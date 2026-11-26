@@ -17,7 +17,7 @@ import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl,
 import { useInputs } from "../lib/inputs";
 import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetFlags, sheetReading, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
-import { ruleCardFile, ruleCardPath, type RuleCardFile, type RuleHead } from "../lib/rule-card-file";
+import type { RuleCardFile, RuleHead } from "../lib/rule-card-file";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { Card, CompanyLinks, DocLink, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
@@ -174,12 +174,17 @@ function watchCardFetches(l: () => void): () => void {
   };
 }
 
-/** A rule's card file, read: a dropped connection or a server's error is a failure; a file that does not match its schema throws. Exported for its test. */
+/**
+ * A rule's card file, read: a dropped connection or a server's error is a failure; a file that does not match its schema throws. The
+ * schema comes with the first file fetched, so a page's own script carries none of it. Exported for its test.
+ */
 export async function loadCardFile(id: string): Promise<CardFetch> {
   let r: Response;
   let body: unknown;
+  let schema: typeof import("../lib/rule-card-file");
   try {
-    r = await fetch(`${import.meta.env.BASE_URL}${ruleCardPath(id).slice(1)}`);
+    schema = await import("../lib/rule-card-file");
+    r = await fetch(`${import.meta.env.BASE_URL}${schema.ruleCardPath(id).slice(1)}`);
     body = r.ok ? await r.json() : null;
   } catch {
     // the connection dropped, or the body was cut short: the card says the fetch failed, with its retry
@@ -187,7 +192,7 @@ export async function loadCardFile(id: string): Promise<CardFetch> {
   }
   if (r.status === 404) return { kind: "missing" };
   if (!r.ok) return { kind: "failed" };
-  const parsed = ruleCardFile.safeParse(body);
+  const parsed = schema.ruleCardFile.safeParse(body);
   if (!parsed.success) throw new Error(`the card file of ${id} does not match its schema`, { cause: parsed.error });
   return { kind: "loaded", file: parsed.data };
 }

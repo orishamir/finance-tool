@@ -1,9 +1,7 @@
 // What a page carries of a rule its cards point at but does not hold in full (a head), and the file of one rule's card that the browser
 // fetches when such a chip is tapped (/rule-card/<id>.json, routes/rule-card.ts). Shared by the loaders, the route and the sheet.
 import { z } from "zod";
-import { ruleRecord, type RuleRecord } from "@finance-tool/schema";
-import { ruleTitle } from "./rule-title";
-import type { SlotSource } from "./figure-slots";
+import { ruleRecord } from "@finance-tool/schema";
 
 /**
  * What a chip and a card's heading need of a rule the page does not hold in full: its title as the page shows it (`ruleTitle`, its
@@ -17,11 +15,6 @@ export const ruleHead = z.object({
   scope_institutions: ruleRecord.shape.scope_institutions,
 });
 export type RuleHead = z.infer<typeof ruleHead>;
-
-/** A rule's head, from its record: its title read with `slots` (the records whose figures fill its text's slots, and the day). */
-export function ruleHeadOf(rule: RuleRecord, slots: SlotSource): RuleHead {
-  return { id: rule.id, title: ruleTitle(rule, slots), strength: rule.strength, scope: rule.scope, ...(rule.scope_institutions ? { scope_institutions: rule.scope_institutions } : {}) };
-}
 
 /** Where a rule is used, as its card says it (`RuleUses` in provenance.tsx). */
 const ruleUses = z.object({ pages: z.array(z.object({ href: z.string(), label: z.string() })), engine: z.boolean() });
