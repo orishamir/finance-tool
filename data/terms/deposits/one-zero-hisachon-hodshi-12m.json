@@ -50,7 +50,8 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-25"
+      "BANK-25",
+      "BANK-34"
     ],
     "state": "sourced",
     "notes": "Printed 'ריבית משתנה' with '(Prime - 2.25%)'; the deposits page: 'P-2.25%, מתואמת 2.50%'. The terms s.3.1-3.2: the rate is prime less a fixed spread given in the deposit's details, and changes whenever prime changes; s.3.4: simple interest ('בשיטת קו ישר ... ללא ריבית דה ריבית'), paid at maturity. Prime is 'כהגדרתה בתנאים הכלליים'."

@@ -50,7 +50,11 @@ describe("figure-rules table", () => {
   it("admits a fixed deposit's rate with BANK-13 alone, and a variable one's with BANK-25 too", () => {
     expect(figureRuleProblems("terms/deposits", deposit(), noCards)).toEqual([]);
     expect(figureRuleProblems("terms/deposits", deposit({ rate_offered: vo(2, ["BANK-13", "BANK-25"]) }), noCards)).toEqual([{ pointer: "/rate_offered", id: "BANK-25", verdict: "disallowed" }]);
-    expect(figureRuleProblems("terms/deposits", deposit({ rate_type: "variable", rate_offered: vo(2, ["BANK-13", "BANK-25"]), spread: vo(-2, ["BANK-25", "BANK-34"]) }), noCards)).toEqual([]);
+    expect(figureRuleProblems("terms/deposits", deposit({ rate_type: "variable", anchor: "prime", rate_offered: vo(2, ["BANK-13", "BANK-25"]), spread: vo(-2, ["BANK-25", "BANK-34"]) }), noCards)).toEqual([]);
+  });
+
+  it("keeps the prime's card on a spread over the prime only", () => {
+    expect(figureRuleProblems("terms/deposits", deposit({ rate_type: "variable", anchor: "ריבית עוגן", rate_offered: vo(2, ["BANK-13", "BANK-25"]), spread: vo(-0.3, ["BANK-25", "BANK-34"]) }), noCards)).toEqual([{ pointer: "/spread", id: "BANK-34", verdict: "disallowed" }]);
   });
 
   it("drops the prime's card and the savings plans' break rule from the rate, and every rule from the term", () => {

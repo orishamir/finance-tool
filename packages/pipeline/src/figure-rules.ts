@@ -127,7 +127,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
     path: "spread",
     allow: [
       { id: "BANK-25", why: "a variable rate's spread over its anchor, known in advance, as the table must print it" },
-      { id: "BANK-34", why: "the spread is over the prime, and BANK-34 says what each bank calls the prime" },
+      { id: "BANK-34", when: (r) => field(r, "anchor") === "prime", why: "the spread is over the prime, and BANK-34 says what each bank calls the prime" },
     ],
   },
   {

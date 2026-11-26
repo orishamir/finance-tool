@@ -47,7 +47,8 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-25"
+      "BANK-25",
+      "BANK-34"
     ],
     "state": "sourced",
     "notes": "Printed '(פריים - 4%) 0.75%'."

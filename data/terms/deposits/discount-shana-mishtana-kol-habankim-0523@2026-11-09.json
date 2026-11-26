@@ -46,7 +46,8 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-25"
+      "BANK-25",
+      "BANK-34"
     ],
     "state": "sourced",
     "notes": "Printed 'p-2.1': spread from prime -2.1 percentage points."

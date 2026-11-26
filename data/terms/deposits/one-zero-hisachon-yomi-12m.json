@@ -49,7 +49,8 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-25"
+      "BANK-25",
+      "BANK-34"
     ],
     "state": "sourced",
     "notes": "Printed 'ריבית משתנה (Prime - 4.00%)': spread from prime -4.00 percentage points. The deposits page: 'P-4.00%'."
