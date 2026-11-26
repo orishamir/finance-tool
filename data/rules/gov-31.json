@@ -1,0 +1,55 @@
+{
+  "id": "GOV-31",
+  "title": "TASE: the last trading day of a makam or government bond series is three trading days before redemption",
+  "title_he": "יום המסחר האחרון בסדרה: שלושה ימי מסחר לפני הפדיון",
+  "text_he": "יום המסחר האחרון בסדרת מק״מ הוא {GOV-31:last_trading_days} ימי מסחר לפני יום הפדיון. באיגרת חוב ממשלתית הוא {GOV-31:last_trading_days} ימי מסחר לפני יום הפדיון, או לפני המועד הקובע לפדיון כשהתקנות שלה קובעות מועד כזה.",
+  "figure_names_he": {
+    "last_trading_days": "ימי מסחר בין יום המסחר האחרון ליום הפדיון"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "figures": {
+    "last_trading_days": {
+      "value": 3,
+      "unit": "count",
+      "source": {
+        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+        "title": "TASE, מדריך המסחר (doc. 274698), פרק א' s.6, p.ב3 (update 144, 3.3.26): \"מק\"מ - שלושה ימי מסחר לפני יום הפדיון\"",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-26",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "GOV-31"
+      ],
+      "state": "sourced",
+      "notes": "Trading days: the last trading day is three trading days before the redemption day for makam, and for a government bond three trading days before the redemption day, or before the record date for redemption where its regulations set one."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
+      "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698)",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "פרק א' s.6, p.ב3",
+      "locator_he": "פרק א' סעיף 6, עמוד ב3",
+      "quote": "מק״מ - שלושה ימי מסחר לפני יום הפדיון",
+      "checked": "2026-10-26"
+    }
+  ]
+}

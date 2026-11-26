@@ -24,7 +24,7 @@ export const content: GuideContent = {
   },
   who: ({ figure }) => {
     const minOrder = figure("GOV-24", "min_order_makam_face_value");
-    const lastDays = figure("GOV-24", "last_trading_days");
+    const lastDays = figure("GOV-31", "last_trading_days");
     return (
       <>
         <p className="max-w-measure">

@@ -30,7 +30,7 @@
         "GOV-17"
       ],
       "state": "sourced",
-      "notes": "Share of 2025 government-bond trading turnover on TASE (p. 27); MTS 4.4% (primary market makers only), OTC 12.6%. The trading unit, minimum order and next-business-day settlement on TASE are GOV-24."
+      "notes": "Share of 2025 government-bond trading turnover on TASE (p. 27); MTS 4.4% (primary market makers only), OTC 12.6%. The trading unit on TASE is GOV-30 and the minimum order GOV-24; next-business-day settlement is in this record."
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
@@ -86,6 +86,20 @@
       "kind": "regulator_page",
       "strength": "primary",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=18",
+      "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק ב'",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.18, ch. ה s.9(א)",
+      "locator_he": "עמוד 18, פרק ה סעיף 9(א)",
+      "page": 18,
+      "quote": "סבב הסליקה הראשון - ביום העסקים הבא",
+      "checked": "2026-10-31"
     }
   ]
 }
