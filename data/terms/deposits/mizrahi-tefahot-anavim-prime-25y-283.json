@@ -139,6 +139,7 @@
   },
   "conditions_he": "משיכה מלאה או חלקית מתום שנה ואחר כך כל חצי שנה; במשיכה חלקית נשארות 12 ההפקדות האחרונות. אין סכום הפקדה מרבי, ואפשר להוסיף הפקדות חד-פעמיות.",
   "doubt_he": "בטבלת הבנק תחנות היציאה הן כל שנה, ובמסמך התנאים לתוכניות שנפתחו מ-21.07.2010 הן כל חצי שנה; נרשם מסמך התנאים.",
+  "doubt_on": "exits",
   "snapshot": "2026-11-07",
   "source": {
     "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",

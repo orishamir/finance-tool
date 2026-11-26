@@ -180,6 +180,7 @@
   },
   "conditions_he": "משיכה מלאה או חלקית מתום 3 חודשים ואחר כך כל 3 חודשים. אפשר להקפיא הפקדות עד 6 חודשים, פעמיים. אי אפשר להוסיף הפקדות חד-פעמיות.",
   "doubt_he": "בטבלת הבנק התקופה היא 6 שנים, ובמסמך התנאים כתוב בשורת התקופה '6 חודשים'; נרשמו 6 שנים.",
+  "doubt_on": "term_months",
   "snapshot": "2026-11-07",
   "source": {
     "url": "https://www.mizrahi-tefahot.co.il/about-mizrahi-tefahot-he/disclosure-links/deposits-interest-rates/",

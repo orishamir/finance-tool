@@ -117,6 +117,7 @@
   },
   "conditions_he": "השיעור שבטבלה הוא לתקופה הראשונה של הפיקדון.",
   "doubt_he": "הטבלה מסמנת שיש תחנות יציאה אבל כותבת בתדירות שלהן 'לא קיימת'.",
+  "doubt_on": "exits",
   "snapshot": "2026-11-09",
   "source": {
     "url": "https://www.bankmassad.co.il/private/depositsandsavings/interestratesondeposits/",
