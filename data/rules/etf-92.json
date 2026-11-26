@@ -1,0 +1,121 @@
+{
+  "id": "ETF-92",
+  "title": "TASE prices an Israeli ETF's unit, like every security on it but a derivative, in agorot",
+  "title_he": "הבורסה בתל אביב: מחיר של קרן סל הוא באגורות ליחידה",
+  "text_he": "לפי הנחיות המסחר של הבורסה בתל אביב, יחידת מסחר בקרן סל היא יחידה אחת של הקרן, וכך גם בקרן זרה שנסחרת בבורסה. המחיר של כל נייר ערך בבורסה, חוץ מנגזר, נקבע באגורות ליחידת מסחר. בעמודי הנתונים של הבורסה, עמודת המחיר של קרנות הסל, של המניות ושל הקרנות הזרות נקראת ״שער אחרון (באגורות)״. לכן מחיר של 23,560 הוא 235.60 ₪ ליחידה, כי 100 אגורות הן שקל אחד. ההנחיות לא אומרות במילים שמחיר של קרן סל נקוב באגורות: זה עולה מסעיפי המחיר שלהן ומכותרות עמודי הנתונים. לא נבדק איך הבורסה מתמחרת קרן ישראלית שהיחידות שלה נקובות בדולר.",
+  "strength": "primary",
+  "dimensions": [
+    "currency"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://market.tase.co.il/he/market_data/etfs",
+      "title": "הבורסה: קרנות סל והייטק",
+      "title_he": "הבורסה: קרנות סל והייטק",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "dataset",
+      "strength": "primary",
+      "quote": "שער אחרון (באגורות)",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://market.tase.co.il/he/market_data/security/1148162/major_data",
+      "title": "הבורסה: נתונים עיקריים לנייר 1148162",
+      "title_he": "הבורסה: נתונים עיקריים לנייר 1148162",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "dataset",
+      "strength": "primary",
+      "quote": "שער אחרון (באגורות)",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://market.tase.co.il/he/market_data/securities/data/stocks",
+      "title": "הבורסה: נתוני מסחר - מניות",
+      "title_he": "הבורסה: נתוני מסחר - מניות",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "dataset",
+      "strength": "primary",
+      "quote": "שער אחרון (באגורות)",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://market.tase.co.il/he/market_data/f-etfs",
+      "title": "הבורסה: קרנות חוץ נסחרות",
+      "title_he": "קרנות חוץ נסחרות (רשימה)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "dataset",
+      "strength": "primary",
+      "quote": "שער אחרון (באגורות)",
+      "checked": "2026-11-26",
+      "qualifier": "(the exchange's own data pages)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf#page=9",
+      "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698)",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "file p.9, ch. ב' s.1(י)",
+      "locator_he": "עמוד הקובץ 9, פרק ב' סעיף 1(י)",
+      "page": 9,
+      "quote": "בקרנות סל - יחידת מסחר הינה יחידת קרן סל אחת",
+      "checked": "2026-11-26",
+      "qualifier": "(exchange rules; the file on TASE's site, modified 14.9.2026)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf#page=11",
+      "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698)",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "file p.11, ch. ג' s.1(א)(10)(ב)",
+      "locator_he": "עמוד הקובץ 11, פרק ג' סעיף 1(א)(10)(ב)",
+      "page": 11,
+      "quote": "השער היציג הידוע, באגורות, של מטבע המסחר",
+      "checked": "2026-11-26",
+      "qualifier": "(exchange rules; the file on TASE's site, modified 14.9.2026)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf#page=12",
+      "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698)",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "file p.12, ch. ג' s.2",
+      "locator_he": "עמוד הקובץ 12, פרק ג' סעיף 2",
+      "page": 12,
+      "quote": "שער הבסיס בנייר ערך, למעט נגזר, לא יפחת מאגורה ליחידת מסחר",
+      "checked": "2026-11-26",
+      "qualifier": "(exchange rules; the file on TASE's site, modified 14.9.2026)"
+    },
+    {
+      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf#page=46",
+      "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698)",
+      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "file p.46, ch. ה' s.3ד",
+      "locator_he": "עמוד הקובץ 46, פרק ה' סעיף 3ד",
+      "page": 46,
+      "quote": "שער נייר הערך מ-1 עד 1,000 אגורות, במדרגות של 0.1 אגורות",
+      "checked": "2026-11-26",
+      "qualifier": "(exchange rules; the file on TASE's site, modified 14.9.2026)"
+    }
+  ]
+}

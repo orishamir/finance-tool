@@ -1,0 +1,30 @@
+{
+  "id": "ETF-94",
+  "title": "A fund not organised under US law may not be offered to the public in the United States without an SEC order",
+  "title_he": "קרן שלא הוקמה לפי החוק האמריקאי לא מוצעת לציבור בארצות הברית בלי צו של הרשות האמריקאית",
+  "text_he": "לפי חוק חברות ההשקעה האמריקאי, חברת השקעות שלא הוקמה לפי החוק של ארצות הברית או של אחת המדינות שלה לא מציעה ולא מוכרת את ניירות הערך שלה בהצעה לציבור בארצות הברית. רשות ניירות הערך האמריקאית יכולה, לבקשת הקרן, לתת צו שמתיר לה להירשם ולהציע לציבור. היא נותנת אותו רק אם מצאה שאפשר, משפטית ומעשית, לאכוף עליה את החוק. לכן קרן אירית לא מוצעת לציבור בארצות הברית בלי צו כזה. הסעיף מדבר על הצעה לציבור, ולא נמצא טקסט של הרשות שמחיל אותו במילים על רישום למסחר בבורסה אמריקאית. לכן הוא תומך ב״קרן אירית לא נקנית בבורסה אמריקאית״ רק כקריאה. בתשקיפים של iShares, הבורסה האמריקאית CBOE מופיעה בין הבורסות שבהן החברה מתכוונת לרשום את הקרנות האיריות שלה. זה לא יושב עם הסעיף, ולא נבדק אם קרן אירית כלשהי רשומה שם.",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title15/html/USCODE-2024-title15-chap2D-subchapI-sec80a-7.htm",
+      "title": "15 U.S.C. 80a-7, Transactions by unregistered investment companies (United States Code, 2024 edition)",
+      "publisher": "govinfo (U.S. Government Publishing Office)",
+      "publisher_he": "govinfo, אתר הפרסומים הרשמיים של ממשלת ארצות הברית",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "s.80a-7(d)",
+      "locator_he": "סעיף 80א-7(ד)",
+      "quote": "to offer for sale, sell, or deliver after sale, in connection with a public offering, any security of which such company is the issuer",
+      "checked": "2026-11-26",
+      "qualifier": "(foreign law)"
+    }
+  ]
+}

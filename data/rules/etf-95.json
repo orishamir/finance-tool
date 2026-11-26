@@ -1,0 +1,110 @@
+{
+  "id": "ETF-95",
+  "title": "Irish law and ESMA: a UCITS ETF trades through the day on at least one regulated market or trading facility; neither says the market is in Europe",
+  "title_he": "קרן סל אירית לפי UCITS נסחרת לפחות בשוק אחד, והחוק לא קובע איפה",
+  "text_he": "לפי תקנות UCITS של הבנק המרכזי של אירלנד מ־2026, קרן סל UCITS היא קרן שלפחות סדרה אחת שלה נסחרת לאורך יום המסחר בשוק מוסדר אחד או במערכת מסחר רב־צדדית אחת לפחות. יש לה לפחות עושה שוק אחד, שדואג שמחיר היחידה בבורסה לא יתרחק הרבה משווי הנכסים הנקי. ההנחיות של הרשות האירופית לניירות ערך ושווקים נותנות אותה הגדרה. מערכת מסחר רב־צדדית מוגדרת בדין האירופי, אבל ״שוק מוסדר״ לא מוגדר בתקנות, והדין האירי משתמש בו גם לשוק מוכר במדינה מחוץ לאיחוד. לכן החוק לא קובע שהשוק נמצא באירופה, ולא קובע איפה קרן אירית נסחרת. קרנות איריות נסחרות גם בבורסה בתל אביב, בהיתר של רשות ניירות ערך. איפה קרן מסוימת רשומה למסחר נלמד מהמסמכים של המנפיק שלה, קרן אחר קרן, או ממה שהמנפיק אומר שהוא נוהג לעשות. לא נבדק ממתי התקנות של 2026 בתוקף. התקנות שקדמו להן הגדירו קרן סל באותן מילים.",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.irishstatutebook.ie/pdf/2026/en.si.2026.0316.pdf#page=13",
+      "title": "S.I. No. 316 of 2026, Central Bank (Supervision and Enforcement) Act 2013 (Section 48(1)) (Undertakings for Collective Investment in Transferable Securities) Regulations 2026",
+      "publisher": "Irish Statute Book (Office of the Attorney General)",
+      "publisher_he": "ספר החוקים של אירלנד (Irish Statute Book)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.13, reg. 2(1)",
+      "locator_he": "עמוד הקובץ 13, תקנה 2(1)",
+      "page": 13,
+      "quote": "a UCITS at least one unit or share class of which is traded throughout the day on at least one regulated market or multilateral trading facility",
+      "checked": "2026-11-26",
+      "qualifier": "(foreign regulator)"
+    },
+    {
+      "url": "https://www.irishstatutebook.ie/pdf/2026/en.si.2026.0316.pdf#page=12",
+      "title": "S.I. No. 316 of 2026, Central Bank (Supervision and Enforcement) Act 2013 (Section 48(1)) (Undertakings for Collective Investment in Transferable Securities) Regulations 2026",
+      "publisher": "Irish Statute Book (Office of the Attorney General)",
+      "publisher_he": "ספר החוקים של אירלנד (Irish Statute Book)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.12, reg. 2(1)",
+      "locator_he": "עמוד הקובץ 12, תקנה 2(1)",
+      "page": 12,
+      "quote": "has the meaning given to the term in Article 4 of MiFID",
+      "checked": "2026-11-26",
+      "qualifier": "(foreign regulator)"
+    },
+    {
+      "url": "https://www.irishstatutebook.ie/pdf/2026/en.si.2026.0316.pdf#page=14",
+      "title": "S.I. No. 316 of 2026, Central Bank (Supervision and Enforcement) Act 2013 (Section 48(1)) (Undertakings for Collective Investment in Transferable Securities) Regulations 2026",
+      "publisher": "Irish Statute Book (Office of the Attorney General)",
+      "publisher_he": "ספר החוקים של אירלנד (Irish Statute Book)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.14, reg. 2(3)",
+      "locator_he": "עמוד הקובץ 14, תקנה 2(3)",
+      "page": 14,
+      "checked": "2026-11-26",
+      "qualifier": "(foreign regulator)"
+    },
+    {
+      "url": "https://www.irishstatutebook.ie/pdf/2026/en.si.2026.0316.pdf#page=92",
+      "title": "S.I. No. 316 of 2026, Central Bank (Supervision and Enforcement) Act 2013 (Section 48(1)) (Undertakings for Collective Investment in Transferable Securities) Regulations 2026",
+      "publisher": "Irish Statute Book (Office of the Attorney General)",
+      "publisher_he": "ספר החוקים של אירלנד (Irish Statute Book)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.92, reg. 131",
+      "locator_he": "עמוד הקובץ 92, תקנה 131",
+      "page": 92,
+      "checked": "2026-11-26",
+      "qualifier": "(foreign regulator)"
+    },
+    {
+      "url": "https://www.esma.europa.eu/sites/default/files/library/2015/11/esma-2014-0011-01-00_en_0.pdf#page=3",
+      "title": "ESMA, Guidelines on ETFs and other UCITS issues, ESMA/2014/937 (1.8.2014)",
+      "publisher": "ESMA (European Securities and Markets Authority)",
+      "publisher_he": "רשות ניירות הערך והשווקים האירופית (ESMA)",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "A UCITS ETF is a UCITS at least one unit or share class of which is traded throughout the day on at least one regulated market or Multilateral Trading Facility",
+      "checked": "2026-11-26",
+      "qualifier": "(foreign regulator)"
+    },
+    {
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32014L0065",
+      "title": "Directive 2014/65/EU (MiFID II), OJ L 173, 12.6.2014",
+      "publisher": "EUR-Lex (Publications Office of the European Union)",
+      "publisher_he": "מאגר הדין של האיחוד האירופי (EUR-Lex)",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "Art. 4(1)(22)",
+      "checked": "2026-11-26",
+      "qualifier": "(EU law)"
+    },
+    {
+      "url": "https://www.irishstatutebook.ie/pdf/2011/en.si.2011.0352.pdf#page=59",
+      "title": "S.I. No. 352 of 2011, European Communities (Undertakings for Collective Investment in Transferable Securities) Regulations 2011",
+      "publisher": "Irish Statute Book (Office of the Attorney General)",
+      "publisher_he": "ספר החוקים של אירלנד (Irish Statute Book)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.59, reg. 68(1)(c)",
+      "locator_he": "עמוד הקובץ 59, תקנה 68(1)(ג)",
+      "page": 59,
+      "quote": "another regulated market in a third country which operates regularly and is recognised and open to the public",
+      "checked": "2026-11-26",
+      "qualifier": "(foreign law, as made)"
+    }
+  ]
+}

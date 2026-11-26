@@ -1,0 +1,44 @@
+{
+  "id": "ETF-93",
+  "title": "A US exchange-traded fund under the SEC's ETF rule has its shares listed on a US exchange",
+  "title_he": "קרן סל אמריקאית לפי כלל קרנות הסל האמריקאי רשומה למסחר לפחות בבורסה אמריקאית אחת",
+  "text_he": "לפי הכלל של רשות ניירות הערך האמריקאית על קרנות סל, קרן סל היא קרן פתוחה רשומה שיוצרת ופודה יחידות מול משתתפים מורשים, והיחידות שלה רשומות למסחר בבורסה לאומית ונסחרות במחיר שקובע השוק. חוק חברות ההשקעה האמריקאי מגדיר בורסה לאומית כבורסה שרשומה בארצות הברית. לכן קרן אמריקאית שהיא קרן סל לפי הכלל הזה רשומה למסחר לפחות בבורסה אמריקאית אחת. הכלל לא אוסר רישום גם מחוץ לארצות הברית, ולא נמצא מקור שאומר שקרן אמריקאית נסחרת רק שם. קרן סל אמריקאית בצורה משפטית אחרת, או כזו שפועלת לפי היתר פרטני של הרשות, לא נכנסת להגדרה הזו. לא נבדק לפי מה פועלת כל אחת מהקרנות האמריקאיות שבאתר.",
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "regulator"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol5/pdf/CFR-2025-title17-vol5-sec270-6c-11.pdf",
+      "title": "17 CFR 270.6c-11, Exchange-traded funds (CFR, 4-1-25 edition)",
+      "publisher": "govinfo (U.S. Government Publishing Office)",
+      "publisher_he": "govinfo, אתר הפרסומים הרשמיים של ממשלת ארצות הברית",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.1, s.270.6c-11(a)(1)",
+      "locator_he": "עמוד 1, סעיף 270.6ג-11(א)(1)",
+      "page": 1,
+      "quote": "Whose shares are listed on a national securities exchange and traded at market-determined prices",
+      "checked": "2026-11-26",
+      "qualifier": "(foreign regulator)"
+    },
+    {
+      "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title15/html/USCODE-2024-title15-chap2D-subchapI-sec80a-2.htm",
+      "title": "15 U.S.C. 80a-2, Definitions (United States Code, 2024 edition)",
+      "publisher": "govinfo (U.S. Government Publishing Office)",
+      "publisher_he": "govinfo, אתר הפרסומים הרשמיים של ממשלת ארצות הברית",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "s.80a-2(a)(26)",
+      "locator_he": "סעיף 80א-2(א)(26)",
+      "quote": "means an exchange registered under section 6 of the Securities Exchange Act of 1934",
+      "checked": "2026-11-26",
+      "qualifier": "(foreign law)"
+    }
+  ]
+}

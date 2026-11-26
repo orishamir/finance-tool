@@ -1,0 +1,93 @@
+{
+  "id": "ETF-96",
+  "title": "iShares and Vanguard: their Irish ETFs are normally first listed in London, Switzerland or another European exchange, with other listings intended",
+  "title_he": "iShares ו־Vanguard: הרישום העיקרי של הקרנות האיריות שלהן הוא בדרך כלל בבורסה אירופית",
+  "text_he": "בשלושה תשקיפים של iShares כתוב שהרישום העיקרי של היחידות של כל קרן יהיה בדרך כלל בשוק הראשי של הבורסה בלונדון, אבל יכול להיות בבורסה אחרת. בתשקיף של iShares VII הרישום העיקרי הרגיל הוא בבורסה השווייצרית SIX או בלונדון. בתשקיף של Vanguard הרישום העיקרי הרגיל הוא באחת מכמה בורסות אירופיות, ובהן דבלין, לונדון, Xetra בגרמניה, איטליה, Cboe Europe ו־SIX. שתי החברות מתכוונות לרשום את הקרנות גם בבורסות נוספות, ובהן בורסות במקסיקו, ו־iShares מזכירה גם את הבורסה האמריקאית CBOE. לפי iShares, אין ודאות שהרישומים האלה ייעשו או יימשכו. כל תשקיף מפנה לאתר של החברה כדי לדעת איפה קרן רשומה בפועל. זה מה ששתי החברות אומרות שהן נוהגות לעשות, ורק בקרנות האיריות שלהן. זה לא כלל: החוק לא קובע איפה קרן אירית נסחרת. התשקיף של Invesco לא נקרא.",
+  "strength": "institution",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-11-26",
+  "recheck_date": "2027-04-01",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "ishares",
+      "name_he": "iShares"
+    },
+    {
+      "id": "vanguard",
+      "name_he": "Vanguard"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.ishares.com/uk/individual/en/literature/prospectus/ishares-plc-prospectus-en.pdf#page=2",
+      "title": "iShares plc prospectus, dated 21 September 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "file p.2",
+      "locator_he": "עמוד הקובץ 2",
+      "page": 2,
+      "quote": "The Shares of each Fund will normally be primarily listed and admitted for trading on the main market of the LSE",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://www.ishares.com/gls-download/literature/prospectus/ishares-iii-plc-prospectus-en.pdf#page=2",
+      "title": "iShares III plc prospectus, dated 5 November 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "file p.2",
+      "locator_he": "עמוד הקובץ 2",
+      "page": 2,
+      "quote": "The Shares of each Fund will normally be primarily listed and admitted for trading on the main market of the LSE",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://www.ishares.com/gls-download/literature/prospectus/ishares-v-plc-prospectus-en.pdf#page=2",
+      "title": "iShares V plc prospectus, dated 3 September 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "file p.2",
+      "locator_he": "עמוד הקובץ 2",
+      "page": 2,
+      "quote": "The Shares of each Fund will normally be primarily listed and admitted for trading on the main market of the LSE",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://www.ishares.com/gls-download/literature/prospectus/ishares-vii-plc-prospectus-en.pdf#page=2",
+      "title": "iShares VII plc prospectus, dated 2 June 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "file p.2",
+      "locator_he": "עמוד הקובץ 2",
+      "page": 2,
+      "quote": "The Shares of each Fund will normally be primarily listed and admitted for trading on the SIX or the main market of the LSE",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://fund-docs.vanguard.com/etf-prospectus-en.pdf#page=3",
+      "title": "Vanguard Funds plc prospectus, dated 15 October 2026",
+      "publisher": "Vanguard",
+      "publisher_he": "Vanguard",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "file p.3",
+      "locator_he": "עמוד הקובץ 3",
+      "page": 3,
+      "quote": "normally be primarily listed and/or admitted for trading on either the Regulated Market of Euronext Dublin",
+      "checked": "2026-11-26"
+    }
+  ]
+}
