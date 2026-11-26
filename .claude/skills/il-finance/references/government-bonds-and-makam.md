@@ -235,9 +235,9 @@ Scope: makam (מק"ם) and every type of Israeli government shekel bond a reside
 
 ### GOV-21 Costs of buying and holding
 - Rule: Makam and government bonds are bought and held as securities in a bank or broker securities account. Buy and sell commissions apply on top of the displayed yield, and capital gains tax is not deducted from it either (447A annex ב note 2; GOV-20). Fee types, tariffs and regulator averages belong to `brokerage-account.md`. The BoI makam auction conditions read here state no fee payable to the Bank of Israel for taking part. Any fee a bank or broker charges for passing a client order into a makam or bond auction was not found (open questions 2, 8).
-- Conditions / exceptions: CPI-linked bonds bought after the record date miss that period's coupon (GOV-27). This is not a fee, but it affects the cash received. *2026-10-25 rule-text pass:* the final 447A (circular 2813, 09/04/25) was read; its note 2 also leaves capital gains tax out of the shown yield, which the draft-based text did not say.
+- Conditions / exceptions: That a CPI-linked bond bought after the record date misses that period's coupon is GOV-27's (not a fee, but it affects the cash received). *2026-10-25 rule-text pass:* the final 447A (circular 2813, 09/04/25) was read; its note 2 also leaves capital gains tax out of the shown yield, which the draft-based text did not say.
 - Figures: none
-- Source: [בנק ישראל, הפיקוח על הבנקים: ניהול בנקאי תקין 447A, פרסום מידע מרוכז על קרנות כספיות ומק"מ (04/25)](https://boi.org.il/media/gcmk52bw/447a.pdf), p.6, Annex ב note 2 · checked 2026-10-25 · primary. [בנק ישראל, חטיבת השווקים: מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים](https://www.boi.org.il/media/ytal5ozx/makam.pdf), pp.1-23, the whole file (no fee clause found) · checked 2026-10-25 · primary.
+- Source: [בנק ישראל, הפיקוח על הבנקים: ניהול בנקאי תקין 447A, פרסום מידע מרוכז על קרנות כספיות ומק"מ (04/25)](https://boi.org.il/media/gcmk52bw/447a.pdf), p.6, Annex ב note 2 · checked 2026-10-25 · primary. [בנק ישראל, חטיבת השווקים: מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים](https://www.boi.org.il/media/ytal5ozx/makam.pdf), pp.1-23, the whole file (no fee clause found) · checked 2026-10-25 · primary. See also GOV-20, GOV-27.
 - Scope: general
 - Dimensions: `fee-trade`, `fee-custody`
 - Likely to change: no
