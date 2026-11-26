@@ -2527,7 +2527,7 @@
     "explain_he": "המסלול שאליו נכנס הכסף כשלא בוחרים מסלול השקעה בעת ההצטרפות",
     "rule_ids": [
       "CAT-18",
-      "CAT-19",
+      "CAT-58",
       "PEN-17",
       "PF-24"
     ],
@@ -2544,7 +2544,7 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "In pension and tagmulim funds the default is the age-dependent track (CAT-19, PEN-17); in kupat gemel lehashkaa it is set in the bylaws; in keren hishtalmut it must be general or flexible index-tracking (CAT-18). Meitav's label for track 7978 is the second variant. Not the same as the default insurance track in a pension fund (PEN-11).",
+    "notes": "In pension and tagmulim funds the default is the age-dependent track (CAT-58, PEN-17); in kupat gemel lehashkaa it is set in the bylaws; in keren hishtalmut it must be general or flexible index-tracking (CAT-18). Meitav's label for track 7978 is the second variant. Not the same as the default insurance track in a pension fund (PEN-11).",
     "id": "mslvl-hshkah-bryrt-mchdl"
   },
   {
@@ -2693,7 +2693,7 @@
     "rule_ids": [
       "CAT-17",
       "CAT-18",
-      "CAT-19",
+      "CAT-58",
       "PEN-17"
     ],
     "source": {

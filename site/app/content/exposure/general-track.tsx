@@ -29,7 +29,7 @@ export const content: ExposureContent = {
     );
   },
   holdNote: ({ figure }) => {
-    const age = figure("CAT-19", "age_band_1");
+    const age = figure("CAT-58", "age_band_1");
     return (
       <RuleRows
         items={[
