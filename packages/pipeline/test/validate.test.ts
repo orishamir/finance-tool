@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { readFormulaIds, readQuestionPrefixes, readRuleBaseIds, validateData } from "../src/index.ts";
-import { checkCitedPages, checkDealOnlyUnit, checkEffectiveRateUnit, checkFirstExitPoint } from "../src/validate.ts";
+import { checkCitedPages, checkDealOnlyUnit, checkEffectiveRateUnit, checkFirstExitPoint, checkTypedFundUnit } from "../src/validate.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const ruleBase = readRuleBaseIds(`${root}.claude/skills/il-finance/references`);
@@ -837,5 +837,16 @@ describe("a price per dollar in agorot, a deal's unit (data-schema §2)", () => 
     const line = (unit: string) => ({ lines: [{ id: "x-fx", rate: { value: unit === "agorot_per_usd" ? 1.5 : 0.015, unit } }] });
     expect(checkDealOnlyUnit(line("nis_per_usd"))).toEqual([]);
     expect(checkDealOnlyUnit(line("agorot_per_usd"))).toEqual([expect.stringContaining("lines[0].rate: unit agorot_per_usd is a deal's")]);
+  });
+});
+
+describe("an amount in agorot, a typed fund's unit price (data-schema §2)", () => {
+  it("is refused in every field of a record, the share price left to its own check", () => {
+    const amount = (unit: string) => ({ value: unit === "agorot" ? 990 : 9.9, unit });
+    expect(checkTypedFundUnit({ lines: [{ id: "x-trade", min: amount("nis") }] })).toEqual([]);
+    expect(checkTypedFundUnit({ lines: [{ id: "x-trade", min: amount("agorot") }] })).toEqual([expect.stringContaining("lines[0].min: unit agorot is a typed fund's unit price")]);
+    expect(checkTypedFundUnit({ fees: { trustee: amount("agorot") } })).toEqual([expect.stringContaining("fees.trustee: unit agorot")]);
+    expect(checkTypedFundUnit({ share_price: amount("agorot") })).toEqual([]);
+    expect(checkTypedFundUnit(amount("agorot"))).toEqual([expect.stringContaining("(record): unit agorot")]);
   });
 });

@@ -114,12 +114,28 @@ export function checkEffectiveRateUnit(collection: string, record: unknown): str
  * record prices the same in `nis_per_usd`, so no record holds a value in agorot.
  */
 export function checkDealOnlyUnit(record: unknown): string[] {
+  return pathsInUnit(record, "agorot_per_usd").map((at) => `${at}: unit agorot_per_usd is a deal's, not a record's; a record prices a dollar converted in nis_per_usd (data-schema §2)`);
+}
+
+/** data-schema §2: `agorot` is a typed fund's unit, the unit price a person types for a fund bought in Tel Aviv as TASE quotes it (F-109). */
+const TYPED_FUND_UNIT = "agorot";
+
+/**
+ * data-schema §2: no record holds a value in agorot, the unit of a unit price a person types (`TYPED_FUND_UNIT`); a record's amounts are in
+ * shekels. A fund record's `share_price` is `checkSharePrice`'s, which says what unit it takes instead.
+ */
+export function checkTypedFundUnit(record: unknown): string[] {
+  return pathsInUnit(record, TYPED_FUND_UNIT, ["share_price"]).map((at) => `${at}: unit ${TYPED_FUND_UNIT} is a typed fund's unit price, not a record's; a record's amounts are in nis (data-schema §2)`);
+}
+
+/** The path of every object in a parsed record whose `unit` is `unit` ("(record)" for the record itself), skipping the top-level `skip` keys. */
+function pathsInUnit(record: unknown, unit: string, skip: readonly string[] = []): string[] {
   const out: string[] = [];
   const walk = (v: unknown, at: string) => {
     if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${at}[${i}]`));
     else if (v && typeof v === "object") {
-      if ((v as { unit?: unknown }).unit === "agorot_per_usd") out.push(`${at || "(record)"}: unit agorot_per_usd is a deal's, not a record's; a record prices a dollar converted in nis_per_usd (data-schema §2)`);
-      for (const [k, x] of Object.entries(v)) walk(x, at ? `${at}.${k}` : k);
+      if ((v as { unit?: unknown }).unit === unit) out.push(at || "(record)");
+      for (const [k, x] of Object.entries(v)) if (at || !skip.includes(k)) walk(x, at ? `${at}.${k}` : k);
     }
   };
   walk(record, "");
@@ -200,6 +216,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     for (const message of checkCitedPages(parsed.value, ctx.filePages)) report(file, message);
     for (const message of checkEffectiveRateUnit(collection, parsed.value)) report(file, message);
     for (const message of checkDealOnlyUnit(parsed.value)) report(file, message);
+    for (const message of checkTypedFundUnit(parsed.value)) report(file, message);
     if (collection === "terms/deposits" && result.success) for (const message of checkFirstExitPoint(parsed.value)) report(file, message);
     if (collection === "rules" && result.success) {
       const rec = parsed.value as RuleLike;
@@ -801,7 +818,7 @@ export function checkSharePrice(rec: Pick<FundRecord, "share_price">): string[] 
   if (!p) return [];
   const out: string[] = [];
   // agorot are TASE's quote of a unit, which only a fund the person types carries (data-schema §3.5)
-  if (!isUnitPriceUnit(p.unit) || p.unit === "agorot") out.push(`share_price: unit ${p.unit} is not a currency an issuer's NAV is printed in`);
+  if (!isUnitPriceUnit(p.unit) || p.unit === TYPED_FUND_UNIT) out.push(`share_price: unit ${p.unit} is not a currency an issuer's NAV is printed in`);
   if (/tase\.co\.il/i.test(p.source.url)) out.push(`share_price: ${p.source.url} is TASE's or Maya's; a unit's price is the issuer's NAV from its own page (D94)`);
   return out;
 }
