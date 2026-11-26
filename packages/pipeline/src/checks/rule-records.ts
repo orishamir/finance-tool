@@ -20,6 +20,13 @@ function openedIds(node: Record<string, unknown>): string[] {
   ];
 }
 
+let ownIds: ReadonlySet<string> | undefined;
+/** The ids of the repository's own rule cards, read once per process: a test's folder runs this check many times, and data/rules/ stays as it is. */
+function ownRuleIds(): ReadonlySet<string> {
+  ownIds ??= new Set(ruleCards({ dataDir: OWN_DATA, files: listFiles(`${OWN_DATA}/rules`), whole: true }).keys());
+  return ownIds;
+}
+
 export function check(data: CheckData): CheckProblem[] {
   const cards = ruleCards(data);
   const collections = existsSync(data.dataDir) ? readdirSync(data.dataDir, { withFileTypes: true }).filter((e) => e.isDirectory() && e.name !== "rules" && e.name !== "terms" && e.name !== "dimensions").map((e) => e.name) : [];
@@ -28,7 +35,7 @@ export function check(data: CheckData): CheckProblem[] {
     ...collections.flatMap((c) => latestRecords(data, c)),
     ...latestRecords(data, "terms/deposits"),
   ];
-  const known = new Set([...cards.keys(), ...(data.whole ? [] : ruleCards({ dataDir: OWN_DATA, files: listFiles(`${OWN_DATA}/rules`), whole: true }).keys())]);
+  const known = new Set([...cards.keys(), ...(data.whole ? [] : ownRuleIds())]);
   const found = new Map<string, Offence>();
   for (const { key, file, record } of records)
     for (const { pointer, node } of objectsIn(record))

@@ -18,14 +18,18 @@ function telltaleForms(value: number, unit: string): string[] {
   return printedForms(value, unit);
 }
 
-/** The figures of every card by printed form: "25%" → ["TXS-09 rate", …]. */
-function figureForms(cards: ReturnType<typeof ruleCards>): Map<string, { id: string; key: string }[]> {
-  const out = new Map<string, { id: string; key: string }[]>();
+/** The figures of every card by printed form, each form with its pattern compiled once: "25%" → TXS-09's rate, …. */
+function figureForms(cards: ReturnType<typeof ruleCards>): Map<string, { pattern: RegExp; owners: { id: string; key: string }[] }> {
+  const out = new Map<string, { pattern: RegExp; owners: { id: string; key: string }[] }>();
   for (const card of cards.values())
     for (const [key, figure] of Object.entries(card.figures ?? {}))
       for (const { node } of objectsIn(figure))
         if (isValueObject(node) && typeof node.value === "number" && typeof node.unit === "string")
-          for (const form of telltaleForms(node.value, node.unit)) out.set(form, [...(out.get(form) ?? []), { id: card.id, key }]);
+          for (const form of telltaleForms(node.value, node.unit)) {
+            const seen = out.get(form) ?? { pattern: typedForm(form), owners: [] };
+            seen.owners.push({ id: card.id, key });
+            out.set(form, seen);
+          }
   return out;
 }
 
@@ -49,14 +53,11 @@ export function check(data: CheckData): CheckProblem[] {
   const found = new Map<string, Offence>();
   for (const card of cards.values()) {
     const text = withoutSlots(`${card.title_he ?? ""} ${card.text_he ?? ""}`);
-    const typed = [...forms].filter(([form, owners]) => {
-      if (owners.every((o) => o.id === card.id)) return false;
-      return typedForm(form).test(text);
-    });
+    const typed = [...forms].filter(([, { pattern, owners }]) => owners.some((o) => o.id !== card.id) && pattern.test(text));
     if (typed.length)
       found.set(card.id, {
         file: card.file,
-        what: typed.map(([form, owners]) => `"${form}" equals a figure of ${ownersLine(card.id, owners)}`).join("; "),
+        what: typed.map(([form, { owners }]) => `"${form}" equals a figure of ${ownersLine(card.id, owners)}`).join("; "),
         fix: "if the number is one of those figures, write that {ID:figure} slot; if it only equals one, list the card under typed-data-figure",
       });
   }

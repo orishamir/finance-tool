@@ -157,6 +157,11 @@ export function readData(file: string): unknown {
   return parsed.get(file);
 }
 
+/** Keep a file's JSON that the validator has already parsed (undefined when it does not parse), so no check parses it again this run. */
+export function rememberRead(file: string, value: unknown): void {
+  parsed.set(file, value);
+}
+
 /** Forget the files read, so a test that writes a data folder again reads it afresh. */
 export function forgetReads(): void {
   parsed.clear();

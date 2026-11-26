@@ -44,7 +44,7 @@ import { inTrailingYear, trailingDistributionYield } from "@finance-tool/engine"
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
 import { figureSlots, readTextLeftovers, withoutSlots, type TextLeftovers } from "./rule-text.ts";
-import { forgetReads, isOwnData, unreadRuleLists, type CheckProblem, type DataCheck } from "./checks/lib/kit.ts";
+import { forgetReads, isOwnData, rememberRead, unreadRuleLists, type CheckProblem, type DataCheck } from "./checks/lib/kit.ts";
 import { checkFundPromotions, checkLineFacts, checkSnapshotFacts } from "./price-list-facts.ts";
 
 /**
@@ -217,6 +217,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
       continue;
     }
     const parsed = parseJson(readFileSync(file, "utf8"));
+    rememberRead(file, parsed.value);
     if (parsed.error) {
       report(file, parsed.error);
       continue;
