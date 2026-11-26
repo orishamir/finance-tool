@@ -170,8 +170,8 @@ export function SheetContent({ item, data, headId, descId }: { item: Item; data:
 }
 
 /**
- * A formula's sheet: its Hebrew name; the formula itself in math type with a key to its symbols, when docs/method.md writes it as math
- * , else a link to its full definition there; and the
+ * A formula's sheet: its Hebrew name; the formula itself in math type with a key to its symbols, when docs/method.md writes it as math,
+ * else a link to its full definition there, at the section it stands in; and the
  * site parameters it uses, each a chip to its card (left out when there are none, or when the page did not pass `formulas`).
  */
 function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; headId: string }) {
@@ -188,7 +188,7 @@ function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; 
       {tex.length > 0 ? (
         <FormulaBlock lines={tex.map((t, i) => ({ tex: t, label: tex.length > 1 ? key?.lines?.[i] : undefined }))} symbols={key?.symbols ?? []} where={copy.formulaSheet.where} />
       ) : (
-        <a href={METHOD_URL} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-start gap-1 text-sm hover:underline" dir="ltr">
+        <a href={known?.anchor ? `${METHOD_URL}#${known.anchor}` : METHOD_URL} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-start gap-1 text-sm hover:underline" dir="ltr">
           <span className="min-w-0 [overflow-wrap:anywhere]">{copy.formulaSheet.full}</span>
           <IconExternal size={16} className="shrink-0 mt-0.5" />
         </a>

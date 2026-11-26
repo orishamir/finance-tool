@@ -409,6 +409,25 @@ export function loadFormulaTex(): Record<string, string[]> {
   return out;
 }
 
+/**
+ * docs/method.md: per formula (`F-nn`, an entry's bold head) and per assumption (`A-nn`, a row of the assumptions' table), the anchor GitHub
+ * gives the heading it stands under, so a link to its full definition opens at that section: GitHub gives an entry, a bold paragraph, no
+ * anchor of its own. GitHub's anchor is the heading in lower case, with every character but a letter, a digit, a space, a hyphen or an
+ * underscore dropped and each space a hyphen.
+ */
+export function loadFormulaAnchors(): Record<string, string> {
+  const doc = readTextCached(join(root, "docs/method.md"));
+  const out: Record<string, string> = {};
+  let heading = "";
+  for (const line of doc.split("\n")) {
+    const h = /^#{1,6} (.+)$/.exec(line);
+    if (h) heading = h[1]!.trim().toLowerCase().replace(/[^\p{L}\p{N} _-]/gu, "").replace(/ /g, "-");
+    const id = /^\*\*(F-\d{2,3}) /.exec(line)?.[1] ?? /^\| (A-\d{2,3}) \|/.exec(line)?.[1];
+    if (id && heading && !out[id]) out[id] = heading;
+  }
+  return out;
+}
+
 /** The Hebrew name of each source host (`data/sources/publishers.json`): a data file names its company in English ("Bank Leumi le-Israel B.M."), and the sheet's source line shows the Hebrew one. */
 export function loadPublishersHe(): Record<string, string> {
   const rows = readJsonCached(join(root, "data/sources/publishers.json")) as Record<string, { publisher_he?: string }>;
