@@ -15,11 +15,11 @@
   ],
   "variants": [],
   "rule_ids": [
-    "BRK-01",
     "BRK-06",
     "BRK-14",
     "BRK-35",
     "BRK-36",
+    "BRK-70",
     "TXF-22"
   ],
   "source": {
