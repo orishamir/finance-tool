@@ -295,9 +295,20 @@ export function brokeragePart(id: string): { kind: InstitutionKind; tariff: Tari
   const allRules = loadRules();
   const cited = new Set<string>(["BRK-20", "BRK-21", "BRK-16"]);
   for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids, ...cardRuleIds(snap)]) cited.add(r);
-  for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
+  const tariff = tariffCard(snap, allRules, today());
+  for (const r of valueRuleIds(tariff)) cited.add(r);
   const rules = Object.fromEntries([...cited].filter((r) => allRules[r]).map((r) => [r, allRules[r]!]));
-  return { kind: "broker", tariff: tariffCard(snap, allRules, today()), rules };
+  return { kind: "broker", tariff, rules };
+}
+
+/**
+ * Every rule id the figures inside a page's data name (`rule_ids` on any value, a computed figure's inputs among them): each figure's
+ * sheet shows them as chips, so the page ships their records and every chip opens its card.
+ */
+export function valueRuleIds(node: unknown): string[] {
+  if (Array.isArray(node)) return node.flatMap(valueRuleIds);
+  if (node === null || typeof node !== "object") return [];
+  return Object.entries(node).flatMap(([k, v]) => (k === "rule_ids" && Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : valueRuleIds(v)));
 }
 
 // ---------------------------------------------------------------- the page
@@ -328,10 +339,8 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     for (const r of d.break.rule_ids) cited.add(r);
     for (const r of depositKindRules(d.variant)) cited.add(r);
   }
-  if (snap) {
-    for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids, ...cardRuleIds(snap)]) cited.add(r);
-    for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
-  }
+  if (snap) for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids, ...cardRuleIds(snap)]) cited.add(r);
+  for (const r of valueRuleIds([tariff, rows])) cited.add(r);
   // the glossary card behind the "?" of a deposit table's rate head (the deposits page's), with the rules it cites
   const helpTerms = deposits.length ? Object.fromEntries(loadTerms().filter((x) => x.he === DEPOSIT_TERMS.rate).map((x) => [x.he, x])) : {};
   for (const term of Object.values(helpTerms)) for (const r of term.ruleIds) cited.add(r);

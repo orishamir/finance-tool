@@ -17,6 +17,9 @@ import { loader as companiesLoader } from "../routes/companies";
 import { loader as companyLoader } from "../routes/company";
 import { loader as notCoveredLoader } from "../routes/not-covered";
 import { loader as indicesLoader } from "../routes/invest";
+import { loader as trackLoader } from "../routes/track";
+import { loader as bondGuideLoader } from "../routes/guide-limited-bond-fund";
+import { loader as fundsGuideLoader } from "../routes/guide-mutual-funds";
 import { shelfBundle } from "./rule-uses.server";
 import { shelfIds } from "./rule-shelves";
 import { flags } from "../copy";
@@ -45,6 +48,18 @@ function unopened(rules: Map_ | readonly RuleRecord[] | undefined, pointed: Map_
   return Object.values(have).flatMap((r) => chipsOf(r).filter((id) => all[id] && !have[id]).map((id) => `${r.id} → ${id}`));
 }
 
+/** Every guide page's loader data, by wrapper id: read once for the tests that walk it. */
+let guides: Promise<[string, Record<string, unknown> & { rules: Map_; pointed: Map_ }][]> | null = null;
+const guidePages = () =>
+  (guides ??= (async () => {
+    const out: [string, Record<string, unknown> & { rules: Map_; pointed: Map_ }][] = [];
+    for (const id of wrapperId.options) {
+      if (!buildGuidePage(id)) continue;
+      out.push([id, (await guideLoader({ params: { id } } as never)) as Record<string, unknown> & { rules: Map_; pointed: Map_ }]);
+    }
+    return out;
+  })());
+
 describe("every chip on a page's rule cards opens its record", () => {
   it("the chips are read from the figures too: TXG-04's figures name TXG-02 and TXG-03", () => {
     expect(chipsOf(all["TXG-04"]!)).toEqual(expect.arrayContaining(["TXG-02", "TXG-03"]));
@@ -58,11 +73,7 @@ describe("every chip on a page's rule cards opens its record", () => {
 
   it("guide pages", async () => {
     const bad: string[] = [];
-    for (const id of wrapperId.options) {
-      if (!buildGuidePage(id)) continue;
-      const d = (await guideLoader({ params: { id } } as never)) as { rules: Map_; pointed: Map_ };
-      bad.push(...unopened(d.rules, d.pointed).map((x) => `${id}: ${x}`));
-    }
+    for (const [id, d] of await guidePages()) bad.push(...unopened(d.rules, d.pointed).map((x) => `${id}: ${x}`));
     expect(bad).toEqual([]);
   }, 300000);
 
@@ -161,4 +172,89 @@ describe("every rule a figure on the indices page names is a record the page hol
     });
     expect(bad).toEqual([]);
   }, 300000);
+});
+
+/**
+ * The ids the glossary rows cite that have no record in data/rules: a term card's list leaves them out (`TermCard`), and each is the
+ * founder's call to extract or drop. A ratchet: an id leaves the list when it gains a record or no row cites it, and none joins it.
+ */
+const noRecord = new Set(["BRK-03", "BRK-30", "CAT-01", "CAT-02", "CAT-25", "CAT-26", "CAT-29", "CAT-30", "CORP-10", "CS-23", "FXD-06", "FXD-12", "FXD-15", "FXD-16", "INS-23", "KH-24", "MF-42", "MF-57", "MGD-20", "PEN-24", "REG-28", "RG-16", "RG-17", "RG-18", "RG-19", "RG-23", "TXH-16", "TXP-25"]);
+
+/** The rows of the page's term cards whose rule has no record: rows `TermCard` leaves out. Held at what they are, as a ratchet. */
+const PLACEHOLDER_ROWS = 60;
+
+type PageData = { rules?: Map_ | readonly RuleRecord[]; pointed?: Map_ | readonly RuleRecord[]; terms: Record<string, { ruleIds: readonly string[] }> };
+
+/** Every `rule_ids` inside a page's data, outside the rule records themselves (whose chips the tests above walk). */
+function valueIds(node: unknown, skip: ReadonlySet<string>): string[] {
+  if (Array.isArray(node)) return node.flatMap((x) => valueIds(x, skip));
+  if (node === null || typeof node !== "object") return [];
+  return Object.entries(node).flatMap(([k, v]) => (skip.has(k) ? [] : k === "rule_ids" && Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : valueIds(v, skip)));
+}
+
+/** The records any part of a page's data carries under `rules` or `pointed`. */
+function heldIn(node: unknown): Map_ {
+  if (Array.isArray(node)) return Object.assign({}, ...node.map(heldIn)) as Map_;
+  if (node === null || typeof node !== "object") return {};
+  return Object.assign({}, ...Object.entries(node).map(([k, v]) => (k === "rules" || k === "pointed" ? asMap(Array.isArray(v) && v.every((r) => typeof r === "object" && r !== null && "id" in r) ? (v as RuleRecord[]) : !Array.isArray(v) && v && typeof v === "object" && Object.values(v).every((r) => typeof r === "object" && r !== null && "id" in r) ? (v as Map_) : {}) : heldIn(v)))) as Map_;
+}
+
+/**
+ * What a page points at that it does not ship: a term card's rule that has a record (`unshipped`), a figure's rule that has a record
+ * (`values`), and a term card's rule with no record at all (`missing`, one per row).
+ */
+function gaps(page: string, d: PageData, data: unknown, skip: readonly string[]): { unshipped: string[]; values: string[]; missing: string[] } {
+  // a part with records of its own (the house's terms on a company page) opens its figures' chips from them
+  const have = { ...heldIn(data), ...asMap(d.rules), ...asMap(d.pointed) };
+  const termIds = Object.values(d.terms).flatMap((t) => t.ruleIds);
+  return {
+    unshipped: termIds.filter((id) => all[id] && !have[id]).map((id) => `${page}: ${id}`),
+    values: [...new Set(valueIds(data, new Set(["rules", "pointed", ...skip])))].filter((id) => all[id] && !have[id]).map((id) => `${page}: ${id}`),
+    missing: termIds.filter((id) => !all[id]),
+  };
+}
+
+describe("every rule a page's term cards and figures name is a record the page ships", () => {
+  const found = { unshipped: [] as string[], values: [] as string[], missing: [] as string[] };
+  const add = (g: ReturnType<typeof gaps>) => {
+    found.unshipped.push(...g.unshipped);
+    found.values.push(...g.values);
+    found.missing.push(...g.missing);
+  };
+
+  it("guide and exposure pages, the prose guides, the company and track pages", async () => {
+    for (const [id, d] of await guidePages()) add(gaps(id, { ...d, terms: d.termsById as PageData["terms"] }, d, ["bundle", "signature", "termsById"]));
+    for (const e of loadExposures()) {
+      const d = buildExposurePage(e.id);
+      if (d) add(gaps(e.id, { ...d, terms: d.termsById }, d, ["termsById"]));
+    }
+    for (const [name, load] of [["limited-bond-fund", bondGuideLoader], ["mutual-funds", fundsGuideLoader]] as const) {
+      const d = await load();
+      add(gaps(name, d, d, ["terms"]));
+    }
+    for (const id of institutionIds()) {
+      const d = (await companyLoader({ params: { id } } as never)) as { kind: string; institution?: PageData & { helpTerms: PageData["terms"] } };
+      if (d.kind === "institution" && d.institution) add(gaps(id, { ...d.institution, terms: d.institution.helpTerms }, d, ["helpTerms", "terms"]));
+    }
+    const cma = loadCma();
+    for (const c of cma.companies) {
+      const d = (await companyLoader({ params: { id: c.id } } as never)) as { kind: string; companyTerms?: PageData & { helpTerms: PageData["terms"] } };
+      if (d.kind === "company" && d.companyTerms) add(gaps(c.id, { ...d.companyTerms, terms: d.companyTerms.helpTerms }, d, ["companyTerms"]));
+    }
+    // one track of each product: their loaders differ by the product's record and the track's own figures
+    const seen = new Set<string>();
+    for (const t of cma.tracks) {
+      const product = t.selfDirected ?? t.wrapperId;
+      if (seen.has(product)) continue;
+      seen.add(product);
+      const d = await trackLoader({ params: { id: t.companyId, fund: String(t.fundId) } } as never);
+      add(gaps(`${t.companyId}/${t.fundId}`, d, d, ["terms"]));
+    }
+    expect(found.unshipped).toEqual([]);
+    expect(found.values).toEqual([]);
+    expect([...new Set(found.missing)].filter((id) => !noRecord.has(id))).toEqual([]);
+    // a listed id that gained a record leaves the list
+    expect([...noRecord].filter((id) => all[id])).toEqual([]);
+    expect(found.missing.length).toBeLessThanOrEqual(PLACEHOLDER_ROWS);
+  }, 600000);
 });
