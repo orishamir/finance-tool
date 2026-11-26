@@ -15,7 +15,7 @@ import { aliasRows } from "./search-aliases";
 import { fxRunInput, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
 import { computed, ownBy, ruleFigure, sumOf, type ExchangeLabel, type FlagIn, type SiteLabel, type SiteValue, type Strength } from "./value";
-import { ACCOUNT_LINES, FUND_LINES, rulesOfRun, type RunParts } from "./run-rules";
+import { ACCOUNT_LINES, DISTRIBUTION_TAX, FUND_LINES, rulesOfRun, type FeeLines, type RunParts } from "./run-rules";
 import { paidInWorking } from "./working";
 
 // ---------------------------------------------------------------- the options
@@ -908,6 +908,11 @@ function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): Record<
 const rulesOf = (row: ComparedProvider, parts: RunParts) => rulesOfRun(row.run.rules, parts);
 /** The parts an account's cost before tax is made of (`rulesOf`): the account's lines, and the tax during the run on a fund that pays out. */
 const accountParts = (payout: boolean): RunParts => [{ part: "fees", lines: ACCOUNT_LINES }, ...(payout ? (["taxDuring"] as const) : [])];
+/**
+ * The parts a money carried to the horizon is made of (F-91: a line in whole units, a deal's fee, the cash waiting for a unit): its fee lines,
+ * and on a fund that pays out the tax a shekel held pays on the distribution, which the carry's growth is less (`DISTRIBUTION_TAX`).
+ */
+const carriedParts = (lines: FeeLines, payout: boolean): RunParts => [...(lines.length ? [{ part: "fees" as const, lines }] : []), ...(payout ? [DISTRIBUTION_TAX] : [])];
 /** The fund pays out (A-10): the tax on what it pays is the run's tax during it, which the account's fees change. */
 const paysOut = (spec: Spec): boolean => !!(spec.fund as { distribution?: unknown }).distribution;
 /**
@@ -1552,8 +1557,8 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     if (!f) throw new Error(`pairCosts: the run charged fee ${id}, which deal ${s.id} does not hold`);
     return feeNameOf(f.kind, f.name);
   };
-  // a deal's fee is no one line of the Tally's, so it takes the account's lines; it reads none of the tax
-  const dealLines = deal && ids ? [...byDealFee].map(([fee, n]) => ({ fee, name: feeWords(fee), cost: at(n, "F-91", copy.pair.lineAbout(feeWords(fee)), inputs, [{ part: "fees", lines: ACCOUNT_LINES }], feeIsAccount(deal, fee) ? costFlags(row) : []) })) : undefined;
+  // a deal's fee is no one line of the Tally's, so it takes the account's lines, carried as the deal's popup carries it (`dealOnFunds`)
+  const dealLines = deal && ids ? [...byDealFee].map(([fee, n]) => ({ fee, name: feeWords(fee), cost: at(n, "F-91", copy.pair.lineAbout(feeWords(fee)), inputs, carriedParts(ACCOUNT_LINES, payout), feeIsAccount(deal, fee) ? costFlags(row) : []) })) : undefined;
   // each line takes its own fee line, and the tax during the run where it is read before the tax on a fund that pays out; the bank's current
   // account carries the run's flag about its cost (BANK-35, F-102)
   const lines = dealLines
@@ -1687,14 +1692,15 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
     }
     const row = got.row;
     const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row, profileUsed: row.run.profileUsed };
-    // a fee of the deal is the account's cost (its lines, and the tax during the run on a fund that pays out); what is left is the whole run
+    // a fee of the deal is what was paid on it carried to the horizon (F-91, `carriedParts`), as the pair's receipt lists it; what is left is
+    // the whole run
     const deal = ctx.bundle.deals?.byId[s.id];
     const of = (tax: RunReads["tax"]) => (n: number, about: string, fee?: string) =>
       computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, tax }), {
         today: ctx.bundle.today,
         ...(tax === "after"
           ? { rules: rulesOf(row, "all"), statements: statementsOf(row), flags: leftFlags(row), labels: labelsOf(row, fs.spec) }
-          : { rules: rulesOf(row, accountParts(paysOut(fs.spec))), labels: row.run.labels.filter(beforeExitTax), ...(fee !== undefined && feeIsAccount(deal, fee) ? { flags: costFlags(row) } : {}) }),
+          : { rules: rulesOf(row, carriedParts(ACCOUNT_LINES, paysOut(fs.spec))), labels: row.run.labels.filter(beforeExitTax), ...(fee !== undefined && feeIsAccount(deal, fee) ? { flags: costFlags(row) } : {}) }),
         about,
       });
     out.set(fundId, { kind: "ok", valueN: row.real, byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure: of(undefined), left: of("after"), listing: got.listing });

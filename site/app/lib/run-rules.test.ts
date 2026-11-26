@@ -5,7 +5,7 @@ import { p05Number } from "./engine";
 import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
 import { pensionModel, studyYears } from "./guide-signature-g2";
-import { ACCOUNT_LINES, FUND_LINES, SALARY_TAX_RULES, rulesOfRun, rulesOfRuns, salaryTaxOnly, withoutSalaryTax } from "./run-rules";
+import { ACCOUNT_LINES, DISTRIBUTION_TAX, FUND_LINES, SALARY_TAX_RULES, rulesOfRun, rulesOfRuns, salaryTaxOnly, withoutSalaryTax } from "./run-rules";
 import { entered } from "./value";
 
 const rule = (id: string, uses: UsedRule["uses"], figures: UsedRule["figures"] = [], strength: UsedRule["strength"] = "primary"): UsedRule => ({ id, strength, dimensions: [], figures, uses });
@@ -25,6 +25,12 @@ describe("rulesOfRun", () => {
     expect(rulesOfRun(run, ["fees"]).map((r) => r.id)).toEqual(["BRK-17", "TXF-16"]);
     expect(rulesOfRun(run, ["taxDuring", "taxAtExit"]).map((r) => r.id)).toEqual(["TXS-02"]);
     expect(rulesOfRun(run, [])).toEqual([]);
+  });
+  it("the payout's tax is the tax during the run without the surtax's uses (F-91's t)", () => {
+    const payout = rule("TXF-08", [{ part: "taxDuring", changed: true, figures: ["rate"] }]);
+    const surtax = rule("TXG-09", [{ part: "taxDuring", changed: true, figures: ["rate"] }]);
+    expect(rulesOfRun([payout, surtax, exitTax], [DISTRIBUTION_TAX]).map((r) => r.id)).toEqual(["TXF-08"]);
+    expect(rulesOfRun([payout, surtax, exitTax], ["taxDuring"]).map((r) => r.id)).toEqual(["TXF-08", "TXG-09"]);
   });
   it("lists no rule only looked at, on any selection", () => {
     expect(rulesOfRun(run, ["taxDuring"])).toEqual([]);

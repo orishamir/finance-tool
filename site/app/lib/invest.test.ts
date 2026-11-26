@@ -1,12 +1,15 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
 import { BlockedError } from "@finance-tool/engine";
-import { accountSum, blockedReason, buildInvest, listReading, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
+import { accountSum, blockedReason, buildInvest, dealOnFunds, listReading, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "./custom-entries";
 import type { WorkbenchInputs } from "./providers";
 import { differenceOf, entered, sheetRules, type SiteValue } from "./value";
-import { ACCOUNT_LINES, FUND_LINES } from "./run-rules";
+import { ACCOUNT_LINES, FUND_LINES, SURTAX_RULES } from "./run-rules";
+import { feesData } from "./fees.server";
+import { houseDeal } from "./deal-account/house-deal";
+import { dealProviderId, withDeals } from "./deal-account/bundle";
 import { invest as words, numbers } from "../copy";
 
 // The page's data as built, but for the exchange rates: frozen at the ECB's rates of 16.11.2026 (units per euro) and dated today, so
@@ -758,6 +761,33 @@ describe("what each figure's sheet lists", () => {
     expect(inputs(carried.remainder)[words.pair.incomeInput]?.value).toBe(900_000);
     for (const l of carried.account) expect(inputs(l.cost)[words.pair.incomeInput]).toBeUndefined();
     if (carried.waiting) expect(inputs(carried.waiting)[words.pair.incomeInput]).toBeUndefined();
+  });
+
+  it("a deal's fee on a fund that pays out lists the same rules on the pair's receipt as in the deal's popup: the payout's tax, no surtax", () => {
+    const p = plan({ income: 900_000, values: { ...plan().values, income: entered(900_000, "nis", t) }, currentAccounts: true });
+    const data = feesData();
+    let compared = 0;
+    for (const house of data.houses) {
+      const deal = houseDeal(`house:${house.id}`, data, t);
+      if (!deal) continue;
+      const b = withDeals(bundle, [deal], data.kinds);
+      const providerId = dealProviderId(deal.id);
+      const pc = pairCosts({ bundle: b, index: sp, plan: p, fundId: irish.rec.id, providerId });
+      const at = dealOnFunds({ bundle: b, index: sp, plan: p, fundIds: [irish.rec.id], providerId }).get(irish.rec.id);
+      if (!pc?.dealLines?.length || at?.kind !== "ok") continue;
+      expect(pc.distributes).toBe(true);
+      // the income is above the surtax's threshold, so the run's tax took the surtax
+      expect((pc.tax.rulesUsed ?? []).some((r) => SURTAX_RULES.includes(r.id)), house.id).toBe(true);
+      for (const l of pc.dealLines) {
+        const onReceipt = (l.cost.rulesUsed ?? []).map((r) => r.id).sort();
+        expect((at.figure(l.cost.value as number, "x", l.fee).rulesUsed ?? []).map((r) => r.id).sort(), `${house.id} ${l.fee}`).toEqual(onReceipt);
+        // the money a fee took is carried at the fund's return less the payout's tax (F-91's t), which leaves the surtax out
+        expect(onReceipt.filter((id) => id.startsWith("TX")).length, `${house.id} ${l.fee}`).toBeGreaterThan(0);
+        expect(onReceipt.filter((id) => SURTAX_RULES.includes(id)), `${house.id} ${l.fee}`).toEqual([]);
+      }
+      compared++;
+    }
+    expect(compared, "a house whose deal prices the fund that pays out").toBeGreaterThan(0);
   });
 
   it("the deposits' sheet says the monthly deposit rises with prices (A-04, F-05)", () => {
