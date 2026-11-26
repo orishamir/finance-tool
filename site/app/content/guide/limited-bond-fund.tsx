@@ -1,6 +1,6 @@
 // Guide prose for a bond fund with a limited period (the market's "קרן בולט"). A page of its own and not a product id, so it
 // stays out of the comparison until the founder decides otherwise. Every figure, year and date is a Num over a rule figure (a fund's id is not a
-// figure); the words that state a rule open it (Ruled, D116), and a figure from a rule opens it from its sheet (il-finance MF-59 to MF-66,
+// figure); the words that state a rule open it (Ruled, D116), and a figure from a rule opens it from its sheet (il-finance MF-59 to MF-66, MF-75, MF-76,
 // TXS-33 to TXS-37). A company's term appears under that company's name.
 import { Fragment, type ReactNode } from "react";
 import { Num, ProofsChip, Ruled, Term } from "../../components/provenance";
@@ -20,8 +20,8 @@ export function What() {
   return (
     <>
       <Sentence measure><Ruled id="MF-59">בסוף התקופה</Ruled> <Term id="מנהל קרן">מנהל הקרן</Term> <Ruled id="MF-60">פודה</Ruled> את <Term prefix="ה" id="יחידה">יחידות</Term>, והכסף חוזר למי שעדיין מחזיק בהן.</Sentence>
-      <Sentence measure>בקרנות שנמצאו, הקרן <Ruled id="MF-62">עוקבת אחרי מדד</Ruled> של <Term id="איגרת חוב">איגרות חוב</Term> <Ruled id="MF-61">שנפרעות בערך באותה שנה</Ruled>. בקרן 5137492 של ילין לפידות, ככל שהן נפרעות הכסף עובר <Term prefix="ל" id={'מק"מ'}>מק״מ</Term>, <Ruled id="MF-63" prefix="ו">אחרי סוף השנה למזומן</Ruled>.</Sentence>
-      <Sentence measure>לפי <Term prefix="ה" id="בורסה">בורסה</Term>, <Ruled id="MF-61">למדדים האלה יש מועד סיום</Ruled>: הם מפסיקים להתקיים כשהאיגרת האחרונה נפדית. ילין לפידות כותבת <Ruled id="MF-63" prefix="ש">אין בכך התחייבות</Ruled> להשיג את מטרת הקרן. ככל שהסוף מתקרב, נשאר פחות זמן עד שהאיגרות בקרן נפרעות, ולכן שינוי <Term prefix="ב" id="ריבית">ריבית</Term> מזיז את <Term id="מחיר קנייה">מחיר היחידה</Term> <Ruled id="BND-04">פחות ופחות</Ruled>. בקרן אג״ח בלי מועד סיום אין רגע כזה: כמה מחיר היחידה זז <Ruled id="BND-13">תלוי באיגרות שהיא מחזיקה</Ruled> באותו זמן. מי שיודע מתי יצטרך את הכסף יכול לבחור קרן ששנת הסיום שלה <Ruled id="BND-14">קרובה למועד הזה</Ruled>. כך בוחרים גם איגרת חוב: לפי המועד שבו היא נגמרת. <ProofsChip ids={["M-03"]} /></Sentence>
+      <Sentence measure>בקרנות שנמצאו, הקרן <Ruled id="MF-62">עוקבת אחרי מדד</Ruled> של <Term id="איגרת חוב">איגרות חוב</Term> <Ruled id="MF-61">שנפרעות בערך באותה שנה</Ruled>. בקרן 5137492 של ילין לפידות, ככל שהן נפרעות הכסף עובר <Term prefix="ל" id={'מק"מ'}>מק״מ</Term>, <Ruled id="MF-75" prefix="ו">אחרי סוף השנה למזומן</Ruled>.</Sentence>
+      <Sentence measure>לפי <Term prefix="ה" id="בורסה">בורסה</Term>, <Ruled id="MF-61">למדדים האלה יש מועד סיום</Ruled>: הם מפסיקים להתקיים כשהאיגרת האחרונה נפדית. ילין לפידות כותבת <Ruled id="MF-75" prefix="ש">אין בכך התחייבות</Ruled> להשיג את מטרת הקרן. ככל שהסוף מתקרב, נשאר פחות זמן עד שהאיגרות בקרן נפרעות, ולכן שינוי <Term prefix="ב" id="ריבית">ריבית</Term> מזיז את <Term id="מחיר קנייה">מחיר היחידה</Term> <Ruled id="BND-04">פחות ופחות</Ruled>. בקרן אג״ח בלי מועד סיום אין רגע כזה: כמה מחיר היחידה זז <Ruled id="BND-13">תלוי באיגרות שהיא מחזיקה</Ruled> באותו זמן. מי שיודע מתי יצטרך את הכסף יכול לבחור קרן ששנת הסיום שלה <Ruled id="BND-14">קרובה למועד הזה</Ruled>. כך בוחרים גם איגרת חוב: לפי המועד שבו היא נגמרת. <ProofsChip ids={["M-03"]} /></Sentence>
       <Sentence measure>בחוק ובמסמכים של <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> שנבדקו <Ruled id="MF-59">לא נמצא שם לסוג הקרן הזה</Ruled>. האתר משתמש במילים של החוק. המילה ״בולט״ היא מילה של הבורסה <Ruled id="MF-61" prefix="ל">סוג מדד</Ruled>, והיא <Ruled id="MF-62">מופיעה גם בשמות של קרנות</Ruled>. ילין לפידות <Ruled id="MF-63">כותבת במקומה</Ruled> ״אג״ח <Term prefix="ל" id="פדיון">פדיון</Term>״.</Sentence>
       <Callout tone="info" className="max-w-measure" title="שנה בשם הקרן לא אומרת שהקרן נגמרת">
         יש קרנות עם שנה בשם, ובסוף אותה שנה הן <Ruled id="MF-65">עוברות לשנה מאוחרת יותר</Ruled> וממשיכות להתקיים. אצל הראל, תכלית ו־MTF כתוב בשם הקרן ״מתגלגל״. קרן שמתפרקת <Ruled id="MF-59">מזהים לפי מה שכתוב עליה עצמה</Ruled> תחת ״<Term id="תקופת קיום הקרן">תקופת קיום הקרן</Term>״.
@@ -43,7 +43,7 @@ export function Compare() {
         ]}
         rows={[
           { key: "end", head: "מתי זה נגמר", cells: [<Fragment key="bond">במועד <Term prefix="שה" id="מנפיק">מנפיק</Term> קבע</Fragment>, <Fragment key="limited"><Ruled id="MF-60">בסוף התקופה של הקרן</Ruled></Fragment>, <Fragment key="open">לפי קריאה של האתר, <Ruled id="MF-59">אין מועד סיום בחוק</Ruled>, רק פירוק מסיבה אחרת</Fragment>] },
-          { key: "back", head: "מה חוזר", cells: [<Fragment key="bond"><Ruled id="CORP-01">מה שהמנפיק התחייב לשלם</Ruled>, אם ישלם</Fragment>, <Fragment key="limited"><Ruled id="MF-60">המפרק פודה את היחידות</Ruled>, אבל אצל ילין לפידות <Ruled id="MF-63">״אין בכך התחייבות״</Ruled></Fragment>, <Fragment key="open"><Term prefix="ב" id="קרן פתוחה">קרן פתוחה</Term>, <Ruled id="MF-05">לפי שווי הנכסים</Ruled> ביום הפדיון; <Term prefix="ב" id="קרן סל">קרן סל</Term>, <Ruled id="ETF-06">המחיר בבורסה</Ruled></Fragment>] },
+          { key: "back", head: "מה חוזר", cells: [<Fragment key="bond"><Ruled id="CORP-01">מה שהמנפיק התחייב לשלם</Ruled>, אם ישלם</Fragment>, <Fragment key="limited"><Ruled id="MF-60">המפרק פודה את היחידות</Ruled>, אבל אצל ילין לפידות <Ruled id="MF-75">״אין בכך התחייבות״</Ruled></Fragment>, <Fragment key="open"><Term prefix="ב" id="קרן פתוחה">קרן פתוחה</Term>, <Ruled id="MF-05">לפי שווי הנכסים</Ruled> ביום הפדיון; <Term prefix="ב" id="קרן סל">קרן סל</Term>, <Ruled id="ETF-06">המחיר בבורסה</Ruled></Fragment>] },
           { key: "issuers", head: "כמה מנפיקים", cells: ["אחד", <Fragment key="limited">כמה, ו<Ruled id="MF-66">לפי דיווח אחד יכולים להישאר פחות</Ruled> קרוב לסוף</Fragment>, "תלוי בקרן"] },
           { key: "cost", head: "עלות שוטפת", cells: [
               <Fragment key="bond">
@@ -140,7 +140,7 @@ export function Who({ figure }: ContentProps) {
         ]}
       />
       <Sentence measure>
-        <Ruled id="MF-63">דמי ניהול יכולים לעלות</Ruled>: בקרן 5137492 של ילין לפידות הם היו {yalin("MF-63", "fee_report")} בדוח השנתי ל־{yalin("MF-63", "fee_report_date")}, ובתשקיף המאוחר יותר כתוב {yalin("MF-63", "fee")}. לכן כדאי לבדוק את דמי הניהול בדוח או בתשקיף האחרונים של הקרן.
+        <Ruled id="MF-76">דמי ניהול יכולים לעלות</Ruled>: בקרן 5137492 של ילין לפידות הם היו {yalin("MF-76", "fee_report")} בדוח השנתי ל־{yalin("MF-76", "fee_report_date")}, ובתשקיף המאוחר יותר כתוב {yalin("MF-63", "fee")}. לכן כדאי לבדוק את דמי הניהול בדוח או בתשקיף האחרונים של הקרן.
       </Sentence>
       <Sentence measure>לפי ילין לפידות, הבנק או בית ההשקעות שדרכו קונים <Ruled id={["MF-63", "MF-27"]}>יכולים לגבות</Ruled> <Term id="עמלה">עמלה</Term> על קנייה ומכירה של יחידות, מעבר לדמי הניהול. לא נמצא אם נגבית עמלה גם על התשלום בפירוק.</Sentence>
       <Sentence measure>נבדקו התשקיפים של תשעה מנהלי קרנות, ורשימות הקרנות של שישה נוספים לפי השם בלבד. אצל ארבעה מהשישה <Ruled id="MF-65">לא נמצאה קרן כזו</Ruled>. אצל איילון וסיגמא יש קרנות עם תאריך בשם, בלי נוסח שאומר שהן מתפרקות, ולכן הן לא בטבלה. קרן שנוספה אחרי התשקיף יכולה להיות חסרה.</Sentence>
@@ -161,7 +161,7 @@ export function End({ figure }: ContentProps) {
         לפי החוק, מי שמפרק את הקרן מודיע על הפירוק בין {max && <Num value={max} />} ל־{min && <Num value={min} />} ימים לפני המועד. קרן פתוחה <Ruled id="MF-60">מפסיקה להציע יחידות</Ruled> מיום התמחור הראשון אחרי ההודעה לרשות ניירות ערך. הוא מוכר את הנכסים ופודה את היחידות במועד הפירוק.
       </Sentence>
       <Sentence measure>
-        המועד האחרון לתשלום כתוב במסמך של הקרן: בקרן 5137492 של ילין לפידות עד {yalin("MF-63", "last_payment")}, בקרן 5140249 של תכלית עד {tachlit("MF-64", "payment_5140249")}, ובקרן 5140231 של תכלית עד {tachlit("MF-64", "payment_5140231")}. בשתי קרנות תכלית האלה <Ruled id="MF-64">המנהל יכול להודיע על מועד אחר</Ruled>, והוא <Ruled id="MF-64">מתחייב לא להעלות את שכרו</Ruled> עד הפירוק.
+        המועד האחרון לתשלום כתוב במסמך של הקרן: בקרן 5137492 של ילין לפידות עד {yalin("MF-75", "last_payment")}, בקרן 5140249 של תכלית עד {tachlit("MF-64", "payment_5140249")}, ובקרן 5140231 של תכלית עד {tachlit("MF-64", "payment_5140231")}. בשתי קרנות תכלית האלה <Ruled id="MF-64">המנהל יכול להודיע על מועד אחר</Ruled>, והוא <Ruled id="MF-64">מתחייב לא להעלות את שכרו</Ruled> עד הפירוק.
       </Sentence>
       <Callout tone="caution" className="max-w-measure" title="עוד לא נבדק פירוק בפועל">
         הקרנות הראשונות מסתיימות ב־{kesem("MF-62", "end_first")}. ב־{kesem("MF-66", "notice_checked")} <Ruled id="MF-66">עוד לא נמצאה הודעת פירוק</Ruled> בשתי הקרנות שנבדקו. <Ruled id="MF-60">בחוק כתוב שהמפרק פודה את היחידות במועד הפירוק</Ruled>. החוק לא אומר אם אפשר עוד לפדות יחידות אחרי ההודעה. האתר לא מצא בכללים שקרא איך הכסף מגיע <Term prefix="ל" id="חשבון ניירות ערך">חשבון ניירות ערך</Term>.
@@ -187,7 +187,7 @@ export function Risks({ figure }: ContentProps) {
   const yalin = ownFigure(figure, "ילין לפידות");
   return (
     <>
-      <Sentence measure>הסכום לא מובטח. <Ruled id="MF-61">ההודעה של הבורסה על מדדי בולט מתארת מדדים, לא קרן</Ruled>. ילין לפידות כותבת <Ruled id="MF-63" prefix="ש">אין בכך התחייבות</Ruled>. לכן סכום הכסף שיחזור, וגם <Term prefix="ה" id="תשואה לפדיון">תשואה לפדיון</Term>, לא ידועים מראש.</Sentence>
+      <Sentence measure>הסכום לא מובטח. <Ruled id="MF-61">ההודעה של הבורסה על מדדי בולט מתארת מדדים, לא קרן</Ruled>. ילין לפידות כותבת <Ruled id="MF-75" prefix="ש">אין בכך התחייבות</Ruled>. לכן סכום הכסף שיחזור, וגם <Term prefix="ה" id="תשואה לפדיון">תשואה לפדיון</Term>, לא ידועים מראש.</Sentence>
       <Sentence measure>מכירה לפני הסוף נעשית <Ruled id="MF-10" prefix="ב">מחיר של אותו יום</Ruled>, שיכול להיות נמוך ממה ששולם.</Sentence>
       <Sentence measure>חדלות פירעון של מנפיק פוגעת בחלק מהקרן, והפגיעה <Ruled id="TXS-37">מגיעה למחזיק דרך מחיר היחידה</Ruled>.</Sentence>
       <Sentence measure>
