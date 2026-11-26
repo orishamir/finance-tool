@@ -186,7 +186,7 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
       // the tax is F-67's two series together, what the run takes during it and at its exit, so it is named as that total, not by the exit's
       // formula; the salary's tax on an employer's deposit above its limit is not in those series (`withoutSalaryTax`), what is left holds it
       const tax = computed(m === "real" ? p.taxReal : p.taxDuring + p.taxAtExit, "nis", "F-67", taxInputs, { today, rules: rulesOfRun(withoutSalaryTax(p.rules), ["taxDuring", "taxAtExit"]), flags: timeline.flags.filter((f) => f !== "G-14" && f !== "PF-13"), labels: timeline.labels, about: `${ci.about.taxTotal} ${p.year}` });
-      const net = computed(m === "real" ? p.real : p.nominal, "nis", "F-67", { ...yearInputs, ...profile, [bundle.terms.tariff ? ci.feesTariff : ci.fees]: fees, [ci.taxAtExit]: tax }, { today, rules: rulesOfRun(p.rules, "all"), flags: timeline.flags, labels: timeline.labels, about: p.year === horizonYears ? (bundle.terms.tariff ? ci.about.headlineTariff : ci.about.headline) : `${ci.about.net} ${p.year}` });
+      const net = computed(m === "real" ? p.real : p.nominal, "nis", "F-67", { ...yearInputs, ...profile, [bundle.terms.tariff ? ci.feesTariff : ci.fees]: fees, [ci.taxTotal]: tax }, { today, rules: rulesOfRun(p.rules, "all"), flags: timeline.flags, labels: timeline.labels, about: p.year === horizonYears ? (bundle.terms.tariff ? ci.about.headlineTariff : ci.about.headline) : `${ci.about.net} ${p.year}` });
       return { yearText, contributions, fees, tax, net };
     };
     return { inputs, yearValues };

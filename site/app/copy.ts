@@ -1276,6 +1276,8 @@ export const computedInputs = {
   realGain: "רווח ריאלי",
   taxRate: "שיעור המס",
   taxAtExit: "מס במשיכה",
+  /** The timeline's tax as an input of what is left: the whole of it, along the way and at the exit, as the figure it opens is named. */
+  taxTotal: "כל המס",
   fees: "דמי ניהול",
   // a run on a tariff: commissions and custody beside a fund's own fee
   feesTariff: "עמלות ודמי ניהול",
