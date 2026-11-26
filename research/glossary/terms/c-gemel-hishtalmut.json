@@ -481,7 +481,6 @@
     "rule_ids": [
       "KGL-02",
       "KGL-03",
-      "KGL-24",
       "KH-07",
       "TXH-01",
       "TXH-03"
@@ -500,7 +499,7 @@
       "guide:keren-hishtalmut",
       "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Gemel lehashkaa: one ceiling per person across all accounts and managers, CPI-linked each 1 January; the law sets the limit without naming it, the name is institution wording (KGL-02, KGL-24). Study fund: deposits above are accepted; employer money above is taxed as salary and gains on it are taxable (KH-07, TXH-03, TXH-11); 'תקרת הפקדה מוטבת' is Harel's table wording for this. IRA has its own cap based on 'הסכום הקובע' (IRA-07, IRA-08).",
+    "notes": "Gemel lehashkaa: one ceiling per person across all accounts and managers, CPI-linked each 1 January; the law sets the limit without naming it, the name is institution wording (KGL-02, KGL-03). Study fund: deposits above are accepted; employer money above is taxed as salary and gains on it are taxable (KH-07, TXH-03, TXH-11); 'תקרת הפקדה מוטבת' is Harel's table wording for this. IRA has its own cap based on 'הסכום הקובע' (IRA-07, IRA-08).",
     "id": "tkrt-hpkdh"
   },
   {
