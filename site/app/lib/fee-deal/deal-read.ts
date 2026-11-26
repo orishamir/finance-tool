@@ -173,7 +173,7 @@ function partsView(p: Price): PartsView | undefined {
   return Object.keys(out).length ? out : undefined;
 }
 
-export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: Price, today: string): PriceView {
+export function priceView(fees: readonly Pick<SlimFee, "kind" | "name">[], i: number, p: Price, today: string): PriceView {
   const fee = fees[i]!;
   const figures = priceFigures(fee, p, today);
   const currency = onAction(p) ? { currency: p.currency ?? "ILS" } : {};
@@ -182,11 +182,11 @@ export function priceView(fees: readonly Pick<SlimFee, "kind">[], i: number, p: 
   if (mainFigure(p)?.blank) return { form: p.form, blank: true, figures, ...(p.form === "held" ? { per: p.per, every: p.every } : p.form === "sum" ? { every: p.every } : currency), ...parts };
   switch (p.form) {
     case "held": {
-      const yearly = p.per === 12 ? figures.rate! : reading((p.rate.v * 12) / p.per, "pct_per_year", "F-111", { [inputKey(fees, i)]: figures.rate! }, today, feeNameOf(fee.kind));
+      const yearly = p.per === 12 ? figures.rate! : reading((p.rate.v * 12) / p.per, "pct_per_year", "F-111", { [inputKey(fees, i)]: figures.rate! }, today, feeNameOf(fee.kind, fee.name));
       return { form: "held", figures, per: p.per, every: p.every, ...(p.boundsEvery ? { boundsEvery: p.boundsEvery } : {}), yearly, ...parts };
     }
     case "sum": {
-      const yearly = p.every === 12 ? figures.amount! : reading((p.amount.v * 12) / p.every, "nis", "F-111", { [inputKey(fees, i)]: figures.amount! }, today, feeNameOf(fee.kind));
+      const yearly = p.every === 12 ? figures.amount! : reading((p.amount.v * 12) / p.every, "nis", "F-111", { [inputKey(fees, i)]: figures.amount! }, today);
       return { form: "sum", figures, every: p.every, yearly, ...parts };
     }
     case "free":
@@ -224,7 +224,7 @@ export function standingView(r: Pick<DealRead, "kind" | "deal" | "today">, fees:
   if (!standing.judged || standing.share === null || !cap) return { standing, share: null };
   const x = p.form === "free" ? null : mainOf(view);
   const inputs: Record<string, SiteValue> = { ...(x ? { [inputKey(fees, i)]: x } : {}), ...(view.figures.discount ? { [inputKey(fees, i, "discount")]: view.figures.discount } : {}), cap: { ...cap } as SiteValue };
-  return { standing, share: reading(standing.share * 100, "pct", "F-113", inputs, r.today, feeNameOf(fee.kind)) };
+  return { standing, share: reading(standing.share * 100, "pct", "F-113", inputs, r.today) };
 }
 
 /**
