@@ -1,22 +1,11 @@
 // F-133 on the receipt: where the pair is priced buying every few months, one line under what is left says the interval and what each
-// purchase buys, and opens why: the charge each purchase pays whatever its size, what the same pair leaves bought every month, and that the
-// waiting cash earns nothing. The engine's workbench is watched (each run's input kept, the run itself the engine's), so the monthly figure is
-// held to the engine's own run of the same input at an interval of one month.
+// purchase buys, as words that open why (what they open: batched-why.test.ts).
 import { createElement } from "react";
-import { describe, expect, it, vi } from "vitest";
-import type { ComparedProvider, providerWorkbench as Workbench } from "@finance-tool/engine";
-
-const runs = vi.hoisted(() => ({ calls: [] as Parameters<typeof Workbench>[], real: null as typeof Workbench | null }));
-vi.mock("@finance-tool/engine", async (importOriginal) => {
-  const engine = await importOriginal<typeof import("@finance-tool/engine")>();
-  runs.real = engine.providerWorkbench;
-  return { ...engine, providerWorkbench: (...a: Parameters<typeof Workbench>) => (runs.calls.push(a), engine.providerWorkbench(...a)) };
-});
-
+import { describe, expect, it } from "vitest";
 import { invest } from "../../copy";
-import { buildInvest, indexById, pairCosts, type PairCosts } from "../../lib/invest";
+import { buildInvest, indexById, pairCosts } from "../../lib/invest";
 import { planOf } from "../../lib/receipt-fixtures";
-import { BatchedWhy, PairReceipt } from "./receipt";
+import { PairReceipt } from "./receipt";
 import { bundle, html, plan, shown, t } from "./render-fixtures";
 
 const w = invest.receipt.batched;
@@ -63,41 +52,5 @@ describe("the line under what is left, where the pair is priced buying every few
     const out = bare(receipt(p, pair!, "ticket"));
     expect(out).toContain(w.lineAlone(pair!.k));
     expect(out).not.toContain(w.line(pair!.k).split("{amount}")[1]!.trim());
-  });
-});
-
-describe("what the line opens (F-133)", () => {
-  runs.calls.length = 0;
-  const pc = pairCosts({ bundle, index: sp, plan, fundId: psagot.fund, providerId: psagot.house }) as PairCosts;
-  const priced = [...runs.calls];
-  /** The engine's run of the input that gave the pair's row, at an interval of one month: the house's row in it. */
-  const atMonthly = (): ComparedProvider => {
-    const rowOf = (r: ReturnType<typeof Workbench>) => r.rows.find((x): x is ComparedProvider => x.kind === "compared" && x.id === psagot.house);
-    const given = priced.find(([input, ctx]) => input.behaviour?.orderEvery === undefined && rowOf(runs.real!(input, ctx))?.real === pc.left.value);
-    if (!given) throw new Error("no run of the workbench gave the pair's row");
-    const [input, ctx] = given;
-    const row = rowOf(runs.real!({ ...input, behaviour: { ...input.behaviour, orderEvery: 1 } }, ctx));
-    if (!row) throw new Error("the house has no row at an interval of one month");
-    return row;
-  };
-  it("holds what the same pair leaves bought every month: the engine's run of the same input at an interval of one month", () => {
-    const row = atMonthly();
-    expect(row.way.orderEvery).toBe(1);
-    const got = pc.batched?.monthly();
-    expect(got?.computed_from?.formula).toBe("F-133");
-    expect(got?.value).toBeCloseTo(row.real, 6);
-    // it leaves less than the interval the figure is priced at
-    expect(row.real).toBeLessThan(pc.left.value as number);
-  });
-  it("says the house's minimum on a purchase, as its price list prints it, and that figure; then the waiting cash", () => {
-    // the trade line the run read: Psagot's line for an exchange in Europe prints a minimum in euros
-    const line = pc.priced.lines.find((l) => l.base === "trade");
-    expect(line?.min?.unit, "the run's trade line prints no minimum in euros: pick another pair").toBe("eur");
-    // the house by its short name, as the receipt names it
-    const out = bare(html(createElement(BatchedWhy, { pc, house: "פסגות" })));
-    const [before, after] = w.charge.tradeMin("פסגות").split("{figure}");
-    expect(out).toContain(`${before}${line!.min!.value} €${after}`);
-    expect(out).toContain(w.monthly.replace("{figure}", `${Math.round(atMonthly().real).toLocaleString("en-US")} ₪`));
-    expect(out).toContain(w.waits);
   });
 });
