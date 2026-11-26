@@ -45,12 +45,13 @@ describe("rule uses", () => {
     expect(guide.drawn.length).toBeGreaterThan(0);
     expect(guide.uses).toEqual(guide.drawn);
     const cma = loadCma();
-    const company = (await companyLoader({ params: { id: cma.companies[0]!.id } } as never)) as { kind: string; companyTerms?: Parameters<typeof keys>[0] };
+    const company = (await companyLoader({ params: { id: (cma.companies[0] ?? { id: "" }).id } } as never)) as { kind: string; companyTerms?: Parameters<typeof keys>[0] };
     if (company.kind !== "company" || !company.companyTerms) throw new Error("the first CMA company has no company page");
     const c = keys(company.companyTerms);
     expect(c.drawn.length).toBeGreaterThan(0);
     expect(c.uses).toEqual(c.drawn);
-    const t = cma.tracks[0]!;
+    const t = cma.tracks[0];
+    if (!t) throw new Error("the CMA data has no track");
     const track = keys(await trackLoader({ params: { id: t.companyId, fund: String(t.fundId) } } as never));
     expect(track.drawn.length).toBeGreaterThan(0);
     expect(track.uses).toEqual(track.drawn);

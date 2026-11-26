@@ -1346,7 +1346,7 @@ function scopeLine(rule: RuleRecord, ownDocs: OwnDocs | undefined, tagged: reado
  * group on /companies.
  */
 /** An address without its fragment and its trailing slash: the page it opens. */
-const pageOfHref = (href: string): string => href.split("#")[0]!.replace(/(.)\/$/, "$1");
+const pageOfHref = (href: string): string => (href.split("#")[0] ?? "").replace(/(.)\/$/, "$1");
 
 /** The card's foot: where the record is listed. A link to the page the card is open on is left out, and two links to one place are one. */
 function CardFoot({ rule, data }: { rule: RuleRecord; data: ProvenanceData }) {

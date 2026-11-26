@@ -66,7 +66,7 @@ async function houseAccount(id: string, tariff: TariffCardData, page: { rules: R
   const own = account.fees.kind === "terms" ? new Set([...account.fees.terms.data.rules, ...(account.fees.terms.data.pointed ?? [])].map((r) => r.id)) : new Set<string>();
   const added = valueRuleIds(account).filter((r) => all[r] && !page.rules[r] && !page.pointed?.[r] && !own.has(r));
   if (added.length === 0) return { account, page };
-  const rules = { ...page.rules, ...Object.fromEntries(added.map((r) => [r, all[r]!])) };
+  const rules = { ...page.rules, ...Object.fromEntries(added.flatMap((r) => (all[r] ? [[r, all[r]] as const] : []))) };
   return { account, page: { rules, pointed: pointedRecords(rules, all) } };
 }
 

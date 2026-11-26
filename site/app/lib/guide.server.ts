@@ -211,7 +211,11 @@ function reportedFeeRange(id: string, t: string): GuidePageData["feeRange"] {
 
 /** The rules the page's glossary cards cite join the page's rules, so every row of a term card opens its rule's card (as on a prose guide). */
 function addTermRules(rules: Record<string, RuleRecord>, terms: Record<string, TermRow>, all: Record<string, RuleRecord>): void {
-  for (const t of Object.values(terms)) for (const id of t.ruleIds) if (!rules[id] && all[id]) rules[id] = all[id]!;
+  for (const t of Object.values(terms))
+    for (const id of t.ruleIds) {
+      const r = all[id];
+      if (!rules[id] && r) rules[id] = r;
+    }
 }
 
 export function buildGuidePage(id: string, extraTermIds: string[] = [], relatedIds?: readonly string[]): GuidePageData | null {
@@ -333,7 +337,10 @@ export function buildGuidePage(id: string, extraTermIds: string[] = [], relatedI
   // the break rules of each bank the prose links to (its records' own), so each link opens
   for (const r of breakTerms?.breakable.flatMap((b) => b.rules) ?? []) if (allRules[r]) rules[r] = allRules[r]!;
   // the rules the figures of the fee range, the managers' range and the break terms name, so every chip in their sheets opens
-  for (const r of valueRuleIds([feeRange, listRange, breakTerms])) if (allRules[r]) rules[r] = allRules[r]!;
+  for (const r of valueRuleIds([feeRange, listRange, breakTerms])) {
+    const rec = allRules[r];
+    if (rec) rules[r] = rec;
+  }
 
   return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, feeRange, listRange, breakTerms, exampleFund, today: t };
 }
