@@ -29,6 +29,7 @@
   ],
   "rule_ids": [
     "PEN-18",
+    "PEN-69",
     "REG-21"
   ],
   "source": {

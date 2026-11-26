@@ -22,7 +22,7 @@ export const content: GuideContent = {
         במסלולי הביטוח <Ruled id="PEN-64">יש גם כיסוי לנכות ולמוות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Term prefix="ל" id="עמית פעיל">עמית פעיל</Term>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> ששווייה לא נמוך מהיתרה שצברתם. הקרן <Ruled id="PEN-64">רשאית להציע גם מסלול בלי הכיסוי הזה</Ruled>.
       </p>
       <p className="max-w-measure">
-        כללי המס <Ruled id="TXP-24">הם כמו במקיפה</Ruled>. <Ruled id="PEN-18">אין</Ruled> <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה. תקרת דמי הניהול מהחיסכון גבוהה יותר, <N v={figure("PF-05", "balance_cap")} /> מול <N v={figure("PF-04", "balance_cap")} />, ותקרת דמי הניהול מההפקדה נמוכה יותר, <N v={figure("PF-05", "deposit_cap")} /> מול <N v={figure("PF-04", "deposit_cap")} />.
+        כללי המס <Ruled id="TXP-24">הם כמו במקיפה</Ruled>. <Ruled id="PEN-69">אין</Ruled> <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה. תקרת דמי הניהול מהחיסכון גבוהה יותר, <N v={figure("PF-05", "balance_cap")} /> מול <N v={figure("PF-04", "balance_cap")} />, ותקרת דמי הניהול מההפקדה נמוכה יותר, <N v={figure("PF-05", "deposit_cap")} /> מול <N v={figure("PF-04", "deposit_cap")} />.
       </p>
     </>
   ),
@@ -56,7 +56,7 @@ export const content: GuideContent = {
   risks: ({ figure }) => (
     <>
       <p className="max-w-measure">הנכסים <Ruled id="PF-29">מוחזקים בנאמנות</Ruled>, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. זכויות של עמית <Ruled id="REG-18">אפשר לעקל רק לפי כללים שהשר קובע</Ruled>. אם החברה המנהלת קורסת, הניהול <Ruled id="REG-19">עובר לחברה אחרת</Ruled>.</p>
-      <p className="max-w-measure"><Ruled id="PEN-18">אין כאן</Ruled> השלמת <Term prefix="ה" id="תשואה">תשואה</Term> של המדינה.</p>
+      <p className="max-w-measure"><Ruled id="PEN-69">אין כאן</Ruled> השלמת <Term prefix="ה" id="תשואה">תשואה</Term> של המדינה.</p>
       <p className="max-w-measure">
         <Ruled id="PEN-65">גם בקרן הכללית יש</Ruled> <Term id="איזון אקטוארי">איזון אקטוארי</Term>. עודף או גירעון מנכות או מתמותה של עמיתים פעילים מגיע רק למי שבמסלול ביטוח עם כיסוי לנכות או <Term prefix="ל" id="שאירים">שאירים</Term>. הקרן <Ruled id="PEN-64">רשאית להציע גם מסלול בלי כיסוי לנכות ולמוות</Ruled>, ולעמיתים בו העודף או הגירעון האלה לא מגיעים. עודף או גירעון מגורמים דמוגרפיים אחרים מעדכן את היתרות של העמיתים ואת הקצבאות. עודף או גירעון מהתשואות חל רק על מקבלי הקצבה. האיזון נעשה בכל תקופת דיווח כספי. האתר לא מצא בכללים שקרא אם בקרן הכללית זו תקופה של רבעון או של שנה.
       </p>

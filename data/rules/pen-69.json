@@ -1,0 +1,33 @@
+{
+  "id": "PEN-69",
+  "title": "Which funds the guaranteed return covers: old and new comprehensive funds, not the general fund or a provident fund for annuity",
+  "title_he": "אילו קרנות זכאיות להשלמת תשואה: ותיקות וחדשות מקיפות בלבד",
+  "text_he": "השלמת התשואה של המדינה חלה רק על קרנות זכאיות: קרנות פנסיה ותיקות וקרנות פנסיה חדשות מקיפות. קרן פנסיה כללית וקופת גמל לקצבה לא זכאיות לה.",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/24/law/24_lsr_611567.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.34, s.34ב",
+      "locator_he": "עמוד 34, סעיף 34ב",
+      "page": 34,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "PEN-18"
+  ]
+}

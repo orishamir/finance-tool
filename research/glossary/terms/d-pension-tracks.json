@@ -15,6 +15,7 @@
     "explain_he": "קרן פנסיה שחוסכת לקצבה חודשית בפרישה, וכוללת גם ביטוח למקרה נכות ולמשפחה במקרה מוות",
     "rule_ids": [
       "PEN-68",
+      "PEN-69",
       "PEN-12",
       "PEN-13",
       "PEN-27",
@@ -56,6 +57,7 @@
     "rule_ids": [
       "PEN-08",
       "PEN-10",
+      "PEN-69",
       "PF-05",
       "REG-17",
       "REG-21"
@@ -75,7 +77,7 @@
       "decoder:company",
       "decoder:track"
     ],
-    "notes": "Law and Fees Regulations write 'קרן חדשה כללית'; the extension order writes 'קרן פנסיה כללית' and defines it only as a new pension fund not entitled to designated bonds. That excess deposits above the comprehensive ceiling move to the same manager's general fund comes from Mor's bylaws (institution). Not an eligible fund for the state return top-up (PEN-10, REG-21). Pension-Net label: 'קרנות כלליות'. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
+    "notes": "Law and Fees Regulations write 'קרן חדשה כללית'; the extension order writes 'קרן פנסיה כללית' and defines it only as a new pension fund not entitled to designated bonds. That excess deposits above the comprehensive ceiling move to the same manager's general fund comes from Mor's bylaws (institution). Not an eligible fund for the state return top-up (PEN-69, REG-21). Pension-Net label: 'קרנות כלליות'. Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "krn-chdshh-kllyt"
   },
   {
@@ -91,6 +93,7 @@
     "rule_ids": [
       "REG-17",
       "REG-21",
+      "PEN-69",
       "TXP-12",
       "TXP-24"
     ],
@@ -119,7 +122,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Meaning (approved before 1.1.1995) is from the PEN Terms table citing extension order s.2(ה), not from a numbered rule. PEN 'Left out' says old funds are closed to new members, but that line carries no source. Differences found: no commutation (TXP-24), no recognized annuity (TXP-12); covered by the return top-up (REG-21). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
+    "notes": "Meaning (approved before 1.1.1995) is from the PEN Terms table citing extension order s.2(ה), not from a numbered rule. PEN 'Left out' says old funds are closed to new members, but that line carries no source. Differences found: no commutation (TXP-24), no recognized annuity (TXP-12); covered by the return top-up (PEN-69, REG-21). Term source re-pointed 2026-11-07 (glossary sweep) from a copy to the official text.",
     "id": "krn-vtykh"
   },
   {
@@ -1206,6 +1209,7 @@
     "explain_he": "התחייבות של המדינה להשלים לקרן הפנסיה המקיפה תשואה עד יעד שנקבע בחוק, על חלק מהנכסים",
     "rule_ids": [
       "PEN-18",
+      "PEN-69",
       "REG-21"
     ],
     "source": {
