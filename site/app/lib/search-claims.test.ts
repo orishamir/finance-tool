@@ -1,7 +1,7 @@
 // The rules page's search against its yardstick (lib/search-claims.ts), over the real index and texts, built through the two
 // route loaders. `known` names the claims the search still misses; the list only shrinks.
 import { beforeAll, describe, expect, it } from "vitest";
-import { searchEntries, type SearchEntry, type SearchTexts } from "./search";
+import { normalize, searchEntries, type SearchEntry, type SearchTexts } from "./search";
 import { claims, lastClaims, reviewerClaims, unseenClaims } from "./search-claims";
 import { loader as indexLoader } from "../routes/search-index";
 import { loader as textsLoader } from "../routes/search-texts";
@@ -38,5 +38,38 @@ describe("claims find the rules that answer them", () => {
     const found = inTopThree(claim, rules);
     if (known.has(claim)) expect(found, "this claim now passes: take it off the list").toBe(false);
     else expect(found).toBe(true);
+  });
+});
+
+// A claim's answer must not hang on how many other rules use its words: a new rule entry about interest, or a gazette booklet that
+// three rules come to cite (a featured document), is added to the real index, and every claim that passed still passes.
+describe("adding entries that share a claim's words drops no passing claim", () => {
+  let index: SearchEntry[];
+  let texts: SearchTexts;
+  beforeAll(async () => {
+    index = (await (await indexLoader()).json()) as SearchEntry[];
+    texts = (await (await textsLoader()).json()) as SearchTexts;
+  }, 120000);
+  const all = [...claims, ...unseenClaims, ...reviewerClaims, ...lastClaims].filter((c) => !known.has(c.claim));
+  const passes = (ix: SearchEntry[], tx: SearchTexts, c: { claim: string; rules: string[] }) =>
+    searchEntries(ix, c.claim, tx)
+      .filter((h) => h.entry.href.startsWith("/rules#"))
+      .slice(0, 3)
+      .some((h) => c.rules.includes(h.entry.key ?? ""));
+  it("three rules about interest and a featured gazette booklet", () => {
+    const tx: SearchTexts = { ...texts };
+    const rule = (key: string, name: string, text: string): SearchEntry => {
+      tx[key] = text;
+      return { kind: "rule", name, line: "", href: `/rules#${key}`, norm: normalize(name), key };
+    };
+    const added = [
+      rule("ZZ-1", "ריבית על יתרת זכות בחשבון", "הבנק משלם ריבית על יתרת זכות בחשבון עובר ושב לפי התעריפון שלו."),
+      rule("ZZ-2", "ריבית על פיקדון", "ריבית על פיקדון נקבעת בהסכם עם הבנק, והבנק מפרסם אותה."),
+      rule("ZZ-3", "ריבית הפריים", "ריבית הפריים היא ריבית בנק ישראל ועוד מרווח קבוע."),
+    ];
+    const booklet = "כללי הבנקאות (שירות ללקוח) (ריבית על פיקדונות), קובץ התקנות";
+    const document: SearchEntry = { kind: "document", name: booklet, line: "", href: "/documents#doc-zz", norm: normalize(booklet) };
+    const ix = [...index, ...added, document];
+    expect(all.filter((c) => passes(index, texts, c) && !passes(ix, tx, c)).map((c) => c.claim)).toEqual([]);
   });
 });
