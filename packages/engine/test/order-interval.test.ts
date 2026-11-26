@@ -1,10 +1,10 @@
 // F-133 The order interval: the plan's purchases placed every k months, the deposits between them waiting in shekels and earning nothing,
-// each order at the regular lines; the workbench tries every way at k of 1, 2, 3, 4, 6 and 12 and keeps the one that leaves the most, the
+// each order at the regular lines; the workbench tries every way at k of 1, 2, 4, 6 and 12 and keeps the one that leaves the most, the
 // smaller k on a tie. The expected figures are worked from the plans below by hand.
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { feesSnapshot, type ValueObject } from "@finance-tool/schema";
-import { intervalChosen, intervalWays, wayChosen, providerWorkbench, runSecurities, waitingReal, type ComparedProvider, type Deal, type DealProvider, type ProviderWorkbench, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
+import { intervalChosen, intervalWays, wayChosen, providerWorkbench, runSecurities, waitingReal, type ComparedProvider, type Deal, type DealProvider, type OrderInterval, type ProviderWorkbench, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
 import { runSecuritiesChosen } from "../src/ledgers/securities.ts";
 import type { RunResult } from "../src/result.ts";
 import { context, loadRules } from "./golden/harness.ts";
@@ -32,16 +32,16 @@ const base: SecuritiesInput = {
 describe("the run at an order interval (F-133)", () => {
   it("places an order in the months the interval divides, each paying its minimum once", () => {
     // 100 ₪ a month for 7 months at no return, a commission of 0 with a 10 ₪ minimum: monthly, 7 orders of 100 buy 90 each (630, 70 in
-    // commissions); every 3 months, 2 orders of 300 buy 290 each, and month 7's 100 waits to the sale (680, 20)
+    // commissions); every 2 months, 3 orders of 200 buy 190 each, and month 7's 100 waits to the sale (670, 30)
     const tariff = { buy: { rate: 0, min: 10 } };
     const seven = { ...base, goal: { amountNow: 0, monthly: 100, months: 7 } };
     const monthly = runSecurities({ ...seven, tariff }, ctx);
-    const every3 = runSecurities({ ...seven, tariff, way: { orderEvery: 3 } }, ctx);
+    const every2 = runSecurities({ ...seven, tariff, way: { orderEvery: 2 } }, ctx);
     expect(monthly.fees.trade).toBeCloseTo(70, 9);
     expect(monthly.nominal).toBeCloseTo(630, 9);
-    expect(every3.fees.trade).toBeCloseTo(20, 9);
-    expect(every3.nominal).toBeCloseTo(680, 9);
-    expect(every3.formulas).toContain("F-133");
+    expect(every2.fees.trade).toBeCloseTo(30, 9);
+    expect(every2.nominal).toBeCloseTo(670, 9);
+    expect(every2.formulas).toContain("F-133");
     expect(monthly.formulas).not.toContain("F-133");
   });
 
@@ -50,11 +50,12 @@ describe("the run at an order interval (F-133)", () => {
     const r = runSecurities({ ...base, goal: { amountNow: 0, monthly: 100, months: 5 }, tariff: { buy: { rate: 0, min: 10 } }, way: { orderEvery: 4 } }, ctx);
     expect(r.fees.trade).toBeCloseTo(10, 9);
     expect(r.nominal).toBeCloseTo(490, 9);
-    // 6 months every 3, the fund up 1% a month: an order in month 3 alone, never in month 6, the month of the sale. Month 3 buys 300 and
-    // pays 10, 290 grown four months, 290 × 1.01^4 = 301.78, a gain of 11.78 taxed at 25%; months 4 to 6's 300 wait, 598.84 in all
-    const up = runSecurities({ ...base, market: { grossReturn: 1.01 ** 12 - 1, inflation: 0 }, tariff: { buy: { rate: 0, min: 10 } }, way: { orderEvery: 3 } }, ctx);
-    expect(up.fees.trade).toBeCloseTo(10, 9);
-    expect(up.nominal).toBeCloseTo(300 + 290 * 1.01 ** 4 - 0.25 * (290 * 1.01 ** 4 - 290), 9);
+    // 6 months every 2, the fund up 1% a month: orders in months 2 and 4, never in month 6, the month of the sale. Each buys 200 and pays
+    // 10: month 2's 190 grown five months, 190 × 1.01^5, month 4's three, 190 × 1.01^3, their gain taxed at 25%; months 5 and 6's 200 wait
+    const up = runSecurities({ ...base, market: { grossReturn: 1.01 ** 12 - 1, inflation: 0 }, tariff: { buy: { rate: 0, min: 10 } }, way: { orderEvery: 2 } }, ctx);
+    const held = 190 * 1.01 ** 5 + 190 * 1.01 ** 3;
+    expect(up.fees.trade).toBeCloseTo(20, 9);
+    expect(up.nominal).toBeCloseTo(200 + held - 0.25 * (held - 380), 9);
   });
 
   it("buys the amount now at once, as every month does", () => {
@@ -66,11 +67,11 @@ describe("the run at an order interval (F-133)", () => {
   });
 
   it("prices an order placed every few months at the regular line, never the standing order's", () => {
-    // 7 months, a standing order at a 2 ₪ minimum, the regular trade at 10 ₪: monthly 7 × 2 = 14; every 3 months 2 × 10 = 20
+    // 7 months, a standing order at a 2 ₪ minimum, the regular trade at 10 ₪: monthly 7 × 2 = 14; every 2 months 3 × 10 = 30
     const tariff = { buy: { rate: 0, min: 10 }, buyStanding: { rate: 0, min: 2 } };
     const seven = { ...base, goal: { amountNow: 0, monthly: 100, months: 7 } };
     expect(runSecurities({ ...seven, tariff }, ctx).fees.trade).toBeCloseTo(14, 9);
-    expect(runSecurities({ ...seven, tariff, way: { orderEvery: 3 } }, ctx).fees.trade).toBeCloseTo(20, 9);
+    expect(runSecurities({ ...seven, tariff, way: { orderEvery: 2 } }, ctx).fees.trade).toBeCloseTo(30, 9);
   });
 
   it("counts what the waiting deposits missed, as whole units count their waiting cash (F-91's W)", () => {
@@ -87,25 +88,25 @@ describe("the run at an order interval (F-133)", () => {
   });
 
   it("lets a distribution's net wait for the next order rather than place an order of its own", () => {
-    // 1,000 now, a payout of 12% a year paid monthly (1% of what is held), no tax on it (a taxable fund pays its own), every 3 months for 4
-    // months: the first two months' payouts wait, month 3's comes after its order and waits to the sale with month 4's, so the trades are the
-    // amount now and the month-3 order alone
+    // 1,000 now, a payout of 12% a year paid monthly (1% of what is held), no tax on it (a taxable fund pays its own), every 2 months for 4
+    // months: month 1's payout waits, month 2's comes after its order and waits to the sale with months 3 and 4's, so the trades are the
+    // amount now and the month-2 order alone
     const fund = { kind: "money-market-taxable" as const, drag: {}, distribution: { yield: 0.12, perYear: 12 } };
-    const r = runSecurities({ ...base, goal: { amountNow: 1_000, monthly: 100, months: 4 }, fund, tariff: { buy: { rate: 0, min: 1 } }, way: { orderEvery: 3 } }, ctx);
+    const r = runSecurities({ ...base, goal: { amountNow: 1_000, monthly: 100, months: 4 }, fund, tariff: { buy: { rate: 0, min: 1 } }, way: { orderEvery: 2 } }, ctx);
     expect(r.fees.trade).toBeCloseTo(2, 9);
   });
 
   it("with no monthly deposit, places an order every few months for the payouts that wait", () => {
-    // 1,000 now and nothing a month, the same payout, for 7 months every 3: orders in months 3 and 6 spend the payouts waiting, none in month
-    // 7, the month of the sale; with a 1 ₪ minimum, 3 trades with the amount now. Monthly, each of the 7 payouts is its own order: 8
+    // 1,000 now and nothing a month, the same payout, for 7 months every 2: orders in months 2, 4 and 6 spend the payouts waiting, none in
+    // month 7, the month of the sale; with a 1 ₪ minimum, 4 trades with the amount now. Monthly, each of the 7 payouts is its own order: 8
     const fund = { kind: "money-market-taxable" as const, drag: {}, distribution: { yield: 0.12, perYear: 12 } };
     const plan = { ...base, goal: { amountNow: 1_000, monthly: 0, months: 7 }, fund, tariff: { buy: { rate: 0, min: 1 } } };
-    expect(runSecurities({ ...plan, way: { orderEvery: 3 } }, ctx).fees.trade).toBeCloseTo(3, 9);
+    expect(runSecurities({ ...plan, way: { orderEvery: 2 } }, ctx).fees.trade).toBeCloseTo(4, 9);
     expect(runSecurities(plan, ctx).fees.trade).toBeCloseTo(8, 9);
   });
 
   it("flags the open tax on the exchange gain of fund currency that waits at a house that is not a bank (TX2 OQ4)", () => {
-    // a US fund in dollars paying out four times a year: every 3 months its net waits in dollars for the next order
+    // a US fund in dollars paying out four times a year: every 6 months its net waits in dollars for the next order
     const usd = {
       ...base,
       goal: { amountNow: 10_000, monthly: 100, months: 24 },
@@ -114,28 +115,29 @@ describe("the run at an order interval (F-133)", () => {
       tariff: { currency: { code: "USD", startRate: 3.7 } },
     };
     const codes = (i: SecuritiesInput) => runSecurities(i, ctx).flags.map((f) => f.code);
-    expect(codes({ ...usd, memberKind: "non-bank", way: { orderEvery: 3 } })).toContain("TX2-OQ4");
-    expect(codes({ ...usd, broker: "foreign", memberKind: "non-bank", way: { orderEvery: 3 } })).toContain("TX2-OQ4");
+    expect(codes({ ...usd, memberKind: "non-bank", way: { orderEvery: 6 } })).toContain("TX2-OQ4");
+    expect(codes({ ...usd, broker: "foreign", memberKind: "non-bank", way: { orderEvery: 6 } })).toContain("TX2-OQ4");
     // at a bank the balance is a deposit, its exchange gain exempt (TX2-04's reading); monthly, the net is reinvested in its month
-    expect(codes({ ...usd, memberKind: "bank", way: { orderEvery: 3 } })).not.toContain("TX2-OQ4");
+    expect(codes({ ...usd, memberKind: "bank", way: { orderEvery: 6 } })).not.toContain("TX2-OQ4");
     expect(codes({ ...usd, memberKind: "non-bank" })).not.toContain("TX2-OQ4");
   });
 
-  it("refuses an interval with several orders a month (A-28), and an interval that is not one of the six", () => {
-    expect(() => runSecurities({ ...base, ordersPerMonth: 2, way: { orderEvery: 3 } }, ctx)).toThrow(/F-133/);
+  it("refuses an interval with several orders a month (A-28), and an interval that is not one of the five", () => {
+    expect(() => runSecurities({ ...base, ordersPerMonth: 2, way: { orderEvery: 2 } }, ctx)).toThrow(/F-133/);
     expect(() => runSecurities({ ...base, way: { orderEvery: 5 as 4 } }, ctx)).toThrow(/F-133/);
+    expect(() => runSecurities({ ...base, way: { orderEvery: 3 as 4 } }, ctx)).toThrow(/F-133/);
   });
 });
 
 describe("the run chosen among a way's intervals (runSecuritiesChosen)", () => {
   it("is the run of the interval that leaves the most, as each run alone gives it, and the same when asked again", () => {
-    // 100 ₪ a month for 7 months at no return, a 10 ₪ minimum: monthly pays 70, every 2 months 30, every 3 20, every 6 10, the deposits
-    // after the last order waiting to the sale, so every 6 months leaves the most, 690
+    // 100 ₪ a month for 7 months at no return, a 10 ₪ minimum: monthly pays 70, every 2 months 30, every 6 10, the deposits after the last
+    // order waiting to the sale, so every 6 months leaves the most, 690
     const seven = { ...base, goal: { amountNow: 0, monthly: 100, months: 7 }, tariff: { buy: { rate: 0, min: 10 } } };
-    const ways = [undefined, { orderEvery: 2 as const }, { orderEvery: 3 as const }, { orderEvery: 6 as const }];
+    const ways = [undefined, { orderEvery: 2 as const }, { orderEvery: 6 as const }];
     const choose = (runs: readonly RunResult[]) => intervalChosen(runs.map((run, i) => ({ way: ways[i] ?? {}, run })));
     const chosen = runSecuritiesChosen("F-133", seven, ways, ctx, choose);
-    expect(chosen.index).toBe(3);
+    expect(chosen.index).toBe(2);
     expect(chosen.run.nominal).toBeCloseTo(690, 9);
     expect(chosen.run).toEqual(runSecurities({ ...seven, way: { orderEvery: 6 } }, ctx));
     expect(runSecuritiesChosen("F-133", seven, ways, ctx, choose)).toEqual(chosen);
@@ -149,7 +151,7 @@ describe("the ways the workbench tries (F-133)", () => {
     const units = must(unitsOrNone, "the second way's runs");
     expect(own).toEqual([ways[0]]);
     expect(units[0]).toEqual(ways[1]);
-    expect(units.slice(1).map((w) => w.orderEvery)).toEqual([2, 3, 4, 6, 12]);
+    expect(units.slice(1).map((w) => w.orderEvery)).toEqual([2, 4, 6, 12]);
     expect(units.every((w) => !w.units?.monthlyByAmount)).toBe(true);
   });
   it("monthly alone with no monthly deposit and no payout, with several orders a month, and the person's own interval alone where given", () => {
@@ -159,33 +161,33 @@ describe("the ways the workbench tries (F-133)", () => {
   });
   it("at a given interval above a month, a way whose recurring plan buys by amount is not tried, and the house's other way is", () => {
     const ways = [{ units: { price: 300, monthlyByAmount: true } }, { units: { price: 300 } }];
-    expect(intervalWays(ways, { monthly: 500, months: 120, paysOut: false, behaviour: { orderEvery: 3 } })).toEqual([[{ units: { price: 300 }, orderEvery: 3 }]]);
+    expect(intervalWays(ways, { monthly: 500, months: 120, paysOut: false, behaviour: { orderEvery: 4 } })).toEqual([[{ units: { price: 300 }, orderEvery: 4 }]]);
   });
   it("every interval with no monthly deposit where the fund pays out, since its net waits for the next order", () => {
-    expect(must(intervalWays([{}], { monthly: 0, months: 120, paysOut: true })[0], "the one way's runs").map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 3, 4, 6, 12]);
+    expect(must(intervalWays([{}], { monthly: 0, months: 120, paysOut: true })[0], "the one way's runs").map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 4, 6, 12]);
   });
   it("no interval of the plan's months or more, which would place no order before the sale", () => {
-    expect(must(intervalWays([{}], { monthly: 200, months: 12, paysOut: false })[0], "the one way's runs").map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 3, 4, 6]);
-    expect(must(intervalWays([{}], { monthly: 200, months: 4, paysOut: false })[0], "the one way's runs").map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 3]);
+    expect(must(intervalWays([{}], { monthly: 200, months: 12, paysOut: false })[0], "the one way's runs").map((w) => w.orderEvery ?? 1)).toEqual([1, 2, 4, 6]);
+    expect(must(intervalWays([{}], { monthly: 200, months: 4, paysOut: false })[0], "the one way's runs").map((w) => w.orderEvery ?? 1)).toEqual([1, 2]);
   });
 });
 
 describe("which interval a way takes (F-133)", () => {
   // a run as the choice reads it: its real value after tax and the tax it paid, at an index of 1
-  const at = (orderEvery: 1 | 2 | 3 | 4 | 6 | 12, real: number, tax: number) =>
+  const at = (orderEvery: OrderInterval, real: number, tax: number) =>
     ({ way: orderEvery === 1 ? {} : { orderEvery }, run: { real, taxDuring: 0, taxAtExit: tax, nominal: real, exitMonth: 12, series: [{ month: 12, index: 1 }] } }) as unknown as Parameters<typeof intervalChosen>[0][number];
   it("the interval that leaves the most before tax, though another leaves more after tax (G-20)", () => {
-    // monthly leaves 10,000 before tax; every 3 months 10,040 before tax, and more after tax too
-    expect(intervalChosen([at(1, 9_000, 1_000), at(3, 9_100, 940)])).toBe(1);
-    // every 6 months 10,060 before tax though less after tax than every 3 months
-    expect(intervalChosen([at(1, 9_000, 1_000), at(3, 9_100, 940), at(6, 9_050, 1_010)])).toBe(2);
+    // monthly leaves 10,000 before tax; every 4 months 10,040 before tax, and more after tax too
+    expect(intervalChosen([at(1, 9_000, 1_000), at(4, 9_100, 940)])).toBe(1);
+    // every 6 months 10,060 before tax though less after tax than every 4 months
+    expect(intervalChosen([at(1, 9_000, 1_000), at(4, 9_100, 940), at(6, 9_050, 1_010)])).toBe(2);
     // every 2 months more after tax alone: 9,950 before tax, under monthly
     expect(intervalChosen([at(1, 9_000, 1_000), at(2, 9_050, 900)])).toBe(0);
   });
   it("the smaller interval on a tie, within a part in a billion", () => {
     expect(intervalChosen([at(1, 9_000, 1_000), at(2, 9_100, 1_000), at(4, 9_200, 1_000), at(12, 9_150, 1_000)])).toBe(2);
     expect(intervalChosen([at(1, 9_000, 1_000), at(2, 9_200, 1_000), at(4, 9_100, 1_100)])).toBe(1);
-    expect(intervalChosen([at(1, 9_000, 1_000), at(3, 9_000, 1_000 + 1e-6)])).toBe(0);
+    expect(intervalChosen([at(1, 9_000, 1_000), at(2, 9_000, 1_000 + 1e-6)])).toBe(0);
   });
 });
 
@@ -288,7 +290,7 @@ describe("monthly where no order pays a minimum, and on a tie (F-133)", () => {
       providers: [{ snapshot: free, level: "list" }],
     };
     const r = row(providerWorkbench(input, ctx));
-    for (const k of [2, 3, 4, 6, 12] as const) expect(row(providerWorkbench({ ...input, behaviour: { orderEvery: k } }, ctx)).real).toBeCloseTo(r.real, 6);
+    for (const k of [2, 4, 6, 12] as const) expect(row(providerWorkbench({ ...input, behaviour: { orderEvery: k } }, ctx)).real).toBeCloseTo(r.real, 6);
     expect(r.way.orderEvery).toBe(1);
   });
 });

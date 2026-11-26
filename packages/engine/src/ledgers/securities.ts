@@ -270,8 +270,12 @@ export interface WholeUnits {
   monthlyByAmount?: boolean;
 }
 
-/** F-133: the order intervals a plan's purchases may be placed at, in months: every month, and every 2, 3, 4, 6 or 12 months. */
-export const ORDER_INTERVALS = [1, 2, 3, 4, 6, 12] as const;
+/**
+ * F-133: the order intervals a plan's purchases may be placed at, in months: every month, and every 2, 4, 6 or 12 months. Every 3 months is
+ * left out: over the ranking grid and the deal plans it moves no value by more than 0.31% of what is left, and each interval tried is one
+ * more run of every house (F-133).
+ */
+export const ORDER_INTERVALS = [1, 2, 4, 6, 12] as const;
 export type OrderInterval = (typeof ORDER_INTERVALS)[number];
 
 /**
