@@ -33,6 +33,8 @@ import { parseMdLink } from "./md-link";
 import { newestChecked } from "./data-as-of";
 import { staleCma, type SiteValue } from "./value";
 import { pointedIds } from "./scope";
+import { slotIds } from "./figure-slots";
+import { ruleHeadOf, type RuleHead } from "./rule-card-file";
 import { readJsonCached, readParsedCached, readTextCached } from "./read-cache.server";
 import { sourceHref, type RefLink } from "./sources";
 import { heCollator } from "./format";
@@ -81,9 +83,10 @@ export function loadRules(): Record<string, RuleRecord> {
 
 /**
  * The records a page's rule cards point at (`derived_from`, a general rule's `examples`, and the rules its figures cite, which a
- * figure's sheet shows as chips), and the ones those point at in turn, that the page does not hold itself: a page passes them as
- * `ProvenanceData.pointed`, so every chip on a card opens its record (BRK-35's "לדוגמה" chip, TXG-04's figure
- * chips TXG-02 and TXG-03). They never join the page's own rules, which its checklist and its runs read.
+ * figure's sheet shows as chips), and the ones those point at in turn, that the page does not hold itself, all in full: what a page
+ * whose provenance does not take heads passes as `ProvenanceData.pointed`, so every chip on a card opens its record (BRK-35's
+ * "לדוגמה" chip, TXG-04's figure chips TXG-02 and TXG-03). A page that takes heads ships less (`pointedShipment`). They never join
+ * the page's own rules, which its checklist and its runs read.
  */
 export function pointedRecords(have: Record<string, RuleRecord> | readonly RuleRecord[], all: Record<string, RuleRecord> = loadRules()): Record<string, RuleRecord> {
   const own = new Set(Array.isArray(have) ? have.map((r) => r.id) : Object.keys(have));
@@ -109,10 +112,49 @@ export function flagSlotRecords(all: Record<string, RuleRecord> = loadRules()): 
   return Object.fromEntries([...ids].filter((id) => all[id]).map((id) => [id, all[id]!]));
 }
 
-/** A page's `pointed`: the records its own rules' cards point at, and the flags' slot records it does not hold, with theirs. */
-export function pointedWithFlagSlots(rules: Record<string, RuleRecord>, all: Record<string, RuleRecord> = loadRules()): Record<string, RuleRecord> {
+/** What a page ships of the rules its cards point at beyond its own (`pointedShipment`): `ProvenanceData.pointed` and `.heads`. */
+export interface PointedShipment {
+  pointed: Record<string, RuleRecord>;
+  heads: Record<string, RuleHead>;
+}
+
+/**
+ * What a page ships of the rules its cards point at (`pointedIds`) beyond `have`, its own. In full: the records whose figures fill the
+ * slots of a shipped card's text, and theirs in turn, since a slot draws its figure on the card. Of every other rule a shipped card points
+ * at, only its head (`RuleHead`): its chip says its title, and its card is fetched from its own file when the chip is tapped
+ * (`ruleCardData`). A rule reached only from inside another card so never travels with the page.
+ */
+export function pointedShipment(have: Record<string, RuleRecord> | readonly RuleRecord[], all: Record<string, RuleRecord> = loadRules()): PointedShipment {
+  const own: Record<string, RuleRecord> = Array.isArray(have) ? Object.fromEntries((have as readonly RuleRecord[]).map((r) => [r.id, r])) : (have as Record<string, RuleRecord>);
+  const pointed: Record<string, RuleRecord> = {};
+  const queue = Object.values(own);
+  while (queue.length > 0) {
+    const r = queue.pop()!;
+    for (const id of slotIds(r.text_he ?? "")) {
+      const target = all[id];
+      if (own[id] || pointed[id] || !target) continue;
+      pointed[id] = target;
+      queue.push(target);
+    }
+  }
+  const shipped = { ...own, ...pointed };
+  // a head's title fills its slots from every record, as the page that holds the record in full would
+  const slots = { rules: all, today: today() };
+  const heads: Record<string, RuleHead> = {};
+  for (const r of Object.values(shipped))
+    for (const id of pointedIds(r)) {
+      const target = all[id];
+      if (shipped[id] || heads[id] || !target) continue;
+      heads[id] = ruleHeadOf(target, slots);
+    }
+  return { pointed, heads };
+}
+
+/** A page's shipment (`pointedShipment`) with the records the flags' words read that it does not hold, in full, so a flag's figure is the record's. */
+export function pointedWithFlagSlots(rules: Record<string, RuleRecord>, all: Record<string, RuleRecord> = loadRules()): PointedShipment {
   const slots = Object.fromEntries(Object.entries(flagSlotRecords(all)).filter(([id]) => !rules[id]));
-  return { ...slots, ...pointedRecords([...Object.values(rules), ...Object.values(slots)], all) };
+  const shipment = pointedShipment({ ...slots, ...rules }, all);
+  return { pointed: { ...slots, ...shipment.pointed }, heads: shipment.heads };
 }
 
 export function loadParameters(): ParameterRecord[] {

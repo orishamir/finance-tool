@@ -8,7 +8,8 @@ import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { feeDeal, guideIndex, invest, limitedBondFund, mutualFunds, r3transfer, trackBrowser, companies as companiesCopy } from "../copy";
 import { exposureHref, loadExposures } from "./instruments.server";
-import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
+import { loadRules, loadProducts, pointedRecords, pointedShipment, root } from "./data.server";
+import type { RuleCardFile } from "./rule-card-file";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
 import { readTextCached } from "./read-cache.server";
 
@@ -249,6 +250,18 @@ export function loadRuleUses(ids?: Iterable<string>): RuleUsesSlim {
 /** Where each rule a page can open a card of is used: its own rules' and the records its cards point at, so every card it draws says it. */
 export function pageRuleUses(rules: Record<string, RuleRecord>, pointed: Record<string, RuleRecord> = {}): RuleUsesSlim {
   return loadRuleUses(new Set([...Object.keys(rules), ...Object.keys(pointed)]));
+}
+
+/**
+ * One rule's card file (`/rule-card/<id>.json`, `RuleCardFile`): its record, and what its card needs to draw as a page that ships it
+ * would (`pointedShipment`), with where each record in full is used. Null for an id with no record.
+ */
+export function ruleCardData(id: string): RuleCardFile | null {
+  const all = loadRules();
+  const record = all[id];
+  if (!record) return null;
+  const { pointed, heads } = pointedShipment({ [id]: record }, all);
+  return { record, pointed, heads, uses: loadRuleUses([id, ...Object.keys(pointed)]) };
 }
 
 /** The score of every rule (orders rules inside a group and picks teasers; never the pinned list). */
