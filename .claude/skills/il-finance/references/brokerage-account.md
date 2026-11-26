@@ -721,7 +721,7 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 
 ### BRK-80 Banks: a fee on a deposit account with no activity may not exceed its credit balance
 - Rule: Bank of Israel proper-conduct directive 415 "נהלים בנושא עמלות" (version 6, 1/08), s.2(ה), headed "עמלת ניהול חשבון פיקדון ללא תנועה": a bank may not charge that fee "בסכום העולה על יתרת הזכות בחשבון הפיקדון", and may still sell investments it holds for the customer so that the account does not go into debit.
-- Conditions / exceptions: Binds banking corporations, credit-card companies included (s.1(א)). s.2(ה) does not define "חשבון פיקדון ללא תנועה" and does not say it reaches a current account (the directive read in full, 2026-11-12). Split from BRK-61 on 2026-11-26.
+- Conditions / exceptions: Binds banking corporations, credit-card companies included (s.1(א)). s.2(ה) does not define "חשבון פיקדון ללא תנועה" and does not say it reaches a current account (the directive read in full, 2026-11-12). Split from BRK-61 on 2026-11-26. Checked 2026-11-27 against BANK-35: the order and the fee-rule amendment of June 2026 (in force mostly from 1.7.2027) amend the fee rules and repeal three orders, and neither amends directive 415, so s.2(ה) stands as read. On the same subject, a note to the rules' new item 1(א1) says the payment-account management fee is not charged on a dormant account ("פיקדון ללא תנועה" under the Banking Ordinance) in which no action was made (BANK-35); whether that is the account s.2(ה) means is not said.
 - Figures: none.
 - Source: [הוראת ניהול בנקאי תקין 415: נהלים בנושא עמלות, גרסה 6 (1/08)](https://www.boi.org.il/media/n2dlnqyf/415.pdf), p.2, s.2(ה) "בסכום העולה על יתרת הזכות בחשבון הפיקדון" · checked 2026-11-12 · primary
 - Scope: general
@@ -730,7 +730,7 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 
 ### BRK-81 Banks: a fee paid in advance for a period is refunded pro rata by days when the service stops early
 - Rule: Bank of Israel proper-conduct directive 415 "נהלים בנושא עמלות" (version 6, 1/08), s.2(ז)(1): a fee charged in advance for a set period (the directive's examples: a quarterly credit-allocation fee, quarterly management fees, a guarantee fee, a year's safe rent) is refunded "באופן יחסי על בסיס יומי" when the service stops before the period ends.
-- Conditions / exceptions: Binds banking corporations, credit-card companies included (s.1(א)). s.2(ז)(2): reasonable minimum fees that stay payable when a service stops early are allowed only with the Supervisor's prior approval. Split from BRK-61 on 2026-11-26.
+- Conditions / exceptions: Binds banking corporations, credit-card companies included (s.1(א)). s.2(ז)(2): reasonable minimum fees that stay payable when a service stops early are allowed only with the Supervisor's prior approval. Split from BRK-61 on 2026-11-26. Checked 2026-11-27 against BANK-35: the order and the fee-rule amendment of June 2026 (in force mostly from 1.7.2027) do not amend directive 415, so s.2(ז) stands as read. A note to the rules' new item 1(א1) lets a bank charge the full month's payment-account management fee when the account closes during the month (BANK-35); how that note meets s.2(ז)(1) is not settled.
 - Figures: none.
 - Source: [הוראת ניהול בנקאי תקין 415: נהלים בנושא עמלות, גרסה 6 (1/08)](https://www.boi.org.il/media/n2dlnqyf/415.pdf), p.2, s.2(ז) · checked 2026-11-12 · primary
 - Scope: general
