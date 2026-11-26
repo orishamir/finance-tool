@@ -850,7 +850,7 @@ Fund managers at end-2025 (ISA 2025 report p. 7, checked 2026-10-22). AUM in NIS
 
 Trustees at end-2025 (ISA 2025 report p. 5, checked 2026-10-22): יובנק חברה לנאמנות בע"מ NIS 416.7 bn (55.0%); מזרחי טפחות חברה לנאמנות בע"מ NIS 160.8 bn (21.2%); אלמגור - בריטמן נאמנויות בע"מ NIS 113.1 bn (15.0%); הרמטיק לנאמנות קרנות (2022) בע"מ NIS 66.4 bn (8.8%). The ISA 2024 report (p. 3) shows Yuvank and Mizrahi Tefahot as part of a banking group and Almagor-Britman and Hermetic as not.
 
-Distributors: banks and TASE members. Tariffs read for Leumi and IBI only (MF-27); others in `brokerage-account.md`.
+Distributors: banks and TASE members. What the BoI fee rules let every bank charge on fund units is MF-27; each bank's and broker's rates are in its price list under `data/fees/`, and the brokers' rules are in `brokerage-account.md`.
 
 ## Open questions
 
