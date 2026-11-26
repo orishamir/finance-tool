@@ -1,13 +1,11 @@
 {
   "id": "BRK-36",
-  "title": "Interactive Israel states it withholds Israeli tax on IBKR accounts opened through it, and claims no custody or inactivity fees",
-  "title_he": "אינטראקטיב ישראל מצהירה: מנכה מס ישראלי, בלי דמי ניהול פיקדון ניירות ערך",
-  "text_he": "אינטראקטיב ישראל מצהירה באתר שלה שהיא מחשבת ומנכה מס ישראלי על רווחי הון, דיבידנדים וריבית, בעזרת חברה בשם HYBRID. זה חל על חשבונות אינטראקטיב ברוקרס שנפתחו דרכה, בחינם, ליחידים תושבי ישראל ולחשבונות משותפים. היא מצהירה גם שאין דמי ניהול פיקדון ניירות ערך ודמי חוסר פעילות, ושיש עמלת מינימום לעסקה. לדבריה, משיכה אחת בחודש היא בחינם, ואחריה בתשלום. אלה הצהרות שיווקיות של החברה עצמה. אישור של רשות המסים לניכוי הזה לא נמצא.",
+  "title": "Interactive Israel states it withholds Israeli tax on IBKR accounts opened through it",
+  "title_he": "שירות לניכוי מס ישראלי בחשבון: אינטראקטיב ישראל",
+  "text_he": "אינטראקטיב ישראל מצהירה באתר שלה שהיא מחשבת ומנכה מס ישראלי על רווחי הון, דיבידנדים וריבית, בעזרת חברה בשם HYBRID. זה חל על חשבונות אינטראקטיב ברוקרס שנפתחו דרכה, בחינם, ליחידים תושבי ישראל ולחשבונות משותפים. אלה הצהרות שיווקיות של החברה עצמה. אישור של רשות המסים לניכוי הזה לא נמצא.",
   "strength": "institution",
   "dimensions": [
-    "reporting-obligation",
-    "fee-trade",
-    "fee-custody"
+    "reporting-obligation"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
@@ -34,6 +32,7 @@
   ],
   "derived_from": [
     "TXS-05",
-    "TXF-22"
+    "TXF-22",
+    "BRK-40"
   ]
 }

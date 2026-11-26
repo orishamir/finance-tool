@@ -138,7 +138,7 @@ Exercises F-13 FX fee on contributions and exit, F-20 foreign branch (TXF-08, TX
 - Goal: 100,000 now; 2,000/month; horizon 5 years.
 - Market: r_g 6% in USD; π = 2.5%; f = +1% a year; distribution yield 1.3% (A-10).
 - Fund: expense ratio 0.03% (ETF-30); US withholding 25% on distributions (W-8BEN on file); Israel 25% with credit → 0 extra.
-- Broker: no custody; trade USD 2.5 minimum per order (BRK-36), FX conversion 0.2% each way; no Israeli withholding; advances by 30 April ignored in timing.
+- Broker: no custody; trade USD 2.5 minimum per order (BRK-40), FX conversion 0.2% each way; no Israeli withholding; advances by 30 April ignored in timing.
 - Expected: _(founder)_ with the flag "US estate tax exposure above USD 60,000 (TXF-27)".
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S17): Real V_T/I_T = 244,184.11; nominal V_T = 276,271.91; fees: trade 653.45, spread 0.00, custody 0.00, fund (δ) 281.95, FX 1,030.98; tax during: US 25% withheld, nothing more in Israel (foreign 3,123.76, Israeli 0.00); tax at exit 10,788.08; flag "US estate tax exposure above USD 60,000 (TXF-27)" from month 33; timing note: advances by 30 April ignored. Filled in: start rate 3.107 NIS/USD (BoI, 22 Oct 2026), share price USD 776.56 (iShares, 21 Oct 2026).
 
