@@ -10,6 +10,7 @@ import {
   withFee,
   insuranceCost,
   limitStanding,
+  mergedRules,
   moneyStory,
   ruleBook,
   runInputs,
@@ -22,6 +23,7 @@ import {
   type P05Input,
   type Profile,
   type RunResult,
+  type UsedRule,
 } from "@finance-tool/engine";
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import { paidInToday, type Bundle } from "./engine";
@@ -197,8 +199,11 @@ export const taxedAfterLock = (years: readonly StudyYear[], lockYears: number) =
 export interface StudyRange {
   /** What is left at the dearest and the cheapest fee reported on the index (rule 3), everything else the same. */
   fund: DiffRange | null;
-  /** A self-employed person only: the same outlay in a securities account on the same index, and how far it moves with the bank or broker. */
-  account: { net: number; range: DiffRange | null } | null;
+  /**
+   * A self-employed person only: the same outlay in a securities account on the same index, and how far it moves with the bank or broker;
+   * `rules`, what the account's run read and how it used each.
+   */
+  account: { net: number; range: DiffRange | null; rules: UsedRule[] } | null;
 }
 
 /** What depends on who is chosen, at the year picked. */
@@ -211,14 +216,14 @@ export function studyRange(d: SignatureData, c: StudyStoryCase, year: number): S
   const [dear, cheap] = [netAt(high), netAt(low)];
   const fund = dear !== null && cheap !== null ? { low: Math.min(dear, cheap), high: Math.max(dear, cheap) } : null;
   if (c.employment !== "self-employed") return { fund, account: null };
-  const accountNet = (key: string) => {
+  const accountRun = (key: string) => {
     const b = d.bundles[key];
     const run = b ? runWith(b, { amount_now: 0, monthly_deposit: c.ownMonthly, "A-01": c.returnPct }, year * 12, { profile: { annualIncome: 12 * c.income } }) : null;
-    return run && settled(run) ? run.real : null;
+    return run && settled(run) ? run : null;
   };
-  const net = accountNet("brokerage-account");
-  const [best, worst] = [accountNet("brokerage-best"), accountNet("brokerage-worst")];
-  return { fund, account: net === null ? null : { net, range: best !== null && worst !== null ? { low: Math.min(best, worst), high: Math.max(best, worst) } : null } };
+  const own = accountRun("brokerage-account");
+  const [best, worst] = [accountRun("brokerage-best")?.real ?? null, accountRun("brokerage-worst")?.real ?? null];
+  return { fund, account: own === null ? null : { net: own.real, range: best !== null && worst !== null ? { low: Math.min(best, worst), high: Math.max(best, worst) } : null, rules: own.rules } };
 }
 
 // ---------------------------------------------------------------- provident fund for investing
@@ -252,15 +257,24 @@ export interface PensionModel {
   netYou: number;
   /** F-53: the insurance cost inside the fund per month at A-17, or null when A-17 is not entered (or the product has none). */
   insuranceMonthly: number | null;
-  /** The engine's end balance of the deposits, both lines, in today's money, before the fund turns it into a pension (F-49 blocked). */
-  balance: { real: number; years: number; flags: string[]; labels: Label[] } | null;
+  /**
+   * The engine's end balance of the deposits, both lines, in today's money, before the fund turns it into a pension (F-49 blocked), with
+   * the rules both runs read and how each used them.
+   */
+  balance: { real: number; years: number; flags: string[]; labels: Label[]; rules: UsedRule[] } | null;
   /** Why there is no balance: no fees for the wrapper, a run that failed, or on the general fund's page, no deposit above the
    *  comprehensive fund's ceiling (`below-ceiling`) or an excess the rule base does not divide between the parts (`general-split`). */
   balanceGap: "no-fees" | "no-run" | "below-ceiling" | "general-split" | null;
   /** On the general fund's page only (PEN-10): the comprehensive fund's monthly deposit ceiling (PEN-08) and the part of the month's
    *  deposit above it, the money that reaches the general fund at these rates (PEN-10 names other cases the visual does not show). Null on the other pages. */
   general: { ceiling: number; toGeneral: number } | null;
-  /** Rule ids the model read: the forward relief and the engine runs. */
+  /**
+   * The rules the model's own reads used, each with the part it went into (`RuleUse`): the minimum rates (PEN-03) on the deposit, and the
+   * comprehensive fund's ceiling (PEN-08) looked at there; the average wage (PEN-04) on it only where the salary is above it; the relief's
+   * rules on the relief. Each figure lists those of its part (`rulesOfRun`).
+   */
+  used: UsedRule[];
+  /** Rule ids the model read: the forward relief and the engine runs, which the page ships so a run in the browser finds every one. */
   rules: string[];
 }
 
@@ -276,18 +290,25 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
   const bundle = d.bundles[id];
   if (!bundle) return null;
   const book = ruleBook({ rules: bundle.rules, runDate: bundle.runDate });
+  const deposit = book.on("deposit");
+  const reliefBook = book.on("relief");
   try {
-    const rates = { employee: book.rate("PEN-03", "employee_pct"), employer: book.rate("PEN-03", "employer_pct"), severance: book.rate("PEN-03", "severance_pct") };
-    const wage = Math.min(c.salary, book.amount("PEN-04", "average_wage"));
+    const rates = { employee: deposit.rate("PEN-03", "employee_pct"), employer: deposit.rate("PEN-03", "employer_pct"), severance: deposit.rate("PEN-03", "severance_pct") };
+    // the average wage caps the insured wage only where the salary is above it (PEN-04); below it, it is only looked at
+    const averageWage = deposit.peek.amount("PEN-04", "average_wage");
+    if (c.salary > averageWage) deposit.took("PEN-04");
+    const wage = Math.min(c.salary, averageWage);
     const you = rates.employee * wage;
     const employer = rates.employer * wage;
     const severance = rates.severance * wage;
     const income = 12 * c.salary;
     const facts = { taxableIncome: income, insuredIncome: income, existingOwn: 0, employer: 12 * (employer + severance) };
-    // the year's tax before the credit, which caps it, leaves out credit points (G-23)
-    const tax = taxAtBrackets(book.brackets("TXG-02", "brackets"));
-    const beneficiary = 12 * you + facts.employer >= book.amount("TXP-03", "threshold");
-    const r = beneficiary ? beneficiaryRelief(book, facts, 12 * you, tax, true) : employeeCredit(book, facts, 12 * you, tax);
+    // the year's tax before the credit, which caps it, leaves out credit points (G-23); the brackets change an F-31 credit only where that
+    // cap binds, and value every F-32 deduction and cap, as the pension ledger takes them (F-30)
+    const tax = taxAtBrackets(reliefBook.peek.brackets("TXG-02", "brackets"));
+    const beneficiary = 12 * you + facts.employer >= reliefBook.peek.amount("TXP-03", "threshold");
+    const r = beneficiary ? beneficiaryRelief(reliefBook, facts, 12 * you, tax, true) : employeeCredit(reliefBook, facts, 12 * you, tax);
+    if (r.formula === "F-32" || r.creditCap.binds) reliefBook.took("TXG-02");
     const relief = { formula: r.formula, beneficiary, yearly: r.relief, monthly: r.relief / 12, credit: r.credit / 12, deductionValue: r.deductionValue / 12, flags: reliefFlags(r), labels: book.labels() };
     const total = you + employer + severance;
     const hasInsurance = id !== "provident-for-annuity";
@@ -296,9 +317,10 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
     // the general fund: only what is above the comprehensive fund's monthly ceiling reaches it (PEN-10); how an excess divides between
     // the person's, the employer's and the severance parts is not in the rule base, so a positive excess has no balance either
     if (id === "pension-general") {
-      const ceiling = book.amount("PEN-08", "monthly_deposit_ceiling");
+      // the ceiling splits the deposit and changes none of its parts, so it is looked at: the split's figure lists it as an input of its own
+      const ceiling = deposit.peek.amount("PEN-08", "monthly_deposit_ceiling");
       const toGeneral = Math.max(0, total - ceiling);
-      return { ...relieved, insuranceMonthly: null, balance: null, balanceGap: toGeneral > 0 ? "general-split" : "below-ceiling", general: { ceiling, toGeneral }, rules: book.used().map((u) => u.id) };
+      return { ...relieved, insuranceMonthly: null, balance: null, balanceGap: toGeneral > 0 ? "general-split" : "below-ceiling", general: { ceiling, toGeneral }, used: book.used(), rules: book.used().map((u) => u.id) };
     }
     const insuranceMonthly = hasInsurance && c.insurancePct !== null ? insuranceCost(c.insurancePct / 100, total) : null;
 
@@ -333,14 +355,14 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
           // the balance rests on what both runs rest on: their flags (G-36 from 2028, the credit's TXP-OQ20 and G-23, and the rest) and labels
           const flags = [...new Set([...own.flags, ...line.flags].map((f) => f.code))];
           const labels = [...new Map([...own.labels, ...line.labels].map((l) => [`${l.code} ${l.ruleId}`, l])).values()];
-          balance = { real: (own.nominal + (line.detail.grossBalance ?? line.nominal)) / index, years: c.years, flags, labels };
+          balance = { real: (own.nominal + (line.detail.grossBalance ?? line.nominal)) / index, years: c.years, flags, labels, rules: mergedRules([own, line]) };
           for (const u of [...own.rules, ...line.rules]) used.add(u.id);
         }
       } catch {
         balanceGap = "no-run";
       }
     }
-    return { ...relieved, insuranceMonthly, balance, balanceGap, general: null, rules: [...used] };
+    return { ...relieved, insuranceMonthly, balance, balanceGap, general: null, used: book.used(), rules: [...used] };
   } catch {
     return null;
   }

@@ -2,7 +2,20 @@
 import { createElement, type ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { guideSignature as sigCopy } from "../../copy";
+import { sheetRules, type SiteValue } from "../../lib/value";
+
+// every figure a visual hands to `Num`, kept for the sweep below, which reads the rules each figure's sheet names
+const shown: SiteValue[] = [];
+vi.mock("../provenance", async (importOriginal) => {
+  const real = await importOriginal<typeof import("../provenance")>();
+  const Num: typeof real.Num = (props) => {
+    shown.push(props.value);
+    return real.Num(props);
+  };
+  return { ...real, Num };
+});
 import { buildGuidePage } from "../../lib/guide.server";
 import { InputsProvider } from "../../lib/inputs";
 import { ProvenanceProvider } from "../provenance";
@@ -151,5 +164,44 @@ describe("study fund page", () => {
     expect(text).toContain("מס הכנסה במשיכה שלא משלמים:");
     // the multiple is of everything deposited, the employer's money too, not of the person's own deposits alone
     expect(text).toContain("ממה שהופקד, מכם ומהמעסיק");
+  });
+});
+
+describe("each figure of a visual lists only the rules that changed it (method §13)", () => {
+  // the visuals as the page first draws them: no age entered, and the example income, far below the surtax's threshold
+  const figures = (id: string) => {
+    shown.length = 0;
+    const p = buildGuidePage(id)!;
+    renderToString(inProviders(p, createElement(SignatureFrame, { id, data: p.signature!, today: p.today, timeline: null })));
+    return shown.filter((v) => v.state === "computed").map((v) => ({ about: v.about ?? "", ids: sheetRules(v).map((r) => r.id) }));
+  };
+  const all = Object.keys(signatureRegistry).map((id) => ({ id, figures: figures(id) }));
+
+  it("no figure names the rules from 60 with no age, nor the surtax where it is 0", () => {
+    for (const { id, figures: fs } of all) {
+      expect(fs.length, id).toBeGreaterThan(0);
+      for (const f of fs) {
+        expect(f.ids.filter((r) => ["TXG-04", "TXG-07", "TXS-23"].includes(r)), `${id}: ${f.about}`).toEqual([]);
+        expect(f.ids.filter((r) => ["TXG-09", "TXG-10"].includes(r)), `${id}: ${f.about}`).toEqual([]);
+      }
+    }
+  });
+  it("a makam fee names no tax rule", () => {
+    const fees = all.find((x) => x.id === "makam")!.figures.filter((f) => f.about === sigCopy.makam.about.fees || f.about === sigCopy.makam.about.custody);
+    expect(fees.length).toBeGreaterThan(0);
+    for (const f of fees) expect(f.ids.filter((r) => r.startsWith("TX")), f.about).toEqual([]);
+  });
+  it("a pension deposit names only the minimum rates and the average wage", () => {
+    const deposits = [sigCopy.pension.about.you, sigCopy.pension.about.employer, sigCopy.pension.about.severance, sigCopy.pension.about.total];
+    for (const id of ["pension-comprehensive", "pension-general", "provident-for-annuity"]) {
+      const fs = all.find((x) => x.id === id)?.figures.filter((f) => deposits.includes(f.about)) ?? [];
+      expect(fs.length, id).toBeGreaterThan(0);
+      for (const f of fs) expect(f.ids.filter((r) => r !== "PEN-03" && r !== "PEN-04"), `${id}: ${f.about}`).toEqual([]);
+    }
+  });
+  it("the current account's headline at 0% names no tax rule: no interest, no tax", () => {
+    const head = all.find((x) => x.id === "current-account")!.figures.filter((f) => f.about === sigCopy.account.about.account);
+    expect(head.length).toBeGreaterThan(0);
+    for (const f of head) expect(f.ids.filter((r) => r.startsWith("TX")), f.about).toEqual([]);
   });
 });

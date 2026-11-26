@@ -3,7 +3,7 @@
 // bundle (`runTimeline`, `runAtMonths`) or an engine formula over a sourced figure, never a number typed here. The components
 // wrap the results in `computed(...)` value objects so every figure goes through `Num` with its state.
 import { paysAtPlanEnd } from "./plan-end";
-import { bondPrice, brokenBalanceCondition, calendarMonthOf, cashRateIn, currentAccountYearlyInterest, makamPrice, rateBasisOf, runInputs, runPlanned, type AnnualRateForm, type P05Input, type RunResult } from "@finance-tool/engine";
+import { bondPrice, brokenBalanceCondition, calendarMonthOf, cashRateIn, currentAccountYearlyInterest, makamPrice, mergedRules, rateBasisOf, runInputs, runPlanned, type AnnualRateForm, type P05Input, type RunResult, type UsedRule } from "@finance-tool/engine";
 import type { ValueObject } from "@finance-tool/schema";
 import { p05Value, runTimeline, withP05Inputs, type Bundle } from "./engine";
 import { p05Units, entered as enteredValue, type SiteValue } from "./value";
@@ -179,6 +179,8 @@ export interface AccountModel {
   /** The ceiling of the balance that earns it, for a paying bank. */
   ceiling: SiteValue | null;
   bank: AccountBank | null;
+  /** The rules each side's run at the end read, with how it used each: each side's figure lists those that changed it (`rulesOfRun`). */
+  rules: { account: UsedRule[]; fund: UsedRule[] };
 }
 
 /**
@@ -206,6 +208,7 @@ export function currentAccountModel(d: SignatureData, c: { balance: number; year
     rate: bank ? bank.rate : base,
     ceiling: bank ? (rateOf(bank) > 0 ? bank.ceiling : null) : (bundle.feeValues.balanceCeiling ?? null),
     bank,
+    rules: { account: a.years.at(-1)?.rules ?? [], fund: f.years.at(-1)?.rules ?? [] },
   };
 }
 
@@ -244,6 +247,8 @@ export interface PlanModel {
   values: number[];
   /** The whole plan's net value at its end: the deposits' values summed. */
   endValue: number;
+  /** The rules each deposit's run read, merged (`mergedRules`): the plan's value at its end lists those that changed it. */
+  rules: UsedRule[];
   at: (month: number) => { free: number; locked: number; freeValue: number; lockedPrincipal: number; notYet: number };
 }
 
@@ -262,10 +267,12 @@ export function planModel(d: SignatureData, monthly: number): PlanModel | null {
   if (!plan || term === null || !Number.isInteger(term) || term < 1) return null;
   const rows: PlanRow[] = Array.from({ length: term }, (_, from) => ({ from, unlock: term }));
   const values: number[] = [];
+  const runs: RunResult[] = [];
   for (const r of rows) {
     const run = runAtMonths(plan, { amount_now: monthly, monthly_deposit: 0 }, term - r.from);
     if (!run) return null;
     values.push(run.nominal);
+    runs.push(run);
   }
   const endValue = values.reduce((a, b) => a + b, 0);
   return {
@@ -273,6 +280,7 @@ export function planModel(d: SignatureData, monthly: number): PlanModel | null {
     rows,
     values,
     endValue,
+    rules: mergedRules(runs),
     at: (month) => {
       if (month >= term) return { free: term, locked: 0, freeValue: endValue, lockedPrincipal: 0, notYet: 0 };
       const locked = Math.min(term, Math.max(0, month + 1));
@@ -365,6 +373,8 @@ export interface MakamModel {
   net: number;
   /** True when the sale month is the redemption (the discount is taxed as interest, TXI-11) rather than a capital gain (TXI-12). */
   atRedemption: boolean;
+  /** The rules the run read, with how it used each: each figure lists those that changed its part (`rulesOfRun`). */
+  rules: UsedRule[];
   /** The sale is blocked by an open rule (the run lists it, not ranked). */
   blocked: string | null;
 }
@@ -394,7 +404,7 @@ export function makamModel(d: SignatureData, c: { amount: number; month: number 
   // the line's base and fees add up to the gain figure as all three are printed, to the agora: the fees take the rounding (under one agora)
   const agorot = (v: number) => Math.round(v * 100);
   const taxedFees = (run.detail.deductedFees ?? 0) > 0 ? (agorot(gain) - agorot(taxedBase)) / 100 : 0;
-  return { term, yieldPct: y * 100, prices, price: prices[month]!, gain, tax, taxedBase, taxedFees, fees, custody: run.fees.custody ?? 0, net: run.nominal, atRedemption, blocked: run.outcome.code === "listed-not-ranked" ? run.outcome.reason : null };
+  return { term, yieldPct: y * 100, prices, price: prices[month]!, gain, tax, taxedBase, taxedFees, fees, custody: run.fees.custody ?? 0, net: run.nominal, atRedemption, rules: run.rules, blocked: run.outcome.code === "listed-not-ranked" ? run.outcome.reason : null };
 }
 
 // ---------------------------------------------------------------- government bond

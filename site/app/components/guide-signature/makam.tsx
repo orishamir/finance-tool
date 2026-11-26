@@ -11,7 +11,8 @@ import type { SiteValue } from "../../lib/value";
 
 import { Callout, InputSlot, LongestCase, Marker, MarkerMark, Sentence, Stat, StatRow, fill, useWidth, MixedName } from "../kit";
 import { Num, Ruled, Term } from "../provenance";
-import { figure, inputSite, rulesOfBundle, SigAmountField, termInputs, termOf, useSigInputs, typed, type VisualProps } from "./kit";
+import { figure, inputSite, SigAmountField, termInputs, termOf, useSigInputs, typed, type VisualProps } from "./kit";
+import { rulesOfRun } from "../../lib/run-rules";
 
 const HEIGHT = 230;
 const TOP = 24;
@@ -58,19 +59,22 @@ export function MakamVisual({ data, today }: VisualProps) {
   const runInputs: Record<string, SiteValue> = { [copy.common.inputNames.amount]: amountIn, [copy.common.inputNames.assumption]: cash, [copy.makam.marker]: sale, ...termInputs(bundle) };
   const taxRate = model?.atRedemption ? (discountRate ? { [copy.makam.taxRedeem]: discountRate } : {}) : gainRate ? { [`${copy.makam.taxSale.before} ${copy.makam.taxSale.term}`]: gainRate } : {};
   const taxInputs: Record<string, SiteValue> = { ...runInputs, ...taxRate };
-  const rules = rulesOfBundle(bundle);
+  // each figure lists the rules that changed its part of the run (method §13): the gain before tax and fees none; the fees the fee lines;
+  // the tax and its base the tax during the run and at the exit; the fees deducted from the gain only the rule that deducts them, where
+  // it did (TXS-06); what is left the whole run
+  const tax = ["taxDuring", "taxAtExit"] as const;
   const v = model
     ? {
         buy: figure(prices[0]!, "index_points", "F-24", priceIn, today, copy.makam.about.buy),
         price: figure(model.price, "index_points", "F-24", { ...priceIn, [copy.makam.marker]: sale }, today, copy.makam.about.price),
-        gain: figure(model.gain, "nis", "F-24", runInputs, today, copy.makam.about.gain, rules),
-        tax: figure(model.tax, "nis", model.atRedemption ? "F-24" : "F-40", taxInputs, today, copy.makam.about.tax, rules),
+        gain: figure(model.gain, "nis", "F-24", runInputs, today, copy.makam.about.gain),
+        tax: figure(model.tax, "nis", model.atRedemption ? "F-24" : "F-40", taxInputs, today, copy.makam.about.tax, rulesOfRun(model.rules, tax)),
         // the commissions, custody and the account's fixed fee of the run, with the redemption's commission (F-24)
-        fees: figure(model.fees, "nis", "F-24", runInputs, today, copy.makam.about.fees, rules),
-        net: figure(model.net, "nis", "F-24", taxInputs, today, copy.makam.about.net, rules),
-        base: figure(model.taxedBase, "nis", model.atRedemption ? "F-24" : "F-40", runInputs, today, copy.makam.taxBase.about.base, rules),
-        taxedFees: figure(model.taxedFees, "nis", "F-09", runInputs, today, copy.makam.taxBase.about.fees, rules),
-        custody: figure(model.custody, "nis", "F-14", runInputs, today, copy.makam.about.custody, rules),
+        fees: figure(model.fees, "nis", "F-24", runInputs, today, copy.makam.about.fees, rulesOfRun(model.rules, ["fees"])),
+        net: figure(model.net, "nis", "F-24", taxInputs, today, copy.makam.about.net, rulesOfRun(model.rules, "all")),
+        base: figure(model.taxedBase, "nis", model.atRedemption ? "F-24" : "F-40", runInputs, today, copy.makam.taxBase.about.base, rulesOfRun(model.rules, tax)),
+        taxedFees: figure(model.taxedFees, "nis", "F-09", runInputs, today, bundle.terms.tariff?.monthlyFee ? copy.makam.taxBase.feesAbout.withAccount : copy.makam.taxBase.feesAbout.custody, rulesOfRun(model.rules, "all").filter((r) => r.id === "TXS-06")),
+        custody: figure(model.custody, "nis", "F-14", runInputs, today, copy.makam.about.custody, rulesOfRun(model.rules, [{ part: "fees", lines: ["custody"] }])),
       }
     : null;
   // the tax's base under the figures, one height in all four cases (a sale or a redemption, with the year's fees deducted or without): the
