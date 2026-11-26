@@ -39,7 +39,8 @@
       "locator_he": "עמוד 2, סעיף 2(ד)",
       "page": 2,
       "quote": "יש לציין גם האם ההצמדה חלה רק במקרה של עליית המדד ,או גם במקרה של ירידת המדד",
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
@@ -52,7 +53,8 @@
       "locator": "p.5, s.7(א)(5)",
       "locator_he": "עמוד 5, סעיף 7(א)(5)",
       "page": 5,
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

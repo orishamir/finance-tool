@@ -38,7 +38,8 @@
       "locator": "p.16, Schedule A (תוספת א')",
       "page": 16,
       "quote": "דרך חישוב ריבית מתואמת שנתית",
-      "checked": "2026-11-14"
+      "checked": "2026-11-14",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

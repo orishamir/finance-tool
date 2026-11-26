@@ -55,7 +55,8 @@
       "locator": "p.150, s.88, definitions `קרן נאמנות חייבת` and `קרן נאמנות פטורה`",
       "page": 150,
       "quote": "בקביעה שאינה ניתנת לשינוי",
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "standing": "consolidated-not-binding"
     }
   ],
   "derived_from": [

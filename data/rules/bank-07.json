@@ -76,7 +76,8 @@
       "locator": "file p.1",
       "locator_he": "עמוד הקובץ 1",
       "page": 1,
-      "checked": "2026-11-07"
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf#page=18",
@@ -89,7 +90,8 @@
       "locator": "file p.18, Schedule E",
       "page": 18,
       "quote": "הודעה מוקדמת על פרעון פקדון לשנה ומעלה",
-      "checked": "2026-11-07"
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
@@ -101,7 +103,8 @@
       "strength": "primary",
       "locator": "pp.6 to 7, 15, 18, s.11, 34, 35, Schedule E",
       "page": 6,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

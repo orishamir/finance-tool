@@ -1,5 +1,6 @@
 // Extracts the `sources` of every rule record from the rule base markdown (`- Source:` line under `### <ID>`), each with the standing
-// its qualifier gives (`QUALIFIER_STANDING`; the run fails on a qualifier the table does not name), plus `derived_from` (and, for a
+// its qualifier gives (`QUALIFIER_STANDING`; the run fails on a qualifier the table does not name), or else its title gives
+// (`STATE_CONSOLIDATION`) or another passage of the same file in the record carries (`shareDocumentStanding`), plus `derived_from` (and, for a
 // general rule, `examples`: the companies' terms its line names), `see_also` (the method entries and open questions its Source and
 // Conditions lines point to), `sources_missing_reason`, and who it applies to from the `- Scope:` line: `scope`, `scope_institutions`
 // and `scope_settle` (D30), with the company names resolved against data/sources/institutions.json. It also moves the place written at
@@ -502,6 +503,43 @@ export function standingOf(parenthetical: string): SourceStanding | "none" | "wo
   return QUALIFIER_STANDING.find((row) => row.match.test(parenthetical))?.standing;
 }
 
+/**
+ * A title that names the text as an Israeli state body's own consolidated version or copy, which is not the binding gazette wording
+ * (`consolidated-not-binding`): "…, נוסח משולב (רשות המסים)", "…, נוסח משולב (בנק ישראל)", "נוסח רשות המסים", "נוסח משולב של רשות
+ * ניירות ערך", "(נוסח רשות ניירות ערך)", "נוסח באתר רשות ניירות ערך", the Bank of Israel's banking legislation file ("קובץ חקיקה
+ * בנקאית של בנק ישראל"), or an English working title saying the Bank of Israel's copy or the Bank of Israel's or the Securities
+ * Authority's consolidated copy. A Knesset consolidation, "[נוסח משולב]" in brackets or "(נוסח משולב)" inside an order's own name, is
+ * the binding text and does not match.
+ */
+export const STATE_CONSOLIDATION =
+  /נוסח משולב (?:\((?:רשות המסים|בנק ישראל)\)|של רשות ניירות ערך)|נוסח (?:באתר )?רשות (?:המסים|ניירות ערך)|קובץ חקיקה בנקאית של בנק ישראל|\bconsolidated\b.*\b(?:BoI|Bank of Israel)\b|\b(?:BoI|Bank of Israel)\b.*\bconsolidated\b|\b(?:BoI|Bank of Israel's) copy\b|\bSecurities Authority's consolidated\b/;
+
+/**
+ * Words of `standing` that belong to the whole document, so every passage of one file in a record shares them. `does-not-answer` is
+ * the citation's own, and `superseded` may hold for one passage only (a historical rate, a section before an amendment).
+ */
+const DOCUMENT_STANDING: ReadonlySet<SourceStanding> = new Set(["draft", "bill", "consolidated-not-binding", "translation", "foreign-view"]);
+
+/**
+ * Gives each source of one record with no standing the document standing that another source of the same file (its address without the
+ * fragment) carries, when those sources carry exactly one such word, so one file never reads as binding at one passage and not at
+ * another.
+ */
+export function shareDocumentStanding(sources: ExtractedSource[]): void {
+  const fileOf = (u: string) => u.replace(/#.*$/, "");
+  const words = new Map<string, Set<SourceStanding>>();
+  for (const s of sources) {
+    if (!s.standing || !DOCUMENT_STANDING.has(s.standing)) continue;
+    const file = fileOf(s.url);
+    if (!words.has(file)) words.set(file, new Set());
+    words.get(file)!.add(s.standing);
+  }
+  for (const s of sources) {
+    const w = words.get(fileOf(s.url));
+    if (!s.standing && w?.size === 1) s.standing = [...w][0]!;
+  }
+}
+
 // ---------------------------------------------------------------- ditto titles
 
 /** A title that is only a place in a document ("s.2", "file p.15", "pp.94-96"). */
@@ -696,6 +734,8 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
       if (standing === undefined) unmapped.push(note);
       else if (standing !== "none" && standing !== "working-note") entry.standing = standing;
     }
+    // a title that names a state body's consolidated version says what the source is where its qualifier gives no word of its own
+    if (!entry.standing && (STATE_CONSOLIDATION.test(title) || STATE_CONSOLIDATION.test(entry.title_he ?? ""))) entry.standing = "consolidated-not-binding";
     const own: ExtractedSource[] = leadLocator || !quoteApart ? [entry] : [];
     for (const passage of passages.slice(lead.length)) {
       const loc = cleanLocator(passage);
@@ -726,6 +766,8 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
   const isExample = (id: string) => ctx.ruleScope === "general" && ctx.scopeOf?.has(id) === true && ctx.scopeOf.get(id) !== "general";
   const derived = pointed.filter((id) => !isExample(id));
   const examples = pointed.filter(isExample);
+
+  shareDocumentStanding(sources);
 
   // Dedupe (same url and locator), then sort by preference.
   const seen = new Set<string>();

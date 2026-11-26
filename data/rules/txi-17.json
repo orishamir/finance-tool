@@ -143,7 +143,8 @@
       "locator_he": "עמוד 155, סעיף 92(א)(5)",
       "page": 155,
       "quote": "כפי שקבע שר האוצר באישור ועדת הכספים של הכנסת, שלא נוכו בשנת המס",
-      "checked": "2026-11-07"
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf",
@@ -171,7 +172,8 @@
       "locator_he": "עמוד 155, סעיף 92(א)(1), (4) ו־92(ב)",
       "page": 155,
       "quote": "יקוזז כנגד ריווח הון בלבד",
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
@@ -211,7 +213,8 @@
       "locator_he": "עמוד 155, סעיף 92(א)(4)",
       "page": 155,
       "quote": "ובלבד ששיעור המס החל על הריבית או הדיבידנד שקיבל אותו אדם לא עולה על השיעור הקבוע",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     }
   ],
   "derived_from": [

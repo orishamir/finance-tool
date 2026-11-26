@@ -25,7 +25,8 @@
       "locator_he": "עמוד 4, סעיף 2(ג)",
       "page": 4,
       "quote": "למעט אם השירות באמצעות פקיד ניתן בלא עלות",
-      "checked": "2026-11-12"
+      "checked": "2026-11-12",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F12431%2Fheb",

@@ -52,7 +52,8 @@
       "locator_he": "עמוד 3, סעיף 5(א)(1)",
       "page": 3,
       "quote": "שבועיים לפחות לפני מועד השינוי",
-      "checked": "2026-11-12"
+      "checked": "2026-11-12",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
@@ -66,7 +67,8 @@
       "locator_he": "עמוד 4, סעיף 5(א)(3) עד (5)",
       "page": 4,
       "quote": "עמלות על מכירת ניירות ערך",
-      "checked": "2026-11-12"
+      "checked": "2026-11-12",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

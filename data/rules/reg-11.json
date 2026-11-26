@@ -73,7 +73,8 @@
       "locator_he": "עמודים 11 עד 12, סעיפים 11, 12",
       "page": 11,
       "quote": "ניתן צו בית משפט למינוי כונס נכסים זמני או מפרק זמני",
-      "checked": "2026-11-02"
+      "checked": "2026-11-02",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=14",
@@ -87,7 +88,8 @@
       "locator_he": "עמוד 14, סעיפים 14, 15(ד)",
       "page": 14,
       "quote": "תעביר החברה את ניהול הקרנות למנהל אחר",
-      "checked": "2026-11-02"
+      "checked": "2026-11-02",
+      "standing": "consolidated-not-binding"
     }
   ],
   "derived_from": [

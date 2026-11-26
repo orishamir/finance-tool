@@ -104,7 +104,8 @@
       "locator": "p.6, s.9",
       "locator_he": "עמוד 6, סעיף 9",
       "page": 6,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

@@ -26,7 +26,8 @@
       "locator_he": "עמוד 16, סעיף 1",
       "page": 16,
       "checked": "2026-11-07",
-      "qualifier": "(derived)"
+      "qualifier": "(derived)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -41,7 +42,8 @@
       "page": 12,
       "quote": "הפרשי שער",
       "checked": "2026-11-07",
-      "qualifier": "(derived)"
+      "qualifier": "(derived)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -55,7 +57,8 @@
       "locator_he": "עמוד 41, סעיף 9(13)",
       "page": 41,
       "checked": "2026-11-07",
-      "qualifier": "(derived)"
+      "qualifier": "(derived)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -69,7 +72,8 @@
       "locator_he": "עמוד 146, סעיף 88",
       "page": 146,
       "checked": "2026-11-07",
-      "qualifier": "(derived)"
+      "qualifier": "(derived)",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

@@ -388,6 +388,30 @@ describe("extract-sources: a source's standing", () => {
     expect(s.standing).toBeUndefined();
   });
 
+  it("comes from a title naming a state body's consolidated version where the qualifier gives no word, never from a Knesset consolidation", () => {
+    const titled = (title: string, q = "") => extractFromLine(`[${title}](https://www.gov.il/BlobFolder/x/he/a.pdf), s.3 · checked 2026-11-20 · primary${q ? ` ${q}` : ""}`, ctx()).sources[0]!;
+    expect(titled("פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)").standing).toBe("consolidated-not-binding");
+    expect(titled("כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)").standing).toBe("consolidated-not-binding");
+    expect(titled("Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy").standing).toBe("consolidated-not-binding");
+    expect(titled("Securities Law, Securities Authority's consolidated copy, file of 26.8.2026").standing).toBe("consolidated-not-binding");
+    expect(titled("חוק השקעות משותפות בנאמנות, התשנ\"ד-1994 (נוסח רשות ניירות ערך)").standing).toBe("consolidated-not-binding");
+    expect(titled("פקודת הבנקאות, 1941 (קובץ חקיקה בנקאית של בנק ישראל, פריט 103)").standing).toBe("consolidated-not-binding");
+    expect(titled("Disclosure rules 1992 (BoI copy)").standing).toBe("consolidated-not-binding");
+    expect(titled("פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)", "(derived)").standing).toBe("consolidated-not-binding");
+    expect(titled("פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)", "(draft)").standing).toBe("draft");
+    expect(titled("חוק הביטוח הלאומי [נוסח משולב], התשנ\"ה-1995, ספר החוקים 1522").standing).toBeUndefined();
+    expect(titled("צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302").standing).toBeUndefined();
+  });
+
+  it("is shared by every passage of one file in a record, but for a citation's own does-not-answer", () => {
+    const line =
+      "[פקודת הבנקאות, Bank of Israel's copy](https://boi.org.il/media/a/103.pdf#page=10), p.10, s.8 · primary (state body's consolidated copy); [פקודת הבנקאות, 1941](https://boi.org.il/media/a/103.pdf), p.6, s.8ד · primary · checked 2026-11-20";
+    expect(extractFromLine(line, ctx()).sources.map((s) => s.standing)).toEqual(["consolidated-not-binding", "consolidated-not-binding"]);
+    const unsettled =
+      "[a definition](https://www.gov.il/BlobFolder/x/he/b.pdf), p.2 · primary (the law's definition; whether it reaches tax inside a fund is not stated); [the same law](https://www.gov.il/BlobFolder/x/he/b.pdf#page=5), p.5 · primary · checked 2026-11-20";
+    expect(extractFromLine(unsettled, ctx()).sources.map((s) => s.standing)).toEqual(["does-not-answer", undefined]);
+  });
+
   it("lists a parenthetical no row names, so the run fails on it", () => {
     expect(standingOf("(a remark no one has read)")).toBeUndefined();
     expect(extractFromLine(line("(a remark no one has read)"), ctx()).unmapped).toEqual(["(a remark no one has read)"]);

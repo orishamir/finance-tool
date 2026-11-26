@@ -74,7 +74,8 @@
       "locator_he": "עמוד 24",
       "page": 24,
       "quote": "לא יעלה על 40 ש״ח",
-      "checked": "2026-10-31"
+      "checked": "2026-10-31",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.boi.org.il/media/bccb1fj2/act08.pdf",
@@ -101,7 +102,8 @@
       "locator_he": "עמודים 17 עד 19",
       "page": 17,
       "quote": "בעת סגירת חשבון לא תעלה על 10",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://boi.org.il/information/fees/",

@@ -20,7 +20,8 @@ const figure = z.union([
  * in force; `bill`, a bill before the Knesset or its explanatory notes; `superseded`, a text no longer in force; `consolidated-not-binding`,
  * a state body's consolidated copy, not the binding gazette wording; `translation`, a translation, the Hebrew text binding;
  * `foreign-view`, a foreign authority's text or a foreign law; `does-not-answer`, a text cited beside the rule that does not itself
- * settle it. Absent on a source that is what its kind says.
+ * settle it. Absent where nothing the extraction reads (the qualifier, the title, another passage of the same file in the record) names
+ * one: that is not a claim that the source is the binding text in force.
  */
 export const sourceStanding = z.enum(["draft", "bill", "superseded", "consolidated-not-binding", "translation", "foreign-view", "does-not-answer"]);
 
