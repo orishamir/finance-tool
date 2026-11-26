@@ -329,13 +329,22 @@ A study fund is a provident fund (קופת גמל) "intended to pay study allowa
 - Dimensions: `regulator`, `eligibility`
 - Likely to change: yes. Managers enter and leave; refresh monthly.
 
-### KH-25 Altshuler Shaham and Harel: group life insurance attached to the fund
-- Rule: Altshuler Shaham "may insure the fund's members in group life insurance" subject to the legislative arrangement, and may cancel it with 60 days' notice (s.30). Harel's fund offers death cover of 120,000 NIS, CPI-linked, to members joining up to age 69 and in force to age 70. At Harel it requires a balance of at least 10,000 NIS or a monthly deposit of at least 500 NIS; the monthly premium is deducted from the balance and is age-adjusted; the cover lapses on full withdrawal or transfer, and the sum goes to the beneficiaries named in the policy (s.22).
-- Conditions / exceptions: General counterpart: the law lets a manager charge insurance premiums (law s.32(א)(3); PF-01), and the 1964 Income Tax Rules list insurance premiums among the only deductions from a member's account (rule 41ח(א1)(3)); the cover itself is each manager's choice. The premium reduces the balance, so it is a cost a fee comparison should show. Whether Harel's cover is opt-in or opt-out was not clear from the text read ("allows its members to buy"). Other managers were not read.
+### KH-25 Harel: group death cover attached to the study fund
+- Rule: Harel's fund offers death cover of 120,000 NIS, CPI-linked, to members joining up to age 69 and in force to age 70. At Harel it requires a balance of at least 10,000 NIS or a monthly deposit of at least 500 NIS; the monthly premium is deducted from the balance and is age-adjusted; the cover lapses on full withdrawal or transfer, and the sum goes to the beneficiaries named in the policy (s.22).
+- Conditions / exceptions: General counterpart: the law lets a manager charge insurance premiums (law s.32(א)(3); PF-01), and the 1964 Income Tax Rules list insurance premiums among the only deductions from a member's account (rule 41ח(א1)(3)); the cover itself is each manager's choice. The premium reduces the balance, so it is a cost a fee comparison should show. Whether Harel's cover is opt-in or opt-out was not clear from the text read ("allows its members to buy"). Altshuler Shaham's bylaws only let it insure its members (KH-36); other managers were not read. Split on 2026-11-26: Altshuler Shaham's part is KH-36.
 - Figures: 120,000 NIS cover (CPI-linked); thresholds 10,000 NIS balance or 500 NIS monthly deposit; ages 69 and 70 (Harel 07/2024).
-- Source: [Altshuler bylaws 1.12.2024](<https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf>), s.30 "רשאית לבטח את עמיתי הקרן בביטוח חיים קבוצתי" · checked 2026-10-25 · institution. [Harel bylaws 07/2024](<https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf>), s.22 · checked 2026-10-25 · institution. General counterpart: PF-01.
-- Scope: institution: Altshuler Shaham, Harel
+- Source: [Harel bylaws 07/2024](<https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf>), s.22 · checked 2026-10-25 · institution. General counterpart: PF-01.
+- Scope: institution: Harel
 - Dimensions: `insurance-cover`, `fee-change-over-time`
+- Likely to change: yes. Insurer terms can change with notice.
+
+### KH-36 Altshuler Shaham: may insure members in group life insurance, and cancel it on 60 days' notice
+- Rule: Altshuler Shaham "may insure the fund's members in group life insurance" subject to the legislative arrangement, and may cancel it with 60 days' notice (s.30).
+- Conditions / exceptions: General counterpart: the law lets a manager charge insurance premiums (law s.32(א)(3); PF-01); the cover itself is each manager's choice. Harel's cover and its terms are KH-25. Split from KH-25 on 2026-11-26.
+- Figures: none
+- Source: [Altshuler bylaws 1.12.2024](<https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf>), s.30 "רשאית לבטח את עמיתי הקרן בביטוח חיים קבוצתי" · checked 2026-10-25 · institution. General counterpart: PF-01.
+- Scope: institution: Altshuler Shaham
+- Dimensions: `insurance-cover`
 - Likely to change: yes. Insurer terms can change with notice.
 
 ### KH-26 Death of a member: beneficiaries and heirs
@@ -395,7 +404,7 @@ A study fund is a provident fund (קופת גמל) "intended to pay study allowa
 | הלוואה / פירעון הלוואה | loan / loan repayment | Loan against the fund; repaid from balance | regulation, bylaws, form | 1964 rule 41ח(א1)(2) (KH-21); Altshuler s.23, form s.3 (KH-32) |
 | שעבוד / עיקול | pledge / attachment | Liens that block or reduce withdrawals | regulation, bylaws, Q&A | 1964 rule 7 (KH-21); Altshuler s.26, Q&A (KH-32) |
 | הוראת מינוי מוטבים | beneficiary designation | Who receives the balance on death | bylaws | Altshuler s.11 (KH-26) |
-| ביטוח חיים קבוצתי | group life insurance | Optional cover with premium from balance | bylaws | Altshuler s.30; Harel s.22 (KH-25) |
+| ביטוח חיים קבוצתי | group life insurance | Optional cover with premium from balance | bylaws | Altshuler s.30 (KH-36); Harel s.22 (KH-25) |
 | בניהול אישי / IRA | self-directed | IRA study funds; see `ira-self-directed.md` | app, data | Gemel-Net fund names |
 | כלל האוכלוסיה | general population | Gemel-Net `TARGET_POPULATION` for public funds | CMA data | Gemel-Net (KH-24) |
 | עובדי סקטור מסויים / עובדי מפעל/גוף מסויים | specific sector / specific employer | Gemel-Net `TARGET_POPULATION` for closed funds | CMA data | Gemel-Net (KH-24) |
