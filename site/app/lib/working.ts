@@ -147,7 +147,7 @@ export function withValues(tex: string, working: FormulaWorking, inputs: Record<
     const values = valuesOf(term.symbol);
     if (!values || values.length === 0) return null;
     const whole = right.slice(0, m.index).trim() === "" && right.slice(j + term.symbol.length).trim() === "";
-    sums.push({ from: m.index, to: j + term.symbol.length, text: whole ? ` ${values.join(" + ")}` : `\\left(${values.join(" + ")}\\right)` });
+    sums.push({ from: m.index, to: j + term.symbol.length, text: whole ? values.join(" + ") : `\\left(${values.join(" + ")}\\right)` });
   }
   for (const f of found) {
     const sum = sums.find((s) => f.at >= s.from && f.at < s.to);
