@@ -678,7 +678,7 @@ of 2.3, one per fee across the whole page.
   point starts at the deal's first mark, never a sum the site picks. Why a fee costs what it does is said only where the two figures
   differ as shown, and the total is the sum of the lines as shown. A chart with a sum per unit asks for the unit's price, empty at first,
   and is drawn once it is given. The holding chart's range is typed or dragged, with no presets; its
-  sub never names a band of 0%. The foot says what changes and when (F-110, F-126, F-127, and directive 415's bound at a bank stated once, BRK-61)
+  sub never names a band of 0%. The foot says what changes and when (F-110, F-126, F-127, and directive 415's bound at a bank stated once, BRK-80)
   and what the law says (F-113).
 - **One fee, one look.** A fee's name, its colour, its price in words and its standing against its cap are written through
   `components/fee-deal/words.tsx`, so a fee reads the same in every column.

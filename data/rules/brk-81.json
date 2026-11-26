@@ -1,0 +1,29 @@
+{
+  "id": "BRK-81",
+  "title": "Banks: a fee paid in advance for a period is refunded pro rata by days when the service stops early",
+  "title_he": "בנקים: עמלה ששולמה מראש לתקופה מוחזרת באופן יחסי אם השירות מפסיק",
+  "text_he": "לפי הוראת ניהול בנקאי תקין 415 של בנק ישראל, עמלה שבנק גבה מראש לתקופה קבועה מוחזרת באופן יחסי לפי ימים, אם השירות מפסיק לפני סוף התקופה. הדוגמאות בהוראה הן עמלת הקצאת אשראי רבעונית, דמי ניהול רבעוניים, עמלת ערבות ודמי שכירות של כספת לשנה. עמלת מינימום סבירה שנשארת לתשלום במקרה כזה מותרת רק באישור מראש של המפקח על הבנקים.",
+  "strength": "primary",
+  "dimensions": [
+    "fee-account"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.boi.org.il/media/n2dlnqyf/415.pdf",
+      "title": "הוראת ניהול בנקאי תקין 415: נהלים בנושא עמלות, גרסה 6 (1/08)",
+      "title_he": "הוראת ניהול בנקאי תקין 415: נהלים בנושא עמלות, גרסה 6 (1/08)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.2, s.2(ז)",
+      "locator_he": "עמוד 2, סעיף 2(ז)",
+      "page": 2,
+      "checked": "2026-11-12"
+    }
+  ]
+}

@@ -1251,7 +1251,7 @@ function offsetAction(r: DealRead, p: DealPeriod, kind: FeeKindId): DealAction |
  * bank's fee on a deposit account with no activity, and the rules do not say whether such a month is one, so the page states it and
  * computes nothing from it.
  */
-export const IDLE_AT_BANK = ["BRK-61"] as const;
+export const IDLE_AT_BANK = ["BRK-80"] as const;
 
 /**
  * A period on the timeline: its card, what a month with nothing in it costs (F-126, with the rules stated beside it, `bank`: `IDLE_AT_BANK`

@@ -404,7 +404,7 @@ describe("what changes and when", () => {
   it("states directive 415's bound beside the idle month at a bank, and nothing beside it elsewhere (F-126)", async () => {
     const deal = (await unpackDeal(link.split("#d=")[1]!))!;
     const at = (provider: string) => readingOf(readDealFor({ ...deal, provider } as typeof deal, data.kinds, "2026-11-20"), data.fx).timeline[0]!.idle!.bank;
-    expect(at("bank")).toEqual(["BRK-61"]);
+    expect(at("bank")).toEqual(["BRK-80"]);
     expect(at("non-bank")).toEqual([]);
   });
 });
