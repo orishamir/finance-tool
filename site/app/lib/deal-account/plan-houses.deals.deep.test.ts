@@ -19,6 +19,12 @@ describe("F-128 a deal filled from a house prices as the house does, on every in
   it("carries the open questions of the prices it reads on its value figure on every fund of every index, as its house's row does (F-12: Interactive Israel's minimum in Europe, BRK OQ25)", () => {
     const funds = s.indices.flatMap((ix) => s.views.get(ix)!.options.flatMap((o) => o.funds));
     expect(funds.filter((f) => flagsOf(f, "interactive-israel")?.includes("BRK-OQ25")).length).toBeGreaterThan(0);
-    for (const f of funds) expect([f.rec.id, flagsOf(f, dealProviderId("deal-interactive-israel"))]).toEqual([f.rec.id, flagsOf(f, "interactive-israel")]);
+    // where a stated exception changes the house (Interactive Israel's recurring plan, which a deal has not), the deal buys otherwise and
+    // its run's own open questions follow how it buys (F-133: TX2-OQ4 where a payout waits at an interval), so the two are compared on the
+    // deal's terms, as the values are
+    const id = "interactive-israel";
+    const on = s.terms.changed.has(id) ? s.termsViews() : s.views;
+    const fundsOn = s.indices.flatMap((ix) => on.get(ix)!.options.flatMap((o) => o.funds));
+    for (const f of fundsOn) expect([f.rec.id, flagsOf(f, dealProviderId(`deal-${id}`))]).toEqual([f.rec.id, flagsOf(f, id)]);
   });
 });
