@@ -138,17 +138,24 @@ export function sourcesForPage<S extends { url: string; title: string; title_he?
 }
 
 /**
- * The chip's words for a record that is not general (spec §4: the chip shows the company's name, not a code): on the page of a company
- * the record shows, that company alone; else the first, with "and N more" (copy) and the count of the others, over the same companies
- * the card names (`shownCompanies`). Null when it names none (the code stays).
+ * The companies a record's chip and its card's tag name, and how many more they count without naming (spec §4: the chip shows the
+ * company's name, not a code): on the page of a company the record shows, that company alone; else the first, with the count of the
+ * others, over the same companies the card names (`shownCompanies`). None when it names none.
  */
-export function chipName(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined, more: (n: number) => string): string | null {
+export function chipCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined): { named: { id: string; name_he: string }[]; more: number } {
   const list = shownCompanies(rule, ownDocs);
-  if (list.length === 0) return null;
   // on the page of a company the record names, the chip names that company alone (D30)
   const here = list.find((c) => c.id === current);
-  if (here) return here.name_he;
-  return list.length === 1 ? list[0]!.name_he : `${list[0]!.name_he} ${more(list.length - 1)}`;
+  if (here) return { named: [here], more: 0 };
+  return { named: list.slice(0, 1), more: Math.max(0, list.length - 1) };
+}
+
+/** The chip's words for a record that is not general (`chipCompanies`), with "and N more" (copy) after the first name. Null when it names none (the code stays). */
+export function chipName(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined, more: (n: number) => string): string | null {
+  const { named, more: others } = chipCompanies(rule, ownDocs, current);
+  const first = named[0];
+  if (!first) return null;
+  return others === 0 ? first.name_he : `${first.name_he} ${more(others)}`;
 }
 
 /** A Hebrew list of names (copy.md 10.4): commas, and the conjunction only before the last. */
