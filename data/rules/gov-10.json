@@ -40,6 +40,20 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=10",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גליל\") (תיקון), התשס\"ו-2006, קובץ התקנות 6457",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג \"גליל\") (תיקון), התשס\"ו-2006, קובץ התקנות 6457",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.10 (gazette p.408), reg. 2",
+      "locator_he": "עמוד הקובץ 10 (עמוד הרשומות 408), תקנה 2",
+      "page": 10,
+      "quote": "איגרות החוב יימכרו לעושי השוק הראשיים ולכלל הציבור במכרז",
+      "checked": "2026-11-15"
+    },
+    {
       "url": "https://www.gov.il/BlobFolder/policy/regulation-01/he/files_regulations_regulation-01-file1-heb.pdf#page=2",
       "title": "משרד האוצר, יחידת ניהול החוב הממשלתי: נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
       "title_he": "נוהל הנפקת איגרות חוב ממשלתיות סחירות (דצמבר 2021)",
@@ -113,6 +127,19 @@
       "checked": "2026-11-08"
     },
     {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=6",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file pp.6-8 (gazette pp.404-406)",
+      "locator_he": "עמודי הקובץ 6 עד 8 (עמודי הרשומות 404 עד 406)",
+      "page": 6,
+      "checked": "2026-10-26"
+    },
+    {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4",
       "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
       "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג ״אג״ח ממשלתית צמודה״), התשס״ו-2006",
@@ -136,6 +163,19 @@
       "locator": "p.26",
       "locator_he": "עמוד 26",
       "page": 26,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=2",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "title_he": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית\"), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "pp.2-3, reg. 4",
+      "locator_he": "עמודים 2 עד 3, תקנה 4",
+      "page": 2,
       "checked": "2026-10-25"
     },
     {
