@@ -367,10 +367,10 @@ Every employee in Israel aged 21 (men) or 20 (women) and up must be insured in a
 - Dimensions: fee-management-balance, fee-deposit
 - Likely to change: yes, yearly
 
-### PEN-25 Fee discounts and what can end them (provident funds and pension funds)
-- Rule: A fee discount offered by any institutional body, pension and provident funds included, must stay valid "במהלך תקופה של חמש שנים או יותר מהיום שבו החלו להיגבות דמי ניהול בשיעור המוצע" (CMA circular 2017-9-15, s.3(א); PF-13). The manager may raise it early only in the circular's cases (deposits stopped for six months for a reason not caused by the employer; a full or partial withdrawal or transfer, to another fund or track; a pre-agreed mechanism by balance or another approved variable) and only after notice in a separate document (s.3(ב), s.4; PF-14, PF-16). A move to a new workplace with the same body is PF-15.
-- Conditions / exceptions: Rewritten 2026-10-26 (scope settling; open-questions audit hand-off 3): the record described Mor's provident bylaws, whose two-year wording is the replaced circular 2012-9-22's; that clause is Mor's and departs from the circular (PEN-47; for kupat gemel lehashkaa bylaws, KGL-30). The pension-fund bylaws read set only the caps (section 8).
-- Figures: five years minimum; six months after deposits stop. Fixed in the circular (effective 1.4.2018).
+### PEN-25 Fee discounts and what can end them (provident funds and pension funds) (retired: see PF-13)
+- Rule: Retired on 2026-11-26. It restated CMA circular 2017-9-15 for pension and provident funds (the five-year minimum, PF-13; the early raises, PF-14; the notice, PF-16; a new workplace, PF-15), and PF-13 now holds the minimum alone, saying the circular covers pension funds and provident funds. Its line on the pension-fund bylaws and its pointer to Mor's two years (PEN-47) moved to PF-13. The id stays so that references to it resolve; they should point to PF-13.
+- Conditions / exceptions: none of its own; see PF-13.
+- Figures: none
 - Source: [חוזר גופים מוסדיים 2017-9-15 – דמי ניהול במכשירי החיסכון הפנסיוני – תיקון](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-989/he/regulation_h_2017-9-15.pdf) p.1, s.3(א) "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של חמש שנים או יותר"; p.2, s.3(ב); p.3, s.4 · checked 2026-10-25 · primary. PF-13, PF-14, PF-15, PF-16.
 - Scope: general
 - Dimensions: fee-change-over-time
@@ -378,9 +378,9 @@ Every employee in Israel aged 21 (men) or 20 (women) and up must be insured in a
 
 ### PEN-47 Mor: its provident bylaws still print a two-year discount
 - Rule: Mor's standard provident-fund bylaws (February 2026) let the company offer fees below the maximum "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים או יותר מהיום שבו החלו להיגבות דמי הניהול בשיעור המוצע" (s.45.1), and allow an early raise in listed cases if the member was told so in a separate document within three months of the discount (s.45.2); a raise takes effect two months after notice (s.46).
-- Conditions / exceptions: Split from PEN-25 on 2026-10-26 (scope settling). CMA circular 2017-9-15 sets five years and binds every institutional body other than sector and guaranteed-return funds (PEN-25, PF-13), so Mor's two years depart from the circular; the wording is the replaced circular 2012-9-22's. Other companies' provident bylaws were not read for this (for kupat gemel lehashkaa: KGL-30).
+- Conditions / exceptions: Split from PEN-25 on 2026-10-26 (scope settling). CMA circular 2017-9-15 sets five years and binds every institutional body other than sector and guaranteed-return funds (PF-13), so Mor's two years depart from the circular; the wording is the replaced circular 2012-9-22's. Other companies' provident bylaws were not read for this (for kupat gemel lehashkaa: KGL-30).
 - Figures: 2 years, 3 months, 2 months (Mor's bylaws, out of date).
-- Source: [Mor gemel standard bylaws 18.02.2026](https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf), p.13, s.45.1 "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים"; ss.45.2, 46 · checked 2026-10-26 · institution. The general rule: PEN-25.
+- Source: [Mor gemel standard bylaws 18.02.2026](https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf), p.13, s.45.1 "ובלבד שההצעה האמורה תהיה תקפה במהלך תקופה של לפחות שנתיים"; ss.45.2, 46 · checked 2026-10-26 · institution. The general rule: PF-13.
 - Scope: institution: Mor
 - Dimensions: fee-change-over-time
 - Likely to change: yes, a bylaw update would bring it to the circular
@@ -810,7 +810,7 @@ Every employee in Israel aged 21 (men) or 20 (women) and up must be insured in a
 
 - `actuarial-adjustment`: the balance or pension can change by an actuarial surplus or deficit unrelated to the person's own investment return (PEN-19). Applies to pension funds only.
 - `default-assignment`: what a person gets if they never choose (default fund, default investment track, default insurance track) and which fee is locked for how long (PEN-06, PEN-11, PEN-17, PEN-23).
-- `employer-dependence`: rights or fees that depend on the current employer (severance release, fee discounts given through the workplace, employer's fund choice) (PEN-05, PEN-67, PEN-25, PEN-31).
+- `employer-dependence`: rights or fees that depend on the current employer (severance release, fee discounts given through the workplace, employer's fund choice) (PEN-05, PEN-67, PF-15, PEN-31).
 
 ## Found for other files
 
