@@ -75,7 +75,7 @@ export const RULES: readonly RuleRow[] = [
 
   // ---- the provident family's management fees, from deposits and from the balance
   // a rate, discounted only for a period, with nothing on top, no refund and no order; on money deposited before 2008 a fund may charge a
-  // monthly sum of up to NIS 6, indexed, where higher (PEN-22), a floor the page does not offer, since a balance fee's price holds no minimum
+  // monthly sum of up to NIS 6, indexed, where higher (PF-02), a floor the page does not offer, since a balance fee's price holds no minimum
   {
     id: "provident-management-rate",
     when: { products: providentFamily, fees: ["deposit", "balance"] },
