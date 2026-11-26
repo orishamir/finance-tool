@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { citationText, isPdfUrl, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, withoutCodes, type RuleSource } from "./sources";
+import { citationFor, citationText, documentKey, isPdfUrl, mayHaveChanged, moreSourcesLabel, onSharedPortal, pickSources, publicUrl, publisherName, sourceChange, sourceHref, sourceLabel2, sourceView, withoutCodes, type RuleSource } from "./sources";
 
 const src = (o: Partial<RuleSource> = {}): RuleSource => ({ url: "https://example.gov.il/a", title: "T", publisher: "Pub", strength: "primary", checked: "2026-10-01", ...o });
 const fig = (url: string, strength: string) => ({
@@ -84,5 +84,77 @@ describe("a title as shown carries no rule code (D101)", () => {
     expect(withoutCodes("אינטראקטיב ישראל: בורסה ישראלית (BRK-41)")).toBe("אינטראקטיב ישראל: בורסה ישראלית");
     expect(withoutCodes("עמוד (BRK-41, BRK-44) של החברה")).toBe("עמוד של החברה");
     expect(withoutCodes("מדד ת״א (TA-35)")).toBe("מדד ת״א (TA-35)");
+  });
+});
+
+describe("sourceView: one shape for every source drawing", () => {
+  const pdf = "https://www.gov.il/BlobFolder/x/ordinance.pdf";
+  it("groups places by document, with a head link at no place and the places in order", () => {
+    const [doc, other] = sourceView([
+      src({ url: `${pdf}#page=3`, title_he: "פקודת מס הכנסה", locator_he: "סעיף 9", page: 3 }),
+      src({ url: "https://example.org/b" }),
+      src({ url: `${pdf}#page=7`, title_he: "פקודת מס הכנסה", locator_he: "סעיף 91", page: 7 }),
+    ]);
+    expect(doc!.href).toBe(pdf);
+    expect(doc!.places.map((p) => [p.locator, p.href])).toEqual([["סעיף 9", `${pdf}#page=3`], ["סעיף 91", `${pdf}#page=7`]]);
+    expect(other!.href).toBe("https://example.org/b");
+  });
+  it("keeps a page's own #/ route apart: it names another page", () => {
+    expect(documentKey("https://x.example/faq#/content/1")).toBe("https://x.example/faq#/content/1");
+    expect(documentKey("https://x.example/faq#/content/1:~:text=w")).toBe("https://x.example/faq#/content/1");
+    expect(documentKey("https://x.example/faq#s3")).toBe("https://x.example/faq");
+  });
+  it("names the document once for the group, by its Hebrew title, and gives a place its own Hebrew title only where it differs", () => {
+    const [doc] = sourceView([src({ url: "https://x.example/a#p1", title: "Guide", kind: "official_pdf" }), src({ url: "https://x.example/a#p2", title_he: "מדריך המס", publisher_he: "רשות המסים" }), src({ url: "https://x.example/a#p3", title_he: "שאלות ותשובות" })]);
+    expect(doc!.title!.text).toBe("מדריך המס");
+    expect(doc!.publisher).toBe("רשות המסים");
+    expect(doc!.places.map((p) => p.title)).toEqual([null, null, "שאלות ותשובות"]);
+  });
+  it("drops the publisher wherever the title holds it, and keeps the title whole", () => {
+    const [doc] = sourceView([src({ publisher_he: "רשות המסים", title_he: "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)" })]);
+    expect(doc!.publisher).toBeNull();
+    expect(doc!.title!.text).toBe("פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)");
+  });
+  it("takes the record's Hebrew publisher before the host table, and never names a shared portal as the publisher", () => {
+    const table = { "boi.org.il": "בנק ישראל", "data.gov.il": "מאגר המידע הממשלתי (data.gov.il)", "gov.il": "אתר הממשלה (gov.il)" };
+    expect(publisherName(src({ url: "https://www.boi.org.il/x", publisher: "Bank of Israel" }), table)).toBe("בנק ישראל");
+    expect(publisherName(src({ url: "https://www.boi.org.il/x", publisher_he: "המפקח על הבנקים" }), table)).toBe("המפקח על הבנקים");
+    expect(publisherName(src({ url: "https://data.gov.il/dataset/x", publisher: "Capital Market Authority" }), table)).toBe("Capital Market Authority");
+    expect(publisherName(src({ url: "https://www.gov.il/he/x", publisher: "Israel Tax Authority" }), table)).toBe("Israel Tax Authority");
+    expect(["api.tase.co.il", "data-api.ecb.europa.eu"].every((h) => onSharedPortal(`https://${h}/x`))).toBe(true);
+  });
+  it("sets the direction from the title as shown: a kind's word is Hebrew, a host is not", () => {
+    const [law] = sourceView([src({ title: "s.2", kind: "law" })]);
+    expect(law!.title!.text).toBe("חוק");
+    expect(law!.hebrew).toBe(true);
+    const [host] = sourceView([src({ title: "Some page", url: "https://example.org/p" })]);
+    expect(host!.title).toEqual({ text: "example.org", host: true });
+    expect(host!.hebrew).toBe(false);
+  });
+});
+
+describe("the copied citation names the place the card shows (Q42)", () => {
+  const rule = { title: "x", title_he: "מעבר מסלול אינו אירוע מס" };
+  const slots = { rules: {}, today: "2026-10-24" };
+  it("writes the chosen place's locator, link and date under the document's shared names", () => {
+    const [doc] = sourceView([src({ url: "https://x/a.pdf", page: 2, publisher_he: "רשות המסים", title_he: "חוזר", locator_he: "סעיף 1" }), src({ url: "https://x/a.pdf", page: 5, title_he: "חוזר", locator_he: "סעיף 4", checked: "2026-10-20" })]);
+    expect(citationFor(rule, doc!, slots, doc!.places[1])).toBe("מעבר מסלול אינו אירוע מס — רשות המסים, חוזר, סעיף 4. https://x/a.pdf#page=5 (נבדק 20.10.2026)");
+    expect(citationFor(rule, doc!, slots)).toContain("סעיף 1. https://x/a.pdf#page=2");
+  });
+});
+
+describe("sourceChange (Q58, Q68)", () => {
+  const today = "2026-12-10";
+  it("says unknown when no rule is loaded and the read is recent, and may-have-changed past six months whatever is loaded", () => {
+    expect(sourceChange([], { checked: "2026-11-01" }, today)).toBe("unknown");
+    expect(sourceChange([], { checked: "2026-06-09" }, today)).toBe("may-have-changed");
+    expect(sourceChange([{ recheck_date: "2027-06-01" }], { checked: "2026-11-01" }, "")).toBe("unknown");
+  });
+  it("reads the soonest recheck date of all the loaded rules, not the first", () => {
+    expect(sourceChange([{ recheck_date: "2027-06-01" }, { recheck_date: "2026-12-01" }], { checked: "2026-11-01" }, today)).toBe("may-have-changed");
+    expect(sourceChange([{ recheck_date: "2027-06-01" }, { recheck_date: null }], { checked: "2026-11-01" }, today)).toBe("current");
+  });
+  it("takes the source's own date: read again on or after the recheck date, it is current", () => {
+    expect(sourceChange([{ recheck_date: "2026-12-01" }], { checked: "2026-12-05" }, today)).toBe("current");
   });
 });

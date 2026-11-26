@@ -215,6 +215,128 @@ export function mayHaveChanged(rule: Pick<SourcedRule, "likely_to_change" | "rec
   return !!today && source.checked < monthsBefore(today, SOURCE_AGE_WARNING_MONTHS);
 }
 
+/**
+ * Hosts that carry many publishers' documents: a government portal, an exchange's or a central bank's data interface. The host
+ * names who keeps the site, never who published the document, so the host table's name is never shown as the publisher of a source
+ * there. The list stands in for a field of the publishers table, whose schema cannot yet mark a row so.
+ */
+export const SHARED_PORTAL_HOSTS: readonly string[] = ["gov.il", "data.gov.il", "api.tase.co.il", "data-api.ecb.europa.eu"];
+
+/** True when the source sits on a shared portal (`SHARED_PORTAL_HOSTS`). */
+export const onSharedPortal = (url: string): boolean => SHARED_PORTAL_HOSTS.includes(hostOf(url) ?? "");
+
+/**
+ * Who published a source, in Hebrew where anyone wrote it: the record's own Hebrew name first, then the publishers table's name for
+ * the link's host (never for a shared portal), then the record's own name.
+ */
+export function publisherName(source: Pick<RuleSource, "url" | "publisher" | "publisher_he">, publishersHe?: Readonly<Record<string, string>>): string {
+  if (source.publisher_he) return source.publisher_he;
+  const host = hostOf(source.url);
+  const byHost = host && !onSharedPortal(source.url) ? publishersHe?.[host] : undefined;
+  return byHost ?? source.publisher;
+}
+
+/** The address of the document a source is in: without the place in it (`#page=`, an anchor, the quoted words), but a page's own `#/` route kept, which names another page. */
+export function documentKey(url: string): string {
+  const full = publicUrl(url);
+  const hash = full.indexOf("#");
+  if (hash < 0) return full;
+  return full.startsWith("#/", hash) ? full.replace(/#\/([^#]*?)(?::~:.*)?$/, "#/$1") : full.slice(0, hash);
+}
+
+/** One place a source cites in its document, as a line under the document's names shows it. */
+export interface SourcePlace {
+  source: RuleSource;
+  /** The link to the place: the PDF's page, the page's anchor and quoted words. */
+  href: string;
+  locator: string | null;
+  quote: string | null;
+  checked: string;
+  /** The place's own shown title when it is not the document's (a second article under one address). */
+  title: string | null;
+}
+
+/** A document a list of sources cites, named once for all its places. */
+export interface SourceView {
+  /** The document's address (`documentKey`). */
+  key: string;
+  /** The head link: the document itself, at no place in it. */
+  href: string;
+  /** Null when the shown title names the publisher already, or the title is the host and the publisher's name holds it. */
+  publisher: string | null;
+  title: { text: string; host: boolean } | null;
+  /** True when the shown title is Hebrew: a title read right to left. A host or an English name is not. */
+  hebrew: boolean;
+  pdf: boolean;
+  places: SourcePlace[];
+  /** The dates its places were read, each once, in the order of the places. */
+  checked: string[];
+}
+
+/** The names a document is shown by: a Hebrew title in the group before any other, and the publisher left out wherever the title holds it. */
+function documentNames(group: readonly RuleSource[], publishersHe: Readonly<Record<string, string>> | undefined): Pick<SourceView, "publisher" | "title" | "hebrew"> {
+  const head = group.find((s) => isHebrewTitle(s.title_he ?? s.title)) ?? group[0]!;
+  const title = shownTitle(head.title_he ?? head.title, head.url, head.kind ?? group.find((s) => s.kind)?.kind);
+  // the head's own publisher first: a Hebrew name written beside the Hebrew title
+  const publisher = [head, ...group].map((s) => publisherName(s, publishersHe)).find((p) => !!p) ?? null;
+  const hebrew = !title.host && isHebrewTitle(title.text);
+  if (!publisher) return { publisher: null, title, hebrew };
+  if (title.host && publisher.includes(title.text)) return { publisher, title: null, hebrew: false };
+  return { publisher: title.text.includes(publisher) ? null : publisher, title, hebrew };
+}
+
+/**
+ * The one shape every source drawing reads: a list of sources grouped by the document they cite, in the order each document first
+ * appears, each named once (`documentNames`) with a head link to the document and a line for each place in it.
+ */
+export function sourceView(sources: readonly RuleSource[], publishersHe?: Readonly<Record<string, string>>): SourceView[] {
+  const groups = new Map<string, RuleSource[]>();
+  for (const s of sources) {
+    const key = documentKey(s.url);
+    groups.set(key, [...(groups.get(key) ?? []), s]);
+  }
+  return [...groups].map(([key, group]) => {
+    const names = documentNames(group, publishersHe);
+    const places = group.map((s): SourcePlace => {
+      // only a title of its own in Hebrew: a kind's word or a host stands in for a missing title, and names nothing more than the head
+      const raw = s.title_he ?? s.title;
+      const own = isHebrewTitle(raw) ? shownTitle(raw, s.url, s.kind).text : null;
+      return { source: s, href: sourceHref(s), locator: sourceLabel2(s).locator, quote: s.quote ?? null, checked: s.checked, title: own && names.title && own !== names.title.text ? own : null };
+    });
+    return { key, href: key, ...names, pdf: isPdfUrl(group[0]!.url), places, checked: [...new Set(group.map((s) => s.checked))] };
+  });
+}
+
+/**
+ * The line the copy button writes for one place of a document, named as the document's head names it:
+ * `{claim} — {publisher}, {document}, {locator}. {link} (נבדק {date})`. `place` is the source the card shows; by default the document's first.
+ */
+export function citationFor(rule: Pick<SourcedRule, "title" | "title_he" | "text_he">, view: SourceView, slots: SlotSource, place: SourcePlace = view.places[0]!): string {
+  const parts = [view.publisher, view.title?.text].filter((x): x is string => !!x);
+  if (place.locator) parts.push(place.locator);
+  const claim = ruleTitle(rule, slots).text;
+  return `${claim} — ${parts.join(", ")}. ${place.href} (${sourceBlock.citation.checked} ${fmt.date(place.checked)})`;
+}
+
+/** Whether a source's words may have changed since they were read; "unknown" when no rule that would say so is loaded. */
+export type SourceChange = "may-have-changed" | "current" | "unknown";
+
+/**
+ * A source line's "it may have changed since" state. The source's own read date decides first: read more than six months ago, it may
+ * have changed; read on or after the soonest recheck date of the rules it serves, it is current. Otherwise that soonest recheck date
+ * decides, once passed. With no rule loaded and a recent read, nobody said when to look again: "unknown".
+ */
+export function sourceChange(rules: readonly Pick<SourcedRule, "recheck_date">[], source: Pick<RuleSource, "checked">, today: string): SourceChange {
+  if (!today) return "unknown";
+  if (source.checked < monthsBefore(today, SOURCE_AGE_WARNING_MONTHS)) return "may-have-changed";
+  if (rules.length === 0) return "unknown";
+  const soonest = rules
+    .map((r) => r.recheck_date)
+    .filter((d): d is string => !!d)
+    .sort()[0];
+  return soonest && recheckStale({ recheck_date: soonest }, today) && source.checked < soonest ? "may-have-changed" : "current";
+}
+
 /** "עוד מקור אחד" / "עוד שני מקורות" / "עוד {n} מקורות" for `n` further sources. */
 export function moreSourcesLabel(n: number): string {
   return countPhrase(n, sourceBlock.more);
