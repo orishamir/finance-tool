@@ -1,0 +1,83 @@
+{
+  "id": "BANK-58",
+  "title": "Bank Yahav: minimum deposit by product, and dates that fall on a non-business day",
+  "title_he": "סכום מינימלי לפיקדון בבנק יהב, ומועד שנופל ביום שאינו יום עסקים",
+  "text_he": "בבנק יהב הסכום המינימלי לפיקדון הוא {BANK-58:yahav_min_deposit_low} או {BANK-58:yahav_min_deposit_high}, לפי המוצר. אם מועד החידוש או הפירעון של פיקדון לא נופל ביום עסקים, הוא עובר ליום העסקים הבא.",
+  "figure_names_he": {
+    "yahav_min_deposit_low": "פיקדון מינימלי, הנמוך שבין המוצרים (יהב)",
+    "yahav_min_deposit_high": "פיקדון מינימלי, הגבוה שבין המוצרים (יהב)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "minimum",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "figures": {
+    "yahav_min_deposit_low": {
+      "value": 50,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+        "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+        "publisher": "Bank Yahav",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-58"
+      ],
+      "state": "sourced",
+      "notes": "Bank Yahav: from NIS 50 or NIS 1,000 depending on the product (BANK-58)."
+    },
+    "yahav_min_deposit_high": {
+      "value": 1000,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+        "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+        "publisher": "Bank Yahav",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-58"
+      ],
+      "state": "sourced",
+      "notes": "Bank Yahav: from NIS 50 or NIS 1,000 depending on the product (BANK-58)."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BANK-27"
+  ]
+}

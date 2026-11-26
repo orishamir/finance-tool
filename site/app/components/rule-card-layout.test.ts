@@ -62,7 +62,7 @@ describe("the day a rule was read", () => {
 });
 
 describe("the rules a record's Source line points to", () => {
-  // BANK-37 reads two banks' pages directly and points to the general rule on exit points (BANK-27): no conclusion is drawn
+  // BANK-37 reads Bank Leumi's pages directly and points to the general rule on exit points (BANK-27): no conclusion is drawn
   it("are pointers beside the record's sources, with no word of derivation (BANK-37)", () => {
     const r = record("BANK-37");
     expect(r.derived_from?.length).toBeGreaterThan(0);
@@ -94,9 +94,9 @@ describe("the companies of a company's term", () => {
       expect(text).not.toContain(named(data, id));
     }
   });
-  it("are named in the line too when the card's tag names only the first (BANK-37's four banks)", async () => {
+  it("are named in the line too when the card's tag names only the first (BANK-33's two banks)", async () => {
     const data = await real();
-    const id = "BANK-37";
+    const id = "BANK-33";
     expect(ownDocCompanies(must(data.rules[id], id), data.ownDocs).length).toBeGreaterThan(1);
     expect(words(createElement(RuleCard, { id, data, inline: true }), data)).toContain(named(data, id));
     // the rules page's tag names them all

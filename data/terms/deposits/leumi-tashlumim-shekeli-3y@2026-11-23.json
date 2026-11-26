@@ -177,8 +177,7 @@
     "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות שבירה' (447 table column, p.33, 23.11.2026). Leumi's general terms 310-93 (06.26) p.11, s.2.9.2: the customer may not withdraw before the dates in the deposit request 'אלא בהסכמת הבנק בתנאים שקבע'; s.2.9.3: if the bank agrees, it counts as a break, 'ויהיה כרוך בתשלום הוצאות, עמלות ונזקים לבנק. במקרה כזה יתכן שהסכום שבו הלקוחות יזוכו בגין הפיקדון יהיה נמוך מהסכום המקורי אותו הפקידו בפיקדון'. The fixed-rate instalment form (pikadon_ribit_p.pdf, p.2, s.5.2) says the same and adds 'משיכת הכספים מהפיקדון תבוצע במשיכה אחת וחד פעמית בלבד, ומובהר כי לא ניתן למשוך חלק מהכספים המופקדים בפיקדון'.",
     "rule_ids": [
       "BANK-06",
-      "BANK-28",
-      "BANK-48"
+      "BANK-28"
     ]
   },
   "exit_points": {

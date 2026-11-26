@@ -54,7 +54,7 @@
       "BANK-25"
     ],
     "state": "sourced",
-    "notes": "Printed '+1.10% הצמדה למדד': a real rate plus linkage to the index (BANK-36), recorded as printed. Row 'חסכון אודם לשנתיים', rate type 'קבועה', linkage 'צמוד למדד המחירים לצרכן', amount '25,000 עד 100,000 ש\"ח', break 'אין אפשרות לשבירה', automatic renewal 'לא קיימת', number of renewals 'לא קיימת', exit points 'לא קיימת'. The board's savings page (p.4) says this saving 'מעניק הבטחת קרן' (BANK-36). This row as printed: '25,000 עד 100,000 ש\"ח': '+1.10% הצמדה למדד'. Read 2026-11-14 on p.6 of the file the bank's deposits page links (https://www.bank-yahav.co.il/investments/deposits/), re-issued on 10.11.2026, headed 'בתוקף מיום: 11/11/2026' with '10/11/2026 11_26' under the date (library eeb6aefc72e67b13); every figure this record takes from p.6 is as it was. The common-deposit column is empty on every row."
+    "notes": "Printed '+1.10% הצמדה למדד': a real rate plus linkage to the index (BANK-63), recorded as printed. Row 'חסכון אודם לשנתיים', rate type 'קבועה', linkage 'צמוד למדד המחירים לצרכן', amount '25,000 עד 100,000 ש\"ח', break 'אין אפשרות לשבירה', automatic renewal 'לא קיימת', number of renewals 'לא קיימת', exit points 'לא קיימת'. The board's savings page (p.4) says this saving 'מעניק הבטחת קרן' (BANK-63). This row as printed: '25,000 עד 100,000 ש\"ח': '+1.10% הצמדה למדד'. Read 2026-11-14 on p.6 of the file the bank's deposits page links (https://www.bank-yahav.co.il/investments/deposits/), re-issued on 10.11.2026, headed 'בתוקף מיום: 11/11/2026' with '10/11/2026 11_26' under the date (library eeb6aefc72e67b13); every figure this record takes from p.6 is as it was. The common-deposit column is empty on every row."
   },
   "linkage": "cpi",
   "tax_bucket": {
@@ -126,11 +126,11 @@
   "break": {
     "allowed": false,
     "penalty": "not_allowed",
-    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות לשבירה' (447 table column, printed once for every row). The account agreement (s.6.1.1, p.36) says that if the bank allows an early withdrawal 'לפנים משורת הדין', the money withdrawn bears no interest or linkage and the bank may charge 'בסכום השווה לנזק שיגרם לבנק' (BANK-33, BANK-48).",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות לשבירה' (447 table column, printed once for every row). The account agreement (s.6.1.1, p.36) says that if the bank allows an early withdrawal 'לפנים משורת הדין', the money withdrawn bears no interest or linkage and the bank may charge 'בסכום השווה לנזק שיגרם לבנק' (BANK-55).",
     "rule_ids": [
       "BANK-06",
       "BANK-14",
-      "BANK-33"
+      "BANK-55"
     ]
   },
   "exit_points": {

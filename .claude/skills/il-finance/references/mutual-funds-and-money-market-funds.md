@@ -378,11 +378,11 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Dimensions: liquidity-lockup, reporting-obligation
 - Likely to change: no
 
-### MF-39 Banks must show money-market funds next to deposits and makam ("מוצרי שוק הכסף")
-- Rule: On 9 April 2025 the ISA and the Bank of Israel published a directive (A447) requiring banks to publish information on deposits, money-market funds and makam together under the name "מוצרי שוק הכסף", simply and accessibly. The final directive (version 1, 09/04/25, circular 2813) requires the display on the public website, the personal area and the app (s.6), filters by period and currency and no favouring of one product (s.5), a link to the ISA's general information on money-market funds (s.13), at least daily updates (ss.14, 18), and a consolidated view of the client's own holdings of deposits, money-market funds and makam in the personal area and the app (s.19).
-- Conditions / exceptions: Money-market funds with fixed dates more than 12 months apart are outside the directive's definition. Details belong to `bank-current-account-deposits.md`.
+### MF-39 Banks must show money-market funds next to deposits and makam ("מוצרי שוק הכסף") (retired: see BANK-15)
+- Rule: Retired on 2026-11-26. It stated the same directive 447A display duties as BANK-15, from the same directive, and BANK-15 now holds them alone, with MF-39's display places (s.6), its 12-month fixed-date exclusion (s.4) and the ISA's 2025 mutual-funds report. The id stays so that references to it resolve; they should point to BANK-15.
+- Conditions / exceptions: none of its own; see BANK-15 in `bank-current-account-deposits.md`.
 - Figures: none
-- Source: [פעילות קרנות נאמנות בישראל 2025](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf), p.2 · primary · checked 2026-10-25. [הוראת ניהול בנקאי תקין 447A: פרסום מידע מרוכז על קרנות כספיות ומק"מ (04/25)](https://boi.org.il/media/gcmk52bw/447a.pdf), pp.1-3, ss.4-20; p.2, s.14 "יעדכן את המידע לפחות ברמה יומית" · primary · checked 2026-10-26. The draft text first cited here (sections 4-19) was replaced on 2026-10-25 by the final 04/25 text (a new section 17 on makam; later sections renumbered 19-20).
+- Source: [הוראת ניהול בנקאי תקין 447A: פרסום מידע מרוכז על קרנות כספיות ומק"מ (04/25)](https://boi.org.il/media/gcmk52bw/447a.pdf), pp.1-3, ss.4-20 · primary · checked 2026-10-26.
 - Scope: general
 - Dimensions: regulator, reporting-obligation
 - Likely to change: no

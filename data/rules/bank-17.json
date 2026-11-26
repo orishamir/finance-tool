@@ -2,13 +2,12 @@
   "id": "BANK-17",
   "title": "Current-account fee tracks: basic, extended, extended plus",
   "title_he": "מסלולי עמלות עובר ושב: בסיסי, מורחב ומורחב פלוס",
-  "text_he": "כל בנק חייב להציע מסלול בסיסי ומסלול מורחב לעמלות עובר ושב, ולאפשר לכל לקוח להצטרף. המסלול הבסיסי כולל עד מספר פעולות בפקיד ועד מספר פעולות בערוץ ישיר בחודש. המסלול המורחב כולל יותר מכל אחד מהם. מסלול מורחב פלוס מוסיף שירותים שהבנק קובע. פעולות מעבר למסלול מחויבות לפי התעריפון המלא. ההצטרפות והביטול נכנסים לתוקף בראשון לחודש שאחרי ההודעה. כל שנה הבנק בודק אם לקוחות מסוימים היו משלמים פחות במסלול, בכל אחד מחודשי השנה. אם כן, הוא מצרף אותם למסלול עד הראשון במרץ ומודיע להם. אזרח ותיק ואדם עם מוגבלות נבדקים מול המסלול הבסיסי בלבד. עסק קטן ועוסק מורשה נבדקים מול המסלול הבסיסי או המורחב. המחיר של המסלול הבסיסי מוגבל בצו לסכום מרבי בחודש, עד שהצו יבוטל ביולי 2027. הכללים מגדירים את המסלולים לפי התוכן שלהם, וכל בנק נותן להם שם משלו.",
+  "text_he": "כל בנק חייב להציע מסלול בסיסי ומסלול מורחב לעמלות עו״ש ולתת לכל לקוח להצטרף אליהם, וההצטרפות והביטול חלים מהראשון לחודש שאחרי ההודעה. המסלול הבסיסי כולל עד {BANK-17:basic_teller_actions} פעולה בפקיד ועד {BANK-17:basic_direct_actions} פעולות בערוץ ישיר בחודש, המסלול המורחב עד {BANK-17:extended_teller_actions} ו־{BANK-17:extended_direct_actions}, ומסלול מורחב פלוס מוסיף להם שירותים שהבנק קובע. פעולות מעבר למסלול מחויבות לפי התעריפון המלא. כל שנה הבנק בודק אם אזרח ותיק, אדם עם מוגבלות, עסק קטן או עוסק מורשה היו משלמים פחות במסלול בכל חודש, ואם כן מצרף אותם עד הראשון במרץ ומודיע להם שאפשר לבטל.",
   "figure_names_he": {
     "basic_teller_actions": "פעולות בפקיד בחודש במסלול הבסיסי",
     "basic_direct_actions": "פעולות בערוץ ישיר בחודש במסלול הבסיסי",
     "extended_teller_actions": "פעולות בפקיד בחודש במסלול המורחב",
-    "extended_direct_actions": "פעולות בערוץ ישיר בחודש במסלול המורחב",
-    "basic_track_max_fee": "המחיר המרבי של המסלול הבסיסי"
+    "extended_direct_actions": "פעולות בערוץ ישיר בחודש במסלול המורחב"
   },
   "strength": "primary",
   "dimensions": [
@@ -37,7 +36,7 @@
         "BANK-17"
       ],
       "state": "sourced",
-      "notes": "Basic track (מסלול בסיסי): up to one teller action a month (fees rules s.1 definition). Every bank must offer it and let any customer join (s.4A). Its price is capped at NIS 10 a month by the 2014 basic-track order (figure basic_track_max_fee) until that order is repealed on 1.7.2027 (BANK-35)."
+      "notes": "Basic track (מסלול בסיסי): up to one teller action a month (fees rules s.1 definition). Every bank must offer it and let any customer join (s.4A). Its price is capped at NIS 10 a month by the 2014 basic-track order (BANK-60, figure basic_track_max_fee) until that order is repealed on 1.7.2027 (BANK-35)."
     },
     "basic_direct_actions": {
       "value": 10,
@@ -98,27 +97,6 @@
       ],
       "state": "sourced",
       "notes": "Extended track: up to fifty direct-channel actions a month. Actions beyond a track are charged per the full tariff."
-    },
-    "basic_track_max_fee": {
-      "value": 10,
-      "unit": "nis_per_month",
-      "source": {
-        "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7360%2Fheb",
-        "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות מסלול בסיסי), התשע\"ד-2014, קובץ התקנות 7360 (26.3.2014), סריקת רשומות, p.1001, s.3: \"סכום העמלה המרבי, שניתן לגבות בעד שירות מסלול בסיסי, יהיה 10 שקלים חדשים בחודש\"",
-        "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-26",
-      "effective_from": "2014-04-01",
-      "effective_to": "2027-06-30",
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "BANK-17",
-        "BANK-35"
-      ],
-      "state": "sourced",
-      "notes": "Maximum fee for the basic track, in force from 1.4.2014; the 2026 order (BANK-35) repeals the 2014 order on 1.7.2027 and caps payment-account management fees instead."
     }
   },
   "il_finance_file": "bank-current-account-deposits.md",
@@ -152,20 +130,9 @@
       "page": 5,
       "quote": "יצרפו למסלול הבסיסי או המורחב, בהתאם לממוצע ההפרשים הגבוה יותר",
       "checked": "2026-10-26"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7360%2Fheb",
-      "title": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות מסלול בסיסי), התשע\"ד-2014, קובץ התקנות 7360 (26.3.2014), סריקת רשומות",
-      "title_he": "צו הבנקאות (שירות ללקוח) (פיקוח על שירות מסלול בסיסי), התשע\"ד-2014, קובץ התקנות 7360 (26.3.2014), סריקת רשומות",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.7 (gazette p.1001), ss.2-4, s.3",
-      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 1001), סעיפים 2-4, סעיף 3",
-      "page": 7,
-      "quote": "סכום העמלה המרבי, שניתן לגבות בעד שירות מסלול בסיסי, יהיה 10 שקלים חדשים בחודש",
-      "checked": "2026-10-26"
     }
+  ],
+  "derived_from": [
+    "BANK-60"
   ]
 }

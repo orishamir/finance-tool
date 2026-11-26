@@ -124,7 +124,8 @@
     "explain_he": "חבילת עמלות בעו\"ש עם מעט פעולות בחודש במחיר מפוקח, וכל בנק חייב להציע אותה",
     "rule_ids": [
       "BANK-16",
-      "BANK-17"
+      "BANK-17",
+      "BANK-60"
     ],
     "source": {
       "title": "Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy",
@@ -463,7 +464,6 @@
     ],
     "explain_he": "ריבית שיכולה לעלות או לרדת במהלך התקופה, כי היא נגזרת מריבית אחרת, בדרך כלל ריבית הפריים",
     "rule_ids": [
-      "BANK-13",
       "BANK-25",
       "BANK-47"
     ],
@@ -480,7 +480,7 @@
       "guide:bank-deposit",
       "guide:savings-plan"
     ],
-    "notes": "Same wording note as 'ריבית קבועה'. 447 requires a variable rate to be shown as anchor and spread with the result (BANK-13).",
+    "notes": "Same wording note as 'ריבית קבועה'. 447 requires a variable rate to be shown as anchor and spread with the result (BANK-25).",
     "id": "rybyt-mshtnh"
   },
   {
@@ -492,7 +492,6 @@
     "variants_he": [],
     "explain_he": "הריבית שממנה נגזרת ריבית משתנה, בדרך כלל ריבית הפריים, והבנק מוסיף לה או מוריד ממנה מרווח",
     "rule_ids": [
-      "BANK-13",
       "BANK-25",
       "BANK-47"
     ],
@@ -521,7 +520,6 @@
     ],
     "explain_he": "כמה נקודות אחוז מוסיפים לריבית העוגן או מורידים ממנה בפיקדון בריבית משתנה, ולפי בנק ישראל המרווח נשאר קבוע לכל תקופת הפיקדון",
     "rule_ids": [
-      "BANK-13",
       "BANK-25",
       "BANK-47"
     ],
@@ -972,8 +970,7 @@
     "explain_he": "הכותרת שתחתיה בנקים מציגים יחד פיקדונות, קרנות כספיות ומק\"מ, בלי להעדיף אף אחד מהם",
     "rule_ids": [
       "BANK-15",
-      "GOV-20",
-      "MF-39"
+      "GOV-20"
     ],
     "source": {
       "title": "BoI directive 447A \"פרסום מידע מרוכז על קרנות כספיות ומק\"מ\" (04/25)",

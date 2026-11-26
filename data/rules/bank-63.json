@@ -1,0 +1,40 @@
+{
+  "id": "BANK-63",
+  "title": "Bank Yahav: how it quotes and builds CPI-linked savings (a principal guarantee; the better of linked and unlinked)",
+  "title_he": "חיסכון צמוד מדד בבנק יהב: הבטחת קרן, והגבוה מבין צמוד ולא צמוד",
+  "text_he": "בבנק יהב פיקדון צמוד מוצג כריבית ריאלית בתוספת הצמדה למדד. ב״חסכון אודם״, לשנה או לשנתיים, הבנק מעניק הבטחת קרן. ב״חיסכון נבו ברירה מדד״ הלקוח מקבל בסוף שנה את הגבוה מבין ריבית קבועה צמודה למדד וריבית קבועה לא צמודה.",
+  "strength": "institution",
+  "dimensions": [
+    "real-vs-nominal",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.4, 6, 8",
+      "locator_he": "עמודים 4, 6, 8",
+      "page": 4,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BANK-26"
+  ]
+}
