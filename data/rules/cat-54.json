@@ -76,10 +76,24 @@
       "publisher_he": "מנורה מבטחים",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.4, s.7",
-      "locator_he": "עמוד 4, סעיף 7",
+      "locator": "p.4, s.7 (פסקה ראשונה)",
+      "locator_he": "עמוד 4, סעיף 7 (פסקה ראשונה)",
       "page": 4,
       "quote": "לא ניתן עוד להצטרף למסלולים מבטיחי התשואה",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://cdn.menoramivt.co.il/public/docs/%D7%9E%D7%91%D7%98%D7%97%D7%99%D7%9D-%D7%99%D7%95%D7%AA%D7%A8-%D7%93'-119-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-2013-12-31.pdf#page=4",
+      "title": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "title_he": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4, s.7 (פסקה שנייה)",
+      "locator_he": "עמוד 4, סעיף 7 (פסקה שנייה)",
+      "page": 4,
+      "quote": "ככל שהדבר אפשרי בהתאם להוראות ההסדר התחיקתי",
       "checked": "2026-11-26"
     },
     {
