@@ -65,9 +65,13 @@ describe("the account map's prices are kept between maps (F-131, lib/map-surface
     const at = (amount: number) => ({ ...plan, amountNow: amount, values: { ...plan.values, amount: entered(amount, "nis", bundle.today) } });
     const fund = pickOfHeadline(work.view(bundle, { index, plan, yourBroker: null }))?.fund;
     if (!fund) throw new Error("missing: the page's pair");
-    work.map(bundle, { index, plan: at(10_000), fund });
+    const before = work.map(bundle, { index, plan: at(10_000), fund });
     const kept = mapCache().points;
     const moved = work.map(bundle, { index, plan: at(12_000), fund });
+    // the case's ground: both maps span the same window (their axes' reach and the monthly axis's foot), so the points they share are many;
+    // where the axis jumps between the two amounts, this fails and the case needs two amounts on one axis
+    if (before.kind !== "map" || moved.kind !== "map") throw new Error("missing: the S&P 500's maps");
+    expect([moved.map.max, moved.map.bottom], "the two amounts no longer share one window: pick two that do").toEqual([before.map.max, before.map.bottom]);
     const slider = (key: string) => p05Range(bundle.p05, "sliders", key)?.max ?? NaN;
     // afresh, counting the points it reads
     const read = new Set<string>();

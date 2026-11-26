@@ -553,21 +553,23 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   const first = ((goal.firstMonth ?? 1) - 1 + offset) % 12 + 1;
   const orders = input.ordersPerMonth ?? 1;
   if (!Number.isInteger(orders) || orders < 1) throw new RangeError(`ordersPerMonth ${orders} must be a whole number of 1 or more (A-28)`);
-  // F-133: the plan's purchases are placed every `every` months, and in the month of the last deposit
+  // F-133: the plan's purchases are placed every `every` months, in the months it divides and never in the month of the sale, where an
+  // order would be sold in the month it buys
   const every = orderEveryOf(input.way);
   if (!(ORDER_INTERVALS as readonly number[]).includes(every)) throw new RangeError(`F-133: an order interval of ${every} months is not one of ${ORDER_INTERVALS.join(", ")}`);
   if (every > 1 && orders > 1) throw new RangeError(`F-133: a plan placed every ${every} months places one order then, not ${orders} a month (A-28)`);
   if (every > 1) formulas.push("F-133");
-  const placesOrder = (m: number) => m <= goal.months && (m % every === 0 || m === goal.months);
   if (!Number.isInteger(offset) || offset < 0) throw new RangeError(`gridOffset ${offset} must be a whole number of months, 0 or more`);
   const I = cpiPath(market.inflation, T);
   const X = fxPath(market.fxChange ?? 0, T);
   const C = contributions(goal, I);
-  // F-133: the deposits a plan's order in month m spends, each month's own where it orders every month; 0 in a month that places none
+  // F-133: the months a plan placed every few months orders in, and the deposits each such order spends (each month's own where it orders
+  // every month); 0 in a month that places none. Deposits after the last such month wait to the sale
+  const batchMonth = (m: number) => every > 1 && m % every === 0 && m < T;
   const planned: number[] = new Array<number>(T + 1).fill(0);
-  for (let m = 1, since = 0; m <= Math.min(goal.months, T); m++) {
-    since += C[m]!;
-    if (placesOrder(m)) {
+  for (let m = 1, since = 0; m <= T; m++) {
+    since += m <= goal.months ? C[m]! : 0;
+    if (every === 1 ? m <= goal.months : batchMonth(m)) {
       planned[m] = since;
       since = 0;
     }
@@ -655,8 +657,14 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // F-128: what a charge of a deal account reads of a month: the orders the run reads for it (`ActivityTrace`), else those the plan places
   // in it (the amount now and the month's deposits, a distribution reinvested, and the sale), and its trading, the trading the run reads for
   // it, else the cash the plan puts in it. An order is counted where it buys something; one that buys no unit is not placed (F-109)
+  const paysOutIn = (m: number) => !!fund.distribution && m >= 1 && m % (12 / fund.distribution.perYear) === 0;
+  // F-133: an order placed every few months spends the deposits since the last and the distributions paid since (one paid in an order's own
+  // month comes after it, F-20, and waits for the next)
+  const paidOutSince = (m: number) => Array.from({ length: every }, (_, i) => m - every + i).some(paysOutIn);
   const ordersIn = (m: number) =>
-    (m === 1 && C[0]! > 0 ? 1 : 0) + (planned[m]! > 0 ? orders : 0) + (every === 1 && fund.distribution && m % (12 / fund.distribution.perYear) === 0 ? 1 : 0) + (m === T ? 1 : 0);
+    (m === 1 && C[0]! > 0 ? 1 : 0) +
+    (every === 1 ? (planned[m]! > 0 ? orders : 0) + (paysOutIn(m) ? 1 : 0) : batchMonth(m) && (planned[m]! > 0 || paidOutSince(m)) ? 1 : 0) +
+    (m === T ? 1 : 0);
   const countIn = (m: number) => trace?.read?.[m]?.count ?? (trace?.read ? 0 : ordersIn(m));
   const tradingIn = (m: number) => trace?.read?.[m]?.trading ?? (trace?.read ? 0 : (m === 1 ? C[0]! : 0) + planned[m]!);
   const placedIn = (m: number, amount: number) => {
@@ -881,9 +889,10 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     // its month's order (F-133)
     if (m === 1 && C[0]! > 0) buy(C[0]!, m, 0, true);
     if (every === 1 && m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, "monthly");
-    if (every > 1 && m <= goal.months) {
-      waitingNis += C[m]!;
-      if (planned[m]! > 0) buy(0, m, m, true, "batched");
+    // F-133: with no deposit since the last order, the order spends what waits (a distribution's net), where something does
+    if (every > 1) {
+      if (m <= goal.months) waitingNis += C[m]!;
+      if (batchMonth(m) && waiting(m) > 0) buy(0, m, m, true, planned[m]! > 0 ? "batched" : null);
     }
     tally.paidIn += (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
 
@@ -918,9 +927,14 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
       tally.taxDuring += t.foreign + t.israeli;
       // the year's taxable distributions, for the surtax (TXG-09); a taxable fund's are exempt to the holder (TXS-11), so they are none
       if (fund.kind !== "money-market-taxable") distThisYear += dist;
-      // F-133: a plan placed every few months places no order for it: the net waits in the fund's currency and joins the next order
+      // F-133: a plan placed every few months places no order for it: the net waits in the fund's currency and joins the next order. At a
+      // house that is not a bank, whether the exchange gain on that currency while it waits is taxed is open (TX2-04 (b), TX2 OQ4, TXF OQ4);
+      // the run counts none, and says so
       if (every === 1) buy(t.net, m, m, false);
-      else waitingHeld += t.net / fxRate(m);
+      else {
+        waitingHeld += t.net / fxRate(m);
+        if (tariff.currency && t.net > 0 && (input.memberKind === "non-bank" || atForeignBroker)) tally.flag("TX2-OQ4", m);
+      }
       units = lots.totalUnits();
       // F-103: the custodian's charge for the dividend, paid by removing units oldest first; it is not a fee the sale gain is reduced by
       const asked = dc ? scaled(dc.event(m, units * nav), units * nav) : null;

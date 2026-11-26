@@ -41,7 +41,7 @@ import { insuranceCost } from "./formulas/insurance.ts";
 import { runSecurities } from "./ledgers/securities.ts";
 import { cpiLinkedAmount, indexedAmount } from "./formulas/indexation.ts";
 import { isTie } from "./compare/ranking.ts";
-import { costByWho, intervalWays, providerWorkbench } from "./providers/workbench.ts";
+import { costByWho, intervalChosen, providerWorkbench } from "./providers/workbench.ts";
 
 export const formulas = {
   "F-01": taxYearOf,
@@ -114,7 +114,7 @@ export const formulas = {
   "F-105": listFeeRange,
   "F-108": bestOpenOffer,
   "F-109": runSecurities,
-  "F-133": intervalWays,
+  "F-133": intervalChosen,
   "F-110": dealPeriods,
   "F-111": groupRate,
   "F-112": dealMarks,

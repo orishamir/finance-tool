@@ -536,7 +536,7 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
     market: { ...spec.market, inflation: ctx.plan.inflation },
     fund: spec.fund,
     profile,
-    behaviour: { ordersPerMonth: 1, ...(spec.orderEvery ? { orderEvery: spec.orderEvery } : {}) },
+    behaviour: { ordersPerMonth: 1 as const, ...(spec.orderEvery ? { orderEvery: spec.orderEvery } : {}) },
     instrumentClass: spec.cls,
     channel: "direct",
     ...(spec.currency ? { currency: spec.currency } : {}),

@@ -133,6 +133,13 @@ export function countsCurrentAccount(snapshot: Pick<FeesSnapshot, "current_accou
   return snapshot.current_account !== undefined;
 }
 
+/**
+ * A-28 and F-133: how the person places the plan's orders: trades a month (`ordersPerMonth`), and the interval between the plan's purchase
+ * orders (`orderEvery`). Several orders a month is a plan that orders every month, so an interval above a month goes with one order a month
+ * only. Absent `orderEvery`, each interval F-133 tries is run and the row takes the one it chooses.
+ */
+export type Behaviour = { ordersPerMonth?: number; orderEvery?: 1 } | { ordersPerMonth?: 1; orderEvery?: OrderInterval };
+
 export interface WorkbenchInput {
   goal: Goal;
   /** A-01 and A-02; A-03 when the fund is quoted in a foreign currency. */
@@ -142,11 +149,7 @@ export interface WorkbenchInput {
   profile: Profile;
   broker?: SecuritiesInput["broker"];
   /** A-28: trades a month, as the person says they trade. FX is a percentage of each conversion, so the number of conversions does not change its cost; custody follows the tariff's own period. */
-  behaviour?: {
-    ordersPerMonth?: number;
-    /** F-133: the interval the person places the plan's orders at. Absent, each of `ORDER_INTERVALS` is tried and the row takes the one that leaves the most. */
-    orderEvery?: OrderInterval;
-  };
+  behaviour?: Behaviour;
   /** The snapshot's instrument class the fund is (`applies_to` of a line), for example `etf_units`. */
   instrumentClass: string;
   /** The wrapper whose lines apply, default `brokerage-account`. */
@@ -890,22 +893,44 @@ export function unitWaysAt(input: Pick<WorkbenchInput, "listing" | "instrumentCl
 }
 
 /**
- * F-133 The order interval: the ways a row tries, each of a house's ways (F-109) at each order interval, monthly first and, at one interval, in the house's own
- * order, so a tie keeps the smaller interval and then the house's own way. Above monthly no order is a recurring plan's, so a way that buys
- * the monthly purchases by amount on one buys every order in whole units, as the house's other way already does, and is not tried twice.
- * A plan with no monthly deposit places no order the interval moves, and A-28's several orders a month is a plan that orders every month:
- * both try monthly alone. An interval the person gives (`behaviour.orderEvery`) is the only one tried.
+ * F-133 The order interval: the runs a row tries, for each of a house's ways (F-109), in the house's own order, that way at each order
+ * interval, monthly first. Above monthly no order is a recurring plan's, so a way that buys the monthly purchases by amount on one buys
+ * every order in whole units, as the house's other way already does, and is tried monthly alone. Intervals are tried where the plan has an
+ * order they move: a monthly deposit, or a fund that pays out, whose net waits for the next order. An interval of the plan's months or more
+ * places no order before the sale, so the plan would never buy: it is not tried. A-28's several orders a month is a plan that orders every
+ * month, and tries monthly alone. An interval the person gives (`behaviour.orderEvery`) is the only one tried.
  */
-export function intervalWays(ways: readonly BuyWay[], plan: { monthly: number; behaviour?: WorkbenchInput["behaviour"] }): BuyWay[] {
+export function intervalWays(ways: readonly BuyWay[], plan: { monthly: number; months: number; paysOut: boolean; behaviour?: Behaviour }): BuyWay[][] {
   const given = plan.behaviour?.orderEvery;
-  const batches = plan.monthly > 0 && (plan.behaviour?.ordersPerMonth ?? 1) === 1;
-  const intervals = given !== undefined ? [given] : batches ? ORDER_INTERVALS : [1];
-  return intervals.flatMap((k) => (k === 1 ? [...ways] : ways.filter((w) => !w.units?.monthlyByAmount).map((w) => ({ ...w, orderEvery: k }))));
+  const batches = (plan.monthly > 0 || plan.paysOut) && (plan.behaviour?.ordersPerMonth ?? 1) === 1;
+  const intervals: readonly OrderInterval[] = given !== undefined ? [given] : batches ? ORDER_INTERVALS.filter((k) => k === 1 || k < plan.months) : [1];
+  return ways.map((w) => intervals.flatMap((k) => (k === 1 ? [w] : w.units?.monthlyByAmount ? [] : [{ ...w, orderEvery: k }])));
 }
 
 /**
- * F-109, F-133: whether a way leaves more than the one before it, by more than the rounding of a double (a part in a billion): two ways that
- * leave the same are a tie, which keeps the one tried first.
+ * F-133 Which interval, within one way: the index of the run chosen among a way's runs at each interval (`intervalWays`, monthly first where
+ * it is tried), by the real value at the horizon before tax (`beforeTax`). An interval above a month is chosen only where it leaves more
+ * than monthly by more than the tie share `theta` (P-01, F-80) of monthly's value: the tax a monthly plan pays is raised by the fees G-20
+ * leaves out of its cost basis, so after tax batching could win through that alone, and a change to how the person buys needs a clear gain.
+ * Of the intervals that pass, the one that leaves the most, the smaller on a tie. A way not tried monthly takes its one run.
+ */
+export function intervalChosen(runs: readonly { way: BuyWay; run: RunResult }[], theta: number): number {
+  const first = runs[0];
+  if (!first) throw new Error("F-133: a way is tried at one interval at least");
+  if (orderEveryOf(first.way) !== 1) return 0;
+  const monthly = beforeTax(first.run);
+  let chosen = 0;
+  let most = monthly;
+  for (let i = 1; i < runs.length; i++) {
+    const b = beforeTax(runs[i]!.run);
+    if (b - monthly > theta * Math.abs(monthly) && (chosen === 0 || leavesMore(b, most))) [chosen, most] = [i, b];
+  }
+  return chosen;
+}
+
+/**
+ * F-133: whether an interval leaves more than the one before it, by more than the rounding of a double (a part in a billion): two that
+ * leave the same are a tie, which keeps the smaller interval.
  */
 const leavesMore = (a: number, b: number): boolean => a - b > 1e-9 * Math.abs(b);
 
@@ -1167,14 +1192,13 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       continue;
     }
     const { base, level, built, memberKind, ways, deal } = ready;
-    // F-109, F-133: the way and the order interval that leave the most at the horizon
-    const tried = intervalWays(ways, { monthly: input.goal.monthly, ...(input.behaviour ? { behaviour: input.behaviour } : {}) });
-    let way = tried[0]!;
-    let run = runSecurities(plan(built.tariff, horizon, memberKind, way, deal), ctx);
-    for (const w of tried.slice(1)) {
-      const other = runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx);
-      if (leavesMore(other.real, run.real)) [way, run] = [w, other];
-    }
+    // F-133: each way at the interval it chooses, before tax; F-109: of the ways, the one that leaves the most at the horizon, its own on a tie
+    const byWay = intervalWays(ways, { monthly: input.goal.monthly, months: horizon, paysOut: !!input.fund.distribution, ...(input.behaviour ? { behaviour: input.behaviour } : {}) }).map((tried) => {
+      const runs = tried.map((w) => ({ way: w, run: runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx) }));
+      return runs[intervalChosen(runs, input.theta)]!;
+    });
+    let { way, run } = byWay[0]!;
+    for (const other of byWay.slice(1)) if (other.run.real > run.real) ({ way, run } = other);
     const stopped = stoppedBeforeComparing([noneT, run]);
     if (stopped) {
       rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });

@@ -39,9 +39,12 @@ describe("in whole units the receipt writes the fees charged as fees and the wai
         const where = `${pc.providerId} ${pc.fundId}`;
         const r = receiptAmounts(pc);
         const lines = pc.account.reduce((a, l) => a + (l.cost.value as number), 0);
-        // the fees charged: every line carried, and a remainder that is their interplay, not the waiting cash
+        // the fees charged: every line carried, and a remainder that is their interplay, not the waiting cash. The remainder is measured
+        // against the account's whole part before tax (its lines, the remainder and the waiting cash, F-91): bought every few months (F-133),
+        // a house's trade line shrinks while its remainder, custody on the money the other fees took, does not, so against the lines alone
+        // the share rises though the remainder itself is smaller (Excellence, whose largest line is its monthly fee)
         expect(lines, where).toBeGreaterThan(0);
-        expect(Math.abs(pc.interaction), where).toBeLessThan(0.15 * lines);
+        expect(Math.abs(pc.interaction), where).toBeLessThan(0.15 * (lines + pc.interaction + pc.waitingN));
         expect(r.account, where).toBeGreaterThan(0);
         expect(pc.accountFees + pc.waitingN, where).toBeCloseTo(pc.accountCost, 9);
         // the waiting cash missed the fund's move: a rise is a cost, a fall a gain
