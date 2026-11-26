@@ -59,5 +59,36 @@
   ],
   "typed-figure": [
     "BANK-49"
+  ],
+  "figure-title": [
+    "BANK-05#renewal_notice_max_days",
+    "BANK-05#renewal_notice_min_days",
+    "BANK-07#maturity_notice_max_days",
+    "BANK-07#maturity_notice_min_days",
+    "BANK-13#in_force_from",
+    "BANK-14#standard_deposit_types",
+    "BANK-17#basic_direct_actions",
+    "BANK-17#basic_teller_actions",
+    "BANK-17#extended_direct_actions",
+    "BANK-17#extended_teller_actions",
+    "BANK-19#benefit_min_months",
+    "BANK-19#notice_days",
+    "BANK-20#continuous_period_months",
+    "BANK-20#credit_balance_threshold",
+    "BANK-21#in_force_from",
+    "BANK-32#annual_report_deadline",
+    "BANK-32#detailed_report_on_request_business_days",
+    "BANK-32#reports_kept_online_years",
+    "BANK-35#account_fee_3_to_100_actions",
+    "BANK-35#account_fee_per_action_above_100",
+    "BANK-35#account_fee_up_to_2_actions",
+    "BANK-35#action_band_low_max",
+    "BANK-35#action_band_mid_max",
+    "BANK-35#action_band_mid_min",
+    "BANK-35#immediate_debit_card_fee",
+    "BANK-42#conditions_count",
+    "BANK-54#small_business_turnover_max",
+    "BANK-54#small_business_turnover_max_before_2013",
+    "BANK-60#basic_track_max_fee"
   ]
 }

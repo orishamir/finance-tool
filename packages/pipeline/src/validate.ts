@@ -1,9 +1,8 @@
 // The validator: docs/data-schema.md §4 and docs/architecture.md 3.2. A problem fails the run; a warning (rule sources, dates) is printed in
 // one line per category and does not. Besides the checks written here, it runs every module of ./checks/, found by reading the folder:
 // each is one check, which one package owns, with its ratchet lists under ./leftovers/ (checks/lib/kit.ts).
-import { existsSync, readdirSync, readFileSync, realpathSync, statSync } from "node:fs";
-import { join, relative, resolve, sep } from "node:path";
-import { fileURLToPath } from "node:url";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { join, relative, sep } from "node:path";
 import type { z } from "zod";
 import {
   abroadRecord,
@@ -45,7 +44,7 @@ import { inTrailingYear, trailingDistributionYield } from "@finance-tool/engine"
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
 import { figureSlots, readTextLeftovers, withoutSlots, type TextLeftovers } from "./rule-text.ts";
-import { forgetReads, unreadRuleLists, type CheckProblem, type DataCheck } from "./checks/lib/kit.ts";
+import { forgetReads, isOwnData, unreadRuleLists, type CheckProblem, type DataCheck } from "./checks/lib/kit.ts";
 import { checkFundPromotions, checkLineFacts, checkSnapshotFacts } from "./price-list-facts.ts";
 
 /**
@@ -86,11 +85,10 @@ const dataChecks: DataCheck[] = await Promise.all(
     .sort()
     .map(async (f) => asCheck(f, (await import(new URL(f, CHECKS).href)) as Record<string, unknown>)),
 );
-const ownData = realpathSync(fileURLToPath(new URL("../../../data", import.meta.url)));
 
 /** The problems the check modules find in `dataDir`, each named by its check, and every list in a group file that no check reads. */
 function runChecks(dataDir: string, files: string[]): CheckProblem[] {
-  const whole = existsSync(dataDir) && realpathSync(resolve(dataDir)) === ownData;
+  const whole = isOwnData(dataDir);
   const out = dataChecks.flatMap((c) => c.check({ dataDir, files, whole }).map((p) => ({ file: p.file, message: `${c.name}: ${p.message}` })));
   forgetReads();
   for (const message of unreadRuleLists()) out.push({ file: dataDir, message });

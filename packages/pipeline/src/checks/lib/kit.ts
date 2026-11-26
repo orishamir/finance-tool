@@ -3,8 +3,9 @@
 // entries still allowed, in a file of its own under packages/pipeline/src/leftovers/, and every list only shrinks. An entry that no
 // longer offends, or whose record is gone, fails with "strike it", as staleTextLeftovers in rule-text.ts does. Entries are judged only
 // over the repository's own data/ (`whole`): a test's data folder holds a few records that stand in for the real ones, under their ids.
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { existsSync, readdirSync, readFileSync, realpathSync, statSync } from "node:fs";
+import { join, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 /** One problem a check finds: the file it is about and what is wrong, in words that say how to fix it. */
 export interface CheckProblem {
@@ -27,6 +28,11 @@ export interface DataCheck {
 }
 
 const LEFTOVERS = new URL("../../leftovers/", import.meta.url);
+/** The repository's own data/ folder. */
+export const OWN_DATA = realpathSync(fileURLToPath(new URL("../../../../../data", import.meta.url)));
+
+/** True when `dataDir` is the repository's own data/. */
+export const isOwnData = (dataDir: string): boolean => existsSync(dataDir) && realpathSync(resolve(dataDir)) === OWN_DATA;
 
 /** A JSON file under packages/pipeline/src/leftovers/, by its path there ("notes/fees.json"), parsed; null when there is none. */
 export function readLeftovers(path: string): unknown {
@@ -76,11 +82,14 @@ export function readRuleList(name: string): string[] {
   });
 }
 
+/** The rule-keyed lists a site test reads, not a data check: a sentence of a rule's text that a guide page opening it says again. */
+const SITE_RULE_LISTS = ["page-copy"];
+
 /** Lists in the group files that no loaded check reads: a misspelt name, or a check gone with its list left behind. */
 export function unreadRuleLists(): string[] {
   return GROUP_NAMES.flatMap((group) =>
     Object.keys((readLeftovers(`rules/${group}.json`) as Record<string, unknown> | null) ?? {})
-      .filter((name) => !ruleListNames.has(name))
+      .filter((name) => !ruleListNames.has(name) && !SITE_RULE_LISTS.includes(name))
       .map((name) => `leftovers/rules/${group}.json: no check reads the list "${name}"`),
   );
 }
@@ -105,6 +114,25 @@ export function staleEntries(
     if (!record(entry)) return [`${file} lists ${entry} under "${list}", and its record is gone: strike it (the list only shrinks)`];
     return offends(entry) ? [] : [`${file} lists ${entry} under "${list}", which no longer offends: strike it (the list only shrinks)`];
   });
+}
+
+/** One offender a ratchet check finds: the file it is in, what was found, and what the fix is. */
+export interface Offence {
+  file: string;
+  what: string;
+  fix: string;
+}
+
+/**
+ * A rule-keyed ratchet: each offender `found` holds (by entry, an entry starting with a rule id) that the group files do not list under
+ * `list`, as a problem "<entry> (<list>): <what>; <fix>", and each listed entry that is stale (staleEntries). `record` says whether an
+ * entry's record is present.
+ */
+export function ruleRatchet(data: CheckData, list: string, found: ReadonlyMap<string, Offence>, record: (entry: string) => boolean): CheckProblem[] {
+  const listed = readRuleList(list);
+  const out: CheckProblem[] = [...found].filter(([entry]) => !listed.includes(entry)).map(([entry, o]) => ({ file: o.file, message: `${entry} (${list}): ${o.what}; ${o.fix}` }));
+  for (const message of staleEntries(listed, data, record, (entry) => found.has(entry), (entry) => ({ file: ruleListFile(entry), list }))) out.push({ file: join(data.dataDir, "rules"), message });
+  return out;
 }
 
 /** Every file under `dir`. */

@@ -67,5 +67,11 @@
   "spelled-number": [
     "CORP-18"
   ],
-  "typed-figure": []
+  "typed-figure": [],
+  "figure-title": [
+    "BRK-12#risk_fund_minimum",
+    "BRK-21#notice_days",
+    "BRK-58#extra_client_subaccount_equity",
+    "BRK-59#clearing_members"
+  ]
 }
