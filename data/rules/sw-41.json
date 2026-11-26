@@ -19,15 +19,15 @@
         "strength": "primary",
         "locator": "p.2, סעיף 3(ו)",
         "locator_he": "עמוד 2, סעיף 3(ו)",
-        "page": 2
+        "page": 2,
+        "quote": "בתוך שני ימי עסקים מהמועד הקובע"
       },
       "checked": "2026-10-25",
       "effective_from": "2017-01-01",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "fixed in regulation",
-      "state": "sourced",
-      "notes": "'בתוך שני ימי עסקים מהמועד הקובע'."
+      "state": "sourced"
     },
     "rejection_notice": {
       "value": 3,
@@ -39,15 +39,15 @@
         "strength": "primary",
         "locator": "p.2, סעיף 3(ז)",
         "locator_he": "עמוד 2, סעיף 3(ז)",
-        "page": 2
+        "page": 2,
+        "quote": "בתוך שלושה ימי עסקים ממועד העברת הבקשה"
       },
       "checked": "2026-10-25",
       "effective_from": "2017-01-01",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "fixed in regulation",
-      "state": "sourced",
-      "notes": "'בתוך שלושה ימי עסקים ממועד העברת הבקשה'."
+      "state": "sourced"
     },
     "lapse_active": {
       "value": 120,
