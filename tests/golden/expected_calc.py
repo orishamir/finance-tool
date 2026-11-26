@@ -663,7 +663,7 @@ def s06_s07():
         f'| 2 | Buy at issue: trade value V and commission c with V + c = cash, c = max(20, 0.1% × V) (commission is a % of the trade) | {L("BRK-16")}; tariff from the scenario | see table |\n'
         f'| 3 | No custody fee on makam at a bank | {L("BRK-17", "BANK-18")} | 0 |\n'
         f'| 4 | At redemption the discount (face − price paid) is interest, taxed and withheld at 15%. Purchase commission is not deducted (no rule allows it) | {L("TXI-01", "TXI-11", "TXI-09")} | see table |\n'
-        f'| 5 | Net proceeds buy the next 365-day series; no sale commission at redemption (scenario) | {L("GOV-22", "GOV-23")} | see table |\n'
+        f'| 5 | Net proceeds buy the next 365-day series; no sale commission at redemption (scenario) | {L("GOV-23")} | see table |\n'
         f'| 6 | 15% used; the 2025 guide\'s 20% line conflicts (flag) | {L("TXI-11")} (TXI OQ3) | flag |\n\n'
         + table(['Series', 'Trade value', 'Commission', 'Face', 'Discount', 'Tax 15%', 'Cash at redemption'], rows)
         + f'\n\nResult: V_T = {f2(a["V"])}; real V_T/I_24 = {f2(a["real_V"])}; fees (commissions) {f2(a["fees"])}; tax during {f2(a["tax"])} (the second series is taxed at redemption on the exit day); tax at exit 0 beyond that.'

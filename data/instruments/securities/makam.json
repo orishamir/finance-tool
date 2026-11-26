@@ -97,7 +97,6 @@
       "TXG-27",
       "GOV-03",
       "GOV-06",
-      "GOV-22",
       "GOV-23"
     ]
   },
@@ -118,7 +117,7 @@
   },
   "lawful_exit": {
     "kind": "trading_day",
-    "text": "Any trading day: makam is listed on TASE after each auction and can be sold at the market price of the day (GOV-04, GOV-17, GOV-22). Held to the redemption date, the Bank of Israel pays the face value (GOV-03). A sale on TASE settles on the next business day (GOV-24); no payout-days figure is recorded."
+    "text": "Any trading day: makam is listed on TASE after each auction and can be sold at the market price of the day (GOV-04, GOV-17). Held to the redemption date, the Bank of Israel pays the face value (GOV-03). A sale on TASE settles on the next business day (GOV-24); no payout-days figure is recorded."
   },
   "switch_is_tax_event": {
     "value": true,

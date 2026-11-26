@@ -49,7 +49,7 @@ For every kind of holding the guides cover, how well this rule base answers the 
 
 | Kind | What it is | Tax | Cost | Getting the money out | If the company fails | Moving it | Count |
 |---|---|---|---|---|---|---|---|
-| Makam | **L** GOV-01, GOV-03, GOV-04, GOV-22 | **L!** TXI-01, TXI-11 (15% by law), TXI-12<br>Open: TXI OQ3 (the split on a sale before redemption) | **L** GOV-21, BANK-18, BRK-17, BRK-52 | **L** GOV-17, GOV-22, GOV-24<br>Open: GOV OQ7 | **L** GOV-02 | **–** moves with the securities account | L 5, C 0, O 0, – 1; 1 with ! |
+| Makam | **L** GOV-01, GOV-03, GOV-04, GOV-22 | **L!** TXI-01, TXI-11 (15% by law), TXI-12<br>Open: TXI OQ3 (the split on a sale before redemption) | **L** GOV-21, BANK-18, BRK-17, BRK-52 | **L** GOV-17, GOV-24<br>Open: GOV OQ7 | **L** GOV-02 | **–** moves with the securities account | L 5, C 0, O 0, – 1; 1 with ! |
 | Government bond | **L!** GOV-08, GOV-11 to GOV-15, GOV-25 (Galil)<br>Open: GOV OQ6 (a deflation floor per series), GOV OQ4 | **L!** TXI-12, TXI-14, TXI-15, TXI-16<br>Open: TXI OQ5 (accrued interest bought between coupons) | **L** GOV-21 | **L** GOV-16, GOV-17, GOV-24 | **L** GOV-02 | **–** moves with the securities account | L 5, C 0, O 0, – 1; 2 with ! |
 | Israel Bonds (sold through the Bonds organisation) | **L!** FXD-18 (the Accountant General's debt reports 2024 p.42, 2025 pp.20-21; outside the Securities Law, ss.1 and 35א; the State's 2025 prospectus and rate sheet on sec.gov, the State's own official statement)<br>Open: GOV OQ11, FXD OQ10 (whether a resident can buy, narrowed) | **L** TX2-22 (the 1991 order under s.15 and its 1998 amendment, in the gazette: exempt for a holder who lent while a foreign resident; bought as a resident, a linked bond, up to 25% of the real gain; withholding reg. 5)<br>Open: TX2 OQ19 (withholding when paid abroad, the year the Savings series is taxed: timing, not the final tax), FXD OQ10 | **L** FXD-19 (bought at 100% of face value; the State pays the selling costs, so the cost is in the rate) | **L** FXD-20 (held to maturity, no secondary market; a buyback only on four listed events; the State may redeem early) | **L** FXD-21 (direct, unconditional, unsecured obligations of the State; full repayment due after 90 days of default) | **L** FXD-20 (entries in the fiscal agent's register; transfer only to listed people) | L 6, C 0, O 0; 1 with ! |
 
@@ -386,7 +386,7 @@ topic files with links and dates, and the open questions they answer are marked 
 | NII's official child-savings fund list (10 managers, including Clal) and its 5 tracks | CS-24 | CS OQ2 |
 | Bank vs provident child savings: principal guarantee, transfer limits, fees to 21 | CS-25 | conflict noted |
 | The CMA lost-accounts search ("הר הכסף" route) | PF-32 | — |
-| Makam: monthly issue, 12 series, individuals can bid through their account, BoI calls it risk-free | GOV-22 | GOV OQ2 (in part), OQ9 |
+| Makam: monthly issue, 12 series, individuals can bid through their account, BoI calls it risk-free | GOV-22, GOV-23, GOV-26 | GOV OQ2 (in part), OQ9 |
 | Makam issue schedule to February 2027, about one year per series | GOV-23 | GOV OQ3 |
 | "פק"מ" = "פיקדון קצר מועד" (institution source) | BANK-30 | BPN OQ8 (in part) |
 | Bank of Jerusalem and One Zero product names | BPN-11 | BPN OQ5 (in part) |
