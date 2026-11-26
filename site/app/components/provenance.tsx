@@ -13,7 +13,7 @@ import { isOpenValue, isParameter, isWeak, strengthOf, type SiteValue, type Stre
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconClock, IconDrillIn, IconFile, IconLock, IconPencil } from "./icons";
 import { Sheet } from "./Sheet";
-import { cx, Disclosure, Tag } from "./ui";
+import { Button, cx, Disclosure, Tag } from "./ui";
 import { CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
 import { decodedPart } from "../lib/address-hash";
@@ -566,9 +566,9 @@ function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
 export function FormulaLink({ id }: { id: string }) {
   const open = useOpen();
   return (
-    <button type="button" className="text-link min-h-target text-start hover:underline" onClick={(e) => open({ kind: "formula", id }, e.currentTarget)}>
+    <Button variant="quiet" flush size="sm" className="self-start" onClick={(e) => open({ kind: "formula", id }, e.currentTarget)}>
       {copy.computed.toFormula}
-    </button>
+    </Button>
   );
 }
 
