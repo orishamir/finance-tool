@@ -18,7 +18,7 @@ const record = (id: string): RuleRecord => JSON.parse(readFileSync(new URL(`data
 const dataOf = (rules: Record<string, RuleRecord>, more: Partial<ProvenanceData> = {}): ProvenanceData => ({ rules, terms: {}, dimensions: {}, today: "2026-11-26", ...more }) as ProvenanceData;
 /** The card's words, tags gone. */
 const words = (el: ReturnType<typeof createElement>, data: ProvenanceData) =>
-  renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data }, el))).replace(/<!-- -->/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, el))).replace(/<!-- -->/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 const count = (text: string, part: string) => text.split(part).length - 1;
 /** A value the test needs, or a failure that names it. */
 function must<T>(v: T | undefined | null, what: string): T {

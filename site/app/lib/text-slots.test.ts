@@ -54,7 +54,7 @@ describe("a rule text with slots", () => {
   it("is drawn on the card and on the rules page with each slot as its figure", () => {
     const data = { ...source, terms: {}, dimensions: {} } as unknown as ProvenanceData;
     for (const el of [createElement(RuleCard, { id: slotted.id, data, inline: true }), createElement(RuleDetail, { id: slotted.id, data, products: [] })]) {
-      const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data }, el))).replace(/<!-- -->/g, "");
+      const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, el))).replace(/<!-- -->/g, "");
       const text = html.replace(/<[^>]+>/g, "");
       // the sentence reads as the plain text writes it: each figure in its place, no slot and no "—" left
       expect(text).toContain(`הגיל הוא ${ownShown} לפי המסמך, והמס `);
