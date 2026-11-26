@@ -315,10 +315,13 @@ describe("invest page computation", () => {
     if (!("value" in at)) throw new Error("Psagot prices 1159250");
     // the account's fees: its whole part (F-91) less what the cash waiting for a whole unit did (F-109), as the receipt writes them
     expect(Math.round(at.accountCost)).toBe(2_751);
-    // what it rests on: the fund's US tax (TXF-16) and that nothing is taxed before the sale (TXF-11, the fund's own ruling); never TXF-04,
-    // whose place the annex's own statement takes, named as the fund's, its page linked
+    // what it rests on: that nothing is taxed before the sale (TXF-11, the fund's own ruling), and the fund's US tax (TXF-16), which the
+    // input of that tax lists and opens, so the figure itself does not list it again; never TXF-04, whose place the annex's own statement
+    // takes, named as the fund's, its page linked
     const used = at.value.rulesUsed!.map((r) => r.id);
-    expect(used).toEqual(expect.arrayContaining(["TXF-16", "TXF-11"]));
+    expect(used).toEqual(expect.arrayContaining(["TXF-11"]));
+    expect(used).not.toContain("TXF-16");
+    expect(Object.values(at.value.computed_from!.inputs).flatMap((x) => x.rulesUsed ?? []).map((r) => r.id)).toContain("TXF-16");
     expect(used).not.toContain("TXF-04");
     expect(at.value.statements).toEqual([expect.objectContaining({ term: "tax-index", index: "fx", currency: "USD", page: 17, source: expect.objectContaining({ url: f.rec.tax_ruling!.source.url }) })]);
     // the account's cost before tax reads no tax index, and so no statement

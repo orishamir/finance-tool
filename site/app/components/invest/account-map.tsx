@@ -15,7 +15,7 @@ import { useAccountMapRun, useMapWindowRun, type Asked } from "../../lib/invest-
 import type { MapAnswer } from "../../lib/invest-work";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { priced } from "../../lib/stretch";
-import { asParameter, carriedBy, differenceOf, entered, type SiteValue } from "../../lib/value";
+import { asParameter, differenceOf, entered, type SiteValue } from "../../lib/value";
 import { isTie } from "@finance-tool/engine";
 import { Num } from "../provenance";
 import { HelpMark, MixedName, PanelHead, RegionMap, regionSwatch, regionTones, regionWash, sameView, Swatch, type PlaneView, type RegionArea, type RegionGrid, type RegionPoint, type RegionReading, type RegionTone, type TabCard } from "../kit";
@@ -174,7 +174,7 @@ function readerOf(view: InvestView, bundle: IndicesBundle, on: Asked<"map">, ton
       const wName = shortOf(view, w.providerId);
       const rows: RegionReading["rows"] = [{ id: w.providerId, swatch: swatch(w.providerId), label: wName, value: <>{m.leaves} <Num value={{ ...w.value, about: m.leftAbout(wName) }} display={fmt.nisWhole(Math.round(w.valueN))} /></>, ...(same ? {} : { wash: regionWash(toneOf(w.providerId)) }) }];
       if (r) {
-        const gap = differenceOf([wName, w.value], [shortOf(view, r.providerId), r.value], "F-65", { today, about: m.gapAbout(wName), round: Math.round, ...carriedBy([w.value, r.value]) });
+        const gap = differenceOf([wName, w.value], [shortOf(view, r.providerId), r.value], "F-65", { today, about: m.gapAbout(wName), round: Math.round });
         rows.push({ id: r.providerId, swatch: swatch(r.providerId), label: shortOf(view, r.providerId), value: typeof gap.value === "number" ? <>{m.leaves} <Num value={gap} display={fmt.nisWhole(gap.value)} /> {m.less}</> : null });
       } else rows.push({ id: "only", label: m.onlyOne, value: null });
       got = { head, rows };

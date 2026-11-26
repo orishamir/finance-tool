@@ -5,7 +5,7 @@
 import { paysAtPlanEnd } from "./plan-end";
 import { bondPrice, brokenBalanceCondition, calendarMonthOf, cashRateIn, currentAccountYearlyInterest, makamPrice, rateBasisOf, runInputs, runPlanned, type AnnualRateForm, type P05Input, type RunResult } from "@finance-tool/engine";
 import type { ValueObject } from "@finance-tool/schema";
-import { p05Value, runTimeline, type Bundle } from "./engine";
+import { p05Value, runTimeline, withP05Inputs, type Bundle } from "./engine";
 import { p05Units, entered as enteredValue, type SiteValue } from "./value";
 import { heCollator } from "./format";
 
@@ -154,8 +154,7 @@ export function accountFact(d: SignatureData): AccountFact | null {
 
 /** The account bundle run at a bank's printed rate and ceiling (its conditions assumed met); the bundle itself runs at the rate most banks pay (F-85). */
 export function bundleAtBank(bundle: Bundle, bank: AccountBank): Bundle {
-  const inputs = (bundle.p05 as unknown as { inputs: Record<string, unknown> }).inputs;
-  const p05 = { ...bundle.p05, inputs: { ...inputs, cash_rate: bank.rate } } as unknown as Bundle["p05"];
+  const p05 = withP05Inputs(bundle.p05, { cash_rate: bank.rate });
   const ceiling = rateOf(bank) > 0 && bank.ceiling && typeof bank.ceiling.value === "number" ? bank.ceiling : null;
   const { balanceCeiling: _was, ...feeValues } = bundle.feeValues;
   const deposit = bundle.terms.deposit;

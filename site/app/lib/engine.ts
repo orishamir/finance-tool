@@ -182,11 +182,20 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
   }
 }
 
+/**
+ * P-05 with a record's own value in place of some of its inputs (a bank's published rate for `cash_rate`): `replaced` names them, so
+ * `p05Value` gives each as that record's number, not as a site parameter.
+ */
+export function withP05Inputs(p05: ParameterRecord, values: Partial<Record<P05Input, ValueObject>>): ParameterRecord {
+  const own = p05 as unknown as { inputs: Record<string, unknown>; replaced?: readonly string[] };
+  return { ...p05, inputs: { ...own.inputs, ...values }, replaced: [...new Set([...(own.replaced ?? []), ...Object.keys(values)])] } as unknown as ParameterRecord;
+}
+
 /** P-05's own value of an input, as the parameter file holds it (with its rationale for the sheet). */
 export function p05Value(p05: ParameterRecord, key: P05Input): SiteValue {
-  const inputs = (p05 as unknown as { inputs: Record<P05Input, ValueObject> }).inputs;
+  const { inputs, replaced } = p05 as unknown as { inputs: Record<P05Input, ValueObject>; replaced?: readonly string[] };
   // an input a guide page replaced with a record's own value (a bank's published rate) is that record's number, not a site parameter
-  if (inputs[key].update_rule !== "founder") return { ...inputs[key] };
+  if (replaced?.includes(key)) return { ...inputs[key] };
   return {
     ...inputs[key],
     parameter: { rationale: p05.rationale, rationaleHe: p05.rationale_he ?? null },

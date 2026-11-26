@@ -1,7 +1,7 @@
 // Value objects on the site: the schema's object plus what a page needs to show it (D7, D3, D10).
-import type { FundStatement, Label, P05Input } from "@finance-tool/engine";
+import type { Flag, FundStatement, Label, P05Input } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject, Working } from "@finance-tool/schema";
-import { amountShown, numberShown } from "./format";
+import { amountShown, formatValue, numberShown, SHORT_IN_ROW } from "./format";
 import { invest, numbers } from "../copy";
 
 export type Strength = ValueObject["source"]["strength"];
@@ -59,6 +59,18 @@ export interface SiteValue extends ValueObject {
   labels?: SiteLabel[];
   /** Engine flags (G-IDs, open questions) that qualify the value. */
   flags?: string[];
+  /** The run month each flag first applies from, by its code, where the engine found one (`Flag.month`): a flag with none applies throughout. */
+  flagMonths?: Record<string, number>;
+  /**
+   * A plain difference or sum of figures on the page (`differenceOf`, `sumOf`): it adds no rule of its own, so its sheet names none; each of
+   * its inputs opens its own rules, statements and warnings from its row.
+   */
+  plain?: boolean;
+  /**
+   * A line its sheet must always show beside the source, which the source's terms of use require (the ECB's attribution of its exchange
+   * rates): never left out as a note can be.
+   */
+  obligation?: string;
   /** What the value is, in one line, for the sheet header. */
   about?: string;
   /** What the figure means, said first in its sheet, under the header (a definition at the sheet's end sat below the popover's edge). */
@@ -115,9 +127,12 @@ export function weaker(a: Strength | undefined, b: Strength | undefined): Streng
   return order[a] >= order[b] ? a : b;
 }
 
-/** The strength a number is labelled with: its own source, or the weakest thing a computation rests on. */
+/**
+ * The strength a number is labelled with: its own source, or the weakest thing a computation rests on. A computed value with no `weakest`
+ * takes its own source's strength, never a strength it was not given.
+ */
 export function strengthOf(v: SiteValue): Strength {
-  return v.state === "computed" ? (v.weakest ?? "primary") : v.source.strength;
+  return v.state === "computed" ? (v.weakest ?? v.source.strength) : v.source.strength;
 }
 
 /** An empty value whose rule is open (D7 blocked, D10): no rule covers it, so the site shows the open question, never a figure or "unknown". */
@@ -144,8 +159,13 @@ export function ownEach(values: Record<string, SiteValue>, company: string, pick
   return Object.fromEntries(Object.entries(values).map(([k, v]) => [k, pick(k) ? ownBy(v, company) : v]));
 }
 
+/**
+ * A site parameter's value (data/parameters), whose sheet tags it and shows the parameter's rationale: one the loader marked as a
+ * parameter's (`asParameter`, `p05Value`), whatever its update rule, so a parameter that quotes a published figure (P-05's cash rate, the
+ * Bank of Israel's) shows the assumption too.
+ */
 export function isParameter(v: SiteValue): boolean {
-  return v.update_rule === "founder" && v.state === "sourced";
+  return !!v.parameter && v.state === "sourced";
 }
 
 
@@ -201,9 +221,11 @@ function readingDoubtOf(labels: readonly SiteLabel[] | undefined): Pick<SiteValu
 /**
  * The rules a computed figure's sheet names: those its runs read, with the strength they recorded, then each rule it carries the site's own
  * `reading` of and did not read (no strength): an open rule whose open tax index the site reads for the fund (TXF-04, D119), which gives
- * the run nothing to read, so its card is where the sheet says why.
+ * the run nothing to read, so its card is where the sheet says why. A plain difference or sum names none (`SiteValue.plain`).
  */
-export function sheetRules(v: Pick<SiteValue, "rulesUsed" | "labels">): { id: string; strength: Strength | null }[] {
+export function sheetRules(v: Pick<SiteValue, "rulesUsed" | "labels" | "plain">): { id: string; strength: Strength | null }[] {
+  // a plain difference or sum names none: each of its rows opens its input's own rules
+  if (v.plain) return [];
   const read = v.rulesUsed ?? [];
   const readIds = new Set(read.map((r) => r.id));
   const unread = [...new Set((v.labels ?? []).filter((l) => l.code === "reading" && !readIds.has(l.ruleId)).map((l) => l.ruleId))];
@@ -211,17 +233,26 @@ export function sheetRules(v: Pick<SiteValue, "rulesUsed" | "labels">): { id: st
 }
 
 /**
- * What a computed figure carries of the inputs it rests on beside its own options: each input's `reading` labels, the site's own reading of
- * a rule (an open tax index's among them, D119), with that rule as the input recorded it, and each input's fund statements, so a figure
- * worked out from a figure on a reading tags the reading and names the fund's document as that figure does. A cautious label, the engine's
- * or the site's (`SiteLabel`), is not carried: the doubt it makes travels by `differenceOf`. A cost before the exit tax carries none of an open tax index's, since its inputs wear none
- * (invest.ts `beforeExitTax`). Carried rules and statements leave the strength alone: each input's own strength already counts them.
+ * What a computed figure carries of the inputs it rests on beside its own options:
+ * - each input's `reading` labels, the site's own reading of a rule (an open tax index's among them, D119), with that rule as the input
+ *   recorded it, and each input's fund statements, so a figure worked out from a figure on a reading tags the reading and names the fund's
+ *   document as that figure does; a cautious label, the engine's or the site's (`SiteLabel`), is not carried, the doubt it makes is;
+ * - the doubt of each input, every one's words once, the rules of each, and which inputs carry it (`doubtFrom`);
+ * - the stalest input's staleness (the earliest `since`);
+ * - every input's flags, each with the earliest month any input gives it.
+ * A cost before the exit tax carries none of an open tax index's, since its inputs wear none (invest.ts `beforeExitTax`). Carried rules and
+ * statements leave the strength alone: each input's own strength already counts them.
  */
-function carriedFromInputs(inputs: Record<string, SiteValue>): { labels: SiteLabel[]; rules: { id: string; strength: Strength }[]; statements: FundStatement[] } {
+function carriedFromInputs(inputs: Record<string, SiteValue>) {
   const labels: SiteLabel[] = [];
   const rules: { id: string; strength: Strength }[] = [];
   const statements: FundStatement[] = [];
-  for (const input of Object.values(inputs)) {
+  const doubts: string[] = [];
+  const doubtRules: string[] = [];
+  const doubtFrom: string[] = [];
+  let stale: Staleness | null = null;
+  const flags: Flag[] = [];
+  for (const [name, input] of Object.entries(inputs)) {
     for (const l of input.labels ?? []) {
       if (l.code !== "reading") continue;
       labels.push(l);
@@ -229,8 +260,15 @@ function carriedFromInputs(inputs: Record<string, SiteValue>): { labels: SiteLab
       if (rule) rules.push(rule);
     }
     statements.push(...(input.statements ?? []));
+    if (input.doubt) {
+      doubts.push(input.doubt);
+      doubtRules.push(...(input.doubtRules ?? []));
+      doubtFrom.push(name);
+    }
+    if (input.stale && (!stale || input.stale.since < stale.since)) stale = input.stale;
+    for (const code of input.flags ?? []) flags.push({ code, ...(input.flagMonths?.[code] !== undefined ? { month: input.flagMonths[code] } : {}) });
   }
-  return { labels, rules, statements };
+  return { labels, rules, statements, doubts, doubtRules, doubtFrom, stale, flags };
 }
 
 /** `own` with each of `more` whose key it does not hold yet, in order; undefined where both are empty. */
@@ -241,18 +279,50 @@ function withMore<T>(own: readonly T[] | undefined, more: readonly T[], key: (x:
   return [...byKey.values()];
 }
 
+/** A flag as a figure takes it: an engine flag with the month it first applies from, or a code that applies throughout. */
+export type FlagIn = string | Flag;
+
+/** Flags by code, each once, in order, with the earliest month given for it: the value's `flags` and `flagMonths`. */
+function flagsOf(list: readonly FlagIn[]): Pick<SiteValue, "flags" | "flagMonths"> {
+  const months = new Map<string, number | undefined>();
+  for (const f of list) {
+    const { code, month } = typeof f === "string" ? { code: f, month: undefined } : f;
+    const seen = months.get(code);
+    // a flag given once with no month applies throughout, so no month is kept
+    months.set(code, !months.has(code) ? month : seen === undefined || month === undefined ? undefined : Math.min(seen, month));
+  }
+  const flagMonths = Object.fromEntries([...months].filter((e): e is [string, number] => e[1] !== undefined));
+  return { flags: [...months.keys()], ...(Object.keys(flagMonths).length ? { flagMonths } : {}) };
+}
+
+/** The options a computed value takes (`computed`). */
+export interface ComputedOptions {
+  today: string;
+  /** The rules the figure's own calculation read, beside what its inputs already list: a rule an input lists is dropped here (`computed`). */
+  rules?: { id: string; strength: Strength }[];
+  statements?: readonly FundStatement[];
+  flags?: readonly FlagIn[];
+  labels?: SiteLabel[];
+  /** For a figure with no value because a rule is open (`BlockedError`): that rule, the only one its sheet names. */
+  blockedBy?: string;
+  about?: string;
+  notes?: string;
+  lead?: string;
+  signed?: boolean;
+  unitText?: string;
+  working?: Working;
+}
+
 /**
- * A computed value with the formula and the inputs it came from (architecture 3.4), carrying the reading labels and fund statements of the
- * inputs it rests on (`carriedFromInputs`). A label of a cautious reading among its own, the engine's or the site's (`SiteLabel`), makes its
- * doubt (`readingDoubtOf`). `working` says how its sheet shows the calculation (`Working`), where the value is exactly that.
+ * A computed value with the formula and the inputs it came from (architecture 3.4), carrying what the inputs it rests on carry
+ * (`carriedFromInputs`). The rules it lists are its own options' less each rule a computed input already lists, whose row opens it there
+ * (the reading rules it carries stay, with their labels). A value that is null lists no rule but the one that left it empty (`blockedBy`). A
+ * label of a cautious reading among its own, the engine's or the site's (`SiteLabel`), makes its doubt (`readingDoubtOf`); with none, the
+ * inputs' doubts are its doubt. `working` says how its sheet shows the calculation (`Working`), where the value is exactly that.
  */
-export function computed(
-  value: number | null,
-  unit: ValueObject["unit"],
-  formula: string,
-  inputs: Record<string, SiteValue>,
-  options: { today: string; rules?: { id: string; strength: Strength }[]; statements?: readonly FundStatement[]; flags?: string[]; labels?: SiteLabel[]; about?: string; notes?: string; lead?: string; signed?: boolean; unitText?: string; working?: Working },
-): SiteValue {
+export function computed(value: number | null, unit: ValueObject["unit"], formula: string, inputs: Record<string, SiteValue>, options: ComputedOptions): SiteValue {
+  const held = new Set(Object.values(inputs).flatMap((input) => (input.state === "computed" ? (input.rulesUsed ?? []).map((r) => r.id) : [])));
+  const ownRules = options.rules?.filter((r) => !held.has(r.id));
   let weakest: Strength | undefined;
   for (const input of Object.values(inputs)) {
     // D31: a company's figure about its own product does not weaken what is computed from it
@@ -260,14 +330,21 @@ export function computed(
     const own = st === "institution" && !!input.own;
     weakest = weaker(weakest, input.state === "entered" || own ? "primary" : st);
   }
-  for (const r of options.rules ?? []) weakest = weaker(weakest, r.strength);
+  for (const r of ownRules ?? []) weakest = weaker(weakest, r.strength);
   for (const st of options.statements ?? []) weakest = weaker(weakest, st.source.strength);
   const carried = carriedFromInputs(inputs);
   const merged = {
-    rules: withMore(options.rules, carried.rules, (r) => r.id),
+    rules: value === null ? (options.blockedBy ? [{ id: options.blockedBy, strength: "open" as const }] : []) : withMore(ownRules, carried.rules, (r) => r.id),
     statements: withMore(options.statements, carried.statements, statementKey),
     labels: withMore(options.labels, carried.labels, (l) => `${l.code}|${l.ruleId}`),
   };
+  const ownDoubt = readingDoubtOf(options.labels);
+  const doubt: Pick<SiteValue, "doubt" | "doubtRules" | "doubtFrom"> = ownDoubt.doubt
+    ? ownDoubt
+    : carried.doubts.length
+      ? { doubt: [...new Set(carried.doubts)].join(" "), ...(carried.doubtRules.length ? { doubtRules: [...new Set(carried.doubtRules)] } : {}), doubtFrom: carried.doubtFrom }
+      : {};
+  const flags = flagsOf([...(options.flags ?? []), ...carried.flags]);
   return {
     value,
     unit,
@@ -281,9 +358,10 @@ export function computed(
     weakest: weakest ?? "primary",
     rulesUsed: merged.rules,
     ...(merged.statements?.length ? { statements: merged.statements } : {}),
-    flags: options.flags,
+    ...(flags.flags?.length ? flags : {}),
     labels: merged.labels,
-    ...readingDoubtOf(options.labels),
+    ...doubt,
+    ...(carried.stale ? { stale: carried.stale } : {}),
     about: options.about,
     notes: options.notes,
     ...(options.lead ? { lead: options.lead } : {}),
@@ -292,41 +370,57 @@ export function computed(
   };
 }
 
-/** The options of a computed value, as `computed` takes them. */
-export type ComputedOptions = Parameters<typeof computed>[4];
+/** The options of a plain difference or sum (`differenceOf`, `sumOf`): no rules and no statements of its own, which it never has. */
+export type PlainOptions = Omit<ComputedOptions, "rules" | "statements"> & { unit?: ValueObject["unit"]; round?: (n: number) => number };
+
+/**
+ * A plain difference or sum as its sheet shows it: no rule and no statement of its own, even one an input carries on a reading, since each
+ * row of its receipt is that input's own figure and opens it. Its labels, doubt, staleness and flags stay, so it keeps its tint and tags.
+ */
+function plain(v: SiteValue): SiteValue {
+  const { rulesUsed: _rules, statements: _statements, ...rest } = v;
+  return { ...rest, plain: true };
+}
 
 /**
  * Whether the lines of a difference or a sum, each with its sign, come to the figure as the page writes each of them: only then does its
- * sheet show them as a receipt (`Working`), whose lines a reader adds up. A sum of figures with agorot, written in whole shekels each, can
- * miss its total by a shekel; its sheet lists its inputs instead.
+ * sheet show them as a receipt (`Working`), whose lines a reader adds up. Its sheet lists its inputs instead where:
+ * - a sum of figures with agorot, written in whole shekels each, misses its total by a shekel;
+ * - a line or the total is a shekel figure a phone's row may write short ("0.76 מיליארד ₪", `SHORT_IN_ROW`), which no longer adds up as read;
+ * - a line or the total is written in a form that does not read back as a number (`readsBack`: agorot per dollar, an amount in billions).
  */
 function addsUp(lines: readonly (readonly [sign: 1 | -1, v: SiteValue])[], result: number, unit: ValueObject["unit"]): boolean {
+  const all = [...lines.map(([, v]) => [v.value as number, v.unit, v.state, isParameter(v)] as const), [result, unit, "computed", false] as const];
+  if (all.some(([n, u, st, param]) => Math.abs(n) >= SHORT_IN_ROW || !readsBack(n, u, st, param))) return false;
   const sum = lines.reduce((t, [sign, v]) => t + sign * numberShown(v.value as number, v.unit, v.state, isParameter(v)), 0);
   return Math.abs(sum - numberShown(result, unit, "computed")) < 1e-9;
+}
+
+/** Whether a figure's text, as the page writes it, reads back as a number written the same way (`numberShown` falls back to the raw value). */
+function readsBack(v: number, unit: string, state: SiteValue["state"], parameter: boolean): boolean {
+  const text = formatValue(v, unit, state, parameter);
+  const digits = Number(text.replace(/[^\d.]/g, ""));
+  return formatValue(text.includes("−") ? -digits : digits, unit, state, parameter) === text;
 }
 
 /**
  * A figure worked out from two others on the page, `a − b` (a gap between two ways, what a change adds): the value is computed here from
  * the two as the page writes them (`amountShown`: 10,768 ₪ less 8,203 ₪ is 2,565 ₪, whatever agorot each holds), and its inputs are the
  * two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either is not a number. `round`
- * shapes the result (its size alone). A doubt on either figure is the difference's too, since it rests on both, where its own options give
- * it none: the first one's words, the rules of each, and which of the two carry it (`doubtFrom`). Their reading labels and fund statements
- * it carries as every computed figure does (`computed`). Its sheet shows it as the difference it is (`Working` "difference"), where the
- * two as written come to it as written (`addsUp`), unless the options name a line of math it is (`working`).
+ * shapes the result (its size alone). It is plain (`plain`): it carries the two's labels, doubt, staleness and flags as every computed
+ * figure does (`computed`), and lists no rule. Its sheet shows it as the difference it is (`Working` "difference"), where the two as written
+ * come to it as written (`addsUp`), unless the options name a line of math it is (`working`). The two names must differ, since each is the
+ * key its input is listed under.
  */
-export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
+export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: PlainOptions): SiteValue {
   const [an, av] = a;
   const [bn, bv] = b;
+  if (an === bn) throw new Error(`differenceOf: both figures are named "${an}", so one would hide the other in the inputs (${formula})`);
   const n = typeof av.value === "number" && typeof bv.value === "number" ? amountShown(av.value, av.unit, av.state, isParameter(av)) - amountShown(bv.value, bv.unit, bv.state, isParameter(bv)) : null;
   const value = n === null ? null : (options.round ?? ((x: number) => x))(n);
   const unit = options.unit ?? av.unit;
   const shown = options.working ?? (value !== null && addsUp([[1, av], [-1, bv]], value, unit) ? ({ kind: "difference", from: an, less: bn } as const) : undefined);
-  const v = computed(value, unit, formula, { [an]: av, [bn]: bv }, { ...options, ...(shown ? { working: shown } : {}) });
-  const doubted = ([a, b] as const).filter(([, x]) => x.doubt);
-  const [first] = doubted;
-  if (v.doubt || !first) return v;
-  const rules = [...new Set(doubted.flatMap(([, x]) => x.doubtRules ?? []))];
-  return { ...v, doubt: first[1].doubt, ...(rules.length ? { doubtRules: rules } : {}), doubtFrom: doubted.map(([name]) => name) };
+  return plain(computed(value, unit, formula, { [an]: av, [bn]: bv }, { ...options, ...(shown ? { working: shown } : {}) }));
 }
 
 /**
@@ -346,34 +440,16 @@ export function statementKey(st: FundStatement): string {
 }
 
 /**
- * The rules, flags and labels of the runs a figure rests on, each once, for a figure computed from them that is not their sum or difference
- * alone (a point where two runs cross): every run that reads a rule or a line carries what it carries (F-12, F-128).
- */
-export function carriedBy(values: readonly SiteValue[]): Pick<ComputedOptions, "rules" | "statements" | "flags" | "labels"> {
-  const rules = new Map<string, { id: string; strength: Strength }>();
-  const statements = new Map<string, FundStatement>();
-  const flags = new Set<string>();
-  const labels = new Map<string, SiteLabel>();
-  for (const v of values) {
-    for (const r of v.rulesUsed ?? []) rules.set(r.id, r);
-    for (const st of v.statements ?? []) statements.set(statementKey(st), st);
-    for (const f of v.flags ?? []) flags.add(f);
-    for (const l of v.labels ?? []) labels.set(`${l.code}|${l.ruleId}`, l);
-  }
-  return { rules: [...rules.values()], statements: [...statements.values()], flags: [...flags], labels: [...labels.values()] };
-}
-
-/**
  * A figure that adds up others on the page (a cost of several lines, a total of parts): the same as `differenceOf`, for a sum, which its
  * sheet shows as one (`Working` "sum") where its parts as written come to it as written (`addsUp`). Null when any part is not a number.
  */
-export function sumOf(parts: Record<string, SiteValue>, formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
+export function sumOf(parts: Record<string, SiteValue>, formula: string, options: PlainOptions): SiteValue {
   const list = Object.values(parts);
   const n = list.length > 0 && list.every((p) => typeof p.value === "number") ? list.reduce((t, p) => t + (p.value as number), 0) : null;
   const value = n === null ? null : (options.round ?? ((x: number) => x))(n);
   const unit = options.unit ?? list[0]?.unit ?? "nis";
   const shown = options.working ?? (value !== null && addsUp(list.map((p) => [1, p] as const), value, unit) ? ({ kind: "sum", parts: Object.keys(parts) } as const) : undefined);
-  return computed(value, unit, formula, parts, { ...options, ...(shown ? { working: shown } : {}) });
+  return plain(computed(value, unit, formula, parts, { ...options, ...(shown ? { working: shown } : {}) }));
 }
 
 /**
@@ -391,18 +467,25 @@ export function figureYear(v: Pick<ValueObject, "effective_from" | "effective_to
 }
 
 /**
- * A figure out of a rule record, carrying the rule's strength and re-check date. "name@2027" is a figure set by tax year, for that year
- * (null when the record sets none for it): prose that says a rise the law already sets reads each later year's figure.
+ * A figure out of a rule record, carrying the rule's strength and re-check date, and what it is in the rule's own words
+ * (`figure_names_he`), with its year for a figure set by tax year. "name@2027" is a figure set by tax year, for that year (null when the
+ * record sets none for it): prose that says a rise the law already sets reads each later year's figure.
  */
 export function ruleFigure(rule: RuleRecord, name: string, today: string): SiteValue | null {
   const [base, year] = name.split("@") as [string, string | undefined];
   const f = rule.figures?.[base];
   if (!f || Array.isArray(f)) return null;
   if (year !== undefined && !("by_tax_year" in f)) return null;
-  const v = "by_tax_year" in f ? (year !== undefined ? f.by_tax_year[year] : f.by_tax_year[today.slice(0, 4)] ?? Object.values(f.by_tax_year).at(-1)) : f;
+  let taxYear: string | null = null;
+  if ("by_tax_year" in f) {
+    const years = Object.keys(f.by_tax_year);
+    taxYear = year ?? (today.slice(0, 4) in f.by_tax_year ? today.slice(0, 4) : (years.at(-1) ?? null));
+  }
+  const v = "by_tax_year" in f ? (taxYear === null ? undefined : f.by_tax_year[taxYear]) : f;
   if (!v) return null;
   const stale = recheckStale(rule, today) ? { since: rule.checked, cadence: "yearly" as const } : null;
-  return { ...v, stale, rule_ids: v.rule_ids ?? [rule.id] };
+  const he = rule.figure_names_he?.[base];
+  return { ...v, stale, rule_ids: v.rule_ids ?? [rule.id], ...(he ? { about: taxYear ? `${he} ${taxYear}` : he } : {}) };
 }
 
 /** Whether a rule's re-check date has passed by `today` (YYYY-MM-DD); a rule with none never has. */
@@ -457,21 +540,34 @@ export function feeYear(v: Pick<ValueObject, "effective_from">): string | null {
  */
 export interface CompactFee {
   value: number | null;
-  /** Sent only when it differs from the template's note (a missing value, a negative one). */
+  /** Sent only when it differs from the template's note (a missing value, a negative one): "" for a row with no note under a template with one. */
   notes?: string;
   /** Sent only when they differ from the template's (an empty deposit fee that PF-06 explains). */
   rule_ids?: string[];
 }
 
+/** A row as the list ships it against its template: its number, and its note and rule ids where they are not the template's. */
 export function compactFee(v: ValueObject, template: ValueObject): CompactFee {
   const out: CompactFee = { value: v.value as number | null };
-  if (v.notes && v.notes !== template.notes) out.notes = v.notes;
+  if ((v.notes ?? "") !== (template.notes ?? "")) out.notes = v.notes ?? "";
   if ((v.rule_ids ?? []).join() !== (template.rule_ids ?? []).join()) out.rule_ids = v.rule_ids ?? [];
   return out;
 }
 
+/** A shipped row back as its value: the template with the row's number, its own note ("" is none) and its own rule ids. */
 export function expandFee(c: CompactFee, template: SiteValue): SiteValue {
-  return { ...template, value: c.value, notes: c.notes ?? template.notes, rule_ids: c.rule_ids ?? template.rule_ids };
+  const { notes: _tplNotes, ...rest } = template;
+  const notes = c.notes === undefined ? template.notes : c.notes;
+  return { ...rest, value: c.value, ...(notes ? { notes } : {}), rule_ids: c.rule_ids ?? template.rule_ids };
+}
+
+/**
+ * The row a list's template is taken from: the first with a number and no note where one exists (so few rows ship a note of their own),
+ * else the first with a number, else the first.
+ */
+export function templateRow<T>(rows: readonly T[], value: (row: T) => Pick<ValueObject, "value" | "notes"> | null | undefined): T | undefined {
+  const has = (r: T) => typeof value(r)?.value === "number";
+  return rows.find((r) => has(r) && !value(r)?.notes) ?? rows.find(has) ?? rows[0];
 }
 
 /**

@@ -13,7 +13,7 @@ import { breakTermOf, isTie, middleIndex, mostCommonRate, plainOneYearDeposits, 
 import { guideBlocks, guideSignature, r4catalogue } from "../copy";
 import { printedLine } from "./deposit-kind";
 import type { Bundle } from "./engine";
-import { p05Number, p05Range, runTimeline } from "./engine";
+import { p05Number, p05Range, runTimeline, withP05Inputs } from "./engine";
 import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { AccountBank } from "./guide-signature";
 import { runWith, sideOf } from "./guide-signature-g2";
@@ -170,8 +170,7 @@ export function depositRange(banks: AccountBank[], today: string): DepositRange 
 
 /** P-05 with a published rate in place of `cash_rate` (the engine reads that input for every cash-like run). */
 export function withPublishedRate(p05: ParameterRecord, rate: ValueObject): ParameterRecord {
-  const inputs = (p05 as unknown as { inputs: Record<string, unknown> }).inputs;
-  return { ...p05, inputs: { ...inputs, cash_rate: rate } } as unknown as ParameterRecord;
+  return withP05Inputs(p05, { cash_rate: rate });
 }
 
 export function familyOf(id: ProductId): "provident" | "deposit" | "securities" | "makam" | "bond" | null {
