@@ -56,12 +56,11 @@ export type TaxLine = "surtax" | "salaryTax";
  * result; `line` the fee line of a `fees` use, or the `TaxLine` of a `taxDuring` use that has one; `changed` whether the rule changed the number (false for a read only looked at, `peek`);
  * `figures` the figure names read through this use. A rule's uses are one per (part, line).
  */
-export interface RuleUse {
-  part: RunPart | null;
-  line?: FeeType | TaxLine;
-  changed: boolean;
-  figures: string[];
-}
+export type RuleUse = { changed: boolean; figures: string[] } & (
+  | { part: "fees"; line?: FeeType }
+  | { part: "taxDuring"; line?: TaxLine }
+  | { part: Exclude<RunPart, "fees" | "taxDuring"> | null; line?: undefined }
+);
 
 /** A G-ID, rule ID, assumption ID (A-nn) or open-question code the page must show, with the month it first applies. */
 export interface Flag {

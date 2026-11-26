@@ -180,7 +180,8 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
   function ruleUse(u: UsedRule, at: At, changed: boolean, figures: () => string[] = () => []): RuleUse {
     let use = u.uses.find((x) => x.part === at.part && x.line === at.line);
     if (!use) {
-      use = { part: at.part, ...(at.line === undefined ? {} : { line: at.line }), changed, figures: figures() };
+      // a view's part and line pair as `RuleBook.on` allows, so the use is one of `RuleUse`'s kinds
+      use = { part: at.part, ...(at.line === undefined ? {} : { line: at.line }), changed, figures: figures() } as RuleUse;
       u.uses.push(use);
     } else use.changed ||= changed;
     return use;
