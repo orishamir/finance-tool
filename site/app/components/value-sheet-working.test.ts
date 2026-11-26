@@ -73,12 +73,14 @@ describe("what a computed figure is, said once", () => {
   it("in the head's line only: no name over the line of math, and the symbol it works out keyed to the head", () => {
     for (const { entry, value } of sheets) {
       const out = sheet(value);
-      const key = formulaKeys[entry]?.symbols ?? [];
-      expect(out.split(value.about!).length - 1, entry).toBe(1);
+      const about = value.about ?? "";
+      const [result] = formulaKeys[entry]?.symbols ?? [];
+      expect(about, entry).not.toBe("");
+      expect(out.split(about).length - 1, entry).toBe(1);
       // the rest of the sheet, the head's line taken out, names it in no other words
-      const rest = out.replace(value.about!, "");
+      const rest = out.replace(about, "");
       expect(rest, entry).not.toContain(formulaNames[entry]);
-      expect(rest, entry).not.toContain(key[0]![1]);
+      expect(rest, entry).not.toContain(result?.[1]);
       expect(rest, entry).toContain(provenance.formulaSheet.resultRow);
     }
   });
@@ -86,7 +88,7 @@ describe("what a computed figure is, said once", () => {
   it("every symbol of the drawn line has its row in the key", () => {
     for (const { entry, value } of sheets) {
       const out = sheet(value);
-      const line = data.formulas![entry]!.tex![0]!;
+      const line = data.formulas?.[entry]?.tex?.[0] ?? "";
       const inLine = (formulaKeys[entry]?.symbols ?? []).filter(([s]) => symbolsIn(line, [s]).length > 0);
       expect(inLine.length, entry).toBeGreaterThan(1);
       for (const [, words] of inLine.slice(1)) expect(out, entry).toContain(words);

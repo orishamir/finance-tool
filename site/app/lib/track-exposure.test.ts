@@ -40,33 +40,37 @@ describe("F-87 and F-88 on the site", () => {
     expect(shareText(s.stock!)).toBe(shareText({ ...s.stock!, value: 48 }));
   });
 
+  /** One track's stock and currency shares, by its amounts. */
+  const stock = (assets: number | null, exposure: number | null) => shares(h(assets, exposure))?.stock;
+  const ruleIds = (v: SiteValue | null | undefined) => v?.rulesUsed?.map((r) => r.id);
+
   it("a share names CAT-44 alone and has no note up to 100% (track 15256, 2026-10: 97.43%)", () => {
-    const s = shares(h(699.8, 681.81))!;
-    expect(s.stock!.value as number).toBeCloseTo(97.43, 2);
-    expect(s.stock!.rulesUsed!.map((r) => r.id)).toEqual(["CAT-44"]);
-    expect(s.stock!.notes).toBeUndefined();
+    const s = stock(699.8, 681.81);
+    expect(s?.value as number).toBeCloseTo(97.43, 2);
+    expect(ruleIds(s)).toEqual(["CAT-44"]);
+    expect(s?.notes).toBeUndefined();
   });
 
   it("above 100% the share says why exposure can pass the assets", () => {
-    const s = shares(h(100, 104, 104))!;
-    expect(s.stock!.rulesUsed!.map((r) => r.id)).toEqual(["CAT-44"]);
-    expect(s.stock!.notes).toBe(copy.stock.above100);
-    expect(s.currency!.notes).toBe(copy.stock.above100);
-    expect(shares(h(100, 100))!.stock!.notes).toBeUndefined();
+    const s = shares(h(100, 104, 104));
+    expect(ruleIds(s?.stock)).toEqual(["CAT-44"]);
+    expect(s?.stock?.notes).toBe(copy.stock.above100);
+    expect(s?.currency?.notes).toBe(copy.stock.above100);
+    expect(stock(100, 100)?.notes).toBeUndefined();
   });
 
   it("a share with no figure names no rule", () => {
-    expect(shares(h(100, null))!.stock!.rulesUsed).toEqual([]);
-    expect(shares(h(0, 0))!.stock!.rulesUsed).toEqual([]);
+    expect(ruleIds(stock(100, null))).toEqual([]);
+    expect(ruleIds(stock(0, 0))).toEqual([]);
   });
 
   it("each amount's sheet says what it is and at which month's end", () => {
-    const t = holdingsTemplate([h(699.8, 681.81, 10)], "2026-10", "2026-11-26")!;
-    expect(t.assets.about).toBe(cmaAbout.total_assets("אוקטובר 2026"));
-    expect(t.exposure.about).toBe(cmaAbout.stock_market_exposure("אוקטובר 2026"));
-    expect(t.currency!.about).toBe(cmaAbout.foreign_currency_exposure("אוקטובר 2026"));
-    const s = shares(h(699.8, 681.81, 10))!;
-    expect((s.stock!.computed_from!.inputs as Record<string, SiteValue>).total_assets!.about).toBe(cmaAbout.total_assets("ספטמבר 2026"));
+    const t = holdingsTemplate([h(699.8, 681.81, 10)], "2026-10", "2026-11-26");
+    expect(t?.assets.about).toBe(cmaAbout.total_assets("אוקטובר 2026"));
+    expect(t?.exposure.about).toBe(cmaAbout.stock_market_exposure("אוקטובר 2026"));
+    expect(t?.currency?.about).toBe(cmaAbout.foreign_currency_exposure("אוקטובר 2026"));
+    const inputs = stock(699.8, 681.81)?.computed_from?.inputs as Record<string, SiteValue> | undefined;
+    expect(inputs?.total_assets?.about).toBe(cmaAbout.total_assets("ספטמבר 2026"));
   });
 
   it("a file without the currency amount gives the stock share alone", () => {

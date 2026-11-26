@@ -6,7 +6,9 @@ import { buildTrackBrowser } from "./track-browser.server";
 import { expandFee } from "./value";
 
 const data = buildTrackBrowser();
-const gemel = data.products.find((p) => p.id === "kupat-gemel-lehashkaa")!;
+const found = data.products.find((p) => p.id === "kupat-gemel-lehashkaa");
+if (!found) throw new Error("the track browser has no kupat gemel lehashkaa");
+const gemel = found;
 const month = "אוקטובר 2026";
 
 describe("the regulator figures' head lines", () => {
@@ -15,11 +17,11 @@ describe("the regulator figures' head lines", () => {
     expect(gemel.period).toBe("2026-10");
     expect(balance.about).toBe(cmaAbout.avg_annual_management_fee("2025"));
     expect(deposit.about).toBe(cmaAbout.avg_deposit_fee("2025"));
-    expect(holdings!.assets.about).toBe(cmaAbout.total_assets(month));
-    expect(holdings!.exposure.about).toBe(cmaAbout.stock_market_exposure(month));
-    expect(holdings!.currency!.about).toBe(cmaAbout.foreign_currency_exposure(month));
-    expect(y3!.about).toBe(cmaAbout.avg_annual_yield_3y(month));
-    expect(y5!.about).toBe(cmaAbout.avg_annual_yield_5y(month));
+    expect(holdings?.assets.about).toBe(cmaAbout.total_assets(month));
+    expect(holdings?.exposure.about).toBe(cmaAbout.stock_market_exposure(month));
+    expect(holdings?.currency?.about).toBe(cmaAbout.foreign_currency_exposure(month));
+    expect(y3?.about).toBe(cmaAbout.avg_annual_yield_3y(month));
+    expect(y5?.about).toBe(cmaAbout.avg_annual_yield_5y(month));
   });
 
   it("every product's templates carry them", () => {
@@ -32,7 +34,8 @@ describe("the regulator figures' head lines", () => {
   it("a track's own figure keeps its template's line, its missing figures included", () => {
     for (const row of gemel.rows) {
       expect(expandFee(row.b, gemel.templates.balance).about).toBe(gemel.templates.balance.about);
-      if (row.y3) expect(expandFee(row.y3, gemel.templates.y3!).about).toBe(cmaAbout.avg_annual_yield_3y(month));
+      const y3 = gemel.templates.y3;
+      if (row.y3 && y3) expect(expandFee(row.y3, y3).about).toBe(cmaAbout.avg_annual_yield_3y(month));
     }
   });
 

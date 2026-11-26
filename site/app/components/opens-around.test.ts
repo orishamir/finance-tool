@@ -31,7 +31,7 @@ class Node {
     return selector.split(",").some((s) => {
       const one = s.trim();
       const attr = /^\[([\w-]+)\]$/.exec(one);
-      return attr ? attr[1]! in this.attrs : one === this.tag;
+      return attr?.[1] ? attr[1] in this.attrs : one === this.tag;
     });
   }
   getAttribute(name: string): string | null {
@@ -58,14 +58,14 @@ function parse(html: string): Node {
   const root = new Node("#root", {}, null);
   let at = root;
   for (const m of html.matchAll(/<(\/?)([a-zA-Z][\w-]*)((?:\s+[^\s=>/]+(?:="[^"]*")?)*)\s*(\/?)>/g)) {
-    const [, close, tag, rawAttrs, self] = m;
+    const [, close, tag = "", rawAttrs = "", self] = m;
     if (close) {
       at = at.parent ?? root;
       continue;
     }
     const attrs: Record<string, string> = {};
-    for (const a of rawAttrs!.matchAll(/([^\s=]+)(?:="([^"]*)")?/g)) attrs[a[1]!] = (a[2] ?? "").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
-    const node = new Node(tag!.toLowerCase(), attrs, at);
+    for (const [, name = "", value = ""] of rawAttrs.matchAll(/([^\s=]+)(?:="([^"]*)")?/g)) attrs[name] = value.replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+    const node = new Node(tag.toLowerCase(), attrs, at);
     at.children.push(node);
     if (!self && !VOID.has(node.tag)) at = node;
   }
@@ -74,8 +74,8 @@ function parse(html: string): Node {
 
 const today = "2026-11-26";
 const rules = loadRules();
-const data = (ids: readonly string[]): ProvenanceData => ({ rules: Object.fromEntries(ids.map((id) => [id, rules[id]!])), terms: {}, dimensions: {}, today });
-const page = (d: ProvenanceData, children: ReactNode) => parse(renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: d, children }))));
+const data = (ids: readonly string[]): ProvenanceData => ({ rules: Object.fromEntries(ids.flatMap((id) => (rules[id] ? [[id, rules[id]]] : []))), terms: {}, dimensions: {}, today });
+const page = (d: ProvenanceData, children: ReactNode) => parse(renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: d } as never, children))));
 /** The figures of a drawn page: every `Num`'s button. */
 const figures = (root: Node) => root.all().filter((n) => n.tag === "button" && (n.attrs.class ?? "").split(" ").includes("num"));
 const around = (n: Node, inside = false) => opensAround(n as unknown as Element, inside).sort();
@@ -84,7 +84,7 @@ const figure = (value: number, ruleIds: string[]): SiteValue => ({ value, unit: 
 
 describe("the rules around a figure", () => {
   it("are those its paragraph's words state, outside a sheet", () => {
-    const root = page(data(["MF-24"]), createElement("p", null, createElement(Ruled, { id: "MF-24", children: "התקרה" }), " ", createElement(Num, { value: figure(0.25, ["MF-24"]) })));
+    const root = page(data(["MF-24"]), createElement("p", null, createElement(Ruled, { id: "MF-24" } as never, "התקרה"), " ", createElement(Num, { value: figure(0.25, ["MF-24"]) })));
     expect(figures(root).map((n) => around(n))).toEqual([["MF-24"]]);
   });
 
@@ -94,7 +94,7 @@ describe("the rules around a figure", () => {
   });
 
   it("inside a sheet, only a place marked as one counts: a computed figure's input in a paragraph keeps its chips", () => {
-    const root = page(data(["MF-24"]), createElement("p", null, createElement(Ruled, { id: "MF-24", children: "התקרה" }), " ", createElement(Num, { value: figure(0.25, ["MF-24"]) })));
+    const root = page(data(["MF-24"]), createElement("p", null, createElement(Ruled, { id: "MF-24" } as never, "התקרה"), " ", createElement(Num, { value: figure(0.25, ["MF-24"]) })));
     expect(figures(root).map((n) => around(n, true))).toEqual([[]]);
   });
 
@@ -122,9 +122,11 @@ describe("a company's securities account", () => {
     return { tariff, root, factsRules: [...tariff.notice, ...tariff.protection.map((r) => r.id)] };
   };
   // the first house whose price table draws a fee and whose facts part draws its minimum and opens rules
-  const house = institutionIds()
+  const picked = institutionIds()
     .map(partOf)
-    .find((h) => h && h.tariff.minimum && h.factsRules.length > 0 && figures(h.root).some((n) => n.closest("table")))!;
+    .find((h) => h && h.tariff.minimum && h.factsRules.length > 0 && figures(h.root).some((n) => n.closest("table")));
+  if (!picked) throw new Error("no house draws a fee table and a minimum beside rules of its facts");
+  const house = picked;
   /** The figures of the part a figure stands in: its price list's (the table and the phone's rows), or its facts' (the minimum). */
   const partFigures = (holds: (part: Node) => boolean) => figures(house.root).filter((n) => {
     const part = n.closest("[data-opens-scope]");

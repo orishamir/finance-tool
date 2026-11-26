@@ -17,9 +17,15 @@ import { RuleDetail, ValueSheet } from "./provenance-sheets";
 
 const today = "2026-11-26";
 const all = loadRules();
+/** A rule's record from the rule base; the test's rules are all there. */
+const record = (id: string): RuleRecord => {
+  const r = all[id];
+  if (!r) throw new Error(`the rule base has no ${id}`);
+  return r;
+};
 const ids = ["CAT-24", "CAT-44", "CAT-36", "CAT-37", "TXI-03"] as const;
-const data: ProvenanceData = { rules: Object.fromEntries(ids.map((id) => [id, all[id]!])), terms: {}, dimensions: {}, today };
-const title = (id: string) => ruleTitle(all[id]!, data).text;
+const data: ProvenanceData = { rules: Object.fromEntries(ids.map((id) => [id, record(id)])), terms: {}, dimensions: {}, today };
+const title = (id: string) => ruleTitle(record(id), data).text;
 
 const wrap = (el: ReturnType<typeof createElement>) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, el)));
 /** The sheet's words in order, its markup's text alone. */
@@ -113,7 +119,7 @@ describe("a figure not in force yet", () => {
 });
 
 describe("a rule's re-check date on the rules page", () => {
-  const rule = (recheck: string): RuleRecord => ({ ...all["TXI-03"]!, recheck_date: recheck });
+  const rule = (recheck: string): RuleRecord => ({ ...record("TXI-03"), recheck_date: recheck });
   /** The classes of the element that holds the re-check date, by its date as the page writes it. */
   const recheckClass = (recheck: string) => {
     const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(RuleDetail, { id: "TXI-03", data: { ...data, rules: { "TXI-03": rule(recheck) } }, products: [] })));
