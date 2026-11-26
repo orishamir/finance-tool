@@ -3,8 +3,8 @@
 // its break, its renewal, the tax on its interest and its amount range, each from plain fields since the pages hold different records;
 // and its kind (`variant`) as a label chip that opens its meaning. Pure: no React, no I/O.
 import type { DepositTerms } from "@finance-tool/schema";
-import { r4catalogue as copy } from "../copy";
-import { fmt } from "./format";
+import { feeDeal, r4catalogue as copy } from "../copy";
+import { countPhrase, fmt } from "./format";
 import type { DepositLabelId, LabelIconKey, RuleLabel } from "./labels";
 import { sourceHref } from "./sources";
 
@@ -75,9 +75,12 @@ export const onlyAtExits = (penalty: BreakPenalty, hasExits: boolean): boolean =
  */
 export const breakText = (penalty: BreakPenalty, hasExits: boolean): string => (onlyAtExits(penalty, hasExits) ? copy.breakAtExits : copy.breakWord[penalty]);
 
-/** Whether a deposit renews by itself, in words: "כן", "לא", or "עד 3 פעמים" where the bank sets a number of renewals. */
+/**
+ * Whether a deposit renews by itself, in words: "כן", "לא", or, where the bank sets a number of renewals, "עד פעם אחת", "עד פעמיים", "עד 3
+ * פעמים" (a count in words, copy.md 7.3: the copy's count of times, which also counts a deal's changes).
+ */
 export const renewText = (renews: boolean, maxRenewals: number | null): string =>
-  !renews ? copy.autoRenewWord.no : maxRenewals !== null ? `${copy.autoRenewWord.upTo} ${fmt.number(maxRenewals)} ${copy.autoRenewWord.times}` : copy.autoRenewWord.yes;
+  !renews ? copy.autoRenewWord.no : maxRenewals !== null ? `${copy.autoRenewWord.upTo} ${countPhrase(maxRenewals, feeDeal.read.periods.months.count)}` : copy.autoRenewWord.yes;
 
 /**
  * The tax on a deposit's interest, in words, from its record's tax bucket; undefined for an empty bucket, whose figure then says what it
@@ -127,6 +130,22 @@ export function termWords(term: { value: unknown; unit: string }): string | null
  */
 export function shownRate(d: Pick<DepositTerms, "rate_offered" | "rate_effective">): DepositTerms["rate_offered"] {
   return typeof d.rate_offered.value !== "number" && d.rate_effective ? d.rate_effective : d.rate_offered;
+}
+
+/** The words of a note, for comparing two notes by what they say: Hebrew and Latin words and numbers, two characters or more, a maqaf a space. */
+const noteWords = (text: string): Set<string> => new Set(text.replace(/[־-]/g, " ").split(/[^\p{L}\p{N}.%]+/u).map((w) => w.replace(/^\.+|\.+$/g, "")).filter((w) => w.length >= 2));
+
+/**
+ * Whether a value's note says again what the record's doubt says, judged by what the two say: at least half the note's words are in the
+ * doubt. Then the doubt, which the figure's sheet shows, is the one line the reader needs. A note that carries another limit ("השיעור
+ * שבטבלה הוא לתקופה הראשונה", "פותחים רק בסניף") shares few of the doubt's words and stays.
+ */
+export function restatesDoubt(note: string | null | undefined, doubt: string | null | undefined): boolean {
+  if (!note || !doubt) return false;
+  const said = noteWords(note);
+  if (said.size === 0) return false;
+  const inDoubt = noteWords(doubt);
+  return [...said].filter((w) => inDoubt.has(w)).length / said.size >= 0.5;
 }
 
 /** A deposit's kind, from the schema: a new kind there fails the typecheck at `kinds` until it has a label. */
