@@ -42,7 +42,7 @@ import {
 import { inTrailingYear, trailingDistributionYield } from "@finance-tool/engine";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
-import { figureSlots, readTextLeftovers, ruleTextProblems, withoutSlots } from "./rule-text.ts";
+import { figureSlots, readTextLeftovers, ruleTextProblems, withoutSlots, type TextLeftovers } from "./rule-text.ts";
 import { checkFundPromotions, checkLineFacts, checkSnapshotFacts } from "./price-list-facts.ts";
 
 /**
@@ -314,6 +314,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkHomeGuideDoor(files, ctx.dataDir, report);
   checkDepositAmounts(files, ctx.dataDir, report);
   checkTermNames(files, ctx.dataDir, report);
+  checkTermCopies(files, ctx.dataDir, textLeftovers, report);
   checkOpenQuestions(files, ctx, report, warn);
   // who each rule applies to and where it may appear (D30; 8dd1f013:research/specs/2026-10-25-rules-scope/spec.md §3): scope.ts
   const scopeCounts = checkScope(ctx, ruleRecords, report, warn);
@@ -1444,6 +1445,36 @@ function checkTermNames(files: string[], dataDir: string, report: (file: string,
     }
   }
   if (terms.length > 0) for (const pair of TERM_NAME_LEFTOVERS) if (!used.has(pair)) report(join(dataDir, "terms"), `terms: the leftover pair "${pair}" no longer shares a page; take it off TERM_NAME_LEFTOVERS (the list only shrinks)`);
+}
+
+/**
+ * Glossary copies (data-schema §4 item 16): two `data/terms/` records with the same Hebrew name and the same explanation, byte for byte
+ * after trimming, are one term written twice, whatever pages each names; the glossary lists both. The pairs still allowed, each
+ * "<id> <id>" in file order, are text-leftovers.json's "term-copy", which only shrinks.
+ */
+export function termCopies(terms: readonly { id: string; he: string; meaning: string }[]): string[] {
+  const out: string[] = [];
+  for (let i = 0; i < terms.length; i++)
+    for (let j = i + 1; j < terms.length; j++) {
+      const [a, b] = [terms[i]!, terms[j]!];
+      if (a.he.trim() === b.he.trim() && a.meaning.trim() === b.meaning.trim()) out.push(`${a.id} ${b.id}`);
+    }
+  return out;
+}
+function checkTermCopies(files: string[], dataDir: string, leftovers: TextLeftovers, report: (file: string, message: string) => void) {
+  const at = (f: string) => relative(dataDir, f).replace(/\\/g, "/");
+  const terms = files
+    .filter((f) => /^terms\/[^/]+\.json$/.test(at(f)))
+    .sort()
+    .map((f) => ({ file: f, rec: parseJson(readFileSync(f, "utf8")).value as { id?: unknown; he?: unknown; meaning?: unknown } | undefined }))
+    .flatMap(({ file, rec }) => (typeof rec?.id === "string" && typeof rec.he === "string" && typeof rec.meaning === "string" ? [{ file, id: rec.id, he: rec.he, meaning: rec.meaning }] : []));
+  const allowed = leftovers.leftovers["term-copy"];
+  const found = termCopies(terms);
+  for (const pair of found)
+    if (!allowed.includes(pair)) report(terms.find((t) => t.id === pair.split(" ")[1])?.file ?? join(dataDir, "terms"), `terms: ${pair.replace(" ", " and ")} carry the same name and the same explanation; one term is one record, so merge them (its products are the two records' together)`);
+  const ids = new Set(terms.map((t) => t.id));
+  for (const pair of allowed)
+    if (pair.split(" ").every((id) => ids.has(id)) && !found.includes(pair)) report(join(dataDir, "terms"), `terms: text-leftovers.json lists the copy "${pair}", which is no longer one: strike it (the list only shrinks)`);
 }
 
 /**

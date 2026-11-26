@@ -137,13 +137,14 @@ const leftoversFile = z.strictObject({
   research_talk: z.strictObject({ phrases: z.array(z.string().min(1)), allowed: z.array(z.string().min(1)) }),
   /** The phrases that say again the line a company's-term card prints ("בחברות אחרות זה יכול להיות אחרת."). */
   fixed_line: z.strictObject({ phrases: z.array(z.string().min(1)) }),
-  /** By flaw, the ids of the rule records still allowed to carry it. */
+  /** By flaw, the ids of the rule records still allowed to carry it; and the glossary copies, each "<id> <id>". */
   leftovers: z.strictObject({
     long: z.array(z.string()),
     "research-talk": z.array(z.string()),
     "fixed-line": z.array(z.string()),
     "spelled-number": z.array(z.string()),
     "typed-figure": z.array(z.string()),
+    "term-copy": z.array(z.string()),
   }),
 });
 export type TextLeftovers = z.infer<typeof leftoversFile>;

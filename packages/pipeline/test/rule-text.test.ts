@@ -1,14 +1,17 @@
 // The checks on the rule cards' Hebrew (src/rule-text.ts, data-schema §3.1 and §4 item 23): each kind of flaw caught on a planted text,
 // left alone on a text without it, and the ratchet over the whole of data/rules, whose lists only shrink.
-import { readdirSync, readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
+import { readFormulaIds, readRuleBaseIds, validateData } from "../src/index.ts";
 import { phrasesIn, printedForms, readTextLeftovers, ruleTextProblems, sentenceCount, spelledNumbers, staleTextLeftovers, textFlaws, typedFigures, type RuleText, type TextLeftovers } from "../src/rule-text.ts";
+import { termCopies } from "../src/validate.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const leftovers = readTextLeftovers();
-const none: TextLeftovers = { ...leftovers, leftovers: { long: [], "research-talk": [], "fixed-line": [], "spelled-number": [], "typed-figure": [] } };
+const none: TextLeftovers = { ...leftovers, leftovers: { long: [], "research-talk": [], "fixed-line": [], "spelled-number": [], "typed-figure": [], "term-copy": [] } };
 const pct = (value: number) => ({ value, unit: "pct" });
 
 describe("sentenceCount", () => {
@@ -129,5 +132,21 @@ describe("the rule cards' texts in data/rules", () => {
   });
   it("leave no listed record that is fixed (each list only shrinks)", () => {
     expect(staleTextLeftovers(rules, leftovers)).toEqual([]);
+  });
+});
+
+describe("glossary copies", () => {
+  const term = (id: string, he: string, meaning: string) => ({ id, he, meaning });
+  it("finds two records with the same name and the same explanation, after trimming", () => {
+    expect(termCopies([term("a", "נאמן", "גוף שמחזיק"), term("b", " נאמן", "גוף שמחזיק "), term("c", "נאמן", "גוף אחר")])).toEqual(["a b"]);
+  });
+  it("fails a copy the list does not allow, through the data check", () => {
+    const dir = mkdtempSync(join(tmpdir(), "data-"));
+    mkdirSync(join(dir, "terms"), { recursive: true });
+    const rec = (id: string) => ({ id, he: "מונח לדוגמה", en: null, meaning: "הסבר אחד", where: [], wrapper_ids: [], variants: [], rule_ids: [], source: { url: "https://www.gov.il/x", title: "t", publisher: "p", strength: "primary", checked: "2026-11-01" } });
+    writeFileSync(join(dir, "terms/x-a.json"), JSON.stringify(rec("x-a")));
+    writeFileSync(join(dir, "terms/x-b.json"), JSON.stringify(rec("x-b")));
+    const problems = validateData({ dataDir: dir, ruleBase: readRuleBaseIds(`${root}.claude/skills/il-finance/references`), formulas: readFormulaIds(`${root}docs/method.md`) });
+    expect(problems).toContainEqual({ file: "terms/x-b.json", message: expect.stringMatching(/x-a and x-b carry the same name and the same explanation/) });
   });
 });
