@@ -615,10 +615,12 @@ function areasIn({ leftAt, order, theta, tied, planFirst, reach, window }: { lef
   const cornersOf = (i: number, j: number, z: number) => [at(i, j), at(i + z, j), at(i + z, j + z), at(i, j + z)] as const;
 
   // each cell split while its centre reads otherwise than its corners' blend, or its corners have different firsts and it is large. A cell on
-  // the first row also reads the point a smallest step above the middle of its bottom side, and one on the first column the point a smallest
-  // step right of the middle of its left side: there the figures can turn within that step (a deposit too small for a trade's minimum,
-  // F-12, or for a whole unit, F-109), and a blend from the side's corners would carry the turn across the whole cell. A cell outside the
-  // window, where the first or last coarse cell runs past it, is not read
+  // the first row also reads the points a smallest step above the middle and the two ends of its bottom side, and one on the first column
+  // the points a smallest step right of the middle and the two ends of its left side: there the figures can turn within that step (a deposit
+  // too small for a trade's minimum, F-12, or for a whole unit, F-109, and the order interval that leaves the most, F-133), and a blend from
+  // the side's corners would carry the turn across the whole cell. The turn is not the same all along the side, and where the first is θ
+  // ahead at the middle its lead reads 1 there whatever the blend, so the middle alone can miss a turn that misreads the cell near an end. A
+  // cell outside the window, where the first or last coarse cell runs past it, is not read
   const leaves: [number, number, number][] = [];
   const cell = (i: number, j: number, z: number) => {
     if (z > 1 && i < cols && j < rows && i + z > iFrom && j + z > jFrom) {
@@ -626,7 +628,9 @@ function areasIn({ leftAt, order, theta, tied, planFirst, reach, window }: { lef
       const firsts = new Set(corners.map((c) => leadOf(c, houses, theta)?.first));
       const h = z / 2;
       const otherwise = (u: number, w: number) => readsOtherwise(leadOf(blend(corners, houses, u / z, w / z), houses, theta), leadOf(at(i + u, j + w), houses, theta));
-      if ((firsts.size > 1 && z > BORDER_CELL) || otherwise(h, h) || (firstRow && j === 0 && otherwise(h, 1)) || (firstCol && i === 0 && otherwise(1, h))) {
+      // the points a smallest step in from the first row's or column's side, at its middle and its two ends
+      const turnsAt = (along: (u: number) => boolean) => along(h) || along(0) || along(z);
+      if ((firsts.size > 1 && z > BORDER_CELL) || otherwise(h, h) || (firstRow && j === 0 && turnsAt((u) => otherwise(u, 1))) || (firstCol && i === 0 && turnsAt((w) => otherwise(1, w)))) {
         for (const [di, dj] of [[0, 0], [h, 0], [h, h], [0, h]] as const) cell(i + di, j + dj, h);
         return;
       }
