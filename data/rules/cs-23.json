@@ -24,7 +24,8 @@
     },
     {
       "url": "https://data.gov.il/he/terms-of-use",
-      "title": "data.gov.il terms of use",
+      "title": "תנאי שימוש אתר מאגרי המידע הממשלתיים",
+      "title_he": "תנאי שימוש אתר מאגרי המידע הממשלתיים",
       "publisher": "data.gov.il",
       "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
       "kind": "dataset",
