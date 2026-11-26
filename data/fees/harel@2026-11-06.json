@@ -47,8 +47,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Printed on Harel's joining request for an adult member of fund 8207 (form version 11/2025, printed in its footer), section ה, filled in by the company, not left blank. The same request says the company may change the fees named there as the law and the bylaws allow (\"החברה רשאית לשנות את דמי הניהול הנקובים\"), and that on top of the fees it may charge direct expenses for transactions from the fund's assets, their past-year rates published on its website (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
@@ -90,8 +89,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Printed on Harel's joining request for an adult member of fund 8207 (form version 11/2025, printed in its footer), section ה, filled in by the company, not left blank. The same request says the company may change the fees named there as the law and the bylaws allow (\"החברה רשאית לשנות את דמי הניהול הנקובים\"), and that on top of the fees it may charge direct expenses for transactions from the fund's assets, their past-year rates published on its website (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."

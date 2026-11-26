@@ -47,8 +47,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Clal's joining and transfer request for כלל גמל לעתיד (form G550, May 2025, p.2) leaves both rates blank (\"דמי ניהול __% מצבירה ו-__% מהפקדה\"); the fund's bylaws (February 2025 edition, s.35.1, p.10) let the company charge up to the maximum the law sets on the balance and on each payment. Recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee; what a joiner is offered is set in the blank, not published. On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
@@ -90,8 +89,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Clal's joining and transfer request for כלל גמל לעתיד (form G550, May 2025, p.2) leaves both rates blank (\"דמי ניהול __% מצבירה ו-__% מהפקדה\"); the fund's bylaws (February 2025 edition, s.35.1, p.10) let the company charge up to the maximum the law sets on the balance and on each payment. Recorded at that maximum, 1.05% of the balance and 4% of deposits (PF-02), as D56 prices an \"up to\" fee; what a joiner is offered is set in the blank, not published. On top of the fees the company may charge direct expenses for transactions from the fund's assets (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."

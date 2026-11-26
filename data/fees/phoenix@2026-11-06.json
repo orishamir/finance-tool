@@ -50,8 +50,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "The Phoenix's joining form prints no agreed rate: \"שיעור דמי ניהול מצבירה (שנתי) __%\" is left blank (p.1), and the member's declaration (p.2) says \"החברה המנהלת תהא רשאית לגבות מחשבוני דמי ניהול: בקופת גמל בשיעור שנתי של 1.05% מהיתר הצבורה על שמי בקופה ובשיעור של 4% מההפקדות החודשיות ... בהיעדר ציון דמי ניהול, יחולו דמי הניהול על-פי תקנון הקופה\". Recorded at the printed rate the member agrees the company may charge, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). The form also prints the average fee charged in the fund in 2025, 0.60% of savings (p.3): an average actually charged, not a list fee, not recorded. The product sheet (https://www.fnx.co.il/sites/docs/genery/for_new_site/xnes-docs/Daf%20Mutzar%20Gemel%20Hashkaa_2022.pdf) says \"דמי ניהול קבועים מהצבירה בלבד\" with no rate; it is a leaflet, not a binding document, and the form's deposit clause stands. On top of the fees the company may charge direct expenses for transactions (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."
@@ -93,8 +92,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "The Phoenix's joining form prints no agreed rate: \"שיעור דמי ניהול מצבירה (שנתי) __%\" is left blank (p.1), and the member's declaration (p.2) says \"החברה המנהלת תהא רשאית לגבות מחשבוני דמי ניהול: בקופת גמל בשיעור שנתי של 1.05% מהיתר הצבורה על שמי בקופה ובשיעור של 4% מההפקדות החודשיות ... בהיעדר ציון דמי ניהול, יחולו דמי הניהול על-פי תקנון הקופה\". Recorded at the printed rate the member agrees the company may charge, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). The form also prints the average fee charged in the fund in 2025, 0.60% of savings (p.3): an average actually charged, not a list fee, not recorded. The product sheet (https://www.fnx.co.il/sites/docs/genery/for_new_site/xnes-docs/Daf%20Mutzar%20Gemel%20Hashkaa_2022.pdf) says \"דמי ניהול קבועים מהצבירה בלבד\" with no rate; it is a leaflet, not a binding document, and the form's deposit clause stands. On top of the fees the company may charge direct expenses for transactions (no rate printed, not recorded). A member's own agreement sets the fee actually paid (D4)."

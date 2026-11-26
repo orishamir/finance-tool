@@ -47,8 +47,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Analyst's joining form prints no agreed rate: it leaves a blank (\"דמי ניהול:____\") and states that the fees \"יסתכמו בחישוב שנתי של עד 1.05% מהיתרה הצבורה על שמו בקופה ועד 4% מההפקדות השוטפות לקופה, למעט אם החברה המנהלת תקבע הסדרים כללים או פרטניים לגביית דמי ניהול שונים\", and that the rate depends on the investment track chosen. Recorded at the printed ceiling, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). What a joiner is actually offered is set in the blank or a separate arrangement, not published. On top of the fees the company may charge direct expenses for transactions, past-year rates at https://www.analyst.co.il/direct-expenses/ (not recorded). A member's own agreement sets the fee actually paid (D4)."
@@ -90,8 +89,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Analyst's joining form prints no agreed rate: it leaves a blank (\"דמי ניהול:____\") and states that the fees \"יסתכמו בחישוב שנתי של עד 1.05% מהיתרה הצבורה על שמו בקופה ועד 4% מההפקדות השוטפות לקופה, למעט אם החברה המנהלת תקבע הסדרים כללים או פרטניים לגביית דמי ניהול שונים\", and that the rate depends on the investment track chosen. Recorded at the printed ceiling, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). What a joiner is actually offered is set in the blank or a separate arrangement, not published. On top of the fees the company may charge direct expenses for transactions, past-year rates at https://www.analyst.co.il/direct-expenses/ (not recorded). A member's own agreement sets the fee actually paid (D4)."

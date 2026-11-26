@@ -47,8 +47,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Altshuler Shaham's joining kit prints no agreed rate: the licensee's section leaves \"% דמי ניהול מצבירה\" and \"% דמי ניהול מהפקדה\" blank, and the member's declaration says \"דמי הניהול שיגבו מחשבוני לא יעלו על שיעור של 1.05% מהצבירה ו-4% מההפקדות\". Recorded at the printed ceiling, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). The kit is dated February 2021 (form GHB1000_190121) and still states the 70,000 NIS ceiling of 2016; it is the only binding document with a fee found on the site on 2026-11-06 (the forms page loads by script and joining is digital, digitalforms.as-invest.co.il, not read). The product page's calculator assumes 0.99% of the balance (an illustration, not used). A member's own agreement sets the fee actually paid (D4)."
@@ -90,8 +89,7 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-02",
-          "PF-03",
-          "KGL-14"
+          "PF-03"
         ],
         "state": "sourced",
         "notes": "Altshuler Shaham's joining kit prints no agreed rate: the licensee's section leaves \"% דמי ניהול מצבירה\" and \"% דמי ניהול מהפקדה\" blank, and the member's declaration says \"דמי הניהול שיגבו מחשבוני לא יעלו על שיעור של 1.05% מהצבירה ו-4% מההפקדות\". Recorded at the printed ceiling, as D56 prices an \"up to\" fee; it equals the legal maximum (PF-02, PF-03). The kit is dated February 2021 (form GHB1000_190121) and still states the 70,000 NIS ceiling of 2016; it is the only binding document with a fee found on the site on 2026-11-06 (the forms page loads by script and joining is digital, digitalforms.as-invest.co.il, not read). The product page's calculator assumes 0.99% of the balance (an illustration, not used). A member's own agreement sets the fee actually paid (D4)."
