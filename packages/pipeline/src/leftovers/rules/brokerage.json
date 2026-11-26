@@ -1,34 +1,10 @@
 {
   "long": [
-    "BRK-14",
-    "CORP-02",
-    "CORP-04",
-    "CORP-05",
-    "CORP-06",
-    "CORP-08",
-    "CORP-09",
-    "CORP-13",
-    "CORP-14",
-    "CORP-15",
-    "CORP-18",
-    "CORP-24",
-    "CORP-27",
-    "RG-01",
-    "RG-07",
-    "RG-11",
-    "RG-14",
-    "RG-20",
-    "RG-22",
-    "SHR-01"
+    "BRK-14"
   ],
-  "research-talk": [
-    "CORP-14",
-    "RG-20"
-  ],
+  "research-talk": [],
   "fixed-line": [],
-  "spelled-number": [
-    "CORP-18"
-  ],
+  "spelled-number": [],
   "typed-figure": [],
   "figure-title": [
     "BRK-58#extra_client_subaccount_equity"
@@ -59,8 +35,6 @@
     "RG-03",
     "RG-07"
   ],
-  "pointer-word": [
-    "CORP-24"
-  ],
+  "pointer-word": [],
   "title-ditto": []
 }
