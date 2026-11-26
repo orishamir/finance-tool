@@ -12,7 +12,8 @@ import { runTimeline, type Bundle, type Timeline } from "./engine";
 import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature-bundle.server";
 import { breakFact, breakInput, buildSignatureData } from "./guide-signature.server";
 import { loadDepositTerms } from "./instruments.server";
-import { loadInstitutionRegistry, valueRuleIds } from "./institutions.server";
+import { loadInstitutionRegistry } from "./institutions.server";
+import { addTermRules, valueRuleIds } from "./page-rules.server";
 import { depositName, exitNameWords, exitPointsOf, exitWords } from "./deposit-kind";
 import { lumpSumEntered, lumpSumIds, type BreakTerms, type SignatureData } from "./guide-signature";
 import { cmaFeeValue, computed, ownBy, ruleFigure, staleCma, type SiteValue } from "./value";
@@ -207,15 +208,6 @@ function reportedFeeRange(id: string, t: string): GuidePageData["feeRange"] {
     tracks: computed(reported.length, "count", "F-64", { [signatureFacts.cmaFile]: report }, { today: t, about: signatureFacts.trackCount }),
     of: computed(open.length, "count", "F-64", { [signatureFacts.cmaFile]: report }, { today: t, about: signatureFacts.trackCountAll }),
   };
-}
-
-/** The rules the page's glossary cards cite join the page's rules, so every row of a term card opens its rule's card (as on a prose guide). */
-function addTermRules(rules: Record<string, RuleRecord>, terms: Record<string, TermRow>, all: Record<string, RuleRecord>): void {
-  for (const t of Object.values(terms))
-    for (const id of t.ruleIds) {
-      const r = all[id];
-      if (!rules[id] && r) rules[id] = r;
-    }
 }
 
 export function buildGuidePage(id: string, extraTermIds: string[] = [], relatedIds?: readonly string[]): GuidePageData | null {

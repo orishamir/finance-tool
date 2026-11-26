@@ -3,6 +3,7 @@
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
 import { datedDay, tariffDated } from "./tariff-date";
 import { companyPath, documentsPath } from "./site-paths";
+import { valueRuleIds } from "./page-rules.server";
 import { depositKindRules, exitPointsOf, ownName, printedQuotes, shownName, shownRate } from "./deposit-kind";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
@@ -299,16 +300,6 @@ export function brokeragePart(id: string): { kind: InstitutionKind; tariff: Tari
   for (const r of valueRuleIds(tariff)) cited.add(r);
   const rules = Object.fromEntries([...cited].filter((r) => allRules[r]).map((r) => [r, allRules[r]!]));
   return { kind: "broker", tariff, rules };
-}
-
-/**
- * Every rule id the figures inside a page's data name (`rule_ids` on any value, a computed figure's inputs among them): each figure's
- * sheet shows them as chips, so the page ships their records and every chip opens its card.
- */
-export function valueRuleIds(node: unknown): string[] {
-  if (Array.isArray(node)) return node.flatMap(valueRuleIds);
-  if (node === null || typeof node !== "object") return [];
-  return Object.entries(node).flatMap(([k, v]) => (k === "rule_ids" && Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : valueRuleIds(v)));
 }
 
 // ---------------------------------------------------------------- the page

@@ -2,6 +2,7 @@
 // and what the rule cards need. Its rules are the ones its content file names (and the parts that file imports).
 import type { RuleRecord } from "@finance-tool/schema";
 import { loadChecklistRows, loadRules, pointedRecords, termsFor, today, type TermRow } from "./data.server";
+import { addTermRules } from "./page-rules.server";
 import { pageRuleUses } from "./rule-uses.server";
 import { scanRuleIds } from "./scan-rule-ids.server";
 
@@ -11,7 +12,7 @@ export function proseGuideData({ content, ruleIds = [], termIds, product }: { /*
   const rules: Record<string, RuleRecord> = Object.fromEntries([...ids].filter((id) => all[id]).map((id) => [id, all[id]!]));
   const terms: Record<string, TermRow> = termsFor(termIds, product);
   // the rules the term cards cite ship with the page too
-  for (const t of Object.values(terms)) for (const id of t.ruleIds) if (!rules[id] && all[id]) rules[id] = all[id]!;
+  addTermRules(rules, terms, all);
   const pointed = pointedRecords(rules, all);
   return { rules, pointed, terms, ruleUses: pageRuleUses(rules, pointed), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])), today: today() };
 }

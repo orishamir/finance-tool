@@ -56,7 +56,7 @@ async function houseNotes(id: string) {
 async function houseAccount(id: string, tariff: TariffCardData, page: { rules: Record<string, RuleRecord>; pointed?: Record<string, RuleRecord> | undefined }) {
   const { houseTermsData } = await import("../lib/fees.server");
   const { loadRules, pointedRecords, today } = await import("../lib/data.server");
-  const { valueRuleIds } = await import("../lib/institutions.server");
+  const { valueRuleIds } = await import("../lib/page-rules.server");
   const account = accountOf(tariff, houseTermsData(id, today(), { rules: new Set(Object.keys(page.rules)), pointed: new Set(Object.keys(page.pointed ?? {})) }));
   // the terms' code is a script of its own, in before the render so the pre-rendered page holds them
   if (account.fees.kind === "terms") await loadTermsCode();
@@ -127,7 +127,8 @@ export async function loader({ params }: Route.LoaderArgs) {
     .filter((c) => c.status === "not-catalogued-yet")
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
   // what the site found in the company's own documents (D30): the records that cite them, by topic, with their cards' data
-  const { brokeragePart, companyTermGroups, registryIdsOfPage, valueRuleIds } = await import("../lib/institutions.server");
+  const { brokeragePart, companyTermGroups, registryIdsOfPage } = await import("../lib/institutions.server");
+  const { valueRuleIds } = await import("../lib/page-rules.server");
   const { loadChecklistRows, pointedRecords } = await import("../lib/data.server");
   const { topicName } = await import("../copy");
   const allRules = loadRules();
