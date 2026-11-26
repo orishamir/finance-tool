@@ -1630,7 +1630,6 @@
     "rule_ids": [
       "CAT-09",
       "CAT-11",
-      "PF-29",
       "REG-17",
       "REG-18"
     ],
@@ -4471,7 +4470,6 @@
     "variants_he": [],
     "explain_he": "הכסף בקופה מוחזק לטובת החוסכים: החברה מנהלת אותו כנאמן, בנפרד מהרכוש שלה, ואי אפשר לעקל אותו",
     "rule_ids": [
-      "PF-29",
       "REG-18",
       "REG-19"
     ],
@@ -4501,7 +4499,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Law wording: 'חברה מנהלת תשמש נאמן על נכסי קופות הגמל', 'בנפרד מרכושה', 'נכסי קופת גמל אינם ניתנים לעיקול'. Market losses are not protected and there is no state guarantee of value, except the pension return top-up (PF-29, REG-21). Mutual funds have a parallel rule with a separate trustee (see 'נאמן'). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
+    "notes": "Law wording: 'חברה מנהלת תשמש נאמן על נכסי קופות הגמל', 'בנפרד מרכושה', 'נכסי קופת גמל אינם ניתנים לעיקול'. Market losses are not protected and there is no state guarantee of value, except the pension return top-up (REG-18, REG-21). Mutual funds have a parallel rule with a separate trustee (see 'נאמן'). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "namnvt-vhprdt-nksym"
   },
   {
