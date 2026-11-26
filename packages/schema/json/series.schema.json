@@ -392,6 +392,9 @@
                         "additionalProperties": {
                           "type": "string"
                         }
+                      },
+                      "terms": {
+                        "type": "string"
                       }
                     },
                     "required": [

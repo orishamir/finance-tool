@@ -312,6 +312,9 @@
                       "additionalProperties": {
                         "type": "string"
                       }
+                    },
+                    "terms": {
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -595,6 +598,9 @@
                       "additionalProperties": {
                         "type": "string"
                       }
+                    },
+                    "terms": {
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -898,6 +904,9 @@
                           "additionalProperties": {
                             "type": "string"
                           }
+                        },
+                        "terms": {
+                          "type": "string"
                         }
                       },
                       "required": [
@@ -1186,6 +1195,9 @@
                       "additionalProperties": {
                         "type": "string"
                       }
+                    },
+                    "terms": {
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -1469,6 +1481,9 @@
                       "additionalProperties": {
                         "type": "string"
                       }
+                    },
+                    "terms": {
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -1755,6 +1770,9 @@
                           "additionalProperties": {
                             "type": "string"
                           }
+                        },
+                        "terms": {
+                          "type": "string"
                         }
                       },
                       "required": [
@@ -2038,6 +2056,9 @@
                           "additionalProperties": {
                             "type": "string"
                           }
+                        },
+                        "terms": {
+                          "type": "string"
                         }
                       },
                       "required": [
@@ -2321,6 +2342,9 @@
                           "additionalProperties": {
                             "type": "string"
                           }
+                        },
+                        "terms": {
+                          "type": "string"
                         }
                       },
                       "required": [
@@ -2633,6 +2657,9 @@
                       "additionalProperties": {
                         "type": "string"
                       }
+                    },
+                    "terms": {
+                      "type": "string"
                     }
                   },
                   "required": [
@@ -2919,6 +2946,9 @@
                           "additionalProperties": {
                             "type": "string"
                           }
+                        },
+                        "terms": {
+                          "type": "string"
                         }
                       },
                       "required": [
@@ -3204,6 +3234,9 @@
                               "additionalProperties": {
                                 "type": "string"
                               }
+                            },
+                            "terms": {
+                              "type": "string"
                             }
                           },
                           "required": [
@@ -3630,6 +3663,9 @@
                             "additionalProperties": {
                               "type": "string"
                             }
+                          },
+                          "terms": {
+                            "type": "string"
                           }
                         },
                         "required": [

@@ -113,14 +113,23 @@ function scriptEnd(tex: string, i: number): number {
   return i + 1;
 }
 
+/** The inputs each symbol of a line stands for, in the inputs' order: those `symbols` names, and every other input that holds a number for `terms`. */
+export function standsFor(working: FormulaWorking, inputs: Record<string, SiteValue>): Map<string, string[]> {
+  const out = new Map<string, string[]>();
+  for (const key of Object.keys(inputs)) {
+    const symbol = working.symbols[key] ?? (typeof inputs[key]?.value === "number" ? working.terms : undefined);
+    if (symbol !== undefined) out.set(symbol, [...(out.get(symbol) ?? []), key]);
+  }
+  return out;
+}
+
 /**
- * The drawn line with this figure's values put in place of its symbols (`working.symbols`), or null where it cannot be: the figure or an
+ * The drawn line with this figure's values put in place of its symbols (`standsFor`), or null where it cannot be: the figure or an
  * input holds no number, a symbol several inputs stand for is not the term of a sum, or a symbol of the line's right side is left with no
  * value (`readable`). A sum over a symbol several inputs stand for (`\sum_i A_i`) is written out as their values added up.
  */
 export function withValues(tex: string, working: FormulaWorking, inputs: Record<string, SiteValue>, digits: number): string | null {
-  const keysOf = new Map<string, string[]>();
-  for (const [key, symbol] of Object.entries(working.symbols)) keysOf.set(symbol, [...(keysOf.get(symbol) ?? []), key]);
+  const keysOf = standsFor(working, inputs);
   const valuesOf = (symbol: string): string[] | null => {
     const out: string[] = [];
     for (const key of keysOf.get(symbol) ?? []) {
@@ -173,12 +182,13 @@ export function withValues(tex: string, working: FormulaWorking, inputs: Record<
  */
 export function keyOfLine(tex: string, key: readonly (readonly [tex: string, words: string])[], working: FormulaWorking, inputs: Record<string, SiteValue>): { tex: string; words: string; inputs: { key: string; input: SiteValue }[] }[] {
   const inLine = new Set(symbolsIn(tex, key.map(([s]) => s)).map((f) => f.symbol));
+  const keysOf = standsFor(working, inputs);
   return key
     .filter(([s]) => inLine.has(s))
     .map(([s, words]) => ({
       tex: s,
       words,
-      inputs: Object.entries(working.symbols).flatMap(([k, sym]) => (sym === s && inputs[k] ? [{ key: k, input: inputs[k] }] : [])),
+      inputs: (keysOf.get(s) ?? []).flatMap((k) => (inputs[k] ? [{ key: k, input: inputs[k] }] : [])),
     }));
 }
 

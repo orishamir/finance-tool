@@ -17,7 +17,7 @@ import { buildProductView } from "./track-browser";
 import { buildTrackBrowser } from "./track-browser.server";
 import { exposureShares } from "./track-exposure";
 import { computed, entered, type SiteValue } from "./value";
-import { digitsFor, headText, keyOfLine, paidInWorking, readable, receiptLines, symbolsIn, withValues, type FormulaWorking } from "./working";
+import { digitsFor, headText, keyOfLine, paidInWorking, readable, receiptLines, standsFor, symbolsIn, withValues, type FormulaWorking } from "./working";
 
 const tex = loadFormulaTex();
 const today = "2026-11-26";
@@ -43,7 +43,7 @@ describe("a line with its values put in", () => {
     expect(withValues(String.raw`w = \rho \times y_{US} \times s_{US}`, w, { r: value(15, "pct"), y: value(-1.2, "pct"), s: value(62.5, "pct") }, 6)).toBe(String.raw`w = 15\% \times (-1.2\%) \times 62.5\%`);
   });
   it("writes a sum over a symbol several inputs stand for as their values added up", () => {
-    const w: FormulaWorking = { kind: "formula", entry: "F-99", line: 0, symbols: { a: "A_i", b: "A_i", c: "A_i" } };
+    const w: FormulaWorking = { kind: "formula", entry: "F-99", line: 0, symbols: {}, terms: "A_i" };
     expect(withValues(String.raw`S = \sum_i A_i`, w, { a: value(1), b: value(2.5), c: value(1000) }, 6)).toBe(String.raw`S = 1 + 2.5 + 1{,}000`);
   });
   it("is none where a symbol of its right side has no input, or an input no number", () => {
@@ -118,13 +118,15 @@ function checkFormulas(values: readonly SiteValue[]): { checked: number; noValue
     const inputs = (v.computed_from?.inputs ?? {}) as Record<string, SiteValue>;
     const keyRows = formulaKeys[w.entry]?.symbols ?? [];
     const key = keyRows.map(([s]) => s);
-    for (const [k, s] of Object.entries(w.symbols)) {
-      expect(inputs[k], `${name}: ${k}`).toBeTruthy();
+    for (const k of Object.keys(w.symbols)) expect(inputs[k], `${name}: ${k}`).toBeTruthy();
+    for (const s of [...Object.values(w.symbols), ...(w.terms ? [w.terms] : [])]) {
       expect(key, `${name}: ${s}`).toContain(s);
       expect(symbolsIn(line, [s]).length, `${name}: ${s} in the line`).toBeGreaterThan(0);
     }
-    for (const [k, input] of Object.entries(inputs)) if (typeof input.value === "number") expect(w.symbols[k], `${name}: input ${k} stands for a symbol`).toBeTruthy();
-    expect(keyOfLine(line, keyRows, w, inputs).flatMap((r) => r.inputs.map((x) => x.key)).sort(), name).toEqual(Object.keys(w.symbols).sort());
+    // every input that holds a number stands for a symbol of the line, and the key lists each once
+    const standing = [...standsFor(w, inputs).values()].flat().sort();
+    for (const [k, input] of Object.entries(inputs)) if (typeof input.value === "number") expect(standing, `${name}: input ${k} stands for a symbol`).toContain(k);
+    expect(keyOfLine(line, keyRows, w, inputs).flatMap((r) => r.inputs.map((x) => x.key)).sort(), name).toEqual(standing);
     const head = headText(v, false);
     const worked = withValues(line, w, inputs, digitsFor(head));
     if (worked === null) {

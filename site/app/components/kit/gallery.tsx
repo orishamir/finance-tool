@@ -822,7 +822,7 @@ function WorkedStates({ today }: { today: string }) {
   const shareWorking = { kind: "formula", entry: "F-87", line: 0, symbols: { [exposure]: "E", [assets]: "A" } } as const;
   const shareValue = computed((1325.38 / 1332.41) * 100, "pct", "F-87", share, { today, working: shareWorking });
   const tracks = Object.fromEntries(g.sample.working.tracks.map((name, i) => [name, millions(1234.56 * (i + 1))]));
-  const tracksWorking = { kind: "formula", entry: "F-99", line: 0, symbols: Object.fromEntries(Object.keys(tracks).map((k) => [k, "A_i"])) } as const;
+  const tracksWorking = { kind: "formula", entry: "F-99", line: 0, symbols: {}, terms: "A_i" } as const;
   const tracksValue = computed(Object.values(tracks).reduce((t, v) => t + (v.value as number), 0), "nis_millions", "F-99", tracks, { today, working: tracksWorking });
   const worked = (value: SiteValue, working: FormulaWorking, tex: string) => {
     const inputs = (value.computed_from?.inputs ?? {}) as Record<string, SiteValue>;
