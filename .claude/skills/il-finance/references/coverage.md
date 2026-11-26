@@ -425,7 +425,7 @@ topic files with links and dates, and the open questions they answer are marked 
 | Closed or narrowed | New rule | Was |
 |---|---|---|
 | Fee fields are percent values; both portals print them with % and the same numbers as the data | CAT-35 | CAT OQ2 (unit), O11 |
-| The value is the average for the latest completed calendar year ("לשנת 2025" in October 2026); dataset rows of year Y hold year Y−1; first value after the first full calendar year | CAT-36 | CAT OQ2 (period), CAT-06 |
+| The value is the average for the latest completed calendar year ("לשנת 2025" in October 2026); dataset rows of year Y hold year Y−1; first value after the first full calendar year | CAT-36 | CAT OQ2 (period) |
 | The CMA defines the same-named member-report average as the rate "שגבתה הקופה בפועל מכלל העמיתים" (after discounts); identity with the field inferred | CAT-37 | CAT OQ2 (basis) |
 | The regulator's fee-rate reporting codes (quarterly, fees ÷ assets) from circular 2015-9-9 | CAT-38 | CAT OQ2 (weighting, narrowed) |
 | Pension fees are per fund; every track of a fund carries the same pair | CAT-39 | — |
