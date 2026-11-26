@@ -4226,7 +4226,7 @@
     "variants_he": [],
     "explain_he": "הסכום מתוך נכסי המסלול שמושקע במניות, לפי הדיווח החודשי לרשות שוק ההון",
     "rule_ids": [
-      "CAT-03",
+      "CAT-44",
       "CAT-24"
     ],
     "source": {
@@ -4238,7 +4238,7 @@
     "where": [
       "decoder:track"
     ],
-    "notes": "Unit inferred as NIS millions, not percent; the share of assets is a computation (exposure ÷ total assets) (CAT-03). Whether derivatives or look-through count is unknown (CAT OQ4). CAT Terms writes the three exposure fields as one entry 'חשיפה למניות / לחו\"ל / למט\"ח'.",
+    "notes": "Unit inferred as NIS millions, not percent; the share of assets is a computation (exposure ÷ total assets) (CAT-44). Whether derivatives or look-through count is unknown (CAT OQ4). CAT Terms writes the three exposure fields as one entry 'חשיפה למניות / לחו\"ל / למט\"ח'.",
     "id": "chshyph-lmnyvt"
   },
   {
@@ -4250,7 +4250,7 @@
     "variants_he": [],
     "explain_he": "הסכום מתוך נכסי המסלול שמושקע מחוץ לישראל, לפי הדיווח החודשי לרשות שוק ההון",
     "rule_ids": [
-      "CAT-03",
+      "CAT-44",
       "CAT-24"
     ],
     "source": {
@@ -4262,7 +4262,7 @@
     "where": [
       "decoder:track"
     ],
-    "notes": "Same unit and basis caveats as equity exposure (CAT-03, CAT OQ4).",
+    "notes": "Same unit and basis caveats as equity exposure (CAT-44, CAT OQ4).",
     "id": "chshyph-lchvl"
   },
   {
@@ -4274,7 +4274,7 @@
     "variants_he": [],
     "explain_he": "הסכום מתוך נכסי המסלול שמושקע בנכסים במטבע זר, לפי הדיווח החודשי לרשות שוק ההון",
     "rule_ids": [
-      "CAT-03"
+      "CAT-44"
     ],
     "source": {
       "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
@@ -4800,8 +4800,7 @@
     ],
     "explain_he": "כמה מהכסף במסלול חשוף למחירי המניות ולשער המטבע הזר: מה שהמסלול מחזיק, ועוד חוזים פיננסיים (נגזרים) על מניות ועל מטבע. החשיפה דרך החוזים נוספת על מה שהמסלול מחזיק, ולכן היא יכולה לעבור את 100%. השקעה אחת יכולה להיספר בשתיהן: מניה בחו\"ל היא גם מניה וגם מט\"ח.",
     "rule_ids": [
-      "CAT-44",
-      "CAT-03"
+      "CAT-44"
     ],
     "source": {
       "title": "חוזר גופים מוסדיים 2015-9-9: דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח (רשות שוק ההון), עמ' 10 עד 11",

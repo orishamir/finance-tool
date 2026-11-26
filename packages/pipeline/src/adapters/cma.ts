@@ -574,7 +574,7 @@ const periodEnd = (period: string): string => {
 
 /**
  * CMA amount fields to value objects, in NIS millions at the period end (CAT-03 for the unit of TOTAL_ASSETS; the units of
- * STOCK_MARKET_EXPOSURE and FOREIGN_CURRENCY_EXPOSURE are read the same way, inferred: the dictionary does not state them, CAT OQ4).
+ * STOCK_MARKET_EXPOSURE and FOREIGN_CURRENCY_EXPOSURE are read the same way, inferred: the dictionary does not state them, CAT-44, CAT OQ4).
  * Undefined when the file has none of the columns. Pure.
  */
 export function buildHoldings(
