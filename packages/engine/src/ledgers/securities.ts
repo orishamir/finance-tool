@@ -449,7 +449,31 @@ export function securitiesStopOf(input: SecuritiesInput, ctx: RunContext): Secur
  * F-51 IRA: an IRA hishtalmut holding securities pays the manager's balance fee and follows F-46 at exit.
  */
 export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResult {
-  return memoRun("securities", ctx, input, () => acrossReadings(ctx, (c) => securitiesLedger(input, c), RUN_RESULT_FIELDS));
+  return memoRun("securities", ctx, input, () => securitiesRun(input, ctx));
+}
+
+/** The run `runSecurities` hands back, worked out afresh. */
+const securitiesRun = (input: SecuritiesInput, ctx: RunContext): RunResult => acrossReadings(ctx, (c) => securitiesLedger(input, c), RUN_RESULT_FIELDS);
+
+/**
+ * The run `choose` picks among the runs of `base` bought each of `ways` (F-133: one way at each order interval; undefined, the way `base`
+ * already buys by), and its index. The runs compare as `runSecurities` hands them back, so the choice and the run are the ones the caller
+ * would have from it. Only the chosen run is kept as `runSecurities` keeps one, and the choice as its index, under `kind`, which names the
+ * rule `choose` applies: kept, the runs that lost would push out of the `keepRuns` latest the runs the tests ask for again. Asked again for
+ * the same base and ways, it reads the choice kept and the one run.
+ */
+export function runSecuritiesChosen(kind: string, base: SecuritiesInput, ways: readonly (BuyWay | undefined)[], ctx: RunContext, choose: (runs: readonly RunResult[]) => number): { index: number; run: RunResult } {
+  const inputOf = (way: BuyWay | undefined): SecuritiesInput => (way === undefined ? base : { ...base, way });
+  let won: RunResult | undefined;
+  const index = memoRun(kind, ctx, [base, ways], () => {
+    const runs = ways.map((way) => securitiesRun(inputOf(way), ctx));
+    const i = choose(runs);
+    won = runs[i];
+    return i;
+  });
+  if (!(index in ways)) throw new Error(`unreachable: ${kind} chose run ${index} of ${ways.length}`);
+  const input = inputOf(ways[index]);
+  return { index, run: memoRun("securities", ctx, input, () => won ?? securitiesRun(input, ctx)) };
 }
 
 /**

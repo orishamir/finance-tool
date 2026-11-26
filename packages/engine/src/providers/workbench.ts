@@ -12,7 +12,7 @@ import type { Commission, ConversionPrice, Custody, SizeStep } from "../formulas
 import { perUnitOf } from "../formulas/deal.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, cashWaits, orderEveryOf, ORDER_INTERVALS, type BuyWay, type OrderInterval, type Fund, type SaleConversionPrice, type SecuritiesInput, type WholeUnits } from "../ledgers/securities.ts";
+import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, runSecuritiesChosen, cashWaits, orderEveryOf, ORDER_INTERVALS, type BuyWay, type OrderInterval, type Fund, type SaleConversionPrice, type SecuritiesInput, type WholeUnits } from "../ledgers/securities.ts";
 import type { DealAccount } from "../ledgers/deal-account.ts";
 import { stoppedOnRule } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
@@ -1216,8 +1216,13 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
     const { base, level, built, memberKind, ways, deal } = ready;
     // F-133: each way at the interval it chooses, before tax; F-109: of the ways, the one that leaves the most at the horizon, its own on a tie
     const byWay = intervalWays(ways, { monthly: input.goal.monthly, months: horizon, paysOut: !!input.fund.distribution, ...(input.behaviour ? { behaviour: input.behaviour } : {}) }).map((tried) => {
-      const runs = tried.map((w) => ({ way: w, run: runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx) }));
-      return chosenOf(runs, intervalChosen(runs), "F-133: the interval chosen is one of the way's runs");
+      const only = tried.length === 1 ? tried[0] : undefined;
+      if (only) return { way: only, run: runSecurities(plan(built.tariff, horizon, memberKind, only, deal), ctx) };
+      // the runs differ only in the way they buy by, which the plan carries where cash waits (`planOf`)
+      const base = plan(built.tariff, horizon, memberKind, undefined, deal);
+      const choose = (runs: readonly RunResult[]) => intervalChosen(runs.map((run, i) => ({ way: chosenOf(tried, i, "F-133: a run of each interval tried"), run })));
+      const { index, run } = runSecuritiesChosen("F-133", base, tried.map((w) => (cashWaits(w) ? w : undefined)), ctx, choose);
+      return { way: chosenOf(tried, index, "F-133: the interval chosen is one of the way's runs"), run };
     });
     const { way, run } = chosenOf(byWay, wayChosen(byWay), "F-109: the way chosen is one of the house's ways");
     const stopped = stoppedBeforeComparing([noneT, run]);
