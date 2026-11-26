@@ -61,11 +61,11 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Likely to change: yes. Plan editions change, and a regulatory cap could be introduced.
 - *2026-10-24 R5 pass:* a regulatory cap does exist, in the Insurance Contract Terms Regulations rather than the 2012 provident fee regulations: reg. 6א caps the balance fee of a profit-sharing policy that is not an insurance fund at 1/12% a month (1% a year) of the revalued portfolio, 2% a year with the Commissioner's approval, and above that only with approval and only as a percentage of value (INS-25). Clal's 1.5% and Phoenix's 1.7% therefore rest on an (א1) approval. Deposit fees are not addressed by reg. 6א(א) and (א1) (open question 16). INS-25 rests on the official ק"ת booklets (primary; first read on a mirror).
 
-### INS-04 The lost-contact fee cap of 0.3% applies to profit-sharing life policies
-- Rule: Regulation 8 caps the fee on the balance of a lost-contact or deceased member, where the institution did not complete the required search steps, at 0.3% a year or the rate last charged, whichever is lower (PF-08). For regulation 8 only, "קופת גמל" is defined "לרבות ביטוח חיים משתתף ברווחים", "עמית" "לרבות מבוטח", and "ביטוח חיים משתתף ברווחים" is "כהגדרתו בתקנות חוזי ביטוח, למעט קופת ביטוח" (reg. 8(ו)).
-- Conditions / exceptions: Applies to savings policies (profit-sharing, not an insurance fund). Insurance funds (executive insurance) fall under it as provident funds in any case. Conditions and exceptions as in PF-08.
-- Figures: 0.3% a year. Fixed.
-- Source: [s.8, gazette ק״ת תשע״ב, 1260](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6) · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)
+### INS-04 The lost-contact fee cap applies to profit-sharing life policies
+- Rule: Regulation 8's cap on the fee from the balance of a lost-contact or deceased member (PF-08) reaches profit-sharing life policies. For regulation 8 only, "קופת גמל" is defined "לרבות ביטוח חיים משתתף ברווחים", "עמית" "לרבות מבוטח", and "ביטוח חיים משתתף ברווחים" is "כהגדרתו בתקנות חוזי ביטוח, למעט קופת ביטוח" (reg. 8(ו)).
+- Conditions / exceptions: Applies to savings policies (profit-sharing, not an insurance fund). Insurance funds (executive insurance) fall under it as provident funds in any case. Conditions and exceptions as in PF-08. Trimmed on 2026-11-26: the cap itself (0.3% a year or the rate last charged, whichever is lower, where the institution did not complete the required search steps) is PF-08's.
+- Figures: none of its own; the 0.3% a year is PF-08's.
+- Source: [s.8, gazette ק״ת תשע״ב, 1260](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6) · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found). The cap: as in PF-08.
 - Scope: general
 - Dimensions: `fee-management-balance`, `fee-change-over-time`, `protection`
 - Likely to change: no
