@@ -2,9 +2,10 @@
 // questions' answers, the "הידעת?" facts, a rule's own text). A card's text states the rule in 2 to 4 sentences, never how the site read
 // it, never the line the card already prints for a company's term, and a number that is one of the rule's figures is a slot, never typed
 // in digits or spelled in words. Each kind of flaw a script can find is a `TextFlaw`; the records that still carry one are listed by id in
-// text-leftovers.json, with the phrases the checks look for, and each list only shrinks (data-schema §4 item 23).
-import { readFileSync } from "node:fs";
+// their group's file, leftovers/rules/<group>.json, the phrases the checks look for are in leftovers/phrases.json, and each list only
+// shrinks (data-schema §4 item 23). checks/rule-text.ts runs it in the data check.
 import { z } from "zod";
+import { readLeftovers, readRuleList, ruleListFile } from "./checks/lib/kit.ts";
 
 /** A figure slot: "{ID:figure}", a rule's id and the name of one of its figures; "{ID:figure.from}" is the month that figure takes effect (the site's `parseAnswer`). */
 const FIGURE_SLOT = /\{([A-Z0-9-]+):([a-z0-9_]+)(?:\.from)?\}/g;
@@ -132,26 +133,29 @@ export interface RuleText {
 export type TextFlaw = "long" | "research-talk" | "fixed-line" | "spelled-number" | "typed-figure";
 const TEXT_FLAWS: readonly TextFlaw[] = ["long", "research-talk", "fixed-line", "spelled-number", "typed-figure"];
 
-const leftoversFile = z.strictObject({
+const phrasesFile = z.strictObject({
   /** The phrases that report how the site read a rule, and the phrases holding one that are allowed (the site's reading said as such). */
   research_talk: z.strictObject({ phrases: z.array(z.string().min(1)), allowed: z.array(z.string().min(1)) }),
   /** The phrases that say again the line a company's-term card prints ("בחברות אחרות זה יכול להיות אחרת."). */
   fixed_line: z.strictObject({ phrases: z.array(z.string().min(1)) }),
-  /** By flaw, the ids of the rule records still allowed to carry it; and the glossary copies, each "<id> <id>". */
-  leftovers: z.strictObject({
-    long: z.array(z.string()),
-    "research-talk": z.array(z.string()),
-    "fixed-line": z.array(z.string()),
-    "spelled-number": z.array(z.string()),
-    "typed-figure": z.array(z.string()),
-    "term-copy": z.array(z.string()),
-  }),
 });
-export type TextLeftovers = z.infer<typeof leftoversFile>;
+/** The glossary copies still allowed, each "<id> <id>" (validate.ts, checkTermCopies). */
+const termsFile = z.strictObject({ "term-copy": z.array(z.string()) });
 
-/** text-leftovers.json, parsed. */
+/** The phrase lists, and by flaw the ids of the rule records still allowed to carry it, with the glossary copies still allowed. */
+export interface TextLeftovers extends z.infer<typeof phrasesFile> {
+  leftovers: Record<TextFlaw | "term-copy", string[]>;
+}
+
+/** The phrase lists of leftovers/phrases.json, which the note checks read too. */
+export function readPhrases(): z.infer<typeof phrasesFile> {
+  return phrasesFile.parse(readLeftovers("phrases.json"));
+}
+
+/** The text leftovers: leftovers/phrases.json, each flaw's list from the group files, and leftovers/terms.json. */
 export function readTextLeftovers(): TextLeftovers {
-  return leftoversFile.parse(JSON.parse(readFileSync(new URL("./text-leftovers.json", import.meta.url), "utf8")));
+  const flaws = Object.fromEntries(TEXT_FLAWS.map((flaw) => [flaw, readRuleList(flaw)])) as Record<TextFlaw, string[]>;
+  return { ...readPhrases(), leftovers: { ...flaws, "term-copy": termsFile.parse(readLeftovers("terms.json"))["term-copy"] } };
 }
 
 /** The flaws a rule card's text carries, each with what was found. A record with neither text has none. */
@@ -204,8 +208,8 @@ export function staleTextLeftovers(rules: ReadonlyMap<string, RuleText>, leftove
   for (const flaw of TEXT_FLAWS)
     for (const id of leftovers.leftovers[flaw]) {
       const rule = rules.get(id);
-      if (!rule) out.push(`text-leftovers.json lists ${id} under "${flaw}", and it has no record under data/rules/: strike it`);
-      else if (!(flaw in textFlaws(rule, leftovers))) out.push(`text-leftovers.json lists ${id} under "${flaw}", which its text no longer carries: strike it (the list only shrinks)`);
+      if (!rule) out.push(`${ruleListFile(id)} lists ${id} under "${flaw}", and it has no record under data/rules/: strike it`);
+      else if (!(flaw in textFlaws(rule, leftovers))) out.push(`${ruleListFile(id)} lists ${id} under "${flaw}", which its text no longer carries: strike it (the list only shrinks)`);
     }
   return out;
 }
