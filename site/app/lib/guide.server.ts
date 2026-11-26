@@ -328,8 +328,10 @@ export function buildGuidePage(id: string, extraTermIds: string[] = [], relatedI
   const exampleFund = exampleFundId === undefined ? null : (loadFunds().find((f) => f.id === String(exampleFundId))?.names.he[0] ?? null);
   // the break rules of each bank the prose links to (its records' own), so each link opens
   for (const r of breakTerms?.breakable.flatMap((b) => b.rules) ?? []) if (allRules[r]) rules[r] = allRules[r]!;
-  // the rules the figures of the fee range, the managers' range and the break terms name, so every chip in their sheets opens
-  for (const r of valueRuleIds([feeRange, listRange, breakTerms])) {
+  // the rules the figures of the fee range, the managers' range, the break terms, the visual's facts and each run's fees name, so every
+  // chip in their sheets opens
+  const runFees = [bundle, ...Object.values(signature?.bundles ?? {})].map((b) => b?.feeValues);
+  for (const r of valueRuleIds([feeRange, listRange, breakTerms, signature?.facts, runFees])) {
     const rec = allRules[r];
     if (rec) rules[r] = rec;
   }
