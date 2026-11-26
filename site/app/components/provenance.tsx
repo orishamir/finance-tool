@@ -400,7 +400,7 @@ export function Num({ value: given, size = "inline", display, animate, className
   const doubt = value.doubt ? numbers.doubt : null;
   const label = [name, fullWord ?? text, blocked ? null : stateWord[value.state], param ? numbers.parameter : null, weak, doubt, future, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ");
   // one caution icon, before the digits, for a weak source or a date still ahead (the sheet says which); a computed figure
-  // carries the weak-source icon only at figure size, since its sheet names the weak input. The words stay out of the line: a
+  // carries the weak-source icon only at figure size, and each of its inputs says its own source in its own sheet. The words stay out of the line: a
   // word between a number and its unit ("4 לפי החברה ימי עסקים") broke the sentence. At figure size a date ahead
   // is also said in words, before the digits.
   const markWeak = weak && (value.state !== "computed" || size === "figure");
