@@ -70,20 +70,21 @@ describe("on the engine's numbers (S&P 500, 10,000 now + 500 a month, 10 years, 
   it("Hapoalim with the MTF fund: two steps, then the page's own pair", () => expect(steps("hapoalim", "1150333")).toEqual([[80770, null], [84148, 3378], [top, top - 84148]]));
   // the accumulating iShares is ranked (TXF-11: its own annex reports the ruling). Bought in whole units (F-109), the iShares unit of USD 815
   // makes 500 a month wait. VOO, priced since its record carries its yield (D85, D107), leaves the most of the S&P 500's funds at Interactive
-  // Brokers, so each climb abroad ends on it
+  // Brokers, so each climb abroad ends on it. Bank Jerusalem buys the iShares every 12 months, nine orders before the sale (F-133)
   const vooAtIb = () => Math.round(grid.cell("interactive-brokers", "us-voo")?.v ?? Number.NaN);
-  it("Bank Jerusalem with the accumulating iShares: to Interactive Brokers, then VOO there", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[76632, null], [83520, 6888], [vooAtIb(), vooAtIb() - 83520]]));
+  it("Bank Jerusalem with the accumulating iShares: to Interactive Brokers, then VOO there", () => expect(steps("jerusalem", "ie00b5bmr087")).toEqual([[77068, null], [83520, 6452], [vooAtIb(), vooAtIb() - 83520]]));
   it("Interactive Israel with the same iShares: to VOO there, then to Interactive Brokers (Tiered, the automatic conversion) with VOO", () => {
     const c = chainOf(grid, { start: { a: "interactive-israel", f: "ie00b5bmr087" }, taken: [] })!;
     expect(c.chain.map((s) => [Math.round(s.v), s.d])).toEqual([[83486, null], [84263, 777], [vooAtIb(), vooAtIb() - 84263]]);
     expect(c.chain[1]!.pos).toMatchObject({ a: "interactive-israel", f: "us-voo" });
     expect(c.chain[2]!.pos).toMatchObject({ a: "interactive-brokers", f: "us-voo" });
   });
+  // Interactive Brokers buys the distributing iShares every 2 months (F-133)
   it("Interactive Brokers with the distributing iShares: one change improves, to VOO there, and the top is the page's own pair", () => {
     const c = chainOf(grid, { start: { a: "interactive-brokers", f: "ie0031442068" }, taken: [] })!;
     expect(c.chain.map((s) => s.pos)).toEqual([{ a: "interactive-brokers", f: "ie0031442068" }, { a: "interactive-brokers", f: "us-voo" }]);
-    expect(Math.round(c.chain[0]?.v ?? Number.NaN)).toBe(83582);
-    expect(vooAtIb()).toBeGreaterThan(83582);
+    expect(Math.round(c.chain[0]?.v ?? Number.NaN)).toBe(83837);
+    expect(vooAtIb()).toBeGreaterThan(83837);
     expect(Math.round(c.ceiling.v)).toBe(top);
   });
   // the lanes' held heights are measured from these cases: every lane any start shows has a case with each of its rows, in the

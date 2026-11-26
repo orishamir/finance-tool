@@ -5,9 +5,8 @@ A fund the person types, and a securities account typed by hand before a deal to
 move of a typed account, method §10.4): the figures check that deal, priced as F-128 prices a deal, against what the typed account left.
 On a plain plan: no spread, no tracking gap, no surtax. The plan's purchases are placed every k months (F-133: k of 1, 2, 3, 4, 6 and 12, the
 deposits between orders waiting in shekels, earning nothing, and above a month no order in the month of the sale); each figure is at the k
-F-133 chooses: by the real value before tax, a k above 1 only where it leaves more than monthly by more than the tie share θ (P-01) of
-monthly's, the most of those, the smaller k on a tie. The tax rates, θ and the
-collected tariff come from the data files, the terms from the test. A run on the site starts month 1 in its run date's month, so the
+F-133 chooses: the one that leaves the most in real value before tax, the smaller k on a tie (within a part in a billion). The tax rates
+and the collected tariff come from the data files, the terms from the test. A run on the site starts month 1 in its run date's month, so the
 exit's tax year, whose fees are deducted from the gain (F-09), holds the months since the last January: the figures are printed for each
 calendar month of month 1, and the test reads the one of its run date. Run it and copy nothing by hand:
 `python3 tests/golden/expected_custom_entries.py`.
@@ -17,12 +16,6 @@ import json
 import os
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")
-
-
-with open(os.path.join(ROOT, "data", "parameters", "tie-threshold.json"), encoding="utf8") as _f:
-    _p = json.load(_f)
-    assert _p["method_id"] == "P-01" and _p["value"]["unit"] == "pct"
-    THETA = _p["value"]["value"] / 100  # P-01, the tie share
 
 
 def rule_rate(rule_file, figure="rate"):
@@ -51,13 +44,12 @@ INTERVALS = (1, 2, 3, 4, 6, 12)
 
 
 def run(*args, **kwargs):
-    """F-133: the run at the interval chosen before tax: above monthly only past monthly by more than θ of monthly's value, then the most,
-    the smaller interval on a tie. Returns the chosen run's real value after tax."""
-    monthly_after, monthly_before = run_every(*args, every=1, **kwargs)
-    chosen_after, most = monthly_after, None
+    """F-133: the run at the interval that leaves the most before tax, the smaller interval on a tie (within a part in a billion). Returns
+    the chosen run's real value after tax."""
+    chosen_after, most = run_every(*args, every=1, **kwargs)
     for k in INTERVALS[1:]:
         after, before = run_every(*args, every=k, **kwargs)
-        if before - monthly_before > THETA * abs(monthly_before) and (most is None or before > most):
+        if before - most > 1e-9 * abs(most):
             chosen_after, most = after, before
     return chosen_after
 

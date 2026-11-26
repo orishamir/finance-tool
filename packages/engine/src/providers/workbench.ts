@@ -910,28 +910,26 @@ export function intervalWays(ways: readonly BuyWay[], plan: { monthly: number; m
 
 /**
  * F-133 Which interval, within one way: the index of the run chosen among a way's runs at each interval (`intervalWays`, monthly first where
- * it is tried), by the real value at the horizon before tax (`beforeTax`). An interval above a month is chosen only where it leaves more
- * than monthly by more than the tie share `theta` (P-01, F-80) of monthly's value: the tax a monthly plan pays is raised by the fees G-20
- * leaves out of its cost basis, so after tax batching could win through that alone, and a change to how the person buys needs a clear gain.
- * Of the intervals that pass, the one that leaves the most, the smaller on a tie. A way not tried monthly takes its one run.
+ * it is tried), the one that leaves the most at the horizon before tax (`beforeTax`), the smaller interval on a tie. Before tax, since the tax
+ * a monthly plan pays is raised by the fees G-20 leaves out of its cost basis, so after tax batching could win through that alone. A way not
+ * tried monthly takes its one run.
  */
-export function intervalChosen(runs: readonly { way: BuyWay; run: RunResult }[], theta: number): number {
+export function intervalChosen(runs: readonly { way: BuyWay; run: RunResult }[]): number {
   const first = runs[0];
   if (!first) throw new Error("F-133: a way is tried at one interval at least");
   if (orderEveryOf(first.way) !== 1) return 0;
-  const monthly = beforeTax(first.run);
   let chosen = 0;
-  let most = monthly;
+  let most = beforeTax(first.run);
   for (let i = 1; i < runs.length; i++) {
     const b = beforeTax(runs[i]!.run);
-    if (b - monthly > theta * Math.abs(monthly) && (chosen === 0 || leavesMore(b, most))) [chosen, most] = [i, b];
+    if (leavesMore(b, most)) [chosen, most] = [i, b];
   }
   return chosen;
 }
 
 /**
- * F-133: whether an interval leaves more than the one before it, by more than the rounding of a double (a part in a billion): two that
- * leave the same are a tie, which keeps the smaller interval.
+ * F-133: whether an interval leaves more than the most of the smaller ones, by more than the rounding of a double (a part in a
+ * billion): two that leave the same are a tie, which keeps the smaller interval.
  */
 const leavesMore = (a: number, b: number): boolean => a - b > 1e-9 * Math.abs(b);
 
@@ -1196,7 +1194,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
     // F-133: each way at the interval it chooses, before tax; F-109: of the ways, the one that leaves the most at the horizon, its own on a tie
     const byWay = intervalWays(ways, { monthly: input.goal.monthly, months: horizon, paysOut: !!input.fund.distribution, ...(input.behaviour ? { behaviour: input.behaviour } : {}) }).map((tried) => {
       const runs = tried.map((w) => ({ way: w, run: runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx) }));
-      return runs[intervalChosen(runs, input.theta)]!;
+      return runs[intervalChosen(runs)]!;
     });
     let { way, run } = byWay[0]!;
     for (const other of byWay.slice(1)) if (other.run.real > run.real) ({ way, run } = other);

@@ -152,15 +152,18 @@ describe("which interval a way takes (F-133)", () => {
   // a run as the choice reads it: its real value after tax and the tax it paid, at an index of 1
   const at = (orderEvery: 1 | 2 | 3 | 4 | 6 | 12, real: number, tax: number) =>
     ({ way: orderEvery === 1 ? {} : { orderEvery }, run: { real, taxDuring: 0, taxAtExit: tax, nominal: real, exitMonth: 12, series: [{ month: 12, index: 1 }] } }) as unknown as Parameters<typeof intervalChosen>[0][number];
-  it("an interval above a month only where it leaves more than monthly before tax, by more than the tie share of monthly's value", () => {
-    // monthly leaves 10,000 before tax; θ = 0.5% is 50 ₪. Every 3 months 10,040 before tax (40 more, within θ), though more after tax (G-20)
-    expect(intervalChosen([at(1, 9_000, 1_000), at(3, 9_100, 940)], 0.005)).toBe(0);
-    // every 6 months 10,060 before tax: past θ
-    expect(intervalChosen([at(1, 9_000, 1_000), at(3, 9_100, 940), at(6, 9_050, 1_010)], 0.005)).toBe(2);
+  it("the interval that leaves the most before tax, though another leaves more after tax (G-20)", () => {
+    // monthly leaves 10,000 before tax; every 3 months 10,040 before tax, and more after tax too
+    expect(intervalChosen([at(1, 9_000, 1_000), at(3, 9_100, 940)])).toBe(1);
+    // every 6 months 10,060 before tax though less after tax than every 3 months
+    expect(intervalChosen([at(1, 9_000, 1_000), at(3, 9_100, 940), at(6, 9_050, 1_010)])).toBe(2);
+    // every 2 months more after tax alone: 9,950 before tax, under monthly
+    expect(intervalChosen([at(1, 9_000, 1_000), at(2, 9_050, 900)])).toBe(0);
   });
-  it("of the intervals past the margin, the one that leaves the most before tax, the smaller on a tie", () => {
-    expect(intervalChosen([at(1, 9_000, 1_000), at(2, 9_100, 1_000), at(4, 9_200, 1_000), at(12, 9_150, 1_000)], 0.005)).toBe(2);
-    expect(intervalChosen([at(1, 9_000, 1_000), at(2, 9_200, 1_000), at(4, 9_100, 1_100)], 0.005)).toBe(1);
+  it("the smaller interval on a tie, within a part in a billion", () => {
+    expect(intervalChosen([at(1, 9_000, 1_000), at(2, 9_100, 1_000), at(4, 9_200, 1_000), at(12, 9_150, 1_000)])).toBe(2);
+    expect(intervalChosen([at(1, 9_000, 1_000), at(2, 9_200, 1_000), at(4, 9_100, 1_100)])).toBe(1);
+    expect(intervalChosen([at(1, 9_000, 1_000), at(3, 9_000, 1_000 + 1e-6)])).toBe(0);
   });
 });
 
