@@ -50,7 +50,6 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "IRA-03": { why: "a count", files: [] },
   "IRA-17": { why: "a range of fee averages", files: [] },
   "ETF-32": { why: "a list", files: [] },
-  "ETF-43": { why: "a count", files: [] },
   "ETF-50": { why: "a count", files: [] },
   "BRK-32": { why: "TASE's member register", files: [] },
   "TXS-24": { why: "a count over Maya's export", files: [] },
