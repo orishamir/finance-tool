@@ -82,7 +82,7 @@ Scope: in: the mechanics and risks of a bond and its nearest cousins as official
 
 ### BND-08 Reinvestment risk: money coming back is reinvested at the rates of its day
 - Rule: The OSC, after an example where rates fall: "If you don’t sell, you’ll keep getting interest payments. However, if you reinvest that money, you’ll make less interest on it."; after rates rise: "If you reinvest that money, you’ll make more interest on it." ASIC's yield to maturity assumes coupons reinvested "at the same interest rate the bond is earning" (BND-03).
-- Conditions / exceptions: Kind of claim: math (docs/method.md M-02, M-08). No Israeli official text read names reinvestment risk; math proves it (docs/method.md M-02, M-08). The ISA's comparison of money-market funds shows the same choice inside a fund: a daily fund's yield follows the Bank of Israel's rate and can change with it, while a fixed-period fund's expected yield is not affected by rate changes during its period (MF-34, MF-35). The trade-off with price risk is BND-12.
+- Conditions / exceptions: Kind of claim: math (docs/method.md M-02, M-08). No Israeli official text read names reinvestment risk; math proves it (docs/method.md M-02, M-08). The same choice inside money-market funds: MF-34, MF-35. The trade-off with price risk is BND-12.
 - Figures: none
 - Source: [Factors that affect bond prices and how to monitor them (GetSmarterAboutMoney.ca, Ontario Securities Commission)](https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/3-factors-that-affect-bond-prices/) "However, if you reinvest that money, you’ll make less interest on it." · checked 2026-11-15 · primary (foreign regulator, general mechanism). MF-34, MF-35.
 - Scope: general
