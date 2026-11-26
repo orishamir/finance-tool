@@ -504,7 +504,7 @@ export function balanceFeeOnly(fund: Partial<Pick<CmaFund, "fund_classification"
   return (fund.names?.cma ?? []).some((n) => IRA_NAME.test(n));
 }
 
-/** CMA fee fields to value objects (data-schema 3.13; CAT-35 to CAT-39, CAT-06). Pure. */
+/** CMA fee fields to value objects (data-schema 3.13; CAT-35 to CAT-39). Pure. */
 export function buildFees(
   file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
   fund: Pick<CmaFund, "raw_fields" | "inception_date"> & Partial<Pick<CmaFund, "fund_classification" | "names">>,
@@ -512,7 +512,7 @@ export function buildFees(
   const config = DATASETS.find((d) => d.dataset === file.dataset)!;
   const year = feeYear(file.report_period);
   const pension = file.dataset === "pensia-net";
-  const ruleIds = ["CAT-35", "CAT-36", "CAT-37", "CAT-06", ...(pension ? ["CAT-39"] : [])];
+  const ruleIds = ["CAT-35", "CAT-36", "CAT-37", ...(pension ? ["CAT-39"] : [])];
   const make = (f: (typeof FEE_FIELDS)[number]) => {
     const rawText = (fund.raw_fields[f.raw] ?? "").trim();
     const n = rawText === "" ? null : Number(rawText);
@@ -574,7 +574,7 @@ const periodEnd = (period: string): string => {
 
 /**
  * CMA amount fields to value objects, in NIS millions at the period end (CAT-03 for the unit of TOTAL_ASSETS; the units of
- * STOCK_MARKET_EXPOSURE and FOREIGN_CURRENCY_EXPOSURE are read the same way, inferred: the dictionary does not state them, CAT OQ4).
+ * STOCK_MARKET_EXPOSURE and FOREIGN_CURRENCY_EXPOSURE are read the same way, inferred: the dictionary does not state them, CAT-44, CAT OQ4).
  * Undefined when the file has none of the columns. Pure.
  */
 export function buildHoldings(

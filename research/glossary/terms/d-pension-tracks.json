@@ -1630,7 +1630,6 @@
     "rule_ids": [
       "CAT-09",
       "CAT-11",
-      "PF-29",
       "REG-17",
       "REG-18"
     ],
@@ -2526,8 +2525,8 @@
     ],
     "explain_he": "המסלול שאליו נכנס הכסף כשלא בוחרים מסלול השקעה בעת ההצטרפות",
     "rule_ids": [
-      "CAT-18",
-      "CAT-19",
+      "KH-19",
+      "CAT-58",
       "PEN-17",
       "PF-24"
     ],
@@ -2544,7 +2543,7 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "In pension and tagmulim funds the default is the age-dependent track (CAT-19, PEN-17); in kupat gemel lehashkaa it is set in the bylaws; in keren hishtalmut it must be general or flexible index-tracking (CAT-18). Meitav's label for track 7978 is the second variant. Not the same as the default insurance track in a pension fund (PEN-11).",
+    "notes": "In pension and tagmulim funds the default is the age-dependent track (CAT-58, PEN-17); in kupat gemel lehashkaa it is set in the bylaws; in keren hishtalmut it must be general or flexible index-tracking (KH-19, PF-24). Meitav's label for track 7978 is the second variant. Not the same as the default insurance track in a pension fund (PEN-11).",
     "id": "mslvl-hshkah-bryrt-mchdl"
   },
   {
@@ -2693,7 +2692,7 @@
     "rule_ids": [
       "CAT-17",
       "CAT-18",
-      "CAT-19",
+      "CAT-58",
       "PEN-17"
     ],
     "source": {
@@ -2781,7 +2780,7 @@
     "rule_ids": [
       "CAT-10",
       "CAT-17",
-      "CAT-23"
+      "CAT-49"
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
@@ -2896,7 +2895,7 @@
     ],
     "explain_he": "מסלול שרוב הכסף בו בנכסים בשקלים שלא צמודים ולא חשופים למטבע חוץ: פיקדונות, מלוות ממשלה, הלוואות ואיגרות חוב בשקלים",
     "rule_ids": [
-      "CAT-23",
+      "CAT-56",
       "CAT-20",
       "CAT-11"
     ],
@@ -2923,7 +2922,7 @@
     "variants_he": [],
     "explain_he": "מסלול שרוב הכסף בו בחוב, בישראל ובחוץ לארץ: פיקדונות, איגרות חוב של חברות ושל ממשלות, ניירות ערך מסחריים, הלוואות לא סחירות לחברות ולאנשים פרטיים וקרנות חוב. הרשימה לא קובעת בו חלק למניות.",
     "rule_ids": [
-      "CAT-23",
+      "CAT-57",
       "CAT-47"
     ],
     "source": {
@@ -2951,7 +2950,7 @@
     ],
     "explain_he": "כמו מסלול אשראי ואג״ח, ועוד חלק מוגבל במניות, שהשם נוקב בו. המסלול קיים רק בקרן השתלמות, בקופת גמל להשקעה ובפוליסת חיסכון.",
     "rule_ids": [
-      "CAT-23",
+      "CAT-57",
       "CAT-17",
       "CAT-25"
     ],
@@ -3145,7 +3144,6 @@
     "explain_he": "מסלול השקעה שבו הכסף עוקב אחרי מדד S&P 500, חוץ מחלק שמוחזק במזומן ובדומיו לצורך הפקדות ומשיכות, וייתכן בו סיכון מטבע",
     "rule_ids": [
       "CAT-45",
-      "CAT-23",
       "CAT-10"
     ],
     "source": {
@@ -3175,7 +3173,7 @@
     "explain_he": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדים שונים של מניות או של איגרות חוב. השיעור של כל מדד יכול לנוע בתוך טווח שנקבע.",
     "rule_ids": [
       "CAT-18",
-      "CAT-23",
+      "CAT-49",
       "CAT-24",
       "CAT-26"
     ],
@@ -3189,7 +3187,7 @@
       "app",
       "decoder:track"
     ],
-    "notes": "Policy text from Meitav (institution). Meitav moves these tracks to an actively managed, more balanced mix from 1.7.2026 (CAT-24). Old name 'פאסיבי - כללי' looks like a general track but is this one (CAT-26). Mandatory offering in provident funds other than study and investment-provident funds; allowed default for study funds (CAT-18).",
+    "notes": "Policy text from Meitav (institution). Meitav moves these tracks to an actively managed, more balanced mix from 1.7.2026 (CAT-24). Old name 'פאסיבי - כללי' looks like a general track but is this one (CAT-26). Mandatory offering in provident funds other than study and investment-provident funds; allowed default for study funds (KH-19).",
     "id": "avkb-mddym-gmysh"
   },
   {
@@ -3351,7 +3349,8 @@
     ],
     "explain_he": "מסלול למי שכבר מקבלים קצבה, שעוקב באמצעות מוצרים עוקבי מדד אחרי כמה מדדים שונים של מניות או של איגרות חוב",
     "rule_ids": [
-      "CAT-51"
+      "CAT-51",
+      "CAT-49"
     ],
     "source": {
       "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (17.4.2024), עמ' 3, \"מסלולים מתמחים למקבלי קצבה\"",
@@ -3408,13 +3407,13 @@
     "variants_he": [],
     "explain_he": null,
     "rule_ids": [
-      "CAT-23"
+      "CAT-57"
     ],
     "source": null,
     "where": [
       "app"
     ],
-    "notes": "Researched 2026-11-07: no official text read defines 'אשראי' on its own (CAT OQ33); the list of tracks names the debt assets of 'אשראי ואג\"ח' (CAT-23), which that row explains. Keep in section 4 until a definition is found."
+    "notes": "Researched 2026-11-07: no official text read defines 'אשראי' on its own (CAT OQ33); the list of tracks names the debt assets of 'אשראי ואג\"ח' (CAT-57), which that row explains. Keep in section 4 until a definition is found."
   },
   {
     "term_he": "מסלול אירוח",
@@ -3497,7 +3496,7 @@
     "rule_ids": [
       "CAT-01",
       "CAT-29",
-      "CAT-32"
+      "CAT-04"
     ],
     "source": {
       "title": "Gemel-Net dataset metadata (CMA via data.gov.il)",
@@ -3509,7 +3508,7 @@
       "decoder:company",
       "decoder:track"
     ],
-    "notes": "Hebrew spelling missing in il-finance: CAT writes 'Gemel-Net' (dataset id 'gemelnet'). Also covers child-savings, central-severance and other-purpose funds (CAT-01). Yields are nominal and gross of fees (CAT-32).",
+    "notes": "Hebrew spelling missing in il-finance: CAT writes 'Gemel-Net' (dataset id 'gemelnet'). Also covers child-savings, central-severance and other-purpose funds (CAT-01). Yields are nominal and gross of fees (CAT-04).",
     "id": "gml-nt"
   },
   {
@@ -3950,8 +3949,8 @@
     ],
     "explain_he": "ממוצע דמי הניהול מהחיסכון שנגבו בפועל מהחוסכים במסלול, ולא המחיר שכל חשבון משלם",
     "rule_ids": [
-      "CAT-03",
-      "CAT-06",
+      "CAT-35",
+      "CAT-37",
       "PEN-24"
     ],
     "source": {
@@ -3965,7 +3964,7 @@
       "pensia-net",
       "decoder:track"
     ],
-    "notes": "Averaging method and period not defined by the CMA; Meitav labels it the previous-year average and the value changes each January (CAT-06, CAT OQ2). Null for tracks with no prior year. Pension fees appear to be reported at fund level (CAT OQ15). Percent values.",
+    "notes": "Averaging method and period not defined by the CMA; Meitav labels it the previous-year average and the value changes each January (CAT-36, CAT OQ2). Null for tracks with no prior year. Pension fees appear to be reported at fund level (CAT OQ15). Percent values.",
     "id": "shyavr-dmy-nyhvl-mmvtzat-shnty-nksym"
   },
   {
@@ -3979,8 +3978,8 @@
     ],
     "explain_he": "ממוצע דמי הניהול מההפקדות שנגבו בפועל מהחוסכים במסלול, ולא המחיר שכל חשבון משלם",
     "rule_ids": [
-      "CAT-03",
-      "CAT-06",
+      "CAT-35",
+      "CAT-37",
       "PEN-24"
     ],
     "source": {
@@ -3994,7 +3993,7 @@
       "pensia-net",
       "decoder:track"
     ],
-    "notes": "Same caveats as the balance-fee average (CAT-06). Field AVG_DEPOSIT_FEE (gemel) / AVG_FEE_ON_DEPOSITS (pension).",
+    "notes": "Same caveats as the balance-fee average (CAT-36, CAT-37). Field AVG_DEPOSIT_FEE (gemel) / AVG_FEE_ON_DEPOSITS (pension).",
     "id": "shyavr-dmy-nyhvl-mmvtzat-hpkdvt"
   },
   {
@@ -4007,8 +4006,7 @@
     "explain_he": "התשואה של המסלול באותו חודש, באחוזים, לפני ניכוי דמי ניהול ולפני מס",
     "rule_ids": [
       "CAT-04",
-      "CAT-05",
-      "CAT-32"
+      "CAT-05"
     ],
     "source": {
       "title": "Gemel-Net, מקורות המידע והנחות מערכת (CMA)",
@@ -4019,7 +4017,7 @@
     "where": [
       "decoder:track"
     ],
-    "notes": "Nominal and gross (CAT-04, CAT-32). Whether direct expenses are deducted is not stated (CAT OQ2).",
+    "notes": "Nominal and gross (CAT-04). Whether direct expenses are deducted is not stated (CAT OQ2).",
     "id": "tshvah-chvdshyt"
   },
   {
@@ -4107,8 +4105,7 @@
     ],
     "explain_he": "תשואות לפני ניכוי דמי ניהול ולפני מס, ובלי התאמה לעליית המחירים במשק",
     "rule_ids": [
-      "CAT-04",
-      "CAT-32"
+      "CAT-04"
     ],
     "source": {
       "title": "Gemel-Net, מקורות המידע והנחות מערכת (CMA)",
@@ -4227,7 +4224,7 @@
     "variants_he": [],
     "explain_he": "הסכום מתוך נכסי המסלול שמושקע במניות, לפי הדיווח החודשי לרשות שוק ההון",
     "rule_ids": [
-      "CAT-03",
+      "CAT-44",
       "CAT-24"
     ],
     "source": {
@@ -4239,7 +4236,7 @@
     "where": [
       "decoder:track"
     ],
-    "notes": "Unit inferred as NIS millions, not percent; the share of assets is a computation (exposure ÷ total assets) (CAT-03). Whether derivatives or look-through count is unknown (CAT OQ4). CAT Terms writes the three exposure fields as one entry 'חשיפה למניות / לחו\"ל / למט\"ח'.",
+    "notes": "Unit inferred as NIS millions, not percent; the share of assets is a computation (exposure ÷ total assets) (CAT-44). Whether derivatives or look-through count is unknown (CAT OQ4). CAT Terms writes the three exposure fields as one entry 'חשיפה למניות / לחו\"ל / למט\"ח'.",
     "id": "chshyph-lmnyvt"
   },
   {
@@ -4251,7 +4248,7 @@
     "variants_he": [],
     "explain_he": "הסכום מתוך נכסי המסלול שמושקע מחוץ לישראל, לפי הדיווח החודשי לרשות שוק ההון",
     "rule_ids": [
-      "CAT-03",
+      "CAT-44",
       "CAT-24"
     ],
     "source": {
@@ -4263,7 +4260,7 @@
     "where": [
       "decoder:track"
     ],
-    "notes": "Same unit and basis caveats as equity exposure (CAT-03, CAT OQ4).",
+    "notes": "Same unit and basis caveats as equity exposure (CAT-44, CAT OQ4).",
     "id": "chshyph-lchvl"
   },
   {
@@ -4275,7 +4272,7 @@
     "variants_he": [],
     "explain_he": "הסכום מתוך נכסי המסלול שמושקע בנכסים במטבע זר, לפי הדיווח החודשי לרשות שוק ההון",
     "rule_ids": [
-      "CAT-03"
+      "CAT-44"
     ],
     "source": {
       "title": "Gemel-Net field dictionary \"פירוט שינויים פורמט חדש גמל\" (CMA via data.gov.il)",
@@ -4347,7 +4344,6 @@
     "rule_ids": [
       "REG-07",
       "REG-08",
-      "REG-10",
       "REG-13"
     ],
     "source": {
@@ -4472,7 +4468,6 @@
     "variants_he": [],
     "explain_he": "הכסף בקופה מוחזק לטובת החוסכים: החברה מנהלת אותו כנאמן, בנפרד מהרכוש שלה, ואי אפשר לעקל אותו",
     "rule_ids": [
-      "PF-29",
       "REG-18",
       "REG-19"
     ],
@@ -4502,7 +4497,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "Law wording: 'חברה מנהלת תשמש נאמן על נכסי קופות הגמל', 'בנפרד מרכושה', 'נכסי קופת גמל אינם ניתנים לעיקול'. Market losses are not protected and there is no state guarantee of value, except the pension return top-up (PF-29, REG-21). Mutual funds have a parallel rule with a separate trustee (see 'נאמן'). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
+    "notes": "Law wording: 'חברה מנהלת תשמש נאמן על נכסי קופות הגמל', 'בנפרד מרכושה', 'נכסי קופת גמל אינם ניתנים לעיקול'. Market losses are not protected and there is no state guarantee of value, except the pension return top-up (REG-18, REG-21). Mutual funds have a parallel rule with a separate trustee (see 'נאמן'). Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)) to the official text.",
     "id": "namnvt-vhprdt-nksym"
   },
   {
@@ -4514,8 +4509,9 @@
     "variants_he": [],
     "explain_he": "גוף שמחזיק את נכסי קרן הנאמנות לטובת המשקיעים, בנפרד מהרכוש שלו, ומפקח על מנהל הקרן",
     "rule_ids": [
-      "REG-10",
+      "MF-02",
       "REG-11",
+      "REG-38",
       "REG-12"
     ],
     "source": {
@@ -4543,7 +4539,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "In a provident fund the managing company itself is the trustee (REG-18); in a mutual fund it is a separate trust company (REG-10). Fund assets cannot be attached in either case. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות) to the official text. Fix pass 2026-11-07: page added: s. 76(א) (p. 56) vests the fund's assets in the trustee for the unit holders, separate from its own property; s. 78 (p. 57) has it supervise the manager.",
+    "notes": "In a provident fund the managing company itself is the trustee (REG-18); in a mutual fund it is a separate trust company (MF-01). Fund assets cannot be attached in either case. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות) to the official text. Fix pass 2026-11-07: page added: s. 76(א) (p. 56) vests the fund's assets in the trustee for the unit holders, separate from its own property; s. 78 (p. 57) has it supervise the manager.",
     "id": "namn-d"
   },
   {
@@ -4800,8 +4796,7 @@
     ],
     "explain_he": "כמה מהכסף במסלול חשוף למחירי המניות ולשער המטבע הזר: מה שהמסלול מחזיק, ועוד חוזים פיננסיים (נגזרים) על מניות ועל מטבע. החשיפה דרך החוזים נוספת על מה שהמסלול מחזיק, ולכן היא יכולה לעבור את 100%. השקעה אחת יכולה להיספר בשתיהן: מניה בחו\"ל היא גם מניה וגם מט\"ח.",
     "rule_ids": [
-      "CAT-44",
-      "CAT-03"
+      "CAT-44"
     ],
     "source": {
       "title": "חוזר גופים מוסדיים 2015-9-9: דוח חודשי לגבי קופות גמל, קרנות פנסיה וחברות ביטוח (רשות שוק ההון), עמ' 10 עד 11",

@@ -1,0 +1,127 @@
+{
+  "id": "GOV-29",
+  "title": "New Gilon (גילון חדש): an older floating-rate type with a margin and a 0% floor, no longer issued",
+  "title_he": "״גילון חדש״: סוג ישן של איגרת בריבית משתנה, עם מרווח ורצפה, שכבר לא מונפק",
+  "text_he": "״גילון חדש״ הוא סוג ישן של איגרת חוב ממשלתית בריבית משתנה, שכבר לא מונפק, והתקנות שלו משנת 1999 חלות רק על הסדרות שלו. לפי התקנות האלה, הריבית היא ממוצע תשואות של מק״מ שנותרו לו שלושה חודשים עד שנה לפדיון, ואליו מוסיפים מרווח שנקבע בהנפקה, עד {GOV-29:margin_cap}. תקופות הריבית אחרי הראשונה הן של שלושה חודשים, והקופון לא יורד מתחת לרצפה של {GOV-29:coupon_floor}. התקנות מאפשרות תקופה של שנה עד 25 שנים.",
+  "figure_names_he": {
+    "margin_cap": "תקרת המרווח מעל תשואת המק״מ",
+    "coupon_floor": "רצפת הקופון"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "distribution-policy"
+  ],
+  "likely_to_change": "no",
+  "figures": {
+    "margin_cap": {
+      "value": 4,
+      "unit": "pct",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=3",
+        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951), p.3, reg. 1 (ריבית משתנה): \"ושלא יעלה על 4%\"",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-29"
+      ],
+      "state": "sourced",
+      "notes": "Margin over the makam reference yield, set at issue, of no more than 4%: the 1999 \"גילון חדש\" regulations only, which govern the older series and are no longer issued. The 2006 regulations for the type auctioned now have no margin."
+    },
+    "coupon_floor": {
+      "value": 0,
+      "unit": "pct",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=3",
+        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951), p.3, reg. 7(ג)-(ד)",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "GOV-29"
+      ],
+      "state": "sourced",
+      "notes": "The coupon \"לא יפחת מ-0%\" (1999 \"גילון חדש\" regulations, reg. 9): the older series only. The 2006 regulations for the type auctioned now have no floor."
+    }
+  },
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/he/pages/govermental-bonds",
+      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020)",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020)",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "tab מאפייני אג״ח סחיר, table אג״ח לא צמוד, row גילון חדש",
+      "quote": "* איגרת החוב אינה מונפקת עוד",
+      "checked": "2026-10-26"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=2",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951)",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״), התשנ״ט-1999",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.2, reg. 1; p.3, regs. 4, 7; p.4, reg. 9",
+      "locator_he": "עמוד 2, תקנה 1; עמוד 3, תקנות 4, 7; עמוד 4, תקנה 9",
+      "page": 2,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpNDaj2+z9ida9BlI~8SpmA=#page=3",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"א-2000 (קובץ התקנות 6069)",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״א-2000 (קובץ התקנות 6069)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.3, reg. 7(ב) as",
+      "page": 3,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=9",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״ו-2006 (קובץ התקנות 6457)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.9, reg. 5 as",
+      "page": 9,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=6",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\") (תיקון), התשס\"ז-2007 (קובץ התקנות 6597)",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג ״גילון חדש״) (תיקון), התשס״ז-2007 (קובץ התקנות 6597)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6, reg. 9א as",
+      "page": 6,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "GOV-14"
+  ]
+}

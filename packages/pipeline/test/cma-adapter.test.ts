@@ -109,7 +109,7 @@ describe("normalise", () => {
           tax_year: null,
           update_rule: "market",
           state: "sourced",
-          rule_ids: ["CAT-35", "CAT-36", "CAT-37", "CAT-06"],
+          rule_ids: ["CAT-35", "CAT-36", "CAT-37"],
           source: expect.objectContaining({ strength: "primary", title: expect.stringContaining("AVG_ANNUAL_MANAGEMENT_FEE") }),
         }),
         avg_deposit_fee: expect.objectContaining({ value: 0.05, unit: "pct_of_deposit" }),

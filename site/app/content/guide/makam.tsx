@@ -10,21 +10,21 @@ import { Callout, Sentence, TextLink } from "../../components/kit";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
-    const series = figure("GOV-22", "series_outstanding");
+    const series = figure("GOV-23", "series_outstanding");
     return (
       <>
         <p className="max-w-measure">
           המק״מ לא משלם <Term id="ריבית">ריבית</Term> ולא <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>: קונים אותו במחיר נמוך <Term prefix="מה" id="שווי נקוב">שווי הנקוב</Term>. במועד <Term prefix="ה" id="פדיון">פדיון</Term> <Ruled id={["GOV-03", "GOV-02"]}>המדינה משלמת את השווי הנקוב במלואו</Ruled>. ההפרש הוא הרווח שלכם. במס הוא נחשב <Term id="דמי ניכיון">דמי ניכיון</Term>, <Ruled id="TXI-01">כלומר ריבית</Ruled>.
         </p>
         <Sentence measure>
-          <Ruled id="GOV-23">בכל חודש מונפקת סדרה חדשה לכשנה</Ruled>, ולכן בכל רגע יש {series ? <Num value={series} /> : null} סדרות בשוק, עם מועדי פדיון שונים. מי שמחזיק עד הסוף <Ruled id="GOV-22">יודע כבר ביום הקנייה</Ruled> מה <Term prefix="ה" id="תשואה לפדיון">תשואה לפדיון</Term> שלו. אין קופונים שצריך להשקיע מחדש בדרך. לכן התשואה לפדיון <Ruled id="GOV-06">היא בדיוק הרווח לשנה עד הפדיון</Ruled>, לפני עמלות ומס הכנסה. <ProofsChip ids={["M-02"]} />
+          <Ruled id="GOV-23">בכל חודש מונפקת סדרה חדשה לכשנה</Ruled>, ולכן בכל רגע יש {series ? <Num value={series} /> : null} סדרות בשוק, עם מועדי פדיון שונים. מי שמחזיק עד הסוף <Ruled id="GOV-26">יודע כבר ביום הקנייה</Ruled> מה <Term prefix="ה" id="תשואה לפדיון">תשואה לפדיון</Term> שלו. אין קופונים שצריך להשקיע מחדש בדרך. לכן התשואה לפדיון <Ruled id="GOV-06">היא בדיוק הרווח לשנה עד הפדיון</Ruled>, לפני עמלות ומס הכנסה. <ProofsChip ids={["M-02"]} />
         </Sentence>
       </>
     );
   },
   who: ({ figure }) => {
     const minOrder = figure("GOV-24", "min_order_makam_face_value");
-    const lastDays = figure("GOV-24", "last_trading_days");
+    const lastDays = figure("GOV-31", "last_trading_days");
     return (
       <>
         <p className="max-w-measure">
@@ -75,10 +75,10 @@ export const content: GuideContent = {
   risks: () => (
     <>
       <p className="max-w-measure">
-        את השווי הנקוב <Ruled id="GOV-02">משלמת המדינה מהכנסותיה הכלליות</Ruled>, לא הבנק ולא <Term prefix="ה" id="ברוקר">ברוקר</Term>. בנק ישראל מתאר את המק״מ כהשקעה שנחשבת <Ruled id="GOV-22">חסרת סיכון, עם תשואה ידועה מראש</Ruled>. למי שמחזיק עד הפדיון <Ruled id="GOV-03">הסכום בשקלים ידוע מראש</Ruled>, אבל <Ruled id="BND-09">לא מה הוא יקנה</Ruled>.
+        את השווי הנקוב <Ruled id="GOV-02">משלמת המדינה מהכנסותיה הכלליות</Ruled>, לא הבנק ולא <Term prefix="ה" id="ברוקר">ברוקר</Term>. בנק ישראל מתאר את המק״מ כהשקעה שנחשבת <Ruled id="GOV-26">חסרת סיכון, עם תשואה ידועה מראש</Ruled>. למי שמחזיק עד הפדיון <Ruled id="GOV-03">הסכום בשקלים ידוע מראש</Ruled>, אבל <Ruled id="BND-09">לא מה הוא יקנה</Ruled>.
       </p>
       <p className="max-w-measure">
-        מי שמוכר קודם <Ruled id="GOV-17">מקבל את מחיר השוק של אותו יום</Ruled>. <Ruled id="BND-01">המחיר הזה זז הפוך לריבית</Ruled>: כשהריבית במשק עולה, המחיר יורד, כי מק״מ חדש נותן תשואה גבוהה יותר. אבל <Ruled id="GOV-23">כל סדרה מונפקת לכשנה</Ruled>, ולכן שינוי בריבית מזיז את המחיר רק מעט: <Ruled id={["BND-04", "GOV-06"]}>בערך השינוי בריבית כפול החלק מהשנה שנשאר</Ruled>. באיגרת חוב ארוכה אותו שינוי מזיז את המחיר הרבה יותר, כמו שמוסבר <TextLink to="/guide/government-bond">בעמוד על האיגרות של המדינה</TextLink>. <ProofsChip ids={["M-01", "M-03"]} />
+        מי שמוכר קודם <Ruled id="BND-02">מקבל את מחיר השוק של אותו יום</Ruled>. <Ruled id="BND-01">המחיר הזה זז הפוך לריבית</Ruled>: כשהריבית במשק עולה, המחיר יורד, כי מק״מ חדש נותן תשואה גבוהה יותר. אבל <Ruled id="GOV-23">כל סדרה מונפקת לכשנה</Ruled>, ולכן שינוי בריבית מזיז את המחיר רק מעט: <Ruled id={["BND-04", "GOV-06"]}>בערך השינוי בריבית כפול החלק מהשנה שנשאר</Ruled>. באיגרת חוב ארוכה אותו שינוי מזיז את המחיר הרבה יותר, כמו שמוסבר <TextLink to="/guide/government-bond">בעמוד על האיגרות של המדינה</TextLink>. <ProofsChip ids={["M-01", "M-03"]} />
       </p>
       <p className="max-w-measure">
         <Ruled id="GOV-03">המק״מ לא צמוד למדד</Ruled>: אם המחירים עולים יותר מהתשואה, הכסף שווה פחות בסוף.
@@ -96,7 +96,7 @@ export const content: GuideContent = {
     return (
     <>
       <p className="max-w-measure">
-        כסף שצריך לשבת כמה חודשים עד שנה, כשרוצים <Term id="תשואה">תשואה</Term> <Ruled id="GOV-22">ידועה מראש ואפשרות למכור בכל יום מסחר</Ruled>.
+        כסף שצריך לשבת כמה חודשים עד שנה, כשרוצים <Term id="תשואה">תשואה</Term> <Ruled id="GOV-26">ידועה מראש</Ruled> <Ruled id="GOV-17">ואפשרות למכור בכל יום מסחר</Ruled>.
       </p>
       <p className="max-w-measure">
         <span className="font-medium">לחדש כל שנה.</span> <Ruled id="GOV-23">אפשר לקנות מק״מ חדש בכל פדיון</Ruled>, ולהחזיק כך כסף לאורך שנים. אז המחיר כמעט לא זז בדרך, אבל הריבית לא ננעלת: <Ruled id="BND-08">בכל חידוש מקבלים את התשואה של אותו יום</Ruled>, גבוהה יותר אם הריבית עלתה ונמוכה יותר אם ירדה. מי שרוצה לדעת מראש מה ירוויח לכמה שנים צריך <Term id="איגרת חוב">איגרת חוב</Term> ארוכה יותר, שהמחיר שלה <Ruled id="BND-12">זז יותר בדרך</Ruled>. <ProofsChip ids={["M-08"]} />

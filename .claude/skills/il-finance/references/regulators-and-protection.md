@@ -95,7 +95,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 
 ### REG-07 Israel Securities Authority: legal basis
 - Rule: The ISA (רשות ניירות ערך) is established by Securities Law s.2. Its role is "שמירת עניניו של ציבור המשקיעים בניירות ערך". It reports to the Finance Minister and the Knesset Finance Committee at least once a year (s.14).
-- Conditions / exceptions: Its powers over funds come from the Joint Investment Trust Law (REG-10, REG-11), over portfolio managers from the Investment Advice Law (REG-08), and over the exchange and clearing house from the Securities Law (REG-13, REG-15).
+- Conditions / exceptions: Its powers over funds come from the Joint Investment Trust Law (REG-10, REG-11, REG-38), over portfolio managers from the Investment Advice Law (REG-08), and over the exchange and clearing house from the Securities Law (REG-13, REG-15).
 - Figures: none.
 - Source: [חוק ניירות ערך, התשכ"ח-1968 (פרסום מקורי ברשומות)](https://fs.knesset.gov.il/6/law/6_lsr_210358.pdf), p.1, s.2; p.3, s.14 · checked 2026-10-25 · primary. [חוק ניירות ערך (תיקון מס' 63), התשע"ז-2017 (ספר החוקים 2633)](https://fs.knesset.gov.il/20/law/20_lsr_382526.pdf), p.2, s.2 of the amending law (s.3 as amended) · checked 2026-10-25 · primary.
 - Scope: general
@@ -119,27 +119,36 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Dimensions: `protection`, `regulator`
 - Likely to change: no (shares change yearly)
 
-### REG-10 Mutual funds (including money-market funds): trustee holds the assets
-- Rule: The fund agreement is made between a manager and a trustee approved under s.9, "שיוקנו לה נכסי הקרן" (s.4).
-  - The assets "יהיו מוקנים לנאמן לטובת בעלי היחידות". They are a separate estate from the trustee's other property, and non-traded assets are registered in the trustee's name (s.76(א)).
-  - The manager must deposit fund cash in a bank account (s.76(ד)).
-  - "נכסי קרן אינם ניתנים לעיקול" (s.79).
-  - The trustee supervises the manager's compliance with the law, the fund agreement and the prospectus (s.78(א)).
-- Conditions / exceptions: Market losses are not protected. Fund cash held at a bank is a bank deposit of the fund (see REG-04 for banks). How that cash is treated if the bank fails was not found.
+### REG-10 Mutual funds (including money-market funds): market losses are not protected, and fund cash is a bank deposit
+- Rule: Market losses are not protected. The manager must deposit fund cash in a bank account (s.76(ד)), and fund cash held at a bank is a bank deposit of the fund (see REG-04 for banks).
+- Conditions / exceptions:
+  - How that cash is treated if the bank fails was not found.
+  - The fund agreement is made between a manager and a trustee approved under s.9, "שיוקנו לה נכסי הקרן" (s.4): as in MF-01.
+  - The assets "יהיו מוקנים לנאמן לטובת בעלי היחידות" and are a separate estate from the trustee's other property (s.76(א)), and "נכסי קרן אינם ניתנים לעיקול" (s.79): as in MF-02. Non-traded assets are registered in the trustee's name (s.76(א)); MF-02 does not state this.
+  - The trustee supervises the manager's compliance with the law, the fund agreement and the prospectus (s.78(א)): as in MF-03.
+  - *2026-11-26 trim:* the fund agreement, the vesting, separation and immunity from attachment of the assets, and the trustee's supervision, stated in full here before, are MF-01's, MF-02's and MF-03's from the same law.
 - Figures: none.
-- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.5, s.4; p.56, s.76; p.57, s.78; p.58, s.79 · checked 2026-10-25 · primary.
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.5, s.4; p.56, s.76; p.57, s.78; p.58, s.79 · checked 2026-10-25 · primary. See also MF-01, MF-02, MF-03.
 - Scope: general
 - Dimensions: `protection`
 - Likely to change: no
 
-### REG-11 If a fund manager or trustee fails
+### REG-11 If a fund manager or trustee fails: who takes over
 - Rule:
   - **Trustee:** its office ends if a temporary receiver or temporary liquidator is appointed and the order is not lifted within 60 days, or a later date the ISA chair sets (s.11(א)(4)). The manager must then have another approved trustee sign the fund agreement and start within 90 days (s.12(א)); the old trustee stays in office until then (s.12(ב)). If none starts within 90 days, the ISA may order the manager to transfer the fund to another manager (s.12(ג)).
   - **Manager:** its approval lapses if a temporary receiver or temporary liquidator is appointed and the order is not lifted within 60 days, or a later date the ISA chair sets (s.14(ב)). On that lapse, as on revocation or suspension, the company must transfer management of the funds to another manager, one it does not control or belong with, within a period the ISA chair sets (s.15(ד), (ו)). Failing that, the court may at the ISA's request appoint a receiver to transfer them (s.15(ה)).
-  - **Liquidation of the fund:** the ISA may petition to liquidate a fund where the holders' interest calls for it (s.104(א)). The court may instead order an arrangement to keep the fund running or a transfer to another manager (s.104(ד)). On a court order the trustee is the liquidator unless the court finds reason for another (s.105(א)). The liquidator sells the assets by the liquidation date in the way that best keeps the holders' rights, and redeems the units on that date (ss.109(א), 108(ה)).
-- Conditions / exceptions: These sections say who takes over; they do not say in words what happens to the holders' money in the failing company's own insolvency (open question 22). Read: the assets are vested in the trustee for the holders, apart from its other property, and cannot be attached (MF-02). Inferred, not stated: that they therefore stay out of the trustee's or manager's insolvency estate (2026-11-06: the Trust Law and the Insolvency Law's estate were read in the gazette for this, REG-33, REG-34; still derived). Corrected 2026-11-02: the 60-day condition was missing for the manager, s.15(ד) was given for revocation only although it names the s.14(ב) lapse, and ss.105 to 109 were added.
+- Conditions / exceptions: These sections say who takes over; they do not say in words what happens to the holders' money in the failing company's own insolvency (open question 22). Read: the assets are vested in the trustee for the holders, apart from its other property, and cannot be attached (MF-02). Inferred, not stated: that they therefore stay out of the trustee's or manager's insolvency estate (2026-11-06: the Trust Law and the Insolvency Law's estate were read in the gazette for this, REG-33, REG-34; still derived). Corrected 2026-11-02: the 60-day condition was missing for the manager, s.15(ד) was given for revocation only although it names the s.14(ב) lapse, and ss.105 to 109 were added. *2026-11-26 split:* the liquidation of the fund (ss.104, 105, 108(ה), 109) is now REG-38.
 - Figures: 60 days (order not lifted, ss.11(א)(4), 14(ב)); 90 days (s.12(א), (ג)).
-- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=11), pp.11-12, ss.11, 12 "ניתן צו בית משפט למינוי כונס נכסים זמני או מפרק זמני"; p.14, ss.14, 15(ד) "תעביר החברה את ניהול הקרנות למנהל אחר"; pp.67-68, s.104; p.69, s.105; p.71, ss.108(ה), 109 "מפרק קרן יפדה את יחידות הקרן במועד הפירוק" · checked 2026-11-02 · primary.
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=11), pp.11-12, ss.11, 12 "ניתן צו בית משפט למינוי כונס נכסים זמני או מפרק זמני"; p.14, ss.14, 15(ד) "תעביר החברה את ניהול הקרנות למנהל אחר" · checked 2026-11-02 · primary. See also REG-38.
+- Scope: general
+- Dimensions: `protection`
+- Likely to change: no
+
+### REG-38 Liquidation of a mutual fund: the trustee is the liquidator, sells the assets and redeems the units
+- Rule: The ISA may petition to liquidate a fund where the holders' interest calls for it (s.104(א)). The court may instead order an arrangement to keep the fund running or a transfer to another manager (s.104(ד)). On a court order the trustee is the liquidator unless the court finds reason for another (s.105(א)). The liquidator sells the assets by the liquidation date in the way that best keeps the holders' rights, and redeems the units on that date (ss.109(א), 108(ה)).
+- Conditions / exceptions: Who takes over when a fund's manager or trustee fails is REG-11. Added to REG-11 on 2026-11-02; *2026-11-26 split:* split from REG-11 as its own rule.
+- Figures: none.
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=67), pp.67-68, s.104; p.69, s.105; p.71, ss.108(ה), 109 "מפרק קרן יפדה את יחידות הקרן במועד הפירוק" · checked 2026-11-02 · primary. See also REG-11.
 - Scope: general
 - Dimensions: `protection`
 - Likely to change: no
@@ -235,11 +244,11 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Rule:
   - "חברה מנהלת תשמש נאמן על נכסי קופות הגמל שבניהולה, לטובת העמיתים" (s.3(א)).
   - "חברה מנהלת תחזיק ותנהל את נכסי קופת הגמל שבניהולה בנפרד מרכושה, לטובת העמיתים באותה קופה" (s.27(א)), with a separate account system per fund (s.27(ב)).
-  - "נכסי קופת גמל אינם ניתנים לעיקול" (s.30(א)).
-  - A member's rights cannot be attached except under rules set by the Minister (s.25(ב)).
-- Conditions / exceptions: Applies to every tier-1 CMA wrapper (definitions in REG-17). Market losses are not protected. For child savings held at a provident fund, see REG-23.
+  - "נכסי קופת גמל אינם ניתנים לעיקול" (s.30(א)), and the company may not pledge them except for a transaction for the fund (s.30(ב)).
+  - A member's rights cannot be transferred to another person or pledged, except as listed (s.25), and cannot be attached except under rules set by the Minister (s.25(ב)).
+- Conditions / exceptions: Applies to every tier-1 CMA wrapper (definitions in REG-17). Market losses are not protected. There is no state guarantee of the fund's value; the return-completion guarantee (s.34א ff.) concerns certain pension funds (PEN-18). A gemel lehashkaa member's rights may be pledged: Amendment 15 s.4 adds "בקופת גמל להשקעה" to the accounts listed in law s.25(א)(1), as in KGL-18. For child savings held at a provident fund, see REG-23. PF-29 was folded in here on 2026-11-26.
 - Figures: none.
-- Source: [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005 (ספר החוקים 2024)](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf), p.4, s.3; p.11, s.25; p.12, ss.27, 30(א) · checked 2026-10-25 · primary.
+- Source: [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005 (ספר החוקים 2024)](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf) p.4, s.3 "חברה מנהלת תשמש נאמן על נכסי קופות הגמל שבניהולה"; p.11, s.25 "זכויות עמית בקופת גמל אינן ניתנות להעברה"; p.12, ss.27, 30 "נכסי קופת גמל אינם ניתנים לעיקול" · checked 2026-10-25 · primary. See also PEN-18, KGL-18, REG-23.
 - Scope: general
 - Dimensions: `protection`
 - Likely to change: no
@@ -399,7 +408,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Rule: A trust can be created by law ("נאמנות נוצרת על פי חוק, על פי חוזה עם נאמן או על פי כתב הקדש", s.2). "אין לרדת לנכסי הנאמנות אלא בשל חובות המוטלים עליהם או הנובעים מפעולות הנאמנות" (s.3(ב)), and "הנאמן חייב להחזיק את נכסי הנאמנות בנפרד מנכסים אחרים או בדרך המאפשרת להבחין ביניהם" (s.3(ג)).
 - Who holds a saver's assets as a trustee, by law or by a binding rule:
   - a provident, study or pension fund's managing company, for the fund's assets (Provident Funds Law s.3(א), REG-18);
-  - a mutual fund's trustee, in whom the fund's assets are vested for the unit holders as a separate estate (Joint Investment Trust Law s.76(א), REG-10);
+  - a mutual fund's trustee, in whom the fund's assets are vested for the unit holders as a separate estate (Joint Investment Trust Law s.76(א), MF-02);
   - every TASE clearing member, banks included, for its clients' TASE securities (clearing-house bylaws, REG-35, BRK-58);
   - a non-bank TASE member, for its clients' financial assets and cash (TASE rules, BRK-07, BRK-08).
 
@@ -489,14 +498,14 @@ What protects a saver's money if the company holding it fails, for every kind of
 | Securities account: foreign securities | Non-bank member: abroad, in its name in trust for clients or a client-designated account (read); bank: at a custodian abroad, apart from the bank's and the custodian's own assets, in an account in the bank's name marked for its clients (read, the custody recommendations the Supervisor made binding), trust not stated | Non-bank: as above (derived); bank: open; which law governs the account abroad not read (the committee: foreign law may protect ownership less) | None | As above | BRK-07, BRK-10, REG-37, BRK-63 · open 10, 23 |
 | Securities account: cash | Non-bank member: in a bank account in the member's name in trust for clients (read); bank: a balance the bank owes (derived) | Non-bank: out of the member's creditors' reach (derived), but a deposit at that bank; bank: a general debt (derived) | None; a s.8יא guarantee is set per deposit, and a pooled trust account's treatment is not stated | As above | BRK-08, REG-33, REG-35 · open 21 |
 | Account at a foreign broker | Under the broker's home law | Under the foreign scheme | SIPC (US): USD 500,000, of which 250,000 cash, custody failure only; Ireland: 90% up to EUR 20,000 | The foreign regulator; not the ISA | REG-27, BRK-14, BRK-35, BRK-51 |
-| Money-market fund, active mutual fund, Israeli index fund or ETF, bond fund with an end date, Israeli gold fund | Vested in the fund's trustee for the holders, a separate estate, not attachable (read); fund cash in a bank account | Manager or trustee replaced; the ISA or a court moves the fund, or the fund is wound up and redeemed (read); out of either company's creditors' reach (derived) | None. The fund's own bank deposits are exposed to that bank's failure; a swap fund carries its counterparty within legal limits | ISA | REG-10, REG-11, REG-34, MF-02, ETF-51 · open 22 |
+| Money-market fund, active mutual fund, Israeli index fund or ETF, bond fund with an end date, Israeli gold fund | Vested in the fund's trustee for the holders, a separate estate, not attachable (read); fund cash in a bank account | Manager or trustee replaced; the ISA or a court moves the fund, or the fund is wound up and redeemed (read); out of either company's creditors' reach (derived) | None. The fund's own bank deposits are exposed to that bank's failure; a swap fund carries its counterparty within legal limits | ISA | REG-10, REG-11, REG-38, REG-34, MF-02, ETF-51 · open 22 |
 | Foreign-domiciled fund (UCITS) | At the fund's depositary, apart from the depositary's own assets | Unavailable to the depositary's creditors, and a lost instrument is replaced (derived: the EU directive obliges member states to ensure it; Irish and Luxembourg law not read) | None beyond that | The home regulator (and the ISA for funds offered in Israel) | REG-36, ETF-23 · US funds: open 24 |
 | Foreign gold ETC | The one ETC read, iShares Physical Gold ETC: a debt security of its issuer, iShares Physical Metals plc, "limited recourse" to the gold held (that issuer's own factsheet) | That ETC's holders are paid only from that gold (its issuer's terms) | None | Foreign | RG-20 (institution: iShares Physical Metals plc; other issuers' ETCs not read) |
 | Corporate bond | A claim on the issuer; collateral only if the trust deed gives it (read) | A general debt unless secured (derived), or lower if its own terms subordinate it (not researched); the bond trustee enforces, it does not pay | None | ISA (issuer reporting, trustees) | CORP-04 to CORP-08, CORP-24, REG-33 · CORP open question 12 |
 | Single shares, REIT | A share in a company | Equity, not a debt: the members receive only what is left after every debt and the expenses (s.242(2)); a debt owed to members because they are members is deferred (s.237(2)) (derived) | None | ISA, TASE | REG-33 · the holding itself: securities-account row |
 | Structured notes and bonds | Not researched | Not researched | Not researched | Not researched | open 25 |
 | Managed portfolio | In the client's own account at a bank or TASE member; the manager holds a power of attorney only (read) | The manager's failure leaves the assets at the custodian (derived); the manager must keep equity and security against negligence and employees' breach of trust (read) | None; protection follows the custodian | ISA | REG-09, MGD-14, MGD-15 |
-| Provident fund for investing, study fund, provident fund for annuity, pension fund, IRA run by a managing company | Held by the managing company **as trustee** for the members, apart from its own property, not attachable (read; for an IRA because Provident Funds Law s.57(א)(1) keeps ss.3, 27 and 30, read as enacted) | Management moves to another managing company; the Commissioner may appoint an authorised manager (read); out of the company's creditors' reach (derived) | None, except the state return top-up on 30% of an eligible pension fund's assets (old funds and new comprehensive funds only). Pension rights also move with the fund's actuarial surplus or deficit | CMA | REG-18, REG-19, REG-21, PEN-19, PF-29, IRA-01 · IRA: `ira-self-directed.md` open question 11 |
+| Provident fund for investing, study fund, provident fund for annuity, pension fund, IRA run by a managing company | Held by the managing company **as trustee** for the members, apart from its own property, not attachable (read; for an IRA because Provident Funds Law s.57(א)(1) keeps ss.3, 27 and 30, read as enacted) | Management moves to another managing company; the Commissioner may appoint an authorised manager (read); out of the company's creditors' reach (derived) | None, except the state return top-up on 30% of an eligible pension fund's assets (old funds and new comprehensive funds only). Pension rights also move with the fund's actuarial surplus or deficit | CMA | REG-18, REG-19, REG-21, PEN-19, IRA-01 · IRA: `ira-self-directed.md` open question 11 |
 | Provident fund for annuity, at payout | The annuity is paid by the pension fund or insurer the money moves to | Follows that payer's row | As that payer | CMA | PEN-34 |
 | Child savings | Bank route: a bank deposit; provident route: a provident fund. Either way the child's, held in trust by the parent, and not attachable (National Insurance Law s.74ב) | As the bank row or the provident row | Bank route: none (the principal-at-end promise is a product term, not failure cover) | Supervisor of Banks or CMA; National Insurance pays in | REG-23, CS-05 |
 | Savings policy, executive insurance; an IRA that is an insurer's insurance fund | In the insurer's life-insurance assets, which serve life-insurance liabilities first, liquidation included (read); an insurance fund's assets are not attachable. An insurer's IRA keeps s.3(ב)-(ה) and s.30 but not s.3(א) or s.27 (s.57(א)(2), read as enacted), so it is not held in trust under s.3(א); whether its assets are among the life-insurance assets of s.54 is not stated (derived) | The Commissioner may appoint an authorised manager (read) | None; no state return top-up | CMA | REG-22, INS-14, INS-21 · whether any insurer offers an IRA: `ira-self-directed.md` open question 14 |
@@ -520,8 +529,8 @@ What protects a saver's money if the company holding it fails, for every kind of
 | רשות ניירות ערך | Israel Securities Authority | Securities regulator | law, ISA | REG-07 |
 | ניהול תיקי השקעות | portfolio management | Discretionary trading for others' accounts | law, ads | REG-08 |
 | חשבון מסחר | trading account | Client's own account at a TASE member, where managed assets are held | ISA report | REG-09 |
-| מנהל קרן / נאמן / בעלי היחידות | fund manager / trustee / unit holders | Parties to a mutual fund | law, prospectus | REG-10 |
-| נכסי קרן אינם ניתנים לעיקול | fund assets cannot be attached | Creditor protection | law | REG-10 |
+| מנהל קרן / נאמן / בעלי היחידות | fund manager / trustee / unit holders | Parties to a mutual fund | law, prospectus | MF-01 |
+| נכסי קרן אינם ניתנים לעיקול | fund assets cannot be attached | Creditor protection | law | MF-02 |
 | חברה לנאמנות | trust company | Trustee legal name form (e.g. יובנק חברה לנאמנות בע"מ) | ISA report, prospectus | REG-12 |
 | חבר בורסה | TASE member | Bank or broker allowed to trade on TASE | law, TASE, apps | REG-13, REG-14 |
 | חש"ב (חבר בורסה שאינו תאגיד בנקאי) | non-bank TASE member (NBCM) | Investment-house broker | TASE | REG-14 |

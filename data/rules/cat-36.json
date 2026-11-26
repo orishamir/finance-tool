@@ -80,6 +80,16 @@
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"FUND_ID\":7860}&sort=REPORT_PERIOD",
+      "title": "גמל-נט: סדרת קופה 7860",
+      "title_he": "גמל-נט: סדרת קופה 7860",
+      "publisher": "data.gov.il",
+      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25"
     }
   ]
 }

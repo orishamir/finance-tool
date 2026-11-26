@@ -1815,7 +1815,7 @@
     "rule_ids": [
       "GOV-01",
       "GOV-03",
-      "GOV-22",
+      "GOV-26",
       "GOV-23"
     ],
     "source": {
@@ -2015,7 +2015,7 @@
     "variants_he": [],
     "explain_he": "סוג נפרד של איגרות חוב ממשלתיות בשקלים בריבית קבועה, לא צמודות למדד, עם תקנות משלו, שהונפק לראשונה ב־1995",
     "rule_ids": [
-      "GOV-13"
+      "GOV-28"
     ],
     "source": {
       "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו",
@@ -2028,7 +2028,7 @@
       "ad",
       "guide:government-bond"
     ],
-    "notes": "Only a secondary source (Hebrew Wikipedia) maps 'שחר' to today's fixed-rate shekel bonds; BoI EDGE series codes (SHACHAR) are only codes (GOV-13, GOV OQ12).",
+    "notes": "Only a secondary source (Hebrew Wikipedia) maps 'שחר' to today's fixed-rate shekel bonds; BoI EDGE series codes (SHACHAR) are only codes (GOV-28, GOV OQ12).",
     "id": "shchr"
   },
   {
@@ -2068,7 +2068,7 @@
     ],
     "explain_he": "סוג ישן של איגרות חוב ממשלתיות בריבית משתנה, שכבר לא מונפק, והריבית בו מתעדכנת לפי התשואה של מק\"מ, בתוספת מרווח",
     "rule_ids": [
-      "GOV-14"
+      "GOV-29"
     ],
     "source": {
       "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999, קובץ התקנות, עמוד 2",
@@ -2134,7 +2134,7 @@
       "statement",
       "guide:government-bond"
     ],
-    "notes": "missing Hebrew spelling in il-finance: the word 'קופון' appears nowhere in the rule base; the files describe the coupon only in English and the 2006 regulations call it interest ('ריבית'). Spelling taken from the starting list, not from a source. Coupon frequency: CPI-linked yearly (GOV-11); floating-rate quarterly under the 1999 regulations (GOV-14); fixed-rate shekel unsourced (GOV OQ4). Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law01/999_564.htm) to the official text.",
+    "notes": "missing Hebrew spelling in il-finance: the word 'קופון' appears nowhere in the rule base; the files describe the coupon only in English and the 2006 regulations call it interest ('ריבית'). Spelling taken from the starting list, not from a source. Coupon frequency: CPI-linked yearly (GOV-11); floating-rate quarterly under the 1999 regulations (GOV-29); fixed-rate shekel unsourced (GOV OQ4). Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law01/999_564.htm) to the official text.",
     "id": "kvpvn"
   },
   {
@@ -2323,8 +2323,7 @@
     "variants_he": [],
     "explain_he": "התאריך שבו נקבע למי משולמת הריבית הקרובה: למחזיקים הרשומים באיגרת החוב באותו יום",
     "rule_ids": [
-      "GOV-11",
-      "GOV-21"
+      "GOV-27"
     ],
     "source": {
       "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006, קובץ התקנות 6457, עמוד 4",
@@ -2336,7 +2335,7 @@
     "where": [
       "guide:government-bond"
     ],
-    "notes": "Buyers after the record date do not get that period's interest (GOV-11, GOV-21). Exact day per the Nevo summary only. Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law01/999_564.htm) to the official text.",
+    "notes": "Buyers after the record date do not get that period's interest (GOV-27). Exact day per the Nevo summary only. Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law01/999_564.htm) to the official text.",
     "id": "mvad-kvba-lzkavt"
   },
   {

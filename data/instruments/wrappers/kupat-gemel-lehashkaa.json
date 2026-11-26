@@ -203,7 +203,6 @@
   },
   "protection": {
     "rule_ids": [
-      "PF-29",
       "REG-18",
       "REG-19"
     ],

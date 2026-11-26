@@ -1,0 +1,70 @@
+{
+  "id": "GOV-28",
+  "title": "Shachar (שחר): a separate unlinked fixed-rate type, first issued 1995, with its own regulations",
+  "title_he": "״שחר״: סוג נפרד של איגרת שקלית בריבית קבועה, שהונפק לראשונה ב־1995",
+  "text_he": "״שחר״ הוא סוג נפרד של איגרת חוב ממשלתית שקלית בריבית קבועה, עם תקנות משלו, והוא לא השם הקודם של ״אג״ח ממשלתית״. החשב הכללי מונה אותו בנפרד בין האיגרות הלא צמודות, עם ריבית שהחשב הכללי קובע ותשלום ריבית פעם בשנה, ולפיו הוא הונפק לראשונה ב־24.8.1995. ועדת הכספים של הכנסת אישרה ב־12.12.2005 תיקונים לתקנות של ״שחר״. נוסח היסוד של התקנות מ־1995, שחל על סדרות ״שחר״ שאולי עוד נסחרות, לא נמצא.",
+  "strength": "primary",
+  "dimensions": [
+    "real-vs-nominal",
+    "distribution-policy"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "government-bonds-and-makam.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/he/pages/govermental-bonds",
+      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020), לשונית מאפייני אג\"ח סחיר",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020), לשונית מאפייני אג\"ח סחיר",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "table אג״ח לא צמוד, row שחר",
+      "locator_he": "טבלה אג״ח לא צמוד, שורה שחר",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=10",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"שחר\") (תיקון), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג \"שחר\") (תיקון), התשס\"ו-2006 (קובץ התקנות 6457)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.10",
+      "locator_he": "עמוד 10",
+      "page": 10,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=6",
+      "title": "תקנות מילווה המדינה (סדרות מסוג \"שחר\") (תיקון), התשס\"ז-2007 (קובץ התקנות 6597)",
+      "title_he": "תקנות מילווה המדינה (סדרות מסוג \"שחר\") (תיקון), התשס\"ז-2007 (קובץ התקנות 6597)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://www.gov.il/he/pages/govermental-bonds",
+      "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020), לשונית תקנות אג\"ח סחיר",
+      "title_he": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו (מדריך, פורסם 24.08.2020), לשונית תקנות אג\"ח סחיר",
+      "publisher": "gov.il",
+      "publisher_he": "אתר הממשלה (gov.il)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "ועדת הכספים של הכנסת אישרה בתאריך 12.12.2005 את התקנתן של תקנות מלווה המדינה עבור",
+      "checked": "2026-11-12"
+    }
+  ],
+  "derived_from": [
+    "GOV-13",
+    "GOV-27"
+  ]
+}

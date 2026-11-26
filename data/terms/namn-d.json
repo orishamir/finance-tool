@@ -24,9 +24,10 @@
   ],
   "variants": [],
   "rule_ids": [
-    "REG-10",
+    "MF-02",
     "REG-11",
-    "REG-12"
+    "REG-12",
+    "REG-38"
   ],
   "source": {
     "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=56",

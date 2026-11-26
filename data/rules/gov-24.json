@@ -1,43 +1,20 @@
 {
   "id": "GOV-24",
-  "title": "TASE: trading unit, minimum order, price steps and last trading day for government bonds and makam",
-  "title_he": "המסחר בבורסה באג״ח ממשלתיות ובמק״מ: יחידת מסחר, פקודה מזערית ויום מסחר אחרון",
-  "text_he": "לפי הנחיות הבורסה, יחידת המסחר באיגרת חוב היא שקל אחד שווי נקוב. המחיר נקוב באגורות ליחידת מסחר. לכן המחיר של איגרת חוב ממשלתית בבורסה הוא באגורות לכל שקל של שווי נקוב, כלומר בשקלים לכל 100 ₪ שווי נקוב. ביום המסחר הראשון, שער הבסיס של איגרת ממשלתית הוא המחיר הממוצע שנקבע לה במכרז. דירקטוריון הבורסה קבע את הגודל המזערי של פקודה בשלב המסחר הרציף: סכום כספי לאיגרות חוב שהנפיקה מדינת ישראל, וכמות בשווי נקוב למק״מ. בשלב שלפני הפתיחה, במכרז פתיחה נוסף, בהפסקת תנודתיות, בשלב שלפני הנעילה ובפקודות TAL אפשר להגיש פקודה של יחידת מסחר אחת. יום המסחר האחרון במק״מ הוא כמה ימי מסחר לפני יום הפדיון. באיגרת חוב ממשלתית הוא כמה ימי מסחר לפני יום הפדיון, או לפני המועד הקובע לפדיון כשהתקנות שלה קובעות מועד כזה. הבנק או הברוקר רשאים לקבוע מינימום משלהם בתעריפון. עסקה בבורסה נסלקת ביום העסקים שאחרי יום העסקה, חוץ מעסקת ריפו. המסלקה מזכה בריבית על איגרת חוב ממשלתית לפי היתרה הרשומה לזכות כל חבר ביום הקובע. היא משלמת את הריבית ביום ה־15 אחרי היום הקובע, אלא אם נקבע אחרת. במדריך המסחר אין גודל ליחידת המסחר של מק״מ.",
+  "title": "TASE: minimum and maximum order size for government bonds and makam",
+  "title_he": "פקודה בבורסה באג״ח ממשלתיות ובמק״מ: גודל מזערי ומרבי",
+  "text_he": "דירקטוריון הבורסה קבע שבשלב המסחר הרציף פקודה באיגרות חוב של מדינת ישראל היא של {GOV-24:min_order_government_bond} לפחות, ובמק״מ של {GOV-24:min_order_makam_face_value} שווי נקוב לפחות (באיגרות חוב של חברות ובניירות ערך מסחריים: 5,000 ₪). בשלב שלפני הפתיחה, במכרז פתיחה נוסף, בהפסקת תנודתיות, בשלב שלפני הנעילה ובפקודות TAL אפשר להגיש פקודה של יחידת מסחר אחת, וכך גם ביום עם פרמטר פתיחה. פקודה אחת היא לכל היותר {GOV-24:max_order_share} מהכמות הרשומה של הסדרה. מנהל הבורסה רשאי לקבוע לנייר ערך גודל מזערי אחר ליום מסוים, והבנק או הברוקר רשאים לקבוע מינימום משלהם בתעריפון.",
   "figure_names_he": {
-    "trading_unit_face_value": "יחידת המסחר באיגרת חוב (ערך נקוב)",
     "min_order_government_bond": "פקודה מזערית במסחר הרציף: איגרות חוב של המדינה",
     "min_order_makam_face_value": "פקודה מזערית במסחר הרציף: מק״מ (ערך נקוב)",
-    "max_order_share": "פקודה מרבית: חלק מהכמות הרשומה של הסדרה",
-    "last_trading_days": "ימי מסחר בין יום המסחר האחרון ליום הפדיון"
+    "max_order_share": "פקודה מרבית: חלק מהכמות הרשומה של הסדרה"
   },
   "strength": "primary",
   "dimensions": [
-    "minimum",
-    "liquidity-lockup"
+    "minimum"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "figures": {
-    "trading_unit_face_value": {
-      "value": 1,
-      "unit": "nis",
-      "source": {
-        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
-        "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698), פרק ב' s.1(ב), p.ב5 (update 130, 5.2.24): \"בתעודות התחייבות - 1 ש\"ח ערך נקוב\"",
-        "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
-      },
-      "checked": "2026-10-26",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "GOV-24"
-      ],
-      "state": "sourced",
-      "notes": "The trading unit of a bond is NIS 1 face value. The unit chapter names no trading unit for makam, and the guide lists makam apart from bonds, so this figure is not makam's (GOV open question 7)."
-    },
     "min_order_government_bond": {
       "value": 10000,
       "unit": "nis",
@@ -97,90 +74,12 @@
       ],
       "state": "sourced",
       "notes": "The maximum order is 10% of the listed quantity of a government bond or makam series."
-    },
-    "last_trading_days": {
-      "value": 3,
-      "unit": "count",
-      "source": {
-        "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
-        "title": "TASE, מדריך המסחר (doc. 274698), פרק א' s.6, p.ב3 (update 144, 3.3.26): \"מק\"מ - שלושה ימי מסחר לפני יום הפדיון\"",
-        "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
-      },
-      "checked": "2026-10-26",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "GOV-24"
-      ],
-      "state": "sourced",
-      "notes": "Trading days: the last trading day is three trading days before the redemption day for makam, and for a government bond three trading days before the redemption day, or before the record date for redemption where its regulations set one."
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
   "checked": "2026-11-02",
   "scope": "general",
   "sources": [
-    {
-      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf#page=10",
-      "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698)",
-      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
-      "strength": "primary",
-      "locator": "file p.10, פרק ג' s.1(א)(3)",
-      "locator_he": "עמוד הקובץ 10, פרק ג' סעיף 1(א)(3)",
-      "page": 10,
-      "quote": "המחיר הממוצע שנקבע לתעודת ההתחייבות במכרז",
-      "checked": "2026-11-15",
-      "qualifier": "(the file on TASE's site, modified 14.9.2026, read on the page images)"
-    },
-    {
-      "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf#page=12",
-      "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698)",
-      "title_he": "מדריך המסחר בבורסה: הנחיות על פי החלק השלישי לתקנון",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
-      "strength": "primary",
-      "locator": "file p.12, פרק ג' s.2",
-      "locator_he": "עמוד הקובץ 12, פרק ג' סעיף 2",
-      "page": 12,
-      "quote": "שער הבסיס בנייר ערך, למעט נגזר, לא יפחת מאגורה ליחידת מסחר",
-      "checked": "2026-11-15",
-      "qualifier": "(the file on TASE's site, modified 14.9.2026, read on the page images)"
-    },
-    {
-      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=66",
-      "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
-      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק ב'",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
-      "strength": "primary",
-      "locator": "p.66, ch. ט s.4(א), (ה)",
-      "locator_he": "עמוד 66, פרק ט סעיף 4(א), (ה)",
-      "page": 66,
-      "quote": "מועד תשלום ריבית על איגרות חוב ממשלתיות יהיה ביום החמישה עשר",
-      "checked": "2026-11-02"
-    },
-    {
-      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=18",
-      "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
-      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק ב'",
-      "publisher": "Tel Aviv Stock Exchange",
-      "publisher_he": "הבורסה לניירות ערך בתל אביב",
-      "kind": "exchange_rules",
-      "strength": "primary",
-      "locator": "p.18, ch. ה s.9(א)",
-      "locator_he": "עמוד 18, פרק ה סעיף 9(א)",
-      "page": 18,
-      "quote": "סבב הסליקה הראשון - ביום העסקים הבא",
-      "checked": "2026-10-31"
-    },
     {
       "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
       "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698)",
@@ -189,10 +88,13 @@
       "publisher_he": "הבורסה לניירות ערך בתל אביב",
       "kind": "exchange_rules",
       "strength": "primary",
-      "locator": "פרק ב' s.1(ב), p.ב5",
-      "locator_he": "פרק ב' סעיף 1(ב), עמוד ב5",
-      "quote": "בתעודות התחייבות - 1 ש״ח ערך נקוב",
+      "locator": "p.ב27",
+      "locator_he": "עמוד ב27",
+      "quote": "הגודל המזערי של פקודה לביצוע בשלב המסחר הרציף של תעודות התחייבות שהונפקו על ידי מדינת ישראל",
       "checked": "2026-10-26"
     }
+  ],
+  "derived_from": [
+    "GOV-30"
   ]
 }

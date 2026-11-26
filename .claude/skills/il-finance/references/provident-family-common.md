@@ -274,11 +274,11 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Dimensions: `transfer-switch-process`
 - Likely to change: no
 
-### PF-29 Fund assets are held in trust, separately from the manager's property, and cannot be attached
-- Rule: "חברה מנהלת תשמש נאמן על נכסי קופות הגמל שבניהולה, לטובת העמיתים" (law s. 3(א)). "חברה מנהלת תחזיק ותנהל את נכסי קופת הגמל שבניהולה בנפרד מרכושה" (s. 27(א)), with a separate accounting system for each fund (s. 27(ב)). "נכסי קופת גמל אינם ניתנים לעיקול" (s. 30(א)), and the company may not pledge them except for a transaction for the fund (s. 30(ב)). A member's rights cannot be transferred to another person or pledged, except as listed (s. 25).
-- Conditions / exceptions: A gemel lehashkaa member's rights may be pledged: Amendment 15 s.4 adds "בקופת גמל להשקעה" to the accounts listed in law s.25(א)(1) (re-sourced 2026-10-26 from unnamed bylaws' s.28.1). There is no state guarantee of the fund's value; the return-completion guarantee (s. 34א ff.) concerns certain pension funds. Cross-regulator protection belongs in `regulators-and-protection.md`.
+### PF-29 Fund assets are held in trust, separately from the manager's property, and cannot be attached (folded into REG-18)
+- Rule: Folded on 2026-11-26. The trust, the separate holding, the bar on attaching and pledging the fund's assets, and the bar on transferring or pledging a member's rights (law ss.3, 25, 27, 30) are REG-18, from the same law and pages; the gemel lehashkaa pledge (Amendment 15 s.4) is KGL-18. The id stays so that references to it resolve; they should point to REG-18.
+- Conditions / exceptions: The gemel lehashkaa pledge was re-sourced on 2026-10-26 from unnamed bylaws' s.28.1 to Amendment 15 s.4, which KGL-18 cites. The note that there is no state guarantee, and that the return completion concerns certain pension funds, is in REG-18's conditions.
 - Figures: none.
-- Source: [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf) p.4, s.3 "חברה מנהלת תשמש נאמן על נכסי קופות הגמל שבניהולה" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf) p.11, s.25 "זכויות עמית בקופת גמל אינן ניתנות להעברה" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf) p.12, ss.27, 30 "נכסי קופת גמל אינם ניתנים לעיקול" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע"ו-2016](https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf) p.2, s.4 (amends s.25(א)(1): "בקופת גמל להשקעה") · checked 2026-10-26 · primary
+- Source: [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf) p.4, s.3 "חברה מנהלת תשמש נאמן על נכסי קופות הגמל שבניהולה" · checked 2026-10-25 · primary. See REG-18, KGL-18.
 - Scope: general
 - Dimensions: `protection`
 - Likely to change: no

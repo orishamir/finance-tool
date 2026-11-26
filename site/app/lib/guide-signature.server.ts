@@ -181,7 +181,7 @@ builders["makam"] = (c) => {
   else d.gaps.push("rule:TXI-12");
   // the one-year deposit it is set against: the range across the collected banks and how many of them lock the money (F-86)
   addDepositBanks(d, c);
-  return withRules(d, "GOV-03", "GOV-06", "GOV-17", "GOV-22", "GOV-23", "TXI-11", "TXI-12", "TXI-03");
+  return withRules(d, "GOV-03", "GOV-06", "GOV-17", "GOV-23", "TXI-11", "TXI-12", "TXI-03");
 };
 
 // ---------------------------------------------------------------- government bond
