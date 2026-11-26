@@ -206,20 +206,6 @@
       "checked": "2026-11-07"
     },
     {
-      "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/פקדונות/gamish.pdf",
-      "title": "הפועלים: חיסכון גמיש",
-      "title_he": "הפועלים: חיסכון גמיש",
-      "publisher": "Bank Hapoalim",
-      "publisher_he": "בנק הפועלים",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "quote": "ניתן לבצע משיכה חלקית של הסכום בפיקדון, בכל תחנת יציאה",
-      "checked": "2026-10-31"
-    },
-    {
       "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
       "title": "הפועלים: שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון, ריבית בפיקדונות נוספים",
       "title_he": "הפועלים: שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון, ריבית בפיקדונות נוספים",
@@ -362,6 +348,8 @@
     }
   ],
   "derived_from": [
+    "BANK-37",
+    "BPN-10",
     "BANK-28"
   ]
 }
