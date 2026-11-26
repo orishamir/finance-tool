@@ -599,11 +599,12 @@ const periodEnd = (period: string): string => {
 };
 
 /**
- * What the note of an exposure amount adds to CAT-44's card: the unit, which the dictionary does not state (CAT-44, CAT OQ4), and that
+ * What the note of an exposure amount adds to CAT-44's card: the unit, written as the site writes amounts (copy.ts `nisMillions`), which
+ * the dictionary does not state and which is inferred by comparing the amount with the track's total assets (CAT-44, CAT OQ4), and that
  * the circular's definition does not say whether a holding through a fund counts by what the fund holds (CAT-44's look-through).
  */
 const EXPOSURE_NOTE =
-  "הסכום במיליוני ש״ח: מילון השדות של הרשות לא כותב את היחידה, והיא מתאימה לסך הנכסים של המסלול (CAT OQ4). ההגדרה של החשיפה בחוזר הדיווח של רשות שוק ההון לא אומרת אם השקעה דרך קרן נאמנות, קרן סל או קרן בחו״ל נספרת לפי מה שהקרן מחזיקה.";
+  "היחידה של הסכום היא מיליון ₪: מילון השדות של הרשות לא כותב אותה, והיא נלמדת מהשוואה לסך הנכסים של המסלול (CAT OQ4). ההגדרה של החשיפה בחוזר הדיווח של רשות שוק ההון לא אומרת אם השקעה דרך קרן נאמנות, קרן סל או קרן בחו״ל נספרת לפי מה שהקרן מחזיקה.";
 
 /**
  * CMA amount fields to value objects, in NIS millions at the period end (CAT-03 for the unit of TOTAL_ASSETS; the units of

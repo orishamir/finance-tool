@@ -118,7 +118,9 @@ describe("holdings values by state", () => {
   it("a reported stock exposure names CAT-44 alone, with the unit and the look-through silence, and nothing CAT-44 contradicts", () => {
     const v = h.stock_market_exposure;
     expect(v.rule_ids).toEqual(["CAT-44"]);
-    expect(v.notes).toContain("מיליוני ש״ח");
+    expect(v.notes).toContain("היחידה של הסכום היא מיליון ₪");
+    expect(v.notes).toContain("נלמדת מהשוואה לסך הנכסים");
+    expect(v.notes).not.toContain("ש״ח");
     expect(v.notes).toContain("(CAT OQ4)");
     expect(v.notes).toContain("דרך קרן נאמנות, קרן סל או קרן בחו״ל");
     expect(v.notes).not.toContain("נגזרים");
