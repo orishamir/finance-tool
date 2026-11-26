@@ -1,9 +1,11 @@
 // The figure-rules table (src/figure-rules.ts): which ids a deposit's values may name, in which state, and the standing allow for the
-// card that holds a value's source. Over the repository's own data the check in src/checks/figure-rules.ts runs in validate.test.ts.
+// card that holds a value's source; then the deposit records' own checks (src/checks/deposits.ts). Over the repository's own data the
+// checks run in validate.test.ts, leftovers and all.
 import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import * as deposits from "../src/checks/deposits.ts";
 import * as figureRulesCheck from "../src/checks/figure-rules.ts";
 import { testData } from "../src/checks/lib/kit.ts";
 import { FIGURE_RULES, figureRuleProblems, judgeId, pathOf, rowFor, type CardSources } from "../src/figure-rules.ts";
@@ -117,5 +119,39 @@ describe("figure-rules check", () => {
 
   it("passes a record whose ids the table admits", () => {
     expect(figureRulesCheck.check(testData(folder({ "bank-pikadon-leshana": deposit() })))).toEqual([]);
+  });
+});
+
+// ---------------------------------------------------------------- the deposit records' checks
+
+function runDeposits(records: Record<string, unknown>): string[] {
+  const dir = mkdtempSync(join(tmpdir(), "data-"));
+  mkdirSync(join(dir, "terms", "deposits"), { recursive: true });
+  for (const [id, r] of Object.entries(records)) writeFileSync(join(dir, "terms", "deposits", `${id}.json`), JSON.stringify(r));
+  return deposits.check(testData(dir)).map((p) => p.message);
+}
+
+const plainDeposit = { wrapper_id: "bank-deposit", term_months: { value: 12 }, exit_points: { exists: false }, auto_renew: { value: false }, break: { penalty: "not_allowed" } };
+const account = { wrapper_id: "current-account", term_months: { value: null }, exit_points: { exists: false }, auto_renew: { value: false }, break: { penalty: "none" } };
+
+describe("deposits checks", () => {
+  it("fails a doubt that names no rate and says no field, and passes it with doubt_on or about the rate", () => {
+    expect(deposits.name).toBe("deposits");
+    expect(runDeposits({ a: { ...plainDeposit, doubt_he: "הטבלה מסמנת שיש תחנות יציאה אבל לא כותבת מתי." } })).toEqual([expect.stringMatching(/^terms\/deposits\/a#\/doubt_he \(doubt-field\)/)]);
+    expect(runDeposits({ a: { ...plainDeposit, doubt_he: "הטבלה מסמנת שיש תחנות יציאה אבל לא כותבת מתי.", doubt_on: "exits" } })).toEqual([]);
+    expect(runDeposits({ a: { ...plainDeposit, doubt_he: "הבנק מפרסם רק את הריבית לתקופה הראשונה." }, b: { ...plainDeposit, doubt_he: "הפרסום עדיין מציג 2%." } })).toEqual([]);
+  });
+
+  it("fails a remark of the site's own in conditions_he, and passes the bank's conditions", () => {
+    expect(runDeposits({ a: { ...plainDeposit, conditions_he: "בטבלה מופיעה הטבה, ולא כתוב אם היא כלולה בשיעור." } })).toEqual([expect.stringMatching(/^terms\/deposits\/a#\/conditions_he \(site-remark\)/)]);
+    expect(runDeposits({ a: { ...plainDeposit, conditions_he: "פותחים רק בסניף." } })).toEqual([]);
+  });
+
+  it("fails a current account that holds a deposit's field, and passes one that holds none", () => {
+    expect(runDeposits({ a: account })).toEqual([]);
+    expect(runDeposits({ a: { ...account, term_months: { value: 12 }, exit_points: { exists: true }, break: { penalty: "with_penalty" } } })).toEqual([
+      expect.stringMatching(/^terms\/deposits\/a# \(current-account\): a current account holds a term, exit points, a break "with_penalty"/),
+    ]);
+    expect(runDeposits({ a: { ...plainDeposit, exit_points: { exists: true } } })).toEqual([]);
   });
 });
