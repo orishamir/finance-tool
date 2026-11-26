@@ -262,12 +262,12 @@ For every child who gets child allowance, NII deposits a fixed monthly sum (NIS 
 - Likely to change: unknown
 
 ### CS-24 NII's official provident list and tracks (hly.gov.il)
-- Rule: NII's child-savings site lists 10 provident managers parents may choose: אינפיניטי, אלטשולר שחם גמל ופנסיה, אנליסט, הפניקס פנסיה וגמל, הראל פנסיה, כלל פנסיה וגמל, מגדל מקפת, מור גמל ופנסיה, מיטב גמל ופנסיה, מנורה פנסיה. Each offers three risk tracks: "חוסכים המעדיפים סיכון מועט", "סיכון בינוני" and "סיכון מוגבר". Parents may move between listed funds, and change track, at any time.
-- Conditions / exceptions: The page shows, as illustration only, each child track's ID next to a "similar" adult track and its 5-year average return. The page also lists religious-law tracks at some funds; they are left out here (D113).
+- Rule: NII's child-savings site lists 10 provident managers parents may choose: אינפיניטי, אלטשולר שחם גמל ופנסיה, אנליסט, הפניקס פנסיה וגמל, הראל פנסיה, כלל פנסיה וגמל, מגדל מקפת, מור גמל ופנסיה, מיטב גמל ופנסיה, מנורה פנסיה. The page names the three risk tracks "חוסכים המעדיפים סיכון מועט", "סיכון בינוני" and "סיכון מוגבר".
+- Conditions / exceptions: The page shows, as illustration only, each child track's ID next to a "similar" adult track and its 5-year average return. The page also lists religious-law tracks at some funds; they are left out here (D113). Trimmed on 2026-11-26: that every manager offers the three risk tracks is CS-08's, and that parents may move between the listed funds and change track at any time is CS-11's.
 - Figures: none recorded (returns are illustrative).
-- Source: [hly.gov.il, מידע על ניהול החיסכון בקופות הגמל](https://hly.gov.il/ProvidentFunds.html) · checked 2026-10-22 · primary
+- Source: [hly.gov.il, מידע על ניהול החיסכון בקופות הגמל](https://hly.gov.il/ProvidentFunds.html) · checked 2026-10-22 · primary. Three tracks: CS-08; switching: CS-11.
 - Scope: general
-- Dimensions: `default-assignment`, `transfer-switch-process`
+- Dimensions: `default-assignment`
 - Likely to change: yes, with tenders.
 
 ### CS-25 Bank vs provident: what NII says differs (retired: see CS-10)
