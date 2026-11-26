@@ -457,7 +457,7 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 - Dimensions: `tax-at-exit`, `tax-during`, `reporting-obligation`, `foreign-withholding-domicile`
 - Likely to change: no.
 
-**[2026-10-25 foreign-broker pass]** Interactive Brokers' own non-US tax page speaks only of US withholding (W-8, 30% or the treaty rate, BRK-45, BRK-50); no IBKR page read mentions Israeli tax, so at a direct IBKR account the person reports (TXF-22). Through Interactive Israel the HYBRID service withholds for those who join it (BRK-36).
+**[2026-10-25 foreign-broker pass]** Interactive Brokers' own non-US tax page speaks only of US withholding (W-8, 30% or the treaty rate, TXF-13, BRK-50); no IBKR page read mentions Israeli tax, so at a direct IBKR account the person reports (TXF-22). Through Interactive Israel the HYBRID service withholds for those who join it (BRK-36).
 
 ### BRK-28 Meitav Trade: online registration and a minimum to open, printed two ways on its own page
 - Rule: Meitav Trade offers online registration and states a minimum deposit to open, but its own page states two different minimums (NIS 5,000 in the FAQ and footer, NIS 10,000 for its "מסלול כללי").
@@ -671,20 +671,20 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 - Dimensions: `eligibility`
 - Likely to change: possible.
 
-### BRK-45 A foreign broker and tax: the W-8BEN, US withholding, and no Israeli withholding
-- Rule: A non-US person who is the beneficial owner of an amount subject to US withholding gives Form W-8BEN to the withholding agent or payer, not to the IRS; the form remains in effect "for a period starting on the date the form is signed and ending on the last day of the third succeeding calendar year", unless a change in circumstances makes it incorrect, and without it US tax may be withheld at the foreign-person rate of 30% (TXF-13). For an Israeli resident the treaty caps US tax on dividends at 25% (TXF-12). Israeli withholding on a securities sale binds only a "מוסד כספי", a bank or a TASE member (TXS-05); a foreign broker is neither, so nothing is withheld in Israel and the person reports semi-annually and files a return (TXF-22).
-- Conditions / exceptions: How one foreign broker collects and applies the form is BRK-50. Split on 2026-10-25 (scope pass): the company's part is BRK-50.
-- Figures: 30% default US withholding (TXF-13); 25% treaty cap on dividends (TXF-12).
-- Source: [IRS, About Form W-8BEN](https://www.irs.gov/forms-pubs/about-form-w-8-ben) (last reviewed 02-Oct-2026) · checked 2026-10-25 · primary; [IRS, Instructions for Form W-8BEN (rev. 10/2021)](https://www.irs.gov/instructions/iw8ben), "Expiration of Form W-8BEN" · checked 2026-10-26 · primary. Treaty rate: TXF-12; withholding agent and form: TXF-13; Israeli withholding: TXS-05; reporting: TXF-22.
+### BRK-45 A foreign broker and tax: the W-8BEN, US withholding, and no Israeli withholding (retired: see TXF-13)
+- Rule: Retired on 2026-11-26. It restated, from the same two IRS pages, TXF-13 (the W-8BEN goes to the withholding agent, its expiry, and 30% without it), and also TXF-12 (the treaty's 25% cap on dividends), TXS-05 and BRK-27 (who withholds in Israel) and TXF-22 (reporting where nothing was withheld). The id stays so that references to it resolve; they should point to TXF-13.
+- Conditions / exceptions: none of its own; how one foreign broker collects and applies the form is BRK-50.
+- Figures: none
+- Source: [IRS, About Form W-8BEN](https://www.irs.gov/forms-pubs/about-form-w-8-ben) (last reviewed 02-Oct-2026) · checked 2026-10-25 · primary; [IRS, Instructions for Form W-8BEN (rev. 10/2021)](https://www.irs.gov/instructions/iw8ben), "Expiration of Form W-8BEN" · checked 2026-10-26 · primary. Withholding agent and form: TXF-13.
 - Scope: general
 - Dimensions: `foreign-withholding-domicile`, `reporting-obligation`, `tax-during`
-- Likely to change: possible.
+- Likely to change: no
 
 ### BRK-50 Interactive Brokers: how it collects the W-8 and what it withholds; nothing on Israeli tax
 - Rule: Interactive Brokers' non-US tax page says all non-US persons complete a Form W-8 when opening an account; "Forms W-8 are valid for the year in which they are signed and for the next three calendar years"; "Generally, tax is withheld at a rate of 30% on payments of US source stock dividends and substitute payments in lieu. The rate of withholding may be reduced if there is a tax treaty between your country of tax residence and the US"; if the form lapses, Interactive Brokers withholds US tax at 30% on interest, dividends, gross proceeds and payments in lieu, and treaty rates no longer apply. Interactive Israel's FAQ shows the W-8BEN is updated in the IBKR account portal (Settings, Account Settings, Update Tax Forms).
-- Conditions / exceptions: No Interactive Brokers page read mentions Israeli tax. The general rules (the form, the treaty rate, Israeli withholding and reporting) are BRK-45. Through Interactive Israel, an Israeli-resident individual or joint account can add the HYBRID withholding service (BRK-36). Split from BRK-45 on 2026-10-25 (scope pass).
+- Conditions / exceptions: No Interactive Brokers page read mentions Israeli tax. The general rules are TXF-13 (the form), TXF-12 (the treaty rate) and BRK-27 (Israeli withholding and reporting). Through Interactive Israel, an Israeli-resident individual or joint account can add the HYBRID withholding service (BRK-36). Split from BRK-45 on 2026-10-25 (scope pass).
 - Figures: 30% default; validity as stated.
-- Source: [Interactive Brokers: Tax Information and Reporting, Non-US, Initial Application & Data Collection](https://www.interactivebrokers.com/en/support/tax-nonus-initial.php) · checked 2026-10-25 · institution; [אינטראקטיב ישראל: איך אני מעדכן את טופס W-8BEN?](https://www.inter-il.com/question-answer/%D7%90%D7%99%D7%9A-%D7%90%D7%A0%D7%99-%D7%9E%D7%A2%D7%93%D7%9B%D7%9F-%D7%90%D7%AA-%D7%98%D7%95%D7%A4%D7%A1-w-8ben/) · checked 2026-10-25 · institution. General rule: BRK-45.
+- Source: [Interactive Brokers: Tax Information and Reporting, Non-US, Initial Application & Data Collection](https://www.interactivebrokers.com/en/support/tax-nonus-initial.php) · checked 2026-10-25 · institution; [אינטראקטיב ישראל: איך אני מעדכן את טופס W-8BEN?](https://www.inter-il.com/question-answer/%D7%90%D7%99%D7%9A-%D7%90%D7%A0%D7%99-%D7%9E%D7%A2%D7%93%D7%9B%D7%9F-%D7%90%D7%AA-%D7%98%D7%95%D7%A4%D7%A1-w-8ben/) · checked 2026-10-25 · institution. General rule: TXF-13, TXF-12.
 - Scope: institution: Interactive Brokers, Interactive Israel
 - Dimensions: `foreign-withholding-domicile`, `reporting-obligation`, `tax-during`
 - Likely to change: possible.

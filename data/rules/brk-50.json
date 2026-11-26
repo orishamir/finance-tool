@@ -45,6 +45,7 @@
     }
   ],
   "derived_from": [
-    "BRK-45"
+    "TXF-13",
+    "TXF-12"
   ]
 }
