@@ -39,8 +39,9 @@ describe("the line under what is left, where the pair is priced buying every few
       expect(out, layout).toContain(line);
       // under the total, after it
       expect(out.indexOf(line)).toBeGreaterThan(out.lastIndexOf(invest.receipt.left));
-      // words drawn as a glossary term that open a sheet
-      expect(raw).toMatch(/<button type="button" aria-haspopup="dialog" aria-expanded="false" class="term whitespace-normal[^"]*">(<span>)?אם קונים/);
+      // plain words, not a button, then a small "?" on the last word's line (a no-break space) that opens a sheet
+      expect(raw).not.toMatch(/<button[^>]*>(<span>)?אם קונים/);
+      expect(raw).toMatch(/בכל פעם(<\/span>)?(<!-- -->)?\u00a0(<!-- -->)?<button type="button" aria-label="[^"]*" aria-haspopup="dialog" aria-expanded="false" class="help-mark /);
       // the account's tag is gone; the fund's rows in the lists keep theirs
       expect(out).not.toContain(invest.pair.orderEvery(k));
     }

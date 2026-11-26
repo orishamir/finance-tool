@@ -21,7 +21,7 @@ import { orderCharge, rateWords, type OrderCharge, type RatePart, type RateWords
 import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, sumOf, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, StateTag, shortRow } from "../provenance";
-import { DocLink, FEE_WORDS_HELP, HeldMark, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, Sentence, SourcedTag, Tag, TicketPart, Tpl, When, WordsSheet } from "../kit";
+import { DocLink, FEE_WORDS_HELP, HeldMark, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, Sentence, SourcedTag, Tag, TicketPart, Tpl, When, MarkSheet } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
 import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, totalNoteOf, whole, type Pick } from "./pair";
 import { OptionTag } from "./parts";
@@ -196,8 +196,8 @@ const waitingWhy = (pc: Costs, rose: boolean): string => {
 /**
  * F-133: under what is left, where the pair is priced buying every few months: the interval and what each purchase buys, words that open
  * why: the charge each purchase pays whatever its size, as the run's price list prints it (`orderCharge`), what the same pair leaves bought
- * every month, and that the waiting cash earned nothing. Nothing where the orders are placed every month. Not a kit piece: the kit's part is
- * `WordsSheet`; what this says is the index page's reading of one pair's run (`PairCosts.batched`), and only the receipt shows it.
+ * every month, and that the waiting cash earned nothing, behind a small "?" after the line. Nothing where the orders are placed every month.
+ * Not a kit piece: the kit's part is `MarkSheet`; what this says is the index page's reading of one pair's run (`PairCosts.batched`), and only the receipt shows it.
  */
 function BatchedLine({ pc, house, className }: { pc: PairCosts; /** The house's short name, as the receipt names it. */ house: string; className?: string }) {
   const b = pc.batched;
@@ -206,9 +206,9 @@ function BatchedLine({ pc, house, className }: { pc: PairCosts; /** The house's 
   const k = pc.orderEvery;
   const words = b.perOrder === null ? w.lineAlone(k) : <Tpl t={w.line(k)} vars={{ amount: <bdi>{fmt.nisWhole(b.perOrder)}</bdi> }} />;
   return (
-    <WordsSheet title={w.why(k)} body={<BatchedWhy pc={pc} house={house} />} className={className}>
+    <MarkSheet title={w.why(k)} about={c.pair.orderEvery(k)} body={<BatchedWhy pc={pc} house={house} />} className={className}>
       {words}
-    </WordsSheet>
+    </MarkSheet>
   );
 }
 
