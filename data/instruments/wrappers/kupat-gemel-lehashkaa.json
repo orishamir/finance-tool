@@ -188,7 +188,6 @@
       "condition": "age >= 60",
       "rule_ids": [
         "KGL-09",
-        "TXK-10",
         "PF-17"
       ]
     }

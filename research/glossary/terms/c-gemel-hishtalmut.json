@@ -14,7 +14,7 @@
       "TXK-01",
       "TXK-05",
       "TXK-09",
-      "TXK-10"
+      "KGL-09"
     ],
     "source": {
       "title": "ספר החוקים 2554 (7.6.2016): חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
@@ -31,7 +31,7 @@
       "guide:kupat-gemel-lehashkaa",
       "decoder"
     ],
-    "notes": "A lump sum is taxed at any age; the tax-free route is moving the money to an annuity fund from early retirement age and taking it as an annuity (KGL-09, TXK-09, TXK-10, TXK-12). Brand names seen in apps: חיסכון פלוס (Altshuler), כלל גמל לעתיד (Clal), מיטב קידס (Meitav, in a child's name). Not the same as the child-savings classification 'קופת גמל להשקעה - חסכון לילד'.",
+    "notes": "A lump sum is taxed at any age; the tax-free route is moving the money to an annuity fund from early retirement age and taking it as an annuity (KGL-09, TXK-09, TXK-12). Brand names seen in apps: חיסכון פלוס (Altshuler), כלל גמל לעתיד (Clal), מיטב קידס (Meitav, in a child's name). Not the same as the child-savings classification 'קופת גמל להשקעה - חסכון לילד'.",
     "id": "kvpt-gml-lhshkah"
   },
   {
@@ -262,8 +262,7 @@
     ],
     "explain_he": "קופת גמל שמשלמת קצבה, ומגיל הפרישה המוקדמת אפשר להעביר אליה כסף מגמל להשקעה, לקבלת קצבה בלבד",
     "rule_ids": [
-      "KGL-09",
-      "TXK-10"
+      "KGL-09"
     ],
     "source": {
       "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008, קובץ התקנות, עמוד 3",
@@ -277,7 +276,7 @@
       "statement",
       "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "The brief's 'קופה לקצבה' is not written that way in the rule base. After the transfer the money is for an annuity only; whether it can later be capitalised is open (TXK-10, TXK open question 4). Pension funds are also annuity funds; product rules are in pension-and-gemel-lekitzba.md. The 'לקיצבה' spelling is from the TXP Terms table. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_ב) to the official text.",
+    "notes": "The brief's 'קופה לקצבה' is not written that way in the rule base. After the transfer the money is for an annuity only; whether it can later be capitalised is open (KGL-09, TXK open question 4). Pension funds are also annuity funds; product rules are in pension-and-gemel-lekitzba.md. The 'לקיצבה' spelling is from the TXP Terms table. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/תקנות_הפיקוח_על_שירותים_פיננסיים_(קופות_גמל)_(העברת_כספים_ב) to the official text.",
     "id": "kvpt-gml-lktzbh-c"
   },
   {
@@ -1433,8 +1432,7 @@
     "explain_he": "גיל שקבוע בחוק גיל פרישה, שממנו אפשר להעביר כסף מגמל להשקעה לקופה שמשלמת קצבה",
     "rule_ids": [
       "KGL-09",
-      "KH-12",
-      "TXK-10"
+      "KH-12"
     ],
     "source": {
       "title": "חוק גיל פרישה, התשס\"ד-2004, ספר החוקים 1950, עמוד 1",
@@ -1897,7 +1895,7 @@
     "rule_ids": [
       "TXK-08",
       "TXK-09",
-      "TXK-10",
+      "KGL-09",
       "TXK-21",
       "TXA-13",
       "TXA-18"
@@ -1927,7 +1925,6 @@
     "explain_he": "תשלום חודשי שמקבלים מקופת גמל לאורך זמן, במקום לקבל את כל הכסף בבת אחת",
     "rule_ids": [
       "KGL-09",
-      "TXK-10",
       "TXK-12"
     ],
     "source": {
@@ -1972,7 +1969,7 @@
       "statement",
       "guide:kupat-gemel-lehashkaa"
     ],
-    "notes": "Whether money moved from a gemel lehashkaa to an annuity fund may be capitalised is open (TXK-10, TXK open question 4). The variant is the TXP Terms wording. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה) to the official text.",
+    "notes": "Whether money moved from a gemel lehashkaa to an annuity fund may be capitalised is open (KGL-09, TXK open question 4). The variant is the TXP Terms wording. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/api/rest_v1/page/pdf/פקודת_מס_הכנסה) to the official text.",
     "id": "hyvvn"
   },
   {
