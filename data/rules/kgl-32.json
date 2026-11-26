@@ -1,0 +1,36 @@
+{
+  "id": "KGL-32",
+  "title": "Altshuler Shaham: anyone may open a kupat gemel lehashkaa, at any age and with any amount",
+  "title_he": "פתיחת קופת גמל להשקעה בכל גיל ובכל סכום, באלטשולר שחם",
+  "text_he": "לפי אלטשולר שחם, כל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום. אין סכום מינימלי, אבל ההפקדות עדיין בתוך התקרה.",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "altshuler-shaham",
+      "name_he": "אלטשולר שחם"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/interstedin/saving_plus_deposit/",
+      "title": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
+      "title_he": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "כל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "KGL-06"
+  ]
+}

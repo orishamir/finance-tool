@@ -72,7 +72,7 @@ Out of scope: tax at deposit, during and at exit, including the annuity exemptio
 
 ### KGL-06 Who may open one
 - Rule: A kupat gemel lehashkaa pays a lump sum "לעמית עצמאי או למוטביו" (law s.1 as amended by Amendment 15, KGL-01). The 1964 rules define that member as "עמית יחיד, לרבות עובד בשל תשלום שהוא משלם לקופת גמל בלא תשלום מקביל של מעביד" (rule 1). The ceiling is per member across all of that member's accounts (s.22(א), KGL-02). The CMA standard bylaw lets the company accept or refuse a joining request: "החברה המנהלת רשאית לאשר הצטרפותו של עמית או לסרב לקבלו כעמית וזאת על פי שיקול דעתה הבלעדי ובכפוף לכל דין" (s.7.1), and bars it from closing a member's account against the member's will except in the cases of its s.33 (s.7.2).
-- Conditions / exceptions: Neither the law nor the rules set an age or a residence condition for opening one. That is a reading of their silence, not a stated rule (open question 6). No limit on the number of accounts per person was found; the ceiling is worded across all of them. What the companies say about opening in another person's name and about who may join is KGL-26; a minor's withdrawal is paid to the guardian parent, KGL-27. Split on 2026-10-25 (scope pass). 2026-10-26 (scope settling): the joining clauses (standard bylaw ss.7.1-7.2) moved here from KGL-26, where they were given as Altshuler Shaham's cl. 7.1-7.2, which copy them.
+- Conditions / exceptions: Neither the law nor the rules set an age or a residence condition for opening one. That is a reading of their silence, not a stated rule (open question 6). No limit on the number of accounts per person was found; the ceiling is worded across all of them. What the companies say about opening in another person's name and about who may join is KGL-26 (Meitav) and KGL-32 (Altshuler Shaham); a minor's withdrawal is paid to the guardian parent, KGL-27. Split on 2026-10-25 (scope pass). 2026-10-26 (scope settling): the joining clauses (standard bylaw ss.7.1-7.2) moved here from KGL-26, where they were given as Altshuler Shaham's cl. 7.1-7.2, which copy them.
 - Figures: none.
 - Source: [תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס"ד-2004, קובץ התקנות 6332 (5.8.2004), סריקת רשומות](https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=4), file p.4 (gazette p.858), reg. 1 (substituting reg. 1), definition 'עמית-עצמאי' "עמית יחיד, לרבות עובד בשל תשלום שהוא משלם לקופת גמל בלא תשלום מקביל של מעביד" · checked 2026-11-07 · primary; [חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע"ו-2016](https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf) p.2, ss.1, 3 · checked 2026-10-25 · primary. [תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf), p.5, ss.7.1-7.2 "החברה המנהלת רשאית לאשר הצטרפותו של עמית או לסרב לקבלו כעמית וזאת על פי שיקול דעתה הבלעדי ובכפוף לכל דין" · checked 2026-10-26 · primary. The definition: KGL-01; the ceiling: KGL-02.
 - Scope: general
@@ -80,12 +80,21 @@ Out of scope: tax at deposit, during and at exit, including the annuity exemptio
 - Proposed dimension: `ownership-gift` (money put in another person's account is theirs).
 - Likely to change: the CMA 2026 plan lists a revision of the joining circular (KGL-23).
 
-### KGL-26 Altshuler Shaham and Meitav: opening an account, and in another person's name
-- Rule: Altshuler Shaham says "כל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום" ("any amount" means no minimum, still within the ceiling). Meitav says an account opened in another person's name, including a child, grandchild or spouse, "כמוה כמתן מתנה בלתי חוזרת" (an irrevocable gift), and the account is then managed by that person, except where the person is a minor.
-- Conditions / exceptions: "מתנה בלתי חוזרת" is Meitav's wording; no general text read uses it (the CMA standard bylaw was searched for an age, minimum-amount or gift clause: none). Who may open one under the law, and the standard bylaw's joining clauses, are KGL-06; a minor's withdrawal is KGL-27. Split from KGL-06 on 2026-10-25 (scope pass). 2026-10-26 (scope settling): Altshuler Shaham's cl. 7.1-7.2 copy the CMA standard bylaw ss.7.1-7.2 and moved to KGL-06.
+### KGL-26 Meitav: an account opened in another person's name is an irrevocable gift
+- Rule: Meitav says an account opened in another person's name, including a child, grandchild or spouse, "כמוה כמתן מתנה בלתי חוזרת" (an irrevocable gift), and the account is then managed by that person, except where the person is a minor.
+- Conditions / exceptions: "מתנה בלתי חוזרת" is Meitav's wording; no general text read uses it (the CMA standard bylaw was searched for a gift clause: none). Who may open one under the law, and the standard bylaw's joining clauses, are KGL-06; a minor's withdrawal is KGL-27. Split from KGL-06 on 2026-10-25 (scope pass). Split on 2026-11-26: Altshuler Shaham's statement that anyone may open one is KGL-32.
 - Figures: none.
-- Source: [אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה](https://www.as-invest.co.il/interstedin/saving_plus_deposit/) "כל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום" · checked 2026-10-25 · institution; [Meitav product page](https://www.meitav.co.il/provident_pension/provident_invest/) "כמוה כמתן מתנה בלתי חוזרת לאותו אדם" · checked 2026-10-25 · institution. General rule: KGL-06.
-- Scope: institution: Altshuler Shaham, Meitav
+- Source: [Meitav product page](https://www.meitav.co.il/provident_pension/provident_invest/) "כמוה כמתן מתנה בלתי חוזרת לאותו אדם" · checked 2026-10-25 · institution. General rule: KGL-06.
+- Scope: institution: Meitav
+- Dimensions: `eligibility`
+- Likely to change: no.
+
+### KGL-32 Altshuler Shaham: anyone may open a kupat gemel lehashkaa, at any age and with any amount
+- Rule: Altshuler Shaham says "כל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום" ("any amount" means no minimum, still within the ceiling).
+- Conditions / exceptions: The CMA standard bylaw was searched for an age or minimum-amount clause: none. Who may open one under the law, and the standard bylaw's joining clauses, are KGL-06; 2026-10-26 (scope settling): Altshuler Shaham's cl. 7.1-7.2 copy the CMA standard bylaw ss.7.1-7.2 and moved to KGL-06. Meitav's statement on an account in another person's name is KGL-26. Split from KGL-26 on 2026-11-26.
+- Figures: none.
+- Source: [אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה](https://www.as-invest.co.il/interstedin/saving_plus_deposit/) "כל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום" · checked 2026-10-25 · institution. General rule: KGL-06.
+- Scope: institution: Altshuler Shaham
 - Dimensions: `eligibility`
 - Likely to change: no.
 

@@ -1,8 +1,8 @@
 {
   "id": "KGL-26",
-  "title": "Altshuler Shaham and Meitav: opening an account, and in another person's name",
-  "title_he": "אלטשולר שחם ומיטב: פתיחת חשבון, גם על שם אדם אחר",
-  "text_he": "באלטשולר שחם כותבים שכל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום, כלומר בלי סכום מינימלי ובתוך התקרה. לפי מיטב, פתיחת חשבון על שם אדם אחר, כמו ילד, נכד או בן זוג, היא מתנה בלתי חוזרת, והחשבון מנוהל על ידי אותו אדם, חוץ מקטין.",
+  "title": "Meitav: an account opened in another person's name is an irrevocable gift",
+  "title_he": "חשבון שנפתח על שם אדם אחר הוא מתנה בלתי חוזרת, בקופת הגמל להשקעה של מיטב",
+  "text_he": "לפי מיטב, פתיחת קופת גמל להשקעה על שם אדם אחר, כמו ילד, נכד או בן זוג, היא מתנה בלתי חוזרת. החשבון מנוהל אז על ידי אותו אדם, אלא אם הוא קטין.",
   "strength": "institution",
   "dimensions": [
     "eligibility"
@@ -13,26 +13,11 @@
   "scope": "institution",
   "scope_institutions": [
     {
-      "id": "altshuler-shaham",
-      "name_he": "אלטשולר שחם"
-    },
-    {
       "id": "meitav",
       "name_he": "מיטב"
     }
   ],
   "sources": [
-    {
-      "url": "https://www.as-invest.co.il/interstedin/saving_plus_deposit/",
-      "title": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
-      "title_he": "אלטשולר שחם – הפקדות סוף שנה, קופת גמל להשקעה",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "quote": "כל אדם רשאי לפתוח קופת גמל להשקעה, בכל גיל ובכל סכום",
-      "checked": "2026-10-25"
-    },
     {
       "url": "https://www.meitav.co.il/provident_pension/provident_invest/",
       "title": "Meitav product page",
