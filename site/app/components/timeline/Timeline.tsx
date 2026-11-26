@@ -4,12 +4,13 @@ import { useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { paidInAsEntered, type P05Input } from "@finance-tool/engine";
 import type { ParameterRecord } from "@finance-tool/schema";
 import { buttons, computedInputs as ci, flags, guide as copy, guideBlocks, invest as investCopy, provenance as provCopy, system, values as valuesCopy } from "../../copy";
-import { p05Number, p05Range, p05Value, runTimeline, type Bundle, type Timeline as TimelineData, type TimelineResult, type YearPoint } from "../../lib/engine";
+import { p05Number, p05Range, p05Value, runTimeline, type Bundle, type Timeline as TimelineData, type YearPoint } from "../../lib/engine";
 import { fmt, nisShown } from "../../lib/format";
 import { useInputs, type Employment } from "../../lib/inputs";
 import { useOwnRates } from "../../lib/own-rate";
 import { useValueMode, type ValueMode as Mode } from "../../lib/mode-store";
-import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, weaker, type SiteValue, type Strength } from "../../lib/value";
+import { p05Units, asField, computed, entered as enteredValue, feeLabel, feeYear, ruleFigure, type SiteValue } from "../../lib/value";
+import { rulesOfRun, withoutSalaryTax } from "../../lib/run-rules";
 import { paidInWorking } from "../../lib/working";
 import { lumpSumEntered, type CashRateRange } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
@@ -108,8 +109,6 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
   };
   const horizonYears = state.entered.horizon_years ?? p05Number(bundle.p05, "horizon_years");
   const returnEntered = cash ? ownRate !== undefined : timeline.kind === "ok" && timeline.enteredReturn;
-  const rulesUsed = (t: TimelineResult) =>
-    t.rules.map((r) => ({ id: r.id, strength: r.figures.reduce<Strength>((w, f) => weaker(w, f.strength as Strength) ?? w, r.strength) }));
   const feeRule = (id: string, figure: string) => {
     const r = bundle.rules.find((x) => x.id === id);
     return r ? ruleFigure(r, figure, today) : null;
@@ -138,7 +137,6 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
       // a current account's interest, and so its tax, stops at the balance ceiling (F-26, BANK-09)
       if (key === "balanceCeiling") ceilingInput[name] = v;
     }
-    const rules = rulesUsed(timeline);
     const taxRate = feeRule("TXK-07", "rate");
     const yearValues = (p: YearPoint, m: Mode) => {
       const yearText = p.year === 0 ? copy.readout.today : `${copy.readout.year} ${p.year}`;
@@ -161,7 +159,10 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
         ...(p.profileUsed.includes("age") && state.age !== null ? { [investCopy.pair.ageInput]: enteredValue(state.age, "years", today, ci.age) } : {}),
         ...(p.profileUsed.includes("income") ? { [investCopy.pair.incomeInput]: inputValue("annual_income") } : {}),
       };
-      const fees = computed(m === "real" ? p.feesReal : p.fees, "nis", "F-67", { ...yearInputs, ...feeInputs }, { today, rules: rules.filter((r) => r.id.startsWith("PF-") || r.id.startsWith("KGL-1")), flags: timeline.flags.filter((f) => f === "G-14" || f === "PF-13"), about: `${bundle.terms.tariff ? ci.about.feesTariff : ci.about.fees} ${p.year}` });
+      // each figure lists the rules of the parts of the year's run it is made of (method §13): the fees every fee line, the fund's drag and
+      // spread among them; the tax what the run takes during it and at the exit, an exemption that zeroes it included; what is left the
+      // whole run, less what its fees and tax already list
+      const fees = computed(m === "real" ? p.feesReal : p.fees, "nis", "F-67", { ...yearInputs, ...feeInputs }, { today, rules: rulesOfRun(p.rules, ["fees"]), flags: timeline.flags.filter((f) => f === "G-14" || f === "PF-13"), about: `${bundle.terms.tariff ? ci.about.feesTariff : ci.about.fees} ${p.year}` });
       // the real gain is the run's own, deposit by deposit (F-44: after each deposit's fee, at a falling CPI at its amount; F-09: lot by lot,
       // after the spread and the fees the units sold paid): no two figures shown subtract to it, so its sheet lists what the run reads
       const realGainInputs: Record<string, SiteValue> = { ...yearInputs, ...feeInputs };
@@ -182,8 +183,10 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
         if (bundle.terms.deposit?.linkage === "cpi" || m === "real" || !lumpSum) taxInputs[ci.inflation] = inputs[ci.inflation]!;
       }
       Object.assign(taxInputs, profile);
-      const tax = computed(m === "real" ? p.taxReal : p.taxDuring + p.taxAtExit, "nis", bundle.record.tax_at_exit.formula, taxInputs, { today, rules: rules.filter((r) => r.id.startsWith("TX")), flags: timeline.flags.filter((f) => f !== "G-14" && f !== "PF-13"), labels: timeline.labels, about: `${ci.about.tax} ${p.year}` });
-      const net = computed(m === "real" ? p.real : p.nominal, "nis", "F-67", { ...yearInputs, ...profile, [bundle.terms.tariff ? ci.feesTariff : ci.fees]: fees, [ci.taxAtExit]: tax }, { today, rules, flags: timeline.flags, labels: timeline.labels, about: p.year === horizonYears ? (bundle.terms.tariff ? ci.about.headlineTariff : ci.about.headline) : `${ci.about.net} ${p.year}` });
+      // the tax is F-67's two series together, what the run takes during it and at its exit, so it is named as that total, not by the exit's
+      // formula; the salary's tax on an employer's deposit above its limit is not in those series (`withoutSalaryTax`), what is left holds it
+      const tax = computed(m === "real" ? p.taxReal : p.taxDuring + p.taxAtExit, "nis", "F-67", taxInputs, { today, rules: rulesOfRun(withoutSalaryTax(p.rules), ["taxDuring", "taxAtExit"]), flags: timeline.flags.filter((f) => f !== "G-14" && f !== "PF-13"), labels: timeline.labels, about: `${ci.about.taxTotal} ${p.year}` });
+      const net = computed(m === "real" ? p.real : p.nominal, "nis", "F-67", { ...yearInputs, ...profile, [bundle.terms.tariff ? ci.feesTariff : ci.fees]: fees, [ci.taxAtExit]: tax }, { today, rules: rulesOfRun(p.rules, "all"), flags: timeline.flags, labels: timeline.labels, about: p.year === horizonYears ? (bundle.terms.tariff ? ci.about.headlineTariff : ci.about.headline) : `${ci.about.net} ${p.year}` });
       return { yearText, contributions, fees, tax, net };
     };
     return { inputs, yearValues };

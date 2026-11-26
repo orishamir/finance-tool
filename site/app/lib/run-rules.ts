@@ -50,3 +50,24 @@ export function rulesOfRun(rules: readonly UsedRule[], parts: RunParts): ListedR
 export function rulesOfRuns(runs: readonly { rules?: readonly UsedRule[] }[], parts: RunParts): ListedRule[] {
   return rulesOfRun(mergedRules(runs), parts);
 }
+
+/**
+ * The rules the F-52 salary tax reads on the `taxDuring` part: the tax a salary pays on an employer's deposit above its exempt limit (TXH-03
+ * for a study fund, TXP-10 and the severance ceiling TXP-11 for a pension), at the brackets (TXG-02), with national insurance on it (TXG-35).
+ * A run deducts that tax from what is left as a detail (`employerDepositTax`, `depositTax`) and does not add it to its `taxDuring` field
+ * (architecture 3.4), and a run's uses carry no mark of it, so these ids, the only ones the provident and pension ledgers read on their
+ * salary-tax view, tell its uses apart: no other read of these rules goes into `taxDuring`.
+ */
+export const SALARY_TAX_RULES: readonly string[] = ["TXH-03", "TXP-10", "TXP-11", "TXG-02", "TXG-35"];
+
+const salaryTaxUse = (r: UsedRule, u: UsedRule["uses"][number]) => u.part === "taxDuring" && SALARY_TAX_RULES.includes(r.id);
+
+/** The run's rules without the uses of the F-52 salary tax (`SALARY_TAX_RULES`): for a figure of the run's tax fields, or of a balance before that tax. */
+export function withoutSalaryTax(rules: readonly UsedRule[]): UsedRule[] {
+  return rules.map((r) => ({ ...r, uses: r.uses.filter((u) => !salaryTaxUse(r, u)) }));
+}
+
+/** The run's rules with only the uses of the F-52 salary tax (`SALARY_TAX_RULES`): for the figure of the tax the salary pays on the employer's deposits. */
+export function salaryTaxOnly(rules: readonly UsedRule[]): UsedRule[] {
+  return rules.map((r) => ({ ...r, uses: r.uses.filter((u) => salaryTaxUse(r, u)) }));
+}

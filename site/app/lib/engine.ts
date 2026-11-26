@@ -14,6 +14,7 @@ import {
   runInputs,
   runPlanned,
   mergedLabels,
+  mergedRules,
   type InstrumentTerms,
   type Label,
   type P05Input,
@@ -59,12 +60,15 @@ export interface YearPoint {
   detail: Record<string, number>;
   /** The age and income that year's run rested on (`RunResult.profileUsed`): its sheets list each only there. */
   profileUsed: RunResult["profileUsed"];
+  /** The rules that year's run read, with how it used each (`UsedRule.uses`): each figure of the year lists those of its own parts. */
+  rules: UsedRule[];
 }
 
 export interface TimelineResult {
   kind: "ok";
   horizon: number;
   years: YearPoint[];
+  /** The rules of every year's run, their uses merged (`mergedRules`): a use changed in any year is changed. */
   rules: UsedRule[];
   flags: string[];
   /** The labels of every year's run, one per rule, the strongest any gives it: the site's cautious reading among them makes the doubt of a figure that rests on the exit tax. */
@@ -141,8 +145,7 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
     const horizon = plan.input.goal.months / 12;
     const years: YearPoint[] = [];
     const flags = new Set<string>();
-    const rules = new Map<string, UsedRule>();
-    const runs: { labels: Label[] }[] = [];
+    const runs: RunResult[] = [];
     for (let n = 1; n <= horizon; n++) {
       const yearPlan = { ...plan, input: { ...plan.input, goal: { ...plan.input.goal, months: 12 * n } } } as typeof plan;
       const run = runPlanned(yearPlan, ctx);
@@ -168,12 +171,12 @@ export function runTimeline(bundle: Bundle, inputs: TimelineInputs): Timeline {
         index: last.index,
         detail: run.detail,
         profileUsed: run.profileUsed,
+        rules: run.rules,
       });
       run.flags.forEach((f) => flags.add(f.code));
-      run.rules.forEach((r) => rules.set(r.id, r));
       runs.push(run);
     }
-    return { kind: "ok", horizon, years, rules: [...rules.values()], flags: [...flags], labels: mergedLabels(runs), enteredReturn: "A-01" in entered };
+    return { kind: "ok", horizon, years, rules: mergedRules(runs), flags: [...flags], labels: mergedLabels(runs), enteredReturn: "A-01" in entered };
   } catch (e) {
     if (e instanceof BlockedError) return { kind: "blocked", ruleId: e.ruleId, ...(e.question ? { question: e.question } : {}), ...(e.gap ? { gap: e.gap } : {}), messageHe: blockedHe };
     if (e instanceof FigureNotUpdatedError) return { kind: "figure-not-updated", ruleId: e.ruleId, figure: e.figure, messageHe: figureNotUpdatedHe };

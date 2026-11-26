@@ -1284,6 +1284,8 @@ export const computedInputs = {
     headlineTariff: "מה שנשאר אחרי עמלות, דמי ניהול ומס, אם מושכים בסוף התקופה",
     net: "מה שנשאר אם מושכים בסוף שנה",
     tax: "המס אם מושכים בסוף שנה",
+    /** The timeline's tax: what the run takes along the way and at the exit together (F-67's two series). */
+    taxTotal: "כל המס, בדרך ובמשיכה, אם מושכים בסוף שנה",
     fees: "דמי הניהול שנגבו עד סוף שנה",
     feesTariff: "העמלות ודמי הניהול שנגבו עד סוף שנה",
     contributions: "כל מה שהפקדתם עד סוף שנה",
