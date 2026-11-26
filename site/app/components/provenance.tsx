@@ -545,6 +545,19 @@ function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
   );
 }
 
+/**
+ * The way from a figure's working to its formula's own sheet (every line the entry draws, its key and the site parameters it uses): a quiet
+ * line of words at the end of the working, which opens that sheet in place of the figure's, with the way back.
+ */
+export function FormulaLink({ id }: { id: string }) {
+  const open = useOpen();
+  return (
+    <button type="button" className="text-link min-h-target text-start hover:underline" onClick={(e) => open({ kind: "formula", id }, e.currentTarget)}>
+      {copy.computed.toFormula}
+    </button>
+  );
+}
+
 export function IdRef(props: { id: string; className?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
   return <ChipEnd chip={<IdChip {...props} />} end={props.end} />;
 }

@@ -439,6 +439,18 @@ export function parseNumber(text: string, kind: NumberKind = "amount"): number {
  */
 export const amountWords = (text: string): string => `\u2066${text.replace(/ /g, "\u00a0")}\u2069`;
 
+/**
+ * A number in TeX, for a calculation's line with its values put in (`lib/working.ts`): at most `significant` significant digits, never fewer
+ * than its whole part has, trailing zeros dropped, the thousands separator in TeX's braces (`1{,}325.38`, so TeX spaces it as a separator
+ * and not as a list's comma) and a hyphen for a minus, which TeX draws as the minus sign.
+ */
+export function texNumber(v: number, significant: number): string {
+  const a = Math.abs(v);
+  const place = a === 0 ? 0 : Math.floor(Math.log10(a));
+  const decimals = Math.min(20, Math.max(0, significant - 1 - place));
+  return numberFormat({ maximumFractionDigits: decimals }, "en-US").format(v).replace(/,/g, "{,}");
+}
+
 /** Thousands separators for a typed field, left to right (`1,500`, `5`, `-2.5`). */
 export function formatTyped(n: number): string {
   return numberFormat({ maximumFractionDigits: 4 }, "en-US").format(n);

@@ -560,6 +560,13 @@
     gap: 8px;
     text-align: end;
   }
+  /* the line of a difference or a sum that says what its lines come to (kit/formula.tsx, `receipt`): set apart by a stronger rule */
+  .readout-total {
+    border-top: 1px solid var(--muted-foreground);
+  }
+  .readout-row:has(+ .readout-total) {
+    border-bottom: 0;
+  }
   .readout-head dt {
     color: var(--foreground);
     font-weight: 500;
@@ -580,6 +587,25 @@
   /* ---- a formula in math type (kit/formula.tsx): KaTeX's display formula keeps its centre but not its 1em margins, which the sheet's gaps give */
   .tex-display .katex-display {
     margin: 0;
+  }
+  /* lines read one under another (a figure's line in symbols, then with its values) start at the box's start, so their "=" line up */
+  .tex-display[data-start] .katex-display,
+  .tex-display[data-start] .katex-display > .katex {
+    text-align: start;
+  }
+  /* a line wider than its box scrolls inside it: the edge past which more of it lies fades, so the line reads as going on (kit/formula.tsx,
+     `useScrollEdges`); the box is always left to right, so its start is the left */
+  .tex-display[data-more-end] {
+    -webkit-mask-image: linear-gradient(to left, transparent 0, #000 1.5rem);
+    mask-image: linear-gradient(to left, transparent 0, #000 1.5rem);
+  }
+  .tex-display[data-more-start] {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 1.5rem);
+    mask-image: linear-gradient(to right, transparent 0, #000 1.5rem);
+  }
+  .tex-display[data-more-start][data-more-end] {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 1.5rem, #000 calc(100% - 1.5rem), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 1.5rem, #000 calc(100% - 1.5rem), transparent 100%);
   }
 
   /* ---- sheet (dialog) */
