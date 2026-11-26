@@ -139,6 +139,17 @@ export const source = z.object({
 });
 
 /**
+ * Where in the document a value stands, beside its source's link and name. `page` is the file's own page of a PDF (the library's count,
+ * not the number printed on the sheet); `quote` is the document's own words, at most 240 characters. A web page has only `quote`. Both
+ * optional: no page means not yet confirmed.
+ */
+export const citedPlace = {
+  page: z.number().int().positive().optional(),
+  quote: z.string().min(1).max(240).optional(),
+  fragment: textFragment.optional(),
+};
+
+/**
  * How a computed value's sheet shows its working, by kind: `difference`, the input `from` less the input `less`; `sum`, the inputs `parts`
  * added up, in order; `formula`, one line of math docs/method.md draws for an entry (`line`, its place among the entry's $`…`$ lines,
  * from 0), with the symbol of that line each input stands for (`symbols`, input key to the symbol's TeX as the line writes it; several
