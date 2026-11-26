@@ -35,7 +35,7 @@
     }
   },
   "il_finance_file": "government-bonds-and-makam.md",
-  "checked": "2026-11-15",
+  "checked": "2026-11-02",
   "scope": "general",
   "sources": [
     {
@@ -81,5 +81,8 @@
       "quote": "בתעודות התחייבות - 1 ש״ח ערך נקוב",
       "checked": "2026-10-26"
     }
+  ],
+  "derived_from": [
+    "GOV-32"
   ]
 }
