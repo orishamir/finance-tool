@@ -425,7 +425,11 @@ describe("the parts each run's rules went into", () => {
     const employer = run("keren hishtalmut, employer money above its limit");
     expect(changedIn(employer, "TXH-01")).toEqual(["deposit", "taxDuring:salaryTax", "taxAtExit"]);
     expect(changedIn(employer, "TXH-02")).toEqual([]);
-    // an early withdrawal taxes every gain whatever the limit, so the limit sets no tax at the exit
+    // withdrawn early, the employer's deposits taxed at the exit are the benefited ones TXH-01 capped, so it sets that tax as well
+    const early = run("keren hishtalmut, employer money above its limit, early withdrawal");
+    expect(detailOf(early, "earlyEmployerDeposits")).toBeGreaterThan(0);
+    expect(changedIn(early, "TXH-01")).toContain("taxAtExit");
+    // an early withdrawal taxes every gain whatever the limit, so the limit sets no tax at the exit of own money
     expect(changedIn(runProvident({ ...s23, goal: { ...s23.goal, monthly: 500, months: 48 }, hishtalmut: { ...s23Hishtalmut, monthlySalary: 20_000, earlyWithdrawal: true } }, ctx), "TXH-08")).toEqual(["deposit"]);
   });
 

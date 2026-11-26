@@ -499,6 +499,9 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
         workBrackets: exit.inYear(exitYear).peek.brackets(workRule, "brackets"),
       });
       if (employerDeposits > 0 && refundClaimed) exit.took(workRule);
+      // the employer's deposits taxed here are the benefited ones, which the limits that cut a deposit capped: those limits set the tax
+      // either way, as work income or as the withholding's base. All gains are taxed whatever the limit, so own money takes none.
+      if (employerDeposits > 0) for (const id of limitsCut) exit.took(id);
       // from 60 the age brought in TXG-04's brackets only where they set the tax: the refund claimed, on gains or employer deposits (TXG-04
       // is then taken above); with the refund not claimed the tax is the withholding, which no age sets (A-14)
       if (sixty && refundClaimed && (gains > 0 || employerDeposits > 0)) book.profile("age");
