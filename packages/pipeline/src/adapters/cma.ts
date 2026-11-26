@@ -518,15 +518,16 @@ const heDate = (iso: string): string => iso.slice(0, 10).split("-").reverse().jo
 
 /**
  * The start date the file gives a track, said as that field and no more (CAT OQ6: which date INCEPTION_DATE means is not known, so
- * never "opened on"), with what has not yet passed since it.
+ * never "opened on").
  */
-const sinceStart = (inception: string, notYet: string): string => `תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא ${heDate(inception)}, ועוד לא ${notYet} מאז.`;
+const startDate = (inception: string): string => `תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא ${heDate(inception)}`;
 
 /**
  * CMA fee fields to value objects (data-schema 3.13). The rules and note follow the value's state:
  * - a number: CAT-36 and CAT-37 (the year and what the average is), CAT-35 on the deposit fee (a share of the deposits), CAT-39 on
  *   Pension-Net (the fund's pair on every track); no note, but a negative value says it is as reported (CAT-40);
- * - empty, the track younger than the fee's calendar year: CAT-36, and a note with the file's start date;
+ * - empty, the track's start date after 1 January of the fee's calendar year: CAT-36, and a note setting the file's start date against
+ *   that year;
  * - empty, a deposit fee of a type whose regulation has none (`balanceFeeOnly`): PF-06 alone, and a note saying so;
  * - empty for any other reason: no rule, and a note that the reason is unknown, naming CAT OQ22 on the tracks it lists.
  * Pure.
@@ -549,9 +550,10 @@ export function buildFees(
       notes = "אין דמי ניהול מהפקדה בסוג הקופה הזה: התקנות מתירות דמי ניהול מהיתרה בלבד, ולכן השדה ריק גם בנתוני רשות שוק ההון.";
       ruleIds = ["PF-06"];
     } else if (value === null) {
-      // a track whose start date is after 1 January of the fee's year had no full calendar year in it, so the note's words hold
+      // the fee is the average of one calendar year (CAT-36), so the start date is set against that year, never against the reading date
       if (fund.inception_date && fund.inception_date > `${year}-01-01`) {
-        notes = sinceStart(fund.inception_date, "עברה שנה קלנדרית מלאה");
+        const after = fund.inception_date > `${year}-12-31` ? "סוף" : "תחילת";
+        notes = `הממוצע הוא של שנת ${year}. ${startDate(fund.inception_date)}, אחרי ${after} השנה.`;
         ruleIds = ["CAT-36"];
       } else {
         notes = file.dataset === "gemelnet" && fund.fund_id !== undefined && OQ22_TRACKS.has(fund.fund_id) ? "הסיבה לא ידועה (CAT OQ22)." : REASON_UNKNOWN;
@@ -677,7 +679,13 @@ export function buildYields(
     const n = rawText === "" ? null : Number(rawText);
     const value = n !== null && Number.isFinite(n) ? n : null;
     const young = value === null && !!fund.inception_date && youngerThan(fund.inception_date, file.report_period, f.years);
-    const notes = value !== null ? undefined : young && fund.inception_date ? sinceStart(fund.inception_date, `עברו ${f.years} שנים מלאות`) : REASON_UNKNOWN;
+    // the window ends at the report month (CAT-05, CAT-41), so the years are counted to the period's end, never to the reading date
+    const notes =
+      value !== null
+        ? undefined
+        : young && fund.inception_date
+          ? `${startDate(fund.inception_date)}. מאז ועד ${heDate(periodEnd(file.report_period))}, סוף תקופת הדיווח, לא עברו ${f.years} שנים מלאות.`
+          : REASON_UNKNOWN;
     return {
       value,
       unit: "pct_per_year" as const,

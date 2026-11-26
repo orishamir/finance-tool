@@ -493,7 +493,7 @@ describe("fees", () => {
   it("an empty fee is null with a reason, not zero, and the file still validates", () => {
     const v = f(15995).fees;
     expect(v.avg_annual_management_fee.value).toBeNull();
-    expect(v.avg_annual_management_fee.notes).toContain("שנה קלנדרית מלאה");
+    expect(v.avg_annual_management_fee.notes).toContain("הממוצע הוא של שנת 2025.");
     expect(v.avg_deposit_fee.value).toBeNull();
     expect(cmaPeriodFile.safeParse(file).success).toBe(true);
   });
@@ -508,11 +508,11 @@ describe("fees", () => {
     expect(neg.avg_deposit_fee.notes).toContain("שלילי");
   });
 
-  it("an empty fee of an old track says the reason is unknown; of a track opened last year, no full year yet", () => {
+  it("an empty fee of an old track says the reason is unknown; of a track whose start date is after the fee's year, says so", () => {
     const base = { dataset: "gemelnet" as const, report_period: "2026-09", checked: "2026-10-23", source: file.source };
     const raw = { AVG_ANNUAL_MANAGEMENT_FEE: "", AVG_DEPOSIT_FEE: "" };
     expect(buildFees(base, { raw_fields: raw, inception_date: "2010-01-01" }).avg_annual_management_fee.notes).toBe("הסיבה לא ידועה.");
-    expect(buildFees(base, { raw_fields: raw, inception_date: "2026-03-01" }).avg_annual_management_fee.notes).toContain("שנה קלנדרית מלאה");
+    expect(buildFees(base, { raw_fields: raw, inception_date: "2026-03-01" }).avg_annual_management_fee.notes).toContain("01.03.2026, אחרי סוף השנה.");
   });
 
   it("an empty deposit fee of a balance-only type (study fund, central, other-purpose, IRA) gives PF-06 as the reason", () => {

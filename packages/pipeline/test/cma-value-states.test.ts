@@ -40,12 +40,20 @@ describe("fee values by state", () => {
     expect(v.notes).toBe("ערך שלילי, כפי שדווח.");
   });
 
-  it("an empty fee of a track younger than the fee's year names CAT-36 and gives the file's start date as that field", () => {
+  it("an empty fee of a track that started after 1 January of the fee's year names CAT-36 and sets the file's start date against that year", () => {
     const v = fees({ AVG_ANNUAL_MANAGEMENT_FEE: "", AVG_DEPOSIT_FEE: "" }, { inception_date: "2025-03-01" });
     for (const x of [v.avg_annual_management_fee, v.avg_deposit_fee]) {
       expect(x.rule_ids).toEqual(["CAT-36"]);
-      expect(x.notes).toBe("תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא 01.03.2025, ועוד לא עברה שנה קלנדרית מלאה מאז.");
+      expect(x.notes).toBe("הממוצע הוא של שנת 2025. תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא 01.03.2025, אחרי תחילת השנה.");
     }
+  });
+
+  it("a fee note says nothing about time since the fee's year, so a December file read the next year stays true", () => {
+    const dec = { ...gemel, report_period: "2026-12" };
+    const v = fees({ AVG_ANNUAL_MANAGEMENT_FEE: "", AVG_DEPOSIT_FEE: "" }, { inception_date: "2025-03-01" }, dec).avg_annual_management_fee;
+    expect(v.notes).toBe("הממוצע הוא של שנת 2025. תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא 01.03.2025, אחרי תחילת השנה.");
+    const later = fees({ AVG_ANNUAL_MANAGEMENT_FEE: "", AVG_DEPOSIT_FEE: "" }, { inception_date: "2026-03-26" }).avg_annual_management_fee;
+    expect(later.notes).toBe("הממוצע הוא של שנת 2025. תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא 26.03.2026, אחרי סוף השנה.");
   });
 
   it("a track whose start date is 1 January of the fee's year had that full year, so its empty fee is unexplained", () => {
@@ -135,11 +143,14 @@ describe("yield values by state", () => {
     }
   });
 
-  it("an empty yield of a track younger than the window names CAT-05, with the file's start date", () => {
+  it("an empty yield of a track younger than the window names CAT-05, with the file's start date counted to the period's end", () => {
     const v = y({ AVG_ANNUAL_YIELD_TRAILING_3YRS: "", AVG_ANNUAL_YIELD_TRAILING_5YRS: "" }, "2023-11-14");
     expect(v.avg_annual_yield_3y.rule_ids).toEqual(["CAT-05"]);
-    expect(v.avg_annual_yield_3y.notes).toBe("תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא 14.11.2023, ועוד לא עברו 3 שנים מלאות מאז.");
-    expect(v.avg_annual_yield_5y.notes).toContain("עברו 5 שנים מלאות");
+    expect(v.avg_annual_yield_3y.notes).toBe(
+      "תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא 14.11.2023. מאז ועד 31.10.2026, סוף תקופת הדיווח, לא עברו 3 שנים מלאות.",
+    );
+    expect(v.avg_annual_yield_5y.notes).toContain("לא עברו 5 שנים מלאות");
+    expect(v.avg_annual_yield_3y.notes).not.toContain("עוד לא");
   });
 
   it("an empty yield with no known reason names no rule and says the reason is unknown", () => {
@@ -164,7 +175,7 @@ describe("the stored files", () => {
     expect(t15256.total_assets.notes).toBeUndefined();
     const y = track(14790).yields!.avg_annual_yield_3y;
     expect(y).toMatchObject({ value: null, rule_ids: ["CAT-05"] });
-    expect(y.notes).toContain("14.11.2023");
+    expect(y.notes).toBe("תאריך ההקמה של המסלול בנתוני רשות שוק ההון הוא 14.11.2023. מאז ועד 31.10.2026, סוף תקופת הדיווח, לא עברו 3 שנים מלאות.");
     const fee = track(886).fees.avg_annual_management_fee;
     expect(fee).toMatchObject({ value: 0.71, rule_ids: ["CAT-36", "CAT-37"], effective_from: "2025-01-01" });
     expect(fee.notes).toBeUndefined();
