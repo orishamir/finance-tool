@@ -182,7 +182,12 @@
       {
         "rule": "CS-29",
         "companies": [
-          "leumi",
+          "leumi"
+        ]
+      },
+      {
+        "rule": "CS-31",
+        "companies": [
           "yahav"
         ]
       }
