@@ -16,7 +16,7 @@ export const content: GuideContent = {
         <Term id="תקרת הפקדה">תקרת ההפקדה</Term> החודשית לקרן המקיפה, של המעסיק ושלכם יחד, היא <N v={figure("PEN-08", "monthly_deposit_ceiling")} />. העודף <Ruled id="PEN-10">עובר לקרן הכללית אוטומטית</Ruled>, אצל אותה <Term id="חברה מנהלת">חברה מנהלת</Term>. תקרה שלא נוצלה בחודש אחד <Ruled id="PEN-08">עוברת לחודשים הבאים באותה שנה</Ruled>.
       </p>
       <p className="max-w-measure">
-        בקרן הכללית הכסף נצבר בחשבון על שמכם ומושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term>. בפרישה היתרה הופכת <Term prefix="ל" id="קצבה">קצבה</Term> חודשית, <Ruled id="PEN-64">לפי</Ruled> <Term id="מקדם המרה">מקדם המרה</Term> של הקרן. <Term prefix="ב" id="מסלול ביטוח">מסלולי הביטוח</Term> של הקרן, הגיל שממנו היא משולמת <Ruled id="PEN-64">הוא לפחות</Ruled> <N v={figure("PEN-64", "min_retirement_age")} />.
+        בקרן הכללית הכסף נצבר בחשבון על שמכם ומושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term>. בפרישה היתרה הופכת <Term prefix="ל" id="קצבה">קצבה</Term> חודשית, <Ruled id="PEN-70">לפי</Ruled> <Term id="מקדם המרה">מקדם המרה</Term> של הקרן. <Term prefix="ב" id="מסלול ביטוח">מסלולי הביטוח</Term> של הקרן, הגיל שממנו היא משולמת <Ruled id="PEN-64">הוא לפחות</Ruled> <N v={figure("PEN-64", "min_retirement_age")} />.
       </p>
       <p className="max-w-measure">
         במסלולי הביטוח <Ruled id="PEN-64">יש גם כיסוי לנכות ולמוות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Term prefix="ל" id="עמית פעיל">עמית פעיל</Term>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> ששווייה לא נמוך מהיתרה שצברתם. הקרן <Ruled id="PEN-64">רשאית להציע גם מסלול בלי הכיסוי הזה</Ruled>.
