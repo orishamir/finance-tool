@@ -76,7 +76,7 @@ export interface CustomFund {
   /** A fund bought abroad: the exchange it trades on, as the person said; absent: not sure, or saved before it was asked, and the exchange follows its domicile (F-65). */
   exchange?: FundExchange;
   /** A fund bought on an exchange: the price of one unit in its kind's unit (`unitPriceUnit`), dated the day it was typed; absent: not typed (F-109). */
-  unitPrice?: ValueObject;
+  unitPrice?: ValueObject & { unit: UnitPriceUnit };
   added: string;
 }
 
@@ -227,13 +227,20 @@ export function validCustomFunds(list: unknown[]): CustomFund[] {
     const tracking = TRACKINGS.includes(f.tracking as FundTracking) ? (f.tracking as FundTracking) : null;
     // a fund saved before these were asked has neither: it reads as not sure, and as no unit price typed
     const exchange = kind === "abroad" ? fundExchange.safeParse(f.exchange).data ?? null : null;
-    // a price in a unit its kind is not typed in is not read: the fund is kept, bought by amount
-    const rawUnit = isObj(f.unitPrice) ? f.unitPrice.unit : undefined;
-    const unitPrice = isUnitPriceUnit(rawUnit) && unitPriceUnit(kind, unitPriceUnits[rawUnit].code) === rawUnit ? figure(f.unitPrice, rawUnit, ANY_SUM) : null;
-    if (unitPrice === undefined) continue;
-    out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: foreign ? null : variable, trustee: foreign ? null : trustee, hedged: f.hedged, ...(f.shekelIndex === true && !f.hedged ? { shekelIndex: true as const } : {}), payout, yield: yieldPct, perYear, domicile, tracking, ...(exchange ? { exchange } : {}), ...(unitPrice && unitPrice.value !== 0 ? { unitPrice } : {}), added: f.added });
+    // the answers asked later read as not given where they do not parse, as the exchange, the payout and the country do: a unit price in a
+    // unit its kind is not typed in, or not a price, is not read, and the fund is kept, bought by amount
+    const unitPrice = unitPriceFrom(kind, f.unitPrice);
+    out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: foreign ? null : variable, trustee: foreign ? null : trustee, hedged: f.hedged, ...(f.shekelIndex === true && !f.hedged ? { shekelIndex: true as const } : {}), payout, yield: yieldPct, perYear, domicile, tracking, ...(exchange ? { exchange } : {}), ...(unitPrice ? { unitPrice } : {}), added: f.added });
   }
   return out;
+}
+
+/** A saved unit price, where it is a price above zero in a unit the fund's kind is typed in for some index (`unitPriceUnit`); else null. */
+function unitPriceFrom(kind: OptionId, raw: unknown): CustomFund["unitPrice"] | null {
+  const unit = isObj(raw) ? raw.unit : undefined;
+  if (!isUnitPriceUnit(unit) || unitPriceUnit(kind, unitPriceUnits[unit].code) !== unit) return null;
+  const read = figure(raw, unit, ANY_SUM);
+  return read && read.value !== 0 ? { ...read, unit } : null;
 }
 
 // ---------------------------------------------------------------- what a person typed
@@ -256,8 +263,13 @@ export interface FundDraft {
   tracking: FundTracking | null;
   /** Null: not sure, asked only of a fund bought abroad. */
   exchange: FundExchange | null;
-  /** In its kind's unit (`unitPriceUnit`); null: not typed. */
-  unitPrice: number | null;
+  /** As typed, with the unit it was typed in (`unitPriceUnit` of the kind it was typed for); null: not typed. */
+  unitPrice: DraftUnitPrice | null;
+}
+
+export interface DraftUnitPrice {
+  value: number;
+  unit: UnitPriceUnit;
 }
 
 const norm = (s: string) => s.trim().replace(/\s+/g, " ");
@@ -265,8 +277,18 @@ const norm = (s: string) => s.trim().replace(/\s+/g, " ");
 /** `israeliIndex`: a fund on an Israeli index has no currency to neutralise, so it starts and stays unhedged. */
 export const fundDraftOf = (f: CustomFund | null, kind: OptionId, israeliIndex = false): FundDraft =>
   f
-    ? { name: f.name, number: f.number ?? "", kind: f.kind, fixed: numberOf(f.fixed), variable: numberOf(f.variable), trustee: numberOf(f.trustee), hedged: f.hedged, shekelIndex: f.shekelIndex === true, payout: f.payout, yield: numberOf(f.yield), perYear: f.perYear, domicile: f.domicile, tracking: f.tracking, exchange: f.exchange ?? null, unitPrice: f.unitPrice ? numberOf(f.unitPrice) : null }
+    ? { name: f.name, number: f.number ?? "", kind: f.kind, fixed: numberOf(f.fixed), variable: numberOf(f.variable), trustee: numberOf(f.trustee), hedged: f.hedged, shekelIndex: f.shekelIndex === true, payout: f.payout, yield: numberOf(f.yield), perYear: f.perYear, domicile: f.domicile, tracking: f.tracking, exchange: f.exchange ?? null, unitPrice: draftPriceOf(f.unitPrice) }
     : { name: "", number: "", kind, fixed: null, variable: null, trustee: null, hedged: israeliIndex ? false : null, shekelIndex: false, payout: null, yield: null, perYear: null, domicile: null, tracking: null, exchange: null, unitPrice: null };
+
+function draftPriceOf(v: CustomFund["unitPrice"]): DraftUnitPrice | null {
+  const value = v ? numberOf(v) : null;
+  return v && value !== null ? { value, unit: v.unit } : null;
+}
+
+/** The draft with another kind: a unit price typed in another unit than the new kind's is not a price in it, and is cleared (F-109). */
+export function draftWithKind(d: FundDraft, kind: OptionId, currencyOfIndex: string | null): FundDraft {
+  return { ...d, kind, unitPrice: d.unitPrice?.unit === unitPriceUnit(kind, currencyOfIndex) ? d.unitPrice : null };
+}
 
 export type EntryError = "name-empty" | "name-taken" | "hedged-none";
 
@@ -284,14 +306,15 @@ const vo = (v: number | null, unit: ValueObject["unit"], today: string, about: s
 
 /**
  * `currencyOfIndex`: the currency of the index the fund is on, which sets the unit its unit price is typed in (`unitPriceUnit`); none known,
- * a fund abroad's is in dollars. `before`: the fund as saved, whose unit price keeps its date where its value is the same (F-65: dated the
- * day it was typed).
+ * a fund abroad's is in dollars. A unit price typed in another unit is not a price in this one, and is not saved. `before`: the fund as
+ * saved, whose unit price keeps its date where its value is the same (F-65: dated the day it was typed).
  */
 export function fundFromDraft(d: FundDraft, id: string, indexId: string, today: string, currencyOfIndex: string | null = null, before: CustomFund | null = null): CustomFund {
   const w = c.fields;
   const foreign = isForeignKind(d.kind);
   const priceUnit = unitPriceUnit(d.kind, currencyOfIndex);
-  const kept = before?.unitPrice && before.unitPrice.unit === priceUnit && before.unitPrice.value === d.unitPrice ? before.unitPrice : null;
+  const typed = priceUnit && d.unitPrice && d.unitPrice.unit === priceUnit && d.unitPrice.value !== 0 ? { value: d.unitPrice.value, unit: priceUnit } : null;
+  const kept = typed && before?.unitPrice && before.unitPrice.unit === typed.unit && before.unitPrice.value === typed.value ? before.unitPrice : null;
   return {
     id,
     name: norm(d.name).slice(0, NAME_MAX),
@@ -309,7 +332,7 @@ export function fundFromDraft(d: FundDraft, id: string, indexId: string, today: 
     domicile: foreign ? d.domicile : null,
     tracking: d.tracking,
     ...(d.kind === "abroad" && d.exchange ? { exchange: d.exchange } : {}),
-    ...(priceUnit && d.unitPrice ? { unitPrice: kept ?? entered(d.unitPrice, priceUnit, today, w.unitPrice) } : {}),
+    ...(typed ? { unitPrice: kept ?? { ...entered(typed.value, typed.unit, today, w.unitPrice), unit: typed.unit } } : {}),
     added: today,
   };
 }
@@ -440,13 +463,37 @@ export interface EnteredInBundle {
   shekelFunds: string[];
 }
 
-/** The bundle with the person's funds in it. Nothing entered: the same object, so the page prices nothing again. */
-export function withCustomEntries(bundle: IndicesBundle, funds: readonly CustomFund[], indices: readonly CustomIndex[] = []): IndicesBundle {
-  if (funds.length === 0) return bundle;
-  // an index the person added says nothing of its currency: a foreign one in dollars, as the page's generic fund abroad; a fund
-  // whose index they said is in shekels runs on a shekel index of its own (shekelFunds, read by fundSpec)
-  const exposures: EnteredInBundle["exposures"] = Object.fromEntries(indices.map((i) => [i.id, { cash_like: false, currency: "USD" }]));
-  const currencyOf = (f: CustomFund) => bundle.exposures.find((e) => e.id === f.indexId)?.currency ?? exposures[f.indexId]?.currency ?? null;
+// an index the person added says nothing of its currency: a foreign one in dollars, as the page's generic fund abroad; a fund whose index
+// they said is in shekels runs on a shekel index of its own (shekelFunds, read by fundSpec)
+const customExposures = (indices: readonly CustomIndex[]): EnteredInBundle["exposures"] => Object.fromEntries(indices.map((i) => [i.id, { cash_like: false, currency: "USD" }]));
+
+/** The currency of the index a typed fund is on: a collected index's, else a custom one's (`customExposures`); null where neither holds it. */
+const indexCurrencyOf = (bundle: Pick<IndicesBundle, "exposures">, exposures: EnteredInBundle["exposures"], f: CustomFund): string | null =>
+  bundle.exposures.find((e) => e.id === f.indexId)?.currency ?? exposures[f.indexId]?.currency ?? null;
+
+/**
+ * The person's funds as the page reads them: a unit price in another unit than the one the fund's kind is typed in at its index's currency
+ * (`unitPriceUnit`; a price in dollars on a fund of a euro index) is not read, and the fund is bought by amount, as on a reload
+ * (`validCustomFunds`). The same array where every price fits.
+ */
+export function fundsAsRead(bundle: Pick<IndicesBundle, "exposures">, funds: readonly CustomFund[], indices: readonly CustomIndex[] = []): readonly CustomFund[] {
+  const exposures = customExposures(indices);
+  const fits = (f: CustomFund) => !f.unitPrice || f.unitPrice.unit === unitPriceUnit(f.kind, indexCurrencyOf(bundle, exposures, f));
+  if (funds.every(fits)) return funds;
+  return funds.map((f) => {
+    if (fits(f)) return f;
+    const read = { ...f };
+    delete read.unitPrice;
+    return read;
+  });
+}
+
+/** The bundle with the person's funds in it, as read (`fundsAsRead`). Nothing entered: the same object, so the page prices nothing again. */
+export function withCustomEntries(bundle: IndicesBundle, typedFunds: readonly CustomFund[], indices: readonly CustomIndex[] = []): IndicesBundle {
+  if (typedFunds.length === 0) return bundle;
+  const funds = fundsAsRead(bundle, typedFunds, indices);
+  const exposures = customExposures(indices);
+  const currencyOf = (f: CustomFund) => indexCurrencyOf(bundle, exposures, f);
   const held = bundle.entered;
   return {
     ...bundle,

@@ -3,7 +3,7 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "rea
 import { Pencil } from "lucide-react";
 import { invest as root } from "../../copy";
 import { fundExchange, type FundExchange, type FundRecord } from "@finance-tool/schema";
-import { customFundGap, DOMICILES, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, unitPriceUnit, type CustomFund, type EntryError, type EntryTerm, type FundDomicile, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
+import { customFundGap, DOMICILES, draftWithKind, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, unitPriceUnit, type CustomFund, type EntryError, type EntryTerm, type FundDomicile, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { optionsOf, type IndexRef, type OptionId } from "../../lib/invest";
 import { isoToday } from "../../lib/state";
@@ -131,7 +131,7 @@ const pctCheck = percentCheck();
 
 function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, onRemove }: { headId: string; index: IndexRef; fund: CustomFund | null; others: readonly CustomFund[]; writable: boolean; onSave: (f: CustomFund) => void; onCancel: () => void; onRemove: (id: string) => void }) {
   const kinds = optionsOf(index.israeli);
-  const { draft, now, set } = useDraft<FundDraft>(() => fundDraftOf(fund, kinds[0]!, index.israeli));
+  const { draft, now, set, setMany } = useDraft<FundDraft>(() => fundDraftOf(fund, kinds[0]!, index.israeli));
   const [errors, setErrors] = useState<EntryError[]>([]);
   const form = useRef<HTMLDivElement>(null);
   const w = c.fields;
@@ -139,11 +139,7 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
   // in its kind's unit (abroad the fund's currency, in Tel Aviv agorot); none for a fund bought by amount
   const currencyOfIndex = index.exposure?.currency ?? null;
   const priceUnit = unitPriceUnit(draft.kind, currencyOfIndex);
-  // a price typed in one unit is not a price in another: a kind priced in another unit starts with none
-  const setKind = (k: OptionId) => {
-    if (unitPriceUnit(k, currencyOfIndex) !== priceUnit) set("unitPrice", null);
-    set("kind", k);
-  };
+  const setKind = (k: OptionId) => setMany(draftWithKind(now.current, k, currencyOfIndex));
   // no "0" in an empty field: an empty fee is not known, not a fee of zero
   const percent = (k: "fixed" | "variable" | "trustee", label: string) => <NumberField label={label} unit="pct_per_year" value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} optional />;
   const save = () => {
@@ -168,7 +164,7 @@ function FundPanel({ headId, index, fund, others, writable, onSave, onCancel, on
             <TextField label={w.fundName} value={draft.name} onChange={(v) => set("name", v)} maxLength={NAME_MAX} error={errors.includes("name-empty") ? c.errors["name-empty"] : errors.includes("name-taken") ? c.errors["name-taken"] : null} />
             <TextField label={w.number} value={draft.number} onChange={(v) => set("number", v)} maxLength={20} dir="ltr" />
             <SelectField className="max-w-none" label={w.kind} value={draft.kind} options={kinds.map((k: OptionId) => ({ id: k, name: c.kinds[k]! }))} onChange={(k) => k && setKind(k as OptionId)} />
-            {priceUnit && <NumberField label={priceUnit === "agorot" ? w.unitPriceAgorot : w.unitPrice} unit={priceUnit} value={draft.unitPrice} isEntered={draft.unitPrice !== null} validate={aboveZeroCheck} onCommit={(n) => set("unitPrice", n)} onReset={() => set("unitPrice", null)} hint={c.unitPriceHint} agorot optional />}
+            {priceUnit && <NumberField label={priceUnit === "agorot" ? w.unitPriceAgorot : w.unitPrice} unit={priceUnit} value={draft.unitPrice?.value ?? null} isEntered={draft.unitPrice !== null} validate={aboveZeroCheck} onCommit={(n) => set("unitPrice", { value: n, unit: priceUnit })} onReset={() => set("unitPrice", null)} hint={c.unitPriceHint} agorot optional />}
           </FieldGroup>
           <FieldGroup title={c.fundParts.fees} className="@xl:border-t-0 @xl:pt-0">
             {foreign ? (

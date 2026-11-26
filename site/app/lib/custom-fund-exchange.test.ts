@@ -5,7 +5,7 @@
 // pricing of another fund or another answer.
 import { describe, expect, it } from "vitest";
 import type { FundExchange, FundRecord } from "@finance-tool/schema";
-import { fundDraftOf, fundFromDraft, recordOfFund, validCustomFunds, withCustomEntries, type CustomFund, type FundDomicile } from "./custom-entries";
+import { draftWithKind, fundDraftOf, fundFromDraft, fundsAsRead, recordOfFund, validCustomFunds, withCustomEntries, type CustomFund, type FundDomicile } from "./custom-entries";
 import { buildInvest, dealOnPlan, dealRunOf, fundWayAt, indexById, venueOfFund, type DealOnPlan, type FundWay, type WayPrice } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
@@ -37,7 +37,7 @@ const indexOf = (b: typeof bundle) => must(indexById(b, SP), "the S&P 500 index"
  */
 const typed = (exchange: FundExchange | null, unitPrice: number | null = null, domicile: FundDomicile | null = "IE"): CustomFund =>
   fundFromDraft(
-    { ...fundDraftOf(null, "abroad"), name: `שלי ${exchange ?? "לא ידוע"} ${domicile ?? "-"}`, fixed: 0.07, payout: "accumulating", hedged: false, domicile, exchange, unitPrice },
+    { ...fundDraftOf(null, "abroad"), name: `שלי ${exchange ?? "לא ידוע"} ${domicile ?? "-"}`, fixed: 0.07, payout: "accumulating", hedged: false, domicile, exchange, unitPrice: unitPrice === null ? null : { value: unitPrice, unit: "usd" } },
     `custom-fund-${exchange ?? "unsure"}-${(domicile ?? "none").toLowerCase()}${unitPrice ? "-priced" : ""}`,
     SP,
     t,
@@ -196,12 +196,12 @@ describe("a typed fund as saved and read back (F-65, F-109)", () => {
     const draft = fundDraftOf(first, "abroad");
     const same = fundFromDraft(draft, first.id, SP, "2099-01-01", "USD", first);
     expect(same.unitPrice).toEqual(first.unitPrice);
-    const changed = fundFromDraft({ ...draft, unitPrice: 101 }, first.id, SP, "2099-01-01", "USD", first);
+    const changed = fundFromDraft({ ...draft, unitPrice: { value: 101, unit: "usd" } }, first.id, SP, "2099-01-01", "USD", first);
     expect(changed.unitPrice?.checked).toBe("2099-01-01");
   });
 
   it("a unit price in a unit its kind is not typed in is not read back: a fund in Tel Aviv in agorot, a fund abroad in its currency", () => {
-    const etf = fundFromDraft({ ...fundDraftOf(null, "il-etf"), name: "סל", fixed: 0.1, variable: 0, trustee: 0, payout: "accumulating", hedged: false, unitPrice: 12_345 }, "custom-fund-etf", SP, t, "USD");
+    const etf = fundFromDraft({ ...fundDraftOf(null, "il-etf"), name: "סל", fixed: 0.1, variable: 0, trustee: 0, payout: "accumulating", hedged: false, unitPrice: { value: 12_345, unit: "agorot" } }, "custom-fund-etf", SP, t, "USD");
     expect(etf.unitPrice?.unit).toBe("agorot");
     const etfPrice = must(etf.unitPrice, "the ETF's unit price");
     const inShekels = { ...etf, id: "custom-fund-etf-nis", unitPrice: { ...etfPrice, unit: "nis" } };
@@ -216,13 +216,14 @@ describe("a typed fund as saved and read back (F-65, F-109)", () => {
 
 describe("a unit price typed in agorot for a fund bought in Tel Aviv (F-109, ETF-32)", () => {
   it("is read as a hundredth of a shekel: every house leaves what it leaves on the same fund priced in shekels", () => {
-    const draft = { ...fundDraftOf(null, "il-etf"), fixed: 0.1, variable: 0, trustee: 0, payout: "accumulating" as const, hedged: false, unitPrice: 12_345 };
+    const draft = { ...fundDraftOf(null, "il-etf"), fixed: 0.1, variable: 0, trustee: 0, payout: "accumulating" as const, hedged: false, unitPrice: { value: 12_345, unit: "agorot" as const } };
     const etf = fundFromDraft({ ...draft, name: "סל באגורות" }, "custom-fund-etf-agorot", SP, t, "USD");
     expect(etf.unitPrice?.unit).toBe("agorot");
-    // the same fund, its price in shekels as a collected record's NAV would be
+    // the same fund, its price in shekels as a collected record's NAV would be: a record, since the page reads no typed price in shekels
     const shekels = fundFromDraft({ ...draft, name: "סל בשקלים" }, "custom-fund-etf-shekels", SP, t, "USD");
     const inShekels: CustomFund = { ...shekels, unitPrice: { ...must(shekels.unitPrice, "the fund's unit price"), value: 123.45, unit: "nis" } };
-    const b = withCustomEntries(bundle, [etf, inShekels]);
+    const b0 = withCustomEntries(bundle, [etf]);
+    const b = { ...b0, funds: [...b0.funds, recordOfFund(inShekels, "USD")] };
     const a = wayOf(b, etf.id);
     const s = wayOf(b, inShekels.id);
     const priced = houses.filter((h) => left(s, h) !== null);
@@ -335,5 +336,38 @@ describe("what the record says of the exchange (F-65)", () => {
     const known = wayOf(b, europe.id);
     expect(houses.filter((h) => left(known, h) !== null).length).toBeGreaterThan(3);
     for (const h of houses) expect([h, left(mine, h), reasonAt(mine, h)]).toEqual([h, left(known, h), reasonAt(known, h)]);
+  });
+});
+
+describe("the unit price as the panel types it (F-109)", () => {
+  const abroad = { ...fundDraftOf(null, "abroad"), name: "קרן", fixed: 0.07, payout: "accumulating" as const, hedged: false, domicile: "IE" as const, unitPrice: { value: 100, unit: "usd" as const } };
+
+  it("is cleared on a kind whose price is typed in another unit, and kept on one typed in the same unit", () => {
+    expect(draftWithKind(abroad, "il-etf", "USD").unitPrice).toBeNull();
+    expect(draftWithKind(abroad, "il-tracking", "USD").unitPrice).toBeNull();
+    const etf = { ...abroad, kind: "il-etf" as const, unitPrice: { value: 12_345, unit: "agorot" as const } };
+    expect(draftWithKind(etf, "tase-foreign", "USD").unitPrice).toEqual(etf.unitPrice);
+  });
+
+  it("is not saved in a unit other than the kind's at the index's currency", () => {
+    expect(fundFromDraft({ ...abroad, kind: "il-etf" }, "custom-fund-a", SP, t, "USD").unitPrice).toBeUndefined();
+    expect(fundFromDraft(abroad, "custom-fund-b", SP, t, "EUR").unitPrice).toBeUndefined();
+    expect(fundFromDraft(abroad, "custom-fund-c", SP, t, "USD").unitPrice).toMatchObject({ value: 100, unit: "usd" });
+  });
+
+  it("is not read back where it is not a price, and the fund is kept", () => {
+    const f = typed("us", 100);
+    const price = must(f.unitPrice, "the fund's unit price");
+    const back = validCustomFunds(JSON.parse(JSON.stringify([{ ...f, id: "custom-fund-neg", unitPrice: { ...price, value: -5 } }, { ...f, id: "custom-fund-text", unitPrice: { ...price, value: "abc" } }])));
+    expect(back.map((x) => [x.id, x.unitPrice])).toEqual([["custom-fund-neg", undefined], ["custom-fund-text", undefined]]);
+  });
+
+  it("is not read on a fund whose index is in another currency than the price, and the fund is bought by amount", () => {
+    const f = typed("us", 100);
+    const exposures = bundle.exposures.map((e) => (e.id === SP ? { ...e, currency: "EUR" } : e));
+    const [read] = fundsAsRead({ exposures }, [f]);
+    expect(read?.id).toBe(f.id);
+    expect(read?.unitPrice).toBeUndefined();
+    expect(fundsAsRead(bundle, [f])[0]).toBe(f);
   });
 });

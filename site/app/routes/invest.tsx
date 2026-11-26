@@ -35,7 +35,7 @@ import { bundleLinks } from "../lib/bundle";
 import { enteredPlan } from "../lib/entered-plan";
 import { useSettled } from "../lib/settled";
 import { useInputs, type InputsState } from "../lib/inputs";
-import { withCustomEntries } from "../lib/custom-entries";
+import { fundsAsRead, withCustomEntries } from "../lib/custom-entries";
 import { useInvestView } from "../lib/invest-run";
 import { hasKinds, indexById, knownIndices, refOfCustom, type CustomIndex, type IndexRef } from "../lib/invest";
 import { exposureIdOfSlug, INDICES_PATH } from "../lib/site-paths";
@@ -196,7 +196,8 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
 
   const customs: CustomIndex[] = invest.customIndices;
   // the funds the person typed join the data here and nowhere else: this page alone compares them (D44)
-  const typedBundle = useMemo(() => withCustomEntries(wb, invest.customFunds, customs), [wb, invest.customFunds, customs]);
+  const typedFunds = useMemo(() => fundsAsRead(wb, invest.customFunds, customs), [wb, invest.customFunds, customs]);
+  const typedBundle = useMemo(() => withCustomEntries(wb, typedFunds, customs), [wb, typedFunds, customs]);
   // the person's securities-account deals are accounts too (F-128): read with the fee page's data (the kinds, `useFeesData`), each with
   // what its house's list fills that it has not had (`withLaterFills`), and each priced as it is counted, without the fees switched off
   // (lib/fee-deal/off.ts); while the popup is open the page keeps the deals as they were, and takes them once it closes
@@ -366,7 +367,7 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
   return (
     <LabelSheetHost>
       <DealAccountsHost data={feesData} onWant={wantFees} failed={feesFailed} left={notMoved} saved={savedDeals} writable={stored.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen} onDeleted={onDealDeleted}>
-      <CustomEntriesHost index={pageIndex} funds={invest.customFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
+      <CustomEntriesHost index={pageIndex} funds={typedFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
       <Frame title={title}>
         <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">
           {customId && !exposureId && !pageIndex && <Callout tone="caution">{c.custom.missing}</Callout>}
