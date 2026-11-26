@@ -98,10 +98,11 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   const depositCap = kgl ? book.on("fees", "deposit").peek.rate("PF-02", "deposit_cap") : 0;
   let balanceCapCut = false;
   let depositCapCut = false;
-  if (fees.direct > 0) book.cite("PF-10");
+  // the direct expenses are charged on their own line (PF-10)
+  if (fees.direct > 0) book.on("fees", "direct").cite("PF-10");
   else tally.flag("G-14");
-  // PF-13's minimum is looked at, and taken on the line whose discount it extended
-  const minDiscountMonths = 12 * book.peek.amount("PF-13", "min_discount_years");
+  // PF-13's minimum is looked at on the line of a discount, and taken on the line whose discount it extended
+  const minDiscountMonths = 12 * book.on("fees", fees.discount || !fees.depositDiscount ? "balance" : "deposit").peek.amount("PF-13", "min_discount_years");
   let depositDiscountExtended = false;
   let balanceDiscountExtended = false;
   // the exemption while invested zeroes the tax during the run

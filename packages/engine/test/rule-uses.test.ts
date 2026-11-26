@@ -426,6 +426,37 @@ describe("the pension runs", () => {
     expect(changedIn(over, "PEN-08")).toEqual([]);
   });
 
+  it("takes the wrapper's fee caps on their fee lines only where they cut a fee", () => {
+    for (const [wrapper, id] of [["pension-comprehensive", "PF-04"], ["pension-general", "PF-05"], ["provident-for-annuity", "PEN-22"]] as const) {
+      const insurance = { rate: wrapper === "provident-for-annuity" ? 0 : s27.insurance.rate };
+      const under = runPension({ ...s27, wrapper, insurance, fees: { deposit: 0, balance: 0.001, direct: 0 } }, ctx);
+      expect(read(under, id), id).toBe(true);
+      expect(changedIn(under, id), id).toEqual([]);
+      const above = runPension({ ...s27, wrapper, insurance, fees: { deposit: 0.5, balance: 0.05, direct: 0 } }, ctx);
+      expect(changedIn(above, id), id).toEqual(["fees:balance", "fees:deposit"]);
+    }
+  });
+
+  it("takes PF-13's minimum on the balance fee whose discount it extended", () => {
+    // a two-year discount on a fund that keeps receiving deposits holds for PF-13's five years
+    const discount = { months: 24, listRate: 0.005 };
+    const s30 = { ...s27, wrapper: "provident-for-annuity" as const, insurance: { rate: 0 } };
+    expect(changedIn(runPension({ ...s30, fees: { deposit: 0, balance: 0.002, direct: 0, discount } }, ctx), "PF-13")).toEqual(["fees:balance"]);
+    expect(changedIn(runPension({ ...s30, fees: { deposit: 0.01, balance: 0.002, direct: 0, depositDiscount: { months: 24, listRate: 0.02 } } }, ctx), "PF-13")).toEqual(["fees:deposit"]);
+    const plain = run("S30 provident fund for annuity");
+    expect(read(plain, "PF-13")).toBe(true);
+    expect(changedIn(plain, "PF-13")).toEqual([]);
+  });
+
+  it("files the direct expenses on their line, the insurance rule on the deposit and the fund's exemption on the tax during the run", () => {
+    const direct = runPension({ ...s27, fees: { ...s27.fees, direct: 0.001 } }, ctx);
+    expect(changedIn(direct, "PF-10")).toEqual(["fees:direct"]);
+    expect(changedIn(run("S20 kupat gemel lehashkaa"), "PF-10")).toEqual(["fees:direct"]);
+    expect(changedIn(direct, "PEN-15")).toEqual(["deposit"]);
+    expect(changedIn(direct, "TXP-13")).toEqual(["taxDuring"]);
+    expect(changedIn(run("S30 provident fund for annuity"), "PEN-35")).toEqual(["deposit"]);
+  });
+
   it("looks at the blocked exit's rules and takes none of them, the exit's tax not being computed", () => {
     for (const r of [runPension(s27, ctx), employerLinePension(s27, ctx)]) {
       expect(r.taxAtExit).toBe(0);
