@@ -330,6 +330,15 @@ describe("the pension runs", () => {
     expect(changedIn(over, "PEN-08")).toEqual([]);
   });
 
+  it("looks at the blocked exit's rules and takes none of them, the exit's tax not being computed", () => {
+    for (const r of [runPension(s27, ctx), employerLinePension(s27, ctx)]) {
+      expect(r.taxAtExit).toBe(0);
+      expect(r.exit.ruleIds.length).toBeGreaterThan(0);
+      for (const id of r.exit.ruleIds.filter((x) => read(r, x))) expect(changedIn(r, id), id).toEqual([]);
+      expect(r.exit.ruleIds.some((x) => read(r, x))).toBe(true);
+    }
+  });
+
   it("flags the employer's severance above its ceiling and takes the ceiling on no part", () => {
     const high = employerLinePension({ ...s27, pension: { ...s27.pension, monthlySalary: 50_000, employer: { pensionRate: 0.065, severanceRate: 0.0833 } } }, ctx);
     expect(high.flags.map((f) => f.code)).toContain("TXP-11");

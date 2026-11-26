@@ -83,7 +83,7 @@ const feeCaps: Record<PensionWrapper, { rule: string }> = {
 };
 
 /** Cites a rule that describes a blocked exit if its record exists; the IDs are returned in `exit` either way. */
-function citeIfPresent(book: RuleBook, ids: readonly string[]) {
+function citeIfPresent(book: Pick<RuleBook, "cite">, ids: readonly string[]) {
   for (const id of ids) {
     try {
       book.cite(id);
@@ -257,8 +257,8 @@ function runPensionUnder(input: PensionInput, ctx: RunContext): PensionResult {
   formulas.push(exit.formula);
   if (exit.gap) tally.flag(exit.gap);
   for (const q of exit.openQuestions) tally.flag(q);
-  // the rules of the blocked exit govern the withdrawal's tax
-  citeIfPresent(book.on("taxAtExit"), exit.ruleIds);
+  // the rules of the blocked exit govern the withdrawal's tax, which the run does not compute (G-03): they are looked at and set no number
+  citeIfPresent(book.on("taxAtExit").peek, exit.ruleIds);
 
   // PEN-26: the lawful exit is an old-age annuity from 60. The wrapper is blocked either way; when 60 is after the horizon it is also locked.
   let outcome: Outcome = { code: "listed-not-ranked", reason: exit.reason };
@@ -350,8 +350,8 @@ function employerLinePensionUnder(input: PensionInput, ctx: RunContext): Pension
   const exit = blockedWrapperExit("F-49", out.balance);
   if (exit.gap) tally.flag(exit.gap);
   for (const q of exit.openQuestions) tally.flag(q);
-  // the rules of the blocked exit govern the withdrawal's tax
-  citeIfPresent(book.on("taxAtExit"), exit.ruleIds);
+  // the rules of the blocked exit govern the withdrawal's tax, which the run does not compute (G-03): they are looked at and set no number
+  citeIfPresent(book.on("taxAtExit").peek, exit.ruleIds);
   const result = tally.result(book, {
     exitMonth: T,
     nominal: out.balance - depositTax,
