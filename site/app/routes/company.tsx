@@ -30,6 +30,10 @@ import { companyTermsAnchor } from "../lib/scope";
 import { labelRules } from "../lib/label-rests";
 import type { SiteValue } from "../lib/value";
 import type { RuleRecord } from "@finance-tool/schema";
+import type { PointedShipment } from "../lib/data.server";
+
+/** The rules a page holds in full and what it ships of those their cards point at: in full only (`pointedRecords`), or with heads (`pointedShipment`). */
+type HeldRules = { rules: Record<string, RuleRecord> } & (PointedShipment | { pointed: Record<string, RuleRecord>; heads?: undefined });
 
 /**
  * The order of a company page's products, by how often a reader comes for them: its tracks' products in
@@ -52,22 +56,23 @@ async function houseNotes(id: string) {
 /**
  * The house's price list split into its head and its fees (`accountOf`): its terms where its latest list fills a deal, with the data their
  * read-only fees draw on the first view but the rules and records the page holds already (`page`, its provenance's); else its table.
+ * `ship` is how the page ships what the rules it adds point at, as it ships its own.
  */
-async function houseAccount(id: string, tariff: TariffCardData, page: { rules: Record<string, RuleRecord>; pointed?: Record<string, RuleRecord> | undefined }) {
+async function houseAccount(id: string, tariff: TariffCardData, page: HeldRules, ship: (rules: Record<string, RuleRecord>) => HeldRules) {
   const { houseTermsData } = await import("../lib/fees.server");
-  const { loadRules, pointedRecords, today } = await import("../lib/data.server");
+  const { loadRules, today } = await import("../lib/data.server");
   const { valueRuleIds } = await import("../lib/page-rules.server");
-  const account = accountOf(tariff, houseTermsData(id, today(), { rules: new Set(Object.keys(page.rules)), pointed: new Set(Object.keys(page.pointed ?? {})) }));
+  const account = accountOf(tariff, houseTermsData(id, today(), { rules: new Set(Object.keys(page.rules)), pointed: new Set(Object.keys(page.pointed)) }));
   // the terms' code is a script of its own, in before the render so the pre-rendered page holds them
   if (account.fees.kind === "terms") await loadTermsCode();
   // the rules the account's figures name that neither the page nor the account's own data holds (its fee kinds' caps): the page ships
   // them, so every chip in those figures' sheets opens
   const all = loadRules();
   const own = account.fees.kind === "terms" ? new Set([...account.fees.terms.data.rules, ...(account.fees.terms.data.pointed ?? [])].map((r) => r.id)) : new Set<string>();
-  const added = valueRuleIds(account).filter((r) => all[r] && !page.rules[r] && !page.pointed?.[r] && !own.has(r));
+  const added = valueRuleIds(account).filter((r) => all[r] && !page.rules[r] && !page.pointed[r] && !own.has(r));
   if (added.length === 0) return { account, page };
   const rules = { ...page.rules, ...Object.fromEntries(added.flatMap((r) => (all[r] ? [[r, all[r]] as const] : []))) };
-  return { account, page: { rules, pointed: pointedRecords(rules, all) } };
+  return { account, page: ship(rules) };
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -86,7 +91,9 @@ export async function loader({ params }: Route.LoaderArgs) {
     const institution = buildInstitution(params.id);
     if (!institution) throw new Response("Not found", { status: 404 });
     const { tariff, ...rest } = institution;
-    const house = tariff ? await houseAccount(params.id, tariff, institution) : null;
+    // its page passes no heads, so the records its cards point at travel in full (`pointedRecords`)
+    const { loadRules, pointedRecords } = await import("../lib/data.server");
+    const house = tariff ? await houseAccount(params.id, tariff, institution, (rules) => ({ rules, pointed: pointedRecords(rules, loadRules()) })) : null;
     const account = house?.account ?? null;
     return { kind: "institution" as const, institution: { ...rest, ...house?.page, tariff: account?.tariff ?? null }, fees: account?.fees ?? null, notes: await houseNotes(params.id) };
   }
@@ -129,7 +136,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   // what the site found in the company's own documents (D30): the records that cite them, by topic, with their cards' data
   const { brokeragePart, companyTermGroups, registryIdsOfPage } = await import("../lib/institutions.server");
   const { valueRuleIds } = await import("../lib/page-rules.server");
-  const { loadChecklistRows, pointedRecords } = await import("../lib/data.server");
+  const { loadChecklistRows, pointedShipment } = await import("../lib/data.server");
   const { topicName } = await import("../copy");
   const allRules = loadRules();
   const pageId = brand?.page ?? company!.id;
@@ -153,9 +160,10 @@ export async function loader({ params }: Route.LoaderArgs) {
   const name = brand?.name ?? shortCompanyName(company!.id, company!.name);
   const shortName = brand?.name ?? loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? name;
   const { pageRuleUses } = await import("../lib/rule-uses.server");
-  const house = brokerage && brand?.brokerId ? await houseAccount(brand.brokerId, brokerage.tariff, { rules: termRules, pointed: pointedRecords(termRules, allRules) }) : null;
-  const held = house?.page ?? { rules: termRules, pointed: pointedRecords(termRules, allRules) };
-  const companyTerms = { groups: termGroups, rules: held.rules, pointed: held.pointed, ruleUses: pageRuleUses(held.rules, held.pointed), company: registryIds[0] ?? null, pageCompanies: registryIds, helpTerms, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
+  const shipped = { rules: termRules, ...pointedShipment(termRules, allRules) };
+  const house = brokerage && brand?.brokerId ? await houseAccount(brand.brokerId, brokerage.tariff, shipped, (rules) => ({ rules, ...pointedShipment(rules, allRules) })) : null;
+  const held = house?.page ?? shipped;
+  const companyTerms = { groups: termGroups, rules: held.rules, pointed: held.pointed, heads: held.heads, ruleUses: pageRuleUses(held.rules, held.pointed), company: registryIds[0] ?? null, pageCompanies: registryIds, helpTerms, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
   // the legal companies the page stands for, as their own data writes them (the CMA, the tariff, the fund records)
   const members = brand ? [...new Set([company?.name, brokerage?.tariff.providerName, ...brand.fundManagers].filter((x): x is string => !!x))] : [];
   const brokerageCard = brokerage && house && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, ...house.account, ...(await houseNotes(brand.brokerId)) } : null;
@@ -323,7 +331,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
     </>
   );
   return (
-    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, ruleUses: data.companyTerms.ruleUses, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
+    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, heads: data.companyTerms.heads, ruleUses: data.companyTerms.ruleUses, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
       <CompanyTemplate
         pageId={data.pageId}
         name={data.name}

@@ -17,7 +17,7 @@ import { isPdfUrl } from "../lib/sources";
 import { useHash } from "../lib/address";
 
 export async function loader() {
-  const { today, loadChecklistRows, loadRules, pointedRecords } = await import("../lib/data.server");
+  const { today, loadChecklistRows, loadRules, pointedShipment } = await import("../lib/data.server");
   const { loadDocuments, loadDocumentData, documentSections } = await import("../lib/documents.server");
   const { noPageCompanyTerms } = await import("../lib/institutions.server");
   // the rule links open the rule on its shelf page, so the page carries no rule records (the chips of 500 rules made it 2 MB), except the
@@ -25,7 +25,7 @@ export async function loader() {
   const all = loadRules();
   const noPage = noPageCompanyTerms(all);
   const rules = Object.fromEntries([...noPage.companies.flatMap((c) => c.ids), ...noPage.none].map((id) => [id, all[id]!]));
-  return { sections: documentSections(loadDocuments()), data: await loadDocumentData(), today: today(), noPage, rules, pointed: pointedRecords(rules, all), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) };
+  return { sections: documentSections(loadDocuments()), data: await loadDocumentData(), today: today(), noPage, rules, ...pointedShipment(rules, all), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) };
 }
 
 /** The documents' cards, fetched once for the page (the first group opened, or a document the address names). */
@@ -203,8 +203,8 @@ function groupOf(id: string, sections: readonly DocumentSection[]): { group: str
 }
 
 export default function Documents() {
-  const { sections, data, today, noPage, rules, pointed, dimensions } = useLoaderData<typeof loader>();
-  const pd = { rules, pointed, terms: {}, dimensions, today };
+  const { sections, data, today, noPage, rules, pointed, heads, dimensions } = useLoaderData<typeof loader>();
+  const pd = { rules, pointed, heads, terms: {}, dimensions, today };
   const d = copy.data;
   const [open, setOpen] = useState<ReadonlySet<string>>(() => new Set());
   const [more, setMore] = useState<ReadonlySet<string>>(() => new Set());
