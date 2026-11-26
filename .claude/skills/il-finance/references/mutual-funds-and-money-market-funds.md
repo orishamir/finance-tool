@@ -633,7 +633,7 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Dimensions: `fee-management-balance`, `fee-change-over-time`
 - Likely to change: yes
 
-### MF-64 Meitav (Tachlit): three funds on TASE's bullet indices, each to be wound up in its year, payment dates, and a fee freeze
+### MF-64 Meitav (Tachlit): three funds on TASE's bullet indices; two to be wound up in their year with a payment date, and a fee freeze
 - Rule: Meitav's prospectus names three Tachlit funds on TASE's bullet indices (MF-61): 5140249 תל-בונד בולט 10/2028 צמוד (0.15%, 0.03%), 5140231 תל-בונד בולט 2029 שקלי (0.15%, 0.03%) and 5140256 תל-בונד בולט 2029 ישראל (0.20%, 0.03%), all "פטורה", distribution type 3.
 - Conditions / exceptions: Read 2026-11-02 in the funds' annual reports at 30.9.2025: 5140249 "תקופת קיום הקרן: בשנת 2028, אשר הינה שנת פדיון הקרן, האג"ח הכלולות במדד יפדו בהתאם למתודולוגית המדד וכך תבוא הקרן לפירוקה", payment "לא יאוחר מתאריך ה-15.11.2028" unless the manager says otherwise; 5140231 the same for 2029, not later than 15.01.2030. Both add "מנהל הקרן מתחייב שלא להעלות את שכר מנהל הקרן ואת דמי הניהול המשתנים עד לפירוקה של הקרן". 5140256 was not read: its page on Maya opened the home page on 2.11.2026, so it stays doubtful (open question 19).
 - Figures: as above; prospectus of 7.7.2026.
