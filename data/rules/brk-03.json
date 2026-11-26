@@ -1,0 +1,38 @@
+{
+  "id": "BRK-03",
+  "title": "Non-bank members that serve individuals",
+  "title_he": "חברי בורסה שהם לא בנקים ומשרתים לקוחות פרטיים",
+  "text_he": "לפי מדריך של הבורסה מינואר 2026, חברי מסלקת הבורסה שהם לא בנקים הם אלטשולר שחם טרייד, אקסלנס, מיטב טרייד, פסגות ואי.בי.אי, ופייר, שהיא חבר משמורן בלבד. כל אחד מהם מפרסם באתר שלו עמודים של חשבון או תעריפון ללקוחות פרטיים. חבר משמורן רשאי להחזיק ניירות ערך ולטפל בהם, אבל לא לבצע עסקאות שהמסלקה היא הצד הנגדי המרכזי בהן. ברשימת חברי הבורסה יש עוד שני חברים שהם לא בנקים, בלינק ויו.בי.אס, והם לא ברשימת חברי המסלקה.",
+  "strength": "institution",
+  "dimensions": [
+    "regulator",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-27",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "tase",
+      "name_he": "הבורסה לניירות ערך בתל אביב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf",
+      "title": "TASE NBCM guide, January 2026, \"Members of TASECH & MAOF CH\"",
+      "title_he": "How to become a non-banking corporation member (ינואר 2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.12",
+      "locator_he": "עמוד 12",
+      "page": 12,
+      "checked": "2026-11-27",
+      "qualifier": "(TASE's explanatory brochure)"
+    }
+  ]
+}

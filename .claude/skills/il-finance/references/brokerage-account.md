@@ -38,10 +38,11 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 - Likely to change: yes, membership changes.
 
 ### BRK-03 Non-bank members that serve individuals
-- Rule: TASE's January 2026 guide lists the non-bank members of the TASE clearing house: Altshuler Shaham Trade Ltd., Excellence Investments Management and Securities Ltd., Meitav Trade Ltd., Psagot Securities Ltd. (each "TASECH Member only"), Israel Brokerage and Investments IBI Ltd., and Fair Financial Technologies Ltd. ("Custodial Member only"). Each of these publishes retail-facing account or tariff pages on its own site (see Institutions).
-- Conditions / exceptions: TASE counts 8 Israeli non-bank members (REG-14); only these 6 appear in the clearing-house list, and TASE's member list names all 8, adding Blink Fintech and UBS Securities Israel (BRK-32). A custodial member may hold and service securities but may not make trades for which the clearing house is the central counterparty (BRK-12).
+- Rule: TASE's January 2026 guide lists the non-bank members of the TASE clearing house: Altshuler Shaham Trade Ltd., Excellence Investments Management and Securities Ltd., Meitav Trade Ltd. and Psagot Securities Ltd., each marked "(TASECH Member only)"; Fair Financial Technologies Ltd., marked "(Custodial Member only)"; and Israel Brokerage and Investments IBI Ltd., with no such mark. Each of these publishes retail-facing account or tariff pages on its own site (see Institutions).
+- Conditions / exceptions: TASE counts 8 Israeli non-bank members (REG-14); only these 6 appear in the clearing-house list, and TASE's member list names all 8, adding Blink Fintech and UBS Securities Israel (BRK-32). A custodial member may hold and service securities but may not make trades for which the clearing house is the central counterparty (BRK-12). Re-read 2026-11-27 at p.12: the earlier wording put IBI beside Fair's "(Custodial Member only)" mark; the list gives IBI no mark.
 - Figures: none.
-- Source: [TASE NBCM guide, January 2026, "Members of TASECH & MAOF CH"](https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf), p.12 · checked 2026-10-22 · primary
+- Source: [TASE NBCM guide, January 2026, "Members of TASECH & MAOF CH"](https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf), p.12 · checked 2026-11-27 · institution (TASE's explanatory brochure)
+- Scope: institution: Tel Aviv Stock Exchange
 - Dimensions: `regulator`, `eligibility`
 - Likely to change: yes.
 
@@ -490,7 +491,8 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 - Rule: Banks must publish the full tariff with a link from the home page (BRK-20); non-bank members have no equivalent rule found but publish their own. Locations found on 2026-10-22 are listed in the Institutions table below with format and any date shown.
 - Conditions / exceptions: Meitav Trade's tariff of 04/2026 was found on 2026-10-31 ([tariff](https://www.meitav.co.il/media/zitlfr4f/%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-42026.pdf#page=2), p.2), with its custody wording in dispute. One Zero's site returns 403 to scripts, but its tariff was read in a browser (BRK-74). TASE's fee calculator was read in a browser (BRK-33).
 - Figures: none.
-- Source: each provider's tariff URL is linked in the Institutions table below; the bank duty is BRK-20 · checked 2026-10-22 · institution · links from the cited rules: [1](<https://boi.org.il/media/w2lgmymp/159a.pdf>)
+- Source: [BoI fees rules 2008, consolidated, s.4(א), 4(ב)](https://boi.org.il/media/w2lgmymp/159a.pdf), p.4 (via BRK-20) · checked 2026-10-22 · primary; each provider's tariff URL is linked in the Institutions table below · checked 2026-10-22 · institution
+- Scope: general
 - Dimensions: `fee-change-over-time`
 - Likely to change: yes, URLs change when files are replaced.
 **[2026-10-24 R4 research pass]** Yahav's full tariff is linked from its tariff page as 'תעריפון מלא- יחיד/עסק קטן' (PDF and XLSX, 'נכון ליום: 01/10/2026', serial 2.2026); Bank of Jerusalem's individuals tariff is at /others/commission-yechidim with a PDF and XLSX per part (part 4 'בתוקף מתאריך : 06/02/20217' as printed, part 5 20/06/2021; /others/commissions-full is the large-business tariff); One Zero's full tariff is BRK-74. Meitav Trade still published no tariff then (its 04/2026 tariff was found on 2026-10-31, above). Snapshots: `data/fees/{yahav,jerusalem,one-zero}@2026-10-24.json`.

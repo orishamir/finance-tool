@@ -1,0 +1,34 @@
+{
+  "id": "BRK-30",
+  "title": "Where each provider publishes its tariff",
+  "title_he": "איפה בנקים ובתי השקעות מפרסמים את התעריפון שלהם",
+  "text_he": "בנק חייב לפרסם את התעריפון המלא שלו, עם קישור מעמוד הבית של האתר. לחבר בורסה שהוא לא בנק לא נמצא כלל דומה, אבל כל אחד מהם מפרסם תעריפון משלו.",
+  "strength": "primary",
+  "dimensions": [
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://boi.org.il/media/w2lgmymp/159a.pdf",
+      "title": "BoI fees rules 2008, consolidated, s.4(א), 4(ב)",
+      "title_he": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-10-22",
+      "standing": "consolidated-not-binding"
+    }
+  ],
+  "derived_from": [
+    "BRK-20"
+  ]
+}
