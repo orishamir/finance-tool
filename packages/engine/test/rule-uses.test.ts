@@ -231,6 +231,18 @@ describe("the parts each run's rules went into", () => {
     expect(changedIn(runProvident({ ...input, profile: { refundClaimed: false } }, ctx), "TXG-02")).not.toContain("taxAtExit");
   });
 
+  it("takes the gains' brackets on an early withdrawal where the refund is claimed, and the fund's withholding where it is not", () => {
+    const claimed = run("S24 keren hishtalmut, early withdrawal");
+    expect(claimed.taxAtExit).toBeGreaterThan(0);
+    expect(changedIn(claimed, "TXG-03")).toEqual(["taxAtExit"]);
+    expect(read(claimed, "TXH-15")).toBe(true);
+    expect(changedIn(claimed, "TXH-15")).toEqual([]);
+    const withheld = runProvident({ ...s23, goal: { ...s23.goal, months: 48 }, hishtalmut: { ...s23Hishtalmut, earlyWithdrawal: true }, profile: { refundClaimed: false } }, ctx);
+    expect(changedIn(withheld, "TXH-15")).toEqual(["taxAtExit"]);
+    expect(read(withheld, "TXG-03")).toBe(true);
+    expect(changedIn(withheld, "TXG-03")).toEqual([]);
+  });
+
   it("files the lock's exemption on the exit as well as on the term", () => {
     expect(changedIn(run("S23 keren hishtalmut"), "TXH-09")).toEqual(["term", "taxAtExit"]);
     // the short lock's exit, four years from the first payment: the three years at retirement age are what exempt it
