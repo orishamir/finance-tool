@@ -3908,7 +3908,15 @@ export const guideSignature = {
     } as Record<string, string>,
     // the pension visual's assumptions, in the short form of the indices page's plan line (DotLine)
     assumption: { site: "הנחות של האתר, לא תחזית", ret: "תשואה", inflation: "אינפלציה", perYear: "בשנה" },
-    inputNames: { trackFee: "דמי הניהול של המסלול", lockYears: "שנות הנעילה", cap: "תקרת המשכורת הקובעת", selfBenefited: "תקרת ההפקדה המוטבת לעצמאי בשנה" },
+    inputNames: {
+      trackFee: "דמי הניהול של המסלול",
+      lockYears: "שנות הנעילה",
+      cap: "תקרת המשכורת הקובעת",
+      selfBenefited: "תקרת ההפקדה המוטבת לעצמאי בשנה",
+      // the limits a typed share is measured against (TXH-01, TXH-08), listed beside the share the reader typed
+      employerLimit: "תקרת ההפקדה של המעסיק",
+      ownLimit: "תקרת ההפקדה המוטבת של העובד",
+    },
   },
   pension: {
     // the `stated` parts below are the words that state a rule and open it (D116): here PEN-67, severance deposits in place of severance pay

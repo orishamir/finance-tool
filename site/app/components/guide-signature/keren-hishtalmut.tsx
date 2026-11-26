@@ -37,6 +37,19 @@ const partText = (sign: 1 | -1 | 0, compact: boolean) => (v: number) => {
   return compact ? fmt.signedNumber(sign * n, 0) : fmt.signedNisWhole(sign * n);
 };
 
+/**
+ * The limits an employee's shares are measured against, as inputs: the employer's deposit up to TXH-01's share, the employee's benefited
+ * deposit up to TXH-08's. A share left at its default is that limit's own figure, which opens its rule; a share the reader typed is theirs,
+ * so the limit is listed beside it, and a figure measured against it still opens its rule.
+ */
+export function typedShareLimits(a: { employee: boolean; employerTyped: boolean; ownTyped: boolean; employerPct: SiteValue | undefined; ownPct: SiteValue | undefined }): { employer: Record<string, SiteValue>; own: Record<string, SiteValue> } {
+  const names = copy.hishtalmut.inputNames;
+  return {
+    employer: a.employee && a.employerTyped && a.employerPct ? { [names.employerLimit]: a.employerPct } : {},
+    own: a.employee && a.ownTyped && a.ownPct ? { [names.ownLimit]: a.ownPct } : {},
+  };
+}
+
 function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const inputs = useSigInputs(base);
   const { state, setEmployment } = useInputs();
@@ -94,6 +107,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const monthlyEntry = { [copy.common.inputNames.monthly]: monthlyIn };
   const inflationEntry: Record<string, SiteValue> = inflationPct ? { [copy.common.inputNames.inflation]: inflationPct } : {};
   const deposits: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? { ...ownShareEntry, ...employerShareEntry } : monthlyEntry) };
+  const { employer: employerLimitEntry, own: ownLimitEntry } = typedShareLimits({ employee: isEmployee, employerTyped: employerPick !== null, ownTyped: ownPick !== null, employerPct, ownPct });
   const yearEntry = { [story.yearName]: typed(year, "years", today, story.yearName) };
   // an employee's deposits count only up to the determining salary (TXH-02), which stays while the salary rises with prices: the runs rest on
   // it where the salary is above it today or passes it within the strip (`studyStanding`'s `grows`)
@@ -115,7 +129,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const ownIn: Record<string, SiteValue> = { ...(isEmployee ? { ...incomeEntry, ...ownShareEntry } : monthlyEntry), ...yearEntry };
   const extraIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? employerShareEntry : monthlyEntry), ...yearEntry };
   // the tax paid from the salary on the employer's money above the limit: the limit stays while the salary follows prices (F-96)
-  const salaryTaxIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? { ...employerShareEntry, ...capEntry } : {}), ...inflationEntry, ...yearEntry };
+  const salaryTaxIn: Record<string, SiteValue> = { ...incomeEntry, ...(isEmployee ? { ...employerShareEntry, ...employerLimitEntry, ...capEntry } : {}), ...inflationEntry, ...yearEntry };
   // each figure carries the rules that changed its part of the runs it comes from (method §13): the year picked, the lock's end, the year
   // before it, the strip's last year. The tax the salary pays on the employer's money is a use of the tax during the run that the run's
   // tax fields do not hold (`salaryTaxOnly`); the withdrawal's tax is the tax at the exit; what is left the whole run
@@ -186,10 +200,10 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           more: nis(wait.more, story.about.waitMore, {
             [story.inputs.lockNet]: lockNet,
             [story.inputs.lockPaid]: paidValue(paidIn(lockSlice), story.about.lockPaid, { ...deposits, ...(lockYears ? { [copy.hishtalmut.inputNames.lockYears]: lockYears } : {}) }),
-            [story.inputs.lockSalaryTax]: nis(lockSlice.taxFromSalary, story.about.lockSalaryTax, lockIn, salaryOf(runsAt(lock))),
+            [story.inputs.lockSalaryTax]: nis(lockSlice.taxFromSalary, story.about.lockSalaryTax, { ...lockIn, ...employerLimitEntry }, salaryOf(runsAt(lock))),
             [story.inputs.left]: leftValue,
             [story.inputs.paid]: paidValue(paidIn(slice), story.about.paid, { ...deposits, ...yearEntry }),
-            [story.inputs.salaryTax]: nis(slice.taxFromSalary, story.about.taxSalary, common, salaryOf(picked.runs)),
+            [story.inputs.salaryTax]: nis(slice.taxFromSalary, story.about.taxSalary, { ...common, ...employerLimitEntry }, salaryOf(picked.runs)),
           }),
           // the tax waiting saves: the withdrawal's tax now less the same at the lock's end, a plain difference of the two
           saved: differenceOf([story.inputs.tax, nis(atWithdrawal(slice), story.about.taxAtWithdrawal, common, exitOf(picked.runs))], [story.inputs.lockTax, nis(atWithdrawal(lockSlice), story.about.lockTax, lockIn, exitOf(runsAt(lock)))], "F-96", { today, about: story.about.taxSaved }),
@@ -250,8 +264,8 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   // rise with prices and the ceiling does not
   // the strip's last year is above the ceiling by a salary risen with prices, so it rests on the inflation too
   const limitEntry: Record<string, SiteValue> = isEmployee ? (capBinds ? { ...capEntry, ...inflationEntry } : {}) : selfBenefited ? { [copy.hishtalmut.inputNames.selfBenefited]: selfBenefited } : {};
-  const standingIn: Record<string, SiteValue> = { ...deposits, ...limitEntry };
-  const crossIn: Record<string, SiteValue> = { ...deposits, ...(isEmployee ? capEntry : limitEntry), ...inflationEntry };
+  const standingIn: Record<string, SiteValue> = { ...deposits, ...employerLimitEntry, ...ownLimitEntry, ...limitEntry };
+  const crossIn: Record<string, SiteValue> = { ...deposits, ...employerLimitEntry, ...ownLimitEntry, ...(isEmployee ? capEntry : limitEntry), ...inflationEntry };
   // F-97 reads the strip's last year, whose runs hold every deposit (studyStanding)
   const standingRules = ofRuns(runsAt(YEARS), ["deposit", "relief"]);
   const standingNum = (value: number, about: string, unit: SiteValue["unit"] = "nis", inputs = standingIn, flags: string[] = []) => figure(value, unit, "F-97", inputs, today, about, standingRules, flags);

@@ -10,6 +10,7 @@ import { InputsProvider } from "../../lib/inputs";
 import { ProvenanceProvider } from "../provenance";
 import { WorthKnowing, worthRows } from "../guide/worth-knowing";
 import { accountWorthRow } from "./current-account";
+import { typedShareLimits } from "./keren-hishtalmut";
 import { SignatureFrame, signatureRegistry } from "./index";
 import { fact } from "../../lib/guide-signature";
 import { studyYears, waitFigures } from "../../lib/guide-signature-g2";
@@ -138,6 +139,19 @@ describe("study fund page", () => {
   const d = p.signature!;
   const html = renderToString(inProviders(p, createElement(SignatureFrame, { id: "keren-hishtalmut", data: d, today: p.today, timeline: null })));
   const text = html.replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ");
+
+  it("a share the reader typed keeps the limit it is measured against within the figure's reach (TXH-01, TXH-08); a default share is that limit", () => {
+    const employerPct = fact(d, "employerPct");
+    const ownPct = fact(d, "ownPct");
+    // a limit's figure opens the rule it is from (`ruleFigure`)
+    const reached = (inputs: Record<string, SiteValue>) => Object.values(inputs).flatMap((v) => v.rule_ids ?? []);
+    const typedBoth = typedShareLimits({ employee: true, employerTyped: true, ownTyped: true, employerPct, ownPct });
+    expect(reached(typedBoth.employer)).toContain("TXH-01");
+    expect(reached(typedBoth.own)).toContain("TXH-08");
+    // at its default the share's own input is the limit's figure, so it is not listed twice; a self-employed person types no share
+    expect(typedShareLimits({ employee: true, employerTyped: false, ownTyped: false, employerPct, ownPct })).toEqual({ employer: {}, own: {} });
+    expect(typedShareLimits({ employee: false, employerTyped: true, ownTyped: true, employerPct, ownPct })).toEqual({ employer: {}, own: {} });
+  });
 
   it("counts what waiting adds above the deposits of the years between, which are paid either way (F-96)", () => {
     const income = p05Number(d.bundles["keren-hishtalmut"]!.p05, "annual_income") / 12;
