@@ -112,10 +112,17 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   let outcome: Outcome = { code: "eligible" };
   let early = false;
   // TXH-08: an employee's benefited deposit is a share of each month's determining salary; a
-  // self-employed person's is a yearly amount.
+  // self-employed person's is a yearly amount. The limits are looked at on the deposit, and taken there where they cut a deposit
+  // (`limitsCut`).
+  const onDeposit = book.on("deposit");
   let benefitedMonthly = Infinity;
   let benefitedYearly = Infinity;
   let employerLimit = Infinity;
+  // the share of the determining salary an employee's run is limited by (TXH-08 for own money, TXH-01 for the employer's), and the
+  // determining salary's ceiling (TXH-02)
+  let shareRule: "TXH-01" | "TXH-08" = "TXH-08";
+  let share = 0;
+  let determiningCap = Infinity;
   // the month the six years from the first payment end (TXH-09): an exit before it is exempt under the short lock (TXH-10)
   let sixYearsEnd = -Infinity;
   if (!kgl) {
@@ -156,20 +163,22 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       throw new RecordInputError("hishtalmut.salaryFollowsPrices limits deposits that rise with the salary: it does not take employerMonthly or nominal contributions");
     }
     if (h.employment === "employee") {
-      const determining = Math.min(h.monthlySalary ?? 0, book.amount("TXH-02", "determining_salary_cap"));
+      determiningCap = onDeposit.peek.amount("TXH-02", "determining_salary_cap");
+      const determining = Math.min(h.monthlySalary ?? 0, determiningCap);
       // TXH-08: own deposit benefited up to 2.5% of the determining salary; TXH-01: the employer's up to 7.5%.
-      benefitedMonthly =
-        h.money === "employer" ? book.rate("TXH-01", "employer_exempt_pct") * determining : book.rate("TXH-08", "own_benefited_pct") * determining;
+      shareRule = h.money === "employer" ? "TXH-01" : "TXH-08";
+      share = shareRule === "TXH-01" ? onDeposit.peek.rate("TXH-01", "employer_exempt_pct") : onDeposit.peek.rate("TXH-08", "own_benefited_pct");
+      benefitedMonthly = share * determining;
       if (h.employerMonthly !== undefined) {
         if (h.money === "employer") throw new RecordInputError("hishtalmut.employerMonthly splits goal.monthly into own and employer money; money: \"employer\" runs the employer's alone");
         if (h.employerMonthly < 0 || h.employerMonthly > goal.monthly) throw new RangeError(`employerMonthly ${h.employerMonthly} must be between 0 and goal.monthly`);
-        employerLimit = book.rate("TXH-01", "employer_exempt_pct") * determining;
+        employerLimit = onDeposit.peek.rate("TXH-01", "employer_exempt_pct") * determining;
         // F-52: the part of the employer's deposit above this limit is salary when paid (TXH-03) and runs
         // separately below; the part up to the limit stays benefited (TXH-01).
         if (h.employerMonthly > employerLimit) book.on("taxDuring", "salaryTax").cite("TXH-03");
       }
     } else {
-      benefitedYearly = book.amount("TXH-08", "self_employed_benefited");
+      benefitedYearly = onDeposit.peek.amount("TXH-08", "self_employed_benefited");
     }
     formulas.push("F-46");
   } else {
@@ -255,6 +264,8 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   const employerOverActive = !kgl && hish?.employerMonthly !== undefined && hish.employerMonthly > employerLimit;
   // the salary tax on the employer's excess (F-52) is a tax during the run, on its own line (`TaxLine`)
   const salaryTax = book.on("taxDuring", "salaryTax");
+  // the employer's exempt limit (TXH-01) sets the salary tax: what is above it is taxed, and up to it the exemption makes the tax none
+  if (employerMoney || employerOverActive) salaryTax.rate("TXH-01", "employer_exempt_pct");
   const social = employerMoney || employerOverActive
     ? {
         reducedUpTo: salaryTax.amount("TXG-35", "reduced_threshold"),
@@ -267,9 +278,14 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   // F-96: the benefited limit of the month's own salary, under the ceiling that does not move (TXH-02)
   const limitOfMonth = (m: number) => {
     if (!hish?.salaryFollowsPrices || hish.employment !== "employee") return benefitedMonthly;
-    const share = employerMoney ? book.rate("TXH-01", "employer_exempt_pct") : book.rate("TXH-08", "own_benefited_pct");
-    return share * Math.min(salary * I[m]!, book.amount("TXH-02", "determining_salary_cap"));
+    return share * Math.min(salary * I[m]!, determiningCap);
   };
+  // the salary a month's limit is a share of is above the determining salary's ceiling (TXH-02)
+  const capBinds = (m: number) => (hish?.salaryFollowsPrices ? salary * I[m]! : salary) > determiningCap;
+  // the limits that cut a deposit (a part of it above them goes to the excess), each taken on the deposit after the loop, on the exit's tax
+  // where the excess is taxed, and on the salary tax where the employer's money above its limit is taxed (F-52)
+  const limitsCut = new Set<string>();
+  let salaryCapCut = false;
 
   const deposit = (amount: number, eventMonth: number, outlay = amount) => {
     if (amount <= 0) return;
@@ -302,8 +318,22 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
     const empOverFrac = hish?.employerMonthly !== undefined && eventMonth > 0 && goal.monthly > 0 ? Math.max(0, hish.employerMonthly - employerLimit) / goal.monthly : 0;
     const employerPart = net * empWithinFrac;
     const employerOver = net * empOverFrac;
-    const inBenefit = employerPart + Math.min(net - employerPart - employerOver, limitOfMonth(eventMonth), benefitedLeft);
+    const ownPart = net - employerPart - employerOver;
+    const limit = limitOfMonth(eventMonth);
+    const left = benefitedLeft;
+    const inBenefit = employerPart + Math.min(ownPart, limit, left);
     benefitedLeft -= inBenefit - employerPart;
+    // the month's share of the salary (an employee's) or what is left of the yearly amount (a self-employed person's) cut the deposit
+    if (ownPart - Math.min(limit, left) > 1e-6) {
+      if (limit <= left) {
+        limitsCut.add(shareRule);
+        if (capBinds(eventMonth)) limitsCut.add("TXH-02");
+      } else limitsCut.add("TXH-08");
+    }
+    if (employerOver > 1e-6) {
+      limitsCut.add("TXH-01");
+      if (capBinds(eventMonth)) limitsCut.add("TXH-02");
+    }
     if (net - inBenefit > 1e-6) {
       firstExcessMonth ??= eventMonth;
       // A-30: the self-employed benefited amount is yearly (TXH-08); an employee's limit is the month's
@@ -311,6 +341,7 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
     }
     const over = employerMoney ? net - inBenefit : employerOver;
     if (social && over > 0) {
+      if (capBinds(eventMonth)) salaryCapCut = true;
       const y = taxYearOf(eventMonth, first);
       employerExcessByYear.set(y, (employerExcessByYear.get(y) ?? 0) + over);
       employerExcessTodayByYear.set(y, (employerExcessTodayByYear.get(y) ?? 0) + over / I[eventMonth]!);
@@ -347,7 +378,7 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       yearTotal = 0;
       if (kgl) ceiling = book.on("deposit").inYear(taxYearOf(m, first)).peek.amount("KGL-03", "ceiling");
       // F-119: the self-employed benefited amount of the new tax year
-      benefitedLeft = hish?.employment === "self-employed" ? book.inYear(taxYearOf(m, first)).amount("TXH-08", "self_employed_benefited") : benefitedYearly;
+      benefitedLeft = hish?.employment === "self-employed" ? onDeposit.inYear(taxYearOf(m, first)).peek.amount("TXH-08", "self_employed_benefited") : benefitedYearly;
     }
     if (m === 1) deposit(grossDeposits[0]!, 0, C[0]!);
     if (m <= goal.months && due(m)) deposit(grossDeposits[m]!, m, C[m]!);
@@ -372,6 +403,8 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
   if (depositCapCut) book.on("fees", "deposit").took("PF-02");
   if (balanceCapCut) book.on("fees", "balance").took(balanceRule);
   if (ceilingCut) for (const id of ["KGL-02", "KGL-03", "KGL-04"]) book.on("deposit").took(id);
+  for (const id of limitsCut) onDeposit.took(id);
+  if (salaryCapCut) salaryTax.took("TXH-02");
   if (oneDeposit) tally.flag("PF-OQ18");
   // A-30: the run's first tax year holds only the months from the run date, and a yearly cap reached in it assumes nothing was deposited
   // earlier that year
@@ -486,7 +519,8 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
         return { flat: hishtalmutExitTax(excessReal, rate), full: exitTax(exit, profile, T, excessReal, rate, false, 0, first) };
       });
       if (step.value) {
-        // F-46 gives the flat 25%; F-42 and F-43 adjust it when they apply.
+        // F-46 gives the flat 25%; F-42 and F-43 adjust it when they apply. The limits that put money in the excess set what it taxes.
+        for (const id of limitsCut) exit.took(id);
         taxAtExit = step.value.full.tax;
         detail.flatExcessTax = step.value.flat;
         if (step.value.full.settledByReturn) tally.flag("G-21");

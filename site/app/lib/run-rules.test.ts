@@ -101,7 +101,7 @@ describe("the guides' runs: each figure lists the rules of its part", () => {
     const taxFields = ids(rulesOfRun(withoutSalaryTax(rules), ["taxDuring", "taxAtExit"]));
     for (const id of ["TXH-03", "TXG-35"]) expect(taxFields, id).not.toContain(id);
     const salary = ids(rulesOfRun(salaryTaxOnly(rules), ["taxDuring"]));
-    expect(salary).toContain("TXH-03");
+    expect(salary).toEqual(expect.arrayContaining(["TXH-01", "TXH-03"]));
     for (const id of salary) expect(["TXH-01", "TXH-02", "TXH-03", "TXG-02", "TXG-35"], id).toContain(id);
   });
 

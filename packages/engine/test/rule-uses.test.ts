@@ -385,6 +385,30 @@ describe("the parts each run's rules went into", () => {
     expect(changedIn(short, "PF-14")).toEqual([]);
   });
 
+  it("takes a study fund's limits on the deposit where they cut it, and on the exit's tax where the excess they leave is taxed", () => {
+    // S23: the own deposit is within TXH-08's share of a salary under the determining salary's ceiling
+    const within = run("S23 keren hishtalmut");
+    for (const id of ["TXH-08", "TXH-02"]) {
+      expect(read(within, id), id).toBe(true);
+      expect(changedIn(within, id), id).toEqual([]);
+    }
+    // S25: a salary above the ceiling, a deposit above the share of it: the share and the ceiling both cut it
+    const above = run("S25 keren hishtalmut above the determining salary");
+    for (const id of ["TXH-08", "TXH-02"]) expect(changedIn(above, id), id).toEqual(["deposit", "taxAtExit"]);
+    // a self-employed person's yearly benefited amount (TXH-08), passed by the year's deposits
+    const self = run("keren hishtalmut, self-employed past the benefited amount");
+    expect(detailOf(self, "excessYear")).toBeGreaterThan(0);
+    expect(changedIn(self, "TXH-08")).toEqual(["deposit", "taxAtExit"]);
+    expect(changedIn(self, "TXH-11")).toEqual(["taxAtExit"]);
+    expect(changedIn(run("keren hishtalmut, self-employed"), "TXH-08")).toEqual([]);
+    // the employer's money above its share of the salary: TXH-01 cut the deposit, and sets both the salary tax and the exit's
+    const employer = run("keren hishtalmut, employer money above its limit");
+    expect(changedIn(employer, "TXH-01")).toEqual(["deposit", "taxDuring:salaryTax", "taxAtExit"]);
+    expect(changedIn(employer, "TXH-02")).toEqual([]);
+    // an early withdrawal taxes every gain whatever the limit, so the limit sets no tax at the exit
+    expect(changedIn(runProvident({ ...s23, goal: { ...s23.goal, monthly: 500, months: 48 }, hishtalmut: { ...s23Hishtalmut, monthlySalary: 20_000, earlyWithdrawal: true } }, ctx), "TXH-08")).toEqual(["deposit"]);
+  });
+
   it("takes a fee cap and a deposit ceiling only where they cut", () => {
     const under = run("S20 kupat gemel lehashkaa");
     for (const id of ["PF-02", "KGL-02", "KGL-03", "KGL-04"]) expect(changedIn(under, id), id).toEqual([]);
