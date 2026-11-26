@@ -109,6 +109,31 @@ describe("invest page computation", () => {
   });
 
 
+  it("a price whose orders are placed every few months carries no standing-order tag, its orders being at the regular lines (F-133, D41)", () => {
+    // the three banks' standing-order lines ranked, so a monthly plan at a bank runs on them and carries the tag
+    const banks = ["leumi", "massad", "fibi"];
+    const ranked = { ...bundle, snapshots: bundle.snapshots.map((s) => (banks.includes(s.id) ? { ...s, lines: s.lines.map(({ not_ranked: _, ...l }) => l) } : s)) };
+    const small = plan({ amountNow: 0, monthly: 100, years: 10, values: { ...plan().values, amount: entered(0, "nis", t), monthly: entered(100, "nis_per_month", t), years: entered(10, "years", t) } });
+    let batched = 0;
+    let tagged = 0;
+    for (const p of [plan(), small]) {
+      for (const i of knownIndices(ranked)) {
+        for (const f of buildInvest({ bundle: ranked, index: i, plan: p }).options.flatMap((o) => o.funds)) {
+          for (const id of banks) {
+            const at = f.byHouse[id];
+            if (!at || !("valueN" in at)) continue;
+            if (at.orderEvery > 1) {
+              batched++;
+              expect(at.standing, `${i.id} ${f.rec.id} at ${id}, every ${at.orderEvery} months`).toBe(false);
+            } else if (at.standing) tagged++;
+          }
+        }
+      }
+    }
+    expect(batched, "no bank's price is placed every few months on these plans: pick another").toBeGreaterThan(0);
+    expect(tagged, "no bank's monthly price runs on its standing-order line: the lines are not ranked").toBeGreaterThan(0);
+  });
+
   it("Psagot prices funds abroad with no doubt on the row, as its written answer of 10.11.2026 settles them (D42)", () => {
     const abroad = view.options.find((o) => o.id === "abroad")!;
     const accumulating = abroad.funds.filter((f) => f.rec.distribution_policy === "accumulating");
