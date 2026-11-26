@@ -360,10 +360,20 @@ Every employee in Israel aged 21 (men) or 20 (women) and up must be insured in a
 - Likely to change: yes, Mor may change its alternatives
 
 ### PEN-24 Regulator reference for fees actually charged
-- Rule: The CMA publishes average management fees actually charged. In 2024, new comprehensive pension funds charged on average 0.15% of assets and 1.57% of deposits; for comparison provident funds 0.54% of assets and 0.09% of deposits. By fund, for the employees of each fund's five largest employers versus all members (balance / deposits): Menora 0.07%/2.06% vs 0.15%/1.73%; Harel 0.07%/1.18% vs 0.16%/1.51%; Clal 0.11%/1.13% vs 0.15%/1.54%; Migdal Makefet 0.15%/1.47% vs 0.16%/1.61%; Altshuler Shaham 0.14%/1.39% vs 0.14%/1.30%; Phoenix 0.10%/1.43% vs 0.15%/1.55%; Meitav 0.09%/1.21% vs 0.11%/1.31%; Mor 0.21%/1% vs 0.20%/1%; Infinity 0.18%/1% vs 0.18%/1%.
-- Conditions / exceptions: These are averages, not prices a person can get; per D4 they are a reference level next to the list price and the person's own fee. Monthly per-track averages are in Pension-Net (`AVG_ANNUAL_MANAGEMENT_FEE`, `AVG_DEPOSIT_FEE`; field units unconfirmed, discovery O11).
+- Rule: The CMA publishes average management fees actually charged. In 2024, new comprehensive pension funds charged on average 0.15% of assets and 1.57% of deposits; for comparison provident funds 0.54% of assets and 0.09% of deposits. The same report gives each fund's own averages: PEN-72.
+- Conditions / exceptions: These are averages, not prices a person can get; per D4 they are a reference level next to the list price and the person's own fee. Monthly per-track averages are in Pension-Net (`AVG_ANNUAL_MANAGEMENT_FEE`, `AVG_DEPOSIT_FEE`; field units unconfirmed, discovery O11). The 2025 report's class averages are PF-39. Split on 2026-11-27 (scope): the class averages, the regulator's statement over the whole market, keep this id and its scope is general; each fund's own averages from the same report are PEN-72, as PF-41 is for 2025.
 - Figures: 2024 calendar year. Published yearly.
-- Source: [CMA report 2024, chapter 4 (gov.il)](https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=6), charts ד-1, ד-2 and table ד-8, file pp. 6-7 (printed pp. 47-48) · checked 2026-11-08 · primary
+- Source: [דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 4: נתונים כמותיים בתחום החיסכון הפנסיוני](https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=6) file pp. 6-7 (printed pp. 47-48) (charts ד-1 and ד-2) · checked 2026-11-08 · primary
+- Scope: general
+- Dimensions: fee-management-balance, fee-deposit
+- Likely to change: yes, yearly
+
+### PEN-72 Each pension fund's average management fees in 2024, as the CMA report prints them (Menora Mivtachim, Harel, Clal, Migdal, Altshuler Shaham, The Phoenix, Meitav, Mor, Infinity)
+- Rule: By fund, for the employees of each fund's five largest employers versus all members (balance / deposits): Menora 0.07%/2.06% vs 0.15%/1.73%; Harel 0.07%/1.18% vs 0.16%/1.51%; Clal 0.11%/1.13% vs 0.15%/1.54%; Migdal Makefet 0.15%/1.47% vs 0.16%/1.61%; Altshuler Shaham 0.14%/1.39% vs 0.14%/1.30%; Phoenix 0.10%/1.43% vs 0.15%/1.55%; Meitav 0.09%/1.21% vs 0.11%/1.31%; Mor 0.21%/1% vs 0.20%/1%; Infinity 0.18%/1% vs 0.18%/1%.
+- Conditions / exceptions: Split from PEN-24 on 2026-11-27 (scope), as PF-41 was split from PF-39: each figure is that company's own average actually charged, printed by the regulator from the companies' reports, and describes that fund only (the class average is PEN-24). Averages actually charged, not prices (D4). The 2025 figures are PF-41.
+- Figures: 2024 calendar year, per fund as above. Published yearly.
+- Source: [דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 4: נתונים כמותיים בתחום החיסכון הפנסיוני](https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=7) file p.7 (printed p.48), table ד-8 · checked 2026-11-08 · primary. General counterpart: PEN-24.
+- Scope: institution: Menora Mivtachim, Harel, Clal, Migdal, Altshuler Shaham, The Phoenix, Meitav, Mor, Infinity
 - Dimensions: fee-management-balance, fee-deposit
 - Likely to change: yes, yearly
 
