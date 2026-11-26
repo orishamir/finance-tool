@@ -1,7 +1,7 @@
 // Value objects on the site: the schema's object plus what a page needs to show it (D7, D3, D10).
 import type { FundStatement, Label, P05Input } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject, Working } from "@finance-tool/schema";
-import { amountShown } from "./format";
+import { amountShown, formatValue } from "./format";
 import { invest, numbers } from "../copy";
 
 export type Strength = ValueObject["source"]["strength"];
@@ -301,14 +301,34 @@ export type ComputedOptions = Parameters<typeof computed>[4];
  * two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either is not a number. `round`
  * shapes the result (its size alone). A doubt on either figure is the difference's too, since it rests on both, where its own options give
  * it none: the first one's words, the rules of each, and which of the two carry it (`doubtFrom`). Their reading labels and fund statements
- * it carries as every computed figure does (`computed`). Its sheet shows it as the difference it is (`Working` "difference"), unless the
- * options name a line of math it is (`working`).
+ * it carries as every computed figure does (`computed`). Its sheet shows it as the difference it is (`Working` "difference"), where the
+ * two as written come to it as written (`addsUp`), unless the options name a line of math it is (`working`).
  */
+/** The number a figure reads as on the page: the text `formatValue` writes for it, read back (a shekel amount in whole shekels, a percent to the decimals it shows). */
+function writtenNumber(value: number, v: Pick<SiteValue, "unit" | "state"> & { parameter?: boolean }): number {
+  const text = formatValue(value, v.unit, v.state, !!v.parameter);
+  const n = Number(text.replace(/[^\d.\u2212-]/g, "").replace("\u2212", "-"));
+  return Number.isFinite(n) ? n : value;
+}
+
+/**
+ * Whether the lines of a difference or a sum, each with its sign, come to the figure as the page writes each of them: only then does its
+ * sheet show them as a receipt (`Working`), whose lines a reader adds up. A sum of figures with agorot, written in whole shekels each, can
+ * miss its total by a shekel; its sheet lists its inputs instead.
+ */
+function addsUp(lines: readonly (readonly [sign: 1 | -1, v: SiteValue])[], result: number, unit: ValueObject["unit"]): boolean {
+  const sum = lines.reduce((t, [sign, v]) => t + sign * writtenNumber(v.value as number, { unit: v.unit, state: v.state, parameter: isParameter(v) }), 0);
+  return Math.abs(sum - writtenNumber(result, { unit, state: "computed" })) < 1e-9;
+}
+
 export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const [an, av] = a;
   const [bn, bv] = b;
   const n = typeof av.value === "number" && typeof bv.value === "number" ? amountShown(av.value, av.unit, av.state, isParameter(av)) - amountShown(bv.value, bv.unit, bv.state, isParameter(bv)) : null;
-  const v = computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? av.unit, formula, { [an]: av, [bn]: bv }, { ...options, working: options.working ?? { kind: "difference", from: an, less: bn } });
+  const value = n === null ? null : (options.round ?? ((x: number) => x))(n);
+  const unit = options.unit ?? av.unit;
+  const shown = options.working ?? (value !== null && addsUp([[1, av], [-1, bv]], value, unit) ? ({ kind: "difference", from: an, less: bn } as const) : undefined);
+  const v = computed(value, unit, formula, { [an]: av, [bn]: bv }, { ...options, ...(shown ? { working: shown } : {}) });
   const doubted = ([a, b] as const).filter(([, x]) => x.doubt);
   const [first] = doubted;
   if (v.doubt || !first) return v;
@@ -352,12 +372,15 @@ export function carriedBy(values: readonly SiteValue[]): Pick<ComputedOptions, "
 
 /**
  * A figure that adds up others on the page (a cost of several lines, a total of parts): the same as `differenceOf`, for a sum, which its
- * sheet shows as one (`Working` "sum"). Null when any part is not a number.
+ * sheet shows as one (`Working` "sum") where its parts as written come to it as written (`addsUp`). Null when any part is not a number.
  */
 export function sumOf(parts: Record<string, SiteValue>, formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const list = Object.values(parts);
   const n = list.length > 0 && list.every((p) => typeof p.value === "number") ? list.reduce((t, p) => t + (p.value as number), 0) : null;
-  return computed(n === null ? null : (options.round ?? ((x: number) => x))(n), options.unit ?? list[0]?.unit ?? "nis", formula, parts, { ...options, working: options.working ?? { kind: "sum", parts: Object.keys(parts) } });
+  const value = n === null ? null : (options.round ?? ((x: number) => x))(n);
+  const unit = options.unit ?? list[0]?.unit ?? "nis";
+  const shown = options.working ?? (value !== null && addsUp(list.map((p) => [1, p] as const), value, unit) ? ({ kind: "sum", parts: Object.keys(parts) } as const) : undefined);
+  return computed(value, unit, formula, parts, { ...options, ...(shown ? { working: shown } : {}) });
 }
 
 /**
