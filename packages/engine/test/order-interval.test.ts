@@ -4,7 +4,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { feesSnapshot, type ValueObject } from "@finance-tool/schema";
-import { intervalChosen, intervalWays, providerWorkbench, runSecurities, waitingReal, type ComparedProvider, type Deal, type DealProvider, type ProviderWorkbench, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
+import { intervalChosen, intervalWays, wayChosen, providerWorkbench, runSecurities, waitingReal, type ComparedProvider, type Deal, type DealProvider, type ProviderWorkbench, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -164,6 +164,23 @@ describe("which interval a way takes (F-133)", () => {
     expect(intervalChosen([at(1, 9_000, 1_000), at(2, 9_100, 1_000), at(4, 9_200, 1_000), at(12, 9_150, 1_000)])).toBe(2);
     expect(intervalChosen([at(1, 9_000, 1_000), at(2, 9_200, 1_000), at(4, 9_100, 1_100)])).toBe(1);
     expect(intervalChosen([at(1, 9_000, 1_000), at(3, 9_000, 1_000 + 1e-6)])).toBe(0);
+  });
+});
+
+describe("which way a house takes (F-109)", () => {
+  // a way's run as the choice reads it: its real value after tax and the tax it paid, at an index of 1
+  const at = (units: { price: number; monthlyByAmount?: true }, real: number, tax: number) =>
+    ({ way: { units }, run: { real, taxDuring: 0, taxAtExit: tax, nominal: real, exitMonth: 12, series: [{ month: 12, index: 1 }] } }) as unknown as Parameters<typeof wayChosen>[0][number];
+  const plan = { price: 300, monthlyByAmount: true } as const;
+  const units = { price: 300 };
+  it("the way that leaves the most after tax, though the other leaves more before tax", () => {
+    // the recurring plan leaves 10,000 before tax and 9,000 after; whole units 9,900 before tax and 9,100 after
+    expect(wayChosen([at(plan, 9_000, 1_000), at(units, 9_100, 800)])).toBe(1);
+    // the other way round: the recurring plan leaves 9,100 after tax, whole units 10,000 before tax but 9,000 after
+    expect(wayChosen([at(plan, 9_100, 800), at(units, 9_000, 1_000)])).toBe(0);
+  });
+  it("the house's own way, the first, on a tie", () => {
+    expect(wayChosen([at(plan, 9_000, 1_000), at(units, 9_000, 900)])).toBe(0);
   });
 });
 
