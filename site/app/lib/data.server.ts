@@ -421,7 +421,7 @@ export function loadFormulaAnchors(): Record<string, string> {
   let heading = "";
   for (const line of doc.split("\n")) {
     const h = /^#{1,6} (.+)$/.exec(line);
-    if (h) heading = h[1]!.trim().toLowerCase().replace(/[^\p{L}\p{N} _-]/gu, "").replace(/ /g, "-");
+    if (h?.[1]) heading = h[1].trim().toLowerCase().replace(/[^\p{L}\p{N} _-]/gu, "").replace(/ /g, "-");
     const id = /^\*\*(F-\d{2,3}) /.exec(line)?.[1] ?? /^\| (A-\d{2,3}) \|/.exec(line)?.[1];
     if (id && heading && !out[id]) out[id] = heading;
   }

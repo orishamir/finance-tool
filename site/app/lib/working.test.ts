@@ -113,19 +113,20 @@ function checkFormulas(values: readonly SiteValue[]): { checked: number; noValue
     const w = v.computed_from?.working;
     if (w?.kind !== "formula" || typeof v.value !== "number") continue;
     const name = `${w.entry}#${w.line}`;
-    const line = tex[w.entry]?.[w.line];
-    expect(line, name).toBeTruthy();
-    const inputs = v.computed_from!.inputs as Record<string, SiteValue>;
-    const key = formulaKeys[w.entry]!.symbols.map(([s]) => s);
+    const line = tex[w.entry]?.[w.line] ?? "";
+    expect(line, name).not.toBe("");
+    const inputs = (v.computed_from?.inputs ?? {}) as Record<string, SiteValue>;
+    const keyRows = formulaKeys[w.entry]?.symbols ?? [];
+    const key = keyRows.map(([s]) => s);
     for (const [k, s] of Object.entries(w.symbols)) {
       expect(inputs[k], `${name}: ${k}`).toBeTruthy();
       expect(key, `${name}: ${s}`).toContain(s);
-      expect(symbolsIn(line!, [s]).length, `${name}: ${s} in the line`).toBeGreaterThan(0);
+      expect(symbolsIn(line, [s]).length, `${name}: ${s} in the line`).toBeGreaterThan(0);
     }
     for (const [k, input] of Object.entries(inputs)) if (typeof input.value === "number") expect(w.symbols[k], `${name}: input ${k} stands for a symbol`).toBeTruthy();
-    expect(keyOfLine(line!, formulaKeys[w.entry]!.symbols, w, inputs).flatMap((r) => r.inputs.map((x) => x.key)).sort(), name).toEqual(Object.keys(w.symbols).sort());
+    expect(keyOfLine(line, keyRows, w, inputs).flatMap((r) => r.inputs.map((x) => x.key)).sort(), name).toEqual(Object.keys(w.symbols).sort());
     const head = headText(v, false);
-    const worked = withValues(line!, w, inputs, digitsFor(head));
+    const worked = withValues(line, w, inputs, digitsFor(head));
     if (worked === null) {
       noValues.add(name);
       continue;
@@ -145,11 +146,11 @@ function checkReceipts(values: readonly SiteValue[]): number {
   for (const v of values) {
     const w = v.computed_from?.working;
     if (!w || w.kind === "formula" || typeof v.value !== "number") continue;
-    const lines = receiptLines(w, v.computed_from!.inputs as Record<string, SiteValue>);
+    const lines = receiptLines(w, (v.computed_from?.inputs ?? {}) as Record<string, SiteValue>);
     if (lines.some((l) => typeof l.input.value !== "number")) continue;
     const sum = lines.reduce((t, l) => t + (l.sign === "minus" ? -1 : 1) * headNumber(headText(l.input, false)).n, 0);
     const { n, unit } = headNumber(headText(v, false));
-    expect(Math.abs(sum - n), `${v.computed_from!.formula} ${v.about ?? ""}: ${lines.map((l) => l.key).join(" / ")}`).toBeLessThanOrEqual(unit * 0.501);
+    expect(Math.abs(sum - n), `${v.computed_from?.formula ?? ""} ${v.about ?? ""}: ${lines.map((l) => l.key).join(" / ")}`).toBeLessThanOrEqual(unit * 0.501);
     checked++;
   }
   return checked;
@@ -162,9 +163,9 @@ describe("every figure marked as a line of math comes to its head when its line 
     for (const p of data.products) {
       for (const r of p.rows) {
         const e = exposureShares(r.h, p.templates.holdings, p.period, data.today);
-        if (e) values.push(e.stock, ...(e.currency ? [e.currency] : []));
+        for (const v of [e?.stock, e?.currency]) if (v) values.push(v);
       }
-      values.push(...(buildProductView(data, p.id)?.companies.map((c) => c.assets) ?? []));
+      for (const c of buildProductView(data, p.id)?.companies ?? []) if (c.assets) values.push(c.assets);
     }
     const { checked, noValues } = checkFormulas(values);
     expect(checked).toBeGreaterThan(500);
@@ -172,8 +173,9 @@ describe("every figure marked as a line of math comes to its head when its line 
   });
 
   it("a cross rate, and the dollar's change in each year and over each stretch (F-84, F-93)", () => {
-    const fx = loadFx()!;
-    const history = loadFxHistory()!;
+    const fx = loadFx();
+    const history = loadFxHistory();
+    if (!fx || !history) throw new Error("the ECB's rates are in data/series");
     const values: SiteValue[] = Object.keys(fx.perEur).flatMap((c) => nisPer(fx, c, today) ?? []);
     values.push(...history.points.map((p) => monthEndRate(history, p, today, p.date)));
     values.push(...yearlyChanges(history.points).map((y) => dollarYearChange(history, y.year, y.pct, today, String(y.year))));

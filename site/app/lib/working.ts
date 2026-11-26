@@ -64,13 +64,13 @@ const MATH_COMMANDS = new Set(["frac", "times", "div", "cdot", "left", "right", 
 /** Whether a line of TeX holds only numbers, operators, brackets and the commands of `MATH_COMMANDS`: a calculation a reader can work out. */
 export function readable(tex: string): boolean {
   for (let i = 0; i < tex.length; ) {
-    const c = tex[i]!;
+    const c = tex.charAt(i);
     if (/\s/.test(c) || /[\d.+\-/()[\]{}^,]/.test(c)) {
       i++;
       continue;
     }
     if (c !== "\\") return false;
-    const name = /^\\([A-Za-z]+|.)/.exec(tex.slice(i))![1]!;
+    const name = /^\\([A-Za-z]+|.)/.exec(tex.slice(i))?.[1] ?? "";
     if (!MATH_COMMANDS.has(name)) return false;
     i += 1 + name.length;
   }

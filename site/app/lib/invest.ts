@@ -894,7 +894,7 @@ const WHOLE_PLAN: readonly PlanInput[] = ["amount", "monthly", "years", "return"
  * The plan's inputs a figure rests on, each named by the caller, so a figure lists only what its formula uses: what was paid in rests on
  * the amount, the deposit and the years, not on the return.
  */
-export function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): Record<string, SiteValue> {
+function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): Record<string, SiteValue> {
   const v = plan.values;
   const of: Record<PlanInput, SiteValue> = { amount: v.amount, monthly: v.monthly, years: v.years, return: v.returnV, inflation: v.inflation };
   return Object.fromEntries(which.map((k) => [copy.planInputs[k], of[k]]));

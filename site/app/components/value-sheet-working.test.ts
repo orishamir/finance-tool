@@ -15,9 +15,9 @@ const today = "2026-11-26";
 const tex = loadFormulaTex();
 const data: ProvenanceData = { rules: {}, terms: {}, dimensions: {}, today, formulas: Object.fromEntries(Object.entries(tex).map(([id, t]) => [id, { name: formulaNames[id] ?? "", parameters: [], tex: t }])) };
 /** The sheet's words in order, its markup's text alone. */
+const markup = (value: SiteValue, d: ProvenanceData) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: d } as never, createElement(ValueSheet, { value, exact: false, data: d, headId: "h", descId: "d" }))));
 const sheet = (value: SiteValue) =>
-  renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(ValueSheet, { value, exact: false, data, headId: "h", descId: "d" }) })))
-    .split("<dialog")[0]!
+  (markup(value, data).split("<dialog")[0] ?? "")
     .replace(/<!-- -->/g, "")
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ");
@@ -28,7 +28,7 @@ describe("a difference's or a sum's sheet", () => {
     const out = sheet(differenceOf(["נשאר לכם", entered(102_345, "nis", today)], ["הפקדתם", entered(70_000, "nis", today)], "F-91", { today }));
     expect(out).toContain(provenance.computed.working);
     expect(out).toMatch(/נשאר לכם .*− הפקדתם .*= 32,345 ₪/);
-    expect(out).not.toContain(formulaNames["F-91"]!);
+    expect(out).not.toContain(formulaNames["F-91"] ?? "F-91");
     expect(out).not.toContain(provenance.computed.inputs);
   });
   it("a sum, with a plus before each line after the first", () => {
@@ -42,15 +42,17 @@ describe("the sheet of a figure that is a line of math", () => {
   const share = computed((1325.38 / 1332.41) * 100, "pct", "F-87", inputs, { today, working: { kind: "formula", entry: "F-87", line: 0, symbols: { "החשיפה לשוק המניות": "E", "סך נכסי המסלול": "A" } } });
   it("keys each symbol to its words with the figure's input beside it, lists no input twice, and ends with the way to the formula's sheet", () => {
     const out = sheet(share);
-    for (const [, words] of formulaKeys["F-87"]!.symbols) expect(out).toContain(words);
+    const key = formulaKeys["F-87"]?.symbols ?? [];
+    expect(key.length).toBe(3);
+    for (const [, words] of key) expect(out).toContain(words);
     expect(out).toContain("1,325.38");
     expect(out).not.toContain(provenance.computed.inputs);
     expect(out).toContain(provenance.computed.toFormula);
-    expect(out.indexOf(formulaKeys["F-87"]!.symbols[1]![1])).toBeLessThan(out.indexOf(provenance.computed.toFormula));
+    expect(out.indexOf(key[1]?.[1] ?? "E")).toBeLessThan(out.indexOf(provenance.computed.toFormula));
   });
   it("where the page holds no math for the entry, shows the formula's chip and the inputs, as any other figure", () => {
-    const out = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { ...data, formulas: {} }, children: createElement(ValueSheet, { value: share, exact: false, data: { ...data, formulas: {} }, headId: "h", descId: "d" }) }))).replace(/<[^>]+>/g, " ");
+    const out = markup(share, { ...data, formulas: {} }).replace(/<[^>]+>/g, " ");
     expect(out).toContain(provenance.computed.inputs);
-    expect(out).toContain(formulaNames["F-87"]!);
+    expect(out).toContain(formulaNames["F-87"] ?? "F-87");
   });
 });

@@ -164,7 +164,9 @@ function Worked({ label, tex, values, result, rows, where, after }: { label?: st
         <div className="flex flex-col gap-1.5">
           <span className="text-sm text-muted-foreground">{where}</span>
           <dl className="readout">
-            {rows.map((row) => (
+            {rows.map((row) => {
+              const [only, ...more] = row.inputs;
+              return (
               <div key={row.tex} className="readout-row items-start">
                 <dt className="flex min-w-0 items-baseline gap-3">
                   <span className="shrink-0 text-foreground">
@@ -172,7 +174,7 @@ function Worked({ label, tex, values, result, rows, where, after }: { label?: st
                   </span>
                   <span className="min-w-0">
                     {row.words}
-                    {row.inputs.length > 1 && (
+                    {more.length > 0 && (
                       <span className="mt-1 flex flex-col">
                         {row.inputs.map((x) => (
                           <span key={x.key} className="flex min-h-target items-center justify-between gap-3">
@@ -184,9 +186,10 @@ function Worked({ label, tex, values, result, rows, where, after }: { label?: st
                     )}
                   </span>
                 </dt>
-                {row.inputs.length === 1 && <dd>{row.inputs[0]!.value}</dd>}
+                {only && more.length === 0 && <dd>{only.value}</dd>}
               </div>
-            ))}
+              );
+            })}
           </dl>
         </div>
       )}

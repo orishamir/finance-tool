@@ -816,15 +816,16 @@ function Chips() {
 function WorkedStates({ today }: { today: string }) {
   const s = samples(today);
   const millions = (value: number): SiteValue => ({ ...s.sourced, value, unit: "nis_millions" });
-  const n = computedInputs.names;
-  const share = { [n.stock_market_exposure!]: millions(1325.38), [n.total_assets!]: millions(1332.41) };
-  const shareWorking = { kind: "formula", entry: "F-87", line: 0, symbols: { [n.stock_market_exposure!]: "E", [n.total_assets!]: "A" } } as const;
+  const exposure = computedInputs.names.stock_market_exposure ?? "stock_market_exposure";
+  const assets = computedInputs.names.total_assets ?? "total_assets";
+  const share = { [exposure]: millions(1325.38), [assets]: millions(1332.41) };
+  const shareWorking = { kind: "formula", entry: "F-87", line: 0, symbols: { [exposure]: "E", [assets]: "A" } } as const;
   const shareValue = computed((1325.38 / 1332.41) * 100, "pct", "F-87", share, { today, working: shareWorking });
   const tracks = Object.fromEntries(g.sample.working.tracks.map((name, i) => [name, millions(1234.56 * (i + 1))]));
   const tracksWorking = { kind: "formula", entry: "F-99", line: 0, symbols: Object.fromEntries(Object.keys(tracks).map((k) => [k, "A_i"])) } as const;
   const tracksValue = computed(Object.values(tracks).reduce((t, v) => t + (v.value as number), 0), "nis_millions", "F-99", tracks, { today, working: tracksWorking });
   const worked = (value: SiteValue, working: FormulaWorking, tex: string) => {
-    const inputs = value.computed_from!.inputs as Record<string, SiteValue>;
+    const inputs = (value.computed_from?.inputs ?? {}) as Record<string, SiteValue>;
     const head = headText(value, false);
     return (
       <FormulaBlock
@@ -833,7 +834,7 @@ function WorkedStates({ today }: { today: string }) {
         tex={tex}
         values={withValues(tex, working, inputs, digitsFor(head))}
         result={head}
-        rows={keyOfLine(tex, formulaKeys[working.entry]!.symbols, working, inputs).map((r) => ({ tex: r.tex, words: r.words, inputs: r.inputs.map((x) => ({ key: x.key, name: x.key, value: <Num value={x.input} /> })) }))}
+        rows={keyOfLine(tex, formulaKeys[working.entry]?.symbols ?? [], working, inputs).map((r) => ({ tex: r.tex, words: r.words, inputs: r.inputs.map((x) => ({ key: x.key, name: x.key, value: <Num value={x.input} /> })) }))}
         where={provenanceWords.formulaSheet.where}
         after={<FormulaLink id={working.entry} />}
       />

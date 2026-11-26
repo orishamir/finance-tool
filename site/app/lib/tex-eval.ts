@@ -8,7 +8,7 @@ function tokens(tex: string): Token[] {
   const s = tex.replace(/\{,\}/g, "").replace(/\\left|\\right/g, "");
   const out: Token[] = [];
   for (let i = 0; i < s.length; ) {
-    const c = s[i]!;
+    const c = s.charAt(i);
     if (/\s/.test(c)) {
       i++;
       continue;
@@ -47,19 +47,24 @@ export function evalTex(line: string): number {
   const ts = tokens(at < 0 ? line : line.slice(at + 1));
   let i = 0;
   const peek = () => ts[i];
-  const isOp = (v: string) => peek()?.kind === "op" && peek()!.value === v;
+  const isOp = (v: string) => {
+    const t = peek();
+    return t?.kind === "op" && t.value === v;
+  };
+  /** The operator at the place, taken. */
+  const op = (): string => String(ts[i++]?.value);
   const take = (v: string) => {
     if (!isOp(v)) throw new Error(`tex-eval: expected "${v}" at token ${i} of ${line}`);
     i++;
   };
   const expr = (): number => {
     let v = term();
-    while (isOp("+") || isOp("-")) v = ts[i++]!.value === "+" ? v + term() : v - term();
+    while (isOp("+") || isOp("-")) v = op() === "+" ? v + term() : v - term();
     return v;
   };
   const term = (): number => {
     let v = unary();
-    while (isOp("*") || isOp("/")) v = ts[i++]!.value === "*" ? v * unary() : v / unary();
+    while (isOp("*") || isOp("/")) v = op() === "*" ? v * unary() : v / unary();
     return v;
   };
   const unary = (): number => (isOp("-") ? (i++, -unary()) : isOp("+") ? (i++, unary()) : power());
@@ -79,10 +84,11 @@ export function evalTex(line: string): number {
   };
   const group = (): number => {
     const t = peek();
-    if (t?.kind !== "op" || !CLOSE[t.value]) throw new Error(`tex-eval: expected a bracket at token ${i} of ${line}`);
+    const close = t?.kind === "op" ? CLOSE[t.value] : undefined;
+    if (!close) throw new Error(`tex-eval: expected a bracket at token ${i} of ${line}`);
     i++;
     const v = expr();
-    take(CLOSE[t.value]!);
+    take(close);
     return v;
   };
   const primary = (): number => {
@@ -96,14 +102,15 @@ export function evalTex(line: string): number {
       i++;
       if (t.value === "frac") return group() / group();
       const open = peek();
-      if (open?.kind !== "op" || !CLOSE[open.value]) throw new Error(`tex-eval: \\${t.value} without its brackets`);
+      const close = open?.kind === "op" ? CLOSE[open.value] : undefined;
+      if (!close) throw new Error(`tex-eval: \\${t.value} without its brackets`);
       i++;
       const args = [expr()];
       while (isOp(",")) {
         i++;
         args.push(expr());
       }
-      take(CLOSE[open.value]!);
+      take(close);
       return t.value === "min" ? Math.min(...args) : Math.max(...args);
     }
     return group();
