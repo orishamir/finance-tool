@@ -1,6 +1,7 @@
 // data/open-questions.json: one entry per numbered open question of the rule base (docs/data-schema.md §3.15).
 // `id` and `status` are generated from the markdown (packages/pipeline/scripts/gen-open-questions.ts); `title_he` and `blocks_he`
-// are written by hand and kept when the script runs again. An answered question is deleted from the markdown once its answer is in a
+// are written by hand and kept when the script runs again; `answered_by` and `meanwhile_he` are not carried over by it yet, so they stay
+// empty until it keeps them. An answered question is deleted from the markdown once its answer is in a
 // rule, so the file lists only open and narrowed questions. Strict.
 import { z } from "zod";
 
