@@ -141,13 +141,22 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 - Dimensions: `liquidity-lockup`, `fee-exit`, `minimum`
 - Likely to change: yes, insurer decision per plan edition
 
-### INS-08 Tracks: choice, default, switching within 3 business days, closure with 45 days' notice
-- Rule: In Clal Insurance's savings policy 1418 (חיסכון פיננסי לעתיד), at joining the holder splits deposits among the open investment tracks. Without an instruction, money goes to the default track, defined as the track "כללי" or a replacement approved by the Commissioner (Clal 1418 s. 1, 5.4). The holder may move the existing balance between tracks, and it moves "בתוך 3 ימי עסקים" of the request (s. 6.2). Phoenix states the same 3 business days, says a switch cannot be cancelled once made, and says the fee changes to the new track's rate. Tracks are invested under the Provident Funds investment-rules regulations (תקנות כללי השקעה החלים על גופים מוסדיים, 2012) (Clal s. 8.1). Direct expenses may be charged as permitted under Provident Funds Law s. 32 (s. 8.5). Clal may close a track with CMA approval after at least 45 days' notice. Money of holders who do not choose a replacement goes to the default track (s. 8.6).
-- Conditions / exceptions: These are Clal Insurance's and The Phoenix's own policy terms; this record cites no regulator's text on how fast a switch in a savings policy must be executed (PF-23 covers provident funds). No limit on the number of switches was found. 2026-11-12: the Scope line names Clal and The Phoenix, with Clal Insurance now in the registry as its own insurer row. The tax treatment of a switch (Clal says switching carries no capital-gains tax) belongs in TXA.
+### INS-08 Clal Insurance savings policy 1418: tracks, default 'כללי', switching within 3 business days, closure on 45 days' notice
+- Rule: In Clal Insurance's savings policy 1418 (חיסכון פיננסי לעתיד), at joining the holder splits deposits among the open investment tracks. Without an instruction, money goes to the default track, defined as the track "כללי" or a replacement approved by the Commissioner (Clal 1418 s. 1, 5.4). The holder may move the existing balance between tracks, and it moves "בתוך 3 ימי עסקים" of the request (s. 6.2). Tracks are invested under the Provident Funds investment-rules regulations (תקנות כללי השקעה החלים על גופים מוסדיים, 2012) (Clal s. 8.1). Direct expenses may be charged as permitted under Provident Funds Law s. 32 (s. 8.5). Clal may close a track with CMA approval after at least 45 days' notice. Money of holders who do not choose a replacement goes to the default track (s. 8.6).
+- Conditions / exceptions: These are Clal Insurance's own policy terms; this record cites no regulator's text on how fast a switch in a savings policy must be executed (PF-23 covers provident funds). No limit on the number of switches was found. 2026-11-12: the Scope line names Clal and The Phoenix, with Clal Insurance now in the registry as its own insurer row. The tax treatment of a switch (Clal says switching carries no capital-gains tax) belongs in TXA. Split on 2026-11-26: The Phoenix's statements on its own policy's switches are INS-30.
 - Figures: 3 business days; 45 days.
-- Source: [Clal 1418](https://www.clalbit.co.il/media/yy5djhg3/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99-%D7%9C%D7%A2%D7%AA%D7%99%D7%93-1418.pdf), s. 1, 5, 6, 8 · checked 2026-10-22 · institution; [Phoenix Invest FAQ](https://www.fnx.co.il/savings/savings-routes/faq/) · checked 2026-10-22 · institution
-- Scope: institution: Clal, The Phoenix
-- Dimensions: `transfer-switch-process`, `switching-tax-event` (TXA), `fee-change-over-time`
+- Source: [Clal 1418](https://www.clalbit.co.il/media/yy5djhg3/%D7%97%D7%99%D7%A1%D7%9B%D7%95%D7%9F-%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99-%D7%9C%D7%A2%D7%AA%D7%99%D7%93-1418.pdf), s. 1, 5, 6, 8 · checked 2026-10-22 · institution
+- Scope: institution: Clal
+- Dimensions: `transfer-switch-process`, `switching-tax-event` (TXA)
+- Likely to change: yes. The CMA 2026 investment-tracks circular also covers hosting tracks (INS-24).
+
+### INS-30 The Phoenix: a savings-policy track switch takes 3 business days, cannot be undone, and moves the fee to the new track's rate
+- Rule: The Phoenix states that a switch between tracks of its investment policy is made within 3 business days, that a switch cannot be cancelled once made, and that the fee changes to the new track's rate.
+- Conditions / exceptions: These are The Phoenix's own statements; this record cites no regulator's text on how fast a switch in a savings policy must be executed (PF-23 covers provident funds). Clal Insurance's policy 1418 terms are INS-08. Split from INS-08 on 2026-11-26.
+- Figures: 3 business days.
+- Source: [Phoenix Invest FAQ](https://www.fnx.co.il/savings/savings-routes/faq/) · checked 2026-10-22 · institution
+- Scope: institution: The Phoenix
+- Dimensions: `transfer-switch-process`, `fee-change-over-time`
 - Likely to change: yes. The CMA 2026 investment-tracks circular also covers hosting tracks (INS-24).
 
 ### INS-09 Hosted tracks: insurer policies with tracks run by investment houses

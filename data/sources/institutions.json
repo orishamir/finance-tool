@@ -887,7 +887,7 @@
         "name": "The Phoenix",
         "only_records": [
           "TXA-29",
-          "INS-08"
+          "INS-30"
         ]
       }
     ],
@@ -897,7 +897,7 @@
     "own_hosts": [
       "fnx.co.il"
     ],
-    "note": "TXA-29 is about a Phoenix investment policy, an insurance product; INS-08 cites The Phoenix's investment-policy FAQ."
+    "note": "TXA-29 is about a Phoenix investment policy, an insurance product; INS-30 cites The Phoenix's investment-policy FAQ."
   },
   {
     "id": "reit1",
