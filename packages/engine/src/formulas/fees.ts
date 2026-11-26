@@ -23,7 +23,7 @@ export interface Commission {
    * On a conversion it is the one-step form of a price by size (`SizedConversion`, `sizedOf`).
    */
   flatUpTo?: { amount: number; upTo: number };
-  /** A fee per share above a number of shares in one order (BRK-36). */
+  /** A fee per share above a number of shares in one order (BRK-40). */
   perShareAbove?: { shares: number; perShare: number };
   /** A fee per share on the whole order, in the line's currency (`in`). Needs the share price. */
   perShare?: number;
@@ -510,7 +510,7 @@ export function custodyFee(c: Custody | undefined, month: number, marketValue: n
 
 /**
  * F-11 Deposit fee (provident family): `φ_dep × D_m`, the rate capped by the regulated maximum for the
- * wrapper (PF-02, PF-03, KGL-14; none for hishtalmut and IRA, PF-06, KH-22).
+ * wrapper (PF-02, PF-03; none for hishtalmut and IRA, PF-06, KH-22).
  */
 export function depositFee(rate: number, cap: number, deposit: number): number {
   return Math.min(rate, cap) * deposit;

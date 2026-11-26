@@ -148,6 +148,12 @@
           "yahav",
           "leumi"
         ]
+      },
+      {
+        "rule": "BANK-37",
+        "companies": [
+          "leumi"
+        ]
       }
     ],
     "minimum": [
@@ -155,6 +161,12 @@
         "rule": "BANK-38",
         "companies": [
           "yahav",
+          "leumi"
+        ]
+      },
+      {
+        "rule": "BANK-37",
+        "companies": [
           "leumi"
         ]
       }

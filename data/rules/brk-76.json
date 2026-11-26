@@ -1,0 +1,100 @@
+{
+  "id": "BRK-76",
+  "title": "Excellence: its tariff is a ceiling, the extra fee lines it prints, and its prices for a trade abroad",
+  "title_he": "תעריפון שהוא תקרה, שורות העמלה הנוספות ומחירי מסחר בחו״ל באקסלנס",
+  "text_he": "אקסלנס כותבת שהיא רשאית לגבות פחות מהתעריפון, ולכן אצלה התעריפון הוא תקרה ויש מחירים מוסכמים. בתעריפון יש דמי טיפול חודשיים, דמי ניהול פיקדון ניירות ערך ועמלת חליפין שלא כוללת את מרווח ההמרה שנקבע בהסכם עם הלקוח. מניה בארצות הברית עולה, לבחירת הלקוח, 3 סנט למניה עם מינימום 8 דולר או 11 דולר קבוע, והעמלה לא עולה על 2% משווי העסקה. מחוץ לארצות הברית העמלה היא 0.4% עם מינימום 35 במטבע העסקה, ובחלק מהשווקים עשויות להיגבות גם עמלות של צד שלישי שהתעריפון לא כותב את סכומן.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-custody",
+    "fee-trade",
+    "fee-fx",
+    "fee-account",
+    "fee-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-14",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "excellence",
+      "name_he": "אקסלנס"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+      "title": "Excellence Trade full tariff (no date on document)",
+      "title_he": "תעריפון אקסלנס טרייד",
+      "publisher": "Excellence",
+      "publisher_he": "אקסלנס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4, item 7",
+      "locator_he": "עמוד 4, פרט 7",
+      "page": 4,
+      "quote": "ייתכנו עמלות צדדים שלישיים בשווקים מסוימים",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+      "title": "Excellence Trade full tariff (no date on document)",
+      "title_he": "תעריפון אקסלנס טרייד",
+      "publisher": "Excellence",
+      "publisher_he": "אקסלנס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "quote": "דמי ניהול/טיפול פיקדון",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+      "title": "Excellence Trade full tariff (no date on document)",
+      "title_he": "תעריפון אקסלנס טרייד",
+      "publisher": "Excellence",
+      "publisher_he": "אקסלנס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4, item 9",
+      "locator_he": "עמוד 4, פרט 9",
+      "page": 4,
+      "quote": "העברת ניירות ערך",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+      "title": "Excellence Trade full tariff (no date on document)",
+      "title_he": "תעריפון אקסלנס טרייד",
+      "publisher": "Excellence",
+      "publisher_he": "אקסלנס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.5, part 6(א) item 1",
+      "locator_he": "עמוד 5, חלק 6(א) פרט 1",
+      "page": 5,
+      "quote": "דמי טיפול",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
+      "title": "Excellence Trade full tariff (no date on document)",
+      "title_he": "תעריפון אקסלנס טרייד",
+      "publisher": "Excellence",
+      "publisher_he": "אקסלנס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "quote": "חבר הבורסה רשאי לגבות סכומים או שיעורים נמוכים יותר",
+      "checked": "2026-10-31"
+    }
+  ],
+  "derived_from": [
+    "BRK-24"
+  ]
+}

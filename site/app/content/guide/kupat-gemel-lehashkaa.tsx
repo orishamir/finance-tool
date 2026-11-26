@@ -15,7 +15,7 @@ export const content: GuideContent = {
     return (
     <>
       <p className="max-w-measure">
-        אתם מפקידים לקופה בעצמכם, <Ruled id="KGL-02">עד</Ruled> {ceiling ? <Num value={ceiling} /> : "התקרה"} <Ruled id="KGL-04">בשנה, בכל הקופות שלכם יחד</Ruled>. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ומי שלא בוחר <Ruled id="KGL-11">מצורף</Ruled> <Term prefix="ל" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term> של הקופה.
+        אתם מפקידים לקופה בעצמכם, <Ruled id="KGL-02">עד</Ruled> {ceiling ? <Num value={ceiling} /> : "התקרה"} <Ruled id="KGL-02">בשנה, בכל הקופות שלכם יחד</Ruled>. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ומי שלא בוחר <Ruled id="KGL-11">מצורף</Ruled> <Term prefix="ל" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term> של הקופה.
       </p>
       <p className="max-w-measure">
         <Ruled id="TXK-03">על הרווחים בתוך הקופה לא משלמים מס</Ruled>. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, <Ruled id="TXK-05" prefix="ו">רק על הרווח</Ruled>: <Ruled id={["TXK-06", "TXK-07"]}>עד</Ruled> {rate ? <Num value={rate} /> : "השיעור המרבי"} <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>.
@@ -45,7 +45,7 @@ export const content: GuideContent = {
   companiesOpen: true,
   termIds: ["מסלול השקעה", "מסלול ברירת מחדל", "הרווח הריאלי", "תקופת ההנחה", "משיכה", "חברה מנהלת", "קופת גמל לקצבה", "קצבה", "עמית", "מקדם המרה", "רשות שוק ההון ביטוח וחיסכון", "העברת כספים בין מסלולי השקעה", "קופת גמל", "תשואה", "אינפלציה", "שכר נאמן", "דמי ניהול", "חשבון ניירות ערך", "דמי ניהול מהפקדה", "דוח שנתי", "החזר מס", "רשות המסים"],
   afterTax: ({ figure }) => {
-    const age = figure("TXK-10", "early_retirement_age");
+    const age = figure("PEN-26", "early_retirement_age");
     const sixty = figure("TXG-04", "age");
     const rate = figure("TXK-06", "rate");
     const withheld = figure("TXK-26", "withholding_on_gains");
@@ -60,7 +60,7 @@ export const content: GuideContent = {
           </Callout>
         ) : null}
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} <Ruled id="KGL-09">אפשר להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> הכסף נכנס שם למסלול למקבלי <Term id="קצבה">קצבה</Term>, <Ruled id="TXK-10" prefix="ל">קבלת קצבה בלבד</Ruled>. לפי טיוטת הבהרה מ־<bdi>2020</bdi> של הממונה על שוק ההון, ביטוח וחיסכון, אחרי ההעברה <Ruled id="PEN-63">אי אפשר לבטל את הבחירה בקצבה</Ruled>, למשל במשיכה בסכום חד־פעמי. את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>. שאלה פתוחה <IdRef id="PEN OQ7" end="." />
+          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} <Ruled id="KGL-09">אפשר להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> הכסף נכנס שם למסלול למקבלי <Term id="קצבה">קצבה</Term>, <Ruled id="KGL-09" prefix="ל">קבלת קצבה בלבד</Ruled>. לפי טיוטת הבהרה מ־<bdi>2020</bdi> של הממונה על שוק ההון, ביטוח וחיסכון, אחרי ההעברה <Ruled id="PEN-71">אי אפשר לבטל את הבחירה בקצבה</Ruled>, למשל במשיכה בסכום חד־פעמי. את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>. שאלה פתוחה <IdRef id="PEN OQ7" end="." />
         </Callout>
         <Callout tone="caution" className="max-w-measure">
           <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח יכול להיות נמוך יותר.</span> {rate ? <Num value={rate} /> : "השיעור על הרווח"} הוא <Ruled id="TXG-07">תקרה, לא שיעור קבוע</Ruled>. מגיל {sixty ? <Num value={sixty} /> : null} <Ruled id="TXG-04">חלות על ההכנסה מדרגות המס הנמוכות</Ruled>, ואם המדרגה נמוכה מהתקרה, משלמים לפיה. הרווח <Ruled id="TXK-06">נספר כחלק העליון של ההכנסה</Ruled>, ולכן זה עוזר רק כשהכנסות אחרות לא ממלאות את המדרגות הנמוכות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב.
@@ -84,7 +84,7 @@ export const content: GuideContent = {
       gb: {
         title: (p) => <>בבריטניה: חשבון <bdi dir="ltr">{p}</bdi></>,
         body: (f, { figure }) => {
-          const age = figure("TXK-10", "early_retirement_age");
+          const age = figure("PEN-26", "early_retirement_age");
           return (
             <>
               חשבון חיסכון והשקעה עם הטבת מס, <AbroadSaid v={f("who")}>לתושבי בריטניה</AbroadSaid> מגיל <AbroadFigure v={f("min_age")} />. ההבדל מקופת גמל להשקעה: משיכה בכל גיל, גם של הכול בבת אחת, פטורה ממס על הרווח. בקופת גמל להשקעה <Ruled id="TXK-05">משלמים מס הכנסה על הרווח במשיכה חד־פעמית בכל גיל</Ruled>, ומגיל {age ? <Num value={age} /> : null} הוא <Ruled id={["TXK-12", "TXK-09"]}>פטור רק כשהכסף עובר לקצבה</Ruled>.
@@ -96,7 +96,7 @@ export const content: GuideContent = {
       us: {
         title: (p) => <>בארצות הברית: חשבון <bdi dir="ltr">{p}</bdi></>,
         body: (f, { figure }) => {
-          const age = figure("TXK-10", "early_retirement_age");
+          const age = figure("PEN-26", "early_retirement_age");
           return (
             <>
               חשבון חיסכון לפרישה. מפקידים בו <AbroadSaid v={f("who")}>עד גובה ההכנסה מעבודה באותה שנה</AbroadSaid>, ולפי ההכנסה ואופן הגשת הדוח לפעמים פחות. כמו בקופת גמל להשקעה, <Ruled id="TXK-01">ההפקדה לא מורידה את מס ההכנסה</Ruled>. ההבדל: מגיל <AbroadFigure v={f("withdraw")} />, אחרי <AbroadFigure v={f("account_years")} /> שנים לפחות מתחילת השנה של ההפקדה הראשונה, גם משיכה של הכול בבת אחת פטורה ממס הכנסה, כולל הרווח. בקופת גמל להשקעה, מגיל {age ? <Num value={age} /> : null} הרווח <Ruled id={["TXK-12", "TXK-09"]}>פטור ממס הכנסה רק כשהכסף עובר לקצבה</Ruled>.
@@ -119,15 +119,15 @@ export const content: GuideContent = {
   },
   risks: () => (
     <>
-      <p className="max-w-measure">הנכסים <Ruled id="PF-29">מוחזקים בנאמנות</Ruled>, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. זכויות של עמית <Ruled id="REG-18">אפשר לעקל רק לפי כללים שהשר קובע</Ruled>. אם החברה המנהלת קורסת, הניהול <Ruled id="REG-19">עובר לחברה אחרת</Ruled>. המדינה לא ערבה לשווי הקופה, והוא עולה ויורד עם ההשקעות של המסלול שבחרתם.</p>
+      <p className="max-w-measure">הנכסים <Ruled id="PF-29">מוחזקים בנאמנות</Ruled>, בנפרד מהרכוש של החברה המנהלת, ואי אפשר לעקל אותם. זכויות של עמית <Ruled id="PF-48">אפשר לעקל רק לפי כללים שהשר קובע</Ruled>. אם החברה המנהלת קורסת, הניהול <Ruled id="REG-19">עובר לחברה אחרת</Ruled>. המדינה לא ערבה לשווי הקופה, והוא עולה ויורד עם ההשקעות של המסלול שבחרתם.</p>
     </>
   ),
   use: ({ figure }) => {
-    const age = figure("TXK-10", "early_retirement_age");
+    const age = figure("PEN-26", "early_retirement_age");
     return (
       <>
         <Sentence measure>
-          חיסכון שצריך להישאר זמין: אין נעילה, <Ruled id="KGL-08" prefix="ו">מושכים בכל עת</Ruled>. <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> לא ממוסה, <Ruled id="TXK-04">לפי הקריאה של האתר</Ruled>, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס הכנסה על הרווח. מגיל {age ? <Num value={age} /> : null} <Ruled id="TXK-10">אפשר גם להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.
+          חיסכון שצריך להישאר זמין: אין נעילה, <Ruled id="KGL-08" prefix="ו">מושכים בכל עת</Ruled>. <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> לא ממוסה, <Ruled id="TXK-04">לפי הקריאה של האתר</Ruled>, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס הכנסה על הרווח. מגיל {age ? <Num value={age} /> : null} <Ruled id="KGL-09">אפשר גם להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.
         </Sentence>
       </>
     );

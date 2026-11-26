@@ -1,8 +1,8 @@
 {
   "id": "ETF-96",
-  "title": "iShares and Vanguard: their Irish ETFs are normally first listed in London, Switzerland or another European exchange, with other listings intended",
-  "title_he": "iShares ו־Vanguard: הרישום העיקרי של הקרנות האיריות שלהן הוא בדרך כלל בבורסה אירופית",
-  "text_he": "בשלושה תשקיפים של iShares כתוב שהרישום העיקרי של היחידות של כל קרן יהיה בדרך כלל בשוק הראשי של הבורסה בלונדון, אבל יכול להיות בבורסה אחרת. בתשקיף של iShares VII הרישום העיקרי הרגיל הוא בבורסה השווייצרית SIX או בלונדון. בתשקיף של Vanguard הרישום העיקרי הרגיל הוא באחת מכמה בורסות אירופיות, ובהן דבלין, לונדון, Xetra בגרמניה, איטליה, Cboe Europe ו־SIX. שתי החברות מתכוונות לרשום את הקרנות גם בבורסות נוספות, ובהן בורסות במקסיקו, ו־iShares מזכירה גם את הבורסה האמריקאית CBOE. לפי iShares, אין ודאות שהרישומים האלה ייעשו או יימשכו. כל תשקיף מפנה לאתר של החברה כדי לדעת איפה קרן רשומה בפועל. זה מה ששתי החברות אומרות שהן נוהגות לעשות, ורק בקרנות האיריות שלהן. זה לא כלל: החוק לא קובע איפה קרן אירית נסחרת. התשקיף של Invesco לא נקרא.",
+  "title": "iShares: its Irish ETFs are normally first listed on the LSE (iShares VII: SIX or LSE), with other listings intended, CBOE among them",
+  "title_he": "הרישום העיקרי של הקרנות האיריות של iShares: בדרך כלל בלונדון או ב־SIX",
+  "text_he": "בשלושה תשקיפים של iShares כתוב שהרישום העיקרי של כל קרן אירית יהיה בדרך כלל בשוק הראשי של הבורסה בלונדון, אבל יכול להיות בבורסה אחרת, ובתשקיף של iShares VII הוא בבורסה השווייצרית SIX או בלונדון. iShares מתכוונת לרשום את הקרנות גם בבורסות נוספות, ובהן בורסה במקסיקו והבורסה האמריקאית CBOE, ולפיה אין ודאות שהרישומים האלה ייעשו או יימשכו. התשקיפים מפנים לאתר של החברה כדי לדעת איפה קרן רשומה בפועל. זה הנוהג של iShares בקרנות האיריות שלה, לא כלל: החוק לא קובע איפה קרן אירית נסחרת.",
   "strength": "institution",
   "dimensions": [
     "foreign-withholding-domicile",
@@ -17,10 +17,6 @@
     {
       "id": "ishares",
       "name_he": "iShares"
-    },
-    {
-      "id": "vanguard",
-      "name_he": "Vanguard"
     }
   ],
   "sources": [
@@ -74,19 +70,6 @@
       "locator_he": "עמוד הקובץ 2",
       "page": 2,
       "quote": "The Shares of each Fund will normally be primarily listed and admitted for trading on the SIX or the main market of the LSE",
-      "checked": "2026-11-26"
-    },
-    {
-      "url": "https://fund-docs.vanguard.com/etf-prospectus-en.pdf#page=3",
-      "title": "Vanguard Funds plc prospectus, dated 15 October 2026",
-      "publisher": "Vanguard",
-      "publisher_he": "Vanguard",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "file p.3",
-      "locator_he": "עמוד הקובץ 3",
-      "page": 3,
-      "quote": "normally be primarily listed and/or admitted for trading on either the Regulated Market of Euronext Dublin",
       "checked": "2026-11-26"
     }
   ]

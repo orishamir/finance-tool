@@ -60,7 +60,7 @@ export type LeftWhy =
   | "spread-unpriced"
   /**
    * A bank's line for trading on the Tel Aviv exchange that names mutual fund units: it is read for what it prices there, and a mutual fund
-   * that is neither a tracking fund nor listed on the exchange is left out of it (BRK-16, part 4(א)(1) and footnote 4; MF-27), so such a
+   * that is neither a tracking fund nor listed on the exchange is left out of it (BRK-72, part 4(א)(1) and footnote 4; MF-27), so such a
    * fund has no trade price in the deal.
    */
   | "bank-funds"
@@ -211,7 +211,7 @@ const ITEM_ONE = new Set(["tase_shares_bonds", "etf_units", "tase_bonds", "tase_
 
 /**
  * What a trade line notes of an order not carried out (§10.6's stated parts). At a bank the fee rules decide it whatever the line's heading
- * says: an order through a clerk not carried out for a reason on the client's side pays the minimum, on the Tel Aviv exchange (BRK-16,
+ * says: an order through a clerk not carried out for a reason on the client's side pays the minimum, on the Tel Aviv exchange (BRK-71,
  * notes to part 4(א)(1)) and abroad (part 4(א)(4), note 1). So a line of the branch's channel carries that note, in the words of its item:
  * on the exchange the item's own exception of mutual funds (`bankTradeLeavesFunds`), abroad none; and a direct line none. At a house
  * that is no bank, the line's own words say it (`chargesUnfilled`). None where neither does.
@@ -265,7 +265,7 @@ function unreadWhy(l: Line): LeftWhy {
 
 /**
  * The houses whose list prints a percent maximum beside a minimum with nothing on which wins on a small action, so that the maximum wins
- * is the site's reading (F-12: Excellence's 2%, BRK-48; Interactive Israel's 2%, BRK-40). A template notes it on those trade prices.
+ * is the site's reading (F-12: Excellence's 2%, BRK-76; Interactive Israel's 2%, BRK-40). A template notes it on those trade prices.
  */
 export const CAP_READ: ReadonlySet<string> = new Set(["excellence", "interactive-israel"]);
 
@@ -459,7 +459,7 @@ function valuesOf(l: Line, own: OwnValues, bank: boolean): string[] {
 }
 
 /**
- * Whether a line is a bank's trade line that leaves mutual funds out (BRK-16, part 4(א)(1): its line for the Tel Aviv exchange excludes
+ * Whether a line is a bank's trade line that leaves mutual funds out (BRK-72, part 4(א)(1): its line for the Tel Aviv exchange excludes
  * mutual funds but a tracking fund and a fund listed on the exchange, footnote 4; MF-27): a bank's trade line that names the exchange's
  * classes beside mutual fund units prices the tracking and listed funds as the exchange's value (`tase`, ETFs among it), and no other fund.
  */
@@ -703,7 +703,7 @@ function withSale(buy: Mapped, sale: Mapped, free: Price): Mapped {
  * F-63's line choice in the deal's words (F-128): the value of what is bought, or of what is held, that a house's template files the line
  * under which the house's own row reads for a fund (`tariffLine`, at the list price, bought online as the indices page buys), so a deal
  * filled from the house reads the case that line filled. `value` is the value the fund's class names (F-114); it stays where the line
- * prices it. At a bank an open mutual fund is bought on the line for securities on the Tel Aviv exchange (BRK-16, part 4(א)(1), footnote
+ * prices it. At a bank an open mutual fund is bought on the line for securities on the Tel Aviv exchange (BRK-72, part 4(א)(1), footnote
  * 4), which the template files under that exchange's value (`bankTradeLeavesFunds`), so the deal reads it there. `value` again where the
  * house has no such line, or its lines leave the choice open (the row then reads another way, F-63's candidates).
  */

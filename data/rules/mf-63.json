@@ -1,8 +1,8 @@
 {
   "id": "MF-63",
-  "title": "Yalin Lapidot: 21 tracking funds named \"quabify אג\"ח לפדיון\", with a year of redemption and a latest payment date",
-  "title_he": "ילין לפידות: קרנות מחקות ״אג״ח לפדיון״, עם שנת פדיון ומועד תשלום אחרון",
-  "text_he": "בתשקיף של ילין לפידות יש קרנות מחקות פתוחות לשנים 2026 עד 2032, שלוש בכל שנה: צמודה, שקלית ומאוזנת. הדוח השנתי של קרן 5137492 מתאר מה קורה בשנת הפדיון. האיגרות נפדות, וכל סדרה שעוזבת את המדד מוחלפת במק״מ. אחרי סוף השנה המנהל מוכר את מה שנשאר ומחזיק מזומן שקלי. התשלום יהיה לא יאוחר מ־15.1.2027. אותו מסמך כותב שאין בכך התחייבות או הבטחה להשיג את מטרת הקרן. הנוסח נקרא ברמת הקרן בשתי קרנות בלבד. בדוח השנתי של קרן 5137492 ל־30.9.2024, שכר מנהל הקרן היה 0.19%. בתשקיף של 20.12.2025, ובדוחות ל־30.9.2025 של הקרנות האחיות לשנת 2027, הוא 0.24%. אלה מסמכים מתאריכים שונים. הם מראים שדמי הניהול עלו, לא שקרן גובה אחרת ממה שכתוב בתשקיף שלה. מתי בדיוק עלו לא נקרא. מפיץ רשאי לגבות עמלה על קנייה ומכירה של יחידות.",
+  "title": "Yalin Lapidot: 21 tracking funds named \"quabify אג\"ח לפדיון\", 2026 to 2032, and their terms",
+  "title_he": "ילין לפידות: קרנות מחקות ״אג״ח לפדיון״, שנות הפדיון ודמי הניהול",
+  "text_he": "בתשקיף של ילין לפידות יש {MF-63:funds} קרנות מחקות פתוחות בשם ״אג״ח לפדיון״, לשנים {MF-63:end_first} עד {MF-63:end_last}, שלוש בכל שנה: צמודה, שקלית ומאוזנת. בכל אחת דמי ניהול קבועים של {MF-63:fee} ושכר נאמן של {MF-63:trustee}, וכולן מסווגות ״פטורה״. לפי מסמך של אחת הקרנות, המפיץ לא מקבל עמלת הפצה בקרן מחקה, אבל רשאי לגבות מבעל היחידות עמלה על קנייה ומכירה של יחידות.",
   "strength": "institution",
   "dimensions": [
     "fee-management-balance",
@@ -112,66 +112,6 @@
       ],
       "state": "sourced",
       "notes": "שנת הפדיון האחרונה בתשקיף"
-    },
-    "last_payment": {
-      "value": "2027-01-15",
-      "unit": "text",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629790-00.pdf#page=1",
-        "title": "דוח שנתי של קרן 5137492, 30.9.2024",
-        "publisher": "ילין לפידות",
-        "strength": "institution"
-      },
-      "checked": "2026-11-02",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-63"
-      ],
-      "state": "sourced",
-      "notes": "המועד האחרון לתשלום, קרן 5137492"
-    },
-    "fee_report": {
-      "value": 0.19,
-      "unit": "pct_per_year",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629790-00.pdf#page=1",
-        "title": "דוח שנתי של קרן 5137492, 30.9.2024",
-        "publisher": "ילין לפידות",
-        "strength": "institution"
-      },
-      "checked": "2026-11-02",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-63"
-      ],
-      "state": "sourced",
-      "notes": "דמי ניהול בדוח השנתי של קרן 5137492"
-    },
-    "fee_report_date": {
-      "value": "2024-09-30",
-      "unit": "text",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629790-00.pdf#page=1",
-        "title": "דוח שנתי של קרן 5137492, 30.9.2024",
-        "publisher": "ילין לפידות",
-        "strength": "institution"
-      },
-      "checked": "2026-11-02",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-63"
-      ],
-      "state": "sourced",
-      "notes": "תאריך הדוח השנתי של קרן 5137492"
     }
   },
   "scope": "institution",
@@ -183,18 +123,6 @@
   ],
   "sources": [
     {
-      "url": "https://mayafiles.tase.co.il/rpdf/1705001-1706000/P1705240-00.pdf#page=1",
-      "title": "Annual report, fund 5137484, 30.9.2025",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1",
-      "locator_he": "עמוד 1",
-      "page": 1,
-      "checked": "2026-11-14"
-    },
-    {
       "url": "https://mayafiles.tase.co.il/rpdf/1709001-1710000/P1709452-00.pdf#page=7",
       "title": "Yalin Lapidot main prospectus, 20.12.2025",
       "publisher": "Maya (TASE filings)",
@@ -204,18 +132,6 @@
       "locator": "pp.7 to 10, p.34",
       "locator_he": "עמודים 7 עד 10, עמוד 34",
       "page": 7,
-      "checked": "2026-11-01"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629790-00.pdf#page=1",
-      "title": "Annual report, fund 5137492, 30.9.2024",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.1, 2",
-      "locator_he": "עמודים 1, 2",
-      "page": 1,
       "checked": "2026-11-01"
     },
     {

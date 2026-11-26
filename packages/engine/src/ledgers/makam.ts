@@ -11,7 +11,7 @@ import { exitTax, OrderCash, Tally, unlessBlocked, yearlySurtax, type Profile } 
 export interface MakamInput {
   goal: Goal;
   market: { inflation: number };
-  /** A-22 yield to redemption; series term in months (12 for the yearly series, GOV-22, GOV-23). */
+  /** A-22 yield to redemption; series term in months (12 for the yearly series, GOV-23). */
   makam: { yield: number; termMonths?: number };
   /**
    * Buy and sell lines for makam (F-12). `redeem` is the tariff's own line for a redemption where it names one (F-24); with

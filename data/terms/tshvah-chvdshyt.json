@@ -8,8 +8,7 @@
   "variants": [],
   "rule_ids": [
     "CAT-04",
-    "CAT-05",
-    "CAT-32"
+    "CAT-05"
   ],
   "source": {
     "url": "https://gemelnet.cma.gov.il/views/dafMakdim_Link3.aspx",

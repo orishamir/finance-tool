@@ -1,8 +1,8 @@
 {
   "id": "GOV-04",
-  "title": "Makam auction: method, units, settlement, listing",
-  "title_he": "מכרז המק״מ: שיטה, יחידות, סליקה ורישום למסחר",
-  "text_he": "מכרז המק״מ מדורג לפי תשואה. כל הזמנה נוקבת תשואה שנתית אפקטיבית לפדיון וכמות בשווי נקוב, בכפולות של יחידת ההזמנה. ההזמנות מתמלאות מהתשואה הנמוכה ומעלה, עד שהכמות המוצעת נגמרת. כל הזמנה זוכה משלמת את המחיר שנגזר מהתשואה שלה. הזמנות בתשואת המכרז מתמלאות באופן יחסי. הזמנות מעל התשואה המרבית שפורסמה לא מתמלאות. חלק מהכמות עשוי להישמר להזמנות לא תחרותיות, שמתמלאות בתשואה הממוצעת. לכל מציע יש תקרה להזמנות כאלה, אלא אם החוזר קובע אחרת. הסליקה ביום העסקים הראשון אחרי המכרז דרך מסלקת הבורסה, והסדרה נרשמת למסחר בבורסה. בנק ישראל רשאי לקבוע בחוזר סוג מכרז אחר, ולבטל או לדחות מכרז מסיבות טכניות.",
+  "title": "Makam auction: method, units, settlement",
+  "title_he": "מכרז המק״מ: שיטה, יחידות וסליקה",
+  "text_he": "מכרז המק״מ מדורג לפי תשואה: כל הזמנה נוקבת תשואה שנתית אפקטיבית לפדיון וכמות בשווי נקוב, בכפולות של {GOV-04:auction_order_unit}, וההזמנות מתמלאות מהתשואה הנמוכה ומעלה עד שהכמות המוצעת נגמרת. כל הזמנה זוכה משלמת את המחיר שנגזר מהתשואה שלה, הזמנות בתשואת המכרז מתמלאות באופן יחסי, והזמנות מעל התשואה המרבית שפורסמה לא מתמלאות. חלק מהכמות עשוי להישמר להזמנות לא תחרותיות, שמתמלאות בתשואה הממוצעת, עד {GOV-04:non_competitive_cap} שווי נקוב למציע, אלא אם החוזר קובע אחרת. הסליקה ביום העסקים הראשון אחרי המכרז דרך מסלקת הבורסה, ובנק ישראל רשאי לקבוע בחוזר סוג מכרז אחר, ולבטל מכרז או לדחות את הסליקה מסיבות טכניות.",
   "figure_names_he": {
     "auction_order_unit": "יחידת ההזמנה במכרז (שווי נקוב)",
     "non_competitive_cap": "תקרה להזמנות לא תחרותיות למציע"
@@ -34,7 +34,7 @@
         "GOV-04"
       ],
       "state": "sourced",
-      "notes": "Face value per order unit in the auction: quantities in multiples of NIS 100 face value (s.3.1.2.3). This is the auction's unit for clearing-house members; the TASE trading unit and minimum order for an individual are GOV-24."
+      "notes": "Face value per order unit in the auction: quantities in multiples of NIS 100 face value (s.3.1.2.3). This is the auction's unit for clearing-house members; the TASE trading unit and minimum order for an individual are GOV-30 and GOV-24."
     },
     "non_competitive_cap": {
       "value": 10000000,
@@ -69,10 +69,13 @@
       "publisher_he": "בנק ישראל, חטיבת השווקים",
       "kind": "official_pdf",
       "strength": "primary",
-      "locator": "pp.1-6, 9, 14, ss.2.1 to 2.6, 3.1.2, 3.2, 3.3, 3.4, 4.1.3, 5.1, 5.2, Annex ב",
-      "locator_he": "עמודים 1 עד 6, 9, 14, סעיפים 2.1 עד 2.6, 3.1.2, 3.2, 3.3, 3.4, 4.1.3, 5.1, 5.2, נספח ב",
+      "locator": "pp.1-6, 9, 14, ss.2.1 to 2.6, 3.1.2, 3.2, 3.3, 3.4, 4.1.3, 5.1, Annex ב",
+      "locator_he": "עמודים 1 עד 6, 9, 14, סעיפים 2.1 עד 2.6, 3.1.2, 3.2, 3.3, 3.4, 4.1.3, 5.1, נספח ב",
       "page": 1,
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "GOV-17"
   ]
 }

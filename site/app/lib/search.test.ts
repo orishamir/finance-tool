@@ -227,7 +227,7 @@ describe("rules in groups and the negatives", () => {
     expect(company!.items.every((h) => h.entry.href.startsWith("/companies/") || h.entry.href.startsWith("/documents#terms-"))).toBe(true);
     const cs30 = real.find((e) => e.key === "CS-30")!;
     expect(cs30.kind).toBe("companyRule");
-    expect(cs30.line).toMatch(/^הראל, אלטשולר שחם ובנק יהב · /);
+    expect(cs30.line).toMatch(/^הראל ואלטשולר שחם · /);
     expect(cs30.href).toBe("/companies/512267592#CS-30");
   });
   it("puts the guide first and the rule after it for a product name", () => {

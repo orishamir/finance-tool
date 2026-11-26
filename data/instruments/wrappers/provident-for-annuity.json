@@ -171,7 +171,7 @@
       "tax_year": null,
       "update_rule": "fixed in regulation",
       "rule_ids": [
-        "PEN-33"
+        "PF-47"
       ],
       "state": "sourced",
       "notes": "Rule 41יא(א) of the 1964 Income Tax Rules: a provident fund pays a withdrawal within 4 business days of the day the request reaches it; if that date falls in the month's first three business days it may defer to the 4th business day of the month. The law's timetable for every fund, not one company's (scope pass 2026-10-25)."
@@ -250,9 +250,8 @@
   "protection": {
     "rule_ids": [
       "PF-29",
-      "REG-18",
       "REG-19",
-      "PEN-35"
+      "PEN-69"
     ],
     "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value; the fund is not an eligible fund for the state guaranteed-return mechanism and has no actuarial balancing, so the balance moves only with the track's investments"
   },

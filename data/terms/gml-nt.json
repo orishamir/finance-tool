@@ -8,8 +8,8 @@
   "variants": [],
   "rule_ids": [
     "CAT-01",
-    "CAT-29",
-    "CAT-32"
+    "CAT-04",
+    "CAT-29"
   ],
   "source": {
     "url": "https://data.gov.il/api/3/action/package_show?id=gemelnet",

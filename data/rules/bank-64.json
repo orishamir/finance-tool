@@ -1,0 +1,36 @@
+{
+  "id": "BANK-64",
+  "title": "Discount Bank: its CPI-linked deposits are linked to the consumer price index",
+  "title_he": "פיקדונות צמודי מדד בבנק דיסקונט: צמודים למדד המחירים לצרכן",
+  "text_he": "בבנק דיסקונט פיקדון צמוד מוצג כריבית ריאלית בתוספת הצמדה למדד. דיסקונט כותב שפיקדונות צמודי מדד צמודים למדד המחירים לצרכן.",
+  "strength": "institution",
+  "dimensions": [
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "discount",
+      "name_he": "בנק דיסקונט"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
+      "title": "דיסקונט: חיסכון וריבית",
+      "title_he": "דיסקונט: חיסכון וריבית",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BANK-26"
+  ]
+}

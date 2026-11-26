@@ -1,0 +1,83 @@
+{
+  "id": "BANK-55",
+  "title": "Bank Yahav: its deposits and savings plans cannot be broken, and what its account agreement says if the bank allows a break",
+  "title_he": "שבירת פיקדון ותוכנית חיסכון בבנק יהב: אי אפשר, ואם הבנק מתיר, בלי ריבית ובתשלום על הנזק",
+  "text_he": "בבנק יהב אי אפשר לשבור את הפיקדונות המקובלים, ולפי הסכם החשבון גם לא את תוכניות החיסכון, לפני מועד הפירעון או תחנת יציאה. אם הבנק בכל זאת מתיר משיכה לפנים משורת הדין, הסכום שנמשך לא מקבל ריבית או הצמדה, וריבית שכבר שולמה עליו מקוזזת. הבנק רשאי לגבות גם סכום השווה לנזק שנגרם לו, כך שאפשר לקבל פחות מהקרן.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup",
+    "fee-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-11-07",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf",
+      "title": "בנק יהב: הסכם פתיחת חשבון",
+      "title_he": "בנק יהב: הסכם פתיחת חשבון",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.36, s.2.5",
+      "locator_he": "עמוד 36, סעיף 2.5",
+      "page": 36,
+      "quote": "איסור משיכה טרם המועד",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf",
+      "title": "בנק יהב: הסכם פתיחת חשבון",
+      "title_he": "בנק יהב: הסכם פתיחת חשבון",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.37",
+      "locator_he": "עמוד 37",
+      "page": 37,
+      "quote": "עלולה להיות אף פגיעה בקרן",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zordhsxh/new-account-agreement.pdf",
+      "title": "בנק יהב: הסכם פתיחת חשבון",
+      "title_he": "בנק יהב: הסכם פתיחת חשבון",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.38, s.8.1",
+      "locator_he": "עמוד 38, סעיף 8.1",
+      "page": 38,
+      "quote": "הוראות סעיפים 1-7 לעיל יחולו גם על פיקדונות מסוג ״תוכנית חסכון״",
+      "checked": "2026-11-07"
+    },
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "title_he": "בנק יהב: לוח שיעורי ריבית על פיקדונות 13_26",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BANK-06",
+    "BANK-28"
+  ]
+}

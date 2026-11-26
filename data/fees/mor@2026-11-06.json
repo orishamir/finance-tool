@@ -7,7 +7,6 @@
     "tase_member": false,
     "protection_rule_ids": [
       "PF-29",
-      "REG-18",
       "REG-19"
     ]
   },
@@ -48,7 +47,6 @@
         "rule_ids": [
           "PF-02",
           "PF-03",
-          "KGL-14",
           "KGL-16"
         ],
         "state": "sourced",
@@ -92,7 +90,6 @@
         "rule_ids": [
           "PF-02",
           "PF-03",
-          "KGL-14",
           "KGL-16"
         ],
         "state": "sourced",

@@ -1,0 +1,61 @@
+{
+  "id": "BANK-59",
+  "title": "Mercantile Discount Bank: the minimum for a deposit by a customer of another bank",
+  "title_he": "סכום מינימלי לפיקדון במרכנתיל למי שאינו לקוח הבנק",
+  "text_he": "במרכנתיל גם מי שאינו לקוח הבנק יכול לפתוח פיקדון. הסכום המינימלי לפיקדון כזה הוא {BANK-59:mercantile_non_customer_min}.",
+  "figure_names_he": {
+    "mercantile_non_customer_min": "פיקדון מינימלי למי שהוא לא לקוח (מרכנתיל)"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "minimum"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "figures": {
+    "mercantile_non_customer_min": {
+      "value": 250,
+      "unit": "nis",
+      "source": {
+        "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
+        "title": "מרכנתיל: פיקדונות ללא חשבון",
+        "publisher": "Mercantile Discount Bank",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "BANK-59"
+      ],
+      "state": "sourced",
+      "notes": "Mercantile Discount Bank's deposits for non-customers: NIS 250 (BANK-59)."
+    }
+  },
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "mercantile",
+      "name_he": "בנק מרכנתיל דיסקונט"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/deposits-without-account/",
+      "title": "מרכנתיל: פיקדונות ללא חשבון",
+      "title_he": "מרכנתיל: פיקדונות ללא חשבון",
+      "publisher": "Mercantile Discount Bank",
+      "publisher_he": "בנק מרכנתיל דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BANK-27"
+  ]
+}

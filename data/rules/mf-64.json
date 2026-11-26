@@ -1,8 +1,8 @@
 {
   "id": "MF-64",
-  "title": "Meitav (Tachlit) and Migdal (MTF): funds on bullet indices",
-  "title_he": "מיטב (תכלית) ומגדל (MTF): קרנות על מדדי בולט",
-  "text_he": "בתשקיף של מיטב יש שלוש קרנות תכלית על מדדי הבולט של הבורסה. בתשקיף של מגדל יש קרן אחת שנוצרה לתקופה מוגבלת: לקראת סוף 2028 המנהל ידווח על פירוק הקרן. הדוחות השנתיים של שתי קרנות תכלית אומרים שהקרן תגיע לפירוקה. קרן 5140249 תגיע לפירוקה בשנת 2028, עם תשלום עד 15.11.2028. קרן 5140231 תגיע לפירוקה בשנת 2029, עם תשלום עד 15.1.2030. בשתיהן זה כך אלא אם המנהל יודיע אחרת. בשתיהן המנהל מתחייב לא להעלות את שכר מנהל הקרן עד הפירוק. האתר לא קרא את הדוח של קרן 5140256.",
+  "title": "Meitav (Tachlit): three funds on TASE's bullet indices; two to be wound up in their year with a payment date, and a fee freeze",
+  "title_he": "מיטב (תכלית): קרנות על מדדי בולט, מועד התשלום בפירוק והתחייבות לא להעלות שכר",
+  "text_he": "בתשקיף של מיטב יש {MF-64:funds_meitav} קרנות תכלית על מדדי הבולט של הבורסה, עם דמי ניהול קבועים של {MF-64:fee_low} עד {MF-64:fee_high} ושכר נאמן של {MF-64:trustee}, וכולן מסווגות ״פטורה״. לפי הדוחות השנתיים, קרן 5140249 תגיע לפירוקה ב־2028 עם תשלום עד {MF-64:payment_5140249}, וקרן 5140231 תגיע לפירוקה ב־2029 עם תשלום עד {MF-64:payment_5140231}, אלא אם המנהל יודיע על מועד אחר. בשתיהן המנהל מתחייב לא להעלות את שכר מנהל הקרן ואת דמי הניהול המשתנים עד הפירוק. על הקרן השלישית, 5140256, לא ברור אם גם היא מתפרקת בשנה שבשם.",
   "strength": "institution",
   "dimensions": [
     "fee-management-balance",
@@ -93,66 +93,6 @@
       "state": "sourced",
       "notes": "שכר נאמן"
     },
-    "funds_migdal": {
-      "value": 1,
-      "unit": "count",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=20",
-        "title": "תשקיף עיקרי של מגדל, 30.1.2026, עמודים 19 ו-20",
-        "publisher": "מגדל קרנות נאמנות",
-        "strength": "institution"
-      },
-      "checked": "2026-11-02",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-64"
-      ],
-      "state": "sourced",
-      "notes": "קרן בתשקיף"
-    },
-    "fee_migdal": {
-      "value": 0.2,
-      "unit": "pct_per_year",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=20",
-        "title": "תשקיף עיקרי של מגדל, 30.1.2026, עמודים 19 ו-20",
-        "publisher": "מגדל קרנות נאמנות",
-        "strength": "institution"
-      },
-      "checked": "2026-11-02",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-64"
-      ],
-      "state": "sourced",
-      "notes": "דמי ניהול קבועים"
-    },
-    "trustee_migdal": {
-      "value": 0.03,
-      "unit": "pct_per_year",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=20",
-        "title": "תשקיף עיקרי של מגדל, 30.1.2026, עמודים 19 ו-20",
-        "publisher": "מגדל קרנות נאמנות",
-        "strength": "institution"
-      },
-      "checked": "2026-11-02",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-64"
-      ],
-      "state": "sourced",
-      "notes": "שכר נאמן"
-    },
     "end_first_meitav": {
       "value": "2028",
       "unit": "text",
@@ -192,26 +132,6 @@
       ],
       "state": "sourced",
       "notes": "שנת הסיום האחרונה"
-    },
-    "end_migdal": {
-      "value": "2028",
-      "unit": "text",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=19",
-        "title": "תשקיף עיקרי של מגדל קרנות נאמנות, 30.1.2026",
-        "publisher": "מגדל קרנות נאמנות",
-        "strength": "institution"
-      },
-      "checked": "2026-11-02",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-64"
-      ],
-      "state": "sourced",
-      "notes": "סוף התקופה המוגבלת"
     },
     "payment_5140249": {
       "value": "2028-11-15",
@@ -259,10 +179,6 @@
     {
       "id": "meitav",
       "name_he": "מיטב"
-    },
-    {
-      "id": "migdal",
-      "name_he": "מגדל"
     }
   ],
   "sources": [
@@ -300,19 +216,6 @@
       "locator": "p.12",
       "locator_he": "עמוד 12",
       "page": 12,
-      "checked": "2026-11-01"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=19",
-      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
-      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.19, 20",
-      "locator_he": "עמודים 19, 20",
-      "page": 19,
       "checked": "2026-11-01"
     }
   ]

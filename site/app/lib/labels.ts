@@ -66,15 +66,15 @@ type LabelDef = { icon: IconDef; tone: LabelTone; rules: string[] };
 
 /** Structure only: the words are in copy.ts. */
 export const labelDefs: Record<RuleLabelId, LabelDef> = {
-  "held-il": { icon: "home", tone: "neutral", rules: ["ETF-31", "ETF-52"] },
+  "held-il": { icon: "home", tone: "neutral", rules: ["ETF-31", "ETF-11"] },
   "held-tase-foreign": { icon: "landmark", tone: "neutral", rules: ["ETF-31", "ETF-24"] },
   "held-abroad": { icon: "globe", tone: "neutral", rules: ["ETF-24"] },
   "trade-etf": { icon: "pulse", tone: "neutral", rules: ["ETF-04"] },
   "trade-tracking": { icon: "calendarClock", tone: "neutral", rules: ["ETF-04", "MF-09"] },
-  "follow-physical": { icon: "box", tone: "neutral", rules: ["ETF-52"] },
-  "follow-swap": { icon: "swap", tone: "neutral", rules: ["ETF-51", "ETF-52", "ETF-53"] },
-  "follow-futures": { icon: "fileClock", tone: "neutral", rules: ["ETF-52"] },
-  "follow-mixed": { icon: "blend", tone: "neutral", rules: ["ETF-52", "ETF-53"] },
+  "follow-physical": { icon: "box", tone: "neutral", rules: ["ETF-11"] },
+  "follow-swap": { icon: "swap", tone: "neutral", rules: ["ETF-51", "ETF-11", "ETF-53"] },
+  "follow-futures": { icon: "fileClock", tone: "neutral", rules: ["ETF-11"] },
+  "follow-mixed": { icon: "blend", tone: "neutral", rules: ["ETF-11", "ETF-53"] },
   currency: { icon: "sign", tone: "neutral", rules: ["ETF-12"] },
   hedged: { icon: "shield", tone: "neutral", rules: ["ETF-12", "ETF-10", "ETF-75"] },
   "hedged-many": { icon: "shield", tone: "neutral", rules: ["ETF-12", "ETF-10", "ETF-75"] },
@@ -92,7 +92,7 @@ export const labelDefs: Record<RuleLabelId, LabelDef> = {
   "ask-estate": { icon: "scroll", tone: "caution", rules: ["TXF-27"] },
   "risk-unsupervised": { icon: "eyeOff", tone: "caution", rules: ["BRK-06", "ETF-24"] },
   "ask-w8": { icon: "fileSignature", tone: "neutral", rules: ["TXF-12", "TXF-13"] },
-  unavailable: { icon: "ban", tone: "caution", rules: ["BRK-64", "BRK-65"] },
+  unavailable: { icon: "ban", tone: "caution", rules: ["BRK-64", "BRK-65", "BRK-82"] },
 };
 
 /** A currency's own sign for its label; a currency without one in the set, or none known, takes the general currency sign. */

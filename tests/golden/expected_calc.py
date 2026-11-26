@@ -663,7 +663,7 @@ def s06_s07():
         f'| 2 | Buy at issue: trade value V and commission c with V + c = cash, c = max(20, 0.1% × V) (commission is a % of the trade) | {L("BRK-16")}; tariff from the scenario | see table |\n'
         f'| 3 | No custody fee on makam at a bank | {L("BRK-17", "BANK-18")} | 0 |\n'
         f'| 4 | At redemption the discount (face − price paid) is interest, taxed and withheld at 15%. Purchase commission is not deducted (no rule allows it) | {L("TXI-01", "TXI-11", "TXI-09")} | see table |\n'
-        f'| 5 | Net proceeds buy the next 365-day series; no sale commission at redemption (scenario) | {L("GOV-22", "GOV-23")} | see table |\n'
+        f'| 5 | Net proceeds buy the next 365-day series; no sale commission at redemption (scenario) | {L("GOV-23")} | see table |\n'
         f'| 6 | 15% used; the 2025 guide\'s 20% line conflicts (flag) | {L("TXI-11")} (TXI OQ3) | flag |\n\n'
         + table(['Series', 'Trade value', 'Commission', 'Face', 'Discount', 'Tax 15%', 'Cash at redemption'], rows)
         + f'\n\nResult: V_T = {f2(a["V"])}; real V_T/I_24 = {f2(a["real_V"])}; fees (commissions) {f2(a["fees"])}; tax during {f2(a["tax"])} (the second series is taxed at redemption on the exit day); tax at exit 0 beyond that.'
@@ -997,7 +997,7 @@ def s20_s21_s22():
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 1 | Deposits: 20,000 at t = 0 and 2,000 × I_m monthly; no deduction or credit | {L("TXK-01")} | Σ {f2(ex["dep_sum"])} |\n'
         f'| 2 | Annual ceiling 83,641 per person per calendar year, checked at deposit (figure is institution-strength) | {L("KGL-02", "KGL-03", "KGL-04", "TXK-02")} | all years within |\n'
-        f'| 3 | Deposit fee 0% (cap 4%); balance fee 0.8%/12 of the month-end balance (cap 1.05%) | {L("KGL-14", "KGL-15", "PF-02", "PF-09")} | — |\n'
+        f'| 3 | Deposit fee 0% (cap 4%); balance fee 0.8%/12 of the month-end balance (cap 1.05%) | {L("PF-03", "KGL-15", "PF-02", "PF-09")} | — |\n'
         f'| 4 | Direct investment expenses 0.10% added to the balance fee, 0.10%/12 of the month-end balance (method F-15; D16 closed as immaterial) | {L("PF-10")} | — |\n'
         f'| 5 | No tax during | {L("TXK-03")} | 0 |\n'
         f'| 6 | Lump sum at exit: gains are interest income at up to 25%; managers withhold 25% of the real gain (deposits indexed from each deposit month); the real base is set by the law, primary, so no label | {L("TXK-05", "TXK-06", "TXK-07")} | real gain {f2(ex["real_gain"])} |\n'
@@ -1558,7 +1558,7 @@ def s17_s18_s19():
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 0 | Filled-in inputs | — | {fill} |\n'
         f'| 1 | Return 6% in USD; shekel weakens 1% a year → NIS return (1.06 × 1.01) − 1 | method A-01, A-03 | — |\n'
-        f'| 2 | Each contribution converted at 0.2% and bought with one order; commission USD 2.5 a trade while an order is under 250 shares (it always is here: at most {{shares}} shares) | {L("BRK-36", "BRK-23")} | — |\n'
+        f'| 2 | Each contribution converted at 0.2% and bought with one order; commission USD 2.5 a trade while an order is under 250 shares (it always is here: at most {{shares}} shares) | {L("BRK-40", "BRK-23")} | — |\n'
         f'| 3 | Distributions 1.3% a year, quarterly; foreign withholding credited up to the Israeli 25%; at a foreign broker the Israeli part is paid by advance (timing ignored) | {L("TXF-08", "TXF-17", "TXF-18", "TXF-21")} | — |\n'
         f'| 4 | Exit: sell, commission USD 2.5, convert at 0.2%; 25% of the real gain against the exchange rate, by advance | {L("TXF-03", "TXF-02", "TXF-22")} | — |\n')
     for sid, title, extra, wtext in (
@@ -2004,7 +2004,7 @@ def s56():
         f'| 1 | P-05\'s example (data/parameters/illustrative-scenario.json): {f2(now)} now at the start of month 1 (index I_0 = 1), {f2(monthly)} × I_m at the start of months 1..{T}, constant real (A-04); r_g {pct(r, 0)} effective, g = {f6(mrate(r))} a month (F-07); π {pct(pi, 0)}, I_m = {1 + pi}^(m/12) (F-03); exit at the end of month {T} (A-05); no deduction or credit | {L("TXK-01")}; method F-03, F-05, A-04, A-05 | Σ deposits {f2(eF["dep_sum"])} |\n'
         f'| 2 | Every calendar year within the ceiling, checked at deposit | {L("KGL-02", "KGL-03", "KGL-04")} | largest year {f2(max(v for v, _ in ceil.values()))} of 83,641 |\n'
         f'| 3 | Harel\'s joining request (fund 8207, version 11/2025) prints 0.7% of the balance and 0% of deposits; its bylaws allow up to the legal maximum, so both are a discount (D83) that lasts PF-13\'s five years (Harel prints no period; the bylaws\' two years is the replaced 2012 rule) and then reverts to the caps | {L("KGL-30", "KGL-16", "PF-13", "PF-02")}; data/fees/harel@2026-11-07.json | balance 0.7% for months 1–{D}, 1.05% from {D + 1}; deposit 0% on the amount now and the deposits of months 1–{D}, 4% from {D + 1} |\n'
-        f'| 4 | Balance fee a twelfth of the annual rate on the month-end balance after growth (F-07, F-15); deposit fee on each deposit at its rate of the deposit\'s month (F-11, F-16); no direct expenses in the record; the discount is not ended early (A-19: no PF-14 trigger) | {L("PF-09", "KGL-14", "PF-14")} | fees: balance {f2(rF["fees"]["balance"])}, deposit {f2(rF["fees"]["deposit"])} |\n'
+        f'| 4 | Balance fee a twelfth of the annual rate on the month-end balance after growth (F-07, F-15); deposit fee on each deposit at its rate of the deposit\'s month (F-11, F-16); no direct expenses in the record; the discount is not ended early (A-19: no PF-14 trigger) | {L("PF-09", "PF-03", "PF-14")} | fees: balance {f2(rF["fees"]["balance"])}, deposit {f2(rF["fees"]["deposit"])} |\n'
         f'| 5 | No tax while invested | {L("TXK-03")} | 0 |\n'
         f'| 6 | Lump sum at exit: gains are interest income at up to 25%; the linkage on each deposit (indexed from its own month, I_T / I_j) is exempt, so 25% of the real gain | {L("TXK-05", "TXK-06", "TXK-07")} | with fees: gross {f2(rF["B"])}, real gain {f2(eF["real_gain"])}, tax {f2(eF["tax25real"])} |\n'
         f'| 7 | Surtax: other income 144,000 (P-05) plus the gain is far below the threshold; no National Insurance or health on the gains | {L("TXG-09", "TXK-27")} | 0 |\n'

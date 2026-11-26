@@ -1,22 +1,16 @@
 {
   "id": "PEN-64",
-  "title": "General pension fund: the CMA's rules for running it (circular 2017-3-2)",
-  "title_he": "קרן פנסיה כללית: הכללים של רשות שוק ההון לניהולה (חוזר 2017-3-2)",
-  "text_he": "חוזר של רשות שוק ההון קובע כללים אחידים לקרנות פנסיה חדשות כלליות. במסלולי הביטוח שבתקנון, גיל הפרישה לקצבת זקנה לא יפחת מ־60. כיסוי הנכות משלם קצבת נכות לעמית פעיל עד גיל הפרישה. כיסוי המוות משלם לשאירים קצבאות ששוויין לא נמוך מהיתרה הצבורה. עלות הכיסויים יחד לא תעלה על 35% מהתגמולים. הקרן רשאית להציע מסלול פנסיית יסוד בלי כיסוי לנכות ולמוות, ובו השאירים מקבלים קצבה שמחושבת מהיתרה הצבורה. בפרישה העמית בוחר תקופת תשלומים מובטחת של 0 עד 240 חודשים, שמסתיימת עד גיל 87, ושיעור קצבה לבן הזוג של 30% לפחות. מקדמי ההמרה מחושבים בריבית היוון של 4%, פחות דמי הניהול (לפחות 0.5%). הקצבאות מתעדכנות לפי העודף או הגירעון האקטוארי ולפי המדד. דמי הניהול מקצבת הזקנה לא יעלו על השיעור שהיה בתקנון כשהעמית הצטרף.",
+  "title": "General pension fund: the insurance tracks and the basic-pension track (circular 2017-3-2)",
+  "title_he": "קרן פנסיה כללית: מסלולי הביטוח ומסלול פנסיית יסוד",
+  "text_he": "חוזר של רשות שוק ההון קובע שבמסלולי הביטוח של קרן פנסיה כללית, גיל הפרישה לקצבת זקנה לא יפחת מ־{PEN-64:min_retirement_age}. כיסוי הנכות משלם לעמית פעיל קצבת נכות עד גיל הפרישה וזוקף לזכותו הפקדות בזמן הנכות, וכיסוי המוות משלם לשאירים קצבאות ששוויין לא נמוך מהיתרה הצבורה. עלות שני הכיסויים יחד לא תעלה על {PEN-64:insurance_cost_cap_pct} מתגמולי המעסיק והעובד. הקרן רשאית להציע גם מסלול פנסיית יסוד בלי כיסוי לנכות ולמוות, ובו השאירים מקבלים קצבה שמחושבת מהיתרה הצבורה.",
   "figure_names_he": {
     "min_retirement_age": "גיל פרישה מזערי לקצבת זקנה במסלולי הביטוח",
-    "insurance_cost_cap_pct": "תקרת עלות הכיסוי לנכות ולמוות (אחוז מהתגמולים)",
-    "guaranteed_period_max_months": "תקופת תשלומים מובטחת מרבית (חודשים)",
-    "guaranteed_period_end_age": "הגיל שעד אליו מסתיימת התקופה המובטחת",
-    "spouse_survivor_min_pct": "שיעור מזערי של קצבת שאיר לבן הזוג",
-    "discount_rate": "ריבית שנתית להיוון"
+    "insurance_cost_cap_pct": "תקרת עלות הכיסוי לנכות ולמוות (אחוז מהתגמולים)"
   },
   "strength": "primary",
   "dimensions": [
     "insurance-cover",
-    "age-or-use-exemption",
-    "liquidity-lockup",
-    "real-vs-nominal"
+    "age-or-use-exemption"
   ],
   "likely_to_change": "no",
   "figures": {
@@ -61,89 +55,6 @@
       ],
       "state": "sourced",
       "notes": "Cumulative cost of disability and death cover, as a share of employer and employee tagmulim before fees."
-    },
-    "guaranteed_period_max_months": {
-      "value": 240,
-      "unit": "months",
-      "source": {
-        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=4",
-        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017), p.4, s.6(א)(1)",
-        "publisher": "Capital Market, Insurance and Savings Authority",
-        "strength": "primary",
-        "quote": "לתקופה שבין 0 חודשים לבין 240 חודשים"
-      },
-      "checked": "2026-11-15",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "PEN-64"
-      ],
-      "state": "sourced",
-      "notes": "The member chooses a guaranteed-payment period between 0 and 240 months."
-    },
-    "guaranteed_period_end_age": {
-      "value": 87,
-      "unit": "years",
-      "source": {
-        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=4",
-        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017), p.4, s.6(א)(1)",
-        "publisher": "Capital Market, Insurance and Savings Authority",
-        "strength": "primary"
-      },
-      "checked": "2026-11-15",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "PEN-64"
-      ],
-      "state": "sourced",
-      "notes": "The member's age at the end of the guaranteed period may not exceed 87."
-    },
-    "spouse_survivor_min_pct": {
-      "value": 30,
-      "unit": "pct",
-      "source": {
-        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=4",
-        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017), p.4, s.6(א)(2)",
-        "publisher": "Capital Market, Insurance and Savings Authority",
-        "strength": "primary",
-        "quote": "ובלבד שהשיעור לא יפחת מ-30% מהפנסיה האחרונה"
-      },
-      "checked": "2026-11-15",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "PEN-64"
-      ],
-      "state": "sourced",
-      "notes": "Spouse's survivor rate, as a share of the last pension paid; all survivors together at most 100% (s.6(ב))."
-    },
-    "discount_rate": {
-      "value": 4,
-      "unit": "pct_per_year",
-      "source": {
-        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=1",
-        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017), p.1, definition (יא)",
-        "publisher": "Capital Market, Insurance and Savings Authority",
-        "strength": "primary",
-        "quote": "ריבית שנתית אפקטיבית בשיעור של 4% או בשיעור אחר כפי שיקבע הממונה מזמן לזמן"
-      },
-      "checked": "2026-11-15",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "PEN-64"
-      ],
-      "state": "sourced",
-      "notes": "Annual discount rate for the general fund; the Commissioner may set another. Conversion factors use it less the higher of the maximum fee and 0.5% (s.8(ב))."
     }
   },
   "il_finance_file": "pension-and-gemel-lekitzba.md",
@@ -162,20 +73,6 @@
       "locator_he": "עמוד 1",
       "page": 1,
       "quote": "פנסיה חדשות כלליות, מסוג מקיפה ומסוג יסוד",
-      "checked": "2026-11-15"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=1",
-      "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "title_he": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.1, definition (יא)",
-      "locator_he": "עמוד 1, הגדרת (יא)",
-      "page": 1,
-      "quote": "ריבית שנתית אפקטיבית בשיעור של 4% או בשיעור אחר כפי שיקבע הממונה מזמן לזמן",
       "checked": "2026-11-15"
     },
     {
@@ -235,48 +132,6 @@
       "checked": "2026-11-15"
     },
     {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=3",
-      "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "title_he": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.3, s.3",
-      "locator_he": "עמוד 3, סעיף 3",
-      "page": 3,
-      "quote": "לא יעלה על שיעור דמי הניהול שהיה קבוע בתקנון קרן הפנסיה במועד הצטרפותו",
-      "checked": "2026-11-15"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=4",
-      "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "title_he": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.4, s.6(א)(1)",
-      "locator_he": "עמוד 4, סעיף 6(א)(1)",
-      "page": 4,
-      "quote": "לתקופה שבין 0 חודשים לבין 240 חודשים",
-      "checked": "2026-11-15"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=4",
-      "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "title_he": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.4, s.6(א)(2)",
-      "locator_he": "עמוד 4, סעיף 6(א)(2)",
-      "page": 4,
-      "quote": "ובלבד שהשיעור לא יפחת מ-30% מהפנסיה האחרונה",
-      "checked": "2026-11-15"
-    },
-    {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=4",
       "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
       "title_he": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
@@ -288,34 +143,6 @@
       "locator_he": "עמוד 4, סעיף 7",
       "page": 4,
       "quote": "תקבל מהקרן פנסיה אשר תחושב מתוך היתרה הצבורה של המבוטח",
-      "checked": "2026-11-15"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=4",
-      "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "title_he": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.4, s.8(ב)",
-      "locator_he": "עמוד 4, סעיף 8(ב)",
-      "page": 4,
-      "quote": "מקדמי ההמרה יחושבו לפי ההנחות האקטואריות שפורטו בחוזר פנסיה 2013-3-1",
-      "checked": "2026-11-15"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=4",
-      "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "title_he": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
-      "publisher": "gov.il",
-      "publisher_he": "אתר הממשלה (gov.il)",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.4, s.9(3)(א)",
-      "locator_he": "עמוד 4, סעיף 9(3)(א)",
-      "page": 4,
-      "quote": "מידי רבעון, בהתאם לשיעור השינוי במדד באותו הרבעון",
       "checked": "2026-11-15"
     },
     {

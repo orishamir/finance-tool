@@ -1,0 +1,34 @@
+{
+  "id": "BRK-70",
+  "title": "Approaching a foreign broker on your own sole initiative: the ISA says the law does not forbid it",
+  "title_he": "פנייה ביוזמתכם בלבד לברוקר זר: לפי רשות ניירות ערך, החוק לא אוסר אותה",
+  "text_he": "לפי רשות ניירות ערך, החוק לא אוסר על אדם לפנות ביוזמתו הבלעדית לגוף זר כדי לקבל ממנו שירותי מסחר בניירות ערך. זה מותנה בכך שהגוף לא פועל בישראל בכלל, לא פנה לאיש בישראל, והשירות נשאר זה שהאדם ביקש. גוף שפועל בישראל לא יכול להסתמך על יוזמת הלקוח. מחוץ למקרה הזה, ברוקר זר מגיע ללקוחות בישראל רק עם היתר לפי סעיף 49א, ישירות או דרך חברה ישראלית.",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-26",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-626a5f3377ef9/QAA49a.pdf",
+      "title": "רשות ניירות ערך: שאלות ותשובות בעקבות פרסום תנאי ההיתר הכללי לפי סעיף 49א (עדכון 13.1.2025)",
+      "title_he": "רשות ניירות ערך: שאלות ותשובות בעקבות פרסום תנאי ההיתר הכללי לפי סעיף 49א (עדכון 13.1.2025)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.3, question 5; p.4, question 6",
+      "locator_he": "עמוד 3, שאלה 5; עמוד 4, שאלה 6",
+      "page": 3,
+      "checked": "2026-10-26"
+    }
+  ],
+  "derived_from": [
+    "BRK-06"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "BANK-57",
+  "title": "Bank Massad: exit points of its deposits",
+  "title_he": "תחנות יציאה בפיקדונות של מסד",
+  "text_he": "במסד יש פיקדונות עם תחנות יציאה בתדירויות שונות: כל שבוע בפיקדון גולן, וכל רבעון בפיקדון אדיר ובפיקדון סער. בפיקדון ארגמן אפשר למשוך בהודעה מוקדמת.",
+  "strength": "institution",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-26",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "massad",
+      "name_he": "בנק מסד"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bankmassad.co.il/private/depositsandsavings/savingtypes/",
+      "title": "מסד: סוגי חסכונות",
+      "title_he": "מסד: סוגי חסכונות",
+      "publisher": "Bank Massad",
+      "publisher_he": "בנק מסד",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BANK-27"
+  ]
+}

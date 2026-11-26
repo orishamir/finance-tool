@@ -117,7 +117,7 @@ export function buildFeesData(): FeesData {
 
 /**
  * The rules the data's figures and cap lines cite, with the records their cards point at: those its records name, the rules the reading's
- * stated sentences state (a bank's order through a clerk, BRK-16), those of the rule table's bans, which a ban's words open and whose figure
+ * stated sentences state (a bank's order through a clerk, BRK-71), those of the rule table's bans, which a ban's words open and whose figure
  * they show (MF-71's distribution fee), and BANK-35, whose cap flags a current account's year of holding (F-102, `accountCapOf`).
  */
 function citedRules(parts: Pick<FeesData, "kinds" | "templates" | "houses" | "fx" | "terms">): Pick<FeesData, "rules" | "pointed"> {

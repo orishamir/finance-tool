@@ -21,7 +21,7 @@ export interface BlockedExit {
 }
 
 const exits = {
-  "F-45": { reason: "G-03", gap: "G-03", ruleIds: ["TXK-08", "TXK-09", "TXK-10", "TXK-12"], openQuestions: ["PEN-OQ7", "TXK-OQ4"] },
+  "F-45": { reason: "G-03", gap: "G-03", ruleIds: ["TXK-08", "TXK-09", "KGL-09", "TXK-12"], openQuestions: ["PEN-OQ7", "TXK-OQ4"] },
   // the base is the whole amount paid (TXP-18): nothing open blocks F-48 any more; it is not built yet
   "F-48": { reason: "F-48", gap: null, ruleIds: ["TXP-18", "PEN-29", "PEN-30"], openQuestions: [] },
   "F-49": { reason: "G-03", gap: "G-03", ruleIds: ["TXP-14", "TXP-15", "TXP-17", "PEN-27", "PEN-28"], openQuestions: ["PEN-OQ7"] },

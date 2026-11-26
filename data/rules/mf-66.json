@@ -1,8 +1,8 @@
 {
   "id": "MF-66",
-  "title": "Near a fund's end: bonds that end later than the year in its name, and fewer holdings",
-  "title_he": "קרוב לסוף הקרן: איגרות שנגמרות אחרי השנה שבשם, ופחות החזקות",
-  "text_he": "לפי הבהרות של קסם (29.10.2026) ושל ילין לפידות (1.11.2026), במדד יכולות להיכלל איגרות עם מועד פדיון סופי מאוחר מהשנה שבשם הקרן. זה קורה אם למנפיק יש זכות לפדיון מוקדם מלא במועד מוגדר. אם המנפיק לא משתמש בזכות, האיגרת יוצאת מהמדד, ואצל ילין לפידות משקלה עובר למק״מ. שתי החברות כותבות שזו הבהרה ולא שינוי. קסם דיווחה גם שבמדד של קרן 5138565 היו ב־26.8.2026 רק 12 ניירות ערך, וחמשת הגדולים שקלו 60.22%. המסקנה שקרן קרובה לסופה מחזיקה פחות ניירות ערך נשענת על דיווח אחד. ב־23.11.2026 עוד לא נמצאה הודעת פירוק בדיווחים של קרן 5138565 ושל קרן 5137492 של ילין לפידות.",
+  "title": "Kesem and Yalin Lapidot: a \"Bullet\" or \"לפדיון\" index may hold bonds whose final maturity is later than the year in the name",
+  "title_he": "קסם וילין לפידות: במדד של הקרן יכולות להיות איגרות שנגמרות אחרי השנה שבשם",
+  "text_he": "לפי הבהרות של קסם ושל ילין לפידות, במדד של הקרן יכולות להיכלל איגרות שמועד הפדיון הסופי שלהן מאוחר מהשנה שבשם הקרן, אם למנפיק יש זכות לפדיון מוקדם מלא במועד מוגדר. אם המנפיק לא משתמש בזכות, האיגרת יוצאת מהמדד, ואצל ילין לפידות היא יוצאת אחרי 2 ימי מסחר ומשקלה עובר למק״מ. שתי החברות כותבות שזה תיאור של השיטה הקיימת ולא שינוי. בדיווחים של קרן 5138565 של קסם ושל קרן 5137492 של ילין לפידות לא נמצאה הודעת פירוק.",
   "strength": "institution",
   "dimensions": [
     "liquidity-lockup"
@@ -12,66 +12,6 @@
   "checked": "2026-11-23",
   "recheck_date": "2027-07-01",
   "figures": {
-    "holdings": {
-      "value": 12,
-      "unit": "count",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rhtm/1766001-1767000/H1766613.htm",
-        "title": "קסם, דיווח ריכוזיות מדד, 27.8.2026",
-        "publisher": "קסם קרנות נאמנות",
-        "strength": "institution"
-      },
-      "checked": "2026-11-02",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-66"
-      ],
-      "state": "sourced",
-      "notes": "ניירות ערך במדד של קרן 5138565, ב־26.8.2026"
-    },
-    "top_five": {
-      "value": 60.22,
-      "unit": "pct",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rhtm/1766001-1767000/H1766613.htm",
-        "title": "קסם, דיווח ריכוזיות מדד, 27.8.2026",
-        "publisher": "קסם קרנות נאמנות",
-        "strength": "institution"
-      },
-      "checked": "2026-11-02",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-66"
-      ],
-      "state": "sourced",
-      "notes": "משקל חמשת הגדולים במדד של קרן 5138565, ב־26.8.2026"
-    },
-    "index_date": {
-      "value": "2026-08-26",
-      "unit": "text",
-      "source": {
-        "url": "https://mayafiles.tase.co.il/rhtm/1766001-1767000/H1766613.htm",
-        "title": "קסם, דיווח ריכוזיות מדד, 27.8.2026",
-        "publisher": "קסם קרנות נאמנות",
-        "strength": "institution"
-      },
-      "checked": "2026-11-02",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-66"
-      ],
-      "state": "sourced",
-      "notes": "תאריך הנתונים על המדד של קרן 5138565"
-    },
     "kesem_note": {
       "value": "2026-10-29",
       "unit": "text",
@@ -175,15 +115,6 @@
     {
       "url": "https://mayafiles.tase.co.il/rhtm/1778001-1779000/H1778970.htm",
       "title": "Yalin Lapidot, report of 1.11.2026",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-11-02"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rhtm/1766001-1767000/H1766613.htm",
-      "title": "Kesem, report of 27.8.2026",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",

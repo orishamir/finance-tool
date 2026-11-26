@@ -17,7 +17,7 @@
       "BRK-06",
       "BRK-10",
       "BRK-15",
-      "BRK-28"
+      "BRK-73"
     ],
     "source": {
       "title": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ\"ה-1995, נוסח משולב באתר רשות ניירות ערך, עמ' 37",
@@ -105,7 +105,7 @@
     "variants_he": [],
     "explain_he": "חברת מסחר בניירות ערך בחו\"ל, שלא חברה בבורסה בתל אביב.",
     "rule_ids": [
-      "BRK-01",
+      "BRK-70",
       "BRK-06",
       "BRK-14",
       "BRK-35",
@@ -137,7 +137,6 @@
     "variants_he": [],
     "explain_he": "אישור מיו\"ר רשות ניירות ערך להציע בישראל מסחר בבורסות בחו\"ל, והפעילות הזאת לא בפיקוח הרשות.",
     "rule_ids": [
-      "BRK-01",
       "BRK-06"
     ],
     "source": {
@@ -428,7 +427,7 @@
     "explain_he": "העברת ניירות ערך וקרנות לחשבון אחר, למשל לבנק או לבית השקעות אחר, והיא כרוכה בעמלה.",
     "rule_ids": [
       "BRK-16",
-      "BRK-18"
+      "SW-33"
     ],
     "source": {
       "title": "בנק ישראל, כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב",
@@ -441,7 +440,7 @@
       "tariff",
       "guide:brokerage-account"
     ],
-    "notes": "At banks the price of a move to the same client's account elsewhere is supervised, and on closing the account it is capped (BRK-18). The full process is in switching-and-transfers.md.",
+    "notes": "At banks the price of a move to the same client's account elsewhere is supervised, and on closing the account it is capped (SW-33). The full process is in switching-and-transfers.md.",
     "id": "habrt-nyyrvt-ark"
   },
   {
@@ -1108,8 +1107,7 @@
       "ETF-28",
       "ETF-30",
       "MF-49",
-      "TXS-10",
-      "TXS-24"
+      "TXS-10"
     ],
     "source": {
       "title": "רשות ניירות ערך, ISA investor guide on mutual funds (2017)",
@@ -1375,8 +1373,7 @@
       "TXS-08",
       "TXS-09",
       "TXS-10",
-      "TXS-13",
-      "TXS-24"
+      "TXS-13"
     ],
     "source": {
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 150",
@@ -1410,8 +1407,7 @@
     "rule_ids": [
       "TXS-07",
       "TXS-11",
-      "TXS-22",
-      "TXS-24"
+      "TXS-22"
     ],
     "source": {
       "title": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים), עמוד 150",
@@ -1441,8 +1437,7 @@
     "explain_he": "הסיווג של קרן נאמנות ישראלית כקרן פטורה או קרן חייבת, והוא קובע מתי ועל מה משלמים מס.",
     "rule_ids": [
       "TXS-07",
-      "TXS-22",
-      "TXS-24"
+      "TXS-22"
     ],
     "source": {
       "title": "Maya (TASE), רשימת קרנות, הורדת נתונים",
@@ -2040,7 +2035,9 @@
     "explain_he": "עמלה תקופתית על שירות לתקופה שנקבעה מראש, למשל דמי ניהול רבעוניים. בנק שגבה אותה מראש, והשירות הופסק לפני סוף התקופה, מחזיר את החלק היחסי לפי ימים.",
     "rule_ids": [
       "BRK-48",
-      "BRK-61"
+      "BRK-76",
+      "BRK-77",
+      "BRK-81"
     ],
     "source": {
       "title": "בנק ישראל, הוראת ניהול בנקאי תקין 415: נהלים בנושא עמלות, סעיף 2(ז)",
@@ -2056,7 +2053,7 @@
       "guide:makam",
       "tariff"
     ],
-    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base fixed_period (docs/data-schema.md). Directive 415 s.2(ז)(1) names a fee charged in advance for a set period, such as quarterly management fees; the non-bank tariffs' monthly account fee is BRK-48 (its own row: דמי טיפול). 2026-11-06 fix pass (check item 5): the explanation was cut to what s.2(ז)(1) says (library f2301515371e486a, p.2); it no longer says the fee is on the account itself rather than on an action, which the directive does not say."
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base fixed_period (docs/data-schema.md). Directive 415 s.2(ז)(1) names a fee charged in advance for a set period, such as quarterly management fees; the non-bank tariffs' monthly account fees are BRK-48, BRK-76 and BRK-77 (its own row: דמי טיפול). 2026-11-06 fix pass (check item 5): the explanation was cut to what s.2(ז)(1) says (library f2301515371e486a, p.2); it no longer says the fee is on the account itself rather than on an action, which the directive does not say."
   },
   {
     "term_he": "טיפול בריבית ובדיבידנד",
@@ -2065,7 +2062,7 @@
     ],
     "explain_he": "כך קוראת אלטשולר שחם טרייד בתעריפון שלה (״טיפול בתשלומי ריבית/דיבידנד״) לעמלה שהיא גובה על תשלום ריבית או דיבידנד שנכנס לחשבון ניירות הערך",
     "rule_ids": [
-      "BRK-48"
+      "BRK-77"
     ],
     "source": {
       "title": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך), עמ' 2",
@@ -2078,7 +2075,7 @@
       "guide:brokerage-account",
       "tariff"
     ],
-    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base distribution_handling. Only companies' tariffs name this fee (BRK-48: Altshuler Shaham Trade, Psagot); no general rule defines it, so the row names the company. 2026-11-06 fix pass (check item 6): the explanation now opens with the company, so no clause reads as a fact about the market (library 500b2b74e04bd53e, p.2, line 5); the variant 'דמי טיפול ריבית ופדיון' was dropped, because it is Psagot's line for foreign bonds' interest and redemption, a different fee. Round 2 (2026-11-07): no general source names this fee. The joint report of June 2026 (library 421f4282b6dda3a8, p.10, note 18) counts \"תפעול חלוקת דיבידנד וריבית\" among the custody services the securities-custody fee pays for, and the TASE rules (part 1, p.34) oblige a member to secure clients' dividends and interest; neither names a separate fee. The row stays the company's, named in the line, graded institution."
+    "notes": "Added 2026-11-06 for #205 from the rule records named in rule_ids; the explanation says only what those records say. The site's own name for the fee base distribution_handling. Only companies' tariffs name this fee (BRK-77: Altshuler Shaham Trade; BRK-79: Psagot); no general rule defines it, so the row names the company. 2026-11-06 fix pass (check item 6): the explanation now opens with the company, so no clause reads as a fact about the market (library 500b2b74e04bd53e, p.2, line 5); the variant 'דמי טיפול ריבית ופדיון' was dropped, because it is Psagot's line for foreign bonds' interest and redemption, a different fee. Round 2 (2026-11-07): no general source names this fee. The joint report of June 2026 (library 421f4282b6dda3a8, p.10, note 18) counts \"תפעול חלוקת דיבידנד וריבית\" among the custody services the securities-custody fee pays for, and the TASE rules (part 1, p.34) oblige a member to secure clients' dividends and interest; neither names a separate fee. The row stays the company's, named in the line, graded institution."
   },
   {
     "term_he": "מדד מניות",
@@ -2318,8 +2315,7 @@
     "explain_he": "המחזיקים ביחידות של קרן נאמנות, והנאמן מחזיק את נכסי הקרן בשבילם ומפקח על מנהל הקרן.",
     "rule_ids": [
       "MF-02",
-      "MF-03",
-      "REG-10"
+      "MF-03"
     ],
     "source": {
       "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח משולב באתר רשות ניירות ערך, ס' 76(א) ו־78, עמוד 56",

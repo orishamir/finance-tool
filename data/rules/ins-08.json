@@ -1,12 +1,11 @@
 {
   "id": "INS-08",
-  "title": "Tracks: choice, default, switching within 3 business days, closure with 45 days' notice",
-  "title_he": "מסלולי השקעה בפוליסת חיסכון של כלל ושל הפניקס: מעבר בתוך 3 ימי עסקים",
-  "text_he": "בפוליסת החיסכון 1418 של כלל חברה לביטוח, בהצטרפות מחלקים את ההפקדות בין המסלולים הפתוחים, ובלי הוראה הכסף הולך למסלול ברירת המחדל, ״כללי״. אפשר להעביר את החיסכון בין מסלולים, וההעברה נעשית בתוך 3 ימי עסקים מהבקשה. כלל יכולה לסגור מסלול באישור רשות שוק ההון ובהודעה של 45 ימים לפחות, וכסף של מי שלא בחר מסלול אחר עובר לברירת המחדל. הפניקס כותבת שגם אצלה המעבר נעשה בתוך 3 ימי עסקים, שאי אפשר לבטל אותו אחרי שבוצע, ושדמי הניהול משתנים לשיעור של המסלול החדש.",
+  "title": "Clal Insurance savings policy 1418: tracks, default 'כללי', switching within 3 business days, closure on 45 days' notice",
+  "title_he": "מסלולים בפוליסת החיסכון 1418 של כלל חברה לביטוח: ברירת מחדל, מעבר בתוך 3 ימי עסקים וסגירת מסלול",
+  "text_he": "בפוליסת החיסכון 1418 של כלל חברה לביטוח, בהצטרפות מחלקים את ההפקדות בין המסלולים הפתוחים, ובלי הוראה הכסף הולך למסלול ברירת המחדל, ״כללי״. אפשר להעביר את החיסכון בין מסלולים, וההעברה נעשית בתוך 3 ימי עסקים מהבקשה. כלל יכולה לסגור מסלול באישור רשות שוק ההון ובהודעה של 45 ימים לפחות, וכסף של מי שלא בחר מסלול אחר עובר לברירת המחדל.",
   "strength": "institution",
   "dimensions": [
-    "transfer-switch-process",
-    "fee-change-over-time"
+    "transfer-switch-process"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-03-01",
@@ -17,10 +16,6 @@
     {
       "id": "clal-insurance",
       "name_he": "כלל חברה לביטוח"
-    },
-    {
-      "id": "phoenix-insurance",
-      "name_he": "הפניקס חברה לביטוח"
     }
   ],
   "sources": [
@@ -34,16 +29,6 @@
       "strength": "institution",
       "locator": "s. 1, 5, 6, 8",
       "locator_he": "סעיף 1, 5, 6, 8",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-      "title": "Phoenix Invest FAQ",
-      "title_he": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
-      "publisher": "The Phoenix",
-      "publisher_he": "הפניקס",
-      "kind": "institution_doc",
-      "strength": "institution",
       "checked": "2026-10-22"
     }
   ]

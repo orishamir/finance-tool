@@ -147,11 +147,11 @@
   "break": {
     "allowed": false,
     "penalty": "not_allowed",
-    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות לשבירה' (447 table column, printed once for every row). The account agreement (s.6.1.1, p.36) says that if the bank allows an early withdrawal 'לפנים משורת הדין', the money withdrawn bears no interest or linkage and the bank may charge 'בסכום השווה לנזק שיגרם לבנק' (BANK-33, BANK-48).",
+    "mechanism_text": "'אפשרות לשבירת פיקדון: אין אפשרות לשבירה' (447 table column, printed once for every row). The account agreement (s.6.1.1, p.36) says that if the bank allows an early withdrawal 'לפנים משורת הדין', the money withdrawn bears no interest or linkage and the bank may charge 'בסכום השווה לנזק שיגרם לבנק' (BANK-55).",
     "rule_ids": [
       "BANK-06",
       "BANK-14",
-      "BANK-33"
+      "BANK-55"
     ]
   },
   "exit_points": {

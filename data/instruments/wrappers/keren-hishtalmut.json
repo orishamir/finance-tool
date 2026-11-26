@@ -229,7 +229,6 @@
   "protection": {
     "rule_ids": [
       "PF-29",
-      "REG-18",
       "REG-19",
       "KH-21"
     ],
@@ -269,7 +268,12 @@
       {
         "rule": "KH-09",
         "companies": [
-          "harel",
+          "harel"
+        ]
+      },
+      {
+        "rule": "KH-34",
+        "companies": [
           "altshuler-shaham"
         ]
       }
@@ -279,14 +283,15 @@
         "rule": "KH-33",
         "companies": [
           "altshuler-shaham",
-          "harel"
+          "harel",
+          "mor"
         ]
       },
       "SW-56"
     ],
     "fee-change-over-time": [
       {
-        "rule": "KH-33",
+        "rule": "KH-37",
         "companies": [
           "meitav"
         ]

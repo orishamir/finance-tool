@@ -1,0 +1,34 @@
+{
+  "id": "INS-30",
+  "title": "The Phoenix: a savings-policy track switch takes 3 business days, cannot be undone, and moves the fee to the new track's rate",
+  "title_he": "מעבר בין מסלולים בפוליסת ההשקעה של הפניקס: בתוך 3 ימי עסקים, ובלי אפשרות לבטל",
+  "text_he": "לפי הפניקס, מעבר בין מסלולים בפוליסת ההשקעה שלה נעשה בתוך 3 ימי עסקים. אי אפשר לבטל מעבר אחרי שבוצע. אחרי המעבר דמי הניהול משתנים לשיעור של המסלול החדש.",
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-03-01",
+  "il_finance_file": "savings-policies-and-executive-insurance.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "phoenix-insurance",
+      "name_he": "הפניקס חברה לביטוח"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
+      "title": "Phoenix Invest FAQ",
+      "title_he": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

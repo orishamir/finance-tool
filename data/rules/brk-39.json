@@ -1,6 +1,6 @@
 {
   "id": "BRK-39",
-  "title": "TASE Data Hub and Data Store: paid, licensed data products priced for internal use or distribution; the mutual-fund products and their list prices; the site terms govern",
+  "title": "TASE Data Hub and Data Store: paid, licensed data products priced for internal use or distribution; the mutual-fund products and their list prices",
   "title_he": "שירותי המידע של הבורסה: מוצרים ברישוי ובתשלום, במחיר שונה לשימוש פנימי ולהפצה",
   "strength": "institution",
   "dimensions": [
@@ -84,7 +84,7 @@
     "mf_prices_internal": "שערי קרנות נאמנות - שימוש פנימי",
     "mf_prices_distribution": "שערי קרנות נאמנות - הפצה"
   },
-  "text_he": "הבורסה מוכרת נתונים בממשק תכנות ובקבצים, ברישוי לפי סוג השימוש: פנימי או הפצה. יש מוצרים חינמיים, אבל התנאים שלהם מוצגים רק בדף המוצר ובקופה. במחירון מופיעים גם מוצרי קרנות נאמנות. המחיר של אחזקות הקרנות להפצה כפול ממחיר השימוש הפנימי. לשערי הקרנות יש אותו מחיר לשני השימושים. המחירון לא מציין לאיזו תקופה המחיר. תנאי השימוש של האתר חלים על כל הפלטפורמות, ואוסרים לפרסם את המידע בלי אישור הבורסה מראש ובכתב. רישיון הפצה הוא מוצר בתשלום.",
+  "text_he": "הבורסה מוכרת נתונים בממשק תכנות ובקבצים, ברישוי לפי סוג השימוש, פנימי או הפצה, ורישיון הפצה הוא מוצר בתשלום. יש גם מוצרים חינמיים, אבל התנאים שלהם מוצגים רק בדף המוצר ובקופה. במחירון, אחזקות קרנות נאמנות עולות {BRK-39:mf_holdings_internal} לשימוש פנימי ו־{BRK-39:mf_holdings_distribution} להפצה, ושערי קרנות נאמנות עולים {BRK-39:mf_prices_internal} לשימוש פנימי ו־{BRK-39:mf_prices_distribution} להפצה. המחירון לא מציין לאיזו תקופה המחיר.",
   "il_finance_file": "brokerage-account.md",
   "checked": "2026-10-26",
   "scope": "institution",
@@ -139,5 +139,8 @@
       "checked": "2026-10-25",
       "qualifier": "(TASE's store)"
     }
+  ],
+  "derived_from": [
+    "CAT-43"
   ]
 }

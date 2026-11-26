@@ -127,7 +127,7 @@ export class LotQueue {
  * F-09 with F-40: the cost of the lots at a sale in month T, indexed per lot by `J_T / J_i`, and the part of a
  * nominal loss that the fall of the index makes not allowable. Each lot is its own purchase:
  * - the index rose (`J_T ≥ J_i`): the adjusted cost is `basis × J_T / J_i` (TXG-12) and the inflationary amount above
- *   the basis is exempt (TXS-02);
+ *   the basis is exempt (TXG-13);
  * - the index fell: the inflationary amount is zero, not negative, so the adjusted cost is the basis and the whole
  *   nominal gain is real (TXS-02, circular 10/2025 appendix, example 3; TXF-03 for an exchange rate); on a nominal loss
  *   the part equal to the fall, `basis × (1 − J_T / J_i)`, is not allowable and only the rest can be offset (example 4;

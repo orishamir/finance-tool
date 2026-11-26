@@ -52,8 +52,7 @@
       "update_rule": "fixed in regulation",
       "rule_ids": [
         "PF-02",
-        "PF-03",
-        "KGL-14"
+        "PF-03"
       ],
       "state": "sourced",
       "notes": "Maximum fee of a kupat gemel (as defined for reg. 2) on the payments transferred for each member, as a share of each deposit."
@@ -74,8 +73,7 @@
       "update_rule": "fixed in regulation",
       "rule_ids": [
         "PF-02",
-        "PF-03",
-        "KGL-14"
+        "PF-03"
       ],
       "state": "sourced",
       "notes": "Maximum management fee of a \"קופת גמל\" (kupat gemel lehashkaa among them), per year, of each member's accumulated balance. In force since 2014 (a transitional 1.1% applied to 31 Dec 2013, reg. 7). Excludes fund types with their own caps (hishtalmut, IRA, pension). Legacy accounts (pre-2008 contributions, non-insurance fund) may be charged up to NIS 6 a month instead (reg. 2(א)(2א)); that amount was not read."
@@ -100,11 +98,10 @@
       "update_rule": "cpi-linked 1 jan",
       "rule_ids": [
         "KGL-02",
-        "KGL-03",
-        "KGL-24"
+        "KGL-03"
       ],
       "state": "sourced",
-      "notes": "NIS per person per calendar year, 2026, across all kupat gemel lehashkaa accounts: the law's NIS 70,000 (Amendment 15 s.3, section 22(א)) indexed by the CPI; the CBS linkage calculator returns 83,641.09 for 1.1.2026, shown rounded to the shekel (KGL-03, KGL-24). No regulator notice is required. Updated every 1 January."
+      "notes": "NIS per person per calendar year, 2026, across all kupat gemel lehashkaa accounts: the law's NIS 70,000 (Amendment 15 s.3, section 22(א)) indexed by the CPI; the CBS linkage calculator returns 83,641.09 for 1.1.2026, shown rounded to the shekel (KGL-03). No regulator notice is required. Updated every 1 January."
     }
   },
   "deposit_side_tax": {
@@ -149,6 +146,7 @@
       "tax_year": null,
       "update_rule": "fixed in regulation",
       "rule_ids": [
+        "KH-16",
         "KGL-08"
       ],
       "state": "sourced",
@@ -189,7 +187,6 @@
       "condition": "age >= 60",
       "rule_ids": [
         "KGL-09",
-        "TXK-10",
         "PF-17"
       ]
     }
@@ -204,7 +201,6 @@
   "protection": {
     "rule_ids": [
       "PF-29",
-      "REG-18",
       "REG-19"
     ],
     "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value"

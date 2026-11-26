@@ -155,8 +155,18 @@
       {
         "rule": "BANK-36",
         "companies": [
-          "leumi",
-          "yahav",
+          "leumi"
+        ]
+      },
+      {
+        "rule": "BANK-63",
+        "companies": [
+          "yahav"
+        ]
+      },
+      {
+        "rule": "BANK-64",
+        "companies": [
           "discount"
         ]
       }
@@ -165,8 +175,18 @@
       {
         "rule": "BANK-37",
         "companies": [
-          "leumi",
-          "massad",
+          "leumi"
+        ]
+      },
+      {
+        "rule": "BANK-57",
+        "companies": [
+          "massad"
+        ]
+      },
+      {
+        "rule": "BANK-58",
+        "companies": [
           "yahav"
         ]
       }
@@ -175,8 +195,18 @@
       {
         "rule": "BANK-37",
         "companies": [
-          "leumi",
-          "yahav",
+          "leumi"
+        ]
+      },
+      {
+        "rule": "BANK-58",
+        "companies": [
+          "yahav"
+        ]
+      },
+      {
+        "rule": "BANK-59",
+        "companies": [
           "mercantile"
         ]
       }

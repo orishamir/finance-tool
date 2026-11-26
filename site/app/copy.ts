@@ -2432,9 +2432,9 @@ export const feeDeal = {
       offset: { lead: "מתקזזת מול ", tail: " של אותו חודש, עד הסכום שלה. האתר מראה אותה בסכום המלא." },
       refund: { lead: "יש החזר של ", tail: ". האתר לא מנכה אותו." },
       unfilled: "נגבית גם על הוראה שלא בוצעה.",
-      /** At a bank, in the terms of the Bank of Israel's fee rules (BRK-16, notes to part 4(א)(1)); `stated` is the words that state BRK-16 (D116). */
+      /** At a bank, in the terms of the Bank of Israel's fee rules (BRK-71, notes to part 4(א)(1)); `stated` is the words that state BRK-71 (D116). */
       unfilledClerk: { lead: "בניירות ערך בבורסה בתל אביב, חוץ מקרנות נאמנות, ", stated: "הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום", tail: "." },
-      /** At a bank, abroad, in the terms of the fee rules' own line for securities abroad (BRK-16, part 4(א)(4) note 1). */
+      /** At a bank, abroad, in the terms of the fee rules' own line for securities abroad (BRK-71, part 4(א)(4) note 1). */
       unfilledClerkAbroad: { lead: "בניירות ערך בחו״ל, ", stated: "הוראה שניתנה דרך פקיד ולא בוצעה מסיבה שתלויה בכם נגבית במינימום", tail: "." },
       /** A list that prints a percent maximum beside a minimum and does not say which wins on a small action (F-12). */
       capRead: "התעריפון מפרסם מינימום וגם מקסימום באחוזים, ולא אומר מה משלמים בפעולה קטנה. האתר מחשב לפי המקסימום באחוזים, ואם המינימום הוא שחל, פעולה קטנה עולה יותר.",
@@ -2755,7 +2755,7 @@ export const feeDeal = {
       "another-line": "שורה אחרת של אותה עמלה היא זו שחלה על מה שהעסקה מחזיקה.",
       "other-base": "עמלה שהתבנית לא ממלאת.",
       "spread-unpriced": "המרה בלי עמלה, אבל עם מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
-      /** BRK-16 part 4(א)(1) and footnote 4: the line prices tracking funds and listed funds, and no other mutual fund. */
+      /** BRK-72 part 4(א)(1) and footnote 4: the line prices tracking funds and listed funds, and no other mutual fund. */
       "bank-funds": "לפי כללי העמלות של בנק ישראל, בבנק השורה הזו לא מתמחרת קרן נאמנות אקטיבית. לכן לקרן כזו אין כאן מחיר קנייה ומכירה. קרן מחקה פתוחה מתומחרת כמו ניירות ערך בתל אביב, ואפשר לבחור בזה בקריאה.",
       "spread-on-top": "על ההמרה נוסף מרווח בשער שהתעריפון לא מגביל: העסקה לא מחשבת את המרווח, ולכן ההמרה עולה בפועל יותר.",
       redemption: "מחיר לפדיון במועד הפירעון: חל רק על פדיון כזה, לא על קנייה ומכירה.",
@@ -3884,7 +3884,7 @@ export const guideSignature = {
     inputNames: { trackFee: "דמי הניהול של המסלול", lockYears: "שנות הנעילה", cap: "תקרת המשכורת הקובעת", selfBenefited: "תקרת ההפקדה המוטבת לעצמאי בשנה" },
   },
   pension: {
-    // the `stated` parts below are the words that state a rule and open it (D116): here PEN-05, severance deposits in place of severance pay
+    // the `stated` parts below are the words that state a rule and open it (D116): here PEN-67, severance deposits in place of severance pay
     lead: { before: "הפקדה לפנסיה של שכיר מורכבת משלושה חלקים: מה שמנוכה לכם מהמשכורת, מה שהמעסיק מוסיף,", prefix: "ו", stated: "פיצויים שהמעסיק שומר לכם בקרן", after: ". כך זה נראה במשכורת שבחרתם:" },
     // `stated`: TXP-05 and TXP-06, the deduction, beside TXP-02 and TXP-04, the credit on what was not deducted
     selfEmployed: { before: "כאן מוצג שכיר שהמעסיק מפקיד לו. עצמאי מפקיד בעצמו, בלי מעסיק, וההטבה שלו היא", stated: "ניכוי מההכנסה לצד זיכוי", after: ". החישוב לעצמאי עוד לא מוצג כאן." },

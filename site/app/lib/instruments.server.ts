@@ -215,7 +215,7 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
     // F-14: a bank may not charge custody on makam (BRK-17); P-05's tariff names its provider, whose class says which it is
     const member = memberOf(src, spec.tariff);
     if (tariff && member) terms.memberKind = member;
-    // The series term is optional (GOV-22, GOV-23): read from the rule P-05 names, else the ledger's default.
+    // The series term is optional (GOV-23): read from the rule P-05 names, else the ledger's default.
     if (spec.series_rule) {
       const term = figure(src, spec.series_rule, "term_months");
       if (isNum(term) && term.unit === "months") {

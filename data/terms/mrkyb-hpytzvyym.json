@@ -17,9 +17,9 @@
   ],
   "rule_ids": [
     "PEN-03",
-    "PEN-05",
     "PEN-30",
     "PEN-31",
+    "PEN-67",
     "TXP-11"
   ],
   "source": {

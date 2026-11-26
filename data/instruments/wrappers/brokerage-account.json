@@ -136,7 +136,7 @@
         "BRK-16"
       ],
       "state": "sourced",
-      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). A bank may charge only for services in the Governor's full tariff, or added with the Supervisor's approval (BRK-16, BANK-16). Whether a member charges a monthly account fee, and how much, is its own tariff (BRK-48, BRK-28, on the companies' pages)."
+      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). A bank may charge only for services in the Governor's full tariff, or added with the Supervisor's approval (BRK-16, BANK-16). Whether a member charges a monthly account fee, and how much, is its own tariff (BRK-48, BRK-76, BRK-77, BRK-79, on the companies' pages)."
     },
     "distribution_handling": {
       "value": null,
@@ -156,7 +156,7 @@
         "BRK-24"
       ],
       "state": "sourced",
-      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). Whether a member charges on interest, dividend and redemption payments is its own tariff (BRK-48, on the companies' pages)."
+      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). Whether a member charges on interest, dividend and redemption payments is its own tariff (BRK-77, BRK-79, on the companies' pages)."
     },
     "transfer_out": {
       "value": 10,
@@ -173,7 +173,6 @@
       "tax_year": null,
       "update_rule": "fixed in regulation",
       "rule_ids": [
-        "BRK-18",
         "SW-33",
         "SW-34"
       ],
@@ -246,7 +245,7 @@
   },
   "lawful_exit": {
     "kind": "trading_day",
-    "text": "any TASE trading day (Monday to Friday since 5.1.2026, BRK-29): sell on the exchange, or redeem Israeli ETF and fund units through the member (ETF-04); the proceeds settle through the TASE clearing house. A trade on the exchange settles on the next business day (GOV-24). Foreign funds on TASE and foreign-domiciled funds are sold on an exchange only."
+    "text": "any TASE trading day (Monday to Friday since 5.1.2026, BRK-29): sell on the exchange, or redeem Israeli ETF and fund units through the member (ETF-04); the proceeds settle through the TASE clearing house. A trade on the exchange settles on the next business day (GOV-17). Foreign funds on TASE and foreign-domiciled funds are sold on an exchange only."
   },
   "switch_is_tax_event": {
     "value": true,
@@ -274,13 +273,15 @@
   "eligibility": {
     "rule_ids": [
       "BRK-01",
+      "BRK-70",
       "BRK-32",
       "BRK-22",
       "BRK-29",
       "ETF-04",
+      "ETF-98",
       "ETF-26"
     ],
-    "text": "anyone who opens a securities account at a bank that is a TASE member or at a non-bank TASE member (a written custody agreement at a bank); minimums are provider-set (each provider's own terms: BRK-28, on the companies' pages); rules for minors' accounts were not found (BRK OQ17); a foreign broker is reached directly or through a section 49A permit holder (BRK OQ9); trading is on TASE trading days, Monday to Friday since 5.1.2026"
+    "text": "anyone who opens a securities account at a bank that is a TASE member or at a non-bank TASE member (a written custody agreement at a bank); minimums are provider-set (each provider's own terms: BRK-28, BRK-73, BRK-79, on the companies' pages); rules for minors' accounts were not found (BRK OQ17); a foreign broker is reached directly or through a section 49A permit holder (BRK-70; BRK OQ9); trading is on TASE trading days, Monday to Friday since 5.1.2026"
   },
   "protection": {
     "rule_ids": [
@@ -328,37 +329,21 @@
   },
   "company_terms": {
     "minimum": [
-      {
-        "rule": "BRK-28",
-        "companies": [
-          "meitav-trade"
-        ]
-      },
+      "BRK-28",
       "BRK-42",
       "BRK-40"
     ],
     "fee-account": [
-      {
-        "rule": "BRK-48",
-        "companies": [
-          "ibi",
-          "excellence",
-          "altshuler-trade",
-          "psagot"
-        ]
-      }
+      "BRK-48",
+      "BRK-76",
+      "BRK-77",
+      "BRK-79"
     ],
     "fee-fx": [
       "BRK-23",
-      {
-        "rule": "BRK-48",
-        "companies": [
-          "ibi",
-          "excellence",
-          "altshuler-trade",
-          "psagot"
-        ]
-      },
+      "BRK-48",
+      "BRK-76",
+      "BRK-79",
       "BRK-40",
       "BRK-42"
     ]

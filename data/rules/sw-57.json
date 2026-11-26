@@ -1,0 +1,37 @@
+{
+  "id": "SW-57",
+  "title": "The Phoenix: an offer request goes to the account's agent, or to an agency in the group",
+  "title_he": "בקשה להצעה בהפניקס: עוברת לסוכן של החשבון או לסוכנות בקבוצה",
+  "text_he": "בהפניקס, בקשה להצעה עוברת לסוכן של החשבון, אם יש לו סוכן. אם אין, היא עוברת לסוכנות ביטוח בקבוצת הפניקס. הטופס המקוון של הפניקס הוא הדרך הישירה.",
+  "strength": "institution",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "switching-and-transfers.md",
+  "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "phoenix",
+      "name_he": "הפניקס"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.fnx.co.il/ishtalmutfund/faq/",
+      "title": "Phoenix study-fund FAQ",
+      "title_he": "שאלות ותשובות על קרן ההשתלמות של הפניקס",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "SW-17",
+    "SW-45"
+  ]
+}

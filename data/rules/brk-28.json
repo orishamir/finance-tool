@@ -1,13 +1,12 @@
 {
   "id": "BRK-28",
-  "title": "Opening an account at Bank Leumi, Meitav Trade and Psagot: their conditions and minimums",
-  "title_he": "פתיחת חשבון בלאומי, מיטב טרייד ופסגות: התנאים והמינימום שלהם",
-  "text_he": "בבנק לאומי, פיקדון ניירות ערך נפתח לפי התנאים הכלליים של החשבון. העסקאות והתקבולים עוברים דרך חשבון העובר ושב של הלקוח. מיטב טרייד מציעה הרשמה מקוונת וקובעת סכום מינימלי לפתיחה. באותו עמוד שלה מופיעים שני מינימומים שונים. פסגות גובה דמי טיפול בפתיחת חשבון, לפי הסכם עם הלקוח. אלה התנאים של הגופים עצמם. בכללים שנקראו לא נמצא סכום מינימלי לפתיחה. כללים לחשבונות של קטינים לא נמצאו אצל שום גוף.",
+  "title": "Meitav Trade: online registration and a minimum to open, printed two ways on its own page",
+  "title_he": "סכום מינימלי לפתיחת חשבון במיטב טרייד: שני סכומים שונים באותו עמוד",
+  "text_he": "מיטב טרייד מציעה הרשמה מקוונת וקובעת סכום מינימלי להפקדה בפתיחת חשבון. באותו עמוד שלה מופיעים שני סכומים שונים: 5,000 ₪ בשאלות הנפוצות ובתחתית העמוד, ו־10,000 ₪ ב״מסלול כללי״.",
   "strength": "institution",
   "dimensions": [
     "minimum",
-    "eligibility",
-    "fee-account"
+    "eligibility"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
@@ -16,32 +15,11 @@
   "scope": "institution",
   "scope_institutions": [
     {
-      "id": "leumi",
-      "name_he": "בנק לאומי"
-    },
-    {
       "id": "meitav-trade",
       "name_he": "מיטב טרייד"
-    },
-    {
-      "id": "psagot",
-      "name_he": "פסגות"
     }
   ],
   "sources": [
-    {
-      "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/generalpages/general%20terms/General_Terms_and_Conditions_acc.pdf",
-      "title": "Leumi general terms 08.25",
-      "title_he": "חוברת תנאים כלליים לניהול חשבון (בנק לאומי, מהדורת 8/2025)",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.12 to 17, 48, s.3, 3.6.1, 25",
-      "locator_he": "עמודים 12 עד 17, 48, סעיף 3, 3.6.1, 25",
-      "page": 12,
-      "checked": "2026-10-25"
-    },
     {
       "url": "https://www.meitav.co.il/trade/independent_trading/",
       "title": "מיטב טרייד: חשבון מסחר עצמאי",
@@ -61,20 +39,9 @@
       "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.psagot.co.il/%d7%aa%d7%a2%d7%a8%d7%99%d7%a4%d7%95%d7%9f-%d7%91%d7%95%d7%a8%d7%a1%d7%94-%d7%a4%d7%a1%d7%92%d7%95%d7%aa-%d7%98%d7%a8%d7%99%d7%99%d7%93-2/",
-      "title": "Psagot tariff",
-      "title_he": "תעריפון פסגות טרייד",
-      "publisher": "Psagot",
-      "publisher_he": "פסגות",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-25"
     }
   ],
   "derived_from": [
-    "BRK-24",
-    "BRK-22"
+    "BRK-24"
   ]
 }

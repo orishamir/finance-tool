@@ -7,7 +7,6 @@
     "tase_member": false,
     "protection_rule_ids": [
       "PF-29",
-      "REG-18",
       "REG-19"
     ]
   },
@@ -166,7 +165,6 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-04",
-          "PEN-21",
           "PEN-23"
         ],
         "state": "sourced",
@@ -209,7 +207,6 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "PF-04",
-          "PEN-21",
           "PEN-23"
         ],
         "state": "sourced",

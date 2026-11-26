@@ -109,12 +109,11 @@
   "break": {
     "allowed": true,
     "penalty": "with_penalty",
-    "mechanism_text": "Account agreement, chapter 4 'פיקדונות בשקלים ותוכניות חיסכון' (applied to savings plans by s.8.1, p.38), s.2.5 'איסור משיכה טרם המועד': 'אנו לא נהיה רשאים למשוך את הפיקדון, כולו או חלקו, טרם הגיע יום הפירעון, או יום תחנת היציאה'; s.6.1.1 (p.36): 'אם התיר הבנק לפנים משורת הדין בהתאם לבקשתנו, משיכת הפיקדון או חלקו ... לפני תום תקופת הפיקדון, היינו, \"שבירת הפיקדון\", לא יישא הפיקדון, או חלק מהפיקדון שנמשך, ריבית כלשהי ו/או הפרשי הצמדה'. Re-fetched 2026-11-07, the same file as library 322ff632b328571c. The same s.6.1.1 also offsets interest already paid and lets the bank charge 'בסכום השווה לנזק שיגרם לבנק', and p.37 warns 'עלולה להיות אף פגיעה בקרן' (BANK-48).",
+    "mechanism_text": "Account agreement, chapter 4 'פיקדונות בשקלים ותוכניות חיסכון' (applied to savings plans by s.8.1, p.38), s.2.5 'איסור משיכה טרם המועד': 'אנו לא נהיה רשאים למשוך את הפיקדון, כולו או חלקו, טרם הגיע יום הפירעון, או יום תחנת היציאה'; s.6.1.1 (p.36): 'אם התיר הבנק לפנים משורת הדין בהתאם לבקשתנו, משיכת הפיקדון או חלקו ... לפני תום תקופת הפיקדון, היינו, \"שבירת הפיקדון\", לא יישא הפיקדון, או חלק מהפיקדון שנמשך, ריבית כלשהי ו/או הפרשי הצמדה'. Re-fetched 2026-11-07, the same file as library 322ff632b328571c. The same s.6.1.1 also offsets interest already paid and lets the bank charge 'בסכום השווה לנזק שיגרם לבנק', and p.37 warns 'עלולה להיות אף פגיעה בקרן' (BANK-55).",
     "rule_ids": [
       "BANK-06",
-      "BANK-33",
-      "BANK-28",
-      "BANK-48"
+      "BANK-55",
+      "BANK-28"
     ]
   },
   "exit_points": {

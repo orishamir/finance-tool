@@ -1,0 +1,44 @@
+{
+  "id": "KGL-33",
+  "title": "Kupat gemel lehashkaa: loans to members, up to 80% of the balance and 7 years",
+  "title_he": "הלוואות לעמיתים בקופת גמל להשקעה: עד 80% מהיתרה, לתקופה של עד 7 שנים",
+  "text_he": "הקופה רשאית, לפי שיקול דעתה, לתת הלוואות לעמיתים, בתנאים האלה: כל ההלוואות יחד עד 10% מנכסי הקופה, כל הלוואה עד 80% מהיתרה של העמית, ותקופה של עד 7 שנים. העמית מתחייב בכתב, יכול לפרוע מוקדם בתנאים שמקובלים בשוק, ומתחיל לפרוע לא יאוחר משנה. כשמשיכה, מלאה או חלקית, תשאיר בקופה פחות מחוב ההלוואות, היתרה נחשבת בניכוי החוב, והסכום שנוכה משמש לפירעון ההלוואות. לעניין חישוב המס, מוסיפים ליתרה את החוב ואת כל סכום אחר שהעמית חייב לקופה בשל ההלוואות.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "kupat-gemel-lehashkaa.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf#page=11",
+      "title": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, ביטוח וחיסכון, 29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.11, s.38.1",
+      "locator_he": "עמוד 11, סעיף 38.1",
+      "page": 11,
+      "quote": "קופת הגמל רשאית על פי שיקול",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-2829/he/regulation_hm_takanongemel.pdf#page=11",
+      "title": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, נשלח לחברות המנהלות במכתב 2016-19364 מ־29.9.2016)",
+      "title_he": "תקנון תקני לקופת גמל להשקעה (רשות שוק ההון, ביטוח וחיסכון, 29.9.2016)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.11, s.38.2",
+      "locator_he": "עמוד 11, סעיף 38.2",
+      "page": 11,
+      "quote": "שהיתרה לאחר המשיכה תהיה נמוכה מההלוואות",
+      "checked": "2026-11-12"
+    }
+  ]
+}

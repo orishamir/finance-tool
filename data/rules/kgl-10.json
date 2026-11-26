@@ -2,7 +2,7 @@
   "id": "KGL-10",
   "title": "Transfers between funds: the whole balance or part of it",
   "title_he": "העברה לקופת גמל להשקעה אחרת: כל היתרה או רק חלק ממנה",
-  "text_he": "מותר להעביר כסף מקופת גמל להשקעה לקופת גמל להשקעה אחרת, ומגיל הפרישה המוקדמת גם לקופת גמל לקצבה. כל העברה אחרת דורשת אישור של הממונה והסכמה של החברה המנהלת. מסלול מקרן השתלמות או מקופת גמל אחרת אל קופת גמל להשקעה לא נמצא בתקנות. מעבירים את כל היתרה או חלק ממנה. ההעברה חסומה במקרים שהתקנות מונות, כמו עיקול או שעבוד על כל היתרה, הלוואה שלא נפרעה, או קופה מקבלת סגורה. העברה, מלאה או חלקית, יכולה להתיר לחברה לסיים הנחה בדמי ניהול מוקדם. על איחור בהעברה העמית מקבל פיצוי מדמי הניהול של הגוף שאיחר.",
+  "text_he": "מותר להעביר כסף מקופת גמל להשקעה לקופת גמל להשקעה אחרת, את כל היתרה או רק חלק ממנה. כך קובעות תקנות הפיקוח על קופות גמל להעברת כספים בין קופות.",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process",
@@ -53,53 +53,13 @@
       "locator": "p.6, reg. 5(א)",
       "locator_he": "עמוד 6, תקנה 5(א)",
       "page": 6,
-      "quote": "בתוך עשרה ימי עסקים",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "p.6, reg. 4",
-      "locator_he": "עמוד 6, תקנה 4",
-      "page": 6,
-      "quote": "לא ניתן להעביר כספים מקופה מעבירה לקופה מקבלת במקרים אלה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fpoeVB94OXb~VXxIiNxEmuFE=#page=6",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס\"ח-2008",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל), התשס״ח-2008",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "משרד האוצר",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file pp.6-7 (gazette pp.630-631), reg. 6",
-      "locator_he": "עמודי הקובץ 6 עד 7 (עמודי הרשומות 630 עד 631), תקנה 6",
-      "page": 6,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAZbYNmyK9Qa3gH~lF+jEWmc=#page=4",
-      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014",
-      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (העברת כספים בין קופות גמל) (תיקון), התשע\"ד-2014",
-      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "p.4, s.4",
-      "locator_he": "עמוד 4, סעיף 4",
-      "page": 4,
-      "quote": "יזקוף הגוף המנהל של הקופה המקבלת",
       "checked": "2026-10-25"
     }
   ],
   "derived_from": [
     "PF-17",
+    "KGL-09",
+    "PF-14",
     "PF-18",
     "PF-19"
   ]

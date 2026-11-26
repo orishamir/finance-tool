@@ -58,8 +58,7 @@
       "tax_year": null,
       "update_rule": "fixed in regulation",
       "rule_ids": [
-        "PF-04",
-        "PEN-21"
+        "PF-04"
       ],
       "state": "sourced",
       "notes": "Maximum fee on payments transferred to a new comprehensive pension fund. Selected funds charge 1% for new members, fixed for at least 10 years (PEN-23); the 2024 average charged was 1.57% (PEN-24)."
@@ -195,7 +194,7 @@
       "tax_year": null,
       "update_rule": "fixed in regulation",
       "rule_ids": [
-        "PEN-33"
+        "PF-47"
       ],
       "state": "sourced",
       "notes": "Rule 41יא(א) of the 1964 Income Tax Rules: a provident fund pays a withdrawal within 4 business days of the day the request reaches it; if that date falls in the month's first three business days it may defer to the 4th business day of the month. The law's timetable for every fund, not one company's (scope pass 2026-10-25). The CMA standard pension bylaw repeats it (s.108(ז)) and answers a withdrawal request within 2 days (s.108(ב)); the first pension payment is by the third of the month (s.46(א))."
@@ -266,6 +265,7 @@
       "PEN-06",
       "PEN-07",
       "PEN-08",
+      "PEN-68",
       "PEN-23"
     ],
     "text": "every employee from age 21 (men) or 20 (women) must be insured by the employer after a 6-month waiting period, at least 6% employee, 6.5% employer and 6% severance of the wage up to the average wage; an employee who does not choose is placed in one of the four selected funds; the self-employed must deposit into a provident fund for annuity; monthly deposits above the comprehensive ceiling go to the general fund"
@@ -273,9 +273,7 @@
   "protection": {
     "rule_ids": [
       "PF-29",
-      "REG-18",
       "REG-19",
-      "REG-21",
       "PEN-18",
       "PEN-19"
     ],
