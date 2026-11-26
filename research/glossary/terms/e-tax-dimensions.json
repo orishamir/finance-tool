@@ -2917,7 +2917,7 @@
     "where": [
       "checklist"
     ],
-    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: PEN-05, PEN-25, PEN-31."
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: PEN-05, PEN-67, PEN-25, PEN-31."
   },
   {
     "kind": "dimension",

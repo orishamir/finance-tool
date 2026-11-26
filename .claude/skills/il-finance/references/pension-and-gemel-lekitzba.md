@@ -49,13 +49,22 @@ Every employee in Israel aged 21 (men) or 20 (women) and up must be insured in a
 - Dimensions: deposit-ceiling, eligibility
 - Likely to change: yes, the average wage is updated by NII each year
 
-### PEN-05 Products that satisfy the order, and severance in place of severance pay
-- Rule: The employee may choose, in writing to the employer within 60 days of starting work, comprehensive pension including a provident fund for annuity approved by the Commissioner, provided it includes death and disability cover, in the same fund or another. If the employee does not choose, the employer insures them in a new comprehensive pension fund. Employer severance payments under the order replace statutory severance pay for the wage and periods they cover (section 14 of the Severance Pay Law). Severance deposits are not returned to the employer except where the employee withdrew money before a qualifying event (death, disability, retirement at 60 or older) or where severance rights were removed under sections 16-17 of the Severance Pay Law.
-- Conditions / exceptions: Section 3(ג) preserves the employee's right to move to another fund. An employer may top up severance to 8.33% (section 9). Pension, disability and survivors rights follow the fund's bylaws (section 10).
+### PEN-05 Products that satisfy the order: comprehensive pension, or a provident fund for annuity with death and disability cover
+- Rule: The employee may choose, in writing to the employer within 60 days of starting work, comprehensive pension including a provident fund for annuity approved by the Commissioner, provided it includes death and disability cover, in the same fund or another. If the employee does not choose, the employer insures them in a new comprehensive pension fund.
+- Conditions / exceptions: Section 3(ג) preserves the employee's right to move to another fund. Pension, disability and survivors rights follow the fund's bylaws (section 10). Split on 2026-11-26: the order's severance sections (7 to 9), severance deposits in place of severance pay, are PEN-67.
 - Figures: 60 days to choose. Fixed.
-- Source: [צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf) pp.2-5 (gazette pp.6939-6942), ss.3, 7-10 · checked 2026-10-25 · primary.
+- Source: [צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf) pp.2-3 (gazette pp.6939-6940), s.3; p.5 (gazette p.6942), s.10 · checked 2026-10-25 · primary.
 - Scope: general
-- Dimensions: insurance-cover, eligibility, liquidity-lockup
+- Dimensions: insurance-cover, eligibility
+- Likely to change: no
+
+### PEN-67 Employer severance deposits under the order replace statutory severance pay
+- Rule: Employer severance payments under the order replace statutory severance pay for the wage and periods they cover (section 14 of the Severance Pay Law). Severance deposits are not returned to the employer except where the employee withdrew money before a qualifying event (death, disability, retirement at 60 or older) or where severance rights were removed under sections 16-17 of the Severance Pay Law.
+- Conditions / exceptions: An employer may top up severance to 8.33% (section 9). Split from PEN-05 on 2026-11-26; the severance sections, 7 to 9 on file p.5, were found on the gov.il scan that day. Which products satisfy the order is PEN-05.
+- Figures: 8.33% (the top-up, s.9); age 60 (a qualifying event, s.8). Fixed in the order.
+- Source: [צו הרחבה (נוסח משולב) לפנסיה חובה, ילקוט הפרסומים 6302, 27.9.2011](https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf) p.5 (gazette p.6942), ss.7-9 · checked 2026-10-25 · primary.
+- Scope: general
+- Dimensions: liquidity-lockup
 - Likely to change: no
 
 ### PEN-06 Employee choice of fund and the employer's default
@@ -398,7 +407,7 @@ Every employee in Israel aged 21 (men) or 20 (women) and up must be insured in a
 
 ### PEN-31 Severance component when leaving a job
 - Rule: A member may withdraw money the employer deposited to the severance component when the employment with that employer ended and the member is entitled to it by law (CMA standard pension bylaw, s.103(א)(2)). Where an unconditional-entitlement arrangement applies (section 14 type, "הסדר זכאות ללא תנאי"), the amount is the higher of "הפקדות המעסיק למרכיב הפיצויים, כשהם צמודים למדד" or the severance balance (s.103(ב)). Instead of withdrawing, the member may transfer the severance money (after tax for the non-exempt part) to a new account in an annuity fund that accepts no further deposits (law s.23(א)(2א)). An employer may ask for severance money it deposited only per the law; the fund notifies the member "בתוך 60 ימים לפחות טרם תשלום הכספים למעסיק" and holds payment back if the member objects (s.104(ב)-(ג)).
-- Conditions / exceptions: In a provident fund too, a severance withdrawal "תיעשה רק אם יחסי העבודה הסתיימו" (law s.23(א)(3), as amended in 2018). The CMA's standard bylaw for a provident savings fund ("תקנון תקני קופת גמל לחיסכון") exists (its 2021 amendment: https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2021-2-1/he/takanon-tikni-kupat-gemel-lehisachon-tikun-word.docx); its base text was not read. Under the extension order, severance deposits cannot return to the employer except as in PEN-05. Every comprehensive fund writes its bylaws on the standard pension text (circular 2016-3-4, s.2(א)). *2026-10-25 scope pass:* re-sourced from the CMA standard bylaw and the law; the Mor pension and gemel bylaws are no longer cited.
+- Conditions / exceptions: In a provident fund too, a severance withdrawal "תיעשה רק אם יחסי העבודה הסתיימו" (law s.23(א)(3), as amended in 2018). The CMA's standard bylaw for a provident savings fund ("תקנון תקני קופת גמל לחיסכון") exists (its 2021 amendment: https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2021-2-1/he/takanon-tikni-kupat-gemel-lehisachon-tikun-word.docx); its base text was not read. Under the extension order, severance deposits cannot return to the employer except as in PEN-67. Every comprehensive fund writes its bylaws on the standard pension text (circular 2016-3-4, s.2(א)). *2026-10-25 scope pass:* re-sourced from the CMA standard bylaw and the law; the Mor pension and gemel bylaws are no longer cited.
 - Figures: 60 days. Fixed in the CMA standard bylaw.
 - Source: [חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה [שם קרן הפנסיה], מהדורת ינואר 2018](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf), pp.62-63, ss.103(א)(2), 103(ב), 104; p.63 "בתוך 60 ימים לפחות טרם תשלום הכספים למעסיק" · checked 2026-10-25 · primary; [חוזר פנסיה 2016-3-4 – הוראות לעניין זכויות וחובות עמיתים בתקנון קרן פנסיה חדשה מקיפה, 29.9.2016](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4.pdf), p.1, s.2(א) "חברה מנהלת תקבע את נוסח תקנון קרן הפנסיה המקיפה שבניהולה בהתאם לנוסח התקנון המצורף" · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (קופות גמל), התשס"ה-2005](https://fs.knesset.gov.il/16/law/16_lsr_299984.pdf) p.11, s.23(א) · checked 2026-10-25 · primary; [חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 21), התשע"ח-2018](https://fs.knesset.gov.il/20/law/20_lsr_502710.pdf) p.2, s.1 (section 23(א)(3)) "משיכה כאמור בפסקת משנה (א) תיעשה רק אם יחסי העבודה הסתיימו" · checked 2026-10-25 · primary.
 - Scope: general
@@ -763,7 +772,7 @@ Every employee in Israel aged 21 (men) or 20 (women) and up must be insured in a
 
 - `actuarial-adjustment`: the balance or pension can change by an actuarial surplus or deficit unrelated to the person's own investment return (PEN-19). Applies to pension funds only.
 - `default-assignment`: what a person gets if they never choose (default fund, default investment track, default insurance track) and which fee is locked for how long (PEN-06, PEN-11, PEN-17, PEN-23).
-- `employer-dependence`: rights or fees that depend on the current employer (severance release, fee discounts given through the workplace, employer's fund choice) (PEN-05, PEN-25, PEN-31).
+- `employer-dependence`: rights or fees that depend on the current employer (severance release, fee discounts given through the workplace, employer's fund choice) (PEN-05, PEN-67, PEN-25, PEN-31).
 
 ## Found for other files
 
