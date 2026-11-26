@@ -173,7 +173,6 @@
       "tax_year": null,
       "update_rule": "fixed in regulation",
       "rule_ids": [
-        "BRK-18",
         "SW-33",
         "SW-34"
       ],

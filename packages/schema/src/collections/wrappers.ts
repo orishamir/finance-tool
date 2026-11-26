@@ -17,14 +17,14 @@ export const companyTermRule = (ref: CompanyTermRef): string => (typeof ref === 
 
 /**
  * A legal cap on one fee base (data-schema §3.3): a value object, `binds` where the cap binds only some providers, and `caveat` where it
- * holds only in a case a deal does not state. `banks`: the cap binds banks only (the price of moving securities out, BRK-18; the ban on
+ * holds only in a case a deal does not state. `banks`: the cap binds banks only (the price of moving securities out, SW-33; the ban on
  * custody of makam, BRK-17). `banks_and_fund_distributors`: the cap binds banks, and a fund's distributor that is not an investment
  * marketer where it has a distribution agreement for the fund (the ban on custody of money-market units, BANK-18, MF-26 reg. 2(ד)). The
  * fee page judges a cap with `binds` only where the deal names a bank (F-113). With a `caveat` the fee page states the cap in the
  * caveat's words and judges no price against it, at any provider (F-113): `closing_account`, a bank's price for moving securities out is
  * at most the value only when the account is being closed and the securities move to the client's own account elsewhere (the rules
  * name third-party costs with the value; whether they are inside it is not settled), and the supervised price holds while it stays
- * open (BRK-18, SW-33); `distribution_agreement`, no cap is set in general (the value is empty), but a bank, or another distributor of
+ * open (SW-33); `distribution_agreement`, no cap is set in general (the value is empty), but a bank, or another distributor of
  * the fund that is not an investment marketer, with a distribution agreement for the fund may charge the holder nothing for buying or
  * redeeming its units (MF-26 regs. 1 and 2(ד)).
  */

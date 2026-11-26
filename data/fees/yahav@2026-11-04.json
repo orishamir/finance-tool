@@ -743,7 +743,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-18",
           "SW-33"
         ],
         "state": "sourced",
