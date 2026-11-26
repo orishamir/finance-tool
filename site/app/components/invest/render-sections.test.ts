@@ -92,6 +92,24 @@ describe("the index page's sections render", () => {
     const shown = [...out.matchAll(/data-pick-key="([^"]+)"/g)].map((m) => m[1]!).filter((id) => v.houses.find((h) => h.provider.id === id)?.generic);
     expect(shown.map((id) => v.houses.find((h) => h.provider.id === id)!.generic!.costN!)).toEqual(costs);
   });
+  it("a custom index: the waiting cash is its own line, apart from what the account charges, and the remainder is the fees' alone (F-91, F-133)", () => {
+    const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
+    const out = html(createElement(NoFundAccountColumn, { view: v, bundle, years: 20, chosen: null, onPick: () => undefined }));
+    const waits = v.houses.filter((h) => h.split?.waiting && Math.round(h.split.waiting.value.value as number) !== 0);
+    expect(waits.length, "no house's way leaves cash waiting on this plan: pick another").toBeGreaterThan(0);
+    for (const h of v.houses.filter((x) => x.split)) {
+      const sp = h.split!;
+      // the charge is the fees: the lines and the remainder add up to it, with no waiting cash among them
+      expect(sp.lines.reduce((a, l) => a + l.cost, 0) + sp.interaction, h.provider.id).toBeCloseTo(h.generic!.costN!, 6);
+      expect(sp.whole.value, h.provider.id).toBe(Math.round(h.generic!.costN!));
+    }
+    for (const h of waits) {
+      const from = out.indexOf(`data-pick-key="${h.provider.id}"`);
+      const next = out.indexOf("data-pick-key=", from + 1);
+      const row = out.slice(from, next < 0 ? undefined : next);
+      expect(row, h.provider.id).toContain(h.split!.waiting!.orderEvery > 1 ? invest.pair.waitingBatched : invest.pair.waiting);
+    }
+  });
   it("a custom index's account that prices no kind of fund says why in the pair page's words, which open the reason: no tag, no \"no data\", no separate source link (D105)", () => {
     // on a custom index abroad (every kind exists there) One Zero prices nothing: its Israeli funds are unknown (BRK-38) and it trades
     // only US securities. A planted one, Interactive Israel with its foreign securities not sold either, stands for a house its documents

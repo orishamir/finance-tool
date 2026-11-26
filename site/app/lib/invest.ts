@@ -220,6 +220,11 @@ export interface CostSplit {
   /** The cost split by fee line, before tax (F-91 on F-61), and the remainder no single line explains: a run per line. */
   lines: { line: FeeLine; cost: number }[];
   interaction: number;
+  /**
+   * F-91 on F-109 and F-133: what the cash the way leaves waiting did against the fund, before tax, in today's shekels, apart from the fees
+   * as on the receipt (`PairCosts.waiting`), with the months between the plan's orders, which name it; null where the way leaves none.
+   */
+  waiting: { value: SiteValue; orderEvery: OrderInterval } | null;
 }
 
 export interface WayPrice {
@@ -1106,10 +1111,10 @@ const COST_FLAGS: readonly string[] = ["BANK-35"];
 /** The open questions the house's price list leaves the run resting on (a line's `open_questions`, data-schema §3.6): said on what is left. */
 const tariffQuestions = (row: ComparedProvider): string[] => row.flags.filter((f) => /^[A-Z0-9]+-OQ\d+$/.test(f));
 
-/** An option's generic fund at a house (F-91 on F-63): the account's cost before tax, `whole` in whole shekels. */
+/** An option's generic fund at a house (F-91 on F-63): the account's fees before tax (`feesOf`), `whole` in whole shekels. */
 function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string | undefined, whole = false): SiteValue {
   const flags = [...row.flags, ...row.run.flags.map((f) => f.code).filter((c) => COST_FLAGS.includes(c) && !row.flags.includes(c))];
-  return computed(whole ? Math.round(row.horizonCostBeforeTax) : row.horizonCostBeforeTax, "nis", "F-91", inputsOfRun(ctx, { house: row.id, spec, row, tax: "before", profileUsed: row.run.profileUsed }), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
+  return computed(whole ? Math.round(feesOf(row)) : feesOf(row), "nis", "F-91", inputsOfRun(ctx, { house: row.id, spec, row, tax: "before", profileUsed: row.run.profileUsed }), { today: ctx.bundle.today, rules: rulesOf(row), flags, about });
 }
 
 /** What is left with one account and one fund (F-65's real value), as every list and the stairs show it, with what its run reads. */
@@ -1121,8 +1126,7 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
   const row = p.row;
   const reads: RunReads & { spec: Spec } = { house: providerId, fund: fundId, spec, row, profileUsed: row.run.profileUsed };
   const value = valueFigure(ctx, row, reads, about);
-  // F-91, F-109, F-133: the account's part less what the cash waiting for a whole unit or an order did, so the figure is its fees, as on the receipt
-  const fees = row.horizonCostBeforeTax - waitingOf(row);
+  const fees = feesOf(row);
   return {
     providerId,
     value,
@@ -1141,6 +1145,12 @@ function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: stri
 
 /** F-91 on F-109 and F-133: what the cash a row's way leaves waiting did against the fund (`waitingReal`); 0 for a way that leaves none. */
 const waitingOf = (row: ComparedProvider): number => (cashWaits(row.way) ? (waitingReal(row.run) ?? 0) : 0);
+
+/**
+ * F-91: the account's fees before tax, a fund's row and a kind of fund's alike: its whole part less what the cash its way leaves waiting did
+ * (`waitingOf`), which is not a fee, as on the receipt.
+ */
+const feesOf = (row: ComparedProvider): number => row.horizonCostBeforeTax - waitingOf(row);
 
 /** The record's lines a run priced at the list's own level, and the current account it counted (`PairCosts.priced`). */
 function pricedLines(ctx: Ctx, s: FeesSnapshot, row: ComparedProvider): PairCosts["priced"] {
@@ -1285,7 +1295,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId): OptionView 
         kind: "cost",
         option,
         cost: costValue(ctx, row, spec, copy.houses.costAbout(s.provider.name_he)),
-        costN: row.horizonCostBeforeTax,
+        costN: feesOf(row),
         venue: p.venue,
         standing: p.standing,
         aside: p.aside,
@@ -1337,8 +1347,14 @@ const cellRuns = new WeakMap<BrokerCell, { row: ComparedProvider; spec: Spec }>(
 function splitOf(ctx: Ctx, cell: BrokerCell): CostSplit {
   const run = cellRuns.get(cell);
   if (!run) throw new Error(`splitOf: the priced cell of ${cell.providerId} has no run`);
-  const lines = run.row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
-  return { whole: costValue(ctx, run.row, run.spec, undefined, true), lines, interaction: run.row.horizonCostBeforeTax - lines.reduce((t, l) => t + l.cost, 0) };
+  const { row, spec } = run;
+  const lines = row.byType.map((x) => ({ line: x.line, cost: x.costBeforeTax }));
+  // F-91: the waiting cash on its own line, so the remainder is the fees' alone (`feesOf`)
+  const batched = row.way.orderEvery > 1;
+  const waiting = cashWaits(row.way)
+    ? { value: computed(waitingOf(row), "nis", batched ? "F-133" : "F-109", inputsOfRun(ctx, { house: row.id, spec, row, profileUsed: row.run.profileUsed }), { today: ctx.bundle.today, rules: rulesOf(row), about: batched ? copy.pair.waitingBatchedAbout : copy.pair.waitingAbout }), orderEvery: row.way.orderEvery }
+    : null;
+  return { whole: costValue(ctx, row, spec, undefined, true), lines, interaction: feesOf(row) - lines.reduce((t, l) => t + l.cost, 0), waiting };
 }
 
 /** A view with no pair to show: no option has a way that leaves something (`bestWay`), so the page shows the account list of an index with no fund to price. */

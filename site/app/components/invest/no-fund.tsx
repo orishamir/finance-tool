@@ -4,7 +4,7 @@
 import { useMemo, useState } from "react";
 import { invest as c } from "../../copy";
 import { asideLines, firstCount, GROUP_OPTIONS, phoneOnlyValue, placesOf, type CostSplit, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
-import type { SiteValue } from "../../lib/value";
+import { numberOf, type SiteValue } from "../../lib/value";
 import type { IndicesBundle } from "../../lib/providers";
 import { fmt } from "../../lib/format";
 import { IconCopy } from "../icons";
@@ -72,6 +72,19 @@ function AccountName({ id, name, custom }: { id: string; name: string; custom: b
   );
 }
 
+/**
+ * F-91 on F-109 and F-133: under a house's row, what the cash its way leaves waiting did, apart from its fees as on the receipt and in the
+ * receipt's words: the cash waited for the next purchase where the row is priced buying every few months, else for a whole unit.
+ */
+function WaitingLine({ waiting }: { waiting: CostSplit["waiting"] }) {
+  if (!waiting || Math.round(numberOf(waiting.value) ?? 0) === 0) return null;
+  return (
+    <span className="col-start-2 col-end-[-1] text-xs leading-snug text-muted-foreground">
+      {waiting.orderEvery > 1 ? c.pair.waitingBatched : c.pair.waiting}: <Num value={waiting.value} />
+    </span>
+  );
+}
+
 export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, onPick }: { view: InvestView; bundle: IndicesBundle; years: number; /** At 0 no purchase runs on a standing order. */ monthly?: number; chosen: string | null; onPick: (id: string) => void }) {
   const legendPick = useChartPick();
   const { rows, ok, missing } = ordered(view);
@@ -135,6 +148,7 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             <CostStack size="sm" parts={parts} total={Math.round(g.costN!)} scale={scale} highlight={legendPick.active} label={`${h.provider.short}: ${fmt.nisWhole(g.costN!)}`} />
           </span>
           <span className="col-end-[-1] text-end font-semibold">{g.cost && <Num animate value={g.cost} />}</span>
+          <WaitingLine waiting={sp.waiting} />
           {/* the kind the cost is for, else the house's: a row keeps its line whichever kind the plan makes cheapest */}
           <AsideLine lines={asideLines(snapOf(h.provider.id), (g.aside ?? []).length > 0 ? g.aside! : h.aside)} company={snapOf(h.provider.id)?.provider.name_he ?? h.provider.short} open={openAsides.includes(h.provider.id)} onOpen={(o) => onAside(h.provider.id, o)} />
           <GroupLine id={h.provider.id} house={h.provider.short} snapshots={bundle.snapshots} open={openGroups.includes(h.provider.id)} onOpen={onGroup} />
