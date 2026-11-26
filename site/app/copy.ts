@@ -870,6 +870,16 @@ export const pagePreview = {
 /** Hebrew names of the formulas a sheet names (method.md F-IDs); copy.md 3.8. */
 export const formulaNames: Record<string, string> = {
   "A-06": "העלות בתוך הקרן: סכום כל מרכיביה",
+  // a method assumption with a formula of its own: half of the spread a fund publishes, the cost of one exchange trade
+  "A-08": "חצי ממרווח הקנייה והמכירה",
+  "F-31": "ההטבה במס על הפקדה לפנסיה, לשכיר שאינו עמית מוטב",
+  "F-32": "ההטבה במס על הפקדה לפנסיה, לעמית מוטב ולעצמאי",
+  // blocked: the balance before the annuity, which needs the funds' conversion factors
+  "F-49": "פנסיה מגיל הפרישה: הסכום בקופה לפני הקצבה",
+  "F-53": "דמי הביטוח בקרן הפנסיה",
+  "F-86": "טווח הריבית בפיקדון לשנה בבנקים",
+  "F-97": "ההפקדות לקרן השתלמות מול התקרה שבחוק",
+  "F-98": "המס שמנוכה במשיכה מוקדמת, ומה שחוזר אחרי דוח",
   "F-03": "מדד המחירים לאורך התוכנית",
   "F-129": "שורות הקבלה, בלי להתחשב באינפלציה",
   "F-130": "מה שהאינפלציה מורידה",
