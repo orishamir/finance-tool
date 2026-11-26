@@ -1,0 +1,30 @@
+{
+  "id": "BRK-89",
+  "title": "An exchange trade settles at the clearing house on the next business day",
+  "title_he": "עסקה בבורסה בתל אביב נסלקת במסלקה ביום העסקים הבא",
+  "text_he": "לפי חוקי העזר של מסלקת הבורסה, עסקה בבורסה, חוץ מעסקת ריפו, נסלקת בסבב הסליקה הראשון ביום העסקים שאחרי היום שבו התקבלה. סליקת ניירות הערך נעשית באותו זמן עם הסליקה הכספית. זו הסליקה בין המסלקה לחבריה, וחוקי העזר לא אומרים מתי הבנק או בית ההשקעות מעדכן את החשבון של הלקוח.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-27",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=18",
+      "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק ב'",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.18, ch. ה s.9(א)",
+      "locator_he": "עמוד 18, פרק ה סעיף 9(א)",
+      "page": 18,
+      "quote": "סבב הסליקה הראשון - ביום העסקים הבא",
+      "checked": "2026-11-27"
+    }
+  ]
+}

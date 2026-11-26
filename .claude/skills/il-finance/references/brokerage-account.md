@@ -157,6 +157,15 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 - Dimensions: `protection`
 - Likely to change: possible; the clearing house amends its bylaws page by page.
 
+### BRK-89 An exchange trade settles at the clearing house on the next business day
+- Rule: Under part B of the TASE clearing-house bylaws, chapter ה ("סליקת המלאי של ניירות ערך"), s.9, a trade on the exchange other than a repo ("עסקה בבורסה (למעט ריפו)"), received on any trading day, settles in the first settlement round on the next business day ("סבב הסליקה הראשון - ביום העסקים הבא"). Each round of securities settlement runs at the same time as the money settlement of its multilateral settlement window (s.8).
+- Conditions / exceptions: The bylaws set settlement between the clearing house and its members; when a bank or broker credits its own client's account they do not say, and no rule saying it was found. The row covers every exchange trade other than a repo, whatever the security; GOV-17 cites the same row for government bonds, and CORP open question 6 asks for the settlement cycle of bonds. The clearing house's guarantee on settlement is BRK-12. Read 2026-11-27 in the file at its address (update no. 115, current to 11.11.25).
+- Figures: none.
+- Source: [חוקי העזר של מסלקת הבורסה, חלק ב'](https://content.tase.co.il/media/t3coscsb/274627.pdf#page=18), p.18, ch. ה s.9(א) "סבב הסליקה הראשון - ביום העסקים הבא" · checked 2026-11-27 · primary
+- Scope: general
+- Dimensions: `liquidity-lockup`
+- Likely to change: no; it changes only with a bylaws update.
+
 ### BRK-13 The TASE nominee company
 - Rule: The TASE Nominee Company ("החברה לרישומים"), a wholly owned TASE subsidiary operating since January 2018, registers securities in its name in issuers' registers, deposits them with the clearing house for the benefit of clearing members, acts as trustee for the clearing house over that inventory, and passes company events and payments (dividends, interest) to final holders. Most companies listed on TASE use it.
 - Conditions / exceptions: This describes what one company, TASE's subsidiary, does; "most companies use it" is TASE's statement. No general source was found that requires a listed company to register through it (searched only within Amendment 63 and the clearing-house searches of BRK-12). 2026-10-26 (scope settling): both sources are TASE's own documents (an explanatory brochure and its periodic report), so their strength is institution.
