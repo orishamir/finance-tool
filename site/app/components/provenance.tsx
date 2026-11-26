@@ -351,7 +351,7 @@ export function opensAround(el: Element, insideSheet: boolean): string[] {
  */
 function pageOwner(v: SiteValue, data: ProvenanceData | null): string | null {
   if (v.state === "computed") {
-    const weak = Object.values(v.computed_from?.inputs ?? {}).filter((x) => strengthOf(x) === "institution" && !x.own);
+    const weak = Object.values((v.computed_from?.inputs ?? {}) as Record<string, SiteValue>).filter((x) => strengthOf(x) === "institution" && !x.own);
     const owners = new Set(weak.map((x) => pageOwner(x, data)));
     const [c] = owners;
     return owners.size === 1 && c ? c : null;
