@@ -6,6 +6,7 @@ import { seriesRecord, type SeriesRecord } from "@finance-tool/schema";
 import { describe, expect, it } from "vitest";
 import { decodeWindows1255 } from "../src/adapters/cma.ts";
 import {
+  DOWNLOAD_URL,
   currentState,
   diffSeries,
   isoFromDmy,
@@ -111,6 +112,18 @@ describe("normalise", () => {
     const first = good();
     const next = normalise(dl(), first, { ...ctx, runDate: "2026-10-24" });
     expect(next.file!.observations.every((o) => o.checked === "2026-10-23")).toBe(true);
+  });
+  it("opens the dataset's page, keeps the CSV it read as fetched_from, and names the Accountant General, never the portal", () => {
+    const first = good();
+    for (const o of first.observations) {
+      expect(o.source.url).toBe("https://data.gov.il/he/datasets/mof/savingsplaninterest");
+      expect(o.source.fetched_from).toBe(DOWNLOAD_URL);
+      expect(o.source.publisher_he).toBe("משרד האוצר, החשב הכללי");
+    }
+    // a stored observation with an older source takes today's, and keeps its checked date
+    const stored = { ...first, observations: first.observations.map((o) => ({ ...o, source: { ...o.source, url: DOWNLOAD_URL, fetched_from: undefined } })) };
+    const next = normalise(dl(), stored, { ...ctx, runDate: "2026-10-24" }).file!;
+    expect(next.observations.every((o) => o.checked === "2026-10-23" && o.source.url === "https://data.gov.il/he/datasets/mof/savingsplaninterest")).toBe(true);
   });
   it("returns no file when there are no usable rows", () => {
     const r = normalise(dl(new TextEncoder().encode("a,b\n1,2\n")), null, ctx);

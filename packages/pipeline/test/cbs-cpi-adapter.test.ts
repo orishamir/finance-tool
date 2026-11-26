@@ -151,10 +151,19 @@ describe("diff", () => {
     revised.observations[0]!.value = 105.2;
     expect(diffSeries(prev, revised)).toMatchObject({ isEmpty: false, newPeriod: false });
   });
-  it("mergeObservations keeps the stored object while the value is unchanged", () => {
+  it("mergeObservations keeps the stored checked date while the value is unchanged, and takes the fresh source", () => {
     const prev = good().observations;
     const fresh = prev.map((o) => ({ ...o, checked: "2030-01-01" }));
     expect(mergeObservations(prev, fresh)).toEqual(prev);
+    const old = prev.map((o) => ({ ...o, source: { url: API_URL, title: "old", publisher: "Central Bureau of Statistics", strength: "primary" as const } }));
+    expect(mergeObservations(old, fresh)).toEqual(prev);
+  });
+  it("names the CBS in Hebrew; no page of the CBS that prints the series was found, so the link stays the API's", () => {
+    for (const o of good().observations) {
+      expect(o.source.publisher_he).toBe("הלשכה המרכזית לסטטיסטיקה");
+      expect(o.source.url).toBe(API_URL);
+      expect(o.source.fetched_from).toBeUndefined();
+    }
   });
 });
 
