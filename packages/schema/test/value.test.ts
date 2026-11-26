@@ -36,6 +36,22 @@ describe("value object (data-schema §1)", () => {
     expect(valueObject.safeParse({ ...sourced, update_rule: "frozen 2025-2027" }).success).toBe(true);
     expect(valueObject.safeParse({ ...sourced, update_rule: "frozen" }).success).toBe(false);
   });
+
+  it("says why a sourced value is empty only on a sourced null, in one of its words", () => {
+    const empty = { ...sourced, value: null, notes: "הסיבה לא ידועה." };
+    expect(valueObject.safeParse({ ...empty, empty_because: "unknown" }).success).toBe(true);
+    expect(valueObject.safeParse({ ...empty, empty_because: "too-young" }).success).toBe(true);
+    expect(valueObject.safeParse({ ...empty, empty_because: "missing" }).success).toBe(false);
+    expect(valueObject.safeParse({ ...sourced, empty_because: "unknown" }).success).toBe(false);
+    expect(valueObject.safeParse({ ...empty, state: "entered", empty_because: "unknown" }).success).toBe(false);
+  });
+
+  it("keeps a Hebrew note, a Hebrew publisher and a machine address apart from the fields a reader opens", () => {
+    const parsed = valueObject.parse({ ...sourced, notes_he: "לפני מס.", source: { ...sourced.source, publisher_he: "הכנסת", fetched_from: "https://example.org/api/data.json" } });
+    expect(parsed.notes_he).toBe("לפני מס.");
+    expect(parsed.source).toMatchObject({ url: "https://example.org/reg", publisher_he: "הכנסת", fetched_from: "https://example.org/api/data.json" });
+    expect(valueObject.safeParse({ ...sourced, source: { ...sourced.source, fetched_from: "not an address" } }).success).toBe(false);
+  });
 });
 
 describe("rule record (data-schema §3.1)", () => {
