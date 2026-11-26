@@ -1043,11 +1043,12 @@ export function isCopySource(url: string): boolean {
  * the Securities Authority, National Insurance outside its Laws1 copies), the Bank of Israel, the Tel Aviv Stock Exchange (its own
  * rules, guidelines and lists; an issuer's filing on Maya is the issuer's, isIssuerFiling), the SEC (for an issuer's own filings there), the United States Code as
  * the House's Office of the Law Revision Counsel publishes it and the federal regulations as the Office of the Federal Register publishes
- * them (the eCFR), and foreign regulators and statutory bodies; for the notes on other countries (data/abroad/, D114) the governments' own
+ * them (the eCFR) and as the Government Publishing Office publishes both (govinfo), Ireland's statutory instruments as the Office of the
+ * Attorney General publishes them (the Irish Statute Book), and foreign regulators and statutory bodies; for the notes on other countries (data/abroad/, D114) the governments' own
  * sites of Britain (GOV.UK) and France (Service-Public.fr, under both its hosts), Italy's tax authority, and Normattiva, the Italian
  * state's portal of the law in force. A source elsewhere marked `primary` is a copy or a company's paper given a strength it does not have, and fails.
  */
-const OFFICIAL_HOSTS = ["gov.il", "boi.org.il", "tase.co.il", "sec.gov", "irs.gov", "uscode.house.gov", "ecfr.gov", "europa.eu", "revenue.ie", "ccpc.ie", "sipc.org", "gov.uk", "moneysmart.gov.au", "getsmarteraboutmoney.ca", "service-public.fr", "service-public.gouv.fr", "agenziaentrate.gov.it", "normattiva.it"];
+const OFFICIAL_HOSTS = ["gov.il", "boi.org.il", "tase.co.il", "sec.gov", "irs.gov", "uscode.house.gov", "ecfr.gov", "govinfo.gov", "irishstatutebook.ie", "europa.eu", "revenue.ie", "ccpc.ie", "sipc.org", "gov.uk", "moneysmart.gov.au", "getsmarteraboutmoney.ca", "service-public.fr", "service-public.gouv.fr", "agenziaentrate.gov.it", "normattiva.it"];
 /**
  * A company's own document is marked `institution` (data-schema 3.1), never `primary`, so it is not caught here. The one kind kept
  * `primary` off those hosts is the defining text of a publisher's own index or numbering standard, cited for that index or standard:
