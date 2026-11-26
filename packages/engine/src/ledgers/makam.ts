@@ -69,10 +69,12 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
   // (TXI OQ20), whether negative interest (TXI-01) or a capital loss on redemption (s.88's sale includes redemption; TXI-12, TXI-17), so the
   // run stops on the discount's rule rather than tax it at a negative amount
   if (makam.yield < 0) throw new BlockedError("TXI-11", undefined, "G-41");
-  const discountRate = book.rate("TXI-11", "rate");
+  // the discount's tax is charged at each redemption, during the run
+  const during = book.on("taxDuring");
+  const discountRate = during.rate("TXI-11", "rate");
   const custodyFree = input.memberKind !== "non-bank";
-  if (custodyFree) book.cite("BRK-17");
-  else if (tariff.custody) book.cite("BRK-52");
+  if (custodyFree) book.on("fees", "custody").cite("BRK-17");
+  else if (tariff.custody) book.on("fees", "custody").cite("BRK-52");
   const custodyLine = custodyFree ? undefined : tariff.custody;
   const tally = new Tally();
   tally.flag("G-09");
@@ -161,7 +163,7 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
       if (year === taxYearOf(T, first)) exitYearFees += fee + fixed;
     }
     if (closesTaxYear(m, T, first)) {
-      tally.taxDuring += yearlySurtax(book, profile, interestThisYear, taxYearOf(m, first));
+      tally.taxDuring += yearlySurtax(during, profile, interestThisYear, taxYearOf(m, first));
       if (m === T) exitYearInterest = interestThisYear;
       interestThisYear = 0;
     }
@@ -177,9 +179,10 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
         cashAtExit += gross - commission;
       }
       if (held.length > 0) {
-        if (exitYearFees > 0) book.cite("TXS-06");
+        const atExit = book.on("taxAtExit");
+        if (exitYearFees > 0) atExit.cite("TXS-06");
         taxedGain = saleGain + (sliceGainByYear.get(taxYearOf(T, first)) ?? 0) - exitYearFees;
-        const exit = unlessBlocked(() => exitTax(book, profile, T, taxedGain, book.rate("TXI-12", "rate"), true, exitYearInterest, first));
+        const exit = unlessBlocked(() => exitTax(atExit, profile, T, taxedGain, atExit.rate("TXI-12", "rate"), true, exitYearInterest, first));
         taxAtExit = exit.value?.tax ?? 0;
         blocked = exit.outcome;
       }
@@ -199,9 +202,9 @@ function runMakamUnder(input: MakamInput, ctx: RunContext): RunResult {
     const gains = g + (year === exitYear && held.length > 0 ? saleGain : 0);
     deductedFees += Math.min(feesByYear.get(year) ?? 0, Math.max(0, gains));
   }
-  // the figures rest on these rules whenever a slice was sold, a sale or not
-  if (sliceGain > 0) book.cite("TXI-12");
-  if (deductedFees > 0) book.cite("TXS-06");
+  // the figures rest on these rules whenever a slice was sold, a sale or not: the slices are sales during the run
+  if (sliceGain > 0) during.cite("TXI-12");
+  if (deductedFees > 0) during.cite("TXS-06");
 
   return tally.result(book, {
     exitMonth: T,
