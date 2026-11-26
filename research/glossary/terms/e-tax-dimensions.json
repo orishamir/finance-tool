@@ -3411,7 +3411,7 @@
     "where": [
       "checklist"
     ],
-    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: CAT-15, CAT-23, CAT-24."
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: CAT-15, CAT-22, CAT-24."
   },
   {
     "term_he": "תיאום מס",

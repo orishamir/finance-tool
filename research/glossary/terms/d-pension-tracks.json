@@ -2781,7 +2781,7 @@
     "rule_ids": [
       "CAT-10",
       "CAT-17",
-      "CAT-23"
+      "CAT-49"
     ],
     "source": {
       "title": "CMA circular 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\" (with consolidated 2022-9-28 text)",
@@ -2896,7 +2896,7 @@
     ],
     "explain_he": "מסלול שרוב הכסף בו בנכסים בשקלים שלא צמודים ולא חשופים למטבע חוץ: פיקדונות, מלוות ממשלה, הלוואות ואיגרות חוב בשקלים",
     "rule_ids": [
-      "CAT-23",
+      "CAT-56",
       "CAT-20",
       "CAT-11"
     ],
@@ -2923,7 +2923,7 @@
     "variants_he": [],
     "explain_he": "מסלול שרוב הכסף בו בחוב, בישראל ובחוץ לארץ: פיקדונות, איגרות חוב של חברות ושל ממשלות, ניירות ערך מסחריים, הלוואות לא סחירות לחברות ולאנשים פרטיים וקרנות חוב. הרשימה לא קובעת בו חלק למניות.",
     "rule_ids": [
-      "CAT-23",
+      "CAT-57",
       "CAT-47"
     ],
     "source": {
@@ -2951,7 +2951,7 @@
     ],
     "explain_he": "כמו מסלול אשראי ואג״ח, ועוד חלק מוגבל במניות, שהשם נוקב בו. המסלול קיים רק בקרן השתלמות, בקופת גמל להשקעה ובפוליסת חיסכון.",
     "rule_ids": [
-      "CAT-23",
+      "CAT-57",
       "CAT-17",
       "CAT-25"
     ],
@@ -3145,7 +3145,6 @@
     "explain_he": "מסלול השקעה שבו הכסף עוקב אחרי מדד S&P 500, חוץ מחלק שמוחזק במזומן ובדומיו לצורך הפקדות ומשיכות, וייתכן בו סיכון מטבע",
     "rule_ids": [
       "CAT-45",
-      "CAT-23",
       "CAT-10"
     ],
     "source": {
@@ -3175,7 +3174,7 @@
     "explain_he": "מסלול שעוקב, באמצעות מוצרים עוקבי מדד, אחרי כמה מדדים שונים של מניות או של איגרות חוב. השיעור של כל מדד יכול לנוע בתוך טווח שנקבע.",
     "rule_ids": [
       "CAT-18",
-      "CAT-23",
+      "CAT-49",
       "CAT-24",
       "CAT-26"
     ],
@@ -3408,13 +3407,13 @@
     "variants_he": [],
     "explain_he": null,
     "rule_ids": [
-      "CAT-23"
+      "CAT-57"
     ],
     "source": null,
     "where": [
       "app"
     ],
-    "notes": "Researched 2026-11-07: no official text read defines 'אשראי' on its own (CAT OQ33); the list of tracks names the debt assets of 'אשראי ואג\"ח' (CAT-23), which that row explains. Keep in section 4 until a definition is found."
+    "notes": "Researched 2026-11-07: no official text read defines 'אשראי' on its own (CAT OQ33); the list of tracks names the debt assets of 'אשראי ואג\"ח' (CAT-57), which that row explains. Keep in section 4 until a definition is found."
   },
   {
     "term_he": "מסלול אירוח",
