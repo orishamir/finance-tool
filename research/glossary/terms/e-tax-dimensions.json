@@ -3354,7 +3354,7 @@
     "where": [
       "checklist"
     ],
-    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXS-07; per-fund status published on Maya (TXS-24)."
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: TXS-07; per-fund status published on Maya (TXS-07)."
   },
   {
     "kind": "dimension",

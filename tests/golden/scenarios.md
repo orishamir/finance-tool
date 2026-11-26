@@ -105,7 +105,7 @@ Exercises F-23 renewable branch (A-24 net of fees, MF-37), exit at the last fixe
 
 ### S13 Taxable shekel money-market fund (derived)
 Exercises F-20 taxable-fund case (TXS-11, TXS-12 (b)), the holder's 0% at exit.
-- As S11 with the fund taxable (TXS-24 example 5137559); fund-level tax 15% of nominal interest modelled as extra δ; no tax to the holder at exit; loss not offsettable (noted).
+- As S11 with the fund taxable (TXS-26 example 5137559); fund-level tax 15% of nominal interest modelled as extra δ; no tax to the holder at exit; loss not offsettable (noted).
 - Expected: _(founder)_ with the label "derived, TXS-12(b)".
   - Independent check, 2026-10-22 (steps in [workings.md](workings.md), section S13): Real V_T/I_T = 73,540.48; nominal V_T = 78,019.09; fees: fund (δ) 231.18; fund-level tax borne 616.98 (inside the price); holder tax during 0, at exit 0; label "derived, TXS-12(b)"; loss not offsettable (TXS-11). Subject to Q11.
 
