@@ -5,14 +5,14 @@
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, type MouseEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router";
-import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
+import { companyTermRule, isOwnDocument, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { formulaNames, numbers, parametersPage, provenance as copy, rule as ruleCopy, scopeWords, strength as strengthCopy } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
-import { isOpenValue, isParameter, isWeak, strengthOf, type SiteValue, type Strength } from "../lib/value";
+import { isOpenValue, isParameter, isWeak, ownBy, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconClock, IconDrillIn, IconFile, IconLock, IconPencil } from "./icons";
-import { Sheet } from "./Sheet";
+import { OwnCompanyCtx, Sheet, StaleSaidCtx } from "./Sheet";
 import { Button, cx, Disclosure, Tag } from "./ui";
 import { CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
@@ -233,16 +233,13 @@ export const InsideSheetCtx = createContext(false);
 /** The element whose tap opened the sheet, while the sheet is open (null when it is closed): words that opened it show so (`TapWords`). */
 const OpenAnchorCtx = createContext<HTMLElement | null>(null);
 /**
- * A page about one company (its company page, a track's page): every company-sourced figure on it is that company's own (D31), so
- * none carries "לפי החברה" or its caution.
+ * A page about one company (its company page, a track's page): a company-sourced figure on it whose source is a document of the page's
+ * company is that company's own (D31), so it carries no "לפי החברה" or its caution (`Num`). A sheet opened on it does not inherit it.
  */
-const OwnCompanyCtx = createContext(false);
 export function OwnCompanyPage({ children }: { children: ReactNode }) {
   return <OwnCompanyCtx.Provider value={true}>{children}</OwnCompanyCtx.Provider>;
 }
 
-/** A notice above already says the figures are old. */
-const StaleSaidCtx = createContext(false);
 
 /**
  * Inside a block that sums up figures the person typed in boxes elsewhere on the screen (the kit's `TypedPlain`): an entered figure is
@@ -348,10 +345,20 @@ export function opensAround(el: Element, insideSheet: boolean): string[] {
   return [...ids];
 }
 
+/** A company-sourced figure on a page about one company: that company's own (D31) where its source is a document of one of the page's companies. */
+function ownOnPage(v: SiteValue, data: ProvenanceData | null): SiteValue {
+  const c = (data?.pageCompanies ?? []).find((id) => {
+    const docs = data?.companies?.[id]?.docs;
+    return !!docs && isOwnDocument(v.source, docs);
+  });
+  return c ? ownBy(v, c) : v;
+}
+
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
 export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord, name, wrap }: NumProps) {
   const ownPage = useContext(OwnCompanyCtx);
-  const value = ownPage && !given.own && strengthOf(given) === "institution" ? { ...given, own: "page" } : given;
+  const pageData = useContext(DataCtx);
+  const value = ownPage && !given.own && strengthOf(given) === "institution" ? ownOnPage(given, pageData) : given;
   const open = useOpen();
   const inside = useContext(InsideSheetCtx);
   const today = useContext(TodayCtx);

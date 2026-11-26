@@ -8,6 +8,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { moreBelow, Sheet, watchMoreBelow, type MoreEnv } from "./Sheet";
 import { site } from "../copy";
+import { Num, OwnCompanyPage, ProvenanceProvider, StaleSaid } from "./provenance";
+import type { SiteValue } from "../lib/value";
 
 // a sheet stands inside the router: a link in it opens its page through the router
 describe("the sheet's sign that more follows", () => {
@@ -108,5 +110,18 @@ describe("the sign never covers a line (independent check of pass 7: the cue ove
     // showing it changes no size: only colour and opacity
     expect(rule(".sheet-more[data-more]")).not.toMatch(/height|padding|margin|display/);
     expect(rule(".sheet-more[data-more] > *")).not.toMatch(/height|padding|margin|display/);
+  });
+});
+
+describe("what the page says around its figures", () => {
+  // a company's figure, a year old: on its company's page under a notice that the figures are old it shows neither mark, but a sheet opened
+  // there holds a card that stands on its own
+  const v = { value: 10, unit: "nis", source: { url: "https://example.org/a.pdf", title: "תעריפון", publisher: "Bank", strength: "institution" }, checked: "2025-01-01", effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced", stale: { since: "2025-01-01", cadence: "yearly" } } as SiteValue;
+  const marks = (html: string) => (html.match(/text-caution/g) ?? []).length;
+  const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-26", pageCompanies: ["bank"], companies: { bank: { name: "בנק", href: "/companies/bank", hasPage: true, docs: { own_hosts: ["example.org"] } } } };
+  const on = (child: ReturnType<typeof createElement>) => renderToString(createElement(MemoryRouter, null, createElement(OwnCompanyPage, null, createElement(ProvenanceProvider, { data, children: createElement(StaleSaid, null, child) }))));
+  it("does not reach inside a sheet", () => {
+    expect(marks(on(createElement(Num, { value: v })))).toBe(0);
+    expect(marks(on(createElement(Sheet, { open: true, onClose: () => undefined, children: createElement(Num, { value: v }) })))).toBe(2);
   });
 });

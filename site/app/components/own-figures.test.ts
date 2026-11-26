@@ -5,7 +5,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { formulaNames } from "../copy";
 import { computed, type SiteValue } from "../lib/value";
-import { Num, ProvenanceProvider } from "./provenance";
+import { Num, OwnCompanyPage, ProvenanceProvider } from "./provenance";
 import { ValueSheet } from "./provenance-sheets";
 import { FeeFigure } from "./kit";
 
@@ -69,5 +69,17 @@ describe("a fund's fee in a list of funds", () => {
     const html = inProvider(createElement(FeeFigure, { value: fee({ own: "הראל" }) }));
     expect(html).toContain("0.24");
     expect(caution(html)).toBe(0);
+  });
+});
+
+describe("a figure on a page about one company", () => {
+  // the page's company and where its own documents live, as PageShell fills them
+  const page = { ...data, pageCompanies: ["harel"], companies: { harel: { name: "הראל", href: "/companies/harel", hasPage: true, docs: { own_hosts: ["harel-group.co.il"] } } } };
+  const onPage = (v: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(OwnCompanyPage, null, createElement(ProvenanceProvider, { data: page, children: createElement(Num, { value: v }) }))));
+  it("is the company's own where its source is the company's document: no caution", () => {
+    expect(caution(onPage(fee({ source: { url: "https://www.harel-group.co.il/fees.pdf", title: "דוח", publisher: "הראל", strength: "institution" } })))).toBe(0);
+  });
+  it("keeps its caution where its source is another company's document", () => {
+    expect(caution(onPage(fee({ source: { url: "https://example.org/other.pdf", title: "דוח", publisher: "אחרת", strength: "institution" } })))).toBeGreaterThan(0);
   });
 });
