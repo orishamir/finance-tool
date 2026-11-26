@@ -5,6 +5,9 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { readFormulaIds, readQuestionPrefixes, readRuleBaseIds, validateData } from "../src/index.ts";
 import { checkCitedPages, checkDealOnlyUnit, checkEffectiveRateUnit, checkFirstExitPoint, checkTypedFundUnit } from "../src/validate.ts";
+import * as values from "../src/checks/values.ts";
+import { isMachineUrl, valuesFile } from "../src/checks/values.ts";
+import { testData } from "../src/checks/lib/kit.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const ruleBase = readRuleBaseIds(`${root}.claude/skills/il-finance/references`);
@@ -851,5 +854,49 @@ describe("an amount in agorot, a typed fund's unit price (data-schema §2)", () 
     expect(checkTypedFundUnit({ fees: { trustee: amount("agorot") } })).toEqual([expect.stringContaining("fees.trustee: unit agorot")]);
     expect(checkTypedFundUnit({ share_price: amount("agorot") })).toEqual([]);
     expect(checkTypedFundUnit(amount("agorot"))).toEqual([expect.stringContaining("(record): unit agorot")]);
+  });
+});
+
+describe("the value checks of the collected collections (src/checks/values.ts)", () => {
+  const sourced = (over: Record<string, unknown>) => ({ ...vo, rule_ids: [], update_rule: "market", ...over });
+  const page = { url: "https://data.gov.il/he/datasets/cma/gemelnet", title: "t", publisher: "CMA", publisher_he: "רשות שוק ההון, ביטוח וחיסכון", strength: "primary", fetched_from: "https://data.gov.il/dataset/x/resource/y/download/file.csv" };
+  const series = (observations: unknown[]) => ({ id: "planted", observations });
+  const found = (observations: unknown[]) => values.check(testData(dataDir({ "series/planted.json": series(observations) }))).map((p) => p.message.replace(/: .*/, ""));
+
+  it("passes a value that names its publisher, opens a page, says why it is empty and has a Hebrew note", () => {
+    expect(found([sourced({ source: page }), sourced({ source: page, value: null, notes: "הסיבה לא ידועה.", empty_because: "unknown" }), sourced({ source: page, notes: "a working note", notes_he: "שורה לקורא." })])).toEqual([]);
+  });
+
+  it("finds an empty value with no reason, a portal source with no publisher, a machine address as the link, and an English note with no notes_he", () => {
+    const { publisher_he: _, ...noName } = page;
+    expect(found([sourced({ source: page, value: null, notes: "הסיבה לא ידועה." }), sourced({ source: noName }), sourced({ source: { ...page, url: page.fetched_from } }), sourced({ source: page, notes: "inferred, not stated" })])).toEqual([
+      "series/planted#/observations/0 (empty-because)",
+      "series/planted#/observations/1 (publisher)",
+      "series/planted#/observations/2 (machine-url)",
+      "series/planted#/observations/3 (notes-he)",
+    ]);
+    // a CMA period file's tracks are records of their own
+    const cma = { dataset: "gemelnet", report_period: "2026-09", funds: [{ fund_id: 7, fees: { avg_deposit_fee: sourced({ source: page, value: null, notes: "הסיבה לא ידועה." }) } }] };
+    expect(values.check(testData(dataDir({ "cma/gemelnet@2026-09.json": cma }))).map((p) => p.message.replace(/: .*/, ""))).toEqual(["cma/gemelnet/7#/fees/avg_deposit_fee (empty-because)"]);
+  });
+
+  it("tells a machine address from a page", () => {
+    for (const url of [
+      "https://api.cbs.gov.il/index/data/price?id=120010&format=json",
+      "https://data-api.ecb.europa.eu/service/data/EXR/M.ILS.EUR.SP00.E?format=csvdata",
+      "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+      "https://data.gov.il/dataset/a/resource/b/download/file.csv",
+      "https://data.gov.il/api/3/action/datastore_search?resource_id=x",
+      "https://www.bankhapoalim.co.il/sites/default/files/tariff.xls",
+      "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Law",
+    ])
+      expect([url, isMachineUrl(url)]).toEqual([url, true]);
+    for (const url of ["https://data.gov.il/he/datasets/mof/savingsplaninterest", "https://data.ecb.europa.eu/data/datasets/EXR/EXR.M.ILS.EUR.SP00.E", "https://www.gov.il/he/pages/x", "not a url"])
+      expect([url, isMachineUrl(url)]).toEqual([url, false]);
+  });
+
+  it("lists each check's leftovers in a file of its own per collection", () => {
+    for (const check of ["empty-because", "publisher", "machine-url", "notes-he"]) for (const collection of values.VALUE_COLLECTIONS) expect(valuesFile(check, collection)).toBe(`values/${check}/${collection}.json`);
+    expect(readdirSync(fileURLToPath(new URL("../src/leftovers/values/", import.meta.url))).sort()).toEqual(["empty-because", "machine-url", "notes-he", "publisher"]);
   });
 });
