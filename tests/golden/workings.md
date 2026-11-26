@@ -1264,7 +1264,7 @@ Strength is the one recorded on the rule's first source.
 
 | Rule | Title | Checked | Strength |
 |---|---|---|---|
-| [BANK-04](<https://boi.org.il/media/rvzi1ngd/151.pdf>) | Interest is quoted as an annual rate; effective annual rate for unlinked shekel deposits | 2026-10-22 | primary |
+| [BANK-04](<https://boi.org.il/media/rvzi1ngd/151.pdf>) | Interest is quoted as an annual rate; effective annual rate for unlinked shekel deposits | 2026-10-22 | primary. For linked deposits, whether linkage applies when the index falls: BANK-26 |
 | [BANK-13](<https://www.boi.org.il/media/orgfwntb/447.pdf>) | Directive 447: concentrated publication of deposit and credit-balance rates (since 1 April 2025) | 2026-10-25 | primary; |
 | [BANK-14](<https://www.boi.org.il/media/orgfwntb/447.pdf>) | Directive 447 Annex A: the standard deposit taxonomy | 2026-10-25 | primary; |
 | [BANK-18](<https://www.boi.org.il/media/mi2driua/159a.pdf>) | Makam and money-market funds at a bank: no custody fee, but buy, sell and redemption commissions on makam | 2026-11-06 | primary. Custody ban in full: BRK-17 |
@@ -1296,7 +1296,7 @@ Strength is the one recorded on the rule's first source.
 | [GOV-06](<https://www.boi.org.il/media/ytal5ozx/makam.pdf>) | Makam yield and price convention | 2026-10-25 | primary |
 | [GOV-11](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=4>) | CPI-linked bond (אג"ח ממשלתית צמודה): coupon, linkage, redemption | 2026-11-15 | primary (read on the page images; the 2007 amendment, ק"ת 6597 file p.3, changes regs. 6 and 7 only) |
 | [GOV-12](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=5>) | CPI-linked bond in deflation: no floor in the regulation text | 2026-10-25 | primary |
-| [GOV-13](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf>) | Fixed-rate shekel bond (אג"ח ממשלתית; the type "שחר", first issued 1995, is separate) | 2026-10-25 | primary |
+| [GOV-13](<https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2024/he/annual-debt-report_annual-debt-report-2024-accessible-version-he.pdf>) | Fixed-rate shekel bond (אג"ח ממשלתית) | 2026-10-25 | primary |
 | [GOV-23](<https://www.boi.org.il/boi_files/hanpaka.pdf>) | Makam issue schedule: one new series a month, about a year each, twelve series outstanding | 2026-11-23 | primary |
 | [IRA-17](<https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6>) | Management fee level and cap | 2026-10-25 | primary; |
 | [IRA-21](<https://www.meitav.co.il/media/r2djwzpw/26061426l-תוצאות-מכרז-לניהול-אישי-2026-לאומי.pdf>) | Meitav: brokerage tariffs inside the IRA, effective 01.05.2026 | 2026-10-25 | institution; |
