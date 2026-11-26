@@ -122,14 +122,14 @@ export function MoneyMarketDailyVisual({ data }: VisualProps) {
 
 /**
  * The line under a tag, where the word alone leaves out how: the fund's set hour and the money the same day, whose words open the rules
- * of a daily fund (MF-34, MF-10, MF-11); the longest wait between fixed dates, whose figure opens MF-08 and whose words open a
+ * of a daily fund (MF-34, MF-10, MF-74); the longest wait between fixed dates, whose figure opens MF-08 and whose words open a
  * renewable fund's rule (MF-35).
  */
 function WhenNote({ speed, interval }: { speed: Speed; interval: ReturnType<typeof fact> }) {
   if (speed === "trading-day")
     return (
       <span className="text-sm text-muted-foreground">
-        <Ruled id={["MF-34", "MF-10", "MF-11"]}>{copy.ladder.tradingDay}</Ruled>
+        <Ruled id={["MF-34", "MF-10", "MF-74"]}>{copy.ladder.tradingDay}</Ruled>
       </span>
     );
   if (speed === "fixed-dates" && interval)

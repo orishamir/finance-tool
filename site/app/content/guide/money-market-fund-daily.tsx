@@ -10,7 +10,7 @@ export const content: GuideContent = {
     const life = figure("MF-30", "max_average_life_days");
     const bondTerm = figure("MF-29", "max_bond_term_months");
     const distCap = figure("MF-24", "distribution_fee_cap_money_market");
-    const foreign = figure("MF-11", "foreign_securities_line");
+    const foreign = figure("MF-74", "foreign_securities_line");
     return (
       <>
         <Sentence measure>
@@ -26,7 +26,7 @@ export const content: GuideContent = {
           קונים בסכום בשקלים ומקבלים יחידות לפי מחיר שמנהל הקרן <Ruled id="MF-09">מחשב פעם ביום, לפי שווי הנכסים</Ruled>. הוראה שמגיעה לפני <Term id="השעה היעודה">השעה היעודה</Term> של הקרן <Ruled id="MF-10">מקבלת את המחיר של אותו יום</Ruled>. הוראה מאוחרת יותר מקבלת את המחיר של יום החישוב הבא. לכן המחיר המדויק לא ידוע ברגע ההוראה.
         </p>
         <Sentence measure>
-          מתי הכסף <Term prefix="מה" id="פדיון">פדיון</Term> מגיע לחשבון תלוי בקרן. בקרן שמדיניות ההשקעות שלה מגבילה <Term id="נייר ערך">ניירות ערך</Term> זרים ל־{foreign ? <Num value={foreign} /> : null} מהנכסים, הוא מגיע באותו יום, אם ההוראה ניתנה לפני השעה היעודה. בקרן שיכולה להחזיק יותר, הוא <Ruled id="MF-11">מגיע ביום המסחר הבא</Ruled>.
+          מתי הכסף <Term prefix="מה" id="פדיון">פדיון</Term> מגיע לחשבון תלוי בקרן. בקרן שמדיניות ההשקעות שלה מגבילה <Term id="נייר ערך">ניירות ערך</Term> זרים ל־{foreign ? <Num value={foreign} /> : null} מהנכסים, הוא מגיע באותו יום, אם ההוראה ניתנה לפני השעה היעודה. בקרן שיכולה להחזיק יותר, הוא <Ruled id="MF-74">מגיע ביום המסחר הבא</Ruled>.
         </Sentence>
         <p className="max-w-measure">
           <Ruled id="BRK-29">הבורסה עברה למסחר מיום שני עד יום שישי</Ruled>. בקרן שמגבילה ניירות ערך זרים <Ruled id={["MF-68", "MF-69"]}>אפשר לתת הוראה גם ביום שישי</Ruled>. ההוראה מבוצעת ביום ראשון לפי מחיר הסגירה של יום שישי. הכסף מגיע בדרך כלל ביום שני. בקרן שיכולה להחזיק יותר, הוראות מתקבלות רק מיום שני עד יום חמישי.

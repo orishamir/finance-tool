@@ -12,7 +12,7 @@ export const content: GuideContent = {
     const maxInterval = figure("MF-08", "max_interval_months");
     const noticeAfter = figure("MF-38", "advance_notice_min_interval_years");
     const distCap = figure("MF-24", "distribution_fee_cap_money_market");
-    const foreign = figure("MF-11", "foreign_securities_line");
+    const foreign = figure("MF-74", "foreign_securities_line");
     return (
       <>
         <p className="max-w-measure">
@@ -25,16 +25,16 @@ export const content: GuideContent = {
           קרנות לאותה תקופה עם מועדים שונים מוצעות כסדרות של קרן אחת, והתאריך מופיע בשם הסדרה.
         </p>
         <Sentence measure>
-          <Ruled id="MF-08">המרווח בין מועדים קבועים הוא עד</Ruled> {maxInterval ? <Num value={maxInterval} /> : null} חודשים, אלא אם <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> התירה יותר. רק בקרנות שבהן המרווח בין מועדים קבועים ארוך {noticeAfter ? <>מ<Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /></> : "מהתקופה שבתקנות"} הפדיון יכול לדרוש הודעה מוקדמת. כשהמרווח בין מועדים {noticeAfter ? <><Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /> או יותר</> : "ארוך"}, <Ruled id="MF-38">מנהל הקרן שולח לפני המועד תזכורת</Ruled>. <Ruled id="MF-09">מנהל הקרן מפרסם מחיר רק למועד הקבוע</Ruled>.
+          <Ruled id="MF-08">המרווח בין מועדים קבועים הוא עד</Ruled> {maxInterval ? <Num value={maxInterval} /> : null} חודשים, אלא אם <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> התירה יותר. רק בקרנות שבהן המרווח בין מועדים קבועים ארוך {noticeAfter ? <>מ<Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /></> : "מהתקופה שבתקנות"} הפדיון יכול לדרוש הודעה מוקדמת. כשהמרווח בין מועדים {noticeAfter ? <><Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /> או יותר</> : "ארוך"}, <Ruled id="MF-38">מנהל הקרן שולח לפני המועד תזכורת</Ruled>. <Ruled id="MF-73">מנהל הקרן מפרסם מחיר רק למועד הקבוע</Ruled>.
         </Sentence>
         <p className="max-w-measure">
-          קונים <Term id="יחידה">יחידות</Term> דרך <Term id="חשבון ניירות ערך">חשבון ניירות ערך</Term> בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term>, לפי שם הסדרה או המספר שלה <Term prefix="ב" id="בורסה">בורסה</Term>. החוק קורא לבנק או לבית ההשקעות <Term id="מפיץ">מפיץ</Term>. <Ruled id="MF-10">ההוראה צריכה להגיע עד</Ruled> <Term id="השעה היעודה">השעה היעודה</Term> של המועד הקבוע. גם הפדיון <Ruled id="MF-35">נעשה רק במועד הקבוע</Ruled>. יחידות של סדרה חדשה מוצעות רק כמה ימים אחרי תאריך הסדרה.
+          קונים <Term id="יחידה">יחידות</Term> דרך <Term id="חשבון ניירות ערך">חשבון ניירות ערך</Term> בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term>, לפי שם הסדרה או המספר שלה <Term prefix="ב" id="בורסה">בורסה</Term>. החוק קורא לבנק או לבית ההשקעות <Term id="מפיץ">מפיץ</Term>. <Ruled id="MF-73">ההוראה צריכה להגיע עד</Ruled> <Term id="השעה היעודה">השעה היעודה</Term> של המועד הקבוע. גם הפדיון <Ruled id="MF-35">נעשה רק במועד הקבוע</Ruled>. יחידות של סדרה חדשה מוצעות רק כמה ימים אחרי תאריך הסדרה.
         </p>
         <p className="max-w-measure">
           בטבלת <Term id="מוצרי שוק הכסף">מוצרי שוק הכסף</Term> <Ruled id={["BANK-15", "MF-37"]}>הבנק מציג קרן כזו</Ruled> רק אם מנהל הקרן דיווח על תשואה צפויה.
         </p>
         <Sentence measure>
-          מתי הכסף מפדיון מגיע לחשבון תלוי בקרן. בקרן שמדיניות ההשקעות שלה מגבילה <Term id="נייר ערך">ניירות ערך</Term> זרים ל־{foreign ? <Num value={foreign} /> : null} מהנכסים, הוא מגיע באותו יום, אם ההוראה ניתנה לפני השעה היעודה. בקרן שיכולה להחזיק יותר, הוא <Ruled id="MF-11">מגיע ביום המסחר הבא</Ruled>.
+          מתי הכסף מפדיון מגיע לחשבון תלוי בקרן. בקרן שמדיניות ההשקעות שלה מגבילה <Term id="נייר ערך">ניירות ערך</Term> זרים ל־{foreign ? <Num value={foreign} /> : null} מהנכסים, הוא מגיע באותו יום, אם ההוראה ניתנה לפני השעה היעודה. בקרן שיכולה להחזיק יותר, הוא <Ruled id="MF-74">מגיע ביום המסחר הבא</Ruled>.
         </Sentence>
         <p className="max-w-measure">
           דמי הניהול ושכר הנאמן <Ruled id="MF-37">כבר מופחתים מהתשואה הצפויה שמוצגת</Ruled>. <Ruled id="MF-18">רשות ניירות ערך מפרסמת ממוצע שנתי לקטגוריה</Ruled>. הממוצע מופיע בקישור שבכרטיס של המספר שלמטה.

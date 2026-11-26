@@ -162,9 +162,9 @@ builders["money-market-fund-daily"] = (c) => {
   const max = figureOf(c, "MF-08", "max_interval_months");
   if (max) d.facts.maxInterval = max;
   else d.gaps.push("maxInterval");
-  // MF-10, MF-11 (prices regulations reg. 15): an order before the fund's set hour is redeemed that day and the distributor pays the same day
-  // (MF-11); MF-35: the renewable fund's dates are chosen when buying
-  return withRules(d, "MF-08", "MF-10", "MF-11", "MF-34", "MF-35", "BANK-06", "BANK-09", "BANK-13");
+  // MF-10, MF-74 (prices regulations reg. 15): an order before the fund's set hour is redeemed that day and the distributor pays the same day
+  // (MF-74); MF-35: the renewable fund's dates are chosen when buying
+  return withRules(d, "MF-08", "MF-10", "MF-74", "MF-34", "MF-35", "BANK-06", "BANK-09", "BANK-13");
 };
 
 // ---------------------------------------------------------------- makam

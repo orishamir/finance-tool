@@ -70,7 +70,7 @@ export function Kinds({ figure }: ContentProps) {
 }
 
 export function Trade({ figure }: ContentProps) {
-  const foreign = figure("MF-11", "foreign_securities_line");
+  const foreign = figure("MF-74", "foreign_securities_line");
   const minOrder = figure("ETF-67", "min_order_equity_market");
   return (
     <>
