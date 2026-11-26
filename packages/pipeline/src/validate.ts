@@ -1466,9 +1466,21 @@ function checkTermCopies(files: string[], dataDir: string, leftovers: TextLeftov
   const found = termCopies(terms);
   for (const pair of found)
     if (!allowed.includes(pair)) report(terms.find((t) => t.id === pair.split(" ")[1])?.file ?? join(dataDir, "terms"), `terms: ${pair.replace(" ", " and ")} carry the same name and the same explanation; one term is one record, so merge them (its products are the two records' together)`);
+  // A folder of a few records stands in for no listed pair, so here a pair is judged only while both its records are present; a pair
+  // naming a record that is gone is staleTermCopies' over the whole of data/terms, held by a test.
   const ids = new Set(terms.map((t) => t.id));
-  for (const pair of allowed)
-    if (pair.split(" ").every((id) => ids.has(id)) && !found.includes(pair)) report(join(dataDir, "terms"), `terms: text-leftovers.json lists the copy "${pair}", which is no longer one: strike it (the list only shrinks)`);
+  for (const message of staleTermCopies(terms, allowed.filter((pair) => pair.split(" ").every((id) => ids.has(id))))) report(join(dataDir, "terms"), message);
+}
+
+/** The listed copies `allowed` of the whole terms collection `terms` that are gone: a pair naming a record that is not there, or two records no longer the same. */
+export function staleTermCopies(terms: readonly { id: string; he: string; meaning: string }[], allowed: readonly string[]): string[] {
+  const ids = new Set(terms.map((t) => t.id));
+  const found = termCopies(terms);
+  return allowed.flatMap((pair) => {
+    const gone = pair.split(" ").filter((id) => !ids.has(id));
+    if (gone.length > 0) return [`terms: text-leftovers.json lists the copy "${pair}", and ${gone.join(" and ")} has no record under data/terms/: strike it (the list only shrinks)`];
+    return found.includes(pair) ? [] : [`terms: text-leftovers.json lists the copy "${pair}", which is no longer one: strike it (the list only shrinks)`];
+  });
 }
 
 /**

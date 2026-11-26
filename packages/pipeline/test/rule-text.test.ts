@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { readFormulaIds, readRuleBaseIds, validateData } from "../src/index.ts";
 import { phrasesIn, printedForms, readTextLeftovers, ruleTextProblems, sentenceCount, spelledNumbers, staleTextLeftovers, textFlaws, typedFigures, type RuleText, type TextLeftovers } from "../src/rule-text.ts";
-import { termCopies } from "../src/validate.ts";
+import { staleTermCopies, termCopies } from "../src/validate.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const leftovers = readTextLeftovers();
@@ -148,5 +148,22 @@ describe("glossary copies", () => {
     writeFileSync(join(dir, "terms/x-b.json"), JSON.stringify(rec("x-b")));
     const problems = validateData({ dataDir: dir, ruleBase: readRuleBaseIds(`${root}.claude/skills/il-finance/references`), formulas: readFormulaIds(`${root}docs/method.md`) });
     expect(problems).toContainEqual({ file: "terms/x-b.json", message: expect.stringMatching(/x-a and x-b carry the same name and the same explanation/) });
+  });
+  it("says a listed copy is gone once one of its records is merged away, or the two differ", () => {
+    const a = term("x-a", "נאמן", "גוף שמחזיק");
+    expect(staleTermCopies([a, term("x-b", "נאמן", "גוף שמחזיק")], ["x-a x-b"])).toEqual([]);
+    expect(staleTermCopies([a], ["x-a x-b"])).toEqual([expect.stringMatching(/"x-a x-b", and x-b has no record under data\/terms\//)]);
+    expect(staleTermCopies([a, term("x-b", "נאמן", "גוף אחר")], ["x-a x-b"])).toEqual([expect.stringMatching(/"x-a x-b", which is no longer one/)]);
+  });
+});
+
+describe("the glossary records in data/terms", () => {
+  const dir = join(root, "data/terms");
+  const terms = readdirSync(dir)
+    .filter((f) => f.endsWith(".json"))
+    .sort()
+    .map((f) => JSON.parse(readFileSync(join(dir, f), "utf8")) as { id: string; he: string; meaning: string });
+  it("leave no listed copy that is gone (the list only shrinks)", () => {
+    expect(staleTermCopies(terms, leftovers.leftovers["term-copy"])).toEqual([]);
   });
 });
