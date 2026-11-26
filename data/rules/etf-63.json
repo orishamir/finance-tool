@@ -21,9 +21,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.ishares.com/uk/individual/en/literature/fact-sheet/cspx-ishares-core-s-p-500-ucits-etf-fund-fact-sheet-en-gb.pdf",
-        "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet, September 2026, p.1",
+        "title": "iShares Core S&P 500 UCITS ETF USD (Acc) factsheet, September 2026",
         "publisher": "iShares",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1
       },
       "checked": "2026-10-25",
       "effective_from": null,

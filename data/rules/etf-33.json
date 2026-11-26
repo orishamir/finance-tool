@@ -19,9 +19,12 @@
       "unit": "count",
       "source": {
         "url": "https://content.tase.co.il/media/rhzcuxda/file_0623_leading_indices_2025.pdf",
-        "title": "TASE, מדדי הבורסה המובילים (brochure, PDF dated 12.5.2025), p.2",
+        "title": "TASE, מדדי הבורסה המובילים (brochure, PDF dated 12.5.2025)",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2",
+        "locator_he": "עמוד 2",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -39,9 +42,12 @@
       "unit": "nis",
       "source": {
         "url": "https://content.tase.co.il/media/rhzcuxda/file_0623_leading_indices_2025.pdf",
-        "title": "TASE, מדדי הבורסה המובילים (brochure, PDF dated 12.5.2025), p.2",
+        "title": "TASE, מדדי הבורסה המובילים (brochure, PDF dated 12.5.2025)",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2",
+        "locator_he": "עמוד 2",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": null,

@@ -14,9 +14,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
-        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, p.8, נספח ג', פעולה 9100",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.8, נספח ג', פעולה 9100",
+        "locator_he": "עמוד 8, נספח ג', פעולה 9100",
+        "page": 8
       },
       "checked": "2026-11-06",
       "effective_from": "2027-01-01",
@@ -31,9 +34,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
-        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, p.8, נספח ג', פעולה 9100 (בתדירות מתמשכת)",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.8, נספח ג', פעולה 9100 (בתדירות מתמשכת)",
+        "locator_he": "עמוד 8, נספח ג', פעולה 9100 (בתדירות מתמשכת)",
+        "page": 8
       },
       "checked": "2026-11-06",
       "effective_from": "2027-01-01",
@@ -48,9 +54,12 @@
       "unit": "nis_per_month",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
-        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, p.8, נספח ג', פעולה 9100 (בתדירות מתמשכת), התוספת החודשית",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.8, נספח ג', פעולה 9100 (בתדירות מתמשכת), התוספת החודשית",
+        "locator_he": "עמוד 8, נספח ג', פעולה 9100 (בתדירות מתמשכת), התוספת החודשית",
+        "page": 8
       },
       "checked": "2026-11-06",
       "effective_from": "2027-01-01",
@@ -65,9 +74,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
-        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, p.9, נספח ג', פעולה 9101",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.9, נספח ג', פעולה 9101",
+        "locator_he": "עמוד 9, נספח ג', פעולה 9101",
+        "page": 9
       },
       "checked": "2026-11-06",
       "effective_from": "2027-01-01",
@@ -82,9 +94,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
-        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, p.9, נספח ג', פעולה 9109",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.9, נספח ג', פעולה 9109",
+        "locator_he": "עמוד 9, נספח ג', פעולה 9109",
+        "page": 9
       },
       "checked": "2026-11-06",
       "effective_from": "2027-01-01",
@@ -99,9 +114,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
-        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, p.7, נספח ג', פעולות 1902-1903",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.7, נספח ג', פעולות 1902-1903",
+        "locator_he": "עמוד 7, נספח ג', פעולות 1902-1903",
+        "page": 7
       },
       "checked": "2026-11-06",
       "effective_from": "2027-01-01",
@@ -116,9 +134,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
-        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, p.6, נספח ב', הנפקת סרטיפיקט למשתמש שאינו גוף מוסדי",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.6, נספח ב', הנפקת סרטיפיקט למשתמש שאינו גוף מוסדי",
+        "locator_he": "עמוד 6, נספח ב', הנפקת סרטיפיקט למשתמש שאינו גוף מוסדי",
+        "page": 6
       },
       "checked": "2026-10-25",
       "effective_from": "2027-01-01",
@@ -133,9 +154,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
-        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, p.5, נספח א', יתרת נכסים עד 1,000,000 אלפי ש\"ח",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5, נספח א', יתרת נכסים עד 1,000,000 אלפי ש\"ח",
+        "locator_he": "עמוד 5, נספח א', יתרת נכסים עד 1,000,000 אלפי ש\"ח",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": "2027-01-01",
@@ -150,9 +174,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-539/he/protocol_payments_for_use_of_Central_Pension_clearing_house_system.pdf.pdf",
-        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026, p.5, נספח א', יתרת נכסים מעל 100,000,000 אלפי ש\"ח",
+        "title": "חוזר סוכנים ויועצים 2026-10-6, תשלום עבור שימוש במערכת סליקה פנסיונית מרכזית - עדכון, 21.10.2026",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5, נספח א', יתרת נכסים מעל 100,000,000 אלפי ש\"ח",
+        "locator_he": "עמוד 5, נספח א', יתרת נכסים מעל 100,000,000 אלפי ש\"ח",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": "2027-01-01",

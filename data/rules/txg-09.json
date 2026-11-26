@@ -21,9 +21,13 @@
       "unit": "pct",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-        "title": "Tax Authority deductions booklet 2026, p.11 (\"מס נוסף על הכנסות גבוהות\")",
+        "title": "Tax Authority deductions booklet 2026",
         "publisher": "Israel Tax Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.11",
+        "locator_he": "עמוד 11",
+        "page": 11,
+        "quote": "מס נוסף על הכנסות גבוהות"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -41,9 +45,13 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-        "title": "Tax Authority deductions booklet 2026, p.11 (\"מס נוסף על הכנסות גבוהות\")",
+        "title": "Tax Authority deductions booklet 2026",
         "publisher": "Israel Tax Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.11",
+        "locator_he": "עמוד 11",
+        "page": 11,
+        "quote": "מס נוסף על הכנסות גבוהות"
       },
       "checked": "2026-10-25",
       "effective_from": "2024-01-01",

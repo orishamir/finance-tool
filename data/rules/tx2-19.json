@@ -26,9 +26,12 @@
       "unit": "years",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=#page=9",
-        "title": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג-2002 (קובץ התקנות 6214), p.9, s.2(3)",
+        "title": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג-2002 (קובץ התקנות 6214)",
         "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.9, s.2(3)",
+        "locator_he": "עמוד 9, סעיף 2(3)",
+        "page": 9
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -47,9 +50,12 @@
       "unit": "years",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n~b7VXyTyYJCYD0R8CbjV2A=#page=7",
-        "title": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ד-2003 (קובץ התקנות 6270), p.7, s.2(3)",
+        "title": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ד-2003 (קובץ התקנות 6270)",
         "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.7, s.2(3)",
+        "locator_he": "עמוד 7, סעיף 2(3)",
+        "page": 7
       },
       "checked": "2026-10-25",
       "effective_from": null,

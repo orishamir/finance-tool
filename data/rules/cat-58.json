@@ -20,9 +20,12 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-        "title": "חוזר גופים מוסדיים 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\", p.4, s.4(א)",
+        "title": "חוזר גופים מוסדיים 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\"",
         "publisher": "רשות שוק ההון, ביטוח וחיסכון",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.4, s.4(א)",
+        "locator_he": "עמוד 4, סעיף 4(א)",
+        "page": 4
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -40,9 +43,12 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
-        "title": "חוזר גופים מוסדיים 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\", p.4, s.4(א)",
+        "title": "חוזר גופים מוסדיים 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\"",
         "publisher": "רשות שוק ההון, ביטוח וחיסכון",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.4, s.4(א)",
+        "locator_he": "עמוד 4, סעיף 4(א)",
+        "page": 4
       },
       "checked": "2026-10-25",
       "effective_from": null,

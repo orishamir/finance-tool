@@ -27,7 +27,8 @@
       "page": 10,
       "quote": "ניירות ערך מסחריים",
       "checked": "2026-10-31",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",

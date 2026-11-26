@@ -136,7 +136,8 @@
       "page": 3,
       "quote": "הוראות פסקה זו לא יחולו על נכס שהוא חשבון בקופת גמל",
       "checked": "2026-10-25",
-      "qualifier": "(history: in force 2006 to 2011 only)"
+      "qualifier": "(history: in force 2006 to 2011 only)",
+      "standing": "superseded"
     },
     {
       "url": "https://fs.knesset.gov.il/20/law/20_ls1_323033.pdf",
@@ -151,7 +152,8 @@
       "page": 3,
       "quote": "יראו ברווחים כאמור הכנסה ולפיכך הם יהיו חייבים במס רווחי הון בשיעור 25% מהרווח הריאלי",
       "checked": "2026-10-25",
-      "qualifier": "(explanatory notes of the government bill; the operative text is s.3(ה4)(3))"
+      "qualifier": "(explanatory notes of the government bill; the operative text is s.3(ה4)(3))",
+      "standing": "bill"
     },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_ls1_831122.pdf",
@@ -166,7 +168,8 @@
       "page": 3,
       "quote": "מרכיב הפרשי ההצמדה ברווחים אלה זכאי לפטור ממס בידי יחיד, לפי סעיף 9(13) לפקודה, אם אינם הכנסה מעסק בידיו",
       "checked": "2026-10-25",
-      "qualifier": "(explanatory notes)"
+      "qualifier": "(explanatory notes)",
+      "standing": "bill"
     },
     {
       "url": "https://fs.knesset.gov.il/18/law/18_ls1_189245.pdf",
@@ -181,7 +184,8 @@
       "page": 2,
       "quote": "מוצע לראות את הריבית והרווחים שנצברו על כספים אלה, למעט הפרשי ההצמדה, כהכנסה מריבית",
       "checked": "2026-10-25",
-      "qualifier": "(explanatory notes; enacted as Amendment 190)"
+      "qualifier": "(explanatory notes; enacted as Amendment 190)",
+      "standing": "bill"
     }
   ],
   "derived_from": [

@@ -19,9 +19,12 @@
       "unit": "count",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/annual-debt-report-2025/he/annual-debt-report_annual-debt-report-2025-accessible-version-he.pdf",
-        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026), p.37",
+        "title": "Accountant General, Government Debt Management Unit, הדו\"ח השנתי 2025 (file dated April 2026)",
         "publisher": "Ministry of Finance, Accountant General",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.37",
+        "locator_he": "עמוד 37",
+        "page": 37
       },
       "checked": "2026-10-25",
       "effective_from": "2025-12-31",

@@ -22,7 +22,8 @@
       "strength": "primary",
       "quote": "It assumes that you reinvest coupon payments in the bond at the same interest rate the bond is earning.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign regulator, general mechanism)"
+      "qualifier": "(foreign regulator, general mechanism)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://www.ecb.europa.eu/stats/financial_markets_and_interest_rates/euro_area_yield_curves/html/index.en.html",
@@ -33,7 +34,8 @@
       "strength": "primary",
       "quote": "The zero coupon curve represents the yield to maturity of hypothetical zero coupon bonds, since they are not directly observable in the market for a wide range of maturities.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign central bank)"
+      "qualifier": "(foreign central bank)",
+      "standing": "foreign-view"
     }
   ],
   "derived_from": [

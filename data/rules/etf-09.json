@@ -18,9 +18,12 @@
       "unit": "pct",
       "source": {
         "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#page=15",
-        "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות, file p.15 (gazette p.1015), reg. 18(ה)(2)",
+        "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "file p.15 (gazette p.1015), reg. 18(ה)(2)",
+        "locator_he": "עמוד הקובץ 15 (עמוד הרשומות 1015), תקנה 18(ה)(2)",
+        "page": 15
       },
       "checked": "2026-11-07",
       "effective_from": null,
@@ -38,9 +41,12 @@
       "unit": "pct",
       "source": {
         "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F7646%2Fheb#page=15",
-        "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות, file p.15 (gazette p.1015), reg. 18(ה)(2)",
+        "title": "תקנות השקעות משותפות בנאמנות (דוח שנתי של קרן), התשע\"ו-2016, קובץ התקנות 7646 (12.4.2016), סריקת רשומות",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "file p.15 (gazette p.1015), reg. 18(ה)(2)",
+        "locator_he": "עמוד הקובץ 15 (עמוד הרשומות 1015), תקנה 18(ה)(2)",
+        "page": 15
       },
       "checked": "2026-11-07",
       "effective_from": null,

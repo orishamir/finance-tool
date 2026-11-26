@@ -26,10 +26,17 @@
       "page": 1,
       "quote": "החברה המנהלת של הקופה המקבלת לא תאפשר לעמית לחזור בו מבחירתו לקבלת קצבה",
       "checked": "2026-11-07",
-      "qualifier": "(the regulator's draft)"
+      "qualifier": "(the regulator's draft)",
+      "standing": "draft"
     }
   ],
   "derived_from": [
     "KGL-09"
+  ],
+  "see_also": [
+    {
+      "kind": "question",
+      "id": "TXK OQ4"
+    }
   ]
 }

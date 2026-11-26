@@ -26,7 +26,8 @@
       "locator_he": "עמודים 1 עד 2",
       "page": 1,
       "checked": "2026-11-07",
-      "qualifier": "(foreign regulator)"
+      "qualifier": "(foreign regulator)",
+      "standing": "foreign-view"
     }
   ]
 }

@@ -18,9 +18,13 @@
       "unit": "pct",
       "source": {
         "url": "https://www.moreinvest.co.il/media/ckfdk24k/תקנון-קרן-פנסיה-מקיפה-6-2025.pdf",
-        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025, p.11, s.1 \"שכר מבוטח\"",
+        "title": "Mor comprehensive pension fund bylaws, version 01.06.2025",
         "publisher": "Mor Gemel and Pension",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.11, s.1",
+        "locator_he": "עמוד 11, סעיף 1",
+        "page": 11,
+        "quote": "שכר מבוטח"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -38,9 +42,13 @@
       "unit": "pct",
       "source": {
         "url": "https://media.harel-group.co.il/media/slyhz2yj/תקנון-הראל-פנסיה-יוני-2025.pdf",
-        "title": "Harel comprehensive pension fund bylaws, edition 20, 06/2025, p.10, s.1 \"שכר מבוטח\"",
+        "title": "Harel comprehensive pension fund bylaws, edition 20, 06/2025",
         "publisher": "Harel",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.10, s.1",
+        "locator_he": "עמוד 10, סעיף 1",
+        "page": 10,
+        "quote": "שכר מבוטח"
       },
       "checked": "2026-10-27",
       "effective_from": null,

@@ -37,7 +37,8 @@
       "strength": "primary",
       "quote": "Laddering can help reduce the risk that all your bonds will mature at a time when interest rates are low.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign regulator, general mechanism)"
+      "qualifier": "(foreign regulator, general mechanism)",
+      "standing": "foreign-view"
     }
   ]
 }

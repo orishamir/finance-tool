@@ -40,7 +40,8 @@
       "page": 7,
       "quote": "לא קיים מסלול קופת גמל בניהול אישי בקופת גמל מסלולית",
       "checked": "2026-11-14",
-      "qualifier": "(draft)"
+      "qualifier": "(draft)",
+      "standing": "draft"
     },
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&q=אישי&filters={\"REPORT_PERIOD\":202609}",

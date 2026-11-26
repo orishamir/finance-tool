@@ -56,7 +56,8 @@
       "page": 10,
       "quote": "למעט ניירות ערך המונפקים בידי הממשלה או בידי בנק",
       "checked": "2026-11-07",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.sec.gov/Archives/edgar/data/52749/000110465925072790/tm2522097-1_424b2.htm",

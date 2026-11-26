@@ -28,5 +28,11 @@
       "quote": "מסלול אג״ח ממשלות",
       "checked": "2026-11-07"
     }
+  ],
+  "see_also": [
+    {
+      "kind": "question",
+      "id": "IRA OQ10"
+    }
   ]
 }

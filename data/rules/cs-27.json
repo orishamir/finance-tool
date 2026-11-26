@@ -20,9 +20,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-740/he/regulation_h_2018-9-25.pdf",
-        "title": "חוזר גופים מוסדיים 2018-9-25 (רשות שוק ההון), p.3, s.5(ב)(1)",
+        "title": "חוזר גופים מוסדיים 2018-9-25 (רשות שוק ההון)",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, s.5(ב)(1)",
+        "locator_he": "עמוד 3, סעיף 5(ב)(1)",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -40,9 +43,12 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-740/he/regulation_h_2018-9-25.pdf",
-        "title": "חוזר גופים מוסדיים 2018-9-25 (רשות שוק ההון), pp.3-4, s.5",
+        "title": "חוזר גופים מוסדיים 2018-9-25 (רשות שוק ההון)",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.3-4, s.5",
+        "locator_he": "עמודים 3 עד 4, סעיף 5",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,

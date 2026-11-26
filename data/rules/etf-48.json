@@ -15,9 +15,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.msci.com/documents/10199/178e6643-6ae6-47b9-82be-e1fc565ededb",
-        "title": "MSCI, \"MSCI World Index (USD)\" factsheet, 30 September 2026, p.1",
+        "title": "MSCI, \"MSCI World Index (USD)\" factsheet, 30 September 2026",
         "publisher": "MSCI",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -35,9 +37,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.msci.com/documents/10199/178e6643-6ae6-47b9-82be-e1fc565ededb",
-        "title": "MSCI, \"MSCI World Index (USD)\" factsheet, 30 September 2026, p.1",
+        "title": "MSCI, \"MSCI World Index (USD)\" factsheet, 30 September 2026",
         "publisher": "MSCI",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -55,9 +59,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.msci.com/documents/10199/8d97d244-4685-4200-a24c-3e2942e3adeb",
-        "title": "MSCI, \"MSCI ACWI Index (USD)\" factsheet, 30 September 2026, p.1",
+        "title": "MSCI, \"MSCI ACWI Index (USD)\" factsheet, 30 September 2026",
         "publisher": "MSCI",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -75,9 +81,11 @@
       "unit": "pct",
       "source": {
         "url": "https://www.msci.com/index/methodology/latest/GIMI",
-        "title": "MSCI, \"MSCI GIMI Methodology\", October 2026, p.24",
+        "title": "MSCI, \"MSCI GIMI Methodology\", October 2026",
         "publisher": "MSCI",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.24",
+        "locator_he": "עמוד 24"
       },
       "checked": "2026-10-25",
       "effective_from": null,

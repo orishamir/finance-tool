@@ -53,7 +53,8 @@
       "locator_he": "עמוד הקובץ 3, סעיפים 3.1.1.3, 3.1.1.4, 3.1.2",
       "quote": "ותמוסה בהתאם להוראות הפקודה",
       "checked": "2026-10-31",
-      "qualifier": "(a published ruling on a US REIT; analogy only here)"
+      "qualifier": "(a published ruling on a US REIT; analogy only here)",
+      "standing": "does-not-answer"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -81,7 +82,8 @@
       "locator_he": "עמודים 20 עד 21, סעיף 4.4",
       "page": 20,
       "checked": "2026-10-26",
-      "qualifier": "(contrary, before Amendment 147)"
+      "qualifier": "(contrary, before Amendment 147)",
+      "standing": "superseded"
     },
     {
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-7-2003/he/Policy_IncomeTaxInst_hoz7-2003.pdf",
@@ -96,7 +98,8 @@
       "page": 21,
       "quote": "החיוב במס של בעל היחידה יערך לפי השקעות הקרן",
       "checked": "2026-10-26",
-      "qualifier": "(contrary, before Amendment 147)"
+      "qualifier": "(contrary, before Amendment 147)",
+      "standing": "superseded"
     },
     {
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-22-2002/he/Policy_IncomeTaxInst_hoz22-2002.pdf",
@@ -168,7 +171,8 @@
     },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_299994.pdf#page=28",
-      "title": "file p.28",
+      "title": "חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, ספר החוקים 2023",
+      "title_he": "חוק לתיקון פקודת מס הכנסה (מס' 147), התשס\"ה-2005, ספר החוקים 2023",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",
@@ -207,7 +211,7 @@
     },
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1261001-1262000/P1261055-00.pdf#page=14",
-      "title": "file p.14",
+      "title": "נספח לתשקיף קרן חוץ נסחרת, iShares II plc, iShares J.P. Morgan $ EM Bond UCITS ETF USD (Acc) (2019)",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
@@ -220,7 +224,7 @@
     },
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1261001-1262000/P1261055-00.pdf#page=15",
-      "title": "file p.15",
+      "title": "נספח לתשקיף קרן חוץ נסחרת, iShares II plc, iShares J.P. Morgan $ EM Bond UCITS ETF USD (Acc) (2019)",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
@@ -259,7 +263,7 @@
     },
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1404001-1405000/P1404927-01.pdf#page=19",
-      "title": "file pp.19-20",
+      "title": "נספח לתשקיף קרן חוץ נסחרת, Multi Units Luxembourg, Lyxor S&P 500 UCITS ETF Acc (2021)",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
@@ -308,7 +312,7 @@
     },
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1609001-1610000/P1609964-00.pdf#page=20",
-      "title": "file pp.20-21",
+      "title": "נספח לתשקיף קרן חוץ נסחרת, Invesco Markets II plc, Invesco FTSE All-World UCITS ETF Acc (2024)",
       "publisher": "Maya (TASE filings)",
       "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
       "kind": "institution_doc",
@@ -331,6 +335,12 @@
       "page": 1,
       "checked": "2026-10-26",
       "qualifier": "(BlackRock's own document on its fund; example only)"
+    }
+  ],
+  "see_also": [
+    {
+      "kind": "method",
+      "id": "F-65"
     }
   ]
 }

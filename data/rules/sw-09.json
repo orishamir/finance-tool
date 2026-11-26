@@ -18,9 +18,12 @@
       "unit": "business_days",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
-        "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל, pp.8-9, s.6(א)-(ב)",
+        "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.8-9, s.6(א)-(ב)",
+        "locator_he": "עמודים 8 עד 9, סעיף 6(א)-(ב)",
+        "page": 8
       },
       "checked": "2026-10-25",
       "effective_from": null,

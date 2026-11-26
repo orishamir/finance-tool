@@ -21,9 +21,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-63b3dc4fa5dd2/madrich_090925.pdf#page=3",
-        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025), p.3",
+        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025)",
         "publisher": "Israel Securities Authority",
         "strength": "primary",
+        "locator": "p.3",
+        "locator_he": "עמוד 3",
+        "page": 3,
         "quote": "החל מיום שני, 5 בינואר 2026"
       },
       "checked": "2026-11-12",
@@ -42,9 +45,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-63b3dc4fa5dd2/madrich_090925.pdf#page=12",
-        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025), p.12, s.5.2",
+        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025)",
         "publisher": "Israel Securities Authority",
         "strength": "primary",
+        "locator": "p.12, s.5.2",
+        "locator_he": "עמוד 12, סעיף 5.2",
+        "page": 12,
         "quote": "כלומר, בימים שני עד שישי"
       },
       "checked": "2026-11-12",
@@ -63,9 +69,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-63b3dc4fa5dd2/madrich_090925.pdf#page=12",
-        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025), p.12, s.5.2",
+        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025)",
         "publisher": "Israel Securities Authority",
         "strength": "primary",
+        "locator": "p.12, s.5.2",
+        "locator_he": "עמוד 12, סעיף 5.2",
+        "page": 12,
         "quote": "בימים שני עד חמישי בלבד"
       },
       "checked": "2026-11-12",
@@ -84,9 +93,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-63b3dc4fa5dd2/madrich_090925.pdf#page=12",
-        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025), p.12, s.5.2",
+        "title": "מדריך שינוי ימי המסחר בבורסה: מדריך בנושא פעילות רשות ניירות ערך ומפוקחיה (רשות ניירות ערך, ספטמבר 2025)",
         "publisher": "Israel Securities Authority",
         "strength": "primary",
+        "locator": "p.12, s.5.2",
+        "locator_he": "עמוד 12, סעיף 5.2",
+        "page": 12,
         "quote": "עשרה אחוזים מהשווי הנקי של נכסי"
       },
       "checked": "2026-11-12",

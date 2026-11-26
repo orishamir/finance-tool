@@ -20,9 +20,12 @@
       "unit": "days",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
-        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח רשות ניירות ערך, p.39, s.48",
+        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח רשות ניירות ערך",
         "publisher": "רשות ניירות ערך",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.39, s.48",
+        "locator_he": "עמוד 39, סעיף 48",
+        "page": 39
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -40,9 +43,12 @@
       "unit": "days",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
-        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח רשות ניירות ערך, p.39, s.48",
+        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח רשות ניירות ערך",
         "publisher": "רשות ניירות ערך",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.39, s.48",
+        "locator_he": "עמוד 39, סעיף 48",
+        "page": 39
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -60,9 +66,12 @@
       "unit": "days",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf",
-        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח רשות ניירות ערך, p.39, s.48",
+        "title": "חוק השקעות משותפות בנאמנות, התשנ\"ד-1994, נוסח רשות ניירות ערך",
         "publisher": "רשות ניירות ערך",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.39, s.48",
+        "locator_he": "עמוד 39, סעיף 48",
+        "page": 39
       },
       "checked": "2026-10-25",
       "effective_from": null,

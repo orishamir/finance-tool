@@ -39,9 +39,12 @@
       "unit": "months",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=2",
-        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית\"), התשס\"ו-2006 (קובץ התקנות 6457), p.2 (gazette p.400), reg. 1 (תקופת ריבית)",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית\"), התשס\"ו-2006 (קובץ התקנות 6457)",
         "publisher": "Reshumot (Ministry of Justice)",
         "strength": "primary",
+        "locator": "p.2 (gazette p.400), reg. 1 (תקופת ריבית)",
+        "locator_he": "עמוד 2 (עמוד הרשומות 400), תקנה 1 (תקופת ריבית)",
+        "page": 2,
         "quote": "בחודש השנים עשר שקדם לו"
       },
       "checked": "2026-11-12",

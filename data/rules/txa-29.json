@@ -23,9 +23,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
         "publisher": "Phoenix Insurance",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "section 125ד",
+        "locator_he": "סעיף 125ד"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -44,9 +46,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
         "publisher": "Phoenix Insurance",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "section 125ד",
+        "locator_he": "סעיף 125ד"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -64,9 +68,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
         "publisher": "Phoenix Insurance",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "section 125ד",
+        "locator_he": "סעיף 125ד"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -85,9 +91,11 @@
       "unit": "nis",
       "source": {
         "url": "https://www.fnx.co.il/savings/savings-routes/faq/",
-        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות, section 125ד",
+        "title": "פוליסת השקעה הפניקס אינווסט: שאלות ותשובות",
         "publisher": "Phoenix Insurance",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "section 125ד",
+        "locator_he": "סעיף 125ד"
       },
       "checked": "2026-10-25",
       "effective_from": null,

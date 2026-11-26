@@ -18,9 +18,12 @@
       "unit": "count",
       "source": {
         "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
-        "title": "TASE, מדריך המסחר (doc. 274698), פרק א' s.6, p.ב3 (update 144, 3.3.26): \"מק\"מ - שלושה ימי מסחר לפני יום הפדיון\"",
+        "title": "TASE, מדריך המסחר (doc. 274698) (update 144, 3.3.26)",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "פרק א' s.6, p.ב3",
+        "locator_he": "פרק א' סעיף 6, עמוד ב3",
+        "quote": "מק״מ - שלושה ימי מסחר לפני יום הפדיון"
       },
       "checked": "2026-10-26",
       "effective_from": null,

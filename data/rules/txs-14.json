@@ -21,9 +21,12 @@
       "unit": "pct",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nxVBukfCLPiTSKOFP3CGC94=#page=9",
-        "title": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס\"ג-2003, קובץ התקנות 6223, p.9, reg. 1",
+        "title": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס\"ג-2003, קובץ התקנות 6223",
         "publisher": "רשומות (משרד המשפטים)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.9, reg. 1",
+        "locator_he": "עמוד 9, תקנה 1",
+        "page": 9
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -41,9 +44,12 @@
       "unit": "days",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3nxVBukfCLPiTSKOFP3CGC94=#page=9",
-        "title": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס\"ג-2003, קובץ התקנות 6223, p.9, reg. 1",
+        "title": "תקנות מס הכנסה (חישוב סכום אינפלציוני במכירת יחידה בקרן נאמנות), התשס\"ג-2003, קובץ התקנות 6223",
         "publisher": "רשומות (משרד המשפטים)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.9, reg. 1",
+        "locator_he": "עמוד 9, תקנה 1",
+        "page": 9
       },
       "checked": "2026-10-25",
       "effective_from": null,

@@ -21,9 +21,12 @@
       "unit": "months",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=4",
-        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017), p.4, s.6(א)(1)",
+        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.4, s.6(א)(1)",
+        "locator_he": "עמוד 4, סעיף 6(א)(1)",
+        "page": 4,
         "quote": "לתקופה שבין 0 חודשים לבין 240 חודשים"
       },
       "checked": "2026-11-15",
@@ -42,9 +45,12 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=4",
-        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017), p.4, s.6(א)(1)",
+        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
         "publisher": "Capital Market, Insurance and Savings Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.4, s.6(א)(1)",
+        "locator_he": "עמוד 4, סעיף 6(א)(1)",
+        "page": 4
       },
       "checked": "2026-11-15",
       "effective_from": null,
@@ -62,9 +68,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=4",
-        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017), p.4, s.6(א)(2)",
+        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.4, s.6(א)(2)",
+        "locator_he": "עמוד 4, סעיף 6(א)(2)",
+        "page": 4,
         "quote": "ובלבד שהשיעור לא יפחת מ-30% מהפנסיה האחרונה"
       },
       "checked": "2026-11-15",
@@ -83,9 +92,12 @@
       "unit": "pct_per_year",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=1",
-        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017), p.1, definition (יא)",
+        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.1, definition (יא)",
+        "locator_he": "עמוד 1, הגדרת (יא)",
+        "page": 1,
         "quote": "ריבית שנתית אפקטיבית בשיעור של 4% או בשיעור אחר כפי שיקבע הממונה מזמן לזמן"
       },
       "checked": "2026-11-15",

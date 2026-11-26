@@ -22,7 +22,8 @@
       "kind": "regulator_page",
       "strength": "primary",
       "checked": "2026-10-26",
-      "qualifier": "(foreign regulator)"
+      "qualifier": "(foreign regulator)",
+      "standing": "foreign-view"
     }
   ],
   "derived_from": [

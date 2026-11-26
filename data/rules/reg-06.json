@@ -18,9 +18,13 @@
       "unit": "days",
       "source": {
         "url": "https://boi.org.il/media/s5ub1z12/103.pdf",
-        "title": "פקודת הבנקאות, 1941 (קובץ חקיקה בנקאית של בנק ישראל, פריט 103), p.11, s.8יא(ה): \"שלא יפחת מתשעים יום מיום פרסום ההודעה\"",
+        "title": "פקודת הבנקאות, 1941 (קובץ חקיקה בנקאית של בנק ישראל, פריט 103)",
         "publisher": "Bank of Israel",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.11, s.8יא(ה)",
+        "locator_he": "עמוד 11, סעיף 8יא(ה)",
+        "page": 11,
+        "quote": "שלא יפחת מתשעים יום מיום פרסום ההודעה"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -50,7 +54,8 @@
       "page": 10,
       "quote": "עד לסכום מסויים לגבי כל פקדון",
       "checked": "2026-11-06",
-      "qualifier": "(state body's consolidated copy)"
+      "qualifier": "(state body's consolidated copy)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://boi.org.il/media/s5ub1z12/103.pdf",
@@ -67,7 +72,8 @@
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_12224370.pdf#page=50",
-      "title": "the same gazette",
+      "title": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ\"ו-2026 (ספר החוקים 3510)",
+      "title_he": "חוק התוכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנת התקציב 2026), התשפ״ו-2026 (ספר החוקים 3510)",
       "publisher": "The Knesset",
       "publisher_he": "הכנסת",
       "kind": "law",

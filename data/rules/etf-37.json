@@ -14,9 +14,12 @@
       "unit": "count",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.5",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403)",
         "publisher": "S&P Dow Jones Indices",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5",
+        "locator_he": "עמוד 5",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": null,

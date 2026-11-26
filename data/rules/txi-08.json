@@ -39,9 +39,11 @@
       "unit": "pct",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmTO82n6LewtS3~kBf4O~zss=#page=7",
-        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005), gazette p.289, reg. 4",
+        "title": "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס\"ו-2005, קובץ התקנות 6449 (29.12.2005)",
         "publisher": "רשומות",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "gazette p.289, reg. 4",
+        "locator_he": "עמוד הרשומות 289, תקנה 4"
       },
       "checked": "2026-11-07",
       "effective_from": "2006-01-01",

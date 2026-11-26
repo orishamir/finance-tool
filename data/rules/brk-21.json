@@ -17,9 +17,12 @@
       "unit": "days",
       "source": {
         "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",
-        "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), p.3, s.5(א)(1)",
+        "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל)",
         "publisher": "בנק ישראל",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, s.5(א)(1)",
+        "locator_he": "עמוד 3, סעיף 5(א)(1)",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,

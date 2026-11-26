@@ -19,9 +19,12 @@
       "unit": "pct_per_year",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SR97yUyP2jSKVKeFojNZ63rHiXBWJs93gBRaURcO88U=#page=2",
-        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013, קובץ התקנות 7236, p.2 (gazette p.900), reg. 3 (type 4 fund)",
+        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013, קובץ התקנות 7236 (type 4 fund)",
         "publisher": "רשומות (משרד המשפטים)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2 (gazette p.900), reg. 3",
+        "locator_he": "עמוד 2 (עמוד הרשומות 900), תקנה 3",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -39,9 +42,12 @@
       "unit": "pct_per_year",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SR97yUyP2jSKVKeFojNZ63rHiXBWJs93gBRaURcO88U=#page=2",
-        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013, קובץ התקנות 7236, p.2 (gazette p.900), reg. 3 (type 1 fund)",
+        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013, קובץ התקנות 7236 (type 1 fund)",
         "publisher": "רשומות (משרד המשפטים)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2 (gazette p.900), reg. 3",
+        "locator_he": "עמוד 2 (עמוד הרשומות 900), תקנה 3",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -59,9 +65,12 @@
       "unit": "pct_per_year",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SR97yUyP2jSKVKeFojNZ63rHiXBWJs93gBRaURcO88U=#page=2",
-        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013, קובץ התקנות 7236, p.2 (gazette p.900), reg. 3 (type 3 fund)",
+        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ג-2013, קובץ התקנות 7236 (type 3 fund)",
         "publisher": "רשומות (משרד המשפטים)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2 (gazette p.900), reg. 3",
+        "locator_he": "עמוד 2 (עמוד הרשומות 900), תקנה 3",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": null,

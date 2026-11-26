@@ -37,7 +37,7 @@
     },
     {
       "url": "https://www.ishares.com/uk/individual/en/literature/annual-report/ishares-vii-plc-en-annual-report-2025.pdf#page=119",
-      "title": "p.119",
+      "title": "iShares VII plc, annual report and audited financial statements, year ended 31 July 2025",
       "publisher": "iShares",
       "publisher_he": "iShares",
       "kind": "institution_doc",
@@ -62,7 +62,7 @@
     },
     {
       "url": "https://www.ishares.com/uk/individual/en/literature/annual-report/ishares-plc-annual-report-en-28-feb-26.pdf#page=128",
-      "title": "p.128",
+      "title": "iShares plc, annual report and audited financial statements, year ended 28 February 2026",
       "publisher": "iShares",
       "publisher_he": "iShares",
       "kind": "institution_doc",
@@ -86,7 +86,7 @@
     },
     {
       "url": "https://fund-docs.vanguard.com/etf-annual-report.pdf#page=1001",
-      "title": "p.1001",
+      "title": "Vanguard Funds plc, annual report, 30 June 2026",
       "publisher": "Vanguard",
       "publisher_he": "Vanguard",
       "kind": "institution_doc",
@@ -171,6 +171,12 @@
       "strength": "institution",
       "page": 1,
       "checked": "2026-11-12"
+    }
+  ],
+  "see_also": [
+    {
+      "kind": "method",
+      "id": "F-107"
     }
   ]
 }

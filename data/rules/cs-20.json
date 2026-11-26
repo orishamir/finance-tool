@@ -23,9 +23,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
-        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report",
         "publisher": "National Insurance Institute",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.3, 6",
+        "locator_he": "עמודים 3, 6",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -43,9 +46,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
-        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report",
         "publisher": "National Insurance Institute",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.3, 6",
+        "locator_he": "עמודים 3, 6",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -63,9 +69,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
-        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report",
         "publisher": "National Insurance Institute",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.3, 6",
+        "locator_he": "עמודים 3, 6",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -83,9 +92,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
-        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report",
         "publisher": "National Insurance Institute",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.3, 6",
+        "locator_he": "עמודים 3, 6",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -103,9 +115,12 @@
       "unit": "count",
       "source": {
         "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
-        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report",
         "publisher": "National Insurance Institute",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.3, 6",
+        "locator_he": "עמודים 3, 6",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -123,9 +138,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.btl.gov.il/Publications/more_publications/Documents/HISAHON2025%20new.pdf",
-        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report, pp.3, 6",
+        "title": "National Insurance Institute, \"חיסכון לכל ילד\" 2025 report",
         "publisher": "National Insurance Institute",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.3, 6",
+        "locator_he": "עמודים 3, 6",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,

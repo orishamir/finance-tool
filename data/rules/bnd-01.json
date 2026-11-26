@@ -52,7 +52,8 @@
       "strength": "primary",
       "quote": "An investor calculates the price of a bond by discounting the expected future cash flows.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign central bank, general mechanism)"
+      "qualifier": "(foreign central bank, general mechanism)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://moneysmart.gov.au/investments-paying-interest/bonds",
@@ -63,7 +64,8 @@
       "strength": "primary",
       "quote": "Interest rate risk – the risk that a change in interest rates could reduce the market value of the bond.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign regulator, general mechanism; page updated 2 October 2026)"
+      "qualifier": "(foreign regulator, general mechanism; page updated 2 October 2026)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/3-factors-that-affect-bond-prices/",
@@ -74,7 +76,8 @@
       "strength": "primary",
       "quote": "If the rate on your bond is higher than general interest rates, then your bond is still likely to be attractive to investors",
       "checked": "2026-11-15",
-      "qualifier": "(foreign regulator, general mechanism; page modified 22.9.2023)"
+      "qualifier": "(foreign regulator, general mechanism; page modified 22.9.2023)",
+      "standing": "foreign-view"
     }
   ]
 }

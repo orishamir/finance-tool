@@ -15,9 +15,11 @@
       "unit": "pct_of_balance_per_period",
       "source": {
         "url": "https://www.boi.org.il/media/mi2driua/159a.pdf#page=17",
-        "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008, עמוד 17, התוספת הראשונה חלק 4, פרט 4(א)(5)",
+        "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
         "publisher": "בנק ישראל",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "עמוד 17, התוספת הראשונה חלק 4, פרט 4(א)(5)",
+        "locator_he": "עמוד 17, התוספת הראשונה חלק 4, פרט 4(א)(5)"
       },
       "checked": "2026-11-06",
       "effective_from": null,

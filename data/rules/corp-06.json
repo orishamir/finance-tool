@@ -26,7 +26,8 @@
       "page": 44,
       "quote": "ולפחות אחת לשנה",
       "checked": "2026-11-12",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=45",
@@ -41,7 +42,8 @@
       "page": 45,
       "quote": "לפי דרישה סבירה של מחזיקים בעשרה אחוזים לפחות מיתרת הערך הנקוב",
       "checked": "2026-11-12",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=43",
@@ -55,7 +57,8 @@
       "locator_he": "סעיפים 35ח, 35ח1, 35ט",
       "page": 43,
       "checked": "2026-10-31",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

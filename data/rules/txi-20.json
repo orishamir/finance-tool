@@ -20,9 +20,13 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-        "title": "Tax Authority deductions booklet from January 2026 (updated April 2026), p.14, \"ניכוי מריבית - תקרה מוטבת 125ד(א)\"",
+        "title": "Tax Authority deductions booklet from January 2026 (updated April 2026)",
         "publisher": "Israel Tax Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.14",
+        "locator_he": "עמוד 14",
+        "page": 14,
+        "quote": "ניכוי מריבית - תקרה מוטבת 125ד(א)"
       },
       "checked": "2026-10-25",
       "effective_from": "2024-01-01",
@@ -40,9 +44,13 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-        "title": "Tax Authority deductions booklet from January 2026 (updated April 2026), p.14, \"פטור למעוט הכנסה 125ד(ב)\"",
+        "title": "Tax Authority deductions booklet from January 2026 (updated April 2026)",
         "publisher": "Israel Tax Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.14",
+        "locator_he": "עמוד 14",
+        "page": 14,
+        "quote": "פטור למעוט הכנסה 125ד(ב)"
       },
       "checked": "2026-10-25",
       "effective_from": "2024-01-01",
