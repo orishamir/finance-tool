@@ -62,9 +62,9 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
+        "BANK-15",
         "MF-16",
         "MF-34",
-        "MF-39",
         "TXS-24"
       ],
       "state": "sourced",
