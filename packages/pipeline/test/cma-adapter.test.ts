@@ -109,15 +109,15 @@ describe("normalise", () => {
           tax_year: null,
           update_rule: "market",
           state: "sourced",
-          rule_ids: ["CAT-35", "CAT-36", "CAT-37"],
+          rule_ids: ["CAT-36", "CAT-37"],
           source: expect.objectContaining({ strength: "primary", title: expect.stringContaining("AVG_ANNUAL_MANAGEMENT_FEE") }),
         }),
         avg_deposit_fee: expect.objectContaining({ value: 0.05, unit: "pct_of_deposit" }),
       }),
       holdings: {
-        total_assets: expect.objectContaining({ value: 25706.14, unit: "nis_millions", state: "sourced", effective_to: "2026-09-30", rule_ids: ["CAT-24"] }),
+        total_assets: expect.objectContaining({ value: 25706.14, unit: "nis_millions", state: "sourced", effective_to: "2026-09-30", rule_ids: [] }),
         stock_market_exposure: expect.objectContaining({ value: 12378.07, unit: "nis_millions", source: expect.objectContaining({ title: expect.stringContaining("STOCK_MARKET_EXPOSURE") }) }),
-        foreign_currency_exposure: expect.objectContaining({ value: 5156.92, unit: "nis_millions", notes: expect.stringContaining("מטבע חוץ") }),
+        foreign_currency_exposure: expect.objectContaining({ value: 5156.92, unit: "nis_millions", rule_ids: ["CAT-44"], notes: expect.stringContaining("OQ4") }),
       },
       yields: {
         avg_annual_yield_3y: expect.objectContaining({ value: 13.16, unit: "pct_per_year", state: "sourced", rule_ids: ["CAT-04", "CAT-05"] }),
@@ -420,13 +420,13 @@ describe("holdings (F-87 inputs)", () => {
     const h = buildHoldings(base, { raw_fields: { TOTAL_ASSETS: "0", STOCK_MARKET_EXPOSURE: "" } })!;
     expect(h.total_assets.value).toBe(0);
     expect(h.stock_market_exposure.value).toBeNull();
-    expect(h.stock_market_exposure.notes).toMatch(/^לא דווח/);
+    expect(h.stock_market_exposure.notes).toBe("הסיבה לא ידועה.");
   });
 
-  it("says the exposure unit is read like the assets, and the measure is unpublished", () => {
+  it("says the exposure unit is not in the dictionary, and that the definition is silent on holdings through funds", () => {
     const h = buildHoldings(base, { raw_fields: { TOTAL_ASSETS: "10", STOCK_MARKET_EXPOSURE: "5" } })!;
     expect(h.stock_market_exposure.notes).toContain("OQ4");
-    expect(h.stock_market_exposure.notes).toContain("נגזרים");
+    expect(h.stock_market_exposure.notes).toContain("דרך קרן");
     expect(buildHoldings(base, { raw_fields: { AVG_DEPOSIT_FEE: "0" } })).toBeUndefined();
     // a file without the currency column has no currency value, and still has the other two
     expect(h.foreign_currency_exposure).toBeUndefined();
@@ -446,15 +446,15 @@ describe("yields (the track browser's past returns, CAT-04, CAT-05)", () => {
     expect(y.avg_annual_yield_3y.rule_ids).toEqual(["CAT-04", "CAT-05"]);
     expect(y.avg_annual_yield_3y.source.title).toContain("AVG_ANNUAL_YIELD_TRAILING_3YRS");
     expect(y.avg_annual_yield_5y.source.title).toContain("202609");
-    expect(y.avg_annual_yield_3y.notes).toContain("לפני דמי ניהול ולפני מס");
+    expect(y.avg_annual_yield_3y.notes).toBeUndefined();
     expect([y.avg_annual_yield_3y.effective_from, y.avg_annual_yield_3y.effective_to]).toEqual(["2026-09-01", "2026-09-30"]);
   });
 
   it("an empty yield is null, and says when the track is younger than the window", () => {
     const y = buildYields(base, { raw_fields: { AVG_ANNUAL_YIELD_TRAILING_3YRS: "", AVG_ANNUAL_YIELD_TRAILING_5YRS: "" }, inception_date: "2022-05-01" })!;
     expect(y.avg_annual_yield_3y.value).toBeNull();
-    expect(y.avg_annual_yield_3y.notes).toBe("לא דווח.");
-    expect(y.avg_annual_yield_5y.notes).toContain("עוד אין 5 שנים מלאות");
+    expect(y.avg_annual_yield_3y.notes).toBe("הסיבה לא ידועה.");
+    expect(y.avg_annual_yield_5y.notes).toContain("עברו 5 שנים מלאות");
     // a negative return is a return, kept as reported
     expect(buildYields(base, { raw_fields: { AVG_ANNUAL_YIELD_TRAILING_3YRS: "-1.5" }, inception_date: null })!.avg_annual_yield_3y.value).toBe(-1.5);
   });
@@ -486,15 +486,14 @@ describe("fees", () => {
     expect(feeYear("2026-09")).toBe(2025);
     const v = f(103).fees.avg_annual_management_fee;
     expect([v.effective_from, v.effective_to]).toEqual(["2025-01-01", "2025-12-31"]);
-    expect(v.notes).toContain("2025");
-    expect(v.notes).toContain("נגבו בפועל");
+    expect(v.notes).toBeUndefined();
     expect(feeYear("2027-01")).toBe(2026);
   });
 
   it("an empty fee is null with a reason, not zero, and the file still validates", () => {
     const v = f(15995).fees;
     expect(v.avg_annual_management_fee.value).toBeNull();
-    expect(v.avg_annual_management_fee.notes).toMatch(/^לא דווח/);
+    expect(v.avg_annual_management_fee.notes).toContain("שנה קלנדרית מלאה");
     expect(v.avg_deposit_fee.value).toBeNull();
     expect(cmaPeriodFile.safeParse(file).success).toBe(true);
   });
@@ -512,7 +511,7 @@ describe("fees", () => {
   it("an empty fee of an old track says the reason is unknown; of a track opened last year, no full year yet", () => {
     const base = { dataset: "gemelnet" as const, report_period: "2026-09", checked: "2026-10-23", source: file.source };
     const raw = { AVG_ANNUAL_MANAGEMENT_FEE: "", AVG_DEPOSIT_FEE: "" };
-    expect(buildFees(base, { raw_fields: raw, inception_date: "2010-01-01" }).avg_annual_management_fee.notes).toContain("OQ22");
+    expect(buildFees(base, { raw_fields: raw, inception_date: "2010-01-01" }).avg_annual_management_fee.notes).toBe("הסיבה לא ידועה.");
     expect(buildFees(base, { raw_fields: raw, inception_date: "2026-03-01" }).avg_annual_management_fee.notes).toContain("שנה קלנדרית מלאה");
   });
 
@@ -542,13 +541,13 @@ describe("fees", () => {
     expect(ira.length + iraStudy.length).toBe(15);
   });
 
-  it("pension fees carry CAT-39 and say they are for the whole fund", () => {
+  it("pension fees carry CAT-39, the rule that the pair is the whole fund's", () => {
     const csv =
       'FUND_ID,FUND_NAME,FUND_CLASSIFICATION,CONTROLLING_CORPORATION,MANAGING_CORPORATION,REPORT_PERIOD,INCEPTION_DATE,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE,MANAGING_CORPORATION_LEGAL_ID\n' +
       '"1589","קרן","קרנות חדשות","בקרה","מנהלת","202609","2015-12-31T00:00:00","0.11","1.25","512065202"\n';
     const p = normalise(csv, { ...ctx, config: pensia }).file!.funds[0]!.fees;
     expect(p.avg_deposit_fee.rule_ids).toContain("CAT-39");
-    expect(p.avg_deposit_fee.notes).toContain("לקרן כולה");
+    expect(p.avg_deposit_fee.rule_ids).toEqual(["CAT-35", "CAT-36", "CAT-37", "CAT-39"]);
     expect(p.avg_deposit_fee.source.title).toContain("פנסיה נט");
   });
 
