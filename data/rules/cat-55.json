@@ -1,0 +1,238 @@
+{
+  "id": "CAT-55",
+  "title": "The nine guaranteed-yield tracks are closed to new members: what each company's own texts say",
+  "title_he": "המסלולים מבטיחי התשואה בקופות הגמל סגורים למצטרפים חדשים: מה כתוב במסמכי החברות",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "no",
+  "text_he": "תשעת המסלולים מבטיחי התשואה שבנתוני גמל נט של רשות שוק ההון סגורים למצטרפים חדשים, לפי המסמכים של החברות שמנהלות אותם. התקנון של ״הפניקס גמולה מבטיחת תשואה״ (מספר המסלול 528) והתקנון של ״מנורה מבטחים יותר״ (מספרי המסלולים 530 עד 532) קובעים שאי אפשר להצטרף אליהם. באתר של מנורה מבטחים כתוב שהמסלולים 531, 532, 533 ו־536 סגורים למצטרפים חדשים, ובאתר של כלל כתוב זאת על ״בר א׳״ (מספר המסלול 539). מיטב מציגה באתר שלה את המסלולים 120 ו־529 בין המסלולים שלא פתוחים להצטרפות, והתקנון שלה מגביל אותם למי שהפקיד בקופה לראשונה עד 31.5.1988.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-11-14",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "phoenix",
+      "name_he": "הפניקס"
+    },
+    {
+      "id": "menora-mivtachim",
+      "name_he": "מנורה מבטחים"
+    },
+    {
+      "id": "clal",
+      "name_he": "כלל"
+    },
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://digital-content.fnx.co.il/sites/docs/polarchive/KupotDocs/%D7%A7%D7%95%D7%A4%D7%94528-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%94%D7%A7%D7%95%D7%A4%D7%94-01-10-21.pdf#page=1",
+      "title": "תקנון הפניקס גמולה מבטיחת תשואה, 1 אוקטובר 2021",
+      "title_he": "תקנון הפניקס גמולה מבטיחת תשואה, 1 אוקטובר 2021",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "הקופה המבטיחים תשואה מזערית",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://digital-content.fnx.co.il/sites/docs/polarchive/KupotDocs/%D7%A7%D7%95%D7%A4%D7%94528-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%94%D7%A7%D7%95%D7%A4%D7%94-01-10-21.pdf#page=3",
+      "title": "תקנון הפניקס גמולה מבטיחת תשואה, 1 אוקטובר 2021",
+      "title_he": "תקנון הפניקס גמולה מבטיחת תשואה, 1 אוקטובר 2021",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3, s.4",
+      "locator_he": "עמוד 3, סעיף 4",
+      "page": 3,
+      "quote": "לא ניתן לצרף עמיתים חדשים",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://digital-content.fnx.co.il/sites/docs/polarchive/KupotDocs/%D7%A7%D7%95%D7%A4%D7%94528-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%94%D7%A7%D7%95%D7%A4%D7%94-01-10-21.pdf#page=4",
+      "title": "תקנון הפניקס גמולה מבטיחת תשואה, 1 אוקטובר 2021",
+      "title_he": "תקנון הפניקס גמולה מבטיחת תשואה, 1 אוקטובר 2021",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4, s.19",
+      "locator_he": "עמוד 4, סעיף 19",
+      "page": 4,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://digital-content.fnx.co.il/sites/docs/polarchive/KupotDocs/%D7%92%D7%9E%D7%95%D7%9C%D7%94-%D7%93%D7%95%D7%97%20%D7%9B%D7%A1%D7%A4%D7%99-%D7%9C%D7%A9%D7%A0%D7%AA-2025.pdf#page=4",
+      "title": "הפניקס גמולה מבטיחת תשואה: סקירת הנהלה ודוחות כספיים לשנת 2025",
+      "title_he": "הפניקס גמולה מבטיחת תשואה: סקירת הנהלה ודוחות כספיים לשנת 2025",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "quote": "מספר אישור",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://digital-content.fnx.co.il/sites/docs/polarchive/KupotDocs/%D7%92%D7%9E%D7%95%D7%9C%D7%94-%D7%93%D7%95%D7%97%20%D7%9B%D7%A1%D7%A4%D7%99-%D7%9C%D7%A9%D7%A0%D7%AA-2025.pdf#page=10",
+      "title": "הפניקס גמולה מבטיחת תשואה: סקירת הנהלה ודוחות כספיים לשנת 2025",
+      "title_he": "הפניקס גמולה מבטיחת תשואה: סקירת הנהלה ודוחות כספיים לשנת 2025",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.10 to 13",
+      "locator_he": "עמודים 10 עד 13",
+      "page": 10,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://digital-content.fnx.co.il/sites/docs/polarchive/KupotDocs/%D7%92%D7%9E%D7%95%D7%9C%D7%94-%D7%93%D7%95%D7%97%20%D7%9B%D7%A1%D7%A4%D7%99-%D7%9C%D7%A9%D7%A0%D7%AA-2025.pdf#page=25",
+      "title": "הפניקס גמולה מבטיחת תשואה: סקירת הנהלה ודוחות כספיים לשנת 2025",
+      "title_he": "הפניקס גמולה מבטיחת תשואה: סקירת הנהלה ודוחות כספיים לשנת 2025",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.25, note 1",
+      "locator_he": "עמוד 25, הערה 1",
+      "page": 25,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://cdn.menoramivt.co.il/public/docs/%D7%9E%D7%91%D7%98%D7%97%D7%99%D7%9D-%D7%99%D7%95%D7%AA%D7%A8-%D7%93'-119-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-2013-12-31.pdf#page=2",
+      "title": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "title_he": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "מסלולים מבטיחי תשואה",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://cdn.menoramivt.co.il/public/docs/%D7%9E%D7%91%D7%98%D7%97%D7%99%D7%9D-%D7%99%D7%95%D7%AA%D7%A8-%D7%93'-119-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-2013-12-31.pdf#page=4",
+      "title": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "title_he": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4, s.7",
+      "locator_he": "עמוד 4, סעיף 7",
+      "page": 4,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/4r3ibeiu/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%91%D7%98%D7%97%D7%95%D7%9F-120-2023.pdf#page=3",
+      "title": "תקנון \"מיטב בטחון\", מהדורה עדכנית מיום 28.2.2023",
+      "title_he": "תקנון \"מיטב בטחון\", מהדורה עדכנית מיום 28.2.2023",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3, s.2.1.1; p.4, s.2.1.2",
+      "locator_he": "עמוד 3, סעיף 2.1.1; עמוד 4, סעיף 2.1.2",
+      "page": 3,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.fnx.co.il/gemel/tzgemel/528/",
+      "title": "הפניקס גמולה מבטיחת תשואה - 528",
+      "title_he": "הפניקס גמולה מבטיחת תשואה - 528",
+      "publisher": "The Phoenix",
+      "publisher_he": "הפניקס",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "קוד קופה",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.menoramivt.co.il/funds/pension-and-gemel/gemel-hishtalmut-list/menora-gemel/531",
+      "title": "מנורה מבטחים יותר ב' 531",
+      "title_he": "מנורה מבטחים יותר ב' 531",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.menoramivt.co.il/funds/pension-and-gemel/gemel-hishtalmut-list/menora-gemel/532",
+      "title": "מנורה מבטחים יותר ג' 532",
+      "title_he": "מנורה מבטחים יותר ג' 532",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.menoramivt.co.il/funds/pension-and-gemel/gemel-hishtalmut-list/menora-gemel/533",
+      "title": "מנורה מבטחים אמיר מדד ידוע 533",
+      "title_he": "מנורה מבטחים אמיר מדד ידוע 533",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.menoramivt.co.il/funds/pension-and-gemel/gemel-hishtalmut-list/menora-gemel/536",
+      "title": "מנורה מבטחים אמיר מדד בגין 536",
+      "title_he": "מנורה מבטחים אמיר מדד בגין 536",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.menoramivt.co.il/funds/pension-and-gemel/gemel-hishtalmut-list/menora-gemel/530",
+      "title": "מנורה מבטחים יותר א' 530",
+      "title_he": "מנורה מבטחים יותר א' 530",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.clalbit.co.il/providentfund/clalbar/",
+      "title": "קופת גמל בר - כלל ביטוח",
+      "title_he": "קופת גמל בר - כלל ביטוח",
+      "publisher": "Clal Insurance",
+      "publisher_he": "כלל ביטוח",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "עיקרי התכנית",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/kupa_gemel_reports/",
+      "title": "דוחות תשואה גמל | מיטב בית השקעות",
+      "title_he": "דוחות תשואה גמל | מיטב בית השקעות",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "מסלולים שאינם פתוחים להצטרפות",
+      "checked": "2026-11-14"
+    }
+  ]
+}

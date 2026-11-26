@@ -2,12 +2,12 @@
   "id": "TX2-19",
   "title": "Olim and returning-resident FX-deposit exemption orders, read in full",
   "title_he": "הפטור ממס על ריבית בפיקדון מט״ח לעולה ולתושב חוזר, לפי הצווים עצמם",
-  "text_he": "צו הפטור לעולה חל על פיקדון במטבע חוץ בתאגיד בנקאי, לזמן קבוע של שלושה חודשים לפחות. הצו פוטר את הריבית ממס אם מתקיימים כל התנאים האלה. הופקד רק כסף שהיה לעולה בחוץ לארץ לפני שעלה. הכסף הופקד בתוך תשעים יום מהעברתו לישראל. עוד לא חלפו עשרים שנה מהעלייה. העולה הצהיר לבנק בטופס המתאים בתוך שבועיים מפתיחת הפיקדון. הריבית היא לא הכנסה מעסק, והיא לא נרשמת בספרים. הפיקדון לא שימש הלוואה או בטוחה להלוואה מהבנק לקרוב של העולה או לחברה שבשליטתו, אם הם תושבי ישראל. צו הפטור לתושב חוזר נותן פטור לחמש שנים, ולא קובע לפיקדון תקופה מזערית. גם הוא דורש הפקדה בתוך תשעים יום, הצהרה בתוך שבועיים מההפקדה, ריבית שהיא לא הכנסה מעסק, ופיקדון שלא שימש הלוואה או בטוחה לקרוב. הכסף צריך להיווצר בחוץ לארץ בתקופה שבה האדם לא היה תושב, ולא ממכירת נכסים בישראל שחייבת במס.",
+  "text_he": "צו הפטור לעולה חל על פיקדון במטבע חוץ בתאגיד בנקאי, לזמן קבוע של {TX2-19:olim_minimum_term_months} לפחות. הצו פוטר את הריבית ממס אם מתקיימים כל התנאים האלה. הופקד רק כסף שהיה לעולה בחוץ לארץ לפני שהיה לתושב ישראל. הכסף הופקד בתוך {TX2-19:deposit_within_days} מהעברתו לישראל. עוד לא חלפו {TX2-19:olim_exemption_years} מהיום שהיה לתושב ישראל לראשונה. העולה הצהיר בטופס 2402 בתוך {TX2-19:declaration_within_days} מהפתיחה הראשונה של הפיקדון. הריבית היא לא הכנסה מעסק או ממשלח יד, והיא לא רשומה ולא חייבת להירשם בספרי החשבונות של העולה. הפיקדון לא שימש הלוואה או בטוחה להלוואה מהבנק לקרוב של העולה או לחבר בני אדם שבשליטתו, אם הם תושבי ישראל. צו הפטור לתושב חוזר נותן פטור למשך {TX2-19:returning_resident_exemption_years}, ולא קובע לפיקדון תקופה מזערית. גם הוא דורש הפקדה בתוך {TX2-19:deposit_within_days}, הצהרה לבנק בתוך {TX2-19:declaration_within_days} מההפקדה, ריבית שהיא לא הכנסה מעסק או ממשלח יד ולא רשומה או חייבת להירשם בספרי החשבונות, ופיקדון שלא שימש להלוואה שהבנק נתן, או כבטוחה להלוואה כזאת, לקרוב שהוא תושב ישראל. הכסף צריך להיווצר בחוץ לארץ בתקופה שבה האדם לא היה תושב, ולא ממכירת נכסים בישראל שחל על מכירתם סעיף 89(ב) לפקודת מס הכנסה.",
   "figure_names_he": {
     "olim_exemption_years": "תקופת הפטור לעולה, בשנים",
     "returning_resident_exemption_years": "תקופת הפטור לתושב חוזר, בשנים",
     "deposit_within_days": "הימים מהעברת הכסף לישראל להפקדתו",
-    "declaration_within_days": "הימים להצהרה לבנק",
+    "declaration_within_days": "הימים להגשת ההצהרה",
     "olim_minimum_term_months": "התקופה המזערית של פיקדון העולה, בחודשים"
   },
   "strength": "primary",
@@ -136,11 +136,39 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.9",
-      "locator_he": "עמוד 9",
+      "locator": "file p.9 (gazette p.293), s.1, s.2(3)",
+      "locator_he": "עמוד הקובץ 9 (עמוד הרשומות 293), סעיף 1, סעיף 2(3)",
       "page": 9,
       "quote": "לא חלפו עשרים שנים מיום שהיה לראשונה לתושב ישראל",
-      "checked": "2026-10-25"
+      "checked": "2026-11-27"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=#page=10",
+      "title": "קובץ התקנות 6214 (19.12.2002): תיקוני תקנות קרן השתלמות וצו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג-2002",
+      "title_he": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס״ג-2002 (קובץ התקנות 6214)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.10 (gazette p.294), s.2(5)",
+      "locator_he": "עמוד הקובץ 10 (עמוד הרשומות 294), סעיף 2(5)",
+      "page": 10,
+      "quote": "ההכנסה מריבית אינה הכנסה מעסק או ממשלח יד בידי היחיד, אינה רשומה בפנקסי חשבונותיו ואינה חייבת ברישום כאמור",
+      "checked": "2026-11-27"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n7vDlZAqFcmNW1LZdFh7qw8=#page=10",
+      "title": "קובץ התקנות 6214 (19.12.2002): תיקוני תקנות קרן השתלמות וצו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ג-2002",
+      "title_he": "צו מס הכנסה (פטור ממס על הכנסה מריבית על פיקדון במטבע חוץ), התשס״ג-2002 (קובץ התקנות 6214)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.10 (gazette p.294), s.2(6)",
+      "locator_he": "עמוד הקובץ 10 (עמוד הרשומות 294), סעיף 2(6)",
+      "page": 10,
+      "quote": "הפיקדון לא שימש למתן הלוואה או כבטוחה להלוואה שנתן התאגיד הבנקאי, לקרובו של היחיד או לחבר בני אדם שהיחיד הוא בעל שליטה בו, אם הם תושבי ישראל",
+      "checked": "2026-11-27"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n~b7VXyTyYJCYD0R8CbjV2A=#page=7",
@@ -150,11 +178,53 @@
       "publisher_he": "רשומות (משרד המשפטים)",
       "kind": "regulation",
       "strength": "primary",
-      "locator": "p.7, s.1, s.2",
-      "locator_he": "עמוד 7, סעיף 1, סעיף 2",
+      "locator": "file p.7 (gazette p.19), s.1, definition קרוב",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 19), סעיף 1, הגדרת קרוב",
+      "page": 7,
+      "quote": "כהגדרתו בסעיף 105יא לפקודה, אם הוא תושב ישראל",
+      "checked": "2026-11-27"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n~b7VXyTyYJCYD0R8CbjV2A=#page=7",
+      "title": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ד-2003 (קובץ התקנות 6270)",
+      "title_he": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס״ד-2003 (קובץ התקנות 6270)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.7 (gazette p.19), s.2(5)",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 19), סעיף 2(5)",
+      "page": 7,
+      "quote": "ההכנסה מריבית אינה הכנסה מעסק או ממשלח יד בידיו אינה רשומה בפנקסי חשבונותיו ואינה חייבת ברישום כאמור",
+      "checked": "2026-11-27"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n~b7VXyTyYJCYD0R8CbjV2A=#page=7",
+      "title": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ד-2003 (קובץ התקנות 6270)",
+      "title_he": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס״ד-2003 (קובץ התקנות 6270)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.7 (gazette p.19), s.2(6)",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 19), סעיף 2(6)",
+      "page": 7,
+      "quote": "הפיקדון לא שימש למתן הלוואה או כבטוחה להלוואה שנתן התאגיד הבנקאי לקרובו של התושב החוזר",
+      "checked": "2026-11-27"
+    },
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/SJCa7BPhZiMZ9l0U5Xe3n~b7VXyTyYJCYD0R8CbjV2A=#page=7",
+      "title": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס\"ד-2003 (קובץ התקנות 6270)",
+      "title_he": "צו מס הכנסה (פטור ממס לתושב חוזר על הכנסה מריבית על פיקדון במטבע חוץ), התשס״ד-2003 (קובץ התקנות 6270)",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.7 (gazette p.19), s.2(7)",
+      "locator_he": "עמוד הקובץ 7 (עמוד הרשומות 19), סעיף 2(7)",
       "page": 7,
       "quote": "הריבית משולמת בעבור התקופה שבה זכאי התושב החוזר לפטור",
-      "checked": "2026-10-25"
+      "checked": "2026-11-27"
     }
   ]
 }
