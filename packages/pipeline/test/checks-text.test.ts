@@ -25,8 +25,15 @@ describe("data-figures", () => {
   const rate = { id: "TXS-98", figures: { rate: vo(25, "pct"), ceiling: vo(83641, "nis"), days: vo(3, "days"), year: vo(2026, "year") } };
   it("fails a number another card holds as a figure, typed outside a slot", () => {
     expect(dataFigures.name).toBe("data-figures");
-    expect(run(dataFigures.check, [rate, { id: "TXS-97", text_he: "המס הוא 25% מהרווח." }])).toEqual([expect.stringMatching(/^TXS-97 \(typed-data-figure\): "25%" \(TXS-98:rate\)/)]);
+    expect(run(dataFigures.check, [rate, { id: "TXS-97", text_he: "המס הוא 25% מהרווח." }])).toEqual([expect.stringMatching(/^TXS-97 \(typed-data-figure\): "25%" equals a figure of 1 rule: TXS-98:rate; if the number is one of those figures/)]);
     expect(run(dataFigures.check, [rate, { id: "TXS-97", text_he: "התקרה היא 83,641 ₪." }])).toEqual([expect.stringMatching(/^TXS-97 \(typed-data-figure\): "83,641"/)]);
+  });
+  it("names the owners nearest the card first, and how many rules hold the number", () => {
+    const etf = { id: "ETF-98", figures: { cap: vo(25, "pct") } };
+    const fund = { id: "MF-98", figures: { cap: vo(25, "pct") } };
+    const tax = { id: "TXK-98", figures: { rate: vo(25, "pct") } };
+    const own = { id: "TXS-96", figures: { rate: vo(25, "pct") } };
+    expect(run(dataFigures.check, [etf, fund, tax, own, { id: "TXS-97", text_he: "המס הוא 25% מהרווח." }])).toEqual([expect.stringContaining('"25%" equals a figure of 4 rules: TXS-96:rate, TXK-98:rate, ETF-98:cap, …;')]);
   });
   it("passes a slot, the card's own figure, a small count, a year and a longer number", () => {
     expect(run(dataFigures.check, [rate, { id: "TXS-97", text_he: "המס הוא {TXS-98:rate} מהרווח, תוך 3 ימים, מ־2026, ולא 125%." }])).toEqual([]);
