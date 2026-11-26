@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 import { formulaKeys, formulaNames, provenance } from "../copy";
 import { loadFormulaTex } from "../lib/data.server";
 import { computed, differenceOf, entered, sumOf, type SiteValue } from "../lib/value";
+import { paidInWorking, symbolsIn } from "../lib/working";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
 import { ValueSheet } from "./provenance-sheets";
 
@@ -44,7 +45,9 @@ describe("the sheet of a figure that is a line of math", () => {
     const out = sheet(share);
     const key = formulaKeys["F-87"]?.symbols ?? [];
     expect(key.length).toBe(3);
-    for (const [, words] of key) expect(out).toContain(words);
+    // the symbol the line works out is the figure the sheet heads with: its row points there
+    for (const [, words] of key.slice(1)) expect(out).toContain(words);
+    expect(out).toContain(provenance.formulaSheet.resultRow);
     expect(out).toContain("1,325.38");
     expect(out).not.toContain(provenance.computed.inputs);
     expect(out).toContain(provenance.computed.toFormula);
@@ -56,3 +59,44 @@ describe("the sheet of a figure that is a line of math", () => {
     expect(out).toContain(formulaNames["F-87"] ?? "F-87");
   });
 });
+
+describe("what a computed figure is, said once", () => {
+  const exposure = { "החשיפה לשוק המניות": sourced(681.81, "nis_millions"), "סך נכסי המסלול": sourced(699.8, "nis_millions") };
+  const fx = { "החשיפה למטבע חוץ": sourced(10, "nis_millions"), "סך נכסי המסלול": sourced(699.8, "nis_millions") };
+  const plan = { "הסכום היום": entered(10_000, "nis", today), "ההפקדה החודשית": entered(500, "nis", today), "מספר השנים": entered(10, "years", today) };
+  const sheets = [
+    { entry: "F-87", value: computed((681.81 / 699.8) * 100, "pct", "F-87", exposure, { today, about: "החלק מנכסי המסלול שחשוף לשוק המניות בסוף אוקטובר 2026", working: { kind: "formula", entry: "F-87", line: 0, symbols: { "החשיפה לשוק המניות": "E", "סך נכסי המסלול": "A" } } }) },
+    { entry: "F-88", value: computed((10 / 699.8) * 100, "pct", "F-88", fx, { today, about: "החלק מנכסי המסלול שחשוף למטבע חוץ בסוף אוקטובר 2026", working: { kind: "formula", entry: "F-88", line: 0, symbols: { "החשיפה למטבע חוץ": "X", "סך נכסי המסלול": "A" } } }) },
+    { entry: "F-106", value: computed(70_000, "nis", "F-106", plan, { today, about: "סך ההפקדות", working: paidInWorking("הסכום היום", "ההפקדה החודשית", "מספר השנים") }) },
+  ] as const;
+
+  it("in the head's line only: no name over the line of math, and the symbol it works out keyed to the head", () => {
+    for (const { entry, value } of sheets) {
+      const out = sheet(value);
+      const key = formulaKeys[entry]?.symbols ?? [];
+      expect(out.split(value.about!).length - 1, entry).toBe(1);
+      // the rest of the sheet, the head's line taken out, names it in no other words
+      const rest = out.replace(value.about!, "");
+      expect(rest, entry).not.toContain(formulaNames[entry]);
+      expect(rest, entry).not.toContain(key[0]![1]);
+      expect(rest, entry).toContain(provenance.formulaSheet.resultRow);
+    }
+  });
+
+  it("every symbol of the drawn line has its row in the key", () => {
+    for (const { entry, value } of sheets) {
+      const out = sheet(value);
+      const line = data.formulas![entry]!.tex![0]!;
+      const inLine = (formulaKeys[entry]?.symbols ?? []).filter(([s]) => symbolsIn(line, [s]).length > 0);
+      expect(inLine.length, entry).toBeGreaterThan(1);
+      for (const [, words] of inLine.slice(1)) expect(out, entry).toContain(words);
+      expect(out.split(provenance.formulaSheet.resultRow).length - 1, entry).toBe(1);
+    }
+  });
+
+  it("without a head's line, the line of math keeps its name", () => {
+    const { value } = sheets[0];
+    expect(sheet({ ...value, about: undefined })).toContain(formulaNames["F-87"]);
+  });
+});
+

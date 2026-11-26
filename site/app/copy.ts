@@ -466,6 +466,8 @@ export const provenance = {
     full: "ההגדרה המלאה במסמך שיטת החישוב (באנגלית)",
     /** Over the key to a formula's symbols (`formulaKeys`). */
     where: "כאשר:",
+    /** In a figure's worked line, the key row of the symbol the line works out: the figure its sheet heads with, which the head's line names. */
+    resultRow: "המספר שבראש הגיליון",
   },
   questionSheet: {
     what: "זו שאלה פתוחה בבסיס החוקים: משהו שעוד לא נמצא לו מקור ברור, בחוק או אצל הרשות.",
@@ -1019,6 +1021,7 @@ export const formulaKeys: Record<string, { lines?: string[]; symbols: [tex: stri
   "F-130": {
     lines: ["מה שהאינפלציה מורידה ממה שנשאר אחרי החשבון והקרן", "מה שנשאר אחרי החשבון והקרן, בהתחשב באינפלציה, פחות חלק המדינה, גם הוא בהתחשב באינפלציה"],
     symbols: [
+      ["inflation", "מה שהאינפלציה מורידה ממה שנשאר אחרי החשבון והקרן"],
       ["B^{nom}", "מה שנשאר אחרי החשבון והקרן, בלי להתחשב באינפלציה"],
       ["B^{real}", "אותו סכום בהתחשב באינפלציה"],
       ["state", "חלק המדינה, בהתחשב באינפלציה"],
