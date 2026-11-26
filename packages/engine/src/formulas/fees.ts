@@ -378,27 +378,33 @@ export function conversionStretches(fee: ConversionPrice | undefined, spread: Co
 }
 
 /**
- * `conversionStretches` kept for a price with steps or bounds, by the price it is (its fee's or its spread's object), the other price and the
- * terms it reads (performance only): every order of a run converts at the same line and, without a move in the exchange rate, at the same
- * rate, and an order in whole units converts once for each count it tries. A price that is only percentages builds one stretch and is not kept.
- * Kept by the price objects themselves, so they go when the tariff that holds them does.
+ * `conversionStretches` kept for a price with steps or bounds, by the price it is (its fee's or its spread's object) and the other price, for
+ * the last terms it was built at (performance only): every order of a run converts at the same line and, without a move in the exchange rate,
+ * at the same rate, and an order in whole units converts once for each count it tries, all at one rate. One entry per pair of prices, so a run
+ * whose rate moves every month replaces it rather than piling up. The share price is part of the terms only where a line of the prices has a
+ * per-share part, the one place it is read (`tradeCommission`). A price that is only percentages builds one stretch and is not kept. Kept by
+ * the price objects themselves, so they go when the tariff that holds them does.
  */
-const keptByFee = new WeakMap<object, Map<ConversionPrice, { fxRate: number; sharePrice: number | undefined; stretches: ConversionStretch[] }[]>>();
-const keptBySpread = new WeakMap<object, Map<ConversionPrice | undefined, { fxRate: number; sharePrice: number | undefined; stretches: ConversionStretch[] }[]>>();
+type KeptStretches = { fxRate: number; sharePrice: number | undefined; stretches: ConversionStretch[] };
+const keptByFee = new WeakMap<object, Map<ConversionPrice, KeptStretches>>();
+const keptBySpread = new WeakMap<object, Map<ConversionPrice | undefined, KeptStretches>>();
+/** Whether a line of a conversion's price has a per-share part, which reads the share price (`tradeCommission`). */
+function readsSharePrice(p: ConversionPrice | undefined): boolean {
+  if (p === undefined || typeof p === "number") return false;
+  const lines = isSized(p) ? [p.line] : [p];
+  return lines.some((l) => typeof l === "object" && (l.perShare !== undefined || l.perShareAbove !== undefined));
+}
 function stretchesKept(fee: ConversionPrice | undefined, spread: ConversionPrice, terms: TradeTerms): ConversionStretch[] {
   const byOther = typeof fee === "object" ? keptByFee : typeof spread === "object" ? keptBySpread : null;
   if (!byOther) return conversionStretches(fee, spread, terms);
   const [key, other] = (typeof fee === "object" ? [fee, spread] : [spread as object, fee]) as [object, ConversionPrice];
-  let byTerms = byOther.get(key)?.get(other);
-  if (!byTerms) {
-    let m = byOther.get(key);
-    if (!m) byOther.set(key, (m = new Map()));
-    m.set(other, (byTerms = []));
-  }
-  const kept = byTerms.find((k) => k.fxRate === terms.fxRate && k.sharePrice === terms.sharePrice);
-  if (kept) return kept.stretches;
+  let m = byOther.get(key);
+  if (!m) byOther.set(key, (m = new Map()));
+  const sharePrice = readsSharePrice(fee) || readsSharePrice(spread) ? terms.sharePrice : undefined;
+  const kept = m.get(other);
+  if (kept && kept.fxRate === terms.fxRate && kept.sharePrice === sharePrice) return kept.stretches;
   const stretches = conversionStretches(fee, spread, terms);
-  byTerms.push({ fxRate: terms.fxRate, sharePrice: terms.sharePrice, stretches });
+  m.set(other, { fxRate: terms.fxRate, sharePrice, stretches });
   return stretches;
 }
 
