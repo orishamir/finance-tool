@@ -119,15 +119,16 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Dimensions: `protection`, `regulator`
 - Likely to change: no (shares change yearly)
 
-### REG-10 Mutual funds (including money-market funds): trustee holds the assets
-- Rule: The fund agreement is made between a manager and a trustee approved under s.9, "שיוקנו לה נכסי הקרן" (s.4).
-  - The assets "יהיו מוקנים לנאמן לטובת בעלי היחידות". They are a separate estate from the trustee's other property, and non-traded assets are registered in the trustee's name (s.76(א)).
-  - The manager must deposit fund cash in a bank account (s.76(ד)).
-  - "נכסי קרן אינם ניתנים לעיקול" (s.79).
-  - The trustee supervises the manager's compliance with the law, the fund agreement and the prospectus (s.78(א)).
-- Conditions / exceptions: Market losses are not protected. Fund cash held at a bank is a bank deposit of the fund (see REG-04 for banks). How that cash is treated if the bank fails was not found.
+### REG-10 Mutual funds (including money-market funds): market losses are not protected, and fund cash is a bank deposit
+- Rule: Market losses are not protected. The manager must deposit fund cash in a bank account (s.76(ד)), and fund cash held at a bank is a bank deposit of the fund (see REG-04 for banks).
+- Conditions / exceptions:
+  - How that cash is treated if the bank fails was not found.
+  - The fund agreement is made between a manager and a trustee approved under s.9, "שיוקנו לה נכסי הקרן" (s.4): as in MF-01.
+  - The assets "יהיו מוקנים לנאמן לטובת בעלי היחידות" and are a separate estate from the trustee's other property (s.76(א)), and "נכסי קרן אינם ניתנים לעיקול" (s.79): as in MF-02. Non-traded assets are registered in the trustee's name (s.76(א)); MF-02 does not state this.
+  - The trustee supervises the manager's compliance with the law, the fund agreement and the prospectus (s.78(א)): as in MF-03.
+  - *2026-11-26 trim:* the fund agreement, the vesting, separation and immunity from attachment of the assets, and the trustee's supervision, stated in full here before, are MF-01's, MF-02's and MF-03's from the same law.
 - Figures: none.
-- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.5, s.4; p.56, s.76; p.57, s.78; p.58, s.79 · checked 2026-10-25 · primary.
+- Source: [חוק השקעות משותפות בנאמנות, התשנ"ד-1994 (נוסח רשות ניירות ערך)](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf), p.5, s.4; p.56, s.76; p.57, s.78; p.58, s.79 · checked 2026-10-25 · primary. See also MF-01, MF-02, MF-03.
 - Scope: general
 - Dimensions: `protection`
 - Likely to change: no
@@ -407,7 +408,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Rule: A trust can be created by law ("נאמנות נוצרת על פי חוק, על פי חוזה עם נאמן או על פי כתב הקדש", s.2). "אין לרדת לנכסי הנאמנות אלא בשל חובות המוטלים עליהם או הנובעים מפעולות הנאמנות" (s.3(ב)), and "הנאמן חייב להחזיק את נכסי הנאמנות בנפרד מנכסים אחרים או בדרך המאפשרת להבחין ביניהם" (s.3(ג)).
 - Who holds a saver's assets as a trustee, by law or by a binding rule:
   - a provident, study or pension fund's managing company, for the fund's assets (Provident Funds Law s.3(א), REG-18);
-  - a mutual fund's trustee, in whom the fund's assets are vested for the unit holders as a separate estate (Joint Investment Trust Law s.76(א), REG-10);
+  - a mutual fund's trustee, in whom the fund's assets are vested for the unit holders as a separate estate (Joint Investment Trust Law s.76(א), MF-02);
   - every TASE clearing member, banks included, for its clients' TASE securities (clearing-house bylaws, REG-35, BRK-58);
   - a non-bank TASE member, for its clients' financial assets and cash (TASE rules, BRK-07, BRK-08).
 
@@ -528,8 +529,8 @@ What protects a saver's money if the company holding it fails, for every kind of
 | רשות ניירות ערך | Israel Securities Authority | Securities regulator | law, ISA | REG-07 |
 | ניהול תיקי השקעות | portfolio management | Discretionary trading for others' accounts | law, ads | REG-08 |
 | חשבון מסחר | trading account | Client's own account at a TASE member, where managed assets are held | ISA report | REG-09 |
-| מנהל קרן / נאמן / בעלי היחידות | fund manager / trustee / unit holders | Parties to a mutual fund | law, prospectus | REG-10 |
-| נכסי קרן אינם ניתנים לעיקול | fund assets cannot be attached | Creditor protection | law | REG-10 |
+| מנהל קרן / נאמן / בעלי היחידות | fund manager / trustee / unit holders | Parties to a mutual fund | law, prospectus | MF-01 |
+| נכסי קרן אינם ניתנים לעיקול | fund assets cannot be attached | Creditor protection | law | MF-02 |
 | חברה לנאמנות | trust company | Trustee legal name form (e.g. יובנק חברה לנאמנות בע"מ) | ISA report, prospectus | REG-12 |
 | חבר בורסה | TASE member | Bank or broker allowed to trade on TASE | law, TASE, apps | REG-13, REG-14 |
 | חש"ב (חבר בורסה שאינו תאגיד בנקאי) | non-bank TASE member (NBCM) | Investment-house broker | TASE | REG-14 |

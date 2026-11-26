@@ -4343,7 +4343,6 @@
     "rule_ids": [
       "REG-07",
       "REG-08",
-      "REG-10",
       "REG-13"
     ],
     "source": {
@@ -4509,7 +4508,7 @@
     "variants_he": [],
     "explain_he": "גוף שמחזיק את נכסי קרן הנאמנות לטובת המשקיעים, בנפרד מהרכוש שלו, ומפקח על מנהל הקרן",
     "rule_ids": [
-      "REG-10",
+      "MF-02",
       "REG-11",
       "REG-38",
       "REG-12"
@@ -4539,7 +4538,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "In a provident fund the managing company itself is the trustee (REG-18); in a mutual fund it is a separate trust company (REG-10). Fund assets cannot be attached in either case. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות) to the official text. Fix pass 2026-11-07: page added: s. 76(א) (p. 56) vests the fund's assets in the trustee for the unit holders, separate from its own property; s. 78 (p. 57) has it supervise the manager.",
+    "notes": "In a provident fund the managing company itself is the trustee (REG-18); in a mutual fund it is a separate trust company (MF-01). Fund assets cannot be attached in either case. Re-cited 2026-11-07 (glossary sweep) from a copy (https://he.wikisource.org/wiki/חוק_השקעות_משותפות_בנאמנות) to the official text. Fix pass 2026-11-07: page added: s. 76(א) (p. 56) vests the fund's assets in the trustee for the unit holders, separate from its own property; s. 78 (p. 57) has it supervise the manager.",
     "id": "namn-d"
   },
   {
