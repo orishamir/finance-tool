@@ -284,14 +284,15 @@
         "rule": "KH-33",
         "companies": [
           "altshuler-shaham",
-          "harel"
+          "harel",
+          "mor"
         ]
       },
       "SW-56"
     ],
     "fee-change-over-time": [
       {
-        "rule": "KH-33",
+        "rule": "KH-37",
         "companies": [
           "meitav"
         ]
