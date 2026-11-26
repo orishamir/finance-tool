@@ -19,7 +19,7 @@ import { parseAnswer } from "../lib/answer-slots";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { Card, CompanyLinks, DocLink, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
-import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, scopeCompanies, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
+import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, sameCompanies, scopeCompanies, tagCompanies, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
 import type { SheetPart } from "./provenance";
 import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData } from "./provenance";
 import { proofOf } from "../content/proofs";
@@ -876,7 +876,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       ) : (
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
       )}
-      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs)}</p>}
+      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs, tagCompanies(rule, data.ownDocs, { company: data.company }))}</p>}
       <RulePointers rule={rule} />
       {sources.length > 0 ? (
         // a company's term read from that company's own document is its own context (D31): the source line carries no "לפי החברה"
@@ -1102,7 +1102,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
       ) : (
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
       )}
-      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs)}</p>}
+      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs, tagCompanies(rule, data.ownDocs))}</p>}
       <RulePointers rule={rule} />
       <RuleFigures rule={rule} id={id} head={<GroupHead>{ruleCopy.figures}</GroupHead>} />
       {sources.length > 0 ? <SourcesByDocument sources={sources} rule={sourced} today={data.today} /> : <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>}
@@ -1214,16 +1214,17 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
 }
 
 /**
- * "נמצא במסמכים של …; בחברות אחרות זה יכול להיות אחרת." for a company's term, naming only the companies whose own documents it cites;
- * the unsettled line for a rule not shown to hold everywhere; "המקורות כאן אינם מסמכים של …" for a record about companies that cites
+ * "נמצא במסמכים של …; בחברות אחרות זה יכול להיות אחרת." for a company's term, naming only the companies whose own documents it cites,
+ * and only "בחברות אחרות…" when the card's tag (`tagged`, `tagCompanies`) already names those same companies; the unsettled line for a rule not shown to hold everywhere; "המקורות כאן אינם מסמכים של …" for a record about companies that cites
  * none of their documents. A not-rule that cites a company's document says it is
  * kept, not shown as a rule, so its line agrees with its foot ("לכל מה שלא נכלל ככלל").
  */
-function scopeLine(rule: RuleRecord, ownDocs: OwnDocs | undefined): string {
-  const own = joinNames(ownDocCompanies(rule, ownDocs).map((c) => c.name_he));
+function scopeLine(rule: RuleRecord, ownDocs: OwnDocs | undefined, tagged: readonly { id: string }[]): string {
+  const ownList = ownDocCompanies(rule, ownDocs);
+  const own = joinNames(ownList.map((c) => c.name_he));
   const named = joinNames(scopeCompanies(rule).map((c) => c.name_he));
   if (own && isNotRule(rule.id)) return scopeWords.notRule.lineOwn.replace("{names}", own);
-  if (rule.scope === "institution") return own ? scopeWords.line.institution.replace("{names}", own) : scopeWords.line.notTheirs.replace("{names}", named);
+  if (rule.scope === "institution") return !own ? scopeWords.line.notTheirs.replace("{names}", named) : sameCompanies(tagged, ownList) ? scopeWords.line.institutionTagged : scopeWords.line.institution.replace("{names}", own);
   return own ? scopeWords.line.unsettledSeen.replace("{names}", own) : scopeWords.line.unsettled;
 }
 

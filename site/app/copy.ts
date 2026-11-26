@@ -3328,6 +3328,8 @@ export const scopeWords = {
   tag: { general: "חל על כולם", institution: "של {names}", unsettled: "לא הוכח שחל על כולם", about: "על {names}" },
   line: {
     institution: "נמצא במסמכים של {names}. בחברות אחרות זה יכול להיות אחרת.",
+    /** A company's term whose tag above already names the companies whose documents say it. */
+    institutionTagged: "בחברות אחרות זה יכול להיות אחרת.",
     notTheirs: "המקורות כאן הם לא מסמכים של {names}.",
     unsettledSeen: "נמצא במסמכים של {names}. אולי כך בכל החברות. האתר לא מצא לזה מקור רשמי.",
     unsettled: "אולי כך בכל החברות. האתר לא מצא לזה מקור רשמי.",

@@ -158,6 +158,22 @@ export function chipName(rule: Pick<RuleRecord, "id" | "scope_institutions">, ow
   return others === 0 ? first.name_he : `${first.name_he} ${more(others)}`;
 }
 
+/**
+ * The companies a card's tag names in full (`scopeTag`): with `short` (a rule card's tag, worded as the chip) the chip's companies when
+ * it counts none unnamed, and none when it shortens them ("לאומי ועוד 3"); without it every company the card names.
+ */
+export function tagCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, short?: { company: string | undefined }): { id: string; name_he: string }[] {
+  if (!short) return shownCompanies(rule, ownDocs);
+  const { named, more } = chipCompanies(rule, ownDocs, short.company);
+  return more === 0 ? named : [];
+}
+
+/** Whether two lists name the same companies, in any order. */
+export function sameCompanies(a: readonly { id: string }[], b: readonly { id: string }[]): boolean {
+  const ids = new Set(a.map((c) => c.id));
+  return a.length > 0 && ids.size === new Set(b.map((c) => c.id)).size && b.every((c) => ids.has(c.id));
+}
+
 /** A Hebrew list of names (copy.md 10.4): commas, and the conjunction only before the last. */
 export function joinNames(names: readonly string[]): string {
   if (names.length <= 1) return names[0] ?? "";
