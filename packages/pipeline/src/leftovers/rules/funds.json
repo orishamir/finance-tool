@@ -110,6 +110,7 @@
     "MF-45",
     "MF-47",
     "MF-59",
+    "MF-65",
     "MF-70",
     "MF-72"
   ],
@@ -252,5 +253,41 @@
     "MF-68#trading_week_from",
     "MF-68#unlimited_fund_days",
     "MF-74#foreign_securities_line"
+  ],
+  "typed-data-figure": [
+    "BND-04",
+    "BND-09",
+    "BND-13",
+    "ETF-03",
+    "ETF-100",
+    "ETF-15",
+    "ETF-33",
+    "ETF-34",
+    "ETF-41",
+    "ETF-42",
+    "ETF-46",
+    "ETF-47",
+    "ETF-57",
+    "ETF-59",
+    "ETF-60",
+    "ETF-68",
+    "ETF-92",
+    "ETF-99",
+    "MF-43",
+    "MF-47",
+    "MF-71",
+    "MF-76"
+  ],
+  "pointer-word": [
+    "ETF-82",
+    "MF-07"
+  ],
+  "title-ditto": [
+    "BND-08",
+    "BND-13",
+    "ETF-28",
+    "MF-36",
+    "MF-48",
+    "MF-74"
   ]
 }

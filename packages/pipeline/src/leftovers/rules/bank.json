@@ -45,7 +45,8 @@
     "BANK-49",
     "BANK-51",
     "BANK-52",
-    "FXD-07"
+    "FXD-07",
+    "FXD-23"
   ],
   "fixed-line": [
     "BANK-30",
@@ -90,5 +91,22 @@
     "BANK-54#small_business_turnover_max",
     "BANK-54#small_business_turnover_max_before_2013",
     "BANK-60#basic_track_max_fee"
+  ],
+  "typed-data-figure": [
+    "BANK-04",
+    "BANK-47",
+    "BANK-49",
+    "FXD-07",
+    "FXD-09",
+    "FXD-14",
+    "FXD-19",
+    "FXD-24"
+  ],
+  "pointer-word": [
+    "BANK-07",
+    "BANK-34"
+  ],
+  "title-ditto": [
+    "BANK-34"
   ]
 }

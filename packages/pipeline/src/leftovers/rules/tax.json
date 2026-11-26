@@ -321,5 +321,54 @@
   "missing-record": [
     "TX2-03",
     "TX2-10"
+  ],
+  "typed-data-figure": [
+    "TX2-01",
+    "TX2-02",
+    "TX2-07",
+    "TX2-08",
+    "TX2-09",
+    "TX2-14",
+    "TXA-02",
+    "TXA-04",
+    "TXA-18",
+    "TXA-19",
+    "TXA-20",
+    "TXA-22",
+    "TXA-23",
+    "TXF-04",
+    "TXF-12",
+    "TXF-27",
+    "TXF-48",
+    "TXF-49",
+    "TXG-01",
+    "TXG-08",
+    "TXG-14",
+    "TXG-18",
+    "TXG-19",
+    "TXG-22",
+    "TXG-23",
+    "TXG-26",
+    "TXG-29",
+    "TXH-06",
+    "TXI-27",
+    "TXK-12",
+    "TXK-21",
+    "TXK-30",
+    "TXP-07",
+    "TXP-09",
+    "TXP-23",
+    "TXP-28",
+    "TXS-44"
+  ],
+  "pointer-word": [
+    "TXI-20",
+    "TXK-06",
+    "TXS-44"
+  ],
+  "title-ditto": [
+    "TXG-34",
+    "TXI-17",
+    "TXS-17"
   ]
 }

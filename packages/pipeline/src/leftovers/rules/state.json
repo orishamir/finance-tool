@@ -120,5 +120,23 @@
   ],
   "silence": [
     "CAT-44"
+  ],
+  "typed-data-figure": [
+    "CAT-45",
+    "CAT-47",
+    "CAT-48",
+    "CAT-49",
+    "CAT-56",
+    "CAT-57",
+    "GOV-10",
+    "GOV-13",
+    "GOV-24",
+    "GOV-25",
+    "GOV-30",
+    "GOV-32",
+    "REG-08"
+  ],
+  "title-ditto": [
+    "CAT-24"
   ]
 }

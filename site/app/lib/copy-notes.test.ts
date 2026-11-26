@@ -37,6 +37,7 @@ const NOTE_LEFTOVERS: Partial<Record<NoteFlaw, string[]>> = {
     "flags.PF-36",
     "flags.TXP-11",
     "flags.TXP-OQ20",
+    "flags.TXS-OQ26",
   ],
   "too-long": [
     "flags.BANK-35",

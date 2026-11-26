@@ -279,5 +279,30 @@
     "SW-51#meitav_israeli_security_transfer_nis",
     "SW-51#meitav_portfolio_transfer_cap_nis",
     "SW-52#discount_supervised_transfer_nis"
+  ],
+  "typed-data-figure": [
+    "PEN-14",
+    "PEN-15",
+    "PEN-18",
+    "PEN-20",
+    "PEN-21",
+    "PEN-22",
+    "PEN-35",
+    "PEN-41",
+    "PEN-65",
+    "PEN-70",
+    "PF-04",
+    "PF-08",
+    "PF-27",
+    "PF-45"
+  ],
+  "pointer-word": [
+    "PEN-26"
+  ],
+  "title-ditto": [
+    "PEN-63",
+    "PF-11",
+    "SW-23",
+    "SW-55"
   ]
 }

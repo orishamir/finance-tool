@@ -123,5 +123,29 @@
     "KH-28#employee_pct",
     "KH-28#employer_pct_high",
     "KH-28#employer_pct_low"
+  ],
+  "typed-data-figure": [
+    "INS-15",
+    "INS-18",
+    "INS-31",
+    "INS-32",
+    "IRA-12",
+    "IRA-22",
+    "KGL-17",
+    "KGL-31",
+    "KGL-33",
+    "KH-20",
+    "KH-23",
+    "KH-25",
+    "KH-26",
+    "MGD-19"
+  ],
+  "pointer-word": [
+    "KH-20",
+    "MGD-21"
+  ],
+  "title-ditto": [
+    "CS-05",
+    "KH-36"
   ]
 }

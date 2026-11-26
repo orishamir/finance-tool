@@ -73,5 +73,44 @@
     "BRK-21#notice_days",
     "BRK-58#extra_client_subaccount_equity",
     "BRK-59#clearing_members"
+  ],
+  "typed-data-figure": [
+    "BRK-14",
+    "BRK-28",
+    "BRK-35",
+    "BRK-38",
+    "BRK-41",
+    "BRK-48",
+    "BRK-54",
+    "BRK-55",
+    "BRK-67",
+    "BRK-68",
+    "BRK-69",
+    "BRK-74",
+    "BRK-76",
+    "BRK-77",
+    "BRK-78",
+    "BRK-79",
+    "BRK-86",
+    "CORP-06",
+    "CORP-09",
+    "CORP-13",
+    "CORP-16",
+    "RG-02",
+    "RG-03",
+    "RG-07"
+  ],
+  "pointer-word": [
+    "BRK-35",
+    "CORP-24"
+  ],
+  "title-ditto": [
+    "BRK-25",
+    "BRK-28",
+    "BRK-46",
+    "BRK-59",
+    "BRK-70",
+    "BRK-74",
+    "BRK-75"
   ]
 }
