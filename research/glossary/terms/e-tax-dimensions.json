@@ -2613,7 +2613,7 @@
     "where": [
       "checklist"
     ],
-    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: KH-09, KH-14, KH-15."
+    "notes": "Proposed, not yet in docs/product.md 3.3 or the README vocabulary; adopting it into data/dimensions/ is a founder call (coverage.md F5). Basis: KH-09, KH-34, KH-14, KH-15."
   },
   {
     "kind": "dimension",

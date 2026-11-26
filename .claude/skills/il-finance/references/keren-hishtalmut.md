@@ -103,14 +103,21 @@ A study fund is a provident fund (קופת גמל) "intended to pay study allowa
 - Dimensions: `eligibility`, `minimum`
 - Likely to change: yes. The cut-off date changes every year.
 
-### KH-09 Harel and Altshuler Shaham: continuing deposits when the employer stops or the status changes
-- Rule: Funds differ on who may keep depositing:
-  - **Harel (fund 154):** "The fund will not continue to accept deposits for a member where the employer does not deposit money for the employee to a study fund for any reason, or for a member who has become self-employed". The member may then withdraw under the seniority rules (s.4.4).
-  - **Altshuler Shaham:** a salaried member who stops being an employee "is entitled to continue saving in the fund or in another study fund in which self-employed members save, as a self-employed member" (s.19). A self-employed member who becomes an employee may continue as a salaried member (s.20.2).
-- Conditions / exceptions: General counterparts: a self-employed deposit is covered only for someone with business or profession income (1964 rule 19א(א), KH-08); salaried and self-employed accounts count as one account under the conditions of the 1993 regulations, reg. 1(ב) added in 1996 (KH-14). On a job change the account stays in the fund. Whether the new employer pays into it, and at what rate, depends on the new agreement and the employee's choice (KH-03). Some fund names state the status they accept, for example "מור קרן השתלמות לשכירים ולעצמאים" in Gemel-Net (KH-24). Per-fund eligibility by status is not a Gemel-Net field (open question 9). Other managers' bylaws were not read on this.
+### KH-09 Harel: no more deposits once the employer stops paying or the member becomes self-employed
+- Rule: **Harel (fund 154):** "The fund will not continue to accept deposits for a member where the employer does not deposit money for the employee to a study fund for any reason, or for a member who has become self-employed". The member may then withdraw under the seniority rules (s.4.4).
+- Conditions / exceptions: General counterparts: a self-employed deposit is covered only for someone with business or profession income (1964 rule 19א(א), KH-08); salaried and self-employed accounts count as one account under the conditions of the 1993 regulations, reg. 1(ב) added in 1996 (KH-14). On a job change the account stays in the fund. Whether the new employer pays into it, and at what rate, depends on the new agreement and the employee's choice (KH-03). Some fund names state the status they accept, for example "מור קרן השתלמות לשכירים ולעצמאים" in Gemel-Net (KH-24). Per-fund eligibility by status is not a Gemel-Net field (open question 9). Altshuler Shaham's bylaws, which let the member go on saving, are KH-34; other managers' bylaws were not read on this. Split on 2026-11-26: Altshuler Shaham's part is KH-34.
 - Figures: none
-- Source: [Harel bylaws 07/2024](<https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf>), s.4.4 · checked 2026-10-25 · institution. [Altshuler bylaws 1.12.2024](<https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf>), s.19, 20 · checked 2026-10-25 · institution. General counterparts: KH-08, KH-14.
-- Scope: institution: Harel, Altshuler Shaham
+- Source: [Harel bylaws 07/2024](<https://harel-group.co.il/long-term-savings/study-funds/plans/harel-funds/doclib/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%95%d7%a4%d7%94/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%94%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a8%d7%90%d7%9c%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa-%20%d7%9c%d7%90%d7%97%d7%a8%20%d7%94%d7%9e%d7%99%d7%96%d7%95%d7%92/%d7%aa%d7%a7%d7%a0%d7%95%d7%9f%20%d7%a7%d7%a8%d7%9f%20%d7%94%d7%a9%d7%aa%d7%9c%d7%9e%d7%95%d7%aa%20%2007.2024.pdf>), s.4.4 · checked 2026-10-25 · institution. General counterparts: KH-08, KH-14.
+- Scope: institution: Harel
+- Dimensions: `eligibility`, `transfer-switch-process`
+- Likely to change: no
+
+### KH-34 Altshuler Shaham: a salaried member who stops being an employee may go on saving as self-employed, and the reverse
+- Rule: **Altshuler Shaham:** a salaried member who stops being an employee "is entitled to continue saving in the fund or in another study fund in which self-employed members save, as a self-employed member" (s.19). A self-employed member who becomes an employee may continue as a salaried member (s.20.2).
+- Conditions / exceptions: General counterparts: a self-employed deposit is covered only for someone with business or profession income (KH-08); salaried and self-employed accounts count as one account under the 1993 regulations (KH-14). Harel's bylaws, by contrast, stop deposits once the employer stops paying or the member becomes self-employed (KH-09). Split from KH-09 on 2026-11-26.
+- Figures: none
+- Source: [Altshuler bylaws 1.12.2024](<https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf>), s.19, 20 · checked 2026-10-25 · institution. General counterparts: KH-08, KH-14.
+- Scope: institution: Altshuler Shaham
 - Dimensions: `eligibility`, `transfer-switch-process`
 - Likely to change: no
 
@@ -444,7 +451,7 @@ Regulator: Capital Market, Insurance and Savings Authority (law s.1, s.13 approv
 ## Proposed dimensions
 
 - `employer-contribution`: whether the wrapper brings an employer contribution that exists in no other wrapper (here 5% to 8.4% of salary, KH-04). It changes the ranking in 3.2 more than any fee.
-- `account-continuity`: whether an action starts a new clock or account (deposit after withdrawal, KH-15; seniority across funds, KH-14; status change, KH-09).
+- `account-continuity`: whether an action starts a new clock or account (deposit after withdrawal, KH-15; seniority across funds, KH-14; status change, KH-09, KH-34).
 
 ## Sources
 

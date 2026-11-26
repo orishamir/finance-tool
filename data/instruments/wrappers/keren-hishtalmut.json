@@ -269,7 +269,12 @@
       {
         "rule": "KH-09",
         "companies": [
-          "harel",
+          "harel"
+        ]
+      },
+      {
+        "rule": "KH-34",
+        "companies": [
           "altshuler-shaham"
         ]
       }
