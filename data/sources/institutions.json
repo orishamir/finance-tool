@@ -150,7 +150,8 @@
       {
         "name": "Harel",
         "only_records": [
-          "INS-29"
+          "INS-29",
+          "INS-31"
         ]
       }
     ],
@@ -160,7 +161,7 @@
     "own_hosts": [
       "harel-group.co.il"
     ],
-    "note": "INS-29 cites Harel Insurance's executive policy 1286 and its 2016 letter to employers, insurance products, not the provident manager's."
+    "note": "INS-29 and INS-31 cite Harel Insurance's executive policy 1286 and its 2016 letter to employers, insurance products, not the provident manager's."
   },
   {
     "id": "menora-mivtachim",

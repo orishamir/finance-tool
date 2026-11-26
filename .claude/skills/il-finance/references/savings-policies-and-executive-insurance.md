@@ -229,17 +229,26 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 
 ### INS-15 Fee caps for executive insurance depend on the issue date: policies from 1 January 2013 are capped at 4% plus 1.05%
 - Rule: The regulation-2 cap (up to 1.05% a year of the balance and up to 4% of deposits, PF-02) applies to provident funds, and its exclusion list removes only "קופת ביטוח מבטיחת תשואה" among insurance funds (reg. 2(ב)). So it applies to executive insurance. But "תקנות 2 ו־7 לא יחולו לעניין פוליסות ביטוח שהוצאו על פי קופת ביטוח לפני יום התחילה" (reg. 11), and the start date is 1 January 2013 (reg. 12). Policies issued before then keep their contractual fees.
-- Conditions / exceptions: Examples:
-  - **Pre-2013 plan:** Harel plan 1286 (7/2009) allows a fee from the balance "בשיעור שנתי שלא יעלה על 1.7%". It charges no fee from deposits, including one-time deposits and transfers in (s. 10.1, 10.2). During annuity payment the fee is 0.5% a year (s. 10.3).
-  - **Post-2013 plan:** Harel's 2016 differential policy "הראל מור למנהלים" charges 3% of the premium and 0.5% a year of the balance. The balance fee rises to 1.05% if premiums stop (Harel letter, annex א).
+- Conditions / exceptions:
+  - **Company examples:** the fees Harel's own executive policies state, a pre-2013 plan (1286 of 2009) and a post-2013 policy (2016), are INS-31.
   - **Annuitants:** the annuitant caps in reg. 2 were read only in summary (PF open question 14).
   - **Discounts and increases:** CMA circular 2017-9-15 applies to all institutional bodies except sector funds and guaranteed-return funds (PF-13 to PF-16).
   - **Guaranteed-return insurance funds** have their own regime, which was not read (open question 8).
-- Figures: 1.05% of balance and 4% of deposits for policies from 1.1.2013; contractual before that (example 1.7%, no deposit fee).
-- Source: [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע"ד-2014 (קובץ התקנות 7358)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4) file p.4 (gazette p.977), s.2 · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found); [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע"ב-2012 (קובץ התקנות 7131)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=8) file p.8 (gazette p.1264), reg. 11 "לא יחולו לעניין פוליסות ביטוח שהוצאו על פי קופת ביטוח לפני יום התחילה"; file p.8 (gazette p.1264), reg. 12 "תחילתן של תקנות אלה ביום י"ט בטבת התשע"ג" · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found); [Harel plan 1286](https://www.harel-group.co.il/Policies/2010.pdf) p.13, s.10 · checked 2026-10-22 · institution; [Harel, הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf) p.3 · checked 2026-10-22 · institution
+  - Split on 2026-11-26: Harel's own fees, given here as examples until then, moved to INS-31 with their sources.
+- Figures: 1.05% of balance and 4% of deposits for policies from 1.1.2013; contractual before that.
+- Source: [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשע"ד-2014 (קובץ התקנות 7358)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/bfvsjLN+leExZ3ArqQksAeOdRzFXelp1D6CGA3tNK3g=#page=4) file p.4 (gazette p.977), s.2 · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found); [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע"ב-2012 (קובץ התקנות 7131)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=8) file p.8 (gazette p.1264), reg. 11 "לא יחולו לעניין פוליסות ביטוח שהוצאו על פי קופת ביטוח לפני יום התחילה"; file p.8 (gazette p.1264), reg. 12 "תחילתן של תקנות אלה ביום י"ט בטבת התשע"ג" · checked 2026-10-31 · primary (gazette for the text as enacted or amended there; no official consolidated text of the current wording was found); company example: INS-31
 - Scope: general
 - Dimensions: `fee-management-balance`, `fee-deposit`, `fee-change-over-time`, `issue-cohort` (proposed)
-- Likely to change: no for the cap; contractual fees on old policies can be lowered by the insurer (Harel 1286 s. 10.5)
+- Likely to change: no for the cap; an insurer can lower the contractual fees of an old policy (INS-31)
+
+### INS-31 Harel's executive policies: the fees they state (plan 1286 of 2009; the 2016 policy "הראל מור למנהלים")
+- Rule: Harel's executive plan 1286 (7/2009) allows a fee from the balance "בשיעור שנתי שלא יעלה על 1.7%". It charges no fee from deposits, including one-time deposits and transfers in (s. 10.1, 10.2). During annuity payment the fee is 0.5% a year (s. 10.3). Harel's 2016 differential policy "הראל מור למנהלים" charges 3% of the premium and 0.5% a year of the balance. The balance fee rises to 1.05% if premiums stop (Harel letter, annex א).
+- Conditions / exceptions: Harel's own policy terms. Plan 1286 was issued before 1 January 2013, so the regulation-2 cap does not apply to it and its fees are contractual; the cap and its start date are INS-15. The insurer may lower plan 1286's fees (s. 10.5). Split from INS-15 on 2026-11-26.
+- Figures: plan 1286: up to 1.7% a year of the balance, no deposit fee, 0.5% a year during annuity payment; 2016 policy: 3% of the premium and 0.5% a year of the balance, 1.05% if premiums stop.
+- Source: [Harel plan 1286](https://www.harel-group.co.il/Policies/2010.pdf) p.13, s.10 · checked 2026-10-22 · institution; [Harel, הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf) p.3 · checked 2026-10-22 · institution; INS-15
+- Scope: institution: Harel
+- Dimensions: `fee-management-balance`, `fee-deposit`, `fee-change-over-time`, `issue-cohort` (proposed)
+- Likely to change: no; the insurer can lower plan 1286's contractual fees (s. 10.5)
 
 ### INS-16 Issue-period cohorts: what the 1990-91, 1992-2003 and 2004+ split means for a holder
 - Rule: Bituach-Net classifies every insurer track by policy issue period ("תקופת הקמת המסלול"): "פוליסות שהונפקו בשנים 1990-1991", "פוליסות שהונפקו בשנים 1992-2003", "פוליסות שהונפקו החל משנת 2004" (CAT-10). What the cohort means for a holder, as far as sourced:
@@ -502,7 +511,7 @@ D2: a tier-2 instrument moves to tier 1 when it has a sourced record and its tax
 **Executive insurance**
 - Sourced now:
   - legal type and the law provisions that apply (INS-13, INS-14, primary);
-  - fee caps by issue date (INS-15, primary for the rule, institution for pre-2013 examples);
+  - fee caps by issue date (INS-15, primary; Harel's own fees as company examples in INS-31);
   - the cohort split and partial fee-structure evidence (INS-16);
   - one guaranteed-annuity-factor example (INS-17);
   - mandatory-pension fit (INS-18);
