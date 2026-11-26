@@ -207,7 +207,8 @@ describe("each figure of a visual lists only the rules that changed it (method Â
     });
     vi.doUnmock("../provenance");
     vi.resetModules();
-  });
+    // it builds and draws every guide's visual once: about 3 s here, and past the 10 s a hook gets by default on GitHub's slower machines
+  }, 60_000);
 
   it("no figure names the rules from 60 with no age, nor the surtax where it is 0", () => {
     for (const { id, figures: fs } of all) {
