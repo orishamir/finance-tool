@@ -357,6 +357,63 @@ describe("the caution of a fund whose exchange is not known is on its figure (F-
   });
 });
 
+describe("a house with lines on both exchanges that prices one of them and not the other (F-65)", () => {
+  // Interactive Israel's list prices each exchange on its own line: its line for Europe is left with no value, so it has no price there
+  const europeLine = "interactive-israel-buy-sell-europe";
+  const snapshots = bundle.snapshots.map((s) => (s.id === "interactive-israel" ? { ...s, lines: s.lines.map((l) => (l.id === europeLine ? { ...l, rate: { ...l.rate, value: null } } : l)) } : s));
+  const unsure = typed(null, 100, null);
+  const onEurope = typed("europe", 100, null);
+  const onUs = typed("us", 100, null);
+  const b = withCustomEntries({ ...bundle, snapshots }, [unsure, onEurope, onUs]);
+  const at = (f: CustomFund) => wayOf(b, f.id).byHouse["interactive-israel"];
+
+  it("has no price for a fund with neither the exchange nor the country, with the reason it has none on the failing exchange", () => {
+    expect(left(wayOf(b, onUs.id), "interactive-israel")).not.toBeNull();
+    const failing = at(onEurope);
+    expect(failing && "reason" in failing ? failing.reason.code : null).not.toBeNull();
+    const got = at(unsure);
+    expect(got && "valueN" in got).toBe(false);
+    expect(got && "reason" in got ? got.reason : null).toEqual(failing && "reason" in failing ? failing.reason : "a reason on Europe");
+    expect(got?.listing).toBe("europe");
+  });
+});
+
+describe("the generic fund abroad at a deal priced on both exchanges (F-63)", () => {
+  const data = feesData();
+  // Psagot's deal, its trade in the United States priced as its trade in Europe is, a share of the trade with a minimum, in dollars: the
+  // generic fund has no unit price, which its own price per unit there would need, so the deal is priced on both exchanges
+  const filled = must(fillDeal({ ...newDeal("brokerage-account", "psagot"), id: "deal-psagot" }, "house:psagot", data, t), "Psagot's deal");
+  const filledTrade = must(filled.fees.find((f) => f.kind === "trade"), "the deal's trade fee");
+  if (!("cases" in filledTrade) || !filledTrade.cases) throw new Error("the trade fee has cases");
+  const caseOn = (exchange: FundExchange) => must(filledTrade.cases?.find((c) => JSON.stringify(c.when).includes(`"${exchange}"`)), `the trade fee's case for ${exchange}`);
+  const usCase = caseOn("us");
+  const europeStages = caseOn("europe").stages.map((st) => ({ ...st, price: { ...st.price, currency: "USD" } }));
+  const trade = { ...filledTrade, cases: filledTrade.cases.map((c) => (c === usCase ? ({ ...usCase, stages: europeStages } as typeof c) : c)) };
+  const deal = { ...filled, fees: filled.fees.map((f) => (f === filledTrade ? trade : f)) };
+  const cases = trade.cases;
+  // the deal without its trade fee's case for the other exchange, so it is priced on this one alone
+  const onlyOn = (exchange: FundExchange) => {
+    const other = exchange === "us" ? "europe" : "us";
+    return { ...deal, id: `deal-psagot-only-${exchange}`, fees: deal.fees.map((f) => (f === trade ? { ...trade, cases: cases.filter((c) => !JSON.stringify(c).includes(`"${other}"`)) } : f)) };
+  };
+  const deals = [deal, onlyOn("us"), onlyOn("europe")];
+  const b = withDeals(bundle, deals, data.kinds);
+  const view = buildInvest({ bundle: b, index: indexOf(b), plan });
+  const cells = must(view.options.find((o) => o.id === "abroad"), "the option abroad").cells;
+  const cellOf = (id: string) => must(cells.find((c) => c.providerId === dealProviderId(id)), `the cell of ${id}`);
+
+  it("is priced on the exchange whose reading leaves the more, its account costing what it costs on that exchange alone", () => {
+    const us = cellOf("deal-psagot-only-us");
+    const europe = cellOf("deal-psagot-only-europe");
+    expect(us.kind).toBe("cost");
+    expect(europe.kind).toBe("cost");
+    const both = cellOf(deal.id);
+    const cheaper = must(us.costN, "the US cost") <= must(europe.costN, "the Europe cost") ? us : europe;
+    expect(us.costN).not.toBe(europe.costN);
+    expect([both.costN, both.venue]).toEqual([cheaper.costN, cheaper.venue]);
+  });
+});
+
 describe("the unit price as the panel types it (F-109)", () => {
   const abroad = { ...fundDraftOf(null, "abroad"), name: "קרן", fixed: 0.07, payout: "accumulating" as const, hedged: false, domicile: "IE" as const, unitPrice: { value: 100, unit: "usd" as const } };
 
