@@ -55,9 +55,9 @@ Scope: makam (מק"ם) and every type of Israeli government shekel bond a reside
 
 ### GOV-05 Makam auction: who may bid directly
 - Rule: The Bank of Israel sells makam only to a member of the TASE clearing house (חבר מסלקת הבורסה) that can submit orders directly through the automated system, has signed a makam purchase agreement with the Bank of Israel, and has given the Bank of Israel a power of attorney. The sale is an off-exchange transaction (עסקה מחוץ לבורסה) through the clearing house.
-- Conditions / exceptions: The document does not say whether or how a member may bid on behalf of its clients. Whether an individual can take part through a bank or broker, and at what cost, is open question 2.
+- Conditions / exceptions: The document does not say whether or how a member may bid on behalf of its clients. How an individual orders (a bid in the auction through a securities account at a bank or investment house): as in GOV-22. The minimum and fee for an individual's auction order are open question 2.
 - Figures: none
-- Source: [בנק ישראל, חטיבת השווקים: מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים](https://www.boi.org.il/media/ytal5ozx/makam.pdf), pp.2, 7-8, ss.2.7, 2.8, 4.3 · checked 2026-10-25 · primary.
+- Source: [בנק ישראל, חטיבת השווקים: מכרז למכירת מילווה קצר מועד (לא צמוד ואינו נושא ריבית) – תנאים כלליים](https://www.boi.org.il/media/ytal5ozx/makam.pdf), pp.2, 7-8, ss.2.7, 2.8, 4.3 · checked 2026-10-25 · primary. See also GOV-22.
 - Scope: general
 - Dimensions: `eligibility`
 - Likely to change: yes, by BoI circular
