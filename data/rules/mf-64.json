@@ -3,6 +3,16 @@
   "title": "Meitav (Tachlit): three funds on TASE's bullet indices; two to be wound up in their year with a payment date, and a fee freeze",
   "title_he": "מיטב (תכלית): קרנות על מדדי בולט, מועד התשלום בפירוק והתחייבות לא להעלות שכר",
   "text_he": "בתשקיף של מיטב יש {MF-64:funds_meitav} קרנות תכלית על מדדי הבולט של הבורסה, עם דמי ניהול קבועים של {MF-64:fee_low} עד {MF-64:fee_high} ושכר נאמן של {MF-64:trustee}, וכולן מסווגות ״פטורה״. לפי הדוחות השנתיים, קרן 5140249 תגיע לפירוקה ב־2028 עם תשלום עד {MF-64:payment_5140249}, וקרן 5140231 תגיע לפירוקה ב־2029 עם תשלום עד {MF-64:payment_5140231}, אלא אם המנהל יודיע על מועד אחר. בשתיהן המנהל מתחייב לא להעלות את שכר מנהל הקרן ואת דמי הניהול המשתנים עד הפירוק. על הקרן השלישית, 5140256, לא ברור אם גם היא מתפרקת בשנה שבשם.",
+  "figure_names_he": {
+    "funds_meitav": "קרנות בתשקיף",
+    "fee_low": "דמי ניהול קבועים, הנמוך",
+    "fee_high": "דמי ניהול קבועים, הגבוה",
+    "trustee": "שכר נאמן",
+    "end_first_meitav": "שנת הסיום הראשונה",
+    "end_last_meitav": "שנת הסיום האחרונה",
+    "payment_5140249": "המועד האחרון לתשלום, קרן 5140249",
+    "payment_5140231": "המועד האחרון לתשלום, קרן 5140231"
+  },
   "strength": "institution",
   "dimensions": [
     "fee-management-balance",
@@ -32,8 +42,7 @@
       "rule_ids": [
         "MF-64"
       ],
-      "state": "sourced",
-      "notes": "קרנות בתשקיף"
+      "state": "sourced"
     },
     "fee_low": {
       "value": 0.15,
@@ -54,8 +63,7 @@
       "rule_ids": [
         "MF-64"
       ],
-      "state": "sourced",
-      "notes": "דמי ניהול קבועים, הנמוך"
+      "state": "sourced"
     },
     "fee_high": {
       "value": 0.2,
@@ -76,8 +84,7 @@
       "rule_ids": [
         "MF-64"
       ],
-      "state": "sourced",
-      "notes": "דמי ניהול קבועים, הגבוה"
+      "state": "sourced"
     },
     "trustee": {
       "value": 0.03,
@@ -98,8 +105,7 @@
       "rule_ids": [
         "MF-64"
       ],
-      "state": "sourced",
-      "notes": "שכר נאמן"
+      "state": "sourced"
     },
     "end_first_meitav": {
       "value": "2028",
@@ -120,8 +126,7 @@
       "rule_ids": [
         "MF-64"
       ],
-      "state": "sourced",
-      "notes": "שנת הסיום הראשונה"
+      "state": "sourced"
     },
     "end_last_meitav": {
       "value": "2029",
@@ -142,8 +147,7 @@
       "rule_ids": [
         "MF-64"
       ],
-      "state": "sourced",
-      "notes": "שנת הסיום האחרונה"
+      "state": "sourced"
     },
     "payment_5140249": {
       "value": "2028-11-15",
@@ -162,8 +166,7 @@
       "rule_ids": [
         "MF-64"
       ],
-      "state": "sourced",
-      "notes": "המועד האחרון לתשלום, קרן 5140249"
+      "state": "sourced"
     },
     "payment_5140231": {
       "value": "2030-01-15",
@@ -182,8 +185,7 @@
       "rule_ids": [
         "MF-64"
       ],
-      "state": "sourced",
-      "notes": "המועד האחרון לתשלום, קרן 5140231"
+      "state": "sourced"
     }
   },
   "scope": "institution",

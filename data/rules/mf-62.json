@@ -3,6 +3,15 @@
   "title": "Kesem: 20 tracking funds named \"אינדקס Bullet\", each with a stated end",
   "title_he": "קסם: קרנות מחקות ״אינדקס Bullet״, לכל אחת כתוב סוף",
   "text_he": "בתשקיף של קסם יש קרנות מחקות פתוחות בשם ״אינדקס Bullet״. לפי ההערות בתשקיף, לכל אחת תקופת קיום עד סוף שנה מסוימת, בין 2026 ל־2035, ועם סיום התקופה הקרן תפורק. כולן במסלול מס של קרן פטורה. התאריך שבו הכסף משולם לא מופיע בתשקיף.",
+  "figure_names_he": {
+    "funds": "קרנות בתשקיף",
+    "fee_low": "דמי ניהול קבועים, הנמוך",
+    "fee_high": "דמי ניהול קבועים, הגבוה",
+    "trustee_low": "שכר נאמן, הנמוך",
+    "trustee_high": "שכר נאמן, הגבוה",
+    "end_first": "שנת הסיום הראשונה בתשקיף",
+    "end_last": "שנת הסיום האחרונה בתשקיף"
+  },
   "strength": "institution",
   "dimensions": [
     "fee-management-balance",
@@ -32,8 +41,7 @@
       "rule_ids": [
         "MF-62"
       ],
-      "state": "sourced",
-      "notes": "קרנות בתשקיף"
+      "state": "sourced"
     },
     "fee_low": {
       "value": 0.2,
@@ -54,8 +62,7 @@
       "rule_ids": [
         "MF-62"
       ],
-      "state": "sourced",
-      "notes": "דמי ניהול קבועים, הנמוך"
+      "state": "sourced"
     },
     "fee_high": {
       "value": 0.45,
@@ -76,8 +83,7 @@
       "rule_ids": [
         "MF-62"
       ],
-      "state": "sourced",
-      "notes": "דמי ניהול קבועים, הגבוה"
+      "state": "sourced"
     },
     "trustee_low": {
       "value": 0.025,
@@ -98,8 +104,7 @@
       "rule_ids": [
         "MF-62"
       ],
-      "state": "sourced",
-      "notes": "שכר נאמן, הנמוך"
+      "state": "sourced"
     },
     "trustee_high": {
       "value": 0.03,
@@ -120,8 +125,7 @@
       "rule_ids": [
         "MF-62"
       ],
-      "state": "sourced",
-      "notes": "שכר נאמן, הגבוה"
+      "state": "sourced"
     },
     "end_first": {
       "value": "2026",
@@ -142,8 +146,7 @@
       "rule_ids": [
         "MF-62"
       ],
-      "state": "sourced",
-      "notes": "שנת הסיום הראשונה בתשקיף"
+      "state": "sourced"
     },
     "end_last": {
       "value": "2035",
@@ -164,8 +167,7 @@
       "rule_ids": [
         "MF-62"
       ],
-      "state": "sourced",
-      "notes": "שנת הסיום האחרונה בתשקיף"
+      "state": "sourced"
     }
   },
   "scope": "institution",
