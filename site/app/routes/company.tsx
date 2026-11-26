@@ -151,9 +151,10 @@ export async function loader({ params }: Route.LoaderArgs) {
   const { loadInstitutionRegistry } = await import("../lib/institutions.server");
   const name = brand?.name ?? shortCompanyName(company!.id, company!.name);
   const shortName = brand?.name ?? loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? name;
+  const { pageRuleUses } = await import("../lib/rule-uses.server");
   const house = brokerage && brand?.brokerId ? await houseAccount(brand.brokerId, brokerage.tariff, { rules: termRules, pointed: pointedRecords(termRules, allRules) }) : null;
   const held = house?.page ?? { rules: termRules, pointed: pointedRecords(termRules, allRules) };
-  const companyTerms = { groups: termGroups, rules: held.rules, pointed: held.pointed, company: registryIds[0] ?? null, pageCompanies: registryIds, helpTerms, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
+  const companyTerms = { groups: termGroups, rules: held.rules, pointed: held.pointed, ruleUses: pageRuleUses(held.rules, held.pointed), company: registryIds[0] ?? null, pageCompanies: registryIds, helpTerms, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
   // the legal companies the page stands for, as their own data writes them (the CMA, the tariff, the fund records)
   const members = brand ? [...new Set([company?.name, brokerage?.tariff.providerName, ...brand.fundManagers].filter((x): x is string => !!x))] : [];
   const brokerageCard = brokerage && house && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, ...house.account, ...(await houseNotes(brand.brokerId)) } : null;
@@ -321,7 +322,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
     </>
   );
   return (
-    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
+    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, ruleUses: data.companyTerms.ruleUses, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
       <CompanyTemplate
         pageId={data.pageId}
         name={data.name}

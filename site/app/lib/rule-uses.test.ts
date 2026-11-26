@@ -5,6 +5,10 @@ import { loadProducts } from "./data.server";
 import { RULES } from "./fee-deal/offers/rules";
 import { ACCOUNT_CAP_RULES, IDLE_AT_BANK } from "./fee-deal/charts";
 import { STATED_RULES } from "./fee-deal/reading";
+import { loadCma } from "./data.server";
+import { loader as companyLoader } from "../routes/company";
+import { loader as trackLoader } from "../routes/track";
+import { loader as bondGuideLoader } from "../routes/guide-limited-bond-fund";
 
 describe("rule uses", () => {
   it("TXI-03 is read by the engine and shown on at least one page", () => {
@@ -35,4 +39,20 @@ describe("rule uses", () => {
     expect(scoreOf({ figures: { a: { value: 1 } as never }, il_finance_file: "tax-general.md", strength: "primary", likely_to_change: "yes" }, 2, 3, 4)).toBe(6 + 3 + 4 + 2 + 1 + 1 + 1);
     expect(scoreOf({ il_finance_file: "corporate-bonds.md", strength: "secondary", likely_to_change: "no" }, 0, 0, 0)).toBe(0);
   });
+  it("a page's uses name every rule it can open a card of, its own and the records its cards point at, and no other (a product guide, a company page, a track page)", async () => {
+    const keys = (d: { rules: Record<string, unknown>; pointed: Record<string, unknown>; ruleUses: Record<string, unknown> }) => ({ uses: Object.keys(d.ruleUses).sort(), drawn: [...new Set([...Object.keys(d.rules), ...Object.keys(d.pointed)])].sort() });
+    const guide = keys(await bondGuideLoader());
+    expect(guide.drawn.length).toBeGreaterThan(0);
+    expect(guide.uses).toEqual(guide.drawn);
+    const cma = loadCma();
+    const company = (await companyLoader({ params: { id: cma.companies[0]!.id } } as never)) as { kind: string; companyTerms?: Parameters<typeof keys>[0] };
+    if (company.kind !== "company" || !company.companyTerms) throw new Error("the first CMA company has no company page");
+    const c = keys(company.companyTerms);
+    expect(c.drawn.length).toBeGreaterThan(0);
+    expect(c.uses).toEqual(c.drawn);
+    const t = cma.tracks[0]!;
+    const track = keys(await trackLoader({ params: { id: t.companyId, fund: String(t.fundId) } } as never));
+    expect(track.drawn.length).toBeGreaterThan(0);
+    expect(track.uses).toEqual(track.drawn);
+  }, 120000);
 });
