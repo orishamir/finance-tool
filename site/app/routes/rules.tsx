@@ -542,7 +542,12 @@ export default function Rules() {
   }, [data.facts, browseFilters, lightById]);
   const factItems: FactItem[] = facts.map((f) => ({
     id: f.id,
-    body: <SlottedText text={f.text} source={{ rules: data.factRules as Record<string, RuleRecord>, today: data.today }} />,
+    // the fact is its rule's: a figure in it opens no chip of that rule (`opensAround`)
+    body: (
+      <span data-opens-scope data-opens={f.id}>
+        <SlottedText text={f.text} source={{ rules: data.factRules as Record<string, RuleRecord>, today: data.today }} />
+      </span>
+    ),
     source: f.source,
     action: (
       <Button variant="quiet" flush className="text-start" onClick={() => openRule(f.id)}>

@@ -15,7 +15,7 @@ import { digitsFor, headText, keyOfLine, receiptLines, withValues } from "../lib
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isOpenValue, isParameter, isWeak, ownBy, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
+import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
@@ -156,7 +156,7 @@ export function SourceBlock({ source, rule, today, inline, english, own, strengt
 export function SheetContent({ item, data, headId, descId }: { item: Item; data: ProvenanceData; headId: string; descId: string }) {
   return (
     <InsideSheetCtx.Provider value={true}>
-      {item.kind === "value" && <ValueSheet value={item.value} exact={!!item.exact} display={item.display} data={data} headId={headId} descId={descId} />}
+      {item.kind === "value" && <ValueSheet value={item.value} exact={!!item.exact} display={item.display} shown={item.shown} data={data} headId={headId} descId={descId} />}
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
       {item.kind === "rules" && <RulesListSheet ids={item.ids} name={item.name} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
@@ -407,14 +407,15 @@ function FigureSource({ value, data, strengthSaid }: { value: SiteValue; data: P
     owner ??= asSourced(r);
     known ??= pickSources(asSourced(r)).find((x) => x.url === value.source.url);
   }
-  // the figure's own place in the document (its PDF page, the words its web page opens at) before the rule's
-  const at = value.source as CitedPlace;
+  // the figure's own place in the document (its PDF page, the words its web page opens at, the words it quotes) before the rule's; a
+  // data file's source object may carry them beside the schema's four fields (a price list's quoted line)
+  const at = value.source as CitedPlace & { quote?: string };
   // a figure whose source names itself in Hebrew (a page abroad: its publisher, its kind, the paragraph of a law) keeps those names
   const named = value.source as Partial<Pick<RuleSource, "publisher_he" | "title_he" | "kind" | "locator_he">>;
   const own = { ...(named.publisher_he ? { publisher_he: named.publisher_he } : {}), ...(named.title_he ? { title_he: named.title_he } : {}), ...(named.kind ? { kind: named.kind } : {}), ...(named.locator_he ? { locator_he: named.locator_he } : {}) };
   const source: RuleSource = {
     ...(known ?? { title: value.source.title, publisher: value.source.publisher, ...own }),
-    ...(value.quote ? { quote: value.quote } : {}),
+    ...(value.quote ?? at.quote ? { quote: value.quote ?? at.quote } : {}),
     url: value.source.url,
     ...(at.page ? { page: at.page } : {}),
     ...(at.fragment ? { fragment: at.fragment } : {}),
@@ -529,6 +530,8 @@ function InputList({ inputs }: { inputs: readonly (readonly [label: string, inpu
  * symbol it stands for; else, the formula's name as a chip to its sheet and the inputs. `result` is the figure as the head shows it.
  */
 function ComputedWorking({ value, computedFrom, result, data }: { value: SiteValue; computedFrom: NonNullable<SiteValue["computed_from"]>; result: string; data: ProvenanceData }) {
+  // the sheet says what the figure is once, in its head's line (`about`): the line's own name stands over it only where there is none, and
+  // the key row of the symbol the line works out points at the head instead of saying it again
   const inputs = computedFrom.inputs as Record<string, SiteValue>;
   const working = typeof value.value === "number" ? computedFrom.working : undefined;
   const tex = working?.kind === "formula" ? data.formulas?.[working.entry]?.tex?.[working.line] : undefined;
@@ -542,11 +545,11 @@ function ComputedWorking({ value, computedFrom, result, data }: { value: SiteVal
       <>
         <FormulaBlock
           variant="worked"
-          label={formulaKeys[working.entry]?.lines?.[working.line] ?? formulaNames[working.entry]}
+          label={value.about ? undefined : (formulaKeys[working.entry]?.lines?.[working.line] ?? formulaNames[working.entry])}
           tex={tex}
           values={withValues(tex, working, inputs, digitsFor(result))}
           result={result}
-          rows={rows.map((r) => ({ tex: r.tex, words: r.words, inputs: r.inputs.map((x) => ({ key: x.key, name: inputName(x.key), value: <InputFigure label={x.key} input={x.input} /> })) }))}
+          rows={rows.map((r) => ({ tex: r.tex, words: r.result ? copy.formulaSheet.resultRow : r.words, inputs: r.inputs.map((x) => ({ key: x.key, name: inputName(x.key), value: <InputFigure label={x.key} input={x.input} /> })) }))}
           where={copy.formulaSheet.where}
           after={<FormulaLink id={working.entry} />}
         />
@@ -568,8 +571,25 @@ function ComputedWorking({ value, computedFrom, result, data }: { value: SiteVal
   );
 }
 
-/** The sheet behind a figure (exported for the render tests). */
-export function ValueSheet({ value, exact, display, data, headId, descId }: { value: SiteValue; exact: boolean; display?: string; data: ProvenanceData; headId: string; descId: string }) {
+/**
+ * Why a figure has no number, said once in its sheet, or null where nothing is said: its note in Hebrew; else, for a sourced figure, that
+ * the source does not hold it; else, for a computed one, that one of the values it reads has none. An open value's reason is its blocked
+ * callout, and an empty value a rule explains ("אין", PF-06) has that rule's chip: "not found in the source" would be untrue of either.
+ */
+function missingReason(value: SiteValue, display: string | undefined, blocked: boolean): string | null {
+  if (value.value !== null) return null;
+  if (mostlyHebrew(value.notes)) return value.notes ?? null;
+  if (blocked) return null;
+  if (value.state === "sourced") return display && value.rule_ids?.length ? null : copy.sourced.noValue;
+  if (value.state === "computed") return Object.values((value.computed_from?.inputs ?? {}) as Record<string, SiteValue>).some((x) => x.value === null) ? copy.computed.inputMissing : null;
+  return null;
+}
+
+/**
+ * The sheet behind a figure (exported for the render tests). `shown`: the rules the place it was opened from already opens, whose chips it
+ * leaves out, as it leaves out the doubt's rules, which the doubt's callout opens.
+ */
+export function ValueSheet({ value, exact, display, shown = [], data, headId, descId }: { value: SiteValue; exact: boolean; display?: string; shown?: readonly string[]; data: ProvenanceData; headId: string; descId: string }) {
   const strength = strengthOf(value);
   const param = isParameter(value);
   const today = useContext(TodayCtx);
@@ -606,7 +626,18 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
   // a computed figure's warnings stand together under its name, above its formula and inputs: under a long list of inputs the strength note
   // sat below a small phone's fold; a sourced figure's source stands directly under its name, and its strength note after it
   const warningsFirst = value.state === "computed";
-  const rulesNamed = sheetRules(value);
+  const hidden = new Set([...shown, ...(value.doubtRules ?? [])]);
+  const rulesNamed = sheetRules(value).filter((r) => !hidden.has(r.id));
+  const chips = (value.rule_ids ?? []).filter((id) => !hidden.has(id));
+  const chipRow = chips.length > 0 && (
+    <Row label={chips.length === 1 ? copy.sourced.rule : copy.sourced.rules}>
+      <span className="flex flex-wrap gap-2">
+        {chips.map((id) => <RuleRef key={id} id={id} />)}
+      </span>
+    </Row>
+  );
+  const missing = value.value === null;
+  const reason = missingReason(value, display, blocked);
   return (
     <div className="flex flex-col gap-3.5">
       <header className="flex flex-col gap-1">
@@ -615,7 +646,8 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
             <bdi dir={textDir(text)} className={longHead ? undefined : "whitespace-nowrap"}>{text}</bdi>
           </span>
           {unitWord && <span className="text-sm text-muted-foreground">{unitWord}</span>}
-          {!blocked && <StateTag state={param ? "parameter" : value.state} />}
+          {/* a missing figure is no figure of any kind: no state tag */}
+          {!blocked && !missing && <StateTag state={param ? "parameter" : value.state} />}
           {/* a figure that rests on the site's reading of official texts says so wherever it is opened (the
               guide visuals and the holdings page carried the engine's reading label and nothing showed it) */}
           {value.labels?.some((l) => l.code === "reading" || l.code === "cautious") && <ReadingTag />}
@@ -651,19 +683,14 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
       )}
       {warningsFirst && strengthNote}
 
-      {/* the working notes are English; only a note written in Hebrew is shown */}
-      {/* an open value's reason is the blocked callout below, and an empty value a rule explains ("לא נמצאה תקרה בחוק") has its rules under
-          it; "not found in the source" would be untrue of either */}
-      {value.value === null && !(blocked && !mostlyHebrew(value.notes)) && (mostlyHebrew(value.notes) || !(display && value.rule_ids?.length)) && <p className="text-sm">{mostlyHebrew(value.notes) ? value.notes : copy.sourced.noValue}</p>}
-      {/* an empty value a rule explains ("אין", PF-06) names that rule as a chip, as a sourced figure does */}
-      {value.value === null && display && value.rule_ids && value.rule_ids.length > 0 && (
-        <dl className="sheet-dl">
-          <Row label={copy.sourced.rule}>
-            <span className="flex flex-wrap gap-2">
-              {value.rule_ids.map((id) => <RuleRef key={id} id={id} />)}
-            </span>
-          </Row>
-        </dl>
+      {/* why a figure is missing, once (`missingReason`); the working notes are English, and only a note written in Hebrew is shown */}
+      {reason && <p className="text-sm">{reason}</p>}
+      {/* a missing sourced figure: where it was looked for, and the rules that explain its absence ("אין", PF-06; a track too young) */}
+      {missing && value.state === "sourced" && !blocked && !param && (
+        <>
+          <FigureSource value={value} data={data} strengthSaid={strengthSaid} />
+          {chipRow && <dl className="sheet-dl">{chipRow}</dl>}
+        </>
       )}
 
       {value.state === "sourced" && param && (
@@ -684,7 +711,8 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
             </Row>
           ) : (
             <>
-              {value.effective_from && (
+              {/* a figure not in force yet says its first day above, with what that means */}
+              {value.effective_from && !fromDate && (
                 <Row label={copy.sourced.from}>
                   <When iso={value.effective_from} />
                 </Row>
@@ -696,13 +724,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
               )}
             </>
           )}
-          {value.rule_ids && value.rule_ids.length > 0 && (
-            <Row label={copy.sourced.rule}>
-              <span className="flex flex-wrap gap-2">
-                {value.rule_ids.map((id) => <RuleRef key={id} id={id} />)}
-              </span>
-            </Row>
-          )}
+          {chipRow}
           {mostlyHebrew(value.notes) && <Row label=""><span className="text-sm text-muted-foreground"><IdText text={value.notes ?? ""} /></span></Row>}
         </dl>
         </>
@@ -750,7 +772,8 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
               <SlottedText text={flagCopy[code] ?? copy.flagOther} source={data} /> <bdi dir="ltr" className="text-xs">{code}</bdi>
             </Callout>
           ))}
-          {mostlyHebrew(value.notes) && <p className="text-sm text-muted-foreground"><IdText text={value.notes ?? ""} /></p>}
+          {/* a missing figure's note is its reason, said above */}
+          {!missing && mostlyHebrew(value.notes) && <p className="text-sm text-muted-foreground"><IdText text={value.notes ?? ""} /></p>}
         </>
       )}
 
@@ -805,6 +828,12 @@ function figureLabel(rule: RuleRecord, name: string, className = "text-xs"): Rea
   return rule.figure_names_he?.[name] ? <span className={className}>{rule.figure_names_he[name]}</span> : <bdi dir="ltr" className={className}>{name}</bdi>;
 }
 
+/** A rule figure's head line in its sheet: its Hebrew name, with the tax year of a figure by year; nothing where the record names it in English only. */
+function aboutOf(rule: RuleRecord, name: string, year?: string | null): { about?: string } {
+  const he = rule.figure_names_he?.[name];
+  return he ? { about: year ? `${he} ${year}` : he } : {};
+}
+
 const unitSuffix = (unit: string, className = "text-sm text-muted-foreground") => (suffixUnits.has(unit) ? <span className={className}> {unitWordOf(unit)}</span> : null);
 
 /** "לשנת המס 2026 · קבוע בחוק": the tax year the figure is for (when its label does not say) and how it is updated. */
@@ -853,11 +882,11 @@ function RuleFigures({ rule, id, pageValue = (v) => v, head }: { rule: RuleRecor
               return (
                 <div key={`${name}-${i}`} className="readout-row">
                   <dt>
-                    {figureLabel(rule, name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={pageValue({ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id] })} />}
+                    {figureLabel(rule, name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={pageValue({ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id], ...aboutOf(rule, name) })} />}
                     {i === 0 && <FigureNote v={edge ? b.up_to : b.rate} labelYear={null} />}
                   </dt>
                   <dd>
-                    <Num value={pageValue({ ...b.rate, rule_ids: b.rate.rule_ids ?? [id] })} />
+                    <Num value={pageValue({ ...b.rate, rule_ids: b.rate.rule_ids ?? [id], ...aboutOf(rule, name) })} />
                     {unitSuffix(b.rate.unit)}
                     {edge && b.rate.update_rule !== b.up_to.update_rule && <FigureNote v={{ update_rule: b.rate.update_rule }} labelYear={null} />}
                   </dd>
@@ -879,7 +908,7 @@ function RuleFigures({ rule, id, pageValue = (v) => v, head }: { rule: RuleRecor
               </dt>
               <dd>
                 {/* one or two years or months in words ("שנה"), never "1 שנים" */}
-                <Num value={pageValue({ ...v, rule_ids: v.rule_ids ?? [id] })} {...(spanWords(v.value, v.unit) ? { display: spanWords(v.value, v.unit)! } : {})} />
+                <Num value={pageValue({ ...v, rule_ids: v.rule_ids ?? [id], ...aboutOf(rule, name, year) })} {...(spanWords(v.value, v.unit) ? { display: spanWords(v.value, v.unit)! } : {})} />
                 {spanWords(v.value, v.unit) ? null : unitSuffix(v.unit)}
               </dd>
             </div>
@@ -924,7 +953,8 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   const uses = data.ruleUses?.[id];
   return (
     // the rule's own card: the one place outside the rules page where its code stands, in the heading "id · title" (D25)
-    <div data-code-ok className={cx("flex-1 flex flex-col gap-3", open && "rule-open")}>
+    // a figure of the card opens no chip of the card's own rule (`opensAround`)
+    <div data-code-ok data-opens-scope data-opens={id} className={cx("flex-1 flex flex-col gap-3", open && "rule-open")}>
       <header className="flex flex-col gap-1.5">
         <h2 id={headId} className="text-lg font-semibold leading-snug">
           {open && <>{ruleCopy.open.title} </>}
@@ -1154,7 +1184,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
   const dims = rule.dimensions.filter((d) => data.dimensions[d]);
   const usesSome = !!uses && (uses.pages.length > 0 || uses.engine);
   return (
-    <article data-code-ok className={cx("flex flex-col gap-5 min-w-0 [overflow-wrap:anywhere]", open && "rule-open")}>
+    <article data-code-ok data-opens-scope data-opens={id} className={cx("flex flex-col gap-5 min-w-0 [overflow-wrap:anywhere]", open && "rule-open")}>
       <p className="text-xs-flow text-muted-foreground">
         <bdi dir="ltr" className="tabular-nums slashed-zero">{id}</bdi>
       </p>
@@ -1223,7 +1253,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
             <span className="text-sm flex flex-wrap gap-x-2">
               <When iso={rule.checked} />
               {rule.recheck_date ? (
-                <span className="text-caution-foreground">
+                <span className={recheckStale(rule, data.today) ? "text-caution-foreground" : "text-muted-foreground"}>
                   · <When iso={rule.recheck_date} lead={`${ruleCopy.recheck} `} />
                 </span>
               ) : rule.likely_to_change === "no" ? (
@@ -1234,7 +1264,8 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
         ) : (
           rule.recheck_date && (
             <Row label={ruleCopy.recheck}>
-              <span className="text-sm text-caution-foreground">
+              {/* the caution colour only once the date has passed, as on the rule card */}
+              <span className={cx("text-sm", recheckStale(rule, data.today) ? "text-caution-foreground" : "text-muted-foreground")}>
                 <When iso={rule.recheck_date} />
               </span>
             </Row>
@@ -1261,7 +1292,7 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
   const first = sources[0];
   const parts = first ? sourceParts(first) : null;
   return (
-    <Card edge="accent" pad="tight" className="flex flex-col gap-3">
+    <Card edge="accent" pad="tight" className="flex flex-col gap-3" data-opens-scope data-opens={id}>
       <span className="text-xs-flow font-medium text-primary">{label}</span>
       <h3 className="text-lg font-semibold leading-snug -mt-1">
         <button type="button" onClick={onOpen} className="text-start hover:underline">
@@ -1274,7 +1305,7 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
             <div key={key} className="flex flex-col gap-0.5 min-w-0">
               <dd className="order-1 flex items-baseline gap-1.5">
                 <span className="figure">
-                  <Num value={{ ...value, rule_ids: value.rule_ids ?? [id] }} size="figure" />
+                  <Num value={{ ...value, rule_ids: value.rule_ids ?? [id], ...aboutOf(rule, key) }} size="figure" />
                 </span>
                 {unitSuffix(value.unit, "text-lg text-muted-foreground")}
               </dd>

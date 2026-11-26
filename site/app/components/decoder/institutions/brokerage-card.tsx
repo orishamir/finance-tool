@@ -336,11 +336,25 @@ function Groups({ groups }: { groups: FeesSnapshot["groups"] | null }) {
   if (!groups) return null;
   if (groups.state !== "prices") return <Section level="card" heading="h3" id={accountSectionIds.groups} title={copy.card.groupsTitle} lead={groupWords.states[groups.state]}>{null}</Section>;
   return (
-    <Section level="card" heading="h3" id={accountSectionIds.groups} title={copy.card.groupsTitle} lead={copy.card.groupsLead}>
-      <Card pad="snug">
-        <GroupPriceRows entries={groups.entries} sources headHelp />
-      </Card>
-    </Section>
+    <FigureScope>
+      <Section level="card" heading="h3" id={accountSectionIds.groups} title={copy.card.groupsTitle} lead={copy.card.groupsLead}>
+        <Card pad="snug">
+          <GroupPriceRows entries={groups.entries} sources headHelp />
+        </Card>
+      </Section>
+    </FigureScope>
+  );
+}
+
+/**
+ * One part of the card as the place its figures are opened from (`opensAround`): a figure's sheet leaves out the rules its own part opens,
+ * and keeps those only another part of the card opens. No layout of its own.
+ */
+function FigureScope({ children }: { children: ReactNode }) {
+  return (
+    <div data-opens-scope className="contents">
+      {children}
+    </div>
   );
 }
 
@@ -363,6 +377,7 @@ function Facts({ tariff }: { tariff: TariffHead }) {
     },
   ];
   return (
+    <FigureScope>
     <Section level="card" heading="h3" id={accountSectionIds.facts} title={copy.card.factsTitle}>
       <KeyValueList items={items} />
       {tariff.protection.length > 0 && (
@@ -379,6 +394,7 @@ function Facts({ tariff }: { tariff: TariffHead }) {
         </div>
       )}
     </Section>
+    </FigureScope>
   );
 }
 
@@ -480,6 +496,8 @@ export function BrokerageGroupCard({ id, tariff, fees, kind, className, advertis
   }
   return (
     <div className={cx("flex flex-col gap-8", className)}>
+      {/* each part that holds a figure is its own place for what a figure's sheet leaves out (`FigureScope`), never the whole card: a fee's
+          rule opened only in another part keeps its chip */}
       {/* the account's price list first, as a product's name and its quiet line: the document (its title is the link), its dates, who pays these prices */}
       {/* 8 px under the part's heading, whose section leaves 16 */}
       <div className="flex flex-col gap-1.5 -mt-2">
@@ -525,9 +543,11 @@ export function BrokerageGroupCard({ id, tariff, fees, kind, className, advertis
           </div>
         </Section>
       ) : fees?.kind === "table" && fees.table.lines.length > 0 && (
-        <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
-          <PriceTable table={fees.table} priceFor={tariff.priceFor} house={tariff.providerName} kind={kind} />
-        </Section>
+        <FigureScope>
+          <Section level="card" heading="h3" id={accountSectionIds.fees} title={copy.card.linesTitle}>
+            <PriceTable table={fees.table} priceFor={tariff.priceFor} house={tariff.providerName} kind={kind} />
+          </Section>
+        </FigureScope>
       )}
       <CanBuy rows={tariff.availability} />
       <Claims entries={advertising} />
