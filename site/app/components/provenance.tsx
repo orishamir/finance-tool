@@ -70,8 +70,9 @@ export interface ProvenanceData {
   /** Per record that is not general, the companies whose own document it cites: only they list it, and the card names only them. PageShell fills it for every page. */
   ownDocs?: OwnDocs;
   /**
-   * The records the page's rule cards point at (`derived_from`, `examples`) that the page does not hold itself, so each chip on a card
-   * opens its record (`pointedRecords` in data.server.ts). Only chips and cards read it; the page's own logic reads `rules`.
+   * The records the page's rule cards point at (`derived_from`, `examples`, the rules their figures cite and fill their slots) that the
+   * page does not hold itself but ships in full: all of them (`pointedRecords` in data.server.ts), or, beside `heads`, only those whose
+   * figures fill a card's slots (`pointedShipment`). Only chips and cards read it; the page's own logic reads `rules`.
    */
   pointed?: Record<string, RuleRecord>;
   /**
