@@ -1,8 +1,8 @@
 {
   "id": "ETF-64",
-  "title": "Harel, Kesem, IBI, MTF, Mor and Tachlit: how their index funds say they replicate, per index",
-  "title_he": "הראל, קסם, אי.בי.אי, MTF, מור ותכלית: איך הקרנות שלהן משיגות את המדד",
-  "text_he": "בהראל ובקסם, הדוחות של קרנות על מדדי הבורסה בתל אביב אומרים שהן משיגות את המדד בעיקר בקניית מניות המדד. בקרן הסל של הראל על מדד הדגל, המניות הן כמעט כל הנכסים. הדוחות של קרנות על מדדי ארצות הברית והעולם, של אי.בי.אי, MTF, מור, קסם, תכלית והראל, אומרים שהן משיגות את המדד בעיקר בעסקאות החלף לא ממומנות. חלקן משתמשות גם בחוזים עתידיים. את יתרת הכסף הן מחזיקות במזומן, בפיקדונות, באג״ח קצרות ובמק״מ. אי.בי.אי ומור כותבות שהצד השני לעסקאות הוא רק בנק מקבוצת סיכון האשראי הראשונה. אלה דוגמאות, וכל מנהל רשאי לשנות את השיטה.",
+  "title": "IBI, MTF, Mor, Kesem, Tachlit and Harel: their funds on US and world indices say they replicate mainly through unfunded swaps",
+  "title_he": "עסקאות החלף בקרנות על מדדי ארצות הברית והעולם: אי.בי.אי, MTF, מור, קסם, תכלית והראל",
+  "text_he": "הדוחות של קרנות על מדדי ארצות הברית והעולם, של אי.בי.אי, MTF, מור, קסם, תכלית והראל, אומרים שהן משיגות את המדד בעיקר בעסקאות החלף לא ממומנות. חלקן משתמשות גם בחוזים עתידיים, וכולן מחזיקות את יתרת הכסף במזומן, בפיקדונות, באג״ח קצרות ובמק״מ. אי.בי.אי ומור כותבות שהצד השני לעסקאות הוא רק בנק מקבוצת סיכון האשראי הראשונה. אלה דוגמאות, וכל מנהל רשאי לשנות את השיטה.",
   "strength": "institution",
   "dimensions": [
     "protection"
@@ -13,14 +13,6 @@
   "checked": "2026-10-25",
   "scope": "institution",
   "scope_institutions": [
-    {
-      "id": "harel-funds",
-      "name_he": "הראל קרנות נאמנות"
-    },
-    {
-      "id": "kesem",
-      "name_he": "קסם קרנות נאמנות"
-    },
     {
       "id": "ibi-funds",
       "name_he": "אי.בי.אי קרנות נאמנות"
@@ -34,59 +26,19 @@
       "name_he": "מור קרנות נאמנות"
     },
     {
+      "id": "kesem",
+      "name_he": "קסם קרנות נאמנות"
+    },
+    {
       "id": "meitav-funds",
       "name_he": "מיטב קרנות נאמנות"
+    },
+    {
+      "id": "harel-funds",
+      "name_he": "הראל קרנות נאמנות"
     }
   ],
   "sources": [
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1761001-1762000/P1761272-00.pdf",
-      "title": "הראל, דוח שנתי \"הראל סל (4A) ת\"א 35\" (1148907), 30.6.2026",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "pp.3, 6",
-      "locator_he": "עמודים 3, 6",
-      "page": 3,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1769001-1770000/P1769378-00.pdf",
-      "title": "הראל, דוח שנתי \"הראל מחקה (4A) ת\"א 90\" (5130638), 30.6.2026",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
-      "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1769001-1770000/P1769340-00.pdf",
-      "title": "הראל, דוח שנתי \"הראל מחקה (4A) ת\"א 35\" (5130661), 30.6.2026",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.3",
-      "locator_he": "עמוד 3",
-      "page": 3,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://mayafiles.tase.co.il/rpdf/1770001-1771000/P1770737-00.pdf",
-      "title": "קסם, דוח שנתי \"קסם KTF (4A) ת\"א 35\" (5124490), 30.6.2026",
-      "publisher": "Maya (TASE filings)",
-      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.2",
-      "locator_he": "עמוד 2",
-      "page": 2,
-      "checked": "2026-10-25"
-    },
     {
       "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
       "title": "IBI ETF annual report 31.12.2025",
@@ -162,6 +114,7 @@
     }
   ],
   "derived_from": [
-    "ETF-52"
+    "ETF-52",
+    "ETF-51"
   ]
 }
