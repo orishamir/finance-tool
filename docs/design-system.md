@@ -451,6 +451,9 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   - a difference or a sum: the lines of a receipt, each figure as the page writes it (so the lines add up exactly), its sign at the start
     of its line, then "=" and the figure as its head shows it. No formula chip: a subtraction under the name of a large formula explained
     nothing.
+    Its sheet is its tags and its receipt: it names no rule, no fund statement, no company-document note and no flag that one of its
+    inputs carries, since each line is that input's own figure and opens its sheet, where they stand (`sheetRules`, `sheetFlags`). A flag
+    of its own, which no input carries, stays.
   - a figure that is exactly one line of math docs/method.md draws: that line in symbols, the same line with the figure's values put in,
     and "=" with the figure. The values are put in by code from the line and the inputs, never typed, each with the digits the result
     needs, units and names left to the key. Under it the key: each symbol's words, with this figure's input beside the symbol it stands

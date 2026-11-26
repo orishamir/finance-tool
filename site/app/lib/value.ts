@@ -219,6 +219,18 @@ function readingDoubtOf(labels: readonly SiteLabel[] | undefined): Pick<SiteValu
 }
 
 /**
+ * The flags a figure's sheet says: every flag it carries, except on a plain difference or sum (`SiteValue.plain`), whose sheet leaves out a
+ * flag one of its inputs already carries: each row of its receipt is that input's own figure and opens its sheet, where the flag stands in
+ * full. A flag of its own, which no input carries, stays.
+ */
+export function sheetFlags(v: Pick<SiteValue, "flags" | "plain" | "computed_from">): string[] {
+  const flags = v.flags ?? [];
+  if (!v.plain) return flags;
+  const carried = new Set(Object.values((v.computed_from?.inputs ?? {}) as Record<string, SiteValue>).flatMap((x) => x.flags ?? []));
+  return flags.filter((code) => !carried.has(code));
+}
+
+/**
  * The rules a computed figure's sheet names: those its runs read, with the strength they recorded, then each rule it carries the site's own
  * `reading` of and did not read (no strength): an open rule whose open tax index the site reads for the fund (TXF-04, D119), which gives
  * the run nothing to read, so its card is where the sheet says why. A plain difference or sum names none (`SiteValue.plain`).

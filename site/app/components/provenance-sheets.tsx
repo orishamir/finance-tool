@@ -15,7 +15,7 @@ import { digitsFor, headText, keyOfLine, receiptLines, withValues } from "../lib
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
+import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetFlags, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
@@ -751,7 +751,8 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
               })}
             </div>
           )}
-          {value.flags?.map((code) => (
+          {/* a plain difference or sum leaves out the flags its inputs carry: each row of its receipt opens them (`sheetFlags`) */}
+          {sheetFlags(value).map((code) => (
             <Callout key={code} tone="caution">
               {/* a flag's words may carry {ID:figure} slots: the rule's figure, from the page's records or those its cards point at */}
               <SlottedText text={flagCopy[code] ?? copy.flagOther} source={data} /> <bdi dir="ltr" className="text-xs">{code}</bdi>

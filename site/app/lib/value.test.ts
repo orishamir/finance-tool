@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { foreignInvestmentFundIndex, openReadings, type FundStatement, type Label } from "@finance-tool/engine";
 import { numbers } from "../copy";
-import { asParameter, compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isParameter, isWeak, ownBy, ownEach, recheckStale, ruleFigure, sheetRules, staleCma, staleCmaFee, strengthOf, templateRow, type SiteValue } from "./value";
+import { asParameter, compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isParameter, isWeak, ownBy, ownEach, recheckStale, ruleFigure, sheetFlags, sheetRules, staleCma, staleCmaFee, strengthOf, templateRow, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -120,6 +120,21 @@ describe("a figure computed from figures on a reading carries the reading (D119,
       expect(sheetRules(input).map((r) => r.id)).toEqual(["TXS-14"]);
       expect(input.statements).toEqual([named]);
     }
+  });
+  it("a plain difference or sum's sheet leaves out a flag an input carries, which that input's own sheet says, and keeps a flag of its own", () => {
+    const flagged = computed(100, "nis", "F-80", {}, { today, flags: ["G-20", { code: "G-23", month: 14 }] });
+    const other = fig("primary", { value: 50, unit: "nis" });
+    for (const v of [differenceOf(["a", flagged], ["b", other], "F-80", { today, flags: ["G-36"] }), sumOf({ a: flagged, b: other }, "F-91", { today, flags: ["G-36"] })]) {
+      // the figure still carries every flag, with its month, for whatever is computed from it
+      expect(v.flags).toEqual(expect.arrayContaining(["G-20", "G-23", "G-36"]));
+      expect(v.flagMonths?.["G-23"]).toBe(14);
+      expect(sheetFlags(v)).toEqual(["G-36"]);
+      const input = (v.computed_from?.inputs as Record<string, SiteValue> | undefined)?.a;
+      if (!input) throw new Error("the figure lost its input a");
+      expect(sheetFlags(input)).toEqual(["G-20", "G-23"]);
+    }
+    // a figure that is not a plain difference or sum says every flag it carries
+    expect(sheetFlags(computed(1, "nis", "F-80", { a: flagged }, { today }))).toEqual(["G-20", "G-23"]);
   });
   it("keeps its own options first and carries each once; carries no cautious label, whose doubt only a plain difference or sum carries", () => {
     const both = computed(1, "nis", "F-80", { a: onReading, b: { ...onReading } }, { today, labels: [{ code: "derived", ruleId: "X-1" }] });
