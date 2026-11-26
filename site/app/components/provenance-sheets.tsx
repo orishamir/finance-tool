@@ -936,20 +936,21 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
 
 // ---------------------------------------------------------------- the rules page's detail and top match
 
-/** "נגזר מ־" and the rules a conclusion rests on; "לדוגמה:" and a general rule's named examples at companies (never a derivation). */
+/**
+ * "ראו גם:" and the rules the record's Source line points to (`derived_from`: the general rule a company's term sits under, a rule read
+ * the same way), each beside the record's own sources, so the words claim no derivation; "לדוגמה:" and a general rule's named examples
+ * at companies.
+ */
 function RulePointers({ rule }: { rule: RuleRecord }) {
   const derived = asSourced(rule).derived_from ?? [];
   const examples = rule.examples ?? [];
   return (
     <>
       {derived.length > 0 && (
-        <div className="flex flex-col gap-1">
-          <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span>{ruleCardMore.derivedFrom}</span>
-            {derived.map((d) => <RuleRef key={d} id={d} />)}
-          </p>
-          <p className="text-xs text-muted-foreground">{ruleCardMore.derivedLine}</p>
-        </div>
+        <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>{ruleCardMore.seeAlso}</span>
+          {derived.map((d) => <RuleRef key={d} id={d} />)}
+        </p>
       )}
       {examples.length > 0 && (
         <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">

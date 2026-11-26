@@ -65,6 +65,7 @@ What the guideline's voice, sentence and word-choice rules don't already say:
 - **Text a record holds is rendered from the record, never retyped**: a rule's text, opening its rule (a condition, a protection line, a statement field), an exposure's name (`names.he[0]`) and its one-line explanation (`one_line_he`).
 - **A topic's Hebrew name, never a file name**, on the page; a file without a name in the map shows "נושא נוסף במאגר החוקים והכללים". The reader's names of the topics drop the "מס:" prefix.
 - **"מראה מקום"** for a citation (the founder: "הפניה" is not the Hebrew word for it).
+- **"ראו גם:"** before the rules a record's Source line points to (`derived_from`), never "נגזר מ־" or a sentence that calls the record a conclusion: every record that has them cites sources of its own, and many are a company's term pointing at the general rule it sits under.
 - **"נבדק"** followed by the date, with no colon: a sentence fragment.
 - **One date, one word.** The day the site read a record (a fee record's `snapshot`) is "נאסף ב־" on every page that shows it; "נבדק ב־" promises that someone confirmed the document is still the current one, and two words for one date read as two promises (fresh readers: "נבדק" on the companies list and "נאסף" on the bank's page for the same 04.11.2026: "Is 'collected' the same as 'checked that it's still the current one'?").
 - **"שאלה פתוחה"** for a rule without a source, its code after the words; its sign is **"מנעול"** ("מסומן במנעול", not "בנעילה").

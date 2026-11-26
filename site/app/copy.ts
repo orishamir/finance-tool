@@ -3364,8 +3364,8 @@ export const scopeWords = {
 /** Additions to the rule card (synthesis §3.3). */
 export const ruleCardMore = {
   forTaxYear: "לשנת המס",
-  derivedFrom: "נגזר מ־",
-  derivedLine: "זו מסקנה משילוב של כמה חוקים וכללים, לא משפט אחד שנמצא במקור.",
+  /** Before the rules a record's Source line points to (`derived_from`), which stand beside its own sources: a pointer, not a derivation. */
+  seeAlso: "ראו גם:",
   /** A general rule's pointers to companies' terms: named examples, never a derivation. */
   examples: "לדוגמה:",
   stable: "לא משתנה מעצמו",

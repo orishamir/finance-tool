@@ -1,12 +1,12 @@
 // On one rule card, each fact is shown once: the day a source was read stands on its source line, and the record's own date only
-// on a card with no source.
+// on a card with no source. What a card says is true of the record: the rules its Source line points to are pointers.
 import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { rule as ruleCopy } from "../copy";
+import { ruleCardMore, rule as ruleCopy } from "../copy";
 import { fmt } from "../lib/format";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
 import { RuleCard, RuleDetail } from "./provenance-sheets";
@@ -51,5 +51,18 @@ describe("the day a rule was read", () => {
       expect(count(text, fmt.date(r.checked))).toBe(1);
       expect(text).toContain(ruleCopy.sourceMissing);
     }
+  });
+});
+
+describe("the rules a record's Source line points to", () => {
+  // BANK-37 reads two banks' pages directly and points to the general rule on exit points (BANK-27): no conclusion is drawn
+  it("are pointers beside the record's sources, with no word of derivation (BANK-37)", () => {
+    const r = record("BANK-37");
+    expect(r.derived_from?.length).toBeGreaterThan(0);
+    expect(r.sources?.length).toBeGreaterThan(0);
+    const data = dataOf({ [r.id]: r });
+    const text = words(createElement(RuleCard, { id: r.id, data, inline: true }), data);
+    expect(text).toContain(ruleCardMore.seeAlso);
+    expect(text).not.toMatch(/נגזר|מסקנה/);
   });
 });
