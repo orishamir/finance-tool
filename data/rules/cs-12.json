@@ -30,7 +30,7 @@
         "CS-12"
       ],
       "state": "sourced",
-      "notes": "How many times a parent may redirect future deposits from a bank to a provident fund: once. Added by amendment 247, in force 1.1.2025 (NII's consolidated law text, p.50, footnote 32). NII's hly.gov.il page still says bank money cannot move to a provident fund (CS-25, conflict noted)."
+      "notes": "How many times a parent may redirect future deposits from a bank to a provident fund: once. Added by amendment 247, in force 1.1.2025 (NII's consolidated law text, p.50, footnote 32). NII's hly.gov.il page still says bank money cannot move to a provident fund (conflict noted in CS-12's conditions; the law governs)."
     }
   },
   "text_he": "חיסכון בבנק אי אפשר להעביר לבנק אחר, ומסלול בבנק אפשר לשנות רק בתחנת יציאה. מאז התיקון לחוק שתחילתו בינואר 2025, הורה יכול, פעם אחת בלבד, להפנות את ההפקדות העתידיות מהבנק לקופת גמל. הסכום שנצבר נשאר בבנק, ולילד יש שני חשבונות.",
@@ -53,6 +53,16 @@
       "locator_he": "עמודים 1 עד 2",
       "page": 1,
       "checked": "2026-10-25"
+    },
+    {
+      "url": "https://hly.gov.il/Differences.html",
+      "title": "hly.gov.il, ההבדלים בין חיסכון בקופת גמל לחיסכון בבנק",
+      "publisher": "Child Savings site (hly.gov.il)",
+      "publisher_he": "אתר חיסכון לכל ילד (hly.gov.il)",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "quote": "לא ניתן להעביר את כספי החיסכון מהבנק שבחרתם לבנק אחר או לקופת גמל אחרת",
+      "checked": "2026-10-26"
     },
     {
       "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/mavar.aspx",

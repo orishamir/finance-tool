@@ -150,7 +150,8 @@
       {
         "name": "Harel",
         "only_records": [
-          "INS-29"
+          "INS-29",
+          "INS-31"
         ]
       }
     ],
@@ -160,7 +161,7 @@
     "own_hosts": [
       "harel-group.co.il"
     ],
-    "note": "INS-29 cites Harel Insurance's executive policy 1286 and its 2016 letter to employers, insurance products, not the provident manager's."
+    "note": "INS-29 and INS-31 cite Harel Insurance's executive policy 1286 and its 2016 letter to employers, insurance products, not the provident manager's."
   },
   {
     "id": "menora-mivtachim",
@@ -887,7 +888,8 @@
         "name": "The Phoenix",
         "only_records": [
           "TXA-29",
-          "INS-08"
+          "INS-30",
+          "INS-32"
         ]
       }
     ],
@@ -897,7 +899,7 @@
     "own_hosts": [
       "fnx.co.il"
     ],
-    "note": "TXA-29 is about a Phoenix investment policy, an insurance product; INS-08 cites The Phoenix's investment-policy FAQ."
+    "note": "TXA-29 is about a Phoenix investment policy, an insurance product; INS-30 cites The Phoenix's investment-policy FAQ; INS-32 cites The Phoenix's page on its legacy 'מניב' life policy."
   },
   {
     "id": "reit1",

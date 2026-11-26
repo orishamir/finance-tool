@@ -1,8 +1,8 @@
 {
   "id": "KH-09",
-  "title": "Harel and Altshuler Shaham: continuing deposits when the employer stops or the status changes",
-  "title_he": "הראל ואלטשולר שחם: המשך הפקדות כשהמעסיק מפסיק או כשהמעמד משתנה",
-  "text_he": "בהראל, הקרן לא ממשיכה לקבל הפקדות לעמית שהמעסיק שלו הפסיק להפקיד, מכל סיבה, או שנעשה עצמאי. העמית יכול אז למשוך לפי כללי הוותק. באלטשולר שחם, שכיר שהפסיק לעבוד רשאי להמשיך לחסוך כעצמאי, ועצמאי שנעשה שכיר ממשיך כשכיר. מה שבחוק: הפקדה כעצמאי מוכרת רק למי שיש לו הכנסה מעסק או ממשלח יד, וחשבון שכיר וחשבון עצמאי יכולים להיחשב חשבון אחד בתנאים. בהחלפת עבודה החשבון נשאר בקרן. תקנונים של חברות אחרות לא נקראו בעניין הזה.",
+  "title": "Harel: no more deposits once the employer stops paying or the member becomes self-employed",
+  "title_he": "הפסקת ההפקדות כשהמעסיק מפסיק להפקיד או כשהעמית נעשה עצמאי, בקרן ההשתלמות של הראל",
+  "text_he": "בהראל, הקרן לא ממשיכה לקבל הפקדות לעמית שהמעסיק שלו הפסיק להפקיד, מכל סיבה, או שנעשה עצמאי. העמית יכול אז למשוך לפי כללי הוותק.",
   "strength": "institution",
   "dimensions": [
     "eligibility",
@@ -16,10 +16,6 @@
     {
       "id": "harel",
       "name_he": "הראל"
-    },
-    {
-      "id": "altshuler-shaham",
-      "name_he": "אלטשולר שחם"
     }
   ],
   "sources": [
@@ -33,18 +29,6 @@
       "strength": "institution",
       "locator": "s.4.4",
       "locator_he": "סעיף 4.4",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
-      "title": "Altshuler bylaws 1.12.2024",
-      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
-      "publisher": "Altshuler Shaham",
-      "publisher_he": "אלטשולר שחם",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "s.19, 20",
-      "locator_he": "סעיף 19, 20",
       "checked": "2026-10-25"
     }
   ],

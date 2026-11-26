@@ -1,0 +1,36 @@
+{
+  "id": "CS-32",
+  "title": "Bank Yahav: the current account opened for child savings is exempt from fees",
+  "title_he": "חשבון העו״ש שנפתח לחיסכון לכל ילד פטור מעמלות, בבנק יהב",
+  "text_he": "בבנק יהב, חשבון העו״ש שהבנק פותח לתוכנית החיסכון לכל ילד פטור מעמלות ומכל תשלום אחר.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-deposit"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "child-savings.md",
+  "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://bank-yahav.co.il/media/qxed4yhi/השקעות-מונגש-חסכון-לכל-ילד-צפייה-בהסכם-חיסכון-לכל-ילד.pdf",
+      "title": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "title_he": "בנק יהב: הסכם חיסכון ארוך טווח לילד (חיסכון לכל ילד)",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.5, s.5.4",
+      "locator_he": "עמוד 5, סעיף 5.4",
+      "page": 5,
+      "quote": "חשבון התמורה יהיה פטור מעמלות או תשלומים כלשהם",
+      "checked": "2026-10-31"
+    }
+  ]
+}

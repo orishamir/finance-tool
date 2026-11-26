@@ -2,7 +2,7 @@
   "id": "MGD-01",
   "title": "What portfolio management is, and the one-of-two rule",
   "title_he": "ניהול תיקי השקעות: רישיון, ובחירה בין ייעוץ לשיווק",
-  "text_he": "לפי חוק הייעוץ להשקעות, ניהול תיקי השקעות הוא ביצוע עסקאות לפי שיקול דעת בשביל אחרים. הוא דורש רישיון מנהל תיקים מרשות ניירות ערך. מנהל תיקים יכול לעסוק גם בייעוץ השקעות או בשיווק השקעות, אבל רק באחד מהם. מנהל תיקים שקשור לגוף מוסדי או לבעל רישיון משווק לא רשאי לעסוק בייעוץ השקעות. שלוש הקבוצות הגדולות שהאתרים שלהן נקראו הן מיטב, אלטשולר שחם והפניקס. כל אחת מהן כותבת שבחרה בשיווק. משווק רשאי להעדיף נכסים שיש לו זיקה אליהם על פני נכסים דומים, אם עמד בכל דרישות הגילוי ללקוח.",
+  "text_he": "לפי חוק הייעוץ להשקעות, ניהול תיקי השקעות הוא ביצוע עסקאות לפי שיקול דעת בשביל אחרים. הוא דורש רישיון מנהל תיקים מרשות ניירות ערך. מנהל תיקים יכול לעסוק גם בייעוץ השקעות או בשיווק השקעות, אבל רק באחד מהם. מנהל תיקים שקשור לגוף מוסדי או לבעל רישיון משווק לא רשאי לעסוק בייעוץ השקעות.",
   "strength": "primary",
   "dimensions": [
     "regulator",
@@ -24,21 +24,6 @@
       "locator": "file p.6, s.2(ג), re-",
       "page": 6,
       "quote": "רשאי לעסוק גם בייעוץ השקעות או בשיווק השקעות",
-      "checked": "2026-11-12",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
-    },
-    {
-      "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=32",
-      "title": "Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026",
-      "title_he": "חוק הסדרת העיסוק בייעוץ השקעות, בשיווק השקעות ובניהול תיקי השקעות, התשנ״ה-1995",
-      "publisher": "Israel Securities Authority",
-      "publisher_he": "הכנסת",
-      "kind": "law",
-      "strength": "primary",
-      "locator": "p.32, s.16א(ב)",
-      "locator_he": "עמוד 32, סעיף 16א(ב)",
-      "page": 32,
-      "quote": "ובלבד שעמדו בכל דרישות הגילוי כלפי הלקוח",
       "checked": "2026-11-12",
       "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
     },
@@ -68,32 +53,9 @@
       "page": 3,
       "checked": "2026-10-31",
       "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
-    },
-    {
-      "url": "https://www.meitav.co.il/proper_disclosure/",
-      "title": "Meitav, גילוי נאות",
-      "publisher": "Meitav",
-      "publisher_he": "מיטב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://join.as-invest.co.il/portfolio-management/",
-      "title": "Altshuler Shaham, ניהול תיקים join page",
-      "publisher": "join.as-invest.co.il",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.xnes.co.il/",
-      "title": "XNES (Phoenix Investment House) home",
-      "publisher": "Excellence",
-      "publisher_he": "אקסלנס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-22"
     }
+  ],
+  "derived_from": [
+    "MGD-12"
   ]
 }

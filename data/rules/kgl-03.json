@@ -1,14 +1,15 @@
 {
   "id": "KGL-03",
   "title": "The 2026 ceiling figure: the law's NIS 70,000 indexed to the CPI",
-  "title_he": "סכום התקרה לשנה הנוכחית",
-  "text_he": "זו תקרת ההפקדה השנתית לשנת המס הנוכחית, לאדם, בכל קופות הגמל להשקעה שלו יחד. הסכום הוא תקרת הבסיס שבחוק, צמודה למדד המחירים לצרכן מהמדד הידוע באמצע שנת הבסיס עד המדד הידוע בתחילת השנה. כך מחשב אותו מחשבון ההצמדה של הלשכה המרכזית לסטטיסטיקה. האתר מציג אותו מעוגל לשקל. הודעת עדכון רשמית לא נמצאה, והחוק לא מחייב אחת. הסכום מתעדכן בכל אחד בינואר.",
+  "title_he": "תקרת ההפקדה בגמל להשקעה לשנת 2026: הסכום שבחוק צמוד למדד",
+  "text_he": "תקרת ההפקדה בקופות גמל להשקעה לשנת 2026 היא {KGL-03:ceiling} לאדם, בכל החשבונות שלו יחד. היא {KGL-02:base_ceiling} שבחוק, צמודים למדד המחירים לצרכן הידוע ב־1 בינואר 2026 (מדד נובמבר 2025) לעומת המדד הידוע ב־1 ביולי 2016 (מדד מאי 2016). כך מחשב אותה מחשבון ההצמדה של הלשכה המרכזית לסטטיסטיקה, והחוק לא מחייב הודעה רשמית על הסכום. התקרה מתעדכנת בכל 1 בינואר.",
   "figure_names_he": {
     "ceiling": "תקרת ההפקדה השנתית"
   },
   "strength": "primary",
   "dimensions": [
-    "deposit-ceiling"
+    "deposit-ceiling",
+    "real-vs-nominal"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
@@ -32,7 +33,7 @@
         "KGL-03"
       ],
       "state": "sourced",
-      "notes": "NIS per person per calendar year, 2026, across all kupat gemel lehashkaa accounts: the law's NIS 70,000 (Amendment 15 s.3, section 22(א); KGL-02) indexed by the CPI known on 1.1.2026 against the CPI known on 1.7.2016. The CBS calculator returns 83,641.09 (May 2016 index 98.8, November 2025 index 103.6, change 19.5%; KGL-24); shown rounded to the shekel. No regulator notice of the amount was found and the law does not require one. Updated every 1 January."
+      "notes": "NIS per person per calendar year, 2026, across all kupat gemel lehashkaa accounts: the law's NIS 70,000 (Amendment 15 s.3, section 22(א); KGL-02) indexed by the CPI known on 1.1.2026 against the CPI known on 1.7.2016. The CBS calculator returns 83,641.09 (May 2016 index 98.8, November 2025 index 103.6, change 19.5%); shown rounded to the shekel. No regulator notice of the amount was found and the law does not require one. Updated every 1 January."
     }
   },
   "il_finance_file": "kupat-gemel-lehashkaa.md",
@@ -43,6 +44,26 @@
       "url": "https://api.cbs.gov.il/index/data/calculator/120010?value=70000&date=07-01-2016&toDate=01-01-2026&format=json&download=false",
       "title": "הלשכה המרכזית לסטטיסטיקה – מחשבון הצמדה, מדד המחירים לצרכן כללי (120010)",
       "title_he": "הלשכה המרכזית לסטטיסטיקה – מחשבון הצמדה, מדד המחירים לצרכן כללי (120010)",
+      "publisher": "Central Bureau of Statistics",
+      "publisher_he": "הלשכה המרכזית לסטטיסטיקה",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=05-2016&endPeriod=05-2016",
+      "title": "הלשכה המרכזית לסטטיסטיקה – מדד המחירים לצרכן כללי, מאי 2016",
+      "title_he": "הלשכה המרכזית לסטטיסטיקה – מדד המחירים לצרכן כללי, מאי 2016",
+      "publisher": "Central Bureau of Statistics",
+      "publisher_he": "הלשכה המרכזית לסטטיסטיקה",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25"
+    },
+    {
+      "url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=11-2025&endPeriod=11-2025",
+      "title": "הלשכה המרכזית לסטטיסטיקה – מדד המחירים לצרכן כללי, נובמבר 2025",
+      "title_he": "הלשכה המרכזית לסטטיסטיקה – מדד המחירים לצרכן כללי, נובמבר 2025",
       "publisher": "Central Bureau of Statistics",
       "publisher_he": "הלשכה המרכזית לסטטיסטיקה",
       "kind": "dataset",
@@ -65,7 +86,6 @@
     }
   ],
   "derived_from": [
-    "KGL-02",
-    "KGL-24"
+    "KGL-02"
   ]
 }

@@ -1,0 +1,39 @@
+{
+  "id": "KH-36",
+  "title": "Altshuler Shaham: may insure members in group life insurance, and cancel it on 60 days' notice",
+  "title_he": "ביטוח חיים קבוצתי בקרן ההשתלמות של אלטשולר שחם: החברה רשאית לעשות אותו ולבטל אותו",
+  "text_he": "באלטשולר שחם, החברה רשאית לבטח את עמיתי קרן ההשתלמות בביטוח חיים קבוצתי, בכפוף להסדר התחיקתי. היא רשאית לבטל את הביטוח בהודעה של 60 יום מראש.",
+  "strength": "institution",
+  "dimensions": [
+    "insurance-cover"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-01",
+  "il_finance_file": "keren-hishtalmut.md",
+  "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "altshuler-shaham",
+      "name_he": "אלטשולר שחם"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://as-invest.co.il/media/khpp32k5/אלטשולר-שחם-השתלמות-תקנון-מהדורת-שינויים-דצמבר-2024.pdf",
+      "title": "Altshuler bylaws 1.12.2024",
+      "title_he": "תקנון קרן ההשתלמות של אלטשולר שחם (מהדורת דצמבר 2024)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "s.30",
+      "locator_he": "סעיף 30",
+      "quote": "רשאית לבטח את עמיתי הקרן בביטוח חיים קבוצתי",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "PF-01"
+  ]
+}

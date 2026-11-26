@@ -1,7 +1,7 @@
 {
   "id": "IRA-17",
-  "title": "Management fee level and cap",
-  "title_he": "גובה דמי הניהול והתקרה שלהם",
+  "title": "Management fee level: the agreed rate and Gemel-Net's averages",
+  "title_he": "דמי הניהול בקופה בניהול אישי: השיעור שבהסכם והממוצעים בגמל־נט",
   "strength": "primary",
   "dimensions": [
     "fee-management-balance",
@@ -10,27 +10,6 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
   "figures": {
-    "balance_cap": {
-      "value": 2,
-      "unit": "pct_per_year",
-      "source": {
-        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.6, reg. 4",
-        "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "IRA-17",
-        "PF-06"
-      ],
-      "state": "sourced",
-      "notes": "Fee regulations reg. 4: a managing company of an IRA fund (קופת גמל בניהול אישי) may charge a fee from the balance \"בשיעור שלא יעלה על 2% לשנה\"; the regulation has no fee-from-deposits item (PF-06). The member's own agreement sets the actual rate."
-    },
     "gemelnet_fee_min": {
       "value": 0.15,
       "unit": "pct_per_year",
@@ -72,11 +51,10 @@
       "notes": "Highest reported average annual management fee among the IRA funds for 202609 (Menora 15367 and Slice 1514 report none). Same caveats as gemelnet_fee_min."
     }
   },
-  "text_he": "דמי הניהול הם השיעור שנכתב בהסכם של כל עמית, והם נגבים מנכסי הקופה. התקרה בקופה בניהול אישי היא תקרת דמי הניהול השנתיים מהיתרה שבתקנות דמי הניהול, ובתקנה אין סעיף של דמי ניהול מהפקדה. בגמל־נט דמי הניהול הממוצעים של קופות הניהול האישי נעים בין הנמוכים לגבוהים שבנתונים, ואף קופה לא מדווחת דמי ניהול מהפקדה.",
+  "text_he": "דמי הניהול בקופה בניהול אישי הם השיעור שנכתב בהסכם של כל עמית, והם נגבים מנכסי הקופה. בנתוני ספטמבר 2026 של גמל־נט, דמי הניהול הממוצעים של קופות הניהול האישי נעים בין {IRA-17:gemelnet_fee_min} ל־{IRA-17:gemelnet_fee_max} מהחיסכון בשנה. אף קופה לא מדווחת דמי ניהול מהפקדה.",
   "figure_names_he": {
     "gemelnet_fee_min": "דמי ניהול ממוצעים, הנמוכים בגמל-נט",
-    "gemelnet_fee_max": "דמי ניהול ממוצעים, הגבוהים בגמל-נט",
-    "balance_cap": "תקרת דמי הניהול השנתיים מהיתרה"
+    "gemelnet_fee_max": "דמי ניהול ממוצעים, הגבוהים בגמל-נט"
   },
   "il_finance_file": "ira-self-directed.md",
   "checked": "2026-10-26",

@@ -9,7 +9,7 @@
     "fee-change-over-time"
   ],
   "likely_to_change": "no",
-  "text_he": "לפי תקנות דמי הניהול של קופות הגמל, התקרה של עד 1.05% בשנה מהיתרה ועד 4% מההפקדה חלה גם על ביטוח מנהלים. הסיבה: מבין קופות הביטוח, רק קופת ביטוח מבטיחת תשואה מוחרגת ממנה. התקרה לא חלה על פוליסות שהוצאו לפני 1 בינואר 2013, ובהן נשארים דמי הניהול שבחוזה. בתוכנית של הראל מ־2009, למשל, דמי הניהול מהיתרה הם עד 1.7% בשנה, בלי דמי ניהול מהפקדה, והחברה יכולה להוריד אותם.",
+  "text_he": "לפי תקנות דמי הניהול של קופות הגמל, התקרה של עד 1.05% בשנה מהיתרה ועד 4% מההפקדה חלה גם על ביטוח מנהלים. הסיבה: מבין קופות הביטוח, רק קופת ביטוח מבטיחת תשואה מוחרגת ממנה. התקרה לא חלה על פוליסות שהוצאו לפני 1 בינואר 2013, ובהן נשארים דמי הניהול שבחוזה.",
   "il_finance_file": "savings-policies-and-executive-insurance.md",
   "checked": "2026-10-31",
   "scope": "general",
@@ -57,32 +57,9 @@
       "quote": "תחילתן של תקנות אלה ביום י״ט בטבת התשע״ג",
       "checked": "2026-10-31",
       "qualifier": "(gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)"
-    },
-    {
-      "url": "https://www.harel-group.co.il/Policies/2010.pdf",
-      "title": "Harel plan 1286",
-      "title_he": "הראל מגוון למנהלים קצבה משלמת (תוכנית 1286, מהדורת 7/2009)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.13, s.10",
-      "locator_he": "עמוד 13, סעיף 10",
-      "page": 13,
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf",
-      "title": "Harel, הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016",
-      "title_he": "הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה (מכתב הראל, יוני 2016)",
-      "publisher": "Harel",
-      "publisher_he": "הראל",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.3",
-      "locator_he": "עמוד 3",
-      "page": 3,
-      "checked": "2026-10-22"
     }
+  ],
+  "examples": [
+    "INS-31"
   ]
 }

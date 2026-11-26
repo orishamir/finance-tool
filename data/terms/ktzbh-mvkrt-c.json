@@ -12,11 +12,11 @@
   ],
   "variants": [],
   "rule_ids": [
+    "KGL-09",
     "TXA-13",
     "TXA-18",
     "TXK-08",
     "TXK-09",
-    "TXK-10",
     "TXK-21"
   ],
   "source": {

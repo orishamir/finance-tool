@@ -80,7 +80,7 @@ export const RULES: readonly RuleRow[] = [
     id: "provident-management-rate",
     when: { products: providentFamily, fees: ["deposit", "balance"] },
     verdict: { kind: "only", forms: ["action", "held"], parts: ["until"] },
-    cite: ["PF-01", "PF-02", "PF-03", "PF-04", "PF-05", "PF-06", "PEN-21", "PEN-22", "CS-18", "KH-22", "IRA-17", "PF-08", "PF-13", "PF-21"],
+    cite: ["PF-01", "PF-02", "PF-03", "PF-04", "PF-05", "PF-06", "PEN-21", "PEN-22", "CS-18", "KH-22", "PF-08", "PF-13", "PF-21"],
     records: true,
   },
   // set per track and graded by the balance; the size of a deposit and an arrangement of the person's own are open (PF open question 19)

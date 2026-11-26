@@ -1,40 +1,13 @@
 {
   "id": "CS-26",
-  "title": "The default when no choice is made: National Insurance's pages and the CMA circular",
-  "title_he": "ברירת המחדל כשלא נבחר דבר: דפי הביטוח הלאומי וחוזר רשות שוק ההון",
-  "text_he": "לפי דפי הביטוח הלאומי, הורים יכולים לבחור היכן ינוהל החיסכון בתוך שישה חודשים מהלידה. אם לא בחרו, החיסכון מנוהל בקופת הגמל שנבחרה לילד שנולד לפני כן. אם לילד הקודם נבחר בנק, החיסכון מנוהל בקופת גמל במסלול סיכון מוגבר. אם לא נבחר דבר לילד הקודם, או שזה הילד הראשון, הכסף מופקד בקופת גמל להשקעה במסלול סיכון מוגבר. בתוך הקופה, חוזר רשות שוק ההון קובע היום את מסלול הסיכון המוגבר כברירת המחדל לכל ילד שמצטרף לראשונה. לילד בלי בחירה הוא נותן את המסלול של האח הצעיר ביותר מבין הגדולים שההורה בחר לו מסלול. לפי הכלל הקודם, מסלול הסיכון המועט היה ברירת המחדל. כל קופה חייבת להציע שלושה מסלולי סיכון. מדיניות ההשקעה של כל מסלול נקבעת בידי החברה, ומאושרת בידי הממונה. הדפים לא אומרים איזה מנהל מקבל את כספי ברירת המחדל של ילד ראשון.",
+  "title": "Child-savings provident tracks: each track's investment policy is set by the managing company and approved by the Commissioner",
+  "title_he": "כל חברה קובעת את מדיניות ההשקעה של מסלולי החיסכון לכל ילד, באישור הממונה",
+  "text_he": "בחיסכון לכל ילד בקופת גמל, מדיניות ההשקעה של כל מסלול נקבעת בידי החברה המנהלת ומאושרת בידי הממונה על שוק ההון. התקנון התקני לחיסכון לילד משאיר את מדיניות המסלול ריקה, וכל חברה ממלאת אותה בעצמה.",
   "strength": "primary",
   "dimensions": [
-    "default-allocation",
-    "transfer-switch-process"
+    "regulator"
   ],
-  "likely_to_change": "yes",
-  "recheck_date": "2027-01-31",
-  "figure_names_he": {
-    "choice_window_months": "חודשים מהלידה שבהם בוחרים היכן ינוהל החיסכון"
-  },
-  "figures": {
-    "choice_window_months": {
-      "value": 6,
-      "unit": "months",
-      "source": {
-        "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/nolad.aspx",
-        "title": "NII, פתיחת תכנית חיסכון לילד שנולד",
-        "publisher": "National Insurance Institute (gov)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in law",
-      "rule_ids": [
-        "CS-26"
-      ],
-      "state": "sourced",
-      "notes": "The parents can choose where the savings are managed within 6 months of the birth; without a choice the default allocation applies."
-    }
-  },
+  "likely_to_change": "no",
   "il_finance_file": "child-savings.md",
   "checked": "2026-10-25",
   "scope": "general",
@@ -47,23 +20,10 @@
       "publisher_he": "אתר הממשלה (gov.il)",
       "kind": "circular",
       "strength": "primary",
-      "locator": "p.4, annex s.3(א)-(ב), (ד)-(ד2)",
-      "locator_he": "עמוד 4, נספח סעיף 3(א)-(ב), (ד)-(ד2)",
+      "locator": "p.4, annex s.3(ב)",
+      "locator_he": "עמוד 4, נספח סעיף 3(ב)",
       "page": 4,
       "quote": "תיקבע בידי החברה המנהלת ותאושר בידי הממונה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-740/he/regulation_h_2018-9-25.pdf",
-      "title": "חוזר גופים מוסדיים 2018-9-25: קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון, 9.7.2018",
-      "title_he": "חוזר גופים מוסדיים 2018-9-25: קופת גמל להשקעה לחיסכון ארוך טווח לילד – תיקון",
-      "publisher": "gov.il",
-      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
-      "kind": "circular",
-      "strength": "primary",
-      "locator": "p.3, s.3(ד)",
-      "locator_he": "עמוד 3, סעיף 3(ד)",
-      "page": 3,
       "checked": "2026-10-25"
     },
     {
@@ -78,35 +38,6 @@
       "locator_he": "עמוד 11, נספח א",
       "page": 11,
       "quote": "מסלולי השקעה",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/nolad.aspx",
-      "title": "ביטוח לאומי: פתיחת תכנית חיסכון לילד שנולד",
-      "title_he": "חיסכון לכל ילד: עמודי המידע של הביטוח הלאומי",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
-      "strength": "primary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.btl.gov.il/About/faq/SaveMoneyFAQ/Pages/newborn.aspx",
-      "title": "ביטוח לאומי: נולד לי ילד, איך אני בוחר לו תכנית חיסכון?",
-      "title_he": "ביטוח לאומי: נולד לי ילד, איך אני בוחר לו תכנית חיסכון?",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
-      "strength": "primary",
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://b2b.btl.gov.il/BTL.ILG.Payments/TochnitChisachonYeledListInfo.aspx",
-      "title": "ביטוח לאומי: מידע אישי על תכנית החיסכון של הילד/ה (service entry page)",
-      "publisher": "National Insurance Institute",
-      "publisher_he": "המוסד לביטוח לאומי",
-      "kind": "regulator_page",
-      "strength": "primary",
       "checked": "2026-10-25"
     }
   ]

@@ -65,7 +65,6 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "CAT-43": { why: "website terms (TASE's)", files: ["data/dimensions/regulator.json"] },
   "GOV-19": { why: "where official yields are published", files: [] },
   "PF-39": { why: "website terms paragraph", files: [] },
-  "KGL-24": { why: "a computation check", files: [] },
   "TXS-22": { why: "a summary", files: [] },
   "TXK-12": { why: "a summary", files: [] },
   "BANK-23": { why: "\"no rule exists\" record", files: [] },

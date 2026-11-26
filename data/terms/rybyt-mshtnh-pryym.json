@@ -15,8 +15,7 @@
   ],
   "rule_ids": [
     "CS-10",
-    "CS-23",
-    "CS-25"
+    "CS-23"
   ],
   "source": {
     "url": "https://hly.gov.il/Differences.html",

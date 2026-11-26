@@ -1,7 +1,7 @@
 {
   "id": "INS-04",
-  "title": "The lost-contact fee cap of 0.3% applies to profit-sharing life policies",
-  "title_he": "תקרה של 0.3% על חיסכון של מבוטח שהקשר איתו נותק, גם בפוליסת חיסכון",
+  "title": "The lost-contact fee cap applies to profit-sharing life policies",
+  "title_he": "תקרת דמי הניהול לעמית שהקשר איתו נותק חלה גם על פוליסות חיסכון",
   "strength": "primary",
   "dimensions": [
     "fee-management-balance",
@@ -9,7 +9,7 @@
     "protection"
   ],
   "likely_to_change": "no",
-  "text_he": "לפי תקנות דמי הניהול של קופות הגמל, דמי הניהול על היתרה של עמית שהקשר איתו נותק, או של עמית שנפטר, מוגבלים ל־0.3% בשנה או לשיעור שנגבה לאחרונה, הנמוך מביניהם. זה חל כשהחברה לא השלימה את פעולות האיתור שנדרשות. לעניין התקנה הזו בלבד, קופת גמל כוללת גם ביטוח חיים משתתף ברווחים שהוא לא קופת ביטוח, ועמית כולל גם מבוטח. לכן התקרה חלה גם על פוליסות חיסכון. ביטוח מנהלים נכלל בה בכל מקרה, כקופת גמל.",
+  "text_he": "לפי תקנות דמי הניהול של קופות הגמל, התקרה על דמי הניהול של עמית שהקשר איתו נותק או שנפטר חלה גם על פוליסות חיסכון. הסיבה: לעניין התקנה הזו בלבד, קופת גמל כוללת גם ביטוח חיים משתתף ברווחים שהוא לא קופת ביטוח, ועמית כולל גם מבוטח. ביטוח מנהלים נכלל בה בכל מקרה, כקופת גמל.",
   "il_finance_file": "savings-policies-and-executive-insurance.md",
   "checked": "2026-10-31",
   "scope": "general",
@@ -27,5 +27,8 @@
       "checked": "2026-10-31",
       "qualifier": "(gazette for the text as enacted or amended there; no official consolidated text of the current wording was found)"
     }
+  ],
+  "derived_from": [
+    "PF-08"
   ]
 }
