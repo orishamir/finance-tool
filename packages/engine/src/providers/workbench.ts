@@ -12,7 +12,7 @@ import type { Commission, ConversionPrice, Custody, SizeStep } from "../formulas
 import { perUnitOf } from "../formulas/deal.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, type Fund, type SaleConversionPrice, type SecuritiesInput } from "../ledgers/securities.ts";
+import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, type BuyWay, type Fund, type SaleConversionPrice, type SecuritiesInput, type WholeUnits } from "../ledgers/securities.ts";
 import type { DealAccount } from "../ledgers/deal-account.ts";
 import { stoppedOnRule } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
@@ -836,7 +836,7 @@ const providerLines: readonly FeeLine[] = ["trade", "custody", "fx", "fixed", "a
  * the rest in whole units. An entry limited to a list of securities the house does not publish (`list_only`) names none of the site's funds
  * (D42) and changes nothing. Undefined (by amount): no listing, a tracking fund (bought from its manager by amount), or no unit price.
  */
-export function wholeUnitsAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">, snapshot: Pick<FeesSnapshot, "by_amount">, tariff: SecuritiesInput["tariff"]): SecuritiesInput["wholeUnits"] {
+export function wholeUnitsAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">, snapshot: Pick<FeesSnapshot, "by_amount">, tariff: SecuritiesInput["tariff"]): WholeUnits | undefined {
   const price = unitPriceAt(input);
   if (price === undefined) return undefined;
   const entry = (snapshot.by_amount ?? []).find((e) => e.venue === input.listing && !e.list_only && !e.shares_only);
@@ -875,11 +875,12 @@ function unitPriceAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" |
  * order or on its recurring plan, can also buy whole units: both are run and the house is priced on the one that leaves more, as a monthly
  * purchase takes the standing line or the regular one. A house that sells only whole units, and a fund with no unit price, have one way.
  */
-export function unitWaysAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">, snapshot: Pick<FeesSnapshot, "by_amount">, tariff: SecuritiesInput["tariff"]): SecuritiesInput["wholeUnits"][] {
+export function unitWaysAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">, snapshot: Pick<FeesSnapshot, "by_amount">, tariff: SecuritiesInput["tariff"]): BuyWay[] {
   const own = wholeUnitsAt(input, snapshot, tariff);
   const price = unitPriceAt(input);
-  if (price === undefined || (own && !own.monthlyByAmount)) return [own];
-  return [own, { price }];
+  const ownWay: BuyWay = own ? { units: own } : {};
+  if (price === undefined || (own && !own.monthlyByAmount)) return [ownWay];
+  return [ownWay, { units: { price } }];
 }
 
 /** The fund as the run takes it: a share price printed in another currency than the instrument's carries the run's rate between them. */
@@ -972,7 +973,7 @@ interface ReadyProvider {
   deal?: DealAccount;
   built: TariffBuild;
   memberKind: NonNullable<SecuritiesInput["memberKind"]>;
-  ways: SecuritiesInput["wholeUnits"][];
+  ways: BuyWay[];
 }
 
 /**
@@ -1087,13 +1088,13 @@ function preparedAll(input: WorkbenchInput, runFund: Fund): (ReadyProvider | Not
 
 /** F-63's input for one run of the fund: the goal over `months`, at a tariff, a member kind and a way of buying (F-109); a deal account's deal (F-128). */
 function planOf(input: WorkbenchInput, runFund: Fund) {
-  return (tariff: SecuritiesInput["tariff"], months: number, memberKind?: SecuritiesInput["memberKind"], wholeUnits?: SecuritiesInput["wholeUnits"], deal?: DealAccount): SecuritiesInput => {
+  return (tariff: SecuritiesInput["tariff"], months: number, memberKind?: SecuritiesInput["memberKind"], way?: BuyWay, deal?: DealAccount): SecuritiesInput => {
     const p: SecuritiesInput = { goal: { ...input.goal, months }, market: input.market, fund: runFund, tariff, profile: input.profile };
     if (deal) p.deal = deal;
     if (input.broker) p.broker = input.broker;
     if (memberKind) p.memberKind = memberKind;
     if (input.behaviour?.ordersPerMonth !== undefined) p.ordersPerMonth = input.behaviour.ordersPerMonth;
-    if (wholeUnits) p.wholeUnits = wholeUnits;
+    if (way?.units) p.way = way;
     return p;
   };
 }
@@ -1139,19 +1140,19 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       continue;
     }
     const { base, level, built, memberKind, ways, deal } = ready;
-    let units = ways[0];
-    let run = runSecurities(plan(built.tariff, horizon, memberKind, units, deal), ctx);
+    let way = ways[0];
+    let run = runSecurities(plan(built.tariff, horizon, memberKind, way, deal), ctx);
     for (const w of ways.slice(1)) {
       const other = runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx);
-      if (other.real > run.real) [units, run] = [w, other];
+      if (other.real > run.real) [way, run] = [w, other];
     }
     const stopped = stoppedBeforeComparing([noneT, run]);
     if (stopped) {
       rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });
       continue;
     }
-    const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind, units, deal) } as const;
-    const run12 = runSecurities(plan(built.tariff, 12, memberKind, units, deal), ctx);
+    const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind, way, deal) } as const;
+    const run12 = runSecurities(plan(built.tariff, 12, memberKind, way, deal), ctx);
     const total = noneT.real - run.real;
     // F-61's split takes a whole run per fee line, and a page that ranks every fund at every house reads it for few: run when first read.
     const split = once(() => {
@@ -1162,7 +1163,7 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       // the same figure before and after tax, the tax and what whole units do left to the remainder, so the whole is unchanged.
       // F-128: a deal account's lines are what each was paid, carried the same way: a run without a deal's line has no meaning apart from its
       // fees. Its lines are the ones its fees were charged on (`byFee` splits the same carry by the deal's own fees)
-      const carried = units || deal ? run.feesCarried : undefined;
+      const carried = way?.units || deal ? run.feesCarried : undefined;
       if (carried) {
         if (deal) lines.push(...providerLines.filter((l) => carried[l] !== 0 && !lines.includes(l)));
         const index = run.series.find((pt) => pt.month === run.exitMonth)?.index ?? 1;

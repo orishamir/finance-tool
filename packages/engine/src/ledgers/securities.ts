@@ -253,15 +253,26 @@ export interface SecuritiesInput {
    * filed for the year of the loss (flagged). The unused part is reported in `detail.lossUnused`.
    */
   carriedLoss?: { amount: number; ruleIds: readonly string[]; carriedForward: boolean };
-  /**
-   * F-109 (D94): the fund is bought in whole units. `price` is one unit's price in shekels at the run's start (the fund record's
-   * `share_price` at the run's exchange rate), moved with the fund's value as `sharePrice` is. Each order buys the most whole units its cash
-   * pays for, fees included, at the ask; what is left waits in the account, earning nothing, and joins the next order. An order whose cash
-   * buys no unit is not placed and pays nothing. `monthlyByAmount`: the monthly purchases are bought by amount (a house's recurring plan that
-   * buys fractions), every other order in whole units. Absent: every order is bought by amount, as F-08 says.
-   */
-  wholeUnits?: { price: number; monthlyByAmount?: boolean };
+  /** How the account buys the fund (`BuyWay`). Absent: every order is bought by amount, as F-08 says. */
+  way?: BuyWay;
   profile: Profile;
+}
+
+/**
+ * F-109 (D94): the fund is bought in whole units. `price` is one unit's price in shekels at the run's start (the fund record's
+ * `share_price` at the run's exchange rate), moved with the fund's value as `sharePrice` is. Each order buys the most whole units its cash
+ * pays for, fees included, at the ask; what is left waits in the account, earning nothing, and joins the next order. An order whose cash
+ * buys no unit is not placed and pays nothing. `monthlyByAmount`: the monthly purchases are bought by amount (a house's recurring plan that
+ * buys fractions), every other order in whole units.
+ */
+export interface WholeUnits {
+  price: number;
+  monthlyByAmount?: boolean;
+}
+
+/** How an account buys the fund: in whole units (`units`, F-109), or by amount where absent (F-08). */
+export interface BuyWay {
+  units?: WholeUnits;
 }
 
 /** The run cannot be done for this input; the comparison shows "not evaluated" with the gap. */
@@ -624,7 +635,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // F-109: whole units. The unit's price in shekels moves with the fund's value per unit (`nav`, 1 at the start). Cash an order leaves waits in
   // two pockets: shekels not yet converted (`waitingNis`), and the fund's currency a distribution left (`waitingHeld`, in that currency), which
   // the next order spends without converting it again.
-  const unitBuy = input.wholeUnits;
+  const unitBuy = input.way?.units;
   if (unitBuy && !(unitBuy.price > 0)) throw new RangeError(`F-109: a unit's price of ${unitBuy.price} must be above 0`);
   if (unitBuy) formulas.push("F-109");
   let waitingNis = 0;

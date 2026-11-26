@@ -64,7 +64,7 @@ describe("a run with a flat price for a small conversion (F-13)", () => {
   it("in whole units: an order whose dollars fit under the sum pays the flat price, a larger one the line", () => {
     // a unit of 350 ₪, 370 ₪ a month: converting all 370 ₪ would pay the minimum (21.09 ₪) and leave 348.91 ₪, less than a unit, but the
     // unit's 350 ₪ needs only 362.21 ₪ converted at the flat price, so month 1 buys it and 7.79 ₪ waits; every month the same, 12 units
-    const flat = runSecurities(input({ goal: { amountNow: 0, monthly: 370, months: 12 }, wholeUnits: { price: 350 } }), ctx);
+    const flat = runSecurities(input({ goal: { amountNow: 0, monthly: 370, months: 12 }, way: { units: { price: 350 } } }), ctx);
     expect(flat.detail.monthlyOrders).toBe(12);
     const sale = 12 * 350; // sold, converted at the line: 0.17% of 4,200 is 7.14 ₪, under the minimum 21.09 ₪
     expect(flat.fees.fx).toBeCloseTo(12 * 12.21 + 21.09, 6);
@@ -72,11 +72,11 @@ describe("a run with a flat price for a small conversion (F-13)", () => {
     expect(flat.nominal).toBeCloseTo(12 * 370 - 12 * 362.21 + sale - 21.09, 6);
     // a unit of 360 ₪ (97.30 $) is still under the sum: each order converts 372.21 ₪ at the flat price and 27.79 ₪ wait, too little in the
     // year for a second unit; sold at the line's minimum
-    const under = runSecurities(input({ goal: { amountNow: 0, monthly: 400, months: 12 }, wholeUnits: { price: 360 } }), ctx);
+    const under = runSecurities(input({ goal: { amountNow: 0, monthly: 400, months: 12 }, way: { units: { price: 360 } } }), ctx);
     expect(under.detail.monthlyOrders).toBe(12);
     expect(under.fees.fx).toBeCloseTo(12 * 12.21 + 21.09, 6);
     // a unit of 370 ₪ (100 $) is over it: each order converts 391.09 ₪ at the minimum, 8.91 ₪ wait each month
-    const over = runSecurities(input({ goal: { amountNow: 0, monthly: 400, months: 12 }, wholeUnits: { price: 370 } }), ctx);
+    const over = runSecurities(input({ goal: { amountNow: 0, monthly: 400, months: 12 }, way: { units: { price: 370 } } }), ctx);
     expect(over.detail.monthlyOrders).toBe(12);
     expect(over.fees.fx).toBeCloseTo(12 * 21.09 + 21.09, 6);
   });

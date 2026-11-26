@@ -134,7 +134,7 @@ describe("F-91, F-109: the cash waiting for a whole unit of a fund that pays out
     fund: f,
     tariff: { currency: { code: "USD", startRate: 3.5 } },
     profile: {},
-    ...(units ? { wholeUnits: { price: 2_400 } } : {}),
+    ...(units ? { way: { units: { price: 2_400 } } } : {}),
   });
   for (const [name, f] of [
     ["a US fund, its tax taken in the US", fund({})],
