@@ -2,7 +2,7 @@
 import { useLoaderData } from "react-router";
 import { companyPath, dealPagePath, guidePath, trackBrowserPath, trackPath } from "../lib/site-paths";
 import type { Route } from "./+types/track";
-import { catalogue, companies as companiesCopy, company as companyCopy, feePageLink, guide as guideCopy, pagePreview, trackBrowser, track as copy } from "../copy";
+import { catalogue, cmaAbout, companies as companiesCopy, company as companyCopy, feePageLink, guide as guideCopy, pagePreview, trackBrowser, track as copy } from "../copy";
 import { pageMeta } from "../lib/page-meta";
 import { feeLabel } from "../components/decoder/fees";
 import { DimensionChecklist, checklistMark, type ChecklistRowView } from "../components/guide/sections";
@@ -11,9 +11,10 @@ import { IdRef, Num, NumAfter, OwnCompanyPage } from "../components/provenance";
 import { CHILD_SAVINGS, childFeeHelp } from "../components/tracks/list";
 import { Breadcrumb, PageShell } from "../components/shell";
 import { Callout, Card, FeeNum, GemelNetLink, HeldMark, HelpMark, KeyValueList, MixedName, PageHead, Section, Sentence, ShareNum, Tag, TextLink, gershayim } from "../components/kit";
-import { cmaFeeValue, feeYear, type SiteValue } from "../lib/value";
+import { feeYear, type SiteValue } from "../lib/value";
 import { compactHoldings, exposureShares, holdingsTemplate, type ExposureShares, type Holdings } from "../lib/track-exposure";
 import { trackLabels } from "../lib/track-labels";
+import { HELP_TERMS } from "../lib/track-browser";
 import { fmt } from "../lib/format";
 
 /** F-87 and F-88 for one track; null when its data file has no amounts. */
@@ -23,8 +24,9 @@ function exposureOf(h: Holdings | undefined, period: string, today: string): Exp
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { loadChecklistRows, loadCma, loadCmaFees, loadCmaHoldings, loadRules, loadWrappers, pointedRecords, today } = await import("../lib/data.server");
+  const { loadChecklistRows, loadCma, loadCmaFees, loadCmaHoldings, loadRules, loadTerms, loadWrappers, pointedRecords, today } = await import("../lib/data.server");
   const { institutionCompanies, loadCatalog, seenValue, seenWhere } = await import("../lib/instruments.server");
+  const { feeTemplate } = await import("../lib/track-browser.server");
   const cma = loadCma();
   const track = cma.tracks.find((t) => t.companyId === params.id && String(t.fundId) === params.fund);
   if (!track) throw new Response("Not found", { status: 404 });
@@ -76,11 +78,14 @@ export async function loader({ params }: Route.LoaderArgs) {
     stale: cma.periodValue.stale,
     notes,
   });
-  // and the rule the stock and currency shares' sheets name, so their chip carries its title and source
-  const { EXPOSURE_RULE_IDS } = await import("../lib/track-exposure");
+  // and the rules the stock and currency shares' sheets name, so their chips carry their titles and sources
+  const exposure = exposureOf(loadCmaHoldings().get(track.fundId), track.reportPeriod, t);
+  // the glossary card behind both exposure rows' "?", with the rules it cites
+  const exposureTerm = exposure ? loadTerms().find((x) => x.he === HELP_TERMS.exposure) : undefined;
+  const exposureRules = [...new Set([...[exposure?.stock, exposure?.currency].flatMap((v) => (v?.rulesUsed ?? []).map((r) => r.id)), ...(exposureTerm?.ruleIds ?? [])])];
   // a child-savings track's note says the age until which National Insurance pays its fee (CS-18), as the company page reads it
   const childAge = wrapper?.id === CHILD_SAVINGS ? ((rules["CS-18"]?.figures?.nii_pays_until_age ?? null) as SiteValue | null) : null;
-  const citedRules = Object.fromEntries([...cited, ...EXPOSURE_RULE_IDS.flatMap((id) => (rules[id] ? [rules[id]] : [])), ...(childAge && rules["CS-18"] ? [rules["CS-18"]] : [])].map((r) => [r.id, r]));
+  const citedRules = Object.fromEntries([...cited, ...exposureRules.flatMap((id) => (rules[id] ? [rules[id]] : [])), ...(childAge && rules["CS-18"] ? [rules["CS-18"]] : [])].map((r) => [r.id, r]));
   // names the catalogue gives this track alone (a fund-level or programme-level name is not this track's name)
   const catalog = loadCatalog();
   const owner = institutionCompanies(catalog, cma.tracks);
@@ -102,15 +107,16 @@ export async function loader({ params }: Route.LoaderArgs) {
     checklist,
     childAge,
     rules: citedRules,
+    terms: exposureTerm ? { [exposureTerm.he]: exposureTerm } : {},
     pointed: pointedRecords(citedRules, rules),
     dimensionNames: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])),
     values: {
-      balanceFee: cmaFeeValue(fees.balance, t),
-      depositFee: cmaFeeValue(fees.deposit, t),
+      balanceFee: feeTemplate([fees.balance], t, cmaAbout.avg_annual_management_fee),
+      depositFee: feeTemplate([fees.deposit], t, cmaAbout.avg_deposit_fee),
       fundId: sourced(String(track.fundId), "text"),
       period: cma.periodValue,
       inception: track.inception ? sourced(track.inception, "text") : null,
-      exposure: exposureOf(loadCmaHoldings().get(track.fundId), track.reportPeriod, t),
+      exposure,
     },
     today: t,
   };
@@ -129,11 +135,16 @@ export default function TrackPage() {
   const child = data.wrapper?.id === CHILD_SAVINGS;
   // what that figure is not, behind a caution "?" at the savings fee label's end
   const childHelp = child ? childFeeHelp(data.childAge) : null;
+  // an exposure row's label, with the "?" of the glossary card on what the exposure counts (it can pass 100%)
+  const exposureLabel = (template: string) => {
+    const words = template.replace("{period}", fmt.period(track.reportPeriod));
+    return <HeldMark words={words} mark={<HelpMark term={HELP_TERMS.exposure} about={words} />} />;
+  };
   const feeText = (template: string, v: SiteValue) => feeLabel(template, feeYear(v)) + (track.dataset === "pensia-net" ? ` ${copy.feeWhole}` : child ? `, ${copy.feeOver21}` : "");
   // a page about one company's track: its own figures carry no "לפי החברה"
   return (
     <OwnCompanyPage>
-    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>
+    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: data.terms, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>
       <div className="flex flex-col gap-8">
         <PageHead
           crumb={<Breadcrumb parent={{ href: companyPath(track.companyId), label: gershayim(track.companyName) }} current={gershayim(track.name)} />}
@@ -204,8 +215,8 @@ export default function TrackPage() {
               ...(track.subSpecialization ? [{ id: "holds", label: copy.labels.holds, value: <MixedName>{track.subSpecialization}</MixedName> }] : []),
               { id: "balanceFee", label: childHelp ? <HeldMark words={feeText(copy.feeBalanceLabel, data.values.balanceFee)} mark={<HelpMark about={trackBrowser.childFee.about} text={childHelp.text} rules={childHelp.rules} tone="caution" />} /> : feeText(copy.feeBalanceLabel, data.values.balanceFee), value: <FeeNum value={data.values.balanceFee} /> },
               { id: "depositFee", label: feeText(copy.feeDepositLabel, data.values.depositFee), value: <FeeNum value={data.values.depositFee} /> },
-              ...(data.values.exposure?.stock ? [{ id: "stock", label: companyCopy.stock.rowStock.replace("{period}", fmt.period(track.reportPeriod)), value: <ShareNum value={data.values.exposure.stock} /> }] : []),
-              ...(data.values.exposure?.currency ? [{ id: "currency", label: companyCopy.stock.rowCurrency.replace("{period}", fmt.period(track.reportPeriod)), value: <ShareNum value={data.values.exposure.currency} /> }] : []),
+              ...(data.values.exposure?.stock ? [{ id: "stock", label: exposureLabel(companyCopy.stock.rowStock), value: <ShareNum value={data.values.exposure.stock} /> }] : []),
+              ...(data.values.exposure?.currency ? [{ id: "currency", label: exposureLabel(companyCopy.stock.rowCurrency), value: <ShareNum value={data.values.exposure.currency} /> }] : []),
               ...(data.values.inception ? [{ id: "inception", label: copy.labels.inception, value: <Num value={data.values.inception} /> }] : []),
               { id: "period", label: copy.labels.period, value: <Num value={data.values.period} /> },
             ]}

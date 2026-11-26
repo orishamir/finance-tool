@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { ValueObject } from "@finance-tool/schema";
-import { company as copy } from "../copy";
+import { cmaAbout, company as copy } from "../copy";
 import { compactHoldings, exposureShares, holdingsTemplate, shareFraction, shareText, type Holdings } from "./track-exposure";
+import type { SiteValue } from "./value";
 
 const amount = (value: number | null): ValueObject => ({
   value,
@@ -28,7 +29,7 @@ function shares(x: Holdings, list: Holdings[] = [x]) {
 }
 
 describe("F-87 and F-88 on the site", () => {
-  it("computes both shares with their inputs and the note on the measure (track 103, 2026-09)", () => {
+  it("computes both shares with their inputs (track 103, 2026-09)", () => {
     const s = shares(h(25706.14, 12378.07, 5156.92))!;
     expect(s.stock!.value as number).toBeCloseTo(48.152, 3);
     expect(s.stock!.computed_from?.formula).toBe("F-87");
@@ -36,8 +37,36 @@ describe("F-87 and F-88 on the site", () => {
     expect(s.currency!.value as number).toBeCloseTo(20.061, 3);
     expect(s.currency!.computed_from?.formula).toBe("F-88");
     expect(Object.keys(s.currency!.computed_from!.inputs)).toEqual(["foreign_currency_exposure", "total_assets"]);
-    expect(s.stock!.notes).toBe(copy.stock.note);
     expect(shareText(s.stock!)).toBe(shareText({ ...s.stock!, value: 48 }));
+  });
+
+  it("a share names CAT-44 alone and has no note up to 100% (track 15256, 2026-10: 97.43%)", () => {
+    const s = shares(h(699.8, 681.81))!;
+    expect(s.stock!.value as number).toBeCloseTo(97.43, 2);
+    expect(s.stock!.rulesUsed!.map((r) => r.id)).toEqual(["CAT-44"]);
+    expect(s.stock!.notes).toBeUndefined();
+  });
+
+  it("above 100% the share says why exposure can pass the assets", () => {
+    const s = shares(h(100, 104, 104))!;
+    expect(s.stock!.rulesUsed!.map((r) => r.id)).toEqual(["CAT-44"]);
+    expect(s.stock!.notes).toBe(copy.stock.above100);
+    expect(s.currency!.notes).toBe(copy.stock.above100);
+    expect(shares(h(100, 100))!.stock!.notes).toBeUndefined();
+  });
+
+  it("a share with no figure names no rule", () => {
+    expect(shares(h(100, null))!.stock!.rulesUsed).toEqual([]);
+    expect(shares(h(0, 0))!.stock!.rulesUsed).toEqual([]);
+  });
+
+  it("each amount's sheet says what it is and at which month's end", () => {
+    const t = holdingsTemplate([h(699.8, 681.81, 10)], "2026-10", "2026-11-26")!;
+    expect(t.assets.about).toBe(cmaAbout.total_assets("אוקטובר 2026"));
+    expect(t.exposure.about).toBe(cmaAbout.stock_market_exposure("אוקטובר 2026"));
+    expect(t.currency!.about).toBe(cmaAbout.foreign_currency_exposure("אוקטובר 2026"));
+    const s = shares(h(699.8, 681.81, 10))!;
+    expect((s.stock!.computed_from!.inputs as Record<string, SiteValue>).total_assets!.about).toBe(cmaAbout.total_assets("ספטמבר 2026"));
   });
 
   it("a file without the currency amount gives the stock share alone", () => {

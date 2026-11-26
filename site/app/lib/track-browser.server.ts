@@ -7,7 +7,10 @@ import { loadInstitutionRegistry } from "./institutions.server";
 import { compactHoldings, holdingsTemplate } from "./track-exposure";
 import { defaultProduct, trackProductIds, type TbData, type TbProduct, type TbRow } from "./track-browser";
 import { cmaFeeValue, compactFee, feeYear, staleCma, type SiteValue } from "./value";
+import type { ValueObject } from "@finance-tool/schema";
 import { withoutLtd } from "./company-name";
+import { cmaAbout } from "../copy";
+import { fmt } from "./format";
 import { SELF_DIRECTED_PRODUCTS } from "./self-directed";
 
 // the six products and the default are in lib/track-browser.ts (the guides read them too)
@@ -21,6 +24,17 @@ export function shortCompanyName(id: string, legalName: string): string {
   const registered = loadInstitutionRegistry().find((r) => r.cma_legal_id === id);
   if (registered) return registered.name_he;
   return withoutLtd(legalName);
+}
+
+/**
+ * A product's fee template: the first track's average that holds a number (else the first), with the yearly stale rule and its head line
+ * for the sheet, which names the fee's calendar year (CAT-36). Every track's fee is expanded from it (`expandFee`) and keeps that line;
+ * the track page builds its two fees with it from the track's own.
+ */
+export function feeTemplate(list: readonly ValueObject[], today: string, about: (year: string) => string): SiteValue {
+  const v = cmaFeeValue(list.find((b) => b.value !== null) ?? list[0]!, today);
+  const year = feeYear(v);
+  return year ? { ...v, about: about(year) } : v;
 }
 
 /** `companyId`: one company's tracks only (its page); the figures' templates are then built over its tracks, and its
@@ -48,17 +62,18 @@ export function buildTrackBrowser(companyId?: string): TbData {
     const period = list[0]!.reportPeriod;
     const balances = list.map((x) => feesOf.get(x.fundId)!.balance);
     const deposits = list.map((x) => feesOf.get(x.fundId)!.deposit);
-    const balance = cmaFeeValue(balances.find((b) => b.value !== null) ?? balances[0]!, t);
-    const deposit = cmaFeeValue(deposits.find((b) => b.value !== null) ?? deposits[0]!, t);
+    const balance = feeTemplate(balances, t, cmaAbout.avg_annual_management_fee);
+    const deposit = feeTemplate(deposits, t, cmaAbout.avg_deposit_fee);
     const holdings = holdingsTemplate(list.map((x) => holdingsOf.get(x.fundId)), period, t);
     const stale = staleCma(period, t);
-    const yieldTemplate = (pick: (y: NonNullable<ReturnType<typeof yieldsOf.get>>) => SiteValue): SiteValue | null => {
+    const month = fmt.period(period);
+    const yieldTemplate = (pick: (y: NonNullable<ReturnType<typeof yieldsOf.get>>) => SiteValue, about: (period: string) => string): SiteValue | null => {
       const all = list.map((x) => yieldsOf.get(x.fundId)).filter((y): y is NonNullable<typeof y> => !!y);
       const first = all.find((y) => pick(y).value !== null) ?? all[0];
-      return first ? { ...pick(first), stale } : null;
+      return first ? { ...pick(first), stale, about: about(month) } : null;
     };
-    const y3 = yieldTemplate((y) => y.avg_annual_yield_3y as SiteValue);
-    const y5 = yieldTemplate((y) => y.avg_annual_yield_5y as SiteValue);
+    const y3 = yieldTemplate((y) => y.avg_annual_yield_3y as SiteValue, cmaAbout.avg_annual_yield_3y);
+    const y5 = yieldTemplate((y) => y.avg_annual_yield_5y as SiteValue, cmaAbout.avg_annual_yield_5y);
     const rows: TbRow[] = list.map((x, i) => {
       if (!companyIds.includes(x.companyId)) companyIds.push(x.companyId);
       // a self-managed (IRA) fund: each member directs its money (IRA-01), and the file reports 0 in its yields
@@ -90,7 +105,13 @@ export function buildTrackBrowser(companyId?: string): TbData {
   });
   const firstBalance = products.find((p) => feeYear(p.templates.balance))?.templates.balance;
   const year = firstBalance ? feeYear(firstBalance) : null;
-  return { today: t, reportPeriod: cma.periodValue.value as string, feeYear: firstBalance && year ? { ...firstBalance, value: year, unit: "text", notes: "" } : null, period: cma.periodValue, companies, products };
+  return { today: t, reportPeriod: cma.periodValue.value as string, feeYear: firstBalance && year ? { ...withoutAbout(firstBalance), value: year, unit: "text", notes: "" } : null, period: cma.periodValue, companies, products };
+}
+
+/** A value with its head line taken off, for a value built from it that is something else (the fee's year). */
+function withoutAbout(v: SiteValue): SiteValue {
+  const { about: _about, ...rest } = v;
+  return rest;
 }
 
 /** Every rule id any value of the products' templates names: the sheets open on them, so the page's loader ships these rules. */

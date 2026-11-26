@@ -703,7 +703,7 @@ export function regulatorAverageFees(
         update_rule: "fixed in regulation",
         state: "sourced",
         rule_ids: ["PF-06"],
-        notes: `השדה של ממוצע דמי הניהול מהפקדות ריק בנתוני רשות שוק ההון למסלול ${spec.track}. בסוג הקופה הזה התקנות מתירות דמי ניהול מהיתרה בלבד (PF-06), ולכן החישוב לוקח 0.`,
+        notes: investCopy.depositFeeNoneByRule(spec.track),
       };
   } else missing.push(`${wrapperId}: track ${spec.track} reports no average deposit fee (tariff fees)`);
   if (missing.length > 0) return { missing };
