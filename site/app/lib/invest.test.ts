@@ -614,14 +614,15 @@ describe("each figure of a run lists the rules of the parts its number is made o
     expect(ACCOUNT_LINES.filter((l) => FUND_LINES.includes(l))).toEqual([]);
     for (const pc of pairs) for (const l of pc.account) expect(ACCOUNT_LINES, `${pc.providerId} ${l.line}`).toContain(l.line);
   });
-  it("a figure before tax on a fund that pays nothing out lists no tax rule, and the fund's part, before all tax, lists none on any fund", () => {
+  it("on a fund that pays nothing out, a figure before tax lists no tax rule, the fund's part only the US tax inside its price (TXF-16)", () => {
     const ways = view.options.flatMap((o) => o.funds).flatMap((f) => Object.values(f.byHouse).flatMap((x) => ("valueN" in x ? [{ f, x }] : [])));
     expect(ways.length).toBeGreaterThan(10);
     for (const { f, x } of ways) if (!f.rec.distribution) expect(ids(x.cost).filter((id) => id.startsWith("TX")), `${f.rec.id} cost`).toEqual([]);
     for (const pc of pairs) {
       const rec = bundle.funds.find((r) => r.id === pc.fundId)!;
-      expect(ids(pc.fund).filter((id) => id.startsWith("TX") && id !== "TXF-16"), `${pc.fundId} fund`).toEqual([]);
       if (pc.distributes) continue;
+      // the US tax on the dividends inside the fund's price is one of the fund's own costs, booked on its line (F-107)
+      expect(ids(pc.fund).filter((id) => id.startsWith("TX") && id !== "TXF-16"), `${pc.fundId} fund`).toEqual([]);
       for (const l of pc.account) expect(ids(l.cost).filter((id) => id.startsWith("TX")), `${pc.providerId} ${l.line}`).toEqual([]);
       expect(ids(pc.remainder).filter((id) => id.startsWith("TX")), `${pc.providerId} remainder`).toEqual([]);
       expect(rec.distribution).toBeFalsy();
@@ -761,6 +762,14 @@ describe("what each figure's sheet lists", () => {
     expect(inputs(carried.remainder)[words.pair.incomeInput]?.value).toBe(900_000);
     for (const l of carried.account) expect(inputs(l.cost)[words.pair.incomeInput]).toBeUndefined();
     if (carried.waiting) expect(inputs(carried.waiting)[words.pair.incomeInput]).toBeUndefined();
+    // and so of the rules: every figure rests on the payout's tax; a difference of B takes the surtax with it, a carried money does not
+    const tx = (v: SiteValue) => (v.rulesUsed ?? []).map((r) => r.id).filter((id) => id.startsWith("TX"));
+    expect(tx(carried.tax).some((id) => SURTAX_RULES.includes(id))).toBe(true);
+    for (const v of [carried.fund, carried.remainder]) expect(tx(v).some((id) => SURTAX_RULES.includes(id))).toBe(true);
+    for (const v of [...carried.account.map((l) => l.cost), ...(carried.waiting ? [carried.waiting] : [])]) {
+      expect(tx(v).length).toBeGreaterThan(0);
+      expect(tx(v).filter((id) => SURTAX_RULES.includes(id))).toEqual([]);
+    }
   });
 
   it("a deal's fee on a fund that pays out lists the same rules on the pair's receipt as in the deal's popup: the payout's tax, no surtax", () => {

@@ -903,7 +903,8 @@ function planInputs(plan: WorkbenchInputs, which: readonly PlanInput[]): Record<
 /**
  * The rules a figure of the run lists (`rulesOfRun`): those whose read changed the parts its number is made of. An account's cost takes the
  * account's fee lines (`ACCOUNT_LINES`), and the tax during the run where the fund pays out, since the fees then change the tax on what it
- * pays; the fund's part its own lines (`FUND_LINES`); the state's part the tax; what is left the whole run.
+ * pays; the fund's part its own lines (`FUND_LINES`), and the same tax where the fund pays out; a money carried to the horizon its lines and
+ * the payout's tax (`carriedParts`); the state's part the tax; what is left the whole run.
  */
 const rulesOf = (row: ComparedProvider, parts: RunParts) => rulesOfRun(row.run.rules, parts);
 /** The parts an account's cost before tax is made of (`rulesOf`): the account's lines, and the tax during the run on a fund that pays out. */
@@ -1531,12 +1532,14 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   // the whole run (the account and the fund); the fund's part is measured with no account, so it reads none of the account's prices
   const run = { house: s.id, fund: rec.id, spec: fs.spec, row, profileUsed: row.run.profileUsed };
   // what each figure reads of the run's tax (`RunReads.tax`): what is left and the tax read it all, a difference of `B` reads it on a fund
-  // that pays out, and a line carried in whole units or of a deal, and the waiting cash, read none
+  // that pays out, and a line carried in whole units or of a deal, and the waiting cash, read no profile (F-91's t takes no surtax)
   const inputs = inputsOfRun(ctx, run);
   const taxedInputs = inputsOfRun(ctx, { ...run, tax: "after" });
   const bInputs = inputsOfRun(ctx, { ...run, tax: "before" });
-  // each figure lists the rules of the parts its number is made of (`rulesOf`); a line read before the tax reads the tax during the run on a
-  // fund that pays out
+  // each figure lists the rules of the parts its number is made of (`rulesOf`). On a fund that pays out every one of them rests on the
+  // payout's tax: a difference of `B` counts the tax paid at face and not the growth it forgoes, so it takes the whole tax during the run;
+  // a money carried to the horizon grows at the fund's return less the tax a shekel held pays on the payout, so it takes that tax alone
+  // (`carriedParts`)
   const payout = !!distribution;
   const at = (n: number, formula: string, about: string, from: Record<string, SiteValue>, parts: RunParts, flags: readonly FlagIn[] = []) => computed(n, "nis", formula, from, { today: ctx.bundle.today, rules: rulesOf(row, parts), about, ...(flags.length ? { flags } : {}) });
   const paidInReal = paidInAsEntered(ctx.plan.amountNow, ctx.plan.monthly, ctx.plan.years);
@@ -1559,13 +1562,13 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   };
   // a deal's fee is no one line of the Tally's, so it takes the account's lines, carried as the deal's popup carries it (`dealOnFunds`)
   const dealLines = deal && ids ? [...byDealFee].map(([fee, n]) => ({ fee, name: feeWords(fee), cost: at(n, "F-91", copy.pair.lineAbout(feeWords(fee)), inputs, carriedParts(ACCOUNT_LINES, payout), feeIsAccount(deal, fee) ? costFlags(row) : []) })) : undefined;
-  // each line takes its own fee line, and the tax during the run where it is read before the tax on a fund that pays out; the bank's current
-  // account carries the run's flag about its cost (BANK-35, F-102)
+  // each line takes its own fee line, and on a fund that pays out the tax during the run where it is a difference of `B`, the payout's tax
+  // where it is carried in whole units; the bank's current account carries the run's flag about its cost (BANK-35, F-102)
   const lines = dealLines
     ? []
     : row.byType.map((x) => {
         const before = !unitsOf(row.run);
-        const parts: RunParts = [{ part: "fees", lines: [x.line] }, ...(before && payout ? (["taxDuring"] as const) : [])];
+        const parts: RunParts = before ? [{ part: "fees", lines: [x.line] }, ...(payout ? (["taxDuring"] as const) : [])] : carriedParts([x.line], payout);
         return { line: x.line, cost: at(x.costBeforeTax, "F-91", copy.pair.lineAbout(copy.pair.lines[x.line] ?? copy.pair.lines.other!), before ? bInputs : inputs, parts, x.line === "account" ? costFlags(row) : []) };
       });
   // what no single line explains, without the waiting cash: the account's fees less its lines, the deal's own where it is priced by a deal
@@ -1587,10 +1590,11 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     accountCost: row.horizonCostBeforeTax,
     accountFees: parts.fees,
     waitingN,
-    waiting: unitsOf(row.run) ? at(waitingN, "F-109", copy.pair.waitingAbout, inputs, []) : null,
+    waiting: unitsOf(row.run) ? at(waitingN, "F-109", copy.pair.waitingAbout, inputs, carriedParts([], payout)) : null,
     distributes: !!distribution,
-    // the fund's part is before all tax: measured with no account, the tax added back (`noAccount`)
-    fund: at(parts.fund, "F-91", copy.pair.fundAbout, inputsOfRun(ctx, { fund: rec.id, spec: fs.spec, tax: "before", profileUsed: row.run.profileUsed }), [{ part: "fees", lines: FUND_LINES }]),
+    // the fund's part is measured with no account, the tax added back (`noAccount`): a difference of `B` whose two runs both pay out where
+    // the fund does, so there it rests on the tax during the run as the account's part does
+    fund: at(parts.fund, "F-91", copy.pair.fundAbout, inputsOfRun(ctx, { fund: rec.id, spec: fs.spec, tax: "before", profileUsed: row.run.profileUsed }), [{ part: "fees", lines: FUND_LINES }, ...(payout ? (["taxDuring"] as const) : [])]),
     // the state's part holds the tax during the run and at its exit; the tax inside the fund's price cancels out of it (`costByWho`)
     tax: computed(parts.state, "nis", "F-91", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row, ["taxDuring", "taxAtExit"]), statements: statementsOf(row), labels: labelsOf(row, fs.spec), about: distribution ? copy.pair.taxAboutPayouts : copy.pair.taxAbout }),
     base,
