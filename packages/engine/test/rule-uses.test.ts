@@ -198,6 +198,18 @@ describe("the parts each run's rules went into", () => {
     expect(changedIn(run("S24 keren hishtalmut, early withdrawal"), "TXG-04")).toEqual([]);
   });
 
+  it("takes the work brackets on an early withdrawal only where the employer's deposits are taxed by them", () => {
+    // own money under 60: the deposits are not income, and only the gains' brackets set the tax
+    const own = run("S24 keren hishtalmut, early withdrawal");
+    expect(own.taxAtExit).toBeGreaterThan(0);
+    expect(read(own, "TXG-02")).toBe(true);
+    expect(changedIn(own, "TXG-02")).not.toContain("taxAtExit");
+    const input = { ...s23, goal: { ...s23.goal, months: 48 }, hishtalmut: { ...s23Hishtalmut, money: "employer" as const, earlyWithdrawal: true } };
+    expect(changedIn(runProvident(input, ctx), "TXG-02")).toContain("taxAtExit");
+    // with the refund not claimed the tax is what was withheld, which no bracket sets
+    expect(changedIn(runProvident({ ...input, profile: { refundClaimed: false } }, ctx), "TXG-02")).not.toContain("taxAtExit");
+  });
+
   it("files the lock's exemption on the exit as well as on the term", () => {
     expect(changedIn(run("S23 keren hishtalmut"), "TXH-09")).toEqual(["term", "taxAtExit"]);
     // an early withdrawal is taxed: the exemption does not reach it

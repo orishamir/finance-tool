@@ -441,14 +441,19 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       const employerDeposits = employerMoney ? benefited.deposits.reduce((a, d) => a + d.amount, 0) : 0;
       // F-119: the brackets and the threshold of the exit's tax year
       const exitYear = taxYearOf(T, first);
+      // the brackets of the employer's deposits are looked at, and taken where there are such deposits and the tax is the one computed
+      // rather than the one withheld
+      const workRule = sixty ? "TXG-04" : "TXG-02";
+      const refundClaimed = profile.refundClaimed !== false;
       const t = studyFundEarlyWithdrawal(exit.inYear(exitYear), {
         gains,
         employerDeposits,
         otherIncome: y,
         sixtyOrOver: sixty,
-        refundClaimed: profile.refundClaimed !== false,
-        workBrackets: exit.inYear(exitYear).brackets(sixty ? "TXG-04" : "TXG-02", "brackets"),
+        refundClaimed,
+        workBrackets: exit.inYear(exitYear).peek.brackets(workRule, "brackets"),
       });
+      if (employerDeposits > 0 && refundClaimed) exit.took(workRule);
       const withIncome = { ...profile, otherIncome: y };
       const surtax = surtaxOn(exit, withIncome, gains + employerDeposits, 0, exitYear, false, "general").general + surtaxOn(exit, withIncome, gains, 0, exitYear, false, "onCapital").onCapital;
       taxAtExit = t.tax + surtax;
