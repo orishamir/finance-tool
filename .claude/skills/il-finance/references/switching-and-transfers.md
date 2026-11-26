@@ -14,7 +14,7 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 - **Retention:** no retention rule was found for provident products. Banks are bound by a retention-contact rule (SW-19, SW-28, experience section).
 - **Banks:** a current account moves online and free through the receiving bank (directive 448). Deposits stay at the old bank until they mature. Incoming payments are rerouted for three years, extended to 31.7.2029 for earlier switchers (SW-26 to SW-31). A deposit cannot be "ported" before maturity today. New money can go to another bank's closed-system deposit (SW-32).
 - **Brokerage:** securities move in kind at the client's request to the old institution. A bank must take the request online and move Israeli securities within 5 business days and foreign ones within 14 (BoI directive 432). A bank's same-client transfer is a supervised price, at most NIS 10 when the account is closed; the order that sets the price was not found. No cap was found for non-bank brokers. Moving to another owner is a sale, and a gift to a relative keeps the giver's cost through the Tax Authority's route; that a move between one's own accounts is tax-neutral is stated only by institutions (SW-33 to SW-37, SW-52 to SW-55).
-- **Scope (2026-10-25):** the general records cite laws, regulations, circulars and the Bank of Israel only. What a company says or charges sits in its own record, named (SW-45 to SW-57), and the claims only companies make are marked unsettled (SW-34, SW-52, SW-55).
+- **Scope (2026-10-25):** the general records cite laws, regulations, circulars and the Bank of Israel only. What a company says or charges sits in its own record, named (SW-45 to SW-59), and the claims only companies make are marked unsettled (SW-34, SW-52, SW-55).
 
 ## Rules
 
@@ -514,23 +514,38 @@ For every CMA product (pension, provident for annuity, keren hishtalmut, gemel l
 
 ### SW-35 Moving a portfolio out of a bank: the bank takes the request online and moves it within 5 or 14 business days
 - Rule: Bank of Israel proper-conduct directive 432 covers moving securities activity "מהבנק לגוף פיננסי אחר" (s.3א). The bank must take the client's request to move a securities portfolio online (s.8א(א)). "הבנק יפעל להעברת תיק ניירות ערך ישראליים, תוך 5 ימי עסקים, ממועד השלמת הגשת הבקשה על ידי הלקוח" (s.8א(ב)(1)), and foreign securities "בתוך 14 ימי עסקים" (s.8א(ב)(2)). The bank may not refuse unreasonably, and gives its reasons (s.8א(ג)). A new bank may act for the client with the client's written consent (s.4).
-- Conditions / exceptions: The deadlines bind a bank as the transferring institution. No rule was found for the timeline and process when the transferring institution is a non-bank broker (open note; what would settle it: the TASE members' rules). Circular ח-06-2639 (30.12.2020) added an exceptions section (s.3ב); in the consolidated version 12 of 9/21, read 2026-10-31 ([הוראה 432, גרסה 12](https://www.boi.org.il/media/pgyndhdn/432.pdf), p.1, p.3), s.3ב reads "בוטל" and s.8א and its deadlines stand. Version 12 was the one on the Bank of Israel's list in its archived copy of 15.12.2025; the live list was not checked. What the institutions add (which securities can move, forms, proof of ownership) is each one's own: Leumi's, Meitav Trade's and Altshuler Shaham Trade's are SW-54. For moving the whole bank relationship, see SW-29: untransferable securities stay at the old bank. Split on 2026-10-25 (scope pass): the companies' part is SW-54.
+- Conditions / exceptions: The deadlines bind a bank as the transferring institution. No rule was found for the timeline and process when the transferring institution is a non-bank broker (open note; what would settle it: the TASE members' rules). Circular ח-06-2639 (30.12.2020) added an exceptions section (s.3ב); in the consolidated version 12 of 9/21, read 2026-10-31 ([הוראה 432, גרסה 12](https://www.boi.org.il/media/pgyndhdn/432.pdf), p.1, p.3), s.3ב reads "בוטל" and s.8א and its deadlines stand. Version 12 was the one on the Bank of Israel's list in its archived copy of 15.12.2025; the live list was not checked. What the institutions add (which securities can move, forms, proof of ownership) is each one's own: Leumi's is SW-54, Altshuler Shaham Trade's SW-58 and Meitav Trade's SW-59. For moving the whole bank relationship, see SW-29: untransferable securities stay at the old bank. Split on 2026-10-25 (scope pass): the companies' part is SW-54 (split by company on 2026-11-26: SW-54, SW-58, SW-59).
 - Figures: 5 business days for Israeli securities, 14 for foreign securities, from the day the client completes the request (a bank, directive 432).
 - Source: [בנק ישראל – הוראת ניהול בנקאי תקין 432, העברת פעילות וסגירת חשבון של לקוח (נוסח [10] 6/2020, מצורף לחוזר ח-06-2623)](https://www.boi.org.il/media/rrcbh2gl/%D7%94%D7%94%D7%95%D7%A8%D7%90%D7%94-%D7%91%D7%9E%D7%9C%D7%95%D7%90%D7%94.pdf) p.5, s.8א(ב)(1)-(2) "הבנק יפעל להעברת תיק ניירות ערך ישראליים, תוך 5 ימי עסקים" · checked 2026-10-25 · primary
 - Scope: general
 - Dimensions: `transfer-switch-process`, `liquidity-lockup`
 - Likely to change: yes.
 
-### SW-54 Bank Leumi, Meitav Trade and Altshuler Shaham Trade: how they describe moving a portfolio
-- Rule: Three institutions describe the same order: open an account at the receiving institution, submit a transfer request to the current institution, and the receiver handles receipt.
-  - Meitav Trade: "מורידים את טופס בקשת ההעברה מהבנק" and send it with the new account details.
-  - Bank Leumi takes the request online. Its instructions: "בקשת ההעברה תכלול רק ניירות ערך אשר בוצע בגינם זיכוי/חיוב בפועל של החשבון"; "לא ניתן להעביר שברי ניירות ערך"; a transfer to the same owner needs proof of ownership of the receiving account; mutual funds need a signed mutual-fund transfer form; fees follow the tariff.
-  - Altshuler Shaham Trade: "לא כל נייר ערך ניתן להעברה אוטומטית". TASE securities and most US-listed securities can move, subject to both institutions. It gives up to 5 trading days for Israeli securities and up to 14 for foreign ones, which match the bank deadlines of directive 432 counted in business days (SW-35).
-- Conditions / exceptions: Institution statements. The bank's duties and deadlines are directive 432's (SW-35). Other institutions' instructions were not read. Split from SW-35 on 2026-10-25 (scope pass).
+### SW-54 Bank Leumi: how it takes a securities transfer request and what it excludes
+- Rule: Bank Leumi takes the request to move a securities portfolio online. Its instructions: "בקשת ההעברה תכלול רק ניירות ערך אשר בוצע בגינם זיכוי/חיוב בפועל של החשבון"; "לא ניתן להעביר שברי ניירות ערך"; a transfer to the same owner needs proof of ownership of the receiving account; mutual funds need a signed mutual-fund transfer form; fees follow the tariff.
+- Conditions / exceptions: Institution statements. The bank's duties and deadlines are directive 432's (SW-35). Bank Leumi, Altshuler Shaham Trade (SW-58) and Meitav Trade (SW-59) describe the same order: open an account at the receiving institution, submit a transfer request to the current institution, and the receiver handles receipt. Other institutions' instructions were not read. Split from SW-35 on 2026-10-25 (scope pass). Split by company on 2026-11-26: Altshuler Shaham Trade's part is SW-58, Meitav Trade's SW-59.
+- Figures: none.
+- Source: [בנק לאומי – הנחיות ללקוח להעברת ניירות ערך](https://leumi.co.il/he/Articles/47356) "לא ניתן להעביר שברי ניירות ערך" · checked 2026-10-25 · institution. The general rule: SW-35.
+- Scope: institution: Bank Leumi
+- Dimensions: `transfer-switch-process`
+- Likely to change: yes.
+
+### SW-58 Altshuler Shaham Trade: not every security moves automatically; up to 5 trading days for Israeli securities, 14 for foreign
+- Rule: Altshuler Shaham Trade: "לא כל נייר ערך ניתן להעברה אוטומטית". TASE securities and most US-listed securities can move, subject to both institutions. It gives up to 5 trading days for Israeli securities and up to 14 for foreign ones, which match the bank deadlines of directive 432 counted in business days (SW-35).
+- Conditions / exceptions: Institution statements. The bank's duties and deadlines are directive 432's (SW-35). The order it describes (an account at the receiving institution, a transfer request to the current one, the receiver handles receipt) is the one Bank Leumi and Meitav Trade describe (SW-54, SW-59). Split from SW-54 on 2026-11-26 (SW-54 was split from SW-35 on 2026-10-25, scope pass).
 - Figures: 5 and 14 trading days (Altshuler Shaham Trade).
-- Source: [בנק לאומי – הנחיות ללקוח להעברת ניירות ערך](https://leumi.co.il/he/Articles/47356) "לא ניתן להעביר שברי ניירות ערך" · checked 2026-10-25 · institution; [מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)](https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/) "מורידים את טופס בקשת ההעברה מהבנק" · checked 2026-10-25 · institution; [אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד](https://www.as-invest.co.il/trade/faq_transfer/) "ניירות ערך ישראליים - עד 5 ימי מסחר" · checked 2026-10-25 · institution. The general rule: SW-35.
-- Scope: institution: Bank Leumi, Meitav Trade, Altshuler Shaham Trade
+- Source: [אלטשולר שחם טרייד – מעבירים את תיק ההשקעות שלכם לאלטשולר שחם טרייד](https://www.as-invest.co.il/trade/faq_transfer/) "ניירות ערך ישראליים - עד 5 ימי מסחר" · checked 2026-10-25 · institution. The general rule: SW-35.
+- Scope: institution: Altshuler Shaham Trade
 - Dimensions: `transfer-switch-process`, `liquidity-lockup`
+- Likely to change: yes.
+
+### SW-59 Meitav Trade: the transfer request form is downloaded from the bank and sent with the new account's details
+- Rule: Meitav Trade: "מורידים את טופס בקשת ההעברה מהבנק" and send it with the new account details.
+- Conditions / exceptions: Institution statement. The bank's duties and deadlines are directive 432's (SW-35). The order it describes (an account at the receiving institution, a transfer request to the current one, the receiver handles receipt) is the one Bank Leumi and Altshuler Shaham Trade describe (SW-54, SW-58). Split from SW-54 on 2026-11-26 (SW-54 was split from SW-35 on 2026-10-25, scope pass).
+- Figures: none.
+- Source: [מיטב – המדריך למעבר חלק: איך לנייד את תיק ההשקעות מהבנק למסחר עצמאי (03/08/2026)](https://www.meitav.co.il/trade/financial_info/self_trading_portfolio_transfer/) "מורידים את טופס בקשת ההעברה מהבנק" · checked 2026-10-25 · institution. The general rule: SW-35.
+- Scope: institution: Meitav Trade
+- Dimensions: `transfer-switch-process`
 - Likely to change: yes.
 
 ### SW-36 Tax on moving securities to another owner: a sale; a gift to a relative keeps the giver's cost through the Tax Authority's route
@@ -671,7 +686,7 @@ This is a composed index for 3.7; each step renders from the rule named.
 - **Bank deposits:** SW-32.
 - **Brokerage:**
   1. Open at the receiver.
-  2. Request at the old institution (SW-35; Leumi's, Meitav Trade's and Altshuler Shaham Trade's instructions, named, SW-54).
+  2. Request at the old institution (SW-35; Leumi's instructions, named, SW-54; Altshuler Shaham Trade's, named, SW-58; Meitav Trade's, named, SW-59).
   3. Cost (SW-33, SW-34; the supervised price as tariffs state it, SW-52; IBI's and Altshuler Shaham Trade's prices, named, SW-53).
   4. Tax (SW-36; the same-owner claim, unsettled, SW-55).
   5. Foreign brokers (SW-37).
@@ -725,7 +740,7 @@ This is a composed index for 3.7; each step renders from the rule named.
 
 ## Institutions
 
-This file does not enumerate providers. Who offers each wrapper, and from which register, is in the wrapper files: Gemel-Net and Pension-Net managers (KH-24, KGL-22, PEN institutions table, IRA institutions table), the child-savings funds and banks (CS-08, CS-22), the BoI bank list (`bank-current-account-deposits.md` Institutions), and TASE members (`brokerage-account.md` BRK-02, BRK-03). The switching duty in directive 448 binds every "bank" as s.5ב1(א) defines it, minus any bank exempted under s.5ב1(ה). Which banks, if any, are exempt was not found (open question 9). The institution pages used here (The Phoenix, Bank Leumi, Mizrahi Tefahot, Discount, IBI, Altshuler Shaham Trade, Meitav Trade) are examples of how the rules appear in practice, not a register. Since the scope pass of 2026-10-25 each sits in its own record, named in the record's Scope line (SW-45 to SW-57), never in a general record.
+This file does not enumerate providers. Who offers each wrapper, and from which register, is in the wrapper files: Gemel-Net and Pension-Net managers (KH-24, KGL-22, PEN institutions table, IRA institutions table), the child-savings funds and banks (CS-08, CS-22), the BoI bank list (`bank-current-account-deposits.md` Institutions), and TASE members (`brokerage-account.md` BRK-02, BRK-03). The switching duty in directive 448 binds every "bank" as s.5ב1(א) defines it, minus any bank exempted under s.5ב1(ה). Which banks, if any, are exempt was not found (open question 9). The institution pages used here (The Phoenix, Bank Leumi, Mizrahi Tefahot, Discount, IBI, Altshuler Shaham Trade, Meitav Trade) are examples of how the rules appear in practice, not a register. Since the scope pass of 2026-10-25 each sits in its own record, named in the record's Scope line (SW-45 to SW-59), never in a general record.
 
 ## Open questions
 
