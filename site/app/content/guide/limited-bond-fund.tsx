@@ -1,6 +1,6 @@
 // Guide prose for a bond fund with a limited period (the market's "קרן בולט"). A page of its own and not a product id, so it
 // stays out of the comparison until the founder decides otherwise. Every figure, year and date is a Num over a rule figure (a fund's id is not a
-// figure); the words that state a rule open it (Ruled, D116), and a figure from a rule opens it from its sheet (il-finance MF-59 to MF-66, MF-75 to MF-77,
+// figure); the words that state a rule open it (Ruled, D116), and a figure from a rule opens it from its sheet (il-finance MF-59 to MF-66, MF-75 to MF-78,
 // TXS-33 to TXS-37). A company's term appears under that company's name.
 import { Fragment, type ReactNode } from "react";
 import { Num, ProofsChip, Ruled, Term } from "../../components/provenance";
@@ -136,7 +136,7 @@ export function Who({ figure }: ContentProps) {
           { key: "kesem", head: "קסם", cells: [kesem("MF-62", "funds"), range(kesem, "MF-62", "end_first", "end_last"), range(kesem, "MF-62", "fee_low", "fee_high"), range(kesem, "MF-62", "trustee_low", "trustee_high")] },
           { key: "yalin", head: "ילין לפידות", cells: [yalin("MF-63", "funds"), range(yalin, "MF-63", "end_first", "end_last"), yalin("MF-63", "fee"), yalin("MF-63", "trustee")] },
           { key: "meitav", head: "מיטב (תכלית)", cells: [meitav("MF-64", "funds_meitav"), range(meitav, "MF-64", "end_first_meitav", "end_last_meitav"), range(meitav, "MF-64", "fee_low", "fee_high"), meitav("MF-64", "trustee")] },
-          { key: "migdal", head: "מגדל (MTF)", cells: [migdal("MF-64", "funds_migdal"), migdal("MF-64", "end_migdal"), migdal("MF-64", "fee_migdal"), migdal("MF-64", "trustee_migdal")] },
+          { key: "migdal", head: "מגדל (MTF)", cells: [migdal("MF-78", "funds_migdal"), migdal("MF-78", "end_migdal"), migdal("MF-78", "fee_migdal"), migdal("MF-78", "trustee_migdal")] },
         ]}
       />
       <Sentence measure>

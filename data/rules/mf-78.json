@@ -1,0 +1,119 @@
+{
+  "id": "MF-78",
+  "title": "Migdal (MTF): fund 5138276 \"אג\"ח מאוזן AAA-A 2028 Bullet\", created for a limited period, wind-up to be reported toward the end of 2028",
+  "title_he": "מגדל קרנות נאמנות (MTF): קרן אג״ח שנוצרה לתקופה מוגבלת, עד סוף 2028",
+  "text_he": "בתשקיף של מגדל קרנות נאמנות, קרן 5138276 נוצרה לתקופה מוגבלת: לפי הערה בתשקיף, לקראת סוף {MF-78:end_migdal} המנהל ידווח על פירוק הקרן. דמי הניהול הקבועים בקרן הם {MF-78:fee_migdal} ושכר הנאמן {MF-78:trustee_migdal}, והיא מסווגת ״פטורה״. מועד תשלום של 15.1.2029 לקרן הזאת מופיע רק באתר Funder, ולא בתשקיף.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-07-01",
+  "figures": {
+    "funds_migdal": {
+      "value": 1,
+      "unit": "count",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=20",
+        "title": "תשקיף עיקרי של מגדל, 30.1.2026, עמודים 19 ו-20",
+        "publisher": "מגדל קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-78"
+      ],
+      "state": "sourced",
+      "notes": "קרן בתשקיף"
+    },
+    "fee_migdal": {
+      "value": 0.2,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=20",
+        "title": "תשקיף עיקרי של מגדל, 30.1.2026, עמודים 19 ו-20",
+        "publisher": "מגדל קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-78"
+      ],
+      "state": "sourced",
+      "notes": "דמי ניהול קבועים"
+    },
+    "trustee_migdal": {
+      "value": 0.03,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=20",
+        "title": "תשקיף עיקרי של מגדל, 30.1.2026, עמודים 19 ו-20",
+        "publisher": "מגדל קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-78"
+      ],
+      "state": "sourced",
+      "notes": "שכר נאמן"
+    },
+    "end_migdal": {
+      "value": "2028",
+      "unit": "text",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=19",
+        "title": "תשקיף עיקרי של מגדל קרנות נאמנות, 30.1.2026",
+        "publisher": "מגדל קרנות נאמנות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-78"
+      ],
+      "state": "sourced",
+      "notes": "סוף התקופה המוגבלת"
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-11-02",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "migdal-funds",
+      "name_he": "מגדל קרנות נאמנות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1719001-1720000/P1719487-00.pdf#page=19",
+      "title": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
+      "title_he": "מגדל קרנות נאמנות, תשקיף עיקרי מיום 30.1.2026",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.19, 20",
+      "locator_he": "עמודים 19, 20",
+      "page": 19,
+      "checked": "2026-11-01"
+    }
+  ]
+}

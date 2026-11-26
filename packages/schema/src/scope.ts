@@ -98,7 +98,7 @@ export const ownContextExposures: Readonly<Record<string, readonly string[]>> = 
  * page shows each company's own documents, every one under that company's name. The list names the records; it only grows with a new company's document.
  */
 export const ownContextGuides: Readonly<Record<string, readonly string[]>> = {
-  "limited-bond-fund": ["MF-62", "MF-63", "MF-64", "MF-65", "MF-66", "MF-75", "MF-76", "MF-77", "ETF-80", "ETF-81"],
+  "limited-bond-fund": ["MF-62", "MF-63", "MF-64", "MF-65", "MF-66", "MF-75", "MF-76", "MF-77", "MF-78", "ETF-80", "ETF-81"],
   // the words "סל" and "מחקה" as two companies' fund names use them, stated under those companies' names (D55)
   "mutual-funds": ["ETF-61"],
 };
