@@ -50,7 +50,7 @@ function useScrollEdges(ref: RefObject<HTMLElement | null>, watch: unknown) {
  * How a piece of TeX stands: `inline`, a symbol in a line of words; `display`, a formula on its own line, centred in its box;
  * `display-start`, a formula on its own line set at its box's start, for lines read one under another.
  */
-export type TexVariant = "inline" | "display" | "display-start";
+type TexVariant = "inline" | "display" | "display-start";
 
 /**
  * TeX in math type, as its `variant` says. Always left to right, isolated from the Hebrew around it. A line on its own wider than its box
