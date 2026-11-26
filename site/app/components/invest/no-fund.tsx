@@ -4,7 +4,7 @@
 import { useMemo, useState } from "react";
 import { invest as c } from "../../copy";
 import { asideLines, firstCount, GROUP_OPTIONS, phoneOnlyValue, placesOf, type CostSplit, type HouseRow, type InvestView, type OptionId } from "../../lib/invest";
-import { numberOf, type SiteValue } from "../../lib/value";
+import type { SiteValue } from "../../lib/value";
 import type { IndicesBundle } from "../../lib/providers";
 import { fmt } from "../../lib/format";
 import { IconCopy } from "../icons";
@@ -38,13 +38,13 @@ function splitOf(h: HouseRow): CostSplit {
   return h.split;
 }
 
-/** The houses the list ranks: priced ones by the account's whole part, its fees and the waiting cash (`BrokerCell.rankN`), then the ones it cannot price, those not sold there last. */
+/** The houses the list ranks: priced ones by what the account charges, then the ones it cannot price, those not sold there last. */
 function ordered(view: InvestView) {
   const rows = view.houses;
   const ok = rows
     .filter((h): h is HouseRow & { generic: NonNullable<HouseRow["generic"]> } => !!h.generic)
     .map((h) => ({ ...h, split: splitOf(h) }))
-    .sort((a, b) => a.generic.rankN! - b.generic.rankN! || a.provider.short.localeCompare(b.provider.short, "he"));
+    .sort((a, b) => a.generic.costN! - b.generic.costN! || a.provider.short.localeCompare(b.provider.short, "he"));
   const missing = rows.filter((h) => !h.generic).sort((a, b) => Number(!!a.unavailable) - Number(!!b.unavailable) || a.provider.short.localeCompare(b.provider.short, "he"));
   return { rows, ok, missing };
 }
@@ -68,19 +68,6 @@ function AccountName({ id, name, custom }: { id: string; name: string; custom: b
     <span className="flex min-w-0 items-center gap-1">
       <span className="min-w-0">{name}</span>
       <DealEditMark id={id} />
-    </span>
-  );
-}
-
-/**
- * F-91 on F-109 and F-133: under a house's row, what the cash its way leaves waiting did, apart from its fees as on the receipt and in the
- * receipt's words: the cash waited for the next purchase where the row is priced buying every few months, else for a whole unit.
- */
-function WaitingLine({ waiting }: { waiting: CostSplit["waiting"] }) {
-  if (!waiting || Math.round(numberOf(waiting.value) ?? 0) === 0) return null;
-  return (
-    <span className="col-start-2 col-end-[-1] text-xs leading-snug text-muted-foreground">
-      {waiting.orderEvery > 1 ? c.pair.waitingBatched : c.pair.waiting}: <Num value={waiting.value} />
     </span>
   );
 }
@@ -115,9 +102,8 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const standingCount = local.filter((h) => h.standing).length;
   const asideCount = local.filter((h) => h.aside.length > 0).length;
   const kinds = view.options.filter((o) => o.exists).map((o) => o.id);
-  // equal costs share a place, and a first place shared by two crowns neither; the tie threshold is for what is left, not for costs.
-  // A place reads the account's whole part, the waiting cash with the fees, as the order does (`BrokerCell.rankN`)
-  const places = placesOf(ok.map((h) => h.generic.rankN!), 0);
+  // equal costs share a place, and a first place shared by two crowns neither; the tie threshold is for what is left, not for costs
+  const places = placesOf(ok.map((h) => h.generic.costN!), 0);
   const crown = firstCount(places) === 1;
   const snapOf = (id: string) => bundle.snapshots.find((s) => s.id === id);
   // the tag's room on a house that sells a kind of fund only by phone on some exchange, whichever the plan makes cheapest
@@ -149,7 +135,6 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
             <CostStack size="sm" parts={parts} total={Math.round(g.costN!)} scale={scale} highlight={legendPick.active} label={`${h.provider.short}: ${fmt.nisWhole(g.costN!)}`} />
           </span>
           <span className="col-end-[-1] text-end font-semibold">{g.cost && <Num animate value={g.cost} />}</span>
-          <WaitingLine waiting={sp.waiting} />
           {/* the kind the cost is for, else the house's: a row keeps its line whichever kind the plan makes cheapest */}
           <AsideLine lines={asideLines(snapOf(h.provider.id), (g.aside ?? []).length > 0 ? g.aside! : h.aside)} company={snapOf(h.provider.id)?.provider.name_he ?? h.provider.short} open={openAsides.includes(h.provider.id)} onOpen={(o) => onAside(h.provider.id, o)} />
           <GroupLine id={h.provider.id} house={h.provider.short} snapshots={bundle.snapshots} open={openGroups.includes(h.provider.id)} onOpen={onGroup} />

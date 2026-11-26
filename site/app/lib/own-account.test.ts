@@ -173,8 +173,6 @@ const workbenchInput = (providers: Parameters<typeof providerWorkbench>[0]["prov
   channel: "direct",
   theta: 0.005,
   providers,
-  // the golden script orders every month (A-28): at a return of 0 an order placed every 12 months would cost nothing to wait for (F-133)
-  behaviour: { orderEvery: 1 as const },
 });
 const rowAt = (snap: typeof mercantile, b: CustomBroker | null) => {
   const p = b ? [{ snapshot: snap, level: "entered" as const, layered: layeredOf(b) }] : [{ snapshot: snap, level: "list" as const }];

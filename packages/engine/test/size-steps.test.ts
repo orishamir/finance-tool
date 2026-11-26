@@ -206,7 +206,7 @@ describe("reading the steps from a price record (F-13, F-63)", () => {
     const miz = record("mizrahi-tefahot@2026-11-12");
     const fx = buildTariff(wb(), { snapshot: miz, level: "list" }, miz).tariff.fx;
     expect(fx).toMatchObject({ steps: mizrahi.steps });
-    const r = runSecurities(run({ goal: { amountNow: 0, monthly: 33, months: 12 }, way: { units: { price: 30 } }, tariff: { buy: { rate: 0 }, fx, currency: { code: "USD", startRate: usd } } }), ctx);
+    const r = runSecurities(run({ goal: { amountNow: 0, monthly: 33, months: 12 }, wholeUnits: { price: 30 }, tariff: { buy: { rate: 0 }, fx, currency: { code: "USD", startRate: usd } } }), ctx);
     expect(r.detail.monthlyOrders).toBe(12);
     expect(r.detail.cashLeft).toBeCloseTo(12 * 3, 6);
     expect(r.fees.fx).toBeCloseTo(19.98, 6);
@@ -216,7 +216,7 @@ describe("reading the steps from a price record (F-13, F-63)", () => {
     // a unit of 369 ₪ and 385 ₪ now at Discount: converting all 385 ₪ pays the line (22.20 ₪) and buys 362.80 ₪, less than the unit, but
     // converting 380.10 ₪ buys the unit's 369 ₪ (99.73 $) at half the minimum (11.10 ₪): the order buys it and 4.90 ₪ wait. Sold: 369 ₪, half
     // the minimum again
-    const r = runSecurities(run({ goal: { amountNow: 385, monthly: 0, months: 1 }, way: { units: { price: 369 } }, tariff: { buy: { rate: 0 }, fx: discount, currency: { code: "USD", startRate: usd } } }), ctx);
+    const r = runSecurities(run({ goal: { amountNow: 385, monthly: 0, months: 1 }, wholeUnits: { price: 369 }, tariff: { buy: { rate: 0 }, fx: discount, currency: { code: "USD", startRate: usd } } }), ctx);
     expect(r.detail.cashLeft).toBeCloseTo(385 - 380.1, 6);
     expect(r.fees.fx).toBeCloseTo(11.1 + 11.1, 6);
   });
@@ -232,7 +232,7 @@ describe("reading the steps from a price record (F-13, F-63)", () => {
     // a unit of 55,400 ₪ and 56,000 ₪ now, IBI's spread alone: just over the top, 55,500.037 ₪ (15,000.01 $) bought at 0.5% for 55,779.94 ₪, the
     // unit and 100.04 ₪ in dollars; 220.06 ₪ wait unconverted. Sold with the dollars: 55,500.037 ₪, just over the top, at 0.5%
     const over = 55_500 + 0.01 * usd;
-    const r = runSecurities(run({ goal: { amountNow: 56_000, monthly: 0, months: 1 }, way: { units: { price: 55_400 } }, tariff: { buy: { rate: 0 }, fx: 0, fxSpread: ibiSpread, currency: { code: "USD", startRate: usd } } }), ctx);
+    const r = runSecurities(run({ goal: { amountNow: 56_000, monthly: 0, months: 1 }, wholeUnits: { price: 55_400 }, tariff: { buy: { rate: 0 }, fx: 0, fxSpread: ibiSpread, currency: { code: "USD", startRate: usd } } }), ctx);
     expect(r.detail.cashLeft).toBeCloseTo(56_000 - over / 0.995 + (over - 55_400), 6);
     expect(r.fees.fx).toBeCloseTo(over / 0.995 - over + 0.005 * over, 6);
   });

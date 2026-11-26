@@ -49,13 +49,9 @@ describe("whole units on the indices page (F-109, D94)", () => {
     const w = at(priced, etfId, "leumi");
     expect(w.units).not.toBeNull();
     expect(w.units!.skipped * 2).toBeGreaterThan(w.units!.monthly);
-    // the figure moves: the waiting cash earns nothing, and an order placed only when the cash covers a unit pays the bank's minimum
-    // commission once in several months. By amount the plan buys every few months too (F-133), paying the minimum as seldom, with no cash
-    // left waiting for a unit, so here by amount leaves more
-    const byAmount = at(bare, etfId, "leumi");
-    expect(w.orderEvery).toBe(1);
-    expect(byAmount.orderEvery).toBeGreaterThan(1);
-    expect(w.valueN).toBeLessThan(byAmount.valueN);
+    // the figure moves: the waiting cash earns nothing, and an order placed every few months pays the bank's minimum commission once
+    // where 400 ₪ orders paid it every month, so here more is left than by amount
+    expect(w.valueN).toBeGreaterThan(at(bare, etfId, "leumi").valueN);
   });
   it("a house whose record says it sells the listing by amount buys as before; a list it does not publish changes nothing", () => {
     const byAll = withUnits({ ...noPrices(bundle), ie00b5bmr087: 814.9 }, { ...noEntries, "interactive-brokers": [{ venue: "europe", orders: "all", list_only: false, source }], excellence: [{ venue: "europe", orders: "all", list_only: true, source }] });
@@ -91,29 +87,10 @@ describe("whole units on the indices page (F-109, D94)", () => {
     expect(pc.waiting?.about).toBe(invest.pair.waitingAbout);
     expect(pc.remainder.about).toContain(invest.pair.remainder);
     expect(pc.accountFees + pc.waitingN).toBeCloseTo(pc.accountCost, 9);
-    // by amount, bought every few months (F-133): the deposits wait for the order, on the same line under its own words
     const byAmount = pairCosts({ bundle: bare, index: sp, plan, fundId: etfId, providerId: "leumi" })!;
     expect(byAmount.units).toBeNull();
-    expect(byAmount.orderEvery).toBeGreaterThan(1);
-    expect(byAmount.waiting?.about).toBe(invest.pair.waitingBatchedAbout);
-    expect(byAmount.waitingN).toBeGreaterThan(0);
-    expect(byAmount.accountFees + byAmount.waitingN).toBeCloseTo(byAmount.accountCost, 9);
-  });
-  it("a figure priced buying every few months says so on its row and on its receipt; one bought every month says nothing new (F-133)", () => {
-    const view = buildInvest({ bundle: bare, index: sp, plan });
-    const byAmount = at(bare, etfId, "leumi");
-    expect(byAmount.orderEvery).toBeGreaterThan(1);
-    const words = invest.pair.orderEvery(byAmount.orderEvery);
-    expect(shown(lists(view, bare, plan, { house: "leumi", fund: etfId }, { today: bare.today }))).toContain(words);
-    // the receipt says it in the line under what is left
-    const line = invest.receipt.batched.lineAlone(byAmount.orderEvery);
-    expect(shown(html(createElement(PairReceipt, { view, bundle: bare, plan, pick: { house: "leumi", fund: etfId }, chosen: true, layout: "ticket" })))).toContain(line);
-    // in whole units at the same bank the plan buys whenever the cash covers a unit, every month
-    const unitView = buildInvest({ bundle: priced, index: sp, plan });
-    expect(at(priced, etfId, "leumi").orderEvery).toBe(1);
-    const unitReceipt = shown(html(createElement(PairReceipt, { view: unitView, bundle: priced, plan, pick: { house: "leumi", fund: etfId }, chosen: true, layout: "ticket" })));
-    expect(unitReceipt).not.toContain(line.split(" ").slice(0, 2).join(" "));
-    expect(unitReceipt).not.toContain(invest.pair.waitingBatched);
+    expect(byAmount.waiting).toBeNull();
+    expect(byAmount.accountFees).toBe(byAmount.accountCost);
   });
   it("a fund the person typed has no unit price: an ETF or a fund abroad says so on its row; a tracking fund is bought by amount anyway", () => {
     const typed = (kind: Parameters<typeof fundDraftOf>[1]) =>

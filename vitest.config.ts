@@ -44,9 +44,8 @@ export default defineConfig({
     // The test files of one worker share their modules: each file importing the schemas, the data loaders and the engine afresh was about
     // a third of the run, and the data read once (lib/read-cache.server.ts) serves every file after the first. Safe while no test patches
     // a module or a global for the files after it: the one store a test swaps (lib/state.ts) is reset before each of its tests, and the
-    // records the cache hands out are frozen. Two test files patch and take it back: lib/device-store.test.ts stubs `window` and
-    // `navigator` for each of its tests, loading the stores afresh, puts them back after each and takes fresh copies again after the file;
-    // components/invest/batched-why.test.ts watches the engine's workbench in modules it loads afresh and lets them go after the file.
+    // records the cache hands out are frozen. One test file patches and takes it back: lib/device-store.test.ts stubs `window` and
+    // `navigator` for each of its tests, loading the stores afresh, puts them back after each and takes fresh copies again after the file.
     // The suite passes with one worker and in shuffled order.
     isolate: false,
     // Several tests sweep every index, fund or guide: about 0.5 s alone, ten times that when builds run beside them, past vitest's 5 s

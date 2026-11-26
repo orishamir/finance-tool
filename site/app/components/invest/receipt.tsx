@@ -1,11 +1,10 @@
 // The index page's answer: the chosen pair's receipt (F-91, F-106, F-129, F-130), one line each, top to bottom, to one total: what was
 // paid in, what the index added before any cost, what the account and the fund took (and, beside the account's fees, what the cash waiting
 // for a whole unit did, F-109, not a fee), all in the shekels of the horizon; then what the inflation takes from what they leave on the
-// way to today's money, the tax in today's money (F-91's state), and what is left, in today's money. Under the total stands only, where
-// the pair is priced buying every few months (F-133), one line that says so and opens why: a "?" beside the total says in what money it
-// is and, where it rests on it, that the dollar holds still (a caution "?"), and its sheet holds the gain. The figures follow the plan as
-// a slider moves (the pair is priced once per plan for this card and what else reads it, `pairCostsKept`), and they add up as a reader
-// adds them (lib/receipt).
+// way to today's money, the tax in today's money (F-91's state), and what is left, in today's money. Nothing stands under the
+// total: a "?" beside it says in what money it is and, where it rests on it, that the dollar holds still (a caution "?"), and its sheet
+// holds the gain. The figures follow the plan as a slider moves (the pair is priced once per plan for this card and what else reads it,
+// `pairCostsKept`), and they add up as a reader adds them (lib/receipt).
 // From 1280 px it is a ticket across the page's column, above the two lists and the ruler: the account's part at the start side and the
 // fund's at the end side, each with its facts as labels under its name and its own lines (each fee and its rate), and the lines that add
 // up to the total in the middle. Below 1280 px it is paper above the lists with the middle's lines only, each part (the same facts and
@@ -17,11 +16,11 @@ import { gapListFor, pricedVariable, accountSum, pairCostsKept, type FundWay, ty
 import { priced } from "../../lib/stretch";
 import { assertNever, type FundRecord } from "@finance-tool/schema";
 import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
-import { orderCharge, rateWords, type OrderCharge, type RatePart, type RateWords } from "../../lib/rate-words";
+import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, restated, sumOf, type SiteValue } from "../../lib/value";
 import { Num, ShortRow, StateTag, shortRow } from "../provenance";
-import { DocLink, FEE_WORDS_HELP, HeldMark, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, Sentence, SourcedTag, Tag, TicketPart, Tpl, When, MarkSheet } from "../kit";
+import { DocLink, FEE_WORDS_HELP, HeldMark, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
 import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, totalNoteOf, whole, type Pick } from "./pair";
 import { OptionTag } from "./parts";
@@ -170,7 +169,7 @@ function beforeTaxOf(pc: Costs, ch: ReceiptChain, today: string): SiteValue {
     [c.pair.paidIn]: at(pc.paidInNominal, r.paidIn),
     [c.receipt.added]: addedOf(pc, today),
     [c.receipt.parts.account]: nom(accountSum(pc, c.pair.who.account, today), c.receipt.parts.account, r.account),
-    ...(pc.waiting && r.waiting !== 0 ? { [waitingName(pc)]: nom(pc.waiting, waitingName(pc), r.waiting) } : {}),
+    ...(pc.waiting && r.waiting !== 0 ? { [c.pair.waiting]: nom(pc.waiting, c.pair.waiting, r.waiting) } : {}),
     [c.receipt.parts.fund]: nom(pc.fund, c.receipt.parts.fund, r.fund),
   };
   return computed(ch.beforeTax, "nis", "F-129", lines, { today, about: c.receipt.beforeTax.nominal, lead: c.receipt.beforeTax.lead });
@@ -187,49 +186,6 @@ export function inflationOf(pc: Costs, ch: ReceiptChain, taxName: string, today:
   // F-130's first line, `inflation = B^nom − B^real`
   const working = { kind: "formula", entry: "F-130", line: 0, symbols: { [b.nominal]: "B^{nom}", [b.today]: "B^{real}" } } as const;
   return differenceOf([b.nominal, beforeTaxOf(pc, ch, today)], [b.today, real], "F-130", { today, about: c.receipt.inflation, lead: c.receipt.inflationLead, working });
-}
-
-/** F-109, F-133: the waiting cash's line by what it waited for: a whole unit, or, priced buying every few months, the next purchase. */
-const waitingName = (pc: Costs): string => (pc.orderEvery > 1 ? c.pair.waitingBatched : c.pair.waiting);
-/** Why the waiting cash's line is there, by whether the fund rose while it waited (`rose`) or fell. */
-const waitingWhy = (pc: Costs, rose: boolean): string => {
-  const why = pc.orderEvery > 1 ? c.pair.waitingBatchedWhy(pc.orderEvery) : c.pair.waitingWhy;
-  return rose ? why.rose : why.fell;
-};
-
-/**
- * F-133: under what is left, where the pair is priced buying every few months: the interval and what each purchase buys, words that open
- * why: the charge each purchase pays whatever its size, as the run's price list prints it (`orderCharge`), what the same pair leaves bought
- * every month, and that the waiting cash earned nothing, behind a small "?" after the line. Nothing where the orders are placed every month.
- * Not a kit piece: the kit's part is `MarkSheet`; what this says is the index page's reading of one pair's run (`PairCosts.batched`), and only the receipt shows it.
- */
-function BatchedLine({ pc, house, className }: { pc: PairCosts; /** The house's short name, as the receipt names it. */ house: string; className?: string }) {
-  const b = pc.batched;
-  if (!b) return null;
-  const w = c.receipt.batched;
-  const k = pc.orderEvery;
-  const words = b.perOrder === null ? w.lineAlone(k) : <Tpl t={w.line(k)} vars={{ amount: <bdi>{fmt.nisWhole(b.perOrder)}</bdi> }} />;
-  return (
-    <MarkSheet title={w.why(k)} about={c.pair.orderEvery(k)} body={<BatchedWhy pc={pc} house={house} />} className={className}>
-      {words}
-    </MarkSheet>
-  );
-}
-
-/** What `BatchedLine` opens: why the pair is priced buying every few months, with the figures that say it; a one-off for the same reason. */
-export function BatchedWhy({ pc, house }: { pc: PairCosts; /** The house's short name, as the receipt names it. */ house: string }) {
-  const w = c.receipt.batched;
-  const charge = orderCharge(pc.priced);
-  // a price from the list, in its own currency, opening the list by the house's own name (as the account's rates do)
-  const figure = (v: OrderCharge["value"]) => <Num value={ownBy({ ...v } as SiteValue, pc.priced.house)} />;
-  const monthly = pc.batched?.monthly() ?? null;
-  return (
-    <>
-      <Sentence t={charge ? w.charge[charge.kind](house) : w.general(house)} vars={charge ? { figure: figure(charge.value), ...("upTo" in charge ? { upTo: figure(charge.upTo) } : {}) } : {}} />
-      {monthly && <Sentence t={w.monthly} vars={{ figure: <Num value={monthly} /> }} />}
-      <Sentence t={w.waits} />
-    </>
-  );
 }
 
 /** The label families a fund's part shows after its kind, in this order; a family the fund has no label in shows nothing. */
@@ -409,19 +365,17 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
     </>
   );
   const accountValue = <Num value={nom(accountSum(pc, c.pair.who.account, today), c.receipt.parts.account)} display={minus(r.account)} />;
-  // F-109, F-133: what the cash waiting for a whole unit or the next purchase did, beside the account's fees and never among them: a minus
-  // where the fund rose while it waited, a plus where it fell; on the account's own lines with why, and among the lines that add up to the
-  // total without it
+  // F-109: what the cash waiting for a whole unit did, beside the account's fees and never among them: a minus where the fund rose while it
+  // waited, a plus where it fell; on the account's own lines with why, and among the lines that add up to the total without it
   const waits = !!pc.waiting && r.waiting !== 0;
-  const waitingLabel = waitingName(pc);
-  const waitingValue = pc.waiting && <Num value={nom(pc.waiting, waitingLabel)} display={minus(r.waiting)} />;
+  const waitingValue = pc.waiting && <Num value={nom(pc.waiting, c.pair.waiting)} display={minus(r.waiting)} />;
   const fundValue = <Num value={nom(pc.fund, c.receipt.parts.fund)} display={minus(r.fund)} />;
   // the account's and the fund's own facts and lines, written once: the ticket's side parts, and on paper the sheet each one's name opens
   const accountOwn = (
     <>
       <AccountFacts view={view} bundle={bundle} plan={plan} pick={pick} refs={!ticket} />
       <ReceiptLine size="sm" edge="border-chart-by-account" label={c.receipt.accountCharges} value={accountValue} parts={accountParts} />
-      {waits && <ReceiptLine size="sm" label={<HeldMark words={waitingLabel} mark={<HelpMark about={waitingLabel} text={waitingWhy(pc, r.waiting > 0)} />} />} value={waitingValue} />}
+      {waits && <ReceiptLine size="sm" label={<HeldMark words={c.pair.waiting} mark={<HelpMark about={c.pair.waiting} text={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />} />} value={waitingValue} />}
     </>
   );
   const fundOwn = (
@@ -443,7 +397,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       <ReceiptLine size="sm" label={c.pair.paidIn} value={<Num value={pc.paidInNominal} display={fmt.nisWhole(r.paidIn)} />} />
       <ReceiptLine size="sm" label={c.receipt.added} value={<Num value={addedOf(pc, today)} display={fmt.signedNisWhole(r.added)} />} />
       <ReceiptLine size="sm" swatch={ticket ? "bg-chart-by-account" : undefined} label={accountName} value={accountValue} opens={ticket ? undefined : { title: accountName, body: accountOwn }} />
-      {waits && <ReceiptLine size="sm" label={waitingLabel} value={waitingValue} />}
+      {waits && <ReceiptLine size="sm" label={c.pair.waiting} value={waitingValue} />}
       <ReceiptLine size="sm" swatch={ticket ? "bg-chart-by-fund" : undefined} label={fundLabel} value={fundValue} opens={ticket ? undefined : { title: <>{c.pair.who.fund} {fundName}</>, body: fundOwn }} />
       <ReceiptLine size="sm" label={c.receipt.inflation} value={<Num value={inflationOf(pc, ch, v.taxName, today)} display={minus(ch.inflation)} />} />
       <ReceiptLine size="sm" label={v.taxName} value={<Num value={taxOf(pc)} display={minus(ch.tax)} />} />
@@ -478,7 +432,6 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
             <div className="flex flex-col items-center gap-1 text-center">
               {leftName}
               <span className="text-total font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
-              <BatchedLine pc={pc} house={short} className="text-sm" />
             </div>
           </>
         }
@@ -496,13 +449,9 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       <div className="flex items-baseline justify-between gap-3 text-xs text-muted-foreground">{top}</div>
       {lines}
       <ReceiptRule kind="double" />
-      <div className="flex flex-col gap-1 pb-1">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-2">
-          {leftName}
-          <span className="text-figure font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
-        </div>
-        {/* under the figure, at its side */}
-        <BatchedLine pc={pc} house={short} className="self-end text-end text-sm" />
+      <div className="flex flex-wrap items-baseline justify-between gap-x-2 pb-1">
+        {leftName}
+        <span className="text-figure font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
       </div>
     </ReceiptPaper>
     </ShortRow>

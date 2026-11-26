@@ -39,11 +39,9 @@ describe("in whole units the receipt writes the fees charged as fees and the wai
         const where = `${pc.providerId} ${pc.fundId}`;
         const r = receiptAmounts(pc);
         const lines = pc.account.reduce((a, l) => a + (l.cost.value as number), 0);
-        // the fees charged: every line carried, and a remainder that is their interplay, not the waiting cash. The remainder is the part of
-        // the account's fees no single line explains (F-91), so it is measured against those fees, its lines and itself, and never against
-        // the waiting cash, which F-91 never counts among the fees
+        // the fees charged: every line carried, and a remainder that is their interplay, not the waiting cash
         expect(lines, where).toBeGreaterThan(0);
-        expect(Math.abs(pc.interaction), where).toBeLessThan(0.15 * (lines + pc.interaction));
+        expect(Math.abs(pc.interaction), where).toBeLessThan(0.15 * lines);
         expect(r.account, where).toBeGreaterThan(0);
         expect(pc.accountFees + pc.waitingN, where).toBeCloseTo(pc.accountCost, 9);
         // the waiting cash missed the fund's move: a rise is a cost, a fall a gain

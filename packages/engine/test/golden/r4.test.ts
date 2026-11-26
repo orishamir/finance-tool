@@ -112,8 +112,7 @@ const s44Base = (ordersPerMonth: number, providers: ProviderInput[]): WorkbenchI
   market: { grossReturn: 0.06, inflation: 0.025 },
   fund: s14Fund,
   profile: {},
-  // the Python check's run orders every month (A-28); F-133's longer intervals are tested on their own (order-interval.test.ts)
-  behaviour: { ordersPerMonth, orderEvery: 1 },
+  behaviour: { ordersPerMonth },
   instrumentClass: "etf_units",
   theta,
   providers,

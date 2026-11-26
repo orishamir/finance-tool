@@ -848,8 +848,6 @@ in the kit fits is added to the kit.
   terms are the bank's.
 - `HelpMark`: a "?" beside a head or a label, only where its card says what the label leaves out; `tone="caution"` where what it opens
   holds a catch about the figure, `note` ("!") where it opens a fact added to the figure rather than the label's meaning.
-- `MarkSheet`: a line of plain words with a small "?" after them that opens a short explanation of the page's own whose sentences hold
-  figures (why the receipt's pair is priced buying every few months); a glossary card is `Term`, a text with no figures `HelpMark`'s.
 - `MixedName`: every fund, house or manager name, and every document title or other text from the data, inside Hebrew text (`DocLink`
   draws a title with it); a plain `<bdi>` takes its direction from the first letter and is right only for a name known to be Latin or a
   number (a ratchet, and the layout check's `direction` check on the built pages).

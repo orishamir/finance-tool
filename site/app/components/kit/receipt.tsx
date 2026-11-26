@@ -3,9 +3,9 @@
 // a double one before the total, a dashed one between blocks. The amounts and their marks are the caller's; the receipt lays them out so they read down one edge. Its
 // ticket is the same lines laid across a wide column in three parts, and its stub the same paper torn at the top, pinned to the screen's
 // foot while the receipt is out of sight above.
-import { useEffect, useState, type ReactNode, type Ref, type RefObject } from "react";
+import { useEffect, useId, useState, type ReactNode, type Ref, type RefObject } from "react";
 import { IconChevronUp, IconDrillIn } from "../icons";
-import { OwnSheet } from "./words-sheet";
+import { Sheet } from "../Sheet";
 import { cx } from "./cx";
 
 export function ReceiptPaper({ children, className, label }: { children: ReactNode; className?: string; /** The paper's spoken name, for a region. */ label?: string }) {
@@ -65,6 +65,7 @@ export function ReceiptLine({ label, value, swatch, sub, parts, edge, opens, siz
 /** A line's name as the button that opens its own lines in a sheet (`ReceiptLine` `opens`). */
 function LineOpens({ title, body, children }: { title: ReactNode; body: ReactNode; children: ReactNode }) {
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
+  const id = useId();
   return (
     <>
       {/* the chevron beside the name's box, so it never wraps onto a line of its own */}
@@ -72,9 +73,16 @@ function LineOpens({ title, body, children }: { title: ReactNode; body: ReactNod
         <span className="min-w-0">{children}</span>
         <IconDrillIn size={14} className="shrink-0 self-center text-link" />
       </button>
-      <OwnSheet anchor={anchor} onClose={() => setAnchor(null)} title={title}>
-        <div className="flex flex-col gap-2.5 text-sm">{body}</div>
-      </OwnSheet>
+      <Sheet open={anchor !== null} onClose={() => setAnchor(null)} anchor={anchor} pc="popover" height={70} labelledBy={id}>
+        {anchor && (
+          <div className="flex flex-col gap-3">
+            <h2 id={id} className="text-lg font-semibold">
+              {title}
+            </h2>
+            <div className="flex flex-col gap-2.5 text-sm">{body}</div>
+          </div>
+        )}
+      </Sheet>
     </>
   );
 }

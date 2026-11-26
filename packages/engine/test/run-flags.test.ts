@@ -24,7 +24,7 @@ describe("RUN_FLAG_CODES", () => {
         const start = i;
         for (; i < text.length && depth > 0; i++) depth += text[i] === "(" ? 1 : text[i] === ")" ? -1 : 0;
         const args = text.slice(start, i - 1);
-        const named = [...args.matchAll(/"([A-Z][A-Z0-9]*-(?:OQ)?\d+)"/g)].map((x) => x[1]!);
+        const named = [...args.matchAll(/"([A-Z]+-(?:OQ)?\d+)"/g)].map((x) => x[1]!);
         if (named.length) named.forEach((c) => raised.add(c));
         else throughValue.push(args.split(",")[0]!.trim());
       }
