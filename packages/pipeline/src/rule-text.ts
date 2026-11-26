@@ -130,7 +130,7 @@ export interface RuleText {
 
 /** A kind of flaw in a rule card's text, each with its own ratchet. */
 export type TextFlaw = "long" | "research-talk" | "fixed-line" | "spelled-number" | "typed-figure";
-export const TEXT_FLAWS: readonly TextFlaw[] = ["long", "research-talk", "fixed-line", "spelled-number", "typed-figure"];
+const TEXT_FLAWS: readonly TextFlaw[] = ["long", "research-talk", "fixed-line", "spelled-number", "typed-figure"];
 
 const leftoversFile = z.strictObject({
   /** The phrases that report how the site read a rule, and the phrases holding one that are allowed (the site's reading said as such). */

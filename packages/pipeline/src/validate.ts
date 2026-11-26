@@ -1453,13 +1453,7 @@ function checkTermNames(files: string[], dataDir: string, report: (file: string,
  * "<id> <id>" in file order, are text-leftovers.json's "term-copy", which only shrinks.
  */
 export function termCopies(terms: readonly { id: string; he: string; meaning: string }[]): string[] {
-  const out: string[] = [];
-  for (let i = 0; i < terms.length; i++)
-    for (let j = i + 1; j < terms.length; j++) {
-      const [a, b] = [terms[i]!, terms[j]!];
-      if (a.he.trim() === b.he.trim() && a.meaning.trim() === b.meaning.trim()) out.push(`${a.id} ${b.id}`);
-    }
-  return out;
+  return terms.flatMap((a, i) => terms.slice(i + 1).flatMap((b) => (a.he.trim() === b.he.trim() && a.meaning.trim() === b.meaning.trim() ? [`${a.id} ${b.id}`] : [])));
 }
 function checkTermCopies(files: string[], dataDir: string, leftovers: TextLeftovers, report: (file: string, message: string) => void) {
   const at = (f: string) => relative(dataDir, f).replace(/\\/g, "/");
