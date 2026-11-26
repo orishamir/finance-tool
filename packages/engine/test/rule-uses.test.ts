@@ -226,13 +226,32 @@ describe("the parts each run's rules went into", () => {
     expect(changedIn(ira, "TXH-09")).toEqual(["term", "taxAtExit"]);
   });
 
-  it("takes the short lock and the retirement age on the term only where the short lock comes first", () => {
+  it("takes the short lock, the retirement age and its reading on the term only where the short lock moves the exit", () => {
     const short = run("keren hishtalmut, the short lock at 67");
     expect(changedIn(short, "TXH-10")).toEqual(["term"]);
     expect(changedIn(short, "PEN-26")).toEqual(["term"]);
     const six = run("keren hishtalmut, early withdrawal at 65");
     expect(changedIn(six, "TXH-10")).toEqual([]);
     expect(changedIn(six, "PEN-26")).toEqual([]);
+    // at 63 the short lock ends at 67, before the six years, but both end before the seven-year horizon: it moves nothing
+    const past = runProvident({ ...s23, profile: { ageAtStart: 63 } }, ctx);
+    expect(past.exitMonth).toBe(84);
+    for (const id of ["TXH-10", "PEN-26", "KH-12"]) {
+      expect(read(past, id), id).toBe(true);
+      expect(changedIn(past, id), id).toEqual([]);
+    }
+    expect(past.labels.some((l) => l.ruleId === "KH-12")).toBe(false);
+    expect(short.labels).toContainEqual({ code: "reading", ruleId: "KH-12" });
+  });
+
+  it("takes the pension's lawful age on the term only where it locks the money past the horizon", () => {
+    // S27 at 30: 60 is the horizon's month 360, which locks nothing past it
+    const atHorizon = runPension(s27, ctx);
+    expect(read(atHorizon, "PEN-26")).toBe(true);
+    expect(changedIn(atHorizon, "PEN-26")).toEqual([]);
+    const locked = runPension({ ...s27, goal: { ...s27.goal, months: 120 } }, ctx);
+    expect(locked.outcome).toMatchObject({ untilMonth: 360 });
+    expect(changedIn(locked, "PEN-26")).toEqual(["term"]);
   });
 
   it("files a linked deposit's tax rules on the tax during the run, TXI-20 there and not on relief", () => {

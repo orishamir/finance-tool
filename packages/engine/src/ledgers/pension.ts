@@ -263,8 +263,12 @@ function runPensionUnder(input: PensionInput, ctx: RunContext): PensionResult {
   // PEN-26: the lawful exit is an old-age annuity from 60. The wrapper is blocked either way; when 60 is after the horizon it is also locked.
   let outcome: Outcome = { code: "listed-not-ranked", reason: exit.reason };
   if (input.profile.ageAtStart !== undefined) {
-    const lawful = 12 * (book.on("term").amount("PEN-26", "early_retirement_age") - input.profile.ageAtStart);
-    if (lawful > T) outcome = { code: "listed-not-ranked", reason: exit.reason, untilMonth: lawful };
+    // the age is looked at, and taken where it locks the money past the horizon
+    const lawful = 12 * (book.on("term").peek.amount("PEN-26", "early_retirement_age") - input.profile.ageAtStart);
+    if (lawful > T) {
+      outcome = { code: "listed-not-ranked", reason: exit.reason, untilMonth: lawful };
+      book.on("term").took("PEN-26");
+    }
   }
 
   const sum = (f: (y: YearRelief) => number) => years.reduce((a, y) => a + f(y), 0);

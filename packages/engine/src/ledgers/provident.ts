@@ -125,17 +125,19 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
     // Age Law applies is an inference (KH-12: the s.3 age); the profile has no sex, so the higher age, 67
     // (PEN-26, also the mandatory age for both), is used and the exit is never earlier than the law allows.
     if (profile.ageAtStart !== undefined) {
-      // the age and the short lock are looked at, and taken where the short lock comes first
+      // the age and the short lock are looked at, and taken where the short lock moves the exit
       const reached = 12 * (term.peek.amount("PEN-26", "retirement_age_men") - profile.ageAtStart);
       const short = Math.max(h.clockStartMonth + 12 * term.peek.amount("TXH-10", "lock_years"), reached);
       if (short < lockMonth) {
-        // the age changes the run only where the six years end after the horizon and the short lock moves the exit: not where both run
-        // past it with an early withdrawal opted into, which exits at the horizon either way
-        if (lockMonth > goal.months && !(h.earlyWithdrawal && short > goal.months)) book.profile("age");
+        // the short lock moves the exit only where the six years end after the horizon: not where both run past it with an early
+        // withdrawal opted into, which exits at the horizon either way
+        if (lockMonth > goal.months && !(h.earlyWithdrawal && short > goal.months)) {
+          book.profile("age");
+          term.took("TXH-10");
+          term.took("PEN-26");
+          term.label("reading", "KH-12");
+        } else term.peek.cite("KH-12");
         lockMonth = short;
-        term.cite("TXH-10");
-        term.took("PEN-26");
-        term.label("reading", "KH-12");
       }
     }
     if (lockMonth > goal.months) {
