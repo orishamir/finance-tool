@@ -1,7 +1,7 @@
 {
   "id": "CAT-44",
   "title": "The exposure fields are total exposure: what is held plus exposure through derivatives, so they can pass 100% of assets",
-  "title_he": "שדות החשיפה: חשיפה כוללת עם נגזרים, שיכולה לעבור 100% מהנכסים, בסכומים של מיליוני שקלים",
+  "title_he": "שדות החשיפה: חשיפה כוללת עם נגזרים, שיכולה לעבור 100% מהנכסים",
   "strength": "primary",
   "dimensions": [
     "currency",
