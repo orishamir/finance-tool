@@ -213,6 +213,12 @@ describe("every figure marked as a line of math comes to its head when its line 
     // drawn with the key and no values
     expect([...noValues]).toEqual(["F-107#0"]);
     expect(checkReceipts(values)).toBeGreaterThan(100);
+    // a line the receipt writes in whole shekels keeps its own working where the figure as written is that number (`asWritten`), and the
+    // checks above work each such working out to the number its row shows
+    const rewritten = [invest.receipt.parts.account, invest.receipt.parts.fund, invest.pair.waiting];
+    const lines = values.filter((v) => v.computed_from?.formula === "F-129").flatMap((v) => Object.entries(v.computed_from!.inputs as Record<string, SiteValue>).filter(([k]) => rewritten.includes(k)).map(([, x]) => x));
+    expect(lines.length).toBeGreaterThan(10);
+    expect(lines.filter((x) => x.computed_from?.working?.kind === "formula").length).toBeGreaterThan(lines.length / 2);
   });
 
   it("what was paid in, at any amount, monthly deposit and years (F-106, the guides' timeline and the receipt)", () => {
