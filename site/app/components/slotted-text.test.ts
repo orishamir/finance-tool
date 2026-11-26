@@ -14,7 +14,7 @@ const bank35 = JSON.parse(readFileSync(new URL("../../../data/rules/bank-35.json
 const words = flags["BANK-35"];
 if (!words) throw new Error("BANK-35's flag has words");
 const text = (rule: RuleRecord) =>
-  renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: { "BANK-35": rule }, today: "2026-11-22" } } as never, createElement(SlottedText, { text: words, rules: { "BANK-35": rule }, today: "2026-11-22" })))).replace(/<[^>]+>/g, "");
+  renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: { "BANK-35": rule }, today: "2026-11-22" } } as never, createElement(SlottedText, { text: words, source: { rules: { "BANK-35": rule }, today: "2026-11-22" } })))).replace(/<[^>]+>/g, "");
 
 describe("BANK-35's flag opens with the month its cap takes effect", () => {
   it("names the month where the figure gives one, and reads from now where it gives none", () => {

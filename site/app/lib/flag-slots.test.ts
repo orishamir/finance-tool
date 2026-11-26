@@ -7,7 +7,7 @@ import { flags } from "../copy";
 import { parseAnswer } from "./answer-slots";
 import { loadRules } from "./data.server";
 import { ruleFigure } from "./value";
-import { ruleFigureFrom } from "../components/provenance-sheets";
+import { ruleFigureFrom } from "./figure-slots";
 import { loader as guideLoader } from "../routes/guide";
 
 const slotsOf = (text: string) => parseAnswer(text).flatMap((p) => (p.kind === "slot" ? [p] : []));

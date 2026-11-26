@@ -8,12 +8,13 @@ import { assertNever, type RuleRecord } from "@finance-tool/schema";
 import type { FundStatement } from "@finance-tool/engine";
 import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
-import { ownFigures, spanWords, wordUnits } from "../lib/rule-row";
+import { ownFigures, spanWords } from "../lib/rule-row";
+import { fillSlot, missingSlot, wordUnits, type SlotSource } from "../lib/figure-slots";
 import { fmt, formatValue } from "../lib/format";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isOpenValue, isParameter, isWeak, ownBy, ruleFigure, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
+import { isOpenValue, isParameter, isWeak, ownBy, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
@@ -421,33 +422,28 @@ export function ParameterWhy({ value }: { value: SiteValue }) {
   );
 }
 
-const slotUnitWords = [...wordUnits];
-
-/** The month a rule's figure takes effect, as a figure of its own with the figure's source ("{ID:figure.from}"), or null when it has no date. */
-export function ruleFigureFrom(rule: RuleRecord, name: string, today: string): SiteValue | null {
-  const v = ruleFigure(rule, name, today);
-  return v?.effective_from ? { ...v, value: v.effective_from.slice(0, 7), unit: "text" } : null;
-}
-
-/** A sentence with {ID:figure} slots (the questions' answers, the "הידעת?" facts, the flags' words): each slot is that rule's figure, with its unit in words where the number carries none; "{ID:figure.from}" is the month it takes effect. */
-export function SlottedText({ text, rules, today }: { text: string; rules: Record<string, RuleRecord>; today: string }) {
+/** A sentence with {ID:figure} slots (the questions' answers, the "הידעת?" facts, the flags' words, a rule's text): each slot is that rule's figure, with its unit in words where the number carries none; "{ID:figure.from}" is the month it takes effect. */
+export function SlottedText({ text, source }: { text: string; source: SlotSource }) {
   return (
     <>
       {parseAnswer(text).map((p, k) => {
         if (p.kind === "text") return <span key={k}>{p.text}</span>;
-        const rule = rules[p.id];
-        const from = p.figure.endsWith(".from");
-        const v = rule ? (from ? ruleFigureFrom(rule, p.figure.slice(0, -5), today) : ruleFigure(rule, p.figure, today)) : null;
-        // a figure in force with no start date holds from now: "מ{…from}" reads "מהיום"
-        if (!v && from && rule && ruleFigure(rule, p.figure.slice(0, -5), today)) return <span key={k}>{copy.fromNoDate}</span>;
-        if (!v) return <span key={k}>—</span>;
-        const word = (copy.unit as Record<string, string>)[v.unit];
-        return (
-          <span key={k} className="whitespace-nowrap">
-            <Num value={{ ...v, notes: "" }} />
-            {typeof v.value === "number" && word && slotUnitWords.includes(v.unit) && <> {word}</>}
-          </span>
-        );
+        const fill = fillSlot(p, source);
+        switch (fill.kind) {
+          case "from-now":
+            return <span key={k}>{copy.fromNoDate}</span>;
+          case "missing":
+            return <span key={k}>{missingSlot}</span>;
+          case "figure":
+            return (
+              <span key={k} className="whitespace-nowrap">
+                <Num value={{ ...fill.value, notes: "" }} />
+                {fill.unitWord && <> {fill.unitWord}</>}
+              </span>
+            );
+          default:
+            return assertNever(fill);
+        }
       })}
     </>
   );
@@ -677,7 +673,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
           {value.flags?.map((code) => (
             <Callout key={code} tone="caution">
               {/* a flag's words may carry {ID:figure} slots: the rule's figure, from the page's records or those its cards point at */}
-              <SlottedText text={flagCopy[code] ?? copy.flagOther} rules={{ ...data.pointed, ...data.rules }} today={data.today} /> <bdi dir="ltr" className="text-xs">{code}</bdi>
+              <SlottedText text={flagCopy[code] ?? copy.flagOther} source={data} /> <bdi dir="ltr" className="text-xs">{code}</bdi>
             </Callout>
           ))}
           {mostlyHebrew(value.notes) && <p className="text-sm text-muted-foreground"><IdText text={value.notes ?? ""} /></p>}
