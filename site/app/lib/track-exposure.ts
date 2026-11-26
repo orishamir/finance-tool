@@ -64,8 +64,11 @@ function share(formula: "F-87" | "F-88", amount: SiteValue, assets: SiteValue, p
   const value = reported ? fn(amount.value as number, assets.value as number) : null;
   const notes = value !== null ? copy.stock.note : reported ? copy.stock.noteNoAssets : copy.stock.noteMissing;
   const about = `${formula === "F-87" ? copy.stock.about : copy.stock.aboutCurrency} ${fmt.period(period)}`;
-  const inputs: Record<string, SiteValue> = { [formula === "F-87" ? "stock_market_exposure" : "foreign_currency_exposure"]: amount, total_assets: assets };
-  const v = computed(value, "pct", formula, inputs, { today, rules: EXPOSURE_RULE_IDS.map((id) => ({ id, strength: "primary" as const })), about, notes });
+  const amountKey = formula === "F-87" ? "stock_market_exposure" : "foreign_currency_exposure";
+  const inputs: Record<string, SiteValue> = { [amountKey]: amount, total_assets: assets };
+  // the share is the one line method.md draws for each, `s = E / A × 100` and `c = X / A × 100`
+  const working = { kind: "formula", entry: formula, line: 0, symbols: { [amountKey]: formula === "F-87" ? "E" : "X", total_assets: "A" } } as const;
+  const v = computed(value, "pct", formula, inputs, { today, rules: EXPOSURE_RULE_IDS.map((id) => ({ id, strength: "primary" as const })), about, notes, working });
   return { ...v, stale: assets.stale ?? null };
 }
 

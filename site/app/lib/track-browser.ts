@@ -203,7 +203,9 @@ export function buildProductView(data: TbData, productId: string): ProductView |
     for (const x of list) x.short = short.get(x.id) ?? x.fullName;
     const sum = companyAssets(list.map((x) => numberOf(x.assets)));
     const inputs = Object.fromEntries(list.filter((x) => x.assets).map((x) => [`${x.fullName} (${x.id})`, x.assets!]));
-    return { index, id: co.id, name: co.name, fullName: co.fullName, tracks: list, assets: computed(sum, "nis_millions", "F-99", inputs, { today: data.today, about: `${t.about.assets} ${p.name}` }) };
+    // `S = Σ A_i`, each track that reported its assets one of the terms; one that did not adds nothing and is listed beside them
+    const working = { kind: "formula", entry: "F-99", line: 0, symbols: Object.fromEntries(Object.entries(inputs).flatMap(([k, v]) => (typeof v.value === "number" ? [[k, "A_i"]] : []))) } as const;
+    return { index, id: co.id, name: co.name, fullName: co.fullName, tracks: list, assets: computed(sum, "nis_millions", "F-99", inputs, { today: data.today, about: `${t.about.assets} ${p.name}`, working }) };
   });
   // F-99: the company with the most assets in this product first, ties by name
   companies.sort((a, b) => (numberOf(b.assets) ?? -1) - (numberOf(a.assets) ?? -1) || heCollator.compare(a.name, b.name));

@@ -317,6 +317,14 @@ export function differenceOf(a: readonly [name: string, value: SiteValue], b: re
 }
 
 /**
+ * A figure with another number in its place (a line's whole shekels as a receipt writes them, which may differ from the figure's own rounding
+ * by a shekel): its working, which comes to the figure's own number, is left off, so its sheet shows its formula and its inputs.
+ */
+export function restated(v: SiteValue, value: number): SiteValue {
+  return v.computed_from ? { ...v, value, computed_from: { formula: v.computed_from.formula, inputs: v.computed_from.inputs } } : { ...v, value };
+}
+
+/**
  * A fund statement's identity on a page: the term it states, its document and the page there (a stated index's own page; the address of a
  * document naming the fund a foreign-investment fund carries its page), so one statement is carried and listed once.
  */
