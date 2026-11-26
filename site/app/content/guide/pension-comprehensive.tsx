@@ -80,7 +80,7 @@ export const content: GuideContent = {
         הבסיס של החיסכון לפרישה של שכירים. לפי צו ההרחבה, <Term id="תגמולי מעסיק">תגמולי המעסיק</Term> לפנסיה <Ruled id="PEN-05">מגיעים לכאן או לקופת גמל לקצבה, לפי בחירת העובד</Ruled>. ההפקדה שלכם <Ruled id="TXP-01">מורידה את מס ההכנסה</Ruled>, וחלק מהנכסים <Ruled id="PEN-18" prefix="ב">השלמת תשואה</Ruled>. המחיר: הכסף מיועד לקצבה, <Term prefix="ו" id="משיכה">משיכה</Term> בסכום אחד <Ruled id={["PEN-30", "PEN-28"]}>אפשרית רק במקרים שבחוק</Ruled> <Term prefix="וב" id="תקנון">תקנון</Term>.
       </p>
       <p className="max-w-measure">
-        לעומת קופת גמל לקצבה, הביטוח כאן הוא חלק מהקרן. <Ruled id="PEN-35">תקרת דמי הניהול מהחיסכון נמוכה יותר</Ruled>, <N v={figure("PF-04", "balance_cap")} /> מול <N v={figure("PF-02", "balance_cap")} />, ותקרת דמי הניהול מההפקדה גבוהה יותר, <N v={figure("PF-04", "deposit_cap")} /> מול <N v={figure("PF-02", "deposit_cap")} />.
+        לעומת קופת גמל לקצבה, הביטוח כאן הוא חלק מהקרן. <Ruled id="PF-04">תקרת דמי הניהול מהחיסכון נמוכה יותר</Ruled>, <N v={figure("PF-04", "balance_cap")} /> מול <N v={figure("PF-02", "balance_cap")} />, ותקרת דמי הניהול מההפקדה גבוהה יותר, <N v={figure("PF-04", "deposit_cap")} /> מול <N v={figure("PF-02", "deposit_cap")} />.
       </p>
     </>
   ),
