@@ -85,7 +85,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   const exposureRules = [...new Set([...[exposure?.stock, exposure?.currency].flatMap((v) => (v?.rulesUsed ?? []).map((r) => r.id)), ...(exposureTerm?.ruleIds ?? [])])];
   // a child-savings track's note says the age until which National Insurance pays its fee (CS-18), as the company page reads it
   const childAge = wrapper?.id === CHILD_SAVINGS ? ((rules["CS-18"]?.figures?.nii_pays_until_age ?? null) as SiteValue | null) : null;
-  const citedRules = Object.fromEntries([...cited, ...exposureRules.flatMap((id) => (rules[id] ? [rules[id]] : [])), ...(childAge && rules["CS-18"] ? [rules["CS-18"]] : [])].map((r) => [r.id, r]));
+  // and the rules the two fee averages name (what the average is, its year), so their chips carry their titles
+  const feeRules = [...new Set([fees.balance, fees.deposit].flatMap((v) => v.rule_ids ?? []))];
+  const citedRules = Object.fromEntries([...cited, ...[...exposureRules, ...feeRules].flatMap((id) => (rules[id] ? [rules[id]] : [])), ...(childAge && rules["CS-18"] ? [rules["CS-18"]] : [])].map((r) => [r.id, r]));
   // names the catalogue gives this track alone (a fund-level or programme-level name is not this track's name)
   const catalog = loadCatalog();
   const owner = institutionCompanies(catalog, cma.tracks);
