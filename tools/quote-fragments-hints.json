@@ -9,7 +9,7 @@
   "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
   "words": "אין אפשרות לשבירת הפיקדון",
   "occurrence": 1,
-  "why": "BANK-48 says every plan's row prints these words; the first row stands for them"
+  "why": "BPN-10 says every row of the table prints these words; the first row stands for them"
  },
  {
   "url": "https://www.inter-il.com/order-execution-policy-oct-2023-2/",

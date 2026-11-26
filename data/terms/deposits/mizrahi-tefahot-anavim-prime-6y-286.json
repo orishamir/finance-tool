@@ -174,8 +174,7 @@
     "mechanism_text": "Terms document: 'שבירה: לא ניתן למשוך את הפיקדון לפני מועד פירעונו המוסכם'. The additional-deposits table has no break column.",
     "rule_ids": [
       "BANK-06",
-      "BANK-28",
-      "BANK-48"
+      "BANK-28"
     ]
   },
   "exit_points": {
