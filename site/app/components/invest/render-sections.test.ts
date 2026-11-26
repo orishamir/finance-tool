@@ -8,7 +8,8 @@ import { taxIndexStatementOf } from "@finance-tool/engine";
 import { invest, numbers, provenance } from "../../copy";
 import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
-import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
+import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf, pairCosts } from "../../lib/invest";
+import { chainOf, gridOf, middleStart } from "../../lib/stairs";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
 import type { SiteValue } from "../../lib/value";
 import { Fees } from "./funds";
@@ -805,6 +806,33 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
       }
     }
     expect(grey, "no grey line rendered in any account lane").toBeGreaterThan(0);
+  });
+  it("the stairs' waiting row is headed for the next purchase only where every stair with waiting cash is priced every few months (F-109, F-133)", () => {
+    const seen = { batched: 0, mixed: 0 };
+    for (const index of knownIndices(bundle)) {
+      const v = buildInvest({ bundle, index, plan });
+      // the stairs the panel draws from the page's example: its start and no step taken
+      const g = gridOf(v, bundle.snapshots);
+      const start = middleStart(g);
+      const chain = start ? chainOf(g, { start, taken: [] }) : null;
+      if (!chain) continue;
+      const waiting = chain.chain.flatMap((st) => {
+        const pc = pairCosts({ bundle, index, plan, fundId: st.pos.f, providerId: st.pos.a });
+        return pc?.waiting ? [pc.orderEvery] : [];
+      });
+      if (waiting.length === 0) continue;
+      const out = html(createElement(StairsFor, { view: v, bundle, plan, startHouse: null, startFund: null, example: true })).replace(/<!-- -->/g, "");
+      if (waiting.every((k) => k > 1)) {
+        seen.batched++;
+        expect(out, index.id).toContain(invest.stairs.table.waitingBatched);
+      } else if (waiting.some((k) => k > 1)) {
+        seen.mixed++;
+        expect(out, index.id).toContain(invest.stairs.table.waiting);
+        expect(out, index.id).not.toContain(invest.stairs.table.waitingBatched);
+      }
+    }
+    expect(seen.batched, "no index's stairs all wait for the next purchase on this plan").toBeGreaterThan(0);
+    expect(seen.mixed, "no index's stairs mix waiting for a unit and for the next purchase on this plan: pick another").toBeGreaterThan(0);
   });
   it("One Zero prices an Israeli fund where a distribution agreement its manager reports names it; any other is open, never \"not sold\" (BRK-38, BRK OQ24); no ETF; and no fund traded outside the US", () => {
     const snap = bundle.snapshots.find((s) => s.id === "one-zero")!;

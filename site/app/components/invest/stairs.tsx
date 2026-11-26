@@ -164,8 +164,10 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   // a stair's difference is the difference of what is left as the two levels write it, in whole shekels
   const shownDiff = (l: Level, prev: Level) => Math.round(l.left.value as number) - Math.round(prev.left.value as number);
   const diffOf = (l: Level, prev: Level) => delta(shownDiff(l, prev), l.left, `${t.about.left}: ${l.fundName}, ${l.house.short}`, prev.left, `${t.about.left}: ${prev.fundName}, ${prev.house.short}`, t.about.versus);
-  // the waiting cash's row says what it waited for: the next purchase where a stair is priced buying every few months (F-133), else a unit
-  const waitingHead = levels.some((l) => l.waiting !== null && l.orderEvery > 1) ? t.table.waitingBatched : t.table.waiting;
+  // the waiting cash's row says what it waited for: the next purchase where every stair with waiting cash is priced buying every few months
+  // (F-133), else the general waiting heading
+  const waiters = levels.filter((l) => l.waiting !== null);
+  const waitingHead = waiters.length > 0 && waiters.every((l) => l.orderEvery > 1) ? t.table.waitingBatched : t.table.waiting;
   const partName = (k: Part) => [t.table.accountCost, waitingHead, t.table.fundCost, t.table.tax][k]!;
   const partOf = (l: Level, prev: Level, k: Part) => {
     const name = partName(k);
