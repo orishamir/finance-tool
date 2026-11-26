@@ -167,7 +167,8 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   // the waiting cash's row says what it waited for: the next purchase where every stair with waiting cash is priced buying every few months
   // (F-133), else the general waiting heading
   const waiters = levels.filter((l) => l.waiting !== null);
-  const waitingHead = waiters.length > 0 && waiters.every((l) => l.orderEvery > 1) ? t.table.waitingBatched : t.table.waiting;
+  // a whole unit's heading only where every stair waited for one; money that waited for the next purchase, every few months, fits both
+  const waitingHead = waiters.some((l) => l.orderEvery > 1) ? t.table.waitingBatched : t.table.waiting;
   const partName = (k: Part) => [t.table.accountCost, waitingHead, t.table.fundCost, t.table.tax][k]!;
   const partOf = (l: Level, prev: Level, k: Part) => {
     const name = partName(k);

@@ -807,7 +807,7 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     }
     expect(grey, "no grey line rendered in any account lane").toBeGreaterThan(0);
   });
-  it("the stairs' waiting row is headed for the next purchase only where every stair with waiting cash is priced every few months (F-109, F-133)", () => {
+  it("the stairs' waiting row is headed for a whole unit only where no stair with waiting cash is priced every few months (F-109, F-133)", () => {
     const seen = { batched: 0, mixed: 0 };
     for (const index of knownIndices(bundle)) {
       const v = buildInvest({ bundle, index, plan });
@@ -827,8 +827,9 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
         expect(out, index.id).toContain(invest.stairs.table.waitingBatched);
       } else if (waiting.some((k) => k > 1)) {
         seen.mixed++;
-        expect(out, index.id).toContain(invest.stairs.table.waiting);
-        expect(out, index.id).not.toContain(invest.stairs.table.waitingBatched);
+        // a stair that waited for the next purchase is never headed as waiting for a whole unit; waiting to buy fits both
+        expect(out, index.id).toContain(invest.stairs.table.waitingBatched);
+        expect(out, index.id).not.toContain(invest.stairs.table.waiting);
       }
     }
     expect(seen.batched, "no index's stairs all wait for the next purchase on this plan").toBeGreaterThan(0);
