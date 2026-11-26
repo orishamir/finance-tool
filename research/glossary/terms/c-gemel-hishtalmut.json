@@ -829,8 +829,7 @@
     "rule_ids": [
       "CS-06",
       "CS-11",
-      "CS-12",
-      "CS-25"
+      "CS-12"
     ],
     "source": {
       "title": "National Insurance, שינוי הגוף החוסך או המסלול",
@@ -844,7 +843,7 @@
       "guide:child-savings-bank",
       "guide:child-savings-provident"
     ],
-    "notes": "A provident fund can be changed to another listed fund at any time; a bank cannot be changed to another bank (CS-11, CS-12). Conflict: the law (from January 2025) allows a one-time move of future deposits from a bank to a provident fund (CS-12), while NII's hly.gov.il page says bank money cannot move to a provident fund (CS-25).",
+    "notes": "A provident fund can be changed to another listed fund at any time; a bank cannot be changed to another bank (CS-11, CS-12). Conflict: the law (from January 2025) allows a one-time move of future deposits from a bank to a provident fund (CS-12), while NII's hly.gov.il page says bank money cannot move to a provident fund (CS-12).",
     "id": "hgvp-hchvsk"
   },
   {
@@ -1082,8 +1081,7 @@
     "variants_he": [],
     "explain_he": "מסלול בנקאי בחיסכון לכל ילד שבו הריבית ידועה מראש ולא תלויה במדד המחירים",
     "rule_ids": [
-      "CS-10",
-      "CS-25"
+      "CS-10"
     ],
     "source": {
       "title": "hly.gov.il, ההבדלים בין חיסכון בקופת גמל לחיסכון בבנק",
@@ -1108,8 +1106,7 @@
     "variants_he": [],
     "explain_he": "מסלול בנקאי בחיסכון לכל ילד עם ריבית ידועה מראש, והסכום מתעדכן גם לפי מדד המחירים לצרכן",
     "rule_ids": [
-      "CS-10",
-      "CS-25"
+      "CS-10"
     ],
     "source": {
       "title": "hly.gov.il, ההבדלים בין חיסכון בקופת גמל לחיסכון בבנק",
@@ -1137,8 +1134,7 @@
     "explain_he": "מסלול בנקאי בחיסכון לכל ילד שבו הריבית משתנה יחד עם ריבית הפריים, ריבית הבסיס של הבנקים",
     "rule_ids": [
       "CS-10",
-      "CS-23",
-      "CS-25"
+      "CS-23"
     ],
     "source": {
       "title": "hly.gov.il, ההבדלים בין חיסכון בקופת גמל לחיסכון בבנק",
@@ -2148,8 +2144,7 @@
       "CS-05",
       "CS-10",
       "CS-12",
-      "CS-22",
-      "CS-25"
+      "CS-22"
     ],
     "source": {
       "title": "National Insurance, שאלות ותשובות – חיסכון לכל ילד",
@@ -2164,7 +2159,7 @@
       "provider-site",
       "guide:child-savings-bank"
     ],
-    "notes": "The site's name for the bank route of חיסכון לכל ילד (wrapper child-savings-bank); NII and the law speak of saving 'בבנק' versus 'בקופת גמל להשקעה' (law 74ב). Three tracks per bank, fixed unlinked, prime-variable and CPI-linked, each with or without an exit station every five years; the rate is set on the opening day for 18 minus the child's age (CS-10, Yahav agreement). Nine banks, the 2016 tender winners (CS-22). Bank money cannot move to another bank; since January 2025 a parent may once redirect future deposits to a provident fund while the balance stays in the bank (CS-12). NII pays the bank's operating costs until 21 (CS-25). Tax on the gains is an open question (TXK-20). Added 2026-10-23 for the guide card lede.",
+    "notes": "The site's name for the bank route of חיסכון לכל ילד (wrapper child-savings-bank); NII and the law speak of saving 'בבנק' versus 'בקופת גמל להשקעה' (law 74ב). Three tracks per bank, fixed unlinked, prime-variable and CPI-linked, each with or without an exit station every five years; the rate is set on the opening day for 18 minus the child's age (CS-10, Yahav agreement). Nine banks, the 2016 tender winners (CS-22). Bank money cannot move to another bank; since January 2025 a parent may once redirect future deposits to a provident fund while the balance stays in the bank (CS-12). NII pays the bank's operating costs until 21 (CS-18). Tax on the gains is an open question (TXK-20). Added 2026-10-23 for the guide card lede.",
     "id": "chyskvn-lkl-yld-bbnk"
   },
   {

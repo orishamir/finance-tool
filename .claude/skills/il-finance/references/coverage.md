@@ -384,7 +384,7 @@ topic files with links and dates, and the open questions they answer are marked 
 | Fixing the annuity exemption: form 161ד, filed through the Tax Authority personal area | TXP-28 | — |
 | Leaving a job: the new form 161 (since 1.1.2024), its parts, and the employee's four choices per grant (annuity continuity, severance continuity, exempt grant, taxable grant) | TXP-29, TXP-30 | — |
 | NII's official child-savings fund list (10 managers, including Clal) and its 5 tracks | CS-24 | CS OQ2 |
-| Bank vs provident child savings: principal guarantee, transfer limits, fees to 21 | CS-25 | conflict noted |
+| Bank vs provident child savings: principal guarantee, transfer limits, fees to 21 | CS-10, CS-12 | conflict noted |
 | The CMA lost-accounts search ("הר הכסף" route) | PF-32 | — |
 | Makam: monthly issue, 12 series, individuals can bid through their account, BoI calls it risk-free | GOV-22 | GOV OQ2 (in part), OQ9 |
 | Makam issue schedule to February 2027, about one year per series | GOV-23 | GOV OQ3 |

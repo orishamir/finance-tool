@@ -33,8 +33,7 @@
     "rule_ids": [
       "REG-23",
       "REG-01",
-      "CS-22",
-      "CS-25"
+      "CS-22"
     ],
     "state": "sourced",
     "notes": "The National Insurance Institute runs the programme and the Ministry of Finance (Accountant General) picks the banks by tender; the money is a bank deposit at one of the nine participating banks, each a banking corporation under the Supervisor of Banks (Bank of Israel). NII's page names no supervising regulator for the bank option (REG-23); Yahav's agreement refers to bank-supervision directives (institution)."
@@ -147,7 +146,7 @@
   "protection": {
     "rule_ids": [
       "CS-05",
-      "CS-25",
+      "CS-10",
       "REG-23",
       "REG-04",
       "REG-06"
@@ -165,7 +164,6 @@
     "deposit-ceiling": "covered",
     "eligibility": "covered",
     "fee-exit": "covered",
-    "fee-management-balance": "covered",
     "liquidity-lockup": "covered",
     "minimum": "covered",
     "protection": "covered",
