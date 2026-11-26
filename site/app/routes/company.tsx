@@ -63,7 +63,7 @@ async function houseAccount(id: string, tariff: TariffCardData, page: { rules: R
   // the rules the account's figures name that neither the page nor the account's own data holds (its fee kinds' caps): the page ships
   // them, so every chip in those figures' sheets opens
   const all = loadRules();
-  const own = account.fees.kind === "terms" ? new Set([...account.fees.terms.data.rules, ...account.fees.terms.data.pointed].map((r) => r.id)) : new Set<string>();
+  const own = account.fees.kind === "terms" ? new Set([...account.fees.terms.data.rules, ...(account.fees.terms.data.pointed ?? [])].map((r) => r.id)) : new Set<string>();
   const added = valueRuleIds(account).filter((r) => all[r] && !page.rules[r] && !page.pointed?.[r] && !own.has(r));
   if (added.length === 0) return { account, page };
   const rules = { ...page.rules, ...Object.fromEntries(added.map((r) => [r, all[r]!])) };

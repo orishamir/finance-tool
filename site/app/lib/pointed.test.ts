@@ -244,7 +244,7 @@ describe("every rule a page's term cards and figures name is a record the page s
     // one track of each product: their loaders differ by the product's record and the track's own figures
     const seen = new Set<string>();
     for (const t of cma.tracks) {
-      const product = t.selfDirected ?? t.wrapperId;
+      const product = t.selfDirected ?? t.wrapperId ?? t.classification;
       if (seen.has(product)) continue;
       seen.add(product);
       const d = await trackLoader({ params: { id: t.companyId, fund: String(t.fundId) } } as never);
