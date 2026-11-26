@@ -11,7 +11,7 @@ export const name = "rule-records";
 const strings = (v: unknown): string[] => (Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : []);
 
 /** The rule ids an object names for a sheet to open: a value's rule_ids, closed_to_joiners' rule_ids and context_rule_ids. */
-export function openedIds(node: Record<string, unknown>): string[] {
+function openedIds(node: Record<string, unknown>): string[] {
   const joiners = node.closed_to_joiners;
   return [
     ...(isValueObject(node) ? strings(node.rule_ids) : []),

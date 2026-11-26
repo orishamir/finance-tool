@@ -7,7 +7,7 @@ import { ruleCards, ruleRatchet, type CheckData, type CheckProblem, type Offence
 export const name = "silences";
 
 /** By rule, the silence its card states (as the rule base records it) and the words that show the card states it. */
-export const SILENCES: Record<string, { what: string; words: RegExp }> = {
+const SILENCES: Record<string, { what: string; words: RegExp }> = {
   // the regulator's definition of total exposure does not say whether a holding through a fund is broken into its contents
   "CAT-44": { what: "the exposure definition does not say whether a holding through a fund counts by its contents", words: /קרן|קרנות|תעוד(?:ת|ות) סל/ },
   // the regulator does not publish how the reported average fee is weighted

@@ -11,7 +11,7 @@ export const name = "data-figures";
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /** The printed forms of a figure's value that a reader takes for that figure, and none of a small count, an age or a year. */
-export function telltaleForms(value: number, unit: string): string[] {
+function telltaleForms(value: number, unit: string): string[] {
   if (unit.startsWith("pct")) return printedForms(value, unit);
   if (Math.abs(value) < 100) return [];
   if (!/^(?:nis|usd|eur|gbp)/.test(unit) && Number.isInteger(value) && value >= 1900 && value <= 2100) return [];

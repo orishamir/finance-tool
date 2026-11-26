@@ -11,7 +11,7 @@ import { isValueObject, latestRecords, objectsIn, readLeftovers, readRuleList, r
 export const name = "note-text";
 
 /** The collections whose records carry shown notes, besides data/rules. */
-export const NOTE_COLLECTIONS = ["fees", "funds", "instruments", "averages", "terms/deposits", "cma", "series"] as const;
+const NOTE_COLLECTIONS = ["fees", "funds", "instruments", "averages", "terms/deposits", "cma", "series"] as const;
 
 /** The file that keeps a collection's note leftovers, under leftovers/. */
 const notesFile = (collection: string) => `notes/${collection.replace(/\//g, "-")}.json`;

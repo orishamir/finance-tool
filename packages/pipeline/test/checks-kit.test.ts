@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { readFormulaIds, readRuleBaseIds, validateData } from "../src/index.ts";
+import * as ruleText from "../src/checks/rule-text.ts";
 import { latestRecords, objectsIn, ruleGroup, staleEntries, testData } from "../src/checks/lib/kit.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
@@ -65,6 +66,15 @@ describe("a ratchet list", () => {
   });
   it("judges nothing over a test's folder, whose records stand in for the real ones", () => {
     expect(staleEntries(listed, { whole: false }, record, offends, () => ({ file: "x.json", list: "long" }))).toEqual([]);
+  });
+});
+
+describe("the rule-text check", () => {
+  it("fails a card's flaw its group's file does not list, and judges no list over a test's folder", () => {
+    expect(ruleText.name).toBe("rule-text");
+    const long = { id: "TXS-98", text_he: "משפט ראשון. משפט שני. משפט שלישי. משפט רביעי. משפט חמישי." };
+    expect(ruleText.check(testData(dataDir({ "rules/txs-98.json": long }))).map((p) => p.message)).toEqual([expect.stringMatching(/^text_he \(long\): 5 sentences/)]);
+    expect(ruleText.check(testData(dataDir({ "rules/txs-09.json": { id: "TXS-09", text_he: "כלל קצר." } })))).toEqual([]);
   });
 });
 

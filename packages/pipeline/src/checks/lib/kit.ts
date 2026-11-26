@@ -44,7 +44,7 @@ export function readLeftovers(path: string): unknown {
  * The rule-text groups and the id prefixes of each: every list keyed by rule id is kept in leftovers/rules/<group>.json, one file a
  * group, so the packages that work on one group's cards touch only that group's file. Every prefix that starts "TX" is tax.
  */
-export const RULE_GROUPS = {
+const RULE_GROUPS = {
   bank: ["BANK", "FXD", "BPN"],
   brokerage: ["BRK", "SHR", "CORP", "RG"],
   funds: ["MF", "ETF", "BND"],
@@ -53,7 +53,7 @@ export const RULE_GROUPS = {
   savings: ["KH", "KGL", "IRA", "CS", "MGD", "INS"],
   tax: [],
 } as const satisfies Record<string, readonly string[]>;
-export type RuleGroup = keyof typeof RULE_GROUPS;
+type RuleGroup = keyof typeof RULE_GROUPS;
 const GROUP_NAMES = Object.keys(RULE_GROUPS) as RuleGroup[];
 
 /** The group of a rule id, or of an entry that starts with one ("MF-60#fee"); null for a prefix no group holds. */
@@ -163,7 +163,7 @@ export function forgetReads(): void {
 }
 
 /** One record as the site reads it: the latest snapshot of a record kept in dated files ("<id>@<date>.json"), or a file of its own. */
-export interface LatestRecord {
+interface LatestRecord {
   /** "<collection>/<record id>", the start of a leftover's key, the same for every snapshot of the record. */
   key: string;
   file: string;

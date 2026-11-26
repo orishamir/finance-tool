@@ -19,13 +19,13 @@ function dataDir(files: Record<string, unknown>): string {
   }
   return dir;
 }
-const run = (check: DataCheck, files: Record<string, unknown>) => check.check(testData(dataDir(files))).map((p) => p.message);
+const run = (check: DataCheck["check"], files: Record<string, unknown>) => check(testData(dataDir(files))).map((p) => p.message);
 const vo = (extra: Record<string, unknown> = {}) => ({ value: 25, unit: "pct", source: { url: "https://x.il", title: "חוק המס", publisher: "p", strength: "primary" }, ...extra });
 
 describe("rule-records", () => {
   it("fails an id a value, a closed track or a record's context names with no card, on the latest snapshot only; a card of the real data/ counts in a test's folder", () => {
     expect(ruleRecords.name).toBe("rule-records");
-    const messages = run(ruleRecords, {
+    const messages = run(ruleRecords.check, {
       "rules/txs-98.json": { id: "TXS-98" },
       "fees/zz@2026-01-01.json": { a: vo({ rule_ids: ["TXS-97"] }) },
       "fees/zz@2026-02-01.json": { a: vo({ rule_ids: ["TXS-98", "TXS-96", "TXS-09"] }) },
@@ -43,15 +43,15 @@ describe("rule-records", () => {
 describe("figure-names", () => {
   it("fails a figure with no Hebrew name", () => {
     expect(figureNames.name).toBe("figure-names");
-    expect(run(figureNames, { "rules/txs-98.json": { id: "TXS-98", figures: { rate: vo(), cap: vo() }, figure_names_he: { rate: "שיעור" } } })).toEqual([expect.stringMatching(/^TXS-98#cap \(figure-names\): /)]);
+    expect(run(figureNames.check, { "rules/txs-98.json": { id: "TXS-98", figures: { rate: vo(), cap: vo() }, figure_names_he: { rate: "שיעור" } } })).toEqual([expect.stringMatching(/^TXS-98#cap \(figure-names\): /)]);
   });
 });
 
 describe("silences", () => {
   it("fails a card whose text leaves out the silence its rule records, and passes one that says it", () => {
     expect(silences.name).toBe("silences");
-    expect(run(silences, { "rules/cat-37.json": { id: "CAT-37", text_he: "הממוצע הוא אחרי הנחות." } })).toEqual([expect.stringMatching(/^CAT-37 \(silence\): /)]);
-    expect(run(silences, { "rules/cat-37.json": { id: "CAT-37", text_he: "שיטת השקלול לא פורסמה." } })).toEqual([]);
+    expect(run(silences.check, { "rules/cat-37.json": { id: "CAT-37", text_he: "הממוצע הוא אחרי הנחות." } })).toEqual([expect.stringMatching(/^CAT-37 \(silence\): /)]);
+    expect(run(silences.check, { "rules/cat-37.json": { id: "CAT-37", text_he: "שיטת השקלול לא פורסמה." } })).toEqual([]);
   });
 });
 
@@ -59,8 +59,8 @@ describe("working", () => {
   it("fails a working written in a data file", () => {
     expect(working.name).toBe("working");
     const computed = { ...vo(), state: "computed", computed_from: { formula: "F-21", inputs: {}, working: { kind: "sum", parts: ["a"] } } };
-    expect(run(working, { "fees/zz.json": { a: computed } })).toEqual(["fees/zz.json#/a/computed_from/working: a working is never written in data/; the site builds it from the formula it draws"]);
-    expect(run(working, { "fees/zz.json": { a: { ...computed, computed_from: { formula: "F-21", inputs: {} } } } })).toEqual([]);
+    expect(run(working.check, { "fees/zz.json": { a: computed } })).toEqual(["fees/zz.json#/a/computed_from/working: a working is never written in data/; the site builds it from the formula it draws"]);
+    expect(run(working.check, { "fees/zz.json": { a: { ...computed, computed_from: { formula: "F-21", inputs: {} } } } })).toEqual([]);
   });
 });
 
@@ -68,8 +68,8 @@ describe("figure-titles", () => {
   it("fails a figure whose source title carries a page, a section or a table", () => {
     expect(figureTitles.name).toBe("figure-titles");
     const titled = (title: string) => ({ "rules/txs-98.json": { id: "TXS-98", figures: { rate: vo({ source: { url: "https://x.il", title, publisher: "p", strength: "primary" } }) } } });
-    expect(run(figureTitles, titled("פקודת מס הכנסה, p.3, s.125ג"))).toEqual([expect.stringMatching(/^TXS-98#rate \(figure-title\): /)]);
-    expect(run(figureTitles, titled("Fee table of the bank"))).toEqual([expect.stringMatching(/^TXS-98#rate \(figure-title\): /)]);
-    expect(run(figureTitles, titled("פקודת מס הכנסה"))).toEqual([]);
+    expect(run(figureTitles.check, titled("פקודת מס הכנסה, p.3, s.125ג"))).toEqual([expect.stringMatching(/^TXS-98#rate \(figure-title\): /)]);
+    expect(run(figureTitles.check, titled("Fee table of the bank"))).toEqual([expect.stringMatching(/^TXS-98#rate \(figure-title\): /)]);
+    expect(run(figureTitles.check, titled("פקודת מס הכנסה"))).toEqual([]);
   });
 });

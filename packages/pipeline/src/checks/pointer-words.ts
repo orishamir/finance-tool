@@ -6,11 +6,11 @@ import { ruleCards, ruleRatchet, type CheckData, type CheckProblem, type Offence
 export const name = "pointer-words";
 
 /** The words that point at a place around the card, each a whole word. */
-export const POINTER_WORDS = ["השיעור שבטבלה", "בטבלה", "כאן", "במדריך"];
+const POINTER_WORDS = ["השיעור שבטבלה", "בטבלה", "כאן", "במדריך"];
 const LETTER = "א-ת";
 
 /** The pointer words a text holds. */
-export function pointerWords(text: string): string[] {
+function pointerWords(text: string): string[] {
   return POINTER_WORDS.filter((w) => new RegExp(`(?<![${LETTER}])${w}(?![${LETTER}])`).test(text));
 }
 

@@ -6,7 +6,7 @@ import { isValueObject, objectsIn, ruleCards, ruleRatchet, type CheckData, type 
 export const name = "figure-titles";
 
 /** A place in a document written into its title: ", p.3", ", s.12", "table". */
-export const PLACE_IN_TITLE = /, p\.\s?\d|, s\.\s?\d|\btable\b/i;
+const PLACE_IN_TITLE = /, p\.\s?\d|, s\.\s?\d|\btable\b/i;
 
 export function check(data: CheckData): CheckProblem[] {
   const cards = ruleCards(data);

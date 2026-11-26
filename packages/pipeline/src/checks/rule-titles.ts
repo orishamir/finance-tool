@@ -7,13 +7,13 @@ import { ruleCards, ruleRatchet, type CheckData, type CheckProblem, type Offence
 export const name = "rule-titles";
 
 /** A title as a reader tells two apart: gershayim and every double quotation mark made one, geresh and apostrophe one, spaces one. */
-export const sameTitle = (s: string): string => s.replace(/[״“”„]/g, '"').replace(/[׳’]/g, "'").replace(/\s+/g, " ").trim();
+const sameTitle = (s: string): string => s.replace(/[״“”„]/g, '"').replace(/[׳’]/g, "'").replace(/\s+/g, " ").trim();
 
 /** The dittos that point back at what came before, each a whole word with any one-letter prefix ("באותו"). */
 const DITTO = /(?<![א-ת])[בלמשוכ]?(?:אותו|אותה|האלה)(?![א-ת])/g;
 
 /** The backward dittos a text holds. */
-export const dittos = (text: string): string[] => text.match(DITTO) ?? [];
+const dittos = (text: string): string[] => text.match(DITTO) ?? [];
 
 export function check(data: CheckData): CheckProblem[] {
   const cards = ruleCards(data);

@@ -51,10 +51,10 @@ export type NoteFlaw = (typeof NOTE_FLAWS)[number];
  * (packages/pipeline/src/leftovers/phrases.json). That a named document does not say something ("החוזר לא קובע", "התקנון לא מציין") is
  * a fact about the source, and none of these catches it.
  */
-export const NOTE_TALK: readonly string[] = ["נבדק", "חיפשנו", "לא מצאנו", "האתר בדק", "נקראת", "נרשם", "נרשמה", "נרשמו"];
+const NOTE_TALK: readonly string[] = ["נבדק", "חיפשנו", "לא מצאנו", "האתר בדק", "נקראת", "נרשם", "נרשמה", "נרשמו"];
 
 /** A note longer than this many sentences belongs in a rule card or a guide, not beside a figure. */
-export const NOTE_MAX_SENTENCES = 3;
+const NOTE_MAX_SENTENCES = 3;
 
 /** A rule's code typed as text ("CAT-44"): two to four capitals, an optional digit, a hyphen and a number. An open question ("CAT OQ4") and a formula ("F-87") are not one. */
 const RULE_ID = /(?<![A-Za-z0-9-])[A-Z]{2,4}[0-9]?-\d{1,3}(?![\d-])/g;
@@ -77,7 +77,7 @@ function phrasesIn(text: string, phrases: readonly string[], allowed: readonly s
   return phrases.filter((p) => t.includes(p));
 }
 
-export interface NoteWords {
+interface NoteWords {
   /** The research-talk phrases and the phrases holding one that are allowed (packages/pipeline/src/leftovers/phrases.json); NOTE_TALK is added to them. */
   talk?: { phrases: readonly string[]; allowed: readonly string[] };
   /** The Hebrew titles of the rules the note's sheet already shows as chips: a note that repeats one says it twice. */
