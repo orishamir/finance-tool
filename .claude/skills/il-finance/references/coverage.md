@@ -379,7 +379,7 @@ topic files with links and dates, and the open questions they answer are marked 
 | One Zero's tariff, deposit terms and 447A page | BRK-34 | — |
 | ISA register totals; 129 portfolio-management companies by name and licence number | REG-30, MGD-23 | REG OQ2, MGD OQ1 (names) |
 | Meitav's portfolio-management company holds licence 322 | REG-31 | REG OQ15 (in part) |
-| Gemel-Net yields are nominal and gross of management fees (CMA page) | CAT-32 | CAT OQ1 (in part) |
+| Gemel-Net yields are nominal and gross of management fees (CMA page) | CAT-04 | CAT OQ1 (in part) |
 | The public mutual-fund list is on Maya (2,009 open-end funds, with filters) | CAT-33 | — |
 | Fixing the annuity exemption: form 161ד, filed through the Tax Authority personal area | TXP-28 | — |
 | Leaving a job: the new form 161 (since 1.1.2024), its parts, and the employee's four choices per grant (annuity continuity, severance continuity, exempt grant, taxable grant) | TXP-29, TXP-30 | — |

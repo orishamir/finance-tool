@@ -3495,7 +3495,7 @@
     "rule_ids": [
       "CAT-01",
       "CAT-29",
-      "CAT-32"
+      "CAT-04"
     ],
     "source": {
       "title": "Gemel-Net dataset metadata (CMA via data.gov.il)",
@@ -3507,7 +3507,7 @@
       "decoder:company",
       "decoder:track"
     ],
-    "notes": "Hebrew spelling missing in il-finance: CAT writes 'Gemel-Net' (dataset id 'gemelnet'). Also covers child-savings, central-severance and other-purpose funds (CAT-01). Yields are nominal and gross of fees (CAT-32).",
+    "notes": "Hebrew spelling missing in il-finance: CAT writes 'Gemel-Net' (dataset id 'gemelnet'). Also covers child-savings, central-severance and other-purpose funds (CAT-01). Yields are nominal and gross of fees (CAT-04).",
     "id": "gml-nt"
   },
   {
@@ -4005,8 +4005,7 @@
     "explain_he": "התשואה של המסלול באותו חודש, באחוזים, לפני ניכוי דמי ניהול ולפני מס",
     "rule_ids": [
       "CAT-04",
-      "CAT-05",
-      "CAT-32"
+      "CAT-05"
     ],
     "source": {
       "title": "Gemel-Net, מקורות המידע והנחות מערכת (CMA)",
@@ -4017,7 +4016,7 @@
     "where": [
       "decoder:track"
     ],
-    "notes": "Nominal and gross (CAT-04, CAT-32). Whether direct expenses are deducted is not stated (CAT OQ2).",
+    "notes": "Nominal and gross (CAT-04). Whether direct expenses are deducted is not stated (CAT OQ2).",
     "id": "tshvah-chvdshyt"
   },
   {
@@ -4105,8 +4104,7 @@
     ],
     "explain_he": "תשואות לפני ניכוי דמי ניהול ולפני מס, ובלי התאמה לעליית המחירים במשק",
     "rule_ids": [
-      "CAT-04",
-      "CAT-32"
+      "CAT-04"
     ],
     "source": {
       "title": "Gemel-Net, מקורות המידע והנחות מערכת (CMA)",
