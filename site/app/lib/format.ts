@@ -254,15 +254,23 @@ function showsWhole(v: number, state: "sourced" | "computed" | "entered" | undef
 const SHEKEL_SUMS: ReadonlySet<string> = new Set(["nis", "nis_per_month", "nis_per_trade", "nis_per_transfer"]);
 
 /**
- * The number a shekel amount reads as on the page: the number `formatValue` writes, read back from its text, so the two are one rounding
- * (method §13). A figure worked out from shown amounts starts from these, so it agrees with them as written. Any other unit is returned
- * as it is.
+ * The number a figure reads as on the page: the text `formatValue` writes for it, read back, so the two are one rounding (method §13): a
+ * shekel amount in the shekels or agorot it shows, a percent to the decimals it shows. Where the text is not the number in its own unit (a
+ * sum written in billions, a rate written in agorot), so that writing the number read back gives other text, the value as it is.
+ */
+export function numberShown(v: number, unit: string, state?: "sourced" | "computed" | "entered", parameter = false): number {
+  const text = formatValue(v, unit, state, parameter);
+  const digits = Number(text.replace(/[^\d.]/g, ""));
+  const n = text.includes("\u2212") ? -digits : digits;
+  return formatValue(n, unit, state, parameter) === text ? n : v;
+}
+
+/**
+ * The number a shekel amount reads as on the page (`numberShown`). A figure worked out from shown amounts starts from these, so it agrees
+ * with them as written. Any other unit is returned as it is.
  */
 export function amountShown(v: number, unit: string, state?: "sourced" | "computed" | "entered", parameter = false): number {
-  if (!SHEKEL_SUMS.has(unit)) return v;
-  const text = formatValue(v, unit, state, parameter);
-  const n = Number(text.replace(/[^\d.]/g, ""));
-  return text.includes("\u2212") ? -n : n;
+  return SHEKEL_SUMS.has(unit) ? numberShown(v, unit, state, parameter) : v;
 }
 
 /**

@@ -1,7 +1,7 @@
 // Value objects on the site: the schema's object plus what a page needs to show it (D7, D3, D10).
 import type { FundStatement, Label, P05Input } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject, Working } from "@finance-tool/schema";
-import { amountShown, formatValue } from "./format";
+import { amountShown, numberShown } from "./format";
 import { invest, numbers } from "../copy";
 
 export type Strength = ValueObject["source"]["strength"];
@@ -296,6 +296,16 @@ export function computed(
 export type ComputedOptions = Parameters<typeof computed>[4];
 
 /**
+ * Whether the lines of a difference or a sum, each with its sign, come to the figure as the page writes each of them: only then does its
+ * sheet show them as a receipt (`Working`), whose lines a reader adds up. A sum of figures with agorot, written in whole shekels each, can
+ * miss its total by a shekel; its sheet lists its inputs instead.
+ */
+function addsUp(lines: readonly (readonly [sign: 1 | -1, v: SiteValue])[], result: number, unit: ValueObject["unit"]): boolean {
+  const sum = lines.reduce((t, [sign, v]) => t + sign * numberShown(v.value as number, v.unit, v.state, isParameter(v)), 0);
+  return Math.abs(sum - numberShown(result, unit, "computed")) < 1e-9;
+}
+
+/**
  * A figure worked out from two others on the page, `a − b` (a gap between two ways, what a change adds): the value is computed here from
  * the two as the page writes them (`amountShown`: 10,768 ₪ less 8,203 ₪ is 2,565 ₪, whatever agorot each holds), and its inputs are the
  * two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either is not a number. `round`
@@ -304,23 +314,6 @@ export type ComputedOptions = Parameters<typeof computed>[4];
  * it carries as every computed figure does (`computed`). Its sheet shows it as the difference it is (`Working` "difference"), where the
  * two as written come to it as written (`addsUp`), unless the options name a line of math it is (`working`).
  */
-/** The number a figure reads as on the page: the text `formatValue` writes for it, read back (a shekel amount in whole shekels, a percent to the decimals it shows). */
-function writtenNumber(value: number, v: Pick<SiteValue, "unit" | "state"> & { parameter?: boolean }): number {
-  const text = formatValue(value, v.unit, v.state, !!v.parameter);
-  const n = Number(text.replace(/[^\d.\u2212-]/g, "").replace("\u2212", "-"));
-  return Number.isFinite(n) ? n : value;
-}
-
-/**
- * Whether the lines of a difference or a sum, each with its sign, come to the figure as the page writes each of them: only then does its
- * sheet show them as a receipt (`Working`), whose lines a reader adds up. A sum of figures with agorot, written in whole shekels each, can
- * miss its total by a shekel; its sheet lists its inputs instead.
- */
-function addsUp(lines: readonly (readonly [sign: 1 | -1, v: SiteValue])[], result: number, unit: ValueObject["unit"]): boolean {
-  const sum = lines.reduce((t, [sign, v]) => t + sign * writtenNumber(v.value as number, { unit: v.unit, state: v.state, parameter: isParameter(v) }), 0);
-  return Math.abs(sum - writtenNumber(result, { unit, state: "computed" })) < 1e-9;
-}
-
 export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: ComputedOptions & { unit?: ValueObject["unit"]; round?: (n: number) => number }): SiteValue {
   const [an, av] = a;
   const [bn, bv] = b;
