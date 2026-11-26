@@ -29,6 +29,29 @@ export type FeeType =
   | "fx"
   | "manager";
 
+/**
+ * The part of a run's result a rule read went into (architecture 3.4, `RuleBook.on`):
+ * - `deposit`: what goes in, its ceilings and cuts;
+ * - `relief`: a tax benefit at deposit (TXP-*, TXG-02 used for relief or grossing up);
+ * - `fees`: a fee, always with its `FeeType` line, as the Tally books it (the fund's drag on "fund", the spread on "spread");
+ * - `fundTax`: the tax a fund pays inside its price (TXS-12, TXS-44);
+ * - `taxDuring` and `taxAtExit`: the `RunResult` fields of those names; an exemption that zeroes one is a use on it;
+ * - `term`: when the money can come out (a lock, a fund's fixed dates).
+ */
+export type RunPart = "deposit" | "relief" | "fees" | "fundTax" | "taxDuring" | "taxAtExit" | "term";
+
+/**
+ * How a run used a rule in one part of its result: `part` null for a read on the run's root book, which reaches only figures of the whole
+ * result; `line` the fee line of a `fees` use; `changed` whether the rule changed the number (false for a read only looked at, `peek`);
+ * `figures` the figure names read through this use. A rule's uses are one per (part, line).
+ */
+export interface RuleUse {
+  part: RunPart | null;
+  line?: FeeType;
+  changed: boolean;
+  figures: string[];
+}
+
 /** A G-ID, rule ID, assumption ID (A-nn) or open-question code the page must show, with the month it first applies. */
 export interface Flag {
   code: string;
@@ -175,7 +198,10 @@ export interface RunResult {
   outcome: Outcome;
   /** Formulas this run applied, by method ID. */
   formulas: string[];
-  /** Every rule the run read, with its strength and dimensions: the dimension checklist derives from it. */
+  /**
+   * Every rule the run read, with its strength and dimensions: the dimension checklist derives from it. A rule only looked at (`peek`) is
+   * here too, its uses saying it changed nothing.
+   */
   rules: UsedRule[];
   /** Every fund statement the run read in place of a rule (D84): absent where it read none. */
   statements?: FundStatement[];

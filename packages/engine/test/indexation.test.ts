@@ -172,7 +172,7 @@ describe("open readings at a falling CPI (method §13, TXG OQ17, KGL OQ15)", () 
     const run = (c: typeof ctx) => {
       const choice = c.readings?.[open.question];
       if (choice === undefined) throw new OpenReadingError(open);
-      const rule = (id: string, figure: string) => ({ id, strength: "primary" as const, dimensions: [], figures: [{ name: figure, strength: "primary" as const }] });
+      const rule = (id: string, figure: string) => ({ id, strength: "primary" as const, dimensions: [], figures: [{ name: figure, strength: "primary" as const }], uses: [{ part: null, changed: true, figures: [figure] }] });
       return choice === one!.id
         ? { nominal: 1, outcome: eligible, flags: [{ code: "A" }, { code: "C", month: 9 }], labels: [{ code: "institution-source" as const, ruleId: "X" }], rules: [rule("X", "a")] }
         : {
