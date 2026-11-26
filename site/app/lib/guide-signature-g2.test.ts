@@ -256,9 +256,11 @@ describe("pensions", () => {
     expect(run.detail.grossDeposits).toBeGreaterThan(m.you * 12 * 10);
     expect(m.balance!.real).toBeGreaterThan(0);
     // the balance carries what its runs rest on: the caps grown from 2028 (G-36) and the credit at a tax without credit points (TXP OQ20, G-23)
-    expect(m.balance!.flags.map((f) => f.code)).toEqual(expect.arrayContaining(["G-36", "TXP-OQ20", "G-23"]));
+    const balance = m.balance;
+    if (!balance) throw new Error("the model has no balance");
+    expect(balance.flags.map((f) => f.code)).toEqual(expect.arrayContaining(["G-36", "TXP-OQ20", "G-23"]));
     // each as the run records it, a code with the month it applies from where the run gives one, so the figure can keep that month
-    for (const f of m.balance!.flags) expect(typeof f, String(f.code)).toBe("object");
+    for (const f of balance.flags) expect(typeof f, String(f.code)).toBe("object");
     expect(m.general).toBeNull();
   });
   it("gives the same balance at every salary from the average wage up, since the deposits are the same and nothing is above TXP-10's limit", () => {

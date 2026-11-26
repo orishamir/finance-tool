@@ -64,7 +64,7 @@ export interface YearPoint {
   rules: UsedRule[];
 }
 
-export interface TimelineResult {
+interface TimelineResult {
   kind: "ok";
   horizon: number;
   years: YearPoint[];

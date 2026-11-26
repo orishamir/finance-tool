@@ -90,7 +90,11 @@ describe("rule record (data-schema §3.1)", () => {
   it("keeps a figure's place in its document on the figure's source, so the title names the document alone", () => {
     const placed = { ...sourced, source: { ...sourced.source, title: "תקנות", locator: "reg. 2(a)", locator_he: "תקנה 2(א)", page: 4, quote: "שיעור דמי הניהול" } };
     const parsed = ruleRecord.parse({ ...rule, figures: { balance_cap: placed, by_year: { by_tax_year: { "2026": placed } }, brackets: [{ up_to: placed, rate: placed }] } });
-    for (const v of [parsed.figures!.balance_cap, (parsed.figures!.by_year as { by_tax_year: Record<string, unknown> }).by_tax_year["2026"], (parsed.figures!.brackets as { rate: unknown }[])[0]!.rate])
+    const figures = parsed.figures;
+    if (!figures) throw new Error("the parsed rule lost its figures");
+    const bracket = (figures.brackets as { rate: unknown }[])[0];
+    if (!bracket) throw new Error("the parsed rule lost its first bracket");
+    for (const v of [figures.balance_cap, (figures.by_year as { by_tax_year: Record<string, unknown> }).by_tax_year["2026"], bracket.rate])
       expect(v).toMatchObject({ source: { locator: "reg. 2(a)", locator_he: "תקנה 2(א)", page: 4, quote: "שיעור דמי הניהול" } });
     expect(ruleRecord.safeParse({ ...rule, figures: { balance_cap: { ...placed, source: { ...placed.source, quote: "" } } } }).success).toBe(false);
   });

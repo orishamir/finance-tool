@@ -115,7 +115,8 @@ describe("a figure computed from figures on a reading carries the reading (D119,
       expect(v.labels).toEqual([{ code: "reading", ruleId: "TXS-14" }]);
       expect(sheetRules(v)).toEqual([]);
       // the input it opens still lists the rule and the fund's statement
-      const input = (v.computed_from!.inputs as Record<string, SiteValue>).a!;
+      const input = (v.computed_from?.inputs as Record<string, SiteValue> | undefined)?.a;
+      if (!input) throw new Error("the figure lost its input a");
       expect(sheetRules(input).map((r) => r.id)).toEqual(["TXS-14"]);
       expect(input.statements).toEqual([named]);
     }
@@ -364,8 +365,9 @@ describe("plain differences and sums", () => {
   it("a difference of two figures under one name keeps both, the second told apart by its order, and shows no working", () => {
     const d = differenceOf(["א", a], ["א", entered(200, "nis", today)], "F-91", { today });
     expect(d.value).toBe(300);
-    expect(Object.keys(d.computed_from!.inputs)).toEqual(["א", "א (2)"]);
-    expect(d.computed_from!.working).toBeUndefined();
+    if (!d.computed_from) throw new Error("the difference lost its inputs");
+    expect(Object.keys(d.computed_from.inputs)).toEqual(["א", "א (2)"]);
+    expect(d.computed_from.working).toBeUndefined();
   });
   it("the gate sends these back to the input list, with no receipt: agorot that miss the total, a figure a phone row may write short, a figure that does not read back", () => {
     const working = (v: SiteValue) => v.computed_from?.working?.kind;
@@ -417,9 +419,10 @@ describe("compact rows keep their own note, never the template's", () => {
     expect(compactFee(tplNone, tplNone)).toEqual({ value: 0.2 });
   });
   it("a list's template is a row with a number and no note where one exists", () => {
-    const rows = [fig("primary", { value: null, notes: "לא דווח" }), tplNote, tplNone];
+    const empty = fig("primary", { value: null, notes: "לא דווח" });
+    const rows = [empty, tplNote, tplNone];
     expect(templateRow(rows, (r) => r)).toBe(tplNone);
-    expect(templateRow([rows[0]!, tplNote], (r) => r)).toBe(tplNote);
-    expect(templateRow([rows[0]!], (r) => r)).toBe(rows[0]);
+    expect(templateRow([empty, tplNote], (r) => r)).toBe(tplNote);
+    expect(templateRow([empty], (r) => r)).toBe(empty);
   });
 });

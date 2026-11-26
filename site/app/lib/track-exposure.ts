@@ -41,8 +41,11 @@ export function holdingsTemplate(list: (Holdings | undefined)[], period: string,
   if (held.length === 0) return null;
   const stale = staleCma(period, today);
   const month = fmt.period(period);
-  const assets = templateRow(held, (h) => h.total_assets)!.total_assets;
-  const exposure = templateRow(held, (h) => h.stock_market_exposure)!.stock_market_exposure;
+  const assetsRow = templateRow(held, (h) => h.total_assets);
+  const exposureRow = templateRow(held, (h) => h.stock_market_exposure);
+  if (!assetsRow || !exposureRow) return null;
+  const assets = assetsRow.total_assets;
+  const exposure = exposureRow.stock_market_exposure;
   const fx = templateRow(held.filter((h) => h.foreign_currency_exposure), (h) => h.foreign_currency_exposure)?.foreign_currency_exposure;
   return {
     assets: { ...assets, stale, about: cmaAbout.total_assets(month) },

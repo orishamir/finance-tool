@@ -18,6 +18,12 @@ import { receiptChain } from "./receipt";
 // the figures pinned below move with a fund's or a house's data, never with the daily rate refresh (which turned the check red on
 // 16.11.2026), and never read as stale. Re-pin with the data, never to fit.
 const FROZEN_PER_EUR = { USD: 1.1014, ILS: 3.5509, GBP: 0.8345, CHF: 0.9244, JPY: 175.78, CAD: 1.5734, AUD: 1.6301 };
+/** The value, or the test fails here where it is missing. */
+function need<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
+  return v;
+}
+
 const live = buildIndicesBundle();
 const bundle: typeof live = live.fx ? { ...live, fx: { ...live.fx, date: live.today, perEur: { ...live.fx.perEur, ...FROZEN_PER_EUR } } } : live;
 const t = bundle.today;
@@ -327,7 +333,7 @@ describe("invest page computation", () => {
     const used = at.value.rulesUsed!.map((r) => r.id);
     expect(used).toEqual(expect.arrayContaining(["TXF-11"]));
     expect(used).not.toContain("TXF-16");
-    expect(Object.values(at.value.computed_from!.inputs as Record<string, SiteValue>).flatMap((x) => x.rulesUsed ?? []).map((r) => r.id)).toContain("TXF-16");
+    expect(Object.values(need(at.value.computed_from, "the figure's inputs").inputs as Record<string, SiteValue>).flatMap((x) => x.rulesUsed ?? []).map((r) => r.id)).toContain("TXF-16");
     expect(used).not.toContain("TXF-04");
     expect(at.value.statements).toEqual([expect.objectContaining({ term: "tax-index", index: "fx", currency: "USD", page: 17, source: expect.objectContaining({ url: f.rec.tax_ruling!.source.url }) })]);
     // the account's cost before tax reads no tax index, and so no statement
@@ -592,12 +598,13 @@ describe("BANK-35 sits on the account's cost, not on what is left (independent c
     }
   });
   it("the pair's current-account line and the account's sum carry it, with the month the run found it from; what is left does not", () => {
-    const fundId = view0().houses.find((h) => h.provider.id === "leumi")!.best!.fund.rec.id;
-    const pc = pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: true }), fundId, providerId: "leumi" })!;
+    const fundId = need(need(view0().houses.find((h) => h.provider.id === "leumi"), "Leumi's house").best, "Leumi's best fund").fund.rec.id;
+    const pc = need(pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: true }), fundId, providerId: "leumi" }), "Leumi's pair");
     const line = pc.account.find((l) => l.line === "account");
     expect(line, "Leumi's pair counts its current account").toBeDefined();
-    expect(line!.cost.flags).toContain("BANK-35");
-    expect(line!.cost.flagMonths?.["BANK-35"]).toBeGreaterThan(0);
+    if (!line) throw new Error("Leumi's pair has no current-account line");
+    expect(line.cost.flags).toContain("BANK-35");
+    expect(line.cost.flagMonths?.["BANK-35"]).toBeGreaterThan(0);
     for (const l of pc.account.filter((x) => x.line !== "account")) expect(l.cost.flags ?? []).not.toContain("BANK-35");
     const sum = accountSum(pc, "x", t);
     expect(sum.flags).toContain("BANK-35");
@@ -605,8 +612,8 @@ describe("BANK-35 sits on the account's cost, not on what is left (independent c
     expect(pc.left.flags ?? []).not.toContain("BANK-35");
     // the receipt's value before tax (F-129) and the inflation on it (F-130) are what is left, not a cost: the flag stays on the account's row
     const inflation = inflationOf(pc, receiptChain(pc), "x", t);
-    const before = (inflation.computed_from!.inputs as Record<string, SiteValue>)[words.receipt.beforeTax.nominal]!;
-    expect((before.computed_from!.inputs as Record<string, SiteValue>)[words.receipt.parts.account]!.flags).toContain("BANK-35");
+    const before = need((need(inflation.computed_from, "the inflation's inputs").inputs as Record<string, SiteValue>)[words.receipt.beforeTax.nominal], "the value before tax");
+    expect(need((need(before.computed_from, "the inputs of the value before tax").inputs as Record<string, SiteValue>)[words.receipt.parts.account], "the account's part").flags).toContain("BANK-35");
     for (const v of [before, inflation]) {
       expect(v.flags ?? []).not.toContain("BANK-35");
       expect(v.flagMonths?.["BANK-35"]).toBeUndefined();
@@ -621,7 +628,7 @@ describe("an engine flag keeps the month it applies from", () => {
     const pc = pairCosts({ bundle, index: sp, plan: big, fundId: "us-voo", providerId: "interactive-brokers" });
     const month = pc?.left.flagMonths?.["TXF-27"];
     expect(month, "a US fund held above the estate threshold").toBeDefined();
-    const left = leftOf(pc!, t);
+    const left = leftOf(need(pc, "the VOO pair"), t);
     expect(left.flags).toContain("TXF-27");
     expect(left.flagMonths?.["TXF-27"]).toBe(month);
   });
@@ -639,7 +646,7 @@ describe("each figure of a run lists the rules of the parts its number is made o
   it("each fee line's figure lists exactly the rules that changed that line, and every line the run books outside the fund's is the account's", () => {
     // the cheapest pair at each house on the S&P 500 and on the MSCI ACWI (whose fund carries the US tax inside its price, TXF-16, on its
     // own line), and the Irish fund that pays out at every house that prices it, on an income above the surtax's threshold
-    const acwi = indexById(bundle, "index-msci-acwi")!;
+    const acwi = need(indexById(bundle, "index-msci-acwi"), "the MSCI ACWI");
     const rich = plan({ income: 900_000, values: { ...plan().values, income: entered(900_000, "nis", t) } });
     const irishId = "ie0031442068";
     const cases = [
@@ -684,7 +691,7 @@ describe("each figure of a run lists the rules of the parts its number is made o
     expect(ways.length).toBeGreaterThan(10);
     for (const { f, x } of ways) if (!f.rec.distribution) expect(ids(x.cost).filter((id) => id.startsWith("TX")), `${f.rec.id} cost`).toEqual([]);
     for (const pc of pairs) {
-      const rec = bundle.funds.find((r) => r.id === pc.fundId)!;
+      const rec = need(bundle.funds.find((r) => r.id === pc.fundId), `the fund ${pc.fundId}`);
       if (pc.distributes) continue;
       // the US tax on the dividends inside the fund's price is one of the fund's own costs, booked on its line (F-107)
       expect(ids(pc.fund).filter((id) => id.startsWith("TX") && id !== "TXF-16"), `${pc.fundId} fund`).toEqual([]);
@@ -702,11 +709,11 @@ describe("each figure of a run lists the rules of the parts its number is made o
   it("a difference from the pair on the receipt lists no rule; each of its two figures lists its own, which the page ships", () => {
     const shipped = new Set(bundle.rules.map((r) => r.id));
     const ways = view.options.flatMap((o) => o.funds).filter((f) => f.best);
-    const [a, b] = [ways[0]!, ways[1]!];
-    const gap = differenceOf(["א", a.best!.value], ["ב", b.best!.value], "F-65", { today: t });
+    const [a, b] = [need(ways[0]?.best, "the first fund's best"), need(ways[1]?.best, "the second fund's best")];
+    const gap = differenceOf(["א", a.value], ["ב", b.value], "F-65", { today: t });
     expect(gap.rulesUsed ?? []).toEqual([]);
     expect(sheetRules(gap)).toEqual([]);
-    const reached = Object.values(gap.computed_from!.inputs as Record<string, SiteValue>).flatMap((v) => sheetRules(v).map((r) => r.id));
+    const reached = Object.values(need(gap.computed_from, "the difference's inputs").inputs as Record<string, SiteValue>).flatMap((v) => sheetRules(v).map((r) => r.id));
     expect(reached.length).toBeGreaterThan(0);
     for (const id of reached) expect(shipped.has(id), id).toBe(true);
   });

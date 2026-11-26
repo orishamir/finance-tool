@@ -74,10 +74,14 @@ export function buildFeesData(): FeesData {
   // each dataset's template: for each fee, a track's with a number and no note where one exists, so few tracks ship a note of their own
   for (const dataset of new Set(mapped.map((x) => x.dataset))) {
     const rows = mapped.filter((x) => x.dataset === dataset);
-    templates[dataset] = { balance: { ...templateRow(rows, (x) => x.fees.avg_annual_management_fee)!.fees.avg_annual_management_fee } as ValueObject, deposit: { ...templateRow(rows, (x) => x.fees.avg_deposit_fee)!.fees.avg_deposit_fee } as ValueObject };
+    const balance = templateRow(rows, (x) => x.fees.avg_annual_management_fee);
+    const deposit = templateRow(rows, (x) => x.fees.avg_deposit_fee);
+    if (!balance || !deposit) continue;
+    templates[dataset] = { balance: { ...balance.fees.avg_annual_management_fee } as ValueObject, deposit: { ...deposit.fees.avg_deposit_fee } as ValueObject };
   }
   for (const x of mapped) {
-    const tpl = templates[x.dataset]!;
+    const tpl = templates[x.dataset];
+    if (!tpl) throw new Error(`fees: no template for the dataset ${x.dataset}, though it has this track`);
     const name = siteTrackName(x.names.cma[0]!.trim());
     const regulatorProduct = classificationToWrapper[x.fund_classification.trim()] ?? null;
     const cut = shorts.get(x.fund_id);

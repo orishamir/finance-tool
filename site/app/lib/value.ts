@@ -372,7 +372,7 @@ function plain(v: SiteValue, inputs: Record<string, SiteValue>): SiteValue {
   const doubted = Object.entries(inputs).filter(([, x]) => x.doubt);
   if (v.doubt || doubted.length === 0) return { ...rest, plain: true };
   const rules = [...new Set(doubted.flatMap(([, x]) => x.doubtRules ?? []))];
-  return { ...rest, plain: true, doubt: [...new Set(doubted.map(([, x]) => x.doubt!))].join(" "), ...(rules.length ? { doubtRules: rules } : {}), doubtFrom: doubted.map(([name]) => name) };
+  return { ...rest, plain: true, doubt: [...new Set(doubted.flatMap(([, x]) => (x.doubt ? [x.doubt] : [])))].join(" "), ...(rules.length ? { doubtRules: rules } : {}), doubtFrom: doubted.map(([name]) => name) };
 }
 
 /**

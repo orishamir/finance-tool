@@ -156,7 +156,7 @@ export function leftOf(pc: Costs, today: string): SiteValue {
  * A line as the receipt writes it, in whole shekels (`n`): the figure with that number, its working kept where the figure as the page
  * writes it is that number, so its sheet still works it out; otherwise its working is left off (`restated`), since it comes to another number.
  */
-export function asWritten(v: SiteValue, n: number): SiteValue {
+function asWritten(v: SiteValue, n: number): SiteValue {
   return typeof v.value === "number" && amountShown(v.value, v.unit, v.state) === n ? { ...v, value: n } : restated(v, n);
 }
 

@@ -22,6 +22,12 @@ import {
 } from "../scripts/extract-sources.ts";
 import { readRuleBaseIds, urlInBlock } from "../src/references.ts";
 
+/** The value, or the test fails here where it is missing. */
+function need<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
+  return v;
+}
+
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const ctx = (over: Partial<LineContext> = {}): LineContext => ({
   ruleId: "XX-01",
@@ -366,7 +372,7 @@ describe("extract-sources: parts", () => {
 describe("extract-sources: a source's standing", () => {
   const line = (q: string) => `[a text](https://www.gov.il/BlobFolder/x/he/a.pdf), p.3 · checked 2026-11-20 · primary ${q}`;
   it("comes from the parenthetical after the strength word, by the table's first matching row", () => {
-    const at = (q: string) => extractFromLine(line(q), ctx()).sources[0]!;
+    const at = (q: string) => need(extractFromLine(line(q), ctx()).sources[0], `a source for ${q}`);
     expect(at("(draft)")).toMatchObject({ qualifier: "(draft)", standing: "draft" });
     expect(at("(a bill, not binding)").standing).toBe("bill");
     expect(at("(explanatory notes)").standing).toBe("bill");
@@ -383,13 +389,13 @@ describe("extract-sources: a source's standing", () => {
     expect(standingOf("(library copy; read on the page image)")).toBe("working-note");
     expect(standingOf("(read in Chrome)")).toBe("working-note");
     expect(standingOf("(exchange rules, ISA-approved)")).toBe("none");
-    const s = extractFromLine(line("(library 0527d8b9da405f0d)"), ctx()).sources[0]!;
+    const s = need(extractFromLine(line("(library 0527d8b9da405f0d)"), ctx()).sources[0], "the library source");
     expect(s.qualifier).toBe("(library 0527d8b9da405f0d)");
     expect(s.standing).toBeUndefined();
   });
 
   it("comes from a title naming a state body's consolidated version where the qualifier gives no word, never from a Knesset consolidation", () => {
-    const titled = (title: string, q = "") => extractFromLine(`[${title}](https://www.gov.il/BlobFolder/x/he/a.pdf), s.3 · checked 2026-11-20 · primary${q ? ` ${q}` : ""}`, ctx()).sources[0]!;
+    const titled = (title: string, q = "") => need(extractFromLine(`[${title}](https://www.gov.il/BlobFolder/x/he/a.pdf), s.3 · checked 2026-11-20 · primary${q ? ` ${q}` : ""}`, ctx()).sources[0], `a source titled ${title}`);
     expect(titled("פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)").standing).toBe("consolidated-not-binding");
     expect(titled("כללי הבנקאות (שירות ללקוח) (עמלות), התשס\"ח-2008, נוסח משולב (בנק ישראל)").standing).toBe("consolidated-not-binding");
     expect(titled("Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy").standing).toBe("consolidated-not-binding");
@@ -423,7 +429,7 @@ describe("extract-sources: a title that points back to the link before it", () =
   it("a ditto is written out from that link's document, its own parts kept unless the name holds them", () => {
     const line =
       '[כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל)](https://www.boi.org.il/media/x/159a.pdf) pp.17-19 · checked 2026-10-25 · primary; [the same rules, first schedule, general note 3](https://www.boi.org.il/media/x/159a.pdf#page=24) p.24 · checked 2026-10-31 · primary';
-    const second = extractFromLine(line, ctx()).sources.find((s) => s.page === 24)!;
+    const second = need(extractFromLine(line, ctx()).sources.find((s) => s.page === 24), "the source on page 24");
     expect(second.title).toBe('כללי הבנקאות (שירות ללקוח) (עמלות), התשס"ח-2008, נוסח משולב (בנק ישראל), first schedule, general note 3');
     expect(second.locator).toBe("p.24");
     expect(writeOutTitle("same rules, נוסח משולב (בנק ישראל)", "https://b.org/r.pdf", { title: "כללי X, התשנ\"ב-1992, נוסח משולב (בנק ישראל)", url: "https://b.org/r.pdf" })).toBe('כללי X, התשנ"ב-1992, נוסח משולב (בנק ישראל)');
@@ -495,10 +501,11 @@ describe("extract-sources: a figure source's place", () => {
     expect(placed.moved).toBe(3);
     expect(Object.keys(f.a.source)).toEqual(["url", "title", "publisher", "strength", "locator", "locator_he", "page"]);
     expect(f.a.source).toMatchObject({ title: "Booklet", locator: "p.10", page: 10 });
-    expect(f.b.by_tax_year["2026"]!.source).toMatchObject({ title: "Booklet", page: 12 });
-    expect(f.c[0]!.up_to.source).toEqual(value("Booklet").source);
-    expect(f.c[0]!.rate.source).toMatchObject({ title: "Booklet", locator: "p.3" });
-    expect(f.c[0]!.rate.source).not.toHaveProperty("page");
+    expect(need(f.b.by_tax_year["2026"], "the 2026 value").source).toMatchObject({ title: "Booklet", page: 12 });
+    const c0 = need(f.c[0], "the first bracket");
+    expect(c0.up_to.source).toEqual(value("Booklet").source);
+    expect(c0.rate.source).toMatchObject({ title: "Booklet", locator: "p.3" });
+    expect(c0.rate.source).not.toHaveProperty("page");
   });
 });
 
@@ -519,7 +526,7 @@ describe("extract-sources: the real records", () => {
 
   it("every parenthetical after a strength word has its row in the standing table", () => {
     for (const r of records) {
-      const block = base.blocks!.get(r.id)!;
+      const block = need(base.blocks?.get(r.id), `the block of ${r.id}`);
       const res = extractFromLine(sourceLineOf(block.body) ?? "", { ruleId: r.id, ruleStrength: r.strength, ruleChecked: r.checked, defs: block.defs, knownIds: known });
       expect(res.unmapped, r.id).toEqual([]);
     }

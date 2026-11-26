@@ -57,6 +57,12 @@ describe("rulesOfRun", () => {
   });
 });
 
+/** The value, or the test fails here where it is missing. */
+function need<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
+  return v;
+}
+
 describe("rulesOfRuns", () => {
   it("merges the runs first: a use changed in any run is changed", () => {
     const year1 = [rule("TXH-09", [{ part: "taxAtExit", changed: false, figures: [] }])];
@@ -67,15 +73,15 @@ describe("rulesOfRuns", () => {
 });
 
 describe("the guides' runs: each figure lists the rules of its part", () => {
-  const signature = (id: string) => buildGuidePage(id)!.signature!;
+  const signature = (id: string) => need(need(buildGuidePage(id), `the guide ${id}`).signature, `the signature of ${id}`);
   const ids = (rules: readonly { id: string }[]) => rules.map((r) => r.id).sort();
 
   it("a pension deposit is the minimum rates, and the average wage only where the salary is above it (PEN-03, PEN-04)", () => {
     const d = signature("provident-for-annuity");
-    const b = d.bundles["provident-for-annuity"]!;
+    const b = need(d.bundles["provident-for-annuity"], "the provident fund's bundle");
     const average = ruleBook({ rules: b.rules, runDate: b.runDate }).amount("PEN-04", "average_wage");
-    const below = pensionModel(d, "provident-for-annuity", { salary: Math.round(average / 2), years: 10, insurancePct: null })!;
-    const above = pensionModel(d, "provident-for-annuity", { salary: Math.round(average * 2), years: 10, insurancePct: null })!;
+    const below = need(pensionModel(d, "provident-for-annuity", { salary: Math.round(average / 2), years: 10, insurancePct: null }), "the model below the average wage");
+    const above = need(pensionModel(d, "provident-for-annuity", { salary: Math.round(average * 2), years: 10, insurancePct: null }), "the model above the average wage");
     expect(ids(rulesOfRun(below.used, ["deposit"]))).toEqual(["PEN-03"]);
     expect(ids(rulesOfRun(above.used, ["deposit"]))).toEqual(["PEN-03", "PEN-04"]);
     // an employee's credit (F-31) rests on its rate and its cap, and on the brackets only where the year's tax caps it
@@ -89,10 +95,10 @@ describe("the guides' runs: each figure lists the rules of its part", () => {
 
   it("a study fund's salary tax on the employer's money above its limit goes on its own figure, not on the run's tax (F-52)", () => {
     const d = signature("keren-hishtalmut");
-    const p05 = d.bundles["keren-hishtalmut"]!.p05;
+    const p05 = need(d.bundles["keren-hishtalmut"], "the study fund's bundle").p05;
     const income = 40_000;
-    const plan = { employment: "employee" as const, income, ownMonthly: (income * Number(fact(d, "ownPct")!.value)) / 100, employerMonthly: (income * Number(fact(d, "employerPct")!.value)) / 100, returnPct: p05Number(p05, "A-01"), feePct: null };
-    const year = studyYears(d, plan, 8)[7]!;
+    const plan = { employment: "employee" as const, income, ownMonthly: (income * Number(need(fact(d, "ownPct"), "the own rate").value)) / 100, employerMonthly: (income * Number(need(fact(d, "employerPct"), "the employer rate").value)) / 100, returnPct: p05Number(p05, "A-01"), feePct: null };
+    const year = need(studyYears(d, plan, 8)[7], "the eighth year");
     expect(year.slice?.taxFromSalary ?? 0).toBeGreaterThan(0);
     const rules = mergedRules(year.runs);
     expect(rulesOfRun(rules, ["taxDuring"]).map((r) => r.id)).toContain("TXH-03");
@@ -105,7 +111,7 @@ describe("the guides' runs: each figure lists the rules of its part", () => {
 
   it("a pension employer line above TXP-10's limit: its salary tax stays off a balance before that tax", () => {
     const d = signature("provident-for-annuity");
-    const b = d.bundles["provident-for-annuity"]!;
+    const b = need(d.bundles["provident-for-annuity"], "the provident fund's bundle");
     const salary = 60_000;
     const terms = { ...b.terms, pension: { employment: "employee" as const, monthlySalary: salary, existingEmployeeRate: 0, employer: { pensionRate: 0.2, severanceRate: 0.0833, salary } } };
     const plan = runInputs(b.record, [b.p05], terms, { entered: { amount_now: entered(0, "nis", b.runDate), monthly_deposit: entered(1000, "nis_per_month", b.runDate), horizon_years: entered(10, "years", b.runDate) }, profile: { annualIncome: 12 * salary }, scenarioIncome: true, firstMonth: calendarMonthOf(b.runDate) });

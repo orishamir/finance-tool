@@ -531,12 +531,14 @@ export function shareDocumentStanding(sources: ExtractedSource[]): void {
   for (const s of sources) {
     if (!s.standing || !DOCUMENT_STANDING.has(s.standing)) continue;
     const file = fileOf(s.url);
-    if (!words.has(file)) words.set(file, new Set());
-    words.get(file)!.add(s.standing);
+    const set = words.get(file) ?? new Set<SourceStanding>();
+    set.add(s.standing);
+    words.set(file, set);
   }
   for (const s of sources) {
     const w = words.get(fileOf(s.url));
-    if (!s.standing && w?.size === 1) s.standing = [...w][0]!;
+    const only = w?.size === 1 ? w.values().next().value : undefined;
+    if (!s.standing && only) s.standing = only;
   }
 }
 
@@ -565,11 +567,11 @@ export function writeOutTitle(title: string, url: string, before: { title: strin
   if (BARE_PLACE.test(title)) return urlBase(url) === urlBase(before.url) ? name : title;
   const m = DITTO.exec(title);
   if (!m) return title;
-  const rest = m[3]!
+  const rest = (m[3] ?? "")
     .split(",")
     .map((x) => x.trim())
     .filter((x) => x && !name.includes(x));
-  return [`${m[1]!}${name}`, ...rest].join(", ");
+  return [`${m[1] ?? ""}${name}`, ...rest].join(", ");
 }
 
 // ---------------------------------------------------------------- kind, rank
@@ -795,8 +797,9 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
 function blockLineOf(body: string, label: RegExp): string | undefined {
   const lines = body.split("\n");
   const i = lines.findIndex((l) => label.test(l.trim()));
-  if (i < 0) return undefined;
-  let line = lines[i]!.trim().replace(label, "").trim();
+  const first = lines[i];
+  if (i < 0 || first === undefined) return undefined;
+  let line = first.trim().replace(label, "").trim();
   for (let j = i + 1; j < lines.length && lines[j]!.trim() && !/^- /.test(lines[j]!.trim()); j++) line += " " + lines[j]!.trim();
   return line;
 }
@@ -849,7 +852,7 @@ function placeCut(title: string): number {
   let depth = 0;
   let quoted = false;
   for (let i = 0; i < t.length; i++) {
-    const c = t[i]!;
+    const c = t.charAt(i);
     if (c === '"' || c === "״") quoted = !quoted;
     else if (c === "“") quoted = true;
     else if (c === "”") quoted = false;
@@ -945,7 +948,7 @@ const OWN_KEYS = ["scope", "scope_institutions", "scope_settle", "sources", "sou
 /** Removes the keys this script wrote from the text of a record (they are always last, at two-space indent), then appends the new ones. */
 export function writeKeys(text: string, add: Record<string, unknown>): string {
   let body = text;
-  const cut = [...body.matchAll(/,\n  "(scope|scope_institutions|scope_settle|sources|sources_missing_reason|derived_from|examples|see_also)":/g)].map((m) => m.index!);
+  const cut = [...body.matchAll(/,\n  "(scope|scope_institutions|scope_settle|sources|sources_missing_reason|derived_from|examples|see_also)":/g)].flatMap((m) => (m.index === undefined ? [] : [m.index]));
   if (cut.length > 0) body = body.slice(0, Math.min(...cut)) + body.slice(body.lastIndexOf("\n}"));
   const close = body.lastIndexOf("}");
   const head = body.slice(0, close).replace(/\s+$/, "");
@@ -1086,7 +1089,7 @@ export function extractAll(root: string, opts: { write?: boolean; only?: Set<str
           if (s.title_he) rep.totals.title_he!++;
           else rep.untitled.set(titleKey(s.title), (rep.untitled.get(titleKey(s.title)) ?? 0) + 1);
           if (s.publisher_he) rep.totals.publisher_he!++;
-          if (s.standing) rep.totals.standing!++;
+          if (s.standing) bump(rep.totals, "standing");
           bump(rep.strengths, s.strength);
           bump(rep.kinds, s.kind);
           const host = hostOf(s.url);
@@ -1112,7 +1115,7 @@ export function extractAll(root: string, opts: { write?: boolean; only?: Set<str
     pointerSkips.forEach((what) => rep.skipped.push({ id: rec.id, what }));
     if (seeAlso.length > 0) {
       add.see_also = seeAlso;
-      rep.totals.seeAlso!++;
+      bump(rep.totals, "seeAlso");
     }
     // a figure's source title names its document; the place written at its end moves into the source's own fields (§3.1)
     const placed = rec.figures === undefined ? { figures: undefined, moved: 0, kept: [] } : placeFigures(rec.figures);
@@ -1122,7 +1125,7 @@ export function extractAll(root: string, opts: { write?: boolean; only?: Set<str
       // the record is rewritten whole, so it must already read as JSON.stringify writes it; otherwise nothing else may move with it
       if (JSON.stringify(JSON.parse(text), null, 2) + "\n" === text) {
         base = JSON.stringify({ ...rec, figures: placed.figures }, null, 2) + "\n";
-        rep.totals.figurePlaces! += placed.moved;
+        rep.totals.figurePlaces = (rep.totals.figurePlaces ?? 0) + placed.moved;
       } else rep.titlesKept.push(`${rec.id}: the record is not written as JSON.stringify writes it, so its figures' places stay in their titles`);
     }
     const out = writeKeys(base, add);

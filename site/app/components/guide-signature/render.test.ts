@@ -1,5 +1,5 @@
 // Smoke: each G1 visual renders on the server with its page data, inside the providers the guide page gives.
-import { createElement, type ReactNode } from "react";
+import { createElement, type ComponentProps, type ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { beforeAll, describe, expect, it, vi } from "vitest";
@@ -174,6 +174,11 @@ describe("each figure of a visual lists only the rules that changed it (method Â
   // every figure a visual hands to `Num`, kept by a `Num` that records its value: the visuals are loaded afresh with it in place (the fast
   // tests share their modules, so a mock declared for the file alone would not reach a module another file already loaded)
   let all: { id: string; figures: { about: string; ids: string[] }[] }[] = [];
+  const figuresOf = (id: string) => {
+    const visual = all.find((x) => x.id === id);
+    if (!visual) throw new Error(`no visual drawn for ${id}`);
+    return visual.figures;
+  };
   beforeAll(async () => {
     const shown: SiteValue[] = [];
     vi.resetModules();
@@ -192,9 +197,12 @@ describe("each figure of a visual lists only the rules that changed it (method Â
     // the visuals as the page first draws them: no age entered, and the example income, far below the surtax's threshold
     all = Object.keys(frame.signatureRegistry).map((id) => {
       shown.length = 0;
-      const p = build(id)!;
-      const page = createElement(frame.SignatureFrame, { id, data: p.signature!, today: p.today, timeline: null });
-      renderToString(createElement(MemoryRouter, null, createElement(Inputs, { children: createElement(prov.ProvenanceProvider, { data: { rules: p.rules, terms: {}, dimensions: {}, today: p.today }, children: page }) })));
+      const p = build(id);
+      if (!p?.signature) throw new Error(`${id}: no guide page with a signature`);
+      const page = createElement(frame.SignatureFrame, { id, data: p.signature, today: p.today, timeline: null });
+      // the provider's children come as createElement's own argument, so its props are given without them
+      const provProps = { data: { rules: p.rules, terms: {}, dimensions: {}, today: p.today } } as ComponentProps<typeof prov.ProvenanceProvider>;
+      renderToString(createElement(MemoryRouter, null, createElement(Inputs, null, createElement(prov.ProvenanceProvider, provProps, page))));
       return { id, figures: shown.filter((v) => v.state === "computed").map((v) => ({ about: v.about ?? "", ids: sheetRules(v).map((r) => r.id) })) };
     });
     vi.doUnmock("../provenance");
@@ -211,7 +219,7 @@ describe("each figure of a visual lists only the rules that changed it (method Â
     }
   });
   it("a makam fee names no tax rule", () => {
-    const fees = all.find((x) => x.id === "makam")!.figures.filter((f) => f.about === sigCopy.makam.about.fees || f.about === sigCopy.makam.about.custody);
+    const fees = figuresOf("makam").filter((f) => f.about === sigCopy.makam.about.fees || f.about === sigCopy.makam.about.custody);
     expect(fees.length).toBeGreaterThan(0);
     for (const f of fees) expect(f.ids.filter((r) => r.startsWith("TX")), f.about).toEqual([]);
   });
@@ -224,7 +232,7 @@ describe("each figure of a visual lists only the rules that changed it (method Â
     }
   });
   it("the current account's headline at 0% names no tax rule: no interest, no tax", () => {
-    const head = all.find((x) => x.id === "current-account")!.figures.filter((f) => f.about === sigCopy.account.about.account);
+    const head = figuresOf("current-account").filter((f) => f.about === sigCopy.account.about.account);
     expect(head.length).toBeGreaterThan(0);
     for (const f of head) expect(f.ids.filter((r) => r.startsWith("TX")), f.about).toEqual([]);
   });
