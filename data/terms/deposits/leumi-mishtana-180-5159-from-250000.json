@@ -27,9 +27,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-14"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Printed as 'פיקדון ל-6 חודשים', model 5159/1 'ריבית משתנה 180-269 ימים'; recorded as 6 months, the period of a six-month deposit (directive 447 Annex A, BANK-14)."
   },
@@ -72,8 +70,7 @@
     "update_rule": "provider-set",
     "rule_ids": [
       "BANK-13",
-      "BANK-25",
-      "BANK-34"
+      "BANK-25"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax as printed ('P-3.6%=1.15 %') for the 250,000ומעלה tier of model 5159/1 'ריבית משתנה 180-269 ימים' ('פיקדון ל-6 חודשים'): rate type 'משתנה', linkage 'לא צמוד', break 'אין אפשרות שבירה', automatic renewal 'לא קיימת', number of renewals '-', exit points 'לא קיימת' '-', 'הטבת דיגיטל' '0.10 %'; the common-deposit column is empty (p.9). This row as printed: 250,000ומעלה: 'P-3.6%=1.15 %', 'הטבת דיגיטל' 0.10 %. Read 2026-11-09 from the bank's print file of its 447 publication (the PDF its rate-table page offers), which prints 'הנתונים נכונים ליום: 09.11.2026' and 'שיעור ריבית הפריים הנוכחית: P = 4.75 % החל מתאריך: 03.09.2026'; the file also says 'שיעור הריבית המוצעת הינו לתום תקופת ההפקדה'. The column 'הטבת דיגיטל' is printed beside the rate; whether it is included in the offered rate or added to it is not stated."
@@ -95,8 +92,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

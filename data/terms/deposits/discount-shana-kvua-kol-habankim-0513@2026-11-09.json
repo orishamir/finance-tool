@@ -25,9 +25,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-14"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Printed period '1 שנה' (365 days in the data); recorded as 12 months."
   },
@@ -49,8 +47,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax, printed 2.4; code 0513 'שנה קבועה -ללקוחות כל הבנקים', interest type 'קבועה', linkage 'לא צמוד', exit points 'No exit stations'; renewal 'No renewal option' (max renewals 0); 'שיעור הריבית לפיקדון שכיח' empty; deposit channels 'סניף,אתר פרטיים,אפליקציה פרטיים'; remarks 'פיקדון במערכת סגורה'; deposit button: a link to deposit. Read 2026-11-06 from the data the page loads (https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-11-06T18:00, prime 4.75%); column titles from the page's own table definition. The data also carries 'OfferedCalculatedNominalInterest' 2.35, which no column of the page shows; on every fixed row it equals prime 4.75 less the rate (read, not used). The bank's page 'פיקדונות ללקוחות כל הבנקים' (https://www.discountbank.co.il/private/savings-investments/deposits-savings/deposits-without-account/, read 2026-11-06) prints the same deposits: 'הפקדונות מיועדים למי שאינם מנהלים חשבון עו\"ש בבנק דיסקונט', 'הפקדונות מיועדים ללקוחות פרטיים בלבד', 'בתום תקופת הפיקדון כספי הפיקדון יחזרו לחשבון ממנו התקבלו', 'תוקף הצעת הריבית ... 3 ימי עסקים', 'הפקדונות הינם ללא חידוש', 'הפיקדון לא יהיה ניתן לשיעבוד או לקיזוז'; and its form page (https://www.discountbank.co.il/private/savings-investments/deposits-savings/deposits-without-account/palal-form-fixed-interest-year/) adds 'זהות בעלי הפיקדון וזהות בעלי החשבון המקורי חייבת להיות בזהות מלאה'. The closed system is BANK-21. That page prints for the one-year fixed deposit 'ריבית שנתית 2.4% (מתואמת שנתית 2.4%)'. The name is kept as 'שנה קבועה - ללקוחות כל הבנקים': the table prints the dash attached to the next word ('שנה קבועה -ללקוחות כל הבנקים'), which read on the page as a stray leading dash. Re-read 2026-11-09: Read 2026-11-09 from the data the page loads (https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-11-08T18:00:00, prime 4.75%); column titles from the page's own table definition. The row prints the same figures as on 2026-11-06."
@@ -71,9 +68,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-03"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read there 2026-10-25), not re-read today."

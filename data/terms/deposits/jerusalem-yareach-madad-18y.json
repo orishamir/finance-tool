@@ -29,10 +29,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-27",
-      "BANK-28"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "The row sits under the product type 'פיקדון ל-18 שנים'; recorded as 216 months. The product page lists 'ירח 18 שנים עם תחנות' ('1.5%', 'ריבית קבועה', 'צמוד מדד'). The forms page (/deposits-savings/forms) holds no joining form for a monthly CPI-linked 18-year plan (its 18-year form, 'ירושלים תשורה למתמיד', is a one-time deposit). Rate table read 2026-11-07 (3 pages, created 20.10.2026, library 75134f72b85da5de; curl fetches the bank's /media/ files although its pages answer scripts with a captcha). Product page read 2026-11-07 in the founder's Chrome (undated; extract filed as library 44f7ce56d3ccd74a)."
   },
@@ -54,9 +51,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25",
-      "BANK-28"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Printed '1.50%' in both the offered and the common rate columns; rate type 'קבועה', linkage 'צמוד', a rate above the linkage (whether a linked rate in the 447 tables is real or nominal is BANK open question 17). No plan-specific terms were found to say whether the rate is set per deposit or at joining. Rate table read 2026-11-07 (3 pages, created 20.10.2026, library 75134f72b85da5de; curl fetches the bank's /media/ files although its pages answer scripts with a captcha). Product page read 2026-11-07 in the founder's Chrome (undated; extract filed as library 44f7ce56d3ccd74a). Exit points 'בכל שנה מתום שנתיים' (rate table p.2, library 75134f72b85da5de)."
@@ -78,9 +73,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-02",
-      "TXI-04",
-      "TXI-05",
-      "TXI-19"
+      "TXI-05"
     ],
     "state": "sourced",
     "notes": "Read as fully linked to the consumer price index on the 447 table's linkage column 'צמוד למדד המחירים לצרכן'; whether the linkage is full, which the bucket needs (TXI-04: a deposit counts as linked only when fully linked to the index), rests on that wording. Fully linked: the linkage differentials are exempt (TXI-05) and the interest above the linkage is taxed at up to 25% (TXI-02), at a lower bracket from age 60 (TXI-19). Copied from the rule base (sources read there 2026-10-25), not re-read today. The engine reads no tax_bucket today."
@@ -101,8 +94,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27",
-        "BANK-28"
+        "BANK-27"
       ],
       "state": "sourced",
       "notes": "Printed '100 ₪' (minimum) and '10,000 ₪' (maximum) under 'טווח סכום להפקדה'. The product page: 'ניתן להפקיד מדי חודש החל מ-100 ₪ ועד 10,000 ₪', so both bound the monthly deposit."
@@ -122,8 +114,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27",
-        "BANK-28"
+        "BANK-27"
       ],
       "state": "sourced",
       "notes": "Printed '10,000 ₪'; the product page: 'ניתן להפקיד מדי חודש החל מ-100 ₪ ועד 10,000 ₪'."

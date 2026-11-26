@@ -25,9 +25,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-14"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Printed as 'פיקדון שבועי'; recorded as 7 days, the period of a weekly deposit (directive 447 Annex A, BANK-14)."
   },
@@ -70,8 +68,7 @@
     "update_rule": "provider-set",
     "rule_ids": [
       "BANK-13",
-      "BANK-25",
-      "BANK-34"
+      "BANK-25"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax as printed ('0.1% = 4.65% - פריים'). Row 'פיקדון שבועי': rate type 'משתנה', linkage '-', amount 'החל מ-100 ₪', break 'אין אפשרות לשבירת הפיקדון', renewal 'קיימת' / '25', exit points '-' '-', common-deposit rate '-', remark '-', deposit method '-'. The table prints no deposit channel. This row as printed: 'החל מ-100 ₪': '0.1% = 4.65% - פריים'. Read 2026-11-09 from the data the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data), whose message reads 'המידע נכון ל-09.11.2026 ולפני חישוב מס במקור'."
@@ -93,8 +90,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

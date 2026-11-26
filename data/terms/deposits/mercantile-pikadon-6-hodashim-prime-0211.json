@@ -26,9 +26,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-14"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Printed as '6 חודשים' (row 'פיקדון לשישה חודשים', code 0211); recorded as 6 months, the period of a six-month deposit (directive 447 Annex A, BANK-14)."
   },
@@ -71,8 +69,7 @@
     "update_rule": "provider-set",
     "rule_ids": [
       "BANK-13",
-      "BANK-25",
-      "BANK-34"
+      "BANK-25"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax: offered column printed 'p-4.05' with 0.7 beside it; code 0211 'פיקדון לשישה חודשים', period '6 חודשים', interest type 'משתנה', linkage 'לא צמוד', exit points 'ללא תחנות יציאה' לא קיים; renewal 'ללא אפשרות חידוש' (max renewals 0); break 'קיימת עם קנס שבירה'; 'שיעור הריבית לפיקדון שכיח' 'p-4.05' (0.7); deposit channels 'סניף,אתר פרטיים,אתר עסקים'; remarks ''. Amount tiers merged into this record (each as printed): 'החל מ-50 שח': 'p-4.05' with 0.7 beside it, common 'p-4.05' (0.7); 'החל מ-10,000 ש\"ח': 'p-4.05' with 0.7 beside it, common 'p-4.05' (0.7); 'החל מ 49,000 ש\"ח': 'p-4.05' with 0.7 beside it, common 'p-4.05' (0.7); 'החל מ 100,000 ש\"ח': 'p-4.05' with 0.7 beside it, common 'p-4.05' (0.7); 'החל מ 500,000 ש\"ח': 'p-4.05' with 0.7 beside it, common 'p-4.05' (0.7). Read 2026-11-09 from the data the page loads (https://www.mercantile.co.il/api/MoneyMarket/Saving?pageId=d57395d4-ba86-43b6-9a85-26a7c97a1e36, 'lastUpdatedAt' 2026-11-08T22:00:00, prime 4.75%); column titles as on Discount's page, which loads the same data shape."
@@ -94,8 +91,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

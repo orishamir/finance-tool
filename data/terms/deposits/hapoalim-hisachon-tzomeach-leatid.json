@@ -25,10 +25,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-27",
-      "BANK-28"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "The 447 row prints rates by withdrawal date: 'לאחר 12 חודשים', 'לאחר 24 חודשים', 'לאחר 36 חודשים'; the plan's own term is not printed (the plan form says 'תקופת החיסכון כמפורט בראש טופס ההצטרפות'). Recorded at the last date in the ladder, 36 months."
   },
@@ -50,9 +47,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25",
-      "BANK-28"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Printed 'לאחר 12 חודשים - 2.4% / לאחר 24 חודשים - 2.5% / לאחר 36 חודשים - 2.6%' (rate type 'קבועה', 'ללא הצמדה'); the rate at the recorded 36 months is 2.6%. The plan's form (library 530208756e1866f1, s.1.3) says the rates by withdrawal date apply to every deposit since the plan's start (BPN-10). Exit points 'לאחר 12 חודשים וכל 1 חודשים בהמשך'; break 'אין אפשרות לשבירת הפיקדון'; deposit method 'הוראת קבע'. Read 2026-11-07 from the table the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data, library 53e44c295b233803); the page states 'המידע נכון למועד הצגתו ולפני חישוב מס רווחי הון', so the date read is the date of the figures."
@@ -73,9 +68,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-03"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel plan (the 447 table's linkage column 'ללא הצמדה'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
@@ -96,8 +89,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27",
-        "BANK-28"
+        "BANK-27"
       ],
       "state": "sourced",
       "notes": "Printed 'החל מ-50 ₪'. No maximum is printed in the 447 table, and the plan form leaves the minimum and maximum blank."

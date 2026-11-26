@@ -26,10 +26,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-27",
-      "BANK-28"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "The 447 row 'שלוש שנים' carries the remark 'לא כולל 48 חודש'; the product page ('\"פיקדון ליעד\" - עד 180 חודשים ללא תחנות יציאה', 'תקופת הפיקדון - עד 180 חודש') prints 'מתום 36-48 חודשים 0.90%'. Recorded at 36 months, the row's shortest term. The page's rows, 'שיעור הריבית השנתית החל מתאריך 9.7.26': 24-36 months 0.80%, 36-48 0.90%, 48-60 1.00%, 60-72 1.10%, 72-96 1.20%, 96-120 1.40%, 120-144 1.60%, 144-180 1.80%, 180-216 2.10%, 'בתום 216 חודש' 2.40%, the same as the 447 rows."
   },
@@ -51,9 +48,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25",
-      "BANK-28"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Printed '0.9' in the 447 row 'שלוש שנים' and '0.90%' on the product page; rate type 'קבועה', 'לא צמוד'; exit points 'No exit stations'; break 'קיימת עם קנס שבירה'. Product page: 'ריבית אי רצף תרד ב-0.1% כפוף לקבלת ריבית מינימלית של 0.02%'. Read 2026-11-07 from the table the page loads (https://www.mercantile.co.il/api/MoneyMarket/Saving?pageId=d57395d4-ba86-43b6-9a85-26a7c97a1e36, 'lastUpdatedAt' 2026-11-06T22:00, prime 4.75%; library e7d5f46d740c1df4). The row is in ProductFamily 5, which the page's filter names 'פיקדון בהוראת קבע'. Product page read 2026-11-07 (library 54e08b1020ace002)."
@@ -74,9 +69,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-03"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel plan (the 447 table's linkage column 'לא צמוד'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
@@ -97,8 +90,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27",
-        "BANK-28"
+        "BANK-27"
       ],
       "state": "sourced",
       "notes": "The product page prints 'מינימום הפקדה חודשית 50 ש\"ח,מקסימום הפקדה חודשית 30,000 ש\"ח'; the 447 table prints ' החל מ 50 עד 30000'."
@@ -118,8 +110,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27",
-        "BANK-28"
+        "BANK-27"
       ],
       "state": "sourced",
       "notes": "Upper bound as printed; see min."

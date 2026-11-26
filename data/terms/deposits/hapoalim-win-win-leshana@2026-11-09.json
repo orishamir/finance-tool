@@ -25,9 +25,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-14"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Name printed 'WIN WIN לשנה'; the table prints no period column for it; recorded as 12 months from the name."
   },
@@ -49,8 +47,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax as printed ('2.35%'). Row 'WIN WIN לשנה': rate type 'קבועה', linkage 'ללא הצמדה', amount 'החל מ-1000 ₪', break 'אין אפשרות לשבירת הפיקדון', renewal '-' / '-', exit points 'לא קיימת' '-', common-deposit rate '-', remark 'בסוף תקופה החיסכון ייבחר אוטומטית המסלול המשתלם יותר - הצמדה מלאה למדד המחירים לצרכן או ריבית צבורה לתקופת החיסכון', deposit method 'חד פעמית'. The table prints no deposit channel. Read 2026-11-06 from the data the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data); the data carries no date and the page says 'המידע נכון למועד הצגתו ולפני חישוב מס רווחי הון', so effective_from is the day read. The bank's WIN WIN contract (https://www.bankhapoalim.co.il/api/media/PDFS/standard-contract/win_win_1832025.pdf, p.1, read from the project library, filed 2026-10-31) s.1.1: two independent calculations at the end, the higher gross amount is credited: track A the agreed interest, not CPI-linked; track B the deposit with no interest plus CPI linkage differentials; s.4: no withdrawal before maturity; s.7: one deposit only. So the printed 2.35% is what track A pays; linkage 'none' is the table's word for track A. Re-read 2026-11-09: Read 2026-11-09 from the data the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data), whose message reads 'המידע נכון ל-09.11.2026 ולפני חישוב מס במקור'. The row prints the same figures as on 2026-11-06."

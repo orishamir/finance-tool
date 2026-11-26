@@ -26,10 +26,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-27",
-      "BANK-28"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Printed '18 שנים' in the table and 'תקופת החיסכון: 18 שנים' in the terms; recorded as 216 months."
   },
@@ -51,9 +48,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25",
-      "BANK-28"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "The table prints 18 rates in the offered-rate column: '0.97% / 0.97% / 0.97% / 0.99% / 1.01% / 1.03% / 1.05% / 1.07% / 1.09% / 1.11% / 1.13% / 1.15% / 1.17% / 1.19% / 1.21% / 1.23% / 1.25% / 1.27%'; rate type 'קבועה', linkage 'מדד מחירים לצרכן', a rate above the linkage (BANK open question 17); amount column '100<'. The terms: 'ריבית קבועה בשיעור מדורג וידוע מראש. ריבית עולה מתום 3 שנים, כל שנה. אם ההפקדות בהוראת הקבע נפסקות, הריבית אינה עולה עוד'. Recorded is the 18th and last rate, 1.27%. Rows 203 and 204, same name, print the same rates (204's terms add 'המפקידים זכאים להטבות במשכנתה'). Read 2026-11-07 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=additional, 'populationDateAdditional' 06/11/2026 08:30:52; library 1b5cbf3747b9920d) and from the plan's terms document linked from its name. Terms document library 99e6575842399a6b. Exit points 'תחנת יציאה ראשונה לאחר 36 חודשים ולאחר מכן תחנת יציאה מדי 6 חודשים' (the table, library 1b5cbf3747b9920d; the same in the table of 09/11/2026, library 47a02fb8a6ef208e); the terms: 'תחנות יציאה מתום 3 שנים כל חצי שנה' (library 99e6575842399a6b p.1)."
@@ -75,9 +70,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-02",
-      "TXI-04",
-      "TXI-05",
-      "TXI-19"
+      "TXI-05"
     ],
     "state": "sourced",
     "notes": "Read as fully linked to the consumer price index on the table's linkage column 'מדד מחירים לצרכן' and the terms document's 'מגזר הצמדה: צמוד למדד המחירים לצרכן'; whether the linkage is full, which the bucket needs (TXI-04: a deposit counts as linked only when fully linked to the index), rests on that wording. Fully linked: the linkage differentials are exempt (TXI-05) and the interest above the linkage is taxed at up to 25% (TXI-02), at a lower bracket from age 60 (TXI-19). Copied from the rule base (sources read there 2026-10-25), not re-read today. The engine reads no tax_bucket today."
@@ -98,8 +91,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27",
-        "BANK-28"
+        "BANK-27"
       ],
       "state": "sourced",
       "notes": "Printed '₪ 100' as 'סכום הפקדה מזערי'; the deposit is monthly by standing order ('תדירות ההפקדה: הוראת קבע'). The table's amount column holds rate tiers ('טווח סכום להפקדה (לא כולל)'), not this minimum."
@@ -119,8 +111,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27",
-        "BANK-28"
+        "BANK-27"
       ],
       "state": "sourced",
       "notes": "Printed '₪ 10,000' as 'סכום הפקדה מקסימלי'; 'לא ניתן להגדיל או להקטין את סכום ההפקדה החודשית'."

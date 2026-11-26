@@ -26,9 +26,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-14"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Printed as '12 חודשים'; recorded as 12 months, the period of a one-year deposit (directive 447 Annex A, BANK-14)."
   },
@@ -71,8 +69,7 @@
     "update_rule": "provider-set",
     "rule_ids": [
       "BANK-13",
-      "BANK-25",
-      "BANK-34"
+      "BANK-25"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax printed '1.00%'. Row '256 - רימונים- חודשי פריים לשנה': period '12 חודשים', rate type 'משתנה', linkage 'אין', break 'לא ניתן לשבור', automatic renewal 'לא מתחדש', number of renewals 'לא מתחדש', exit points 'יש' 'תחנת יציאה ראשונה לאחר 1 חודשים ולאחר מכן תחנת יציאה מדי 1 חודשים', anchor 'P=4.75%', deposit options 'כיצד להפקיד'. Amount tiers merged into this record (each as printed): '50000' / 'P-3.75%' / '1.00%' / common '' / effective '1.00%'; '100000' / 'P-3.75%' / '1.00%' / common '' / effective '1.00%'; '250000' / 'P-3.75%' / '1.00%' / common '' / effective '1.00%'; '1000000' / 'P-3.75%' / '1.00%' / common '' / effective '1.00%'; '1000000<' / 'P-3.75%' / '1.00%' / common '' / effective '1.00%'. Read 2026-11-14 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed&pageIndex=1&itemsPerPage=500&currencyCode=), 'כל המידע המוצג נכון לתאריך ושעה' 13/11/2026 08:30:53; amount tiers are printed as upper bounds under 'טווח סכום להפקדה (לא כולל)'. The read of 2026-11-09 printed '1.01%' and 'P-3.74%' on every tier."
@@ -94,8 +91,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

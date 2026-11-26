@@ -26,9 +26,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-14"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Printed as '12 חודשים'; recorded as 12 months, the period of a one-year deposit (directive 447 Annex A, BANK-14)."
   },
@@ -50,8 +48,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax printed '1.50% / 1.51% / 1.52% / 1.53%'. Row '189 - ליצ'י קבועה שנה': period '12 חודשים', rate type 'קבועה', linkage 'אין', break 'לא ניתן לשבור', automatic renewal 'לא מתחדש', number of renewals 'לא מתחדש', exit points 'יש' 'תחנת יציאה ראשונה לאחר 3 חודשים ולאחר מכן תחנת יציאה מדי 3 חודשים', anchor 'לא רלוונטי', deposit options 'כיצד להפקיד'. The rate column prints one rate for each exit period, which differ, so no single rate is recorded. Amount tiers merged into this record (each as printed): '100000' / 'לא רלוונטי' / '1.50% / 1.51% / 1.52% / 1.53%' / common '' / effective '1.52%'; '250000' / 'לא רלוונטי' / '1.50% / 1.51% / 1.52% / 1.53%' / common '' / effective '1.52%'; '1000000' / 'לא רלוונטי' / '1.50% / 1.51% / 1.52% / 1.53%' / common '' / effective '1.52%'; '1000000<' / 'לא רלוונטי' / '1.50% / 1.51% / 1.52% / 1.53%' / common '' / effective '1.52%'. Read 2026-11-09 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=fixed&pageIndex=1&itemsPerPage=500&currencyCode=), 'כל המידע המוצג נכון לתאריך ושעה' 09/11/2026 08:31:13; amount tiers are printed as upper bounds under 'טווח סכום להפקדה (לא כולל)'. Compared with the record of 2026-11-06: no figure changed."
@@ -90,9 +87,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-03"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

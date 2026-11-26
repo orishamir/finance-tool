@@ -27,10 +27,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-27",
-      "BANK-28"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "The page prints 'הפקדות חודשיות לתקופה של 24 חודשים'; the rate board: 'פיקדון בהוראת קבע חודשית לתקופה של שנתיים בריבית משתנה על בסיס הפריים' (p.2); recorded as 24 months. The deposits page, under 'פיקדונות בהוראות קבע': 'חסכון גמיש' | 'הפקדות חודשיות לתקופה של 24 חודשים' | 'משתנה' | 'פיקדון שקלי בריבית משתנה, הנגזרת מריבית הפריים, בריבית דריבית חודשית, המאפשר הפקדות חודשיות בהוראת קבע.ניתן לשנות את סכום הוראת הקבע מדי חודש, להפסיק ולחדש הפקדות, לבצע הפקדה מזדמנת ולבצע משיכה חלקית או מלאה בתחנה.'; 'בחסכון גמיש סכום הפקדה מינימאלי - 200 ש\"ח. סכום הפקדה מקסימאלי - 5,000 ש\"ח.' Rate board read 2026-11-07 (library 124adbb22147699a, checked against the rendered page 2). The deposits page fetched by curl 2026-11-07 (library 322d2fa5d65f10a0); it is undated. The 447 table 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' and 'נוספים' (https://www.bank-yahav.co.il/all-savings/deposit-table/, a PDF created 05.10.2026) lists no standing-order plan."
   },
@@ -73,9 +70,7 @@
     "update_rule": "provider-set",
     "rule_ids": [
       "BANK-13",
-      "BANK-25",
-      "BANK-28",
-      "BANK-34"
+      "BANK-25"
     ],
     "state": "sourced",
     "notes": "Printed '0.05%' as both 'תעריפית' and 'מתואמת' in the column 'מ-28 יום', amount 'מ-200 ש\"ח' (-4.70% from prime 4.75%). The page: 'בריבית דריבית חודשית'. Neither the board nor the page says what 'מ-28 יום' refers to, or whether the plan renews. Rate board 'מחליף לוח קודם מיום 03/09/2026'. Rate board read 2026-11-07 (library 124adbb22147699a, checked against the rendered page 2). The deposits page fetched by curl 2026-11-07 (library 322d2fa5d65f10a0); it is undated. The 447 table 'שיעורי ריבית על סוגי הפיקדונות השקליים המקובלים' and 'נוספים' (https://www.bank-yahav.co.il/all-savings/deposit-table/, a PDF created 05.10.2026) lists no standing-order plan."
@@ -119,8 +114,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel plan (the product page's 'מגזר – שקלי'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
@@ -141,8 +135,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27",
-        "BANK-28"
+        "BANK-27"
       ],
       "state": "sourced",
       "notes": "The page: 'בחסכון גמיש סכום הפקדה מינימאלי - 200 ש\"ח'; the board's amount row: 'מ-200 ש\"ח'."
@@ -162,8 +155,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27",
-        "BANK-28"
+        "BANK-27"
       ],
       "state": "sourced",
       "notes": "The page: 'סכום הפקדה מקסימאלי - 5,000 ש\"ח'; read as the bound of each monthly deposit, which the page does not say in words. The board prints no upper bound."

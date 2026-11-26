@@ -27,10 +27,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-27",
-      "BANK-28"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "The product page prints 'מסלול - הפקדה חודשית בהוראת קבע', 'מגזר – שקלי', 'תקופה – 10 שנים'; recorded as 120 months. Page read 2026-11-07 (library 8fa6887c3d20faec); the page is undated."
   },
@@ -73,9 +70,7 @@
     "update_rule": "provider-set",
     "rule_ids": [
       "BANK-13",
-      "BANK-25",
-      "BANK-28",
-      "BANK-34"
+      "BANK-25"
     ],
     "state": "sourced",
     "notes": "The board prints for 'מ-100 ש\"ח עד 5 מ' ₪' four periods: 'שנתיים ראשונות' -3.50% / 1.25% / 1.25%, 'שנתיים עד חמש שנים' -3.25% / 1.50% / 1.50%, 'חמש עד שמונה שנים' -3.10% / 1.65% / 1.65%, 'שמונה עד עשר שנים' -2.90% / 1.85% / 1.85% (margin from prime / 'תעריפית' / 'מתואמת'). The product page ties each rate to when a deposit is made: 'הפקדות בשנתיים הראשונות - P-3.5%', 'הפקדות מתום שנתיים ועד השנה החמישית - P-3.25%', 'הפקדות מתום חמש שנים ועד השנה השמינית - P-3.1%', 'הפקדות מתום שמונה שנים ועד תום תקופה - P-2.9%'; recorded is the rate of the first two years' deposits, 1.25%. Page: 'ריבית - שקלית משתנה לפי ריבית הפריים'; 'תחנות יציאה –לאחר שנתיים ובכל חודש לאחר מכן'. Rate board read 2026-11-07 (8 pages, created 05.10.2026, 'מחליף לוח קודם מיום 03/09/2026'; the same file as filed on 2026-10-31, library 124adbb22147699a)."
@@ -97,8 +92,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel plan (the product page's 'מגזר – שקלי'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
@@ -119,8 +113,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27",
-        "BANK-28"
+        "BANK-27"
       ],
       "state": "sourced",
       "notes": "The page prints 'סכום מינימום להפקדה - 100 ש\"ח, ניתן להוסיף החל מ - 1,000 ש\"ח במועדי ההוראת קבע'. The rate board's amount column prints 'מ-100 ש\"ח עד 5 מ' ₪'; whether that bounds each deposit or the balance is not said, so no maximum per deposit is recorded."
