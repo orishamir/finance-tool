@@ -136,7 +136,7 @@
         "BRK-16"
       ],
       "state": "sourced",
-      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). A bank may charge only for services in the Governor's full tariff, or added with the Supervisor's approval (BRK-16, BANK-16). Whether a member charges a monthly account fee, and how much, is its own tariff (BRK-48, BRK-76, BRK-77, BRK-28, on the companies' pages)."
+      "notes": "No cap in law or in the exchange rules: every member reports its fees to TASE and states them in the client agreement, and no rule makes a published tariff a ceiling (BRK-24). A bank may charge only for services in the Governor's full tariff, or added with the Supervisor's approval (BRK-16, BANK-16). Whether a member charges a monthly account fee, and how much, is its own tariff (BRK-48, BRK-76, BRK-77, BRK-79, on the companies' pages)."
     },
     "distribution_handling": {
       "value": null,
@@ -281,7 +281,7 @@
       "ETF-04",
       "ETF-26"
     ],
-    "text": "anyone who opens a securities account at a bank that is a TASE member or at a non-bank TASE member (a written custody agreement at a bank); minimums are provider-set (each provider's own terms: BRK-28, on the companies' pages); rules for minors' accounts were not found (BRK OQ17); a foreign broker is reached directly or through a section 49A permit holder (BRK-70; BRK OQ9); trading is on TASE trading days, Monday to Friday since 5.1.2026"
+    "text": "anyone who opens a securities account at a bank that is a TASE member or at a non-bank TASE member (a written custody agreement at a bank); minimums are provider-set (each provider's own terms: BRK-28, BRK-73, BRK-79, on the companies' pages); rules for minors' accounts were not found (BRK OQ17); a foreign broker is reached directly or through a section 49A permit holder (BRK-70; BRK OQ9); trading is on TASE trading days, Monday to Friday since 5.1.2026"
   },
   "protection": {
     "rule_ids": [
@@ -329,12 +329,7 @@
   },
   "company_terms": {
     "minimum": [
-      {
-        "rule": "BRK-28",
-        "companies": [
-          "meitav-trade"
-        ]
-      },
+      "BRK-28",
       "BRK-42",
       "BRK-40"
     ],
@@ -342,12 +337,7 @@
       "BRK-48",
       "BRK-76",
       "BRK-77",
-      {
-        "rule": "BRK-28",
-        "companies": [
-          "psagot"
-        ]
-      }
+      "BRK-79"
     ],
     "fee-fx": [
       "BRK-23",

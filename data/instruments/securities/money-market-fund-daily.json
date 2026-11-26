@@ -310,23 +310,13 @@
   },
   "company_terms": {
     "minimum": [
-      {
-        "rule": "BRK-28",
-        "companies": [
-          "meitav-trade"
-        ]
-      }
+      "BRK-28"
     ],
     "fee-account": [
       "BRK-48",
       "BRK-76",
       "BRK-77",
-      {
-        "rule": "BRK-28",
-        "companies": [
-          "psagot"
-        ]
-      }
+      "BRK-79"
     ]
   },
   "tier": 1,
