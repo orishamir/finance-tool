@@ -73,7 +73,7 @@ export function MakamVisual({ data, today }: VisualProps) {
         fees: figure(model.fees, "nis", "F-24", runInputs, today, copy.makam.about.fees, rulesOfRun(model.rules, ["fees"])),
         net: figure(model.net, "nis", "F-24", taxInputs, today, copy.makam.about.net, rulesOfRun(model.rules, "all")),
         base: figure(model.taxedBase, "nis", model.atRedemption ? "F-24" : "F-40", runInputs, today, copy.makam.taxBase.about.base, rulesOfRun(model.rules, tax)),
-        taxedFees: figure(model.taxedFees, "nis", "F-09", runInputs, today, bundle.terms.tariff?.monthlyFee ? copy.makam.taxBase.feesAbout.withAccount : copy.makam.taxBase.feesAbout.custody, rulesOfRun(model.rules, "all").filter((r) => r.id === "TXS-06")),
+        taxedFees: figure(model.taxedFees, "nis", "F-09", runInputs, today, copy.makam.taxBase.feesAbout[bundle.terms.tariff?.monthlyFee ? "withAccount" : "custody"], rulesOfRun(model.rules, "all").filter((r) => r.id === "TXS-06")),
         custody: figure(model.custody, "nis", "F-14", runInputs, today, copy.makam.about.custody, rulesOfRun(model.rules, [{ part: "fees", lines: ["custody"] }])),
       }
     : null;
