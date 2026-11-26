@@ -20,7 +20,7 @@ import { distributionRuleIds } from "../components/decoder/institutions/types";
 import { loadFx } from "./fx.server";
 import { BROKERAGE, onlyWhatCanBeDone, providersOf, startsDeal } from "./providers";
 import { latestSnapshots } from "./providers.server";
-import { compactFee } from "./value";
+import { compactFee, templateRow } from "./value";
 import { readParsedCached } from "./read-cache.server";
 import { buildProductView } from "./track-browser";
 import { buildTrackBrowser } from "./track-browser.server";
@@ -71,8 +71,13 @@ export function buildFeesData(): FeesData {
   const templates: FeesData["templates"] = {};
   const tracks: TrackLite[] = [];
   const shorts = shortNames();
+  // each dataset's template: for each fee, a track's with a number and no note where one exists, so few tracks ship a note of their own
+  for (const dataset of new Set(mapped.map((x) => x.dataset))) {
+    const rows = mapped.filter((x) => x.dataset === dataset);
+    templates[dataset] = { balance: { ...templateRow(rows, (x) => x.fees.avg_annual_management_fee)!.fees.avg_annual_management_fee } as ValueObject, deposit: { ...templateRow(rows, (x) => x.fees.avg_deposit_fee)!.fees.avg_deposit_fee } as ValueObject };
+  }
   for (const x of mapped) {
-    const tpl = (templates[x.dataset] ??= { balance: { ...x.fees.avg_annual_management_fee } as ValueObject, deposit: { ...x.fees.avg_deposit_fee } as ValueObject });
+    const tpl = templates[x.dataset]!;
     const name = siteTrackName(x.names.cma[0]!.trim());
     const regulatorProduct = classificationToWrapper[x.fund_classification.trim()] ?? null;
     const cut = shorts.get(x.fund_id);
