@@ -42,7 +42,7 @@ import {
 import { inTrailingYear, trailingDistributionYield } from "@finance-tool/engine";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
-import { figureSlots, withoutSlots } from "./rule-text.ts";
+import { figureSlots, readTextLeftovers, ruleTextProblems, withoutSlots } from "./rule-text.ts";
 import { checkFundPromotions, checkLineFacts, checkSnapshotFacts } from "./price-list-facts.ts";
 
 /**
@@ -174,6 +174,8 @@ export function validateData(ctx: ValidationContext): Problem[] {
   const feeCaps = readFeeCaps(files, ctx.dataDir);
   const warnings = new Map<string, string[]>();
   const warn = (category: string, id: string) => warnings.set(category, [...(warnings.get(category) ?? []), id]);
+  const ruleFiles = new Map<string, string>();
+  const textLeftovers = readTextLeftovers();
 
   for (const file of files) {
     const rel = relative(ctx.dataDir, file);
@@ -222,6 +224,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
     if (collection === "terms/deposits" && result.success) for (const message of checkFirstExitPoint(parsed.value)) report(file, message);
     if (collection === "rules" && result.success) {
       const rec = parsed.value as RuleLike;
+      ruleFiles.set(rec.id, file);
       for (const message of checkRuleSources(rec, ctx, ruleRecords, warn)) report(file, message);
     }
     // data-schema §3.16: one record per guide page, named by the guide's id
@@ -306,6 +309,8 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkLegalStructures(files, ctx.dataDir, report);
   checkStatedTaxIndex(files, ctx.dataDir, currencies, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
+  // data-schema §4 item 23: the rule cards' texts (rule-text.ts)
+  for (const p of ruleTextProblems(ruleRecords, textLeftovers)) report(ruleFiles.get(p.id) ?? join(ctx.dataDir, "rules"), p.message);
   checkHomeGuideDoor(files, ctx.dataDir, report);
   checkDepositAmounts(files, ctx.dataDir, report);
   checkTermNames(files, ctx.dataDir, report);
@@ -1005,6 +1010,8 @@ export interface RuleLike {
   scope?: string;
   scope_institutions?: { id: string; name_he: string }[];
   scope_settle?: string;
+  title_he?: string;
+  text_he?: string;
 }
 
 const STRENGTH_RANK: Record<string, number> = { primary: 2, institution: 1, secondary: 0 };
