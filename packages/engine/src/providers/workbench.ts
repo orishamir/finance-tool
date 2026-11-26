@@ -148,7 +148,7 @@ export interface WorkbenchInput {
   fund: Fund;
   profile: Profile;
   broker?: SecuritiesInput["broker"];
-  /** A-28: trades a month, as the person says they trade. FX is a percentage of each conversion, so the number of conversions does not change its cost; custody follows the tariff's own period. */
+  /** A-28 and F-133: how the person places the plan's orders (`Behaviour`); custody follows the tariff's own period. */
   behaviour?: Behaviour;
   /** The snapshot's instrument class the fund is (`applies_to` of a line), for example `etf_units`. */
   instrumentClass: string;
