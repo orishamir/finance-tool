@@ -132,6 +132,49 @@
                   "fetched_from": {
                     "type": "string",
                     "format": "uri"
+                  },
+                  "page": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "quote": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240
+                  },
+                  "fragment": {
+                    "type": "object",
+                    "properties": {
+                      "prefix": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "start": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "end": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "suffix": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "start"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "locator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "locator_he": {
+                    "type": "string",
+                    "minLength": 1
                   }
                 },
                 "required": [
@@ -450,6 +493,49 @@
                         "fetched_from": {
                           "type": "string",
                           "format": "uri"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "quote": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 240
+                        },
+                        "fragment": {
+                          "type": "object",
+                          "properties": {
+                            "prefix": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "start": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "end": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "suffix": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "start"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "locator": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "locator_he": {
+                          "type": "string",
+                          "minLength": 1
                         }
                       },
                       "required": [
@@ -771,6 +857,49 @@
                         "fetched_from": {
                           "type": "string",
                           "format": "uri"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "quote": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 240
+                        },
+                        "fragment": {
+                          "type": "object",
+                          "properties": {
+                            "prefix": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "start": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "end": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "suffix": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "start"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "locator": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "locator_he": {
+                          "type": "string",
+                          "minLength": 1
                         }
                       },
                       "required": [
@@ -1080,6 +1209,49 @@
                         "fetched_from": {
                           "type": "string",
                           "format": "uri"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "quote": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 240
+                        },
+                        "fragment": {
+                          "type": "object",
+                          "properties": {
+                            "prefix": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "start": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "end": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "suffix": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "start"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "locator": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "locator_he": {
+                          "type": "string",
+                          "minLength": 1
                         }
                       },
                       "required": [
@@ -1470,6 +1642,18 @@
           "qualifier": {
             "type": "string"
           },
+          "standing": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "bill",
+              "superseded",
+              "consolidated-not-binding",
+              "translation",
+              "foreign-view",
+              "does-not-answer"
+            ]
+          },
           "note": {
             "type": "string"
           }
@@ -1500,6 +1684,50 @@
       "items": {
         "type": "string",
         "pattern": "^[A-Z0-9]+-[A-Z0-9]+$"
+      }
+    },
+    "see_also": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "method"
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^F-\\d{2,3}$"
+              }
+            },
+            "required": [
+              "kind",
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "question"
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9]* OQ\\d+$"
+              }
+            },
+            "required": [
+              "kind",
+              "id"
+            ],
+            "additionalProperties": false
+          }
+        ]
       }
     },
     "il_finance_file": {

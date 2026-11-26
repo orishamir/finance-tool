@@ -79,6 +79,31 @@ describe("rule record (data-schema §3.1)", () => {
     expect(ruleRecord.safeParse({ ...rule, likely_to_change: "yes" }).success).toBe(false);
   });
 
+  it("keeps a figure's place in its document on the figure's source, so the title names the document alone", () => {
+    const placed = { ...sourced, source: { ...sourced.source, title: "תקנות", locator: "reg. 2(a)", locator_he: "תקנה 2(א)", page: 4, quote: "שיעור דמי הניהול" } };
+    const parsed = ruleRecord.parse({ ...rule, figures: { balance_cap: placed, by_year: { by_tax_year: { "2026": placed } }, brackets: [{ up_to: placed, rate: placed }] } });
+    for (const v of [parsed.figures!.balance_cap, (parsed.figures!.by_year as { by_tax_year: Record<string, unknown> }).by_tax_year["2026"], (parsed.figures!.brackets as { rate: unknown }[])[0]!.rate])
+      expect(v).toMatchObject({ source: { locator: "reg. 2(a)", locator_he: "תקנה 2(א)", page: 4, quote: "שיעור דמי הניהול" } });
+    expect(ruleRecord.safeParse({ ...rule, figures: { balance_cap: { ...placed, source: { ...placed.source, quote: "" } } } }).success).toBe(false);
+  });
+
+  it("names a source's standing in its closed words only", () => {
+    const src = { url: "https://example.org/draft.pdf", title: "draft", publisher: "CMA", kind: "official_pdf", strength: "primary", checked: "2026-10-22" };
+    expect(ruleRecord.safeParse({ ...rule, sources: [{ ...src, qualifier: "(draft)", standing: "draft" }] }).success).toBe(true);
+    expect(ruleRecord.safeParse({ ...rule, sources: [{ ...src, standing: "consolidated-not-binding" }] }).success).toBe(true);
+    expect(ruleRecord.safeParse({ ...rule, sources: [{ ...src, standing: "historical" }] }).success).toBe(false);
+  });
+
+  it("points to a method entry or an open question by kind, each in its own form", () => {
+    expect(ruleRecord.parse({ ...rule, see_also: [{ kind: "method", id: "F-104" }, { kind: "question", id: "TXS OQ26" }] }).see_also).toEqual([
+      { kind: "method", id: "F-104" },
+      { kind: "question", id: "TXS OQ26" },
+    ]);
+    expect(ruleRecord.safeParse({ ...rule, see_also: [{ kind: "method", id: "TXS OQ26" }] }).success).toBe(false);
+    expect(ruleRecord.safeParse({ ...rule, see_also: [{ kind: "question", id: "F-04" }] }).success).toBe(false);
+    expect(ruleRecord.safeParse({ ...rule, see_also: [{ kind: "rule", id: "PF-02" }] }).success).toBe(false);
+  });
+
   // D30 (spec 2026-10-25-rules-scope §3): every rule says who it applies to
   it("requires a scope, and the fields each scope needs", () => {
     const { scope: _drop, ...noScope } = rule;

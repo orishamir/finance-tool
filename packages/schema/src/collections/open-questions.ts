@@ -16,6 +16,10 @@ export const openQuestionEntry = z.strictObject({
   title_he: z.string().min(1).optional(),
   /** What on the site waits for the answer, in Hebrew; only where something does. */
   blocks_he: z.string().min(1).optional(),
+  /** The rules that hold the part of the answer already found (rule ids): what narrowed the question. */
+  answered_by: z.array(z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/)).min(1).optional(),
+  /** What the site does meanwhile, in Hebrew, apart from what waits for the answer (`blocks_he`); only where it does something. */
+  meanwhile_he: z.string().min(1).optional(),
 });
 
 export const openQuestionsFile = z.array(openQuestionEntry).refine((list) => new Set(list.map((q) => q.id)).size === list.length, { message: "an id appears twice" });
