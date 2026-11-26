@@ -148,6 +148,7 @@
       "tax_year": null,
       "update_rule": "fixed in regulation",
       "rule_ids": [
+        "KH-16",
         "KGL-08"
       ],
       "state": "sourced",

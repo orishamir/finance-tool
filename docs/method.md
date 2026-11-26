@@ -304,7 +304,7 @@ The person's outlay `C_m` is net money. Where a wrapper returns part of a deposi
 | Money-market fund, renewable | none | fixed dates only (MF-35) | MF |
 | Makam, government bonds | none | any trading day (GOV-17), redemption at maturity | GOV |
 | Brokerage: Israeli and foreign funds | none | any trading day | ETF, BRK |
-| Kupat gemel lehashkaa | 83,641 NIS per person per calendar year across all managers in 2026, linked to the CPI every 1 January (KGL-02, KGL-03, TXK-02; a later year by F-120), checked at deposit (KGL-04) | any time, paid within 4 business days (KGL-08) | KGL |
+| Kupat gemel lehashkaa | 83,641 NIS per person per calendar year across all managers in 2026, linked to the CPI every 1 January (KGL-02, KGL-03, TXK-02; a later year by F-120), checked at deposit (KGL-04) | any time (KGL-08), paid within 4 business days (KH-16) | KGL |
 | Keren hishtalmut | benefited ceiling for tax (F-46); employee deposits only with an employer (KH-02, KH-03); self-employed anytime. In wrapper mode (product D15): an employee sees it listed, not ranked; a self-employed person has it ranked up to TXH-08's yearly amount (20,566 NIS through 2027, grown from 2028 by F-119), with the excess routed as for any ceiling (F-05) | 6 years from first payment, 3 at retirement age or for study (TXH-09, TXH-10, KH-10) | KH, TXH |
 | Pension fund (new comprehensive) | monthly deposit ceiling 20.5% × 2 × average wage (PEN-08); in a run the excess is flagged, not routed to the general fund (PEN-10); the general fund's visual splits the deposit at the ceiling (F-67) | old-age pension from 60 (PEN-26); earlier only severance component or special cases (PEN-30) | PEN, TXP |
 | Provident fund for annuity | none in the rule base | as pension (PEN-34) | PEN |
