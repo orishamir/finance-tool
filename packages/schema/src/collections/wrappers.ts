@@ -70,8 +70,8 @@ const productFields = {
   tier: z.union([z.literal(1), z.literal(2)]),
   open_questions: z.array(z.string()),
   /**
-   * Rules that govern the product but set none of its figures (data-schema §3.3): kept on the record so the dimension marks they cover
-   * still count, and never shown as a figure's rule.
+   * Rules that govern the product but set none of its figures (data-schema §3.3), never shown as a figure's rule. The dimension check
+   * does not read this field yet, so it stays empty until that check counts it beside `rule_ids`.
    */
   context_rule_ids: ruleIds.optional(),
   /** Set when the wrapper closes (D6); absent or null while it is open. */
