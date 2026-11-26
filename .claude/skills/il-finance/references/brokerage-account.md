@@ -415,19 +415,28 @@ A brokerage account in Israel is held at one of three provider classes: a bank t
 
 ### BRK-25 Interest on idle cash: a non-bank member reports it, a bank publishes its rate or says it pays none
 - Rule: A non-bank member "ידווח ללקוחו על הריבית בה זוכו הכספים של הלקוח בחשבון הלקוח אצל החש"ב" (TASE guidelines s.26ה(1)(ו); BRK-08). A bank publishes its current-account credit rate in its concentrated publication or, if it pays none, the words "לא מוצעת ריבית על יתרת זכות בחשבון" (Directive 447 s.4(א); BANK-13). For bank accounts, idle cash sits in the current account (`bank-current-account-deposits.md`).
-- Conditions / exceptions: No rule sets whether a non-bank member must pay interest on idle cash or at what rate; that is each member's tariff. Three tariffs' interest lines are BRK-49. Split on 2026-10-25 (scope pass): the companies' part is BRK-49.
+- Conditions / exceptions: No rule sets whether a non-bank member must pay interest on idle cash or at what rate; that is each member's tariff. Two tariffs' interest lines are BRK-49 (IBI) and BRK-87 (Excellence). Split on 2026-10-25 (scope pass): the companies' part is BRK-49, and since 2026-11-26 Excellence's line is BRK-87.
 - Figures: none here.
 - Source: [מדריך לחברי הבורסה: הנחיות על פי החלק הראשון לתקנון (מעודכן עד 1.1.2026)](https://content.tase.co.il/media/g2ekpw4d/274691.pdf), p.98, s.26ה(1)(ו) · checked 2026-10-25 · primary; [הוראת ניהול בנקאי תקין 447 (5/24)](https://www.boi.org.il/media/orgfwntb/447.pdf), p.1, s.4(א) · checked 2026-10-25 · primary
 - Scope: general
 - Dimensions: `fee-interest-on-cash` (proposed), `currency`
 - Likely to change: possible.
 
-### BRK-49 IBI and Excellence: interest on a credit balance as a tariff line, with conditions
-- Rule: The tariffs of IBI ("ריבית זכות") and Excellence ("ריבית בגין יתרת זכות ₪ בחשבון") carry a line for interest on a credit balance, with conditions such as a client type or a minimum, and at both no interest on foreign-currency balances.
-- Conditions / exceptions: What every member must report and every bank must publish is BRK-25. Other members' tariffs were not read for this line. Split from BRK-25 on 2026-10-25 (scope pass).
+### BRK-49 IBI: interest on a credit balance is a tariff line, with conditions, and none on foreign-currency balances
+- Rule: IBI's tariff ("ריבית זכות") carries a line for interest on a credit balance, with conditions such as a client type or a minimum, and no interest on foreign-currency balances.
+- Conditions / exceptions: What every member must report and every bank must publish is BRK-25. Tariffs of members other than IBI and Excellence (BRK-87) were not read for this line. Split from BRK-25 on 2026-10-25 (scope pass). Split on 2026-11-26: Excellence's line went to BRK-87; the words "conditions such as a client type or a minimum" were written of the two tariffs together and are kept as written in each part.
 - Figures: none here.
-- Source: [IBI tariff](https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf), p.2, part 3 item 6 · checked 2026-10-25 · institution; [Excellence tariff](https://www.xnes.co.il/media/nwogkoos/taarifon.pdf), p.1, part 1 item 5 · checked 2026-10-25 · institution. General rule: BRK-25.
-- Scope: institution: IBI, Excellence
+- Source: [IBI tariff](https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf), p.2, part 3 item 6 · checked 2026-10-25 · institution. General rule: BRK-25.
+- Scope: institution: IBI
+- Dimensions: `fee-interest-on-cash` (proposed), `currency`
+- Likely to change: yes.
+
+### BRK-87 Excellence: interest on a credit balance is a tariff line, with conditions, and none on foreign-currency balances
+- Rule: Excellence's tariff ("ריבית בגין יתרת זכות ₪ בחשבון") carries a line for interest on a credit balance, with conditions such as a client type or a minimum, and no interest on foreign-currency balances.
+- Conditions / exceptions: What every member must report and every bank must publish is BRK-25. Split from BRK-49 on 2026-11-26; the words "conditions such as a client type or a minimum" were written of IBI's and Excellence's tariffs together and are kept as written in each part.
+- Figures: none here.
+- Source: [Excellence tariff](https://www.xnes.co.il/media/nwogkoos/taarifon.pdf), p.1, part 1 item 5 · checked 2026-10-25 · institution. General rule: BRK-25.
+- Scope: institution: Excellence
 - Dimensions: `fee-interest-on-cash` (proposed), `currency`
 - Likely to change: yes.
 

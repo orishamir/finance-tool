@@ -1,8 +1,8 @@
 {
   "id": "BRK-49",
-  "title": "IBI and Excellence: interest on a credit balance as a tariff line, with conditions",
-  "title_he": "אי.בי.אי ואקסלנס: ריבית על יתרת זכות כשורה בתעריפון",
-  "text_he": "בתעריפונים של אי.בי.אי ואקסלנס יש שורה לריבית על יתרת זכות בחשבון, עם תנאים כמו סוג לקוח או מינימום. אצל שניהם אין ריבית על יתרות במטבע חוץ. תעריפונים של חברים אחרים לא נקראו לשורה הזו.",
+  "title": "IBI: interest on a credit balance is a tariff line, with conditions, and none on foreign-currency balances",
+  "title_he": "ריבית על יתרת זכות בתעריפון של אי.בי.אי",
+  "text_he": "בתעריפון של אי.בי.אי יש שורה לריבית על יתרת זכות בחשבון, עם תנאים כמו סוג לקוח או מינימום. על יתרות במטבע חוץ אי.בי.אי לא משלמת ריבית.",
   "strength": "institution",
   "dimensions": [
     "currency"
@@ -16,10 +16,6 @@
     {
       "id": "ibi",
       "name_he": "אי.בי.אי"
-    },
-    {
-      "id": "excellence",
-      "name_he": "אקסלנס"
     }
   ],
   "sources": [
@@ -34,19 +30,6 @@
       "locator": "p.2, part 3 item 6",
       "locator_he": "עמוד 2, חלק 3 פרט 6",
       "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://www.xnes.co.il/media/nwogkoos/taarifon.pdf",
-      "title": "Excellence tariff",
-      "title_he": "תעריפון אקסלנס טרייד",
-      "publisher": "Excellence",
-      "publisher_he": "אקסלנס",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.1, part 1 item 5",
-      "locator_he": "עמוד 1, חלק 1 פרט 5",
-      "page": 1,
       "checked": "2026-10-25"
     }
   ],
