@@ -423,6 +423,8 @@ export const provenance = {
     from: "בתוקף מתאריך",
     to: "בתוקף עד",
     rule: "חוק או כלל",
+    /** The same label over more than one chip. */
+    rules: "חוקים וכללים",
     forYear: "תקף לשנת",
     englishTitle: "שם המקור באנגלית",
     localFile: "קובץ נתונים של האתר",
@@ -452,6 +454,8 @@ export const provenance = {
     toFormula: "לנוסחה הכללית",
     weakInputs: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:",
     doubtedInputs: "בין הערכים שנכנסו לחישוב, על אלה יש ספק:",
+    /** A computed figure with no number and no note of its own, when one of the values it reads has none. */
+    inputMissing: "חסר אחד הערכים שנכנסו לחישוב, ולכן האתר לא מציג מספר.",
   },
   // a flag with no sentence of its own
   flagOther: "הערה על החישוב:",
@@ -462,6 +466,8 @@ export const provenance = {
     full: "ההגדרה המלאה במסמך שיטת החישוב (באנגלית)",
     /** Over the key to a formula's symbols (`formulaKeys`). */
     where: "כאשר:",
+    /** In a figure's worked line, the key row of the symbol the line works out: the figure its sheet heads with, which the head's line names. */
+    resultRow: "המספר שבראש הגיליון",
   },
   questionSheet: {
     what: "זו שאלה פתוחה בבסיס החוקים: משהו שעוד לא נמצא לו מקור ברור, בחוק או אצל הרשות.",
@@ -739,12 +745,26 @@ export const company = {
     aboutCurrency: "החלק מנכסי המסלול שחשוף למטבע חוץ בסוף",
     missing: "לא דווח",
     noAssets: "אין נכסים",
-    /** The sheet's note on every share (F-87): what the regulator's circular defines (CAT-44), and what of it is the site's reading. */
-    note: "לפי דיווח המסלול לרשות שוק ההון. חוזר של הרשות מ־2015 מגדיר את החשיפה כחשיפה כוללת, גם דרך נגזרים, ולכן היא יכולה להיות גבוהה מ־100%. האתר לא קרא את הנוסח העדכני של החוזר. הקביעה שהנתון כאן הוא החשיפה הזו היא קריאה של האתר משם השדה.",
+    /** The sheet's note on a share above 100% only: the circular's exposure counts what is held plus exposure through derivatives on it, and that the dataset's field is that exposure is the site's reading of its name (CAT-44). */
+    above100: "חוזר של רשות שוק ההון מגדיר את החשיפה כך שהיא כוללת גם חשיפה דרך נגזרים על אותו נכס, ולכן היא יכולה לעבור את 100% מנכסי המסלול. האתר מסיק משם השדה שהנתון כאן הוא החשיפה הזו.",
     noteMissing: "המסלול לא דיווח לרשות את סך הנכסים או את החשיפה לתקופה הזו.",
     noteNoAssets: "המסלול דיווח לרשות על סך נכסים 0 לתקופה הזו, ולכן אין חלק לחשב.",
   },
 } as const;
+
+/**
+ * The head line of each regulator figure a track shows (data-schema 3.13), by its field in the CMA file: what the number is and when.
+ * A fee average takes its calendar year (CAT-36); the amounts and the yields take the report month, as `fmt.period` writes it.
+ */
+export const cmaAbout = {
+  avg_annual_management_fee: (year: string) => `ממוצע דמי הניהול מהחיסכון שנגבו בפועל ב־${year}`,
+  avg_deposit_fee: (year: string) => `ממוצע דמי הניהול מההפקדות שנגבו בפועל ב־${year}`,
+  total_assets: (period: string) => `סך נכסי המסלול בסוף ${period}`,
+  stock_market_exposure: (period: string) => `החשיפה של המסלול לשוק המניות בסוף ${period}`,
+  foreign_currency_exposure: (period: string) => `החשיפה של המסלול למטבע חוץ בסוף ${period}`,
+  avg_annual_yield_3y: (period: string) => `התשואה השנתית הממוצעת ל־3 שנים, בדיווח של המסלול ל${period}`,
+  avg_annual_yield_5y: (period: string) => `התשואה השנתית הממוצעת ל־5 שנים, בדיווח של המסלול ל${period}`,
+} as const satisfies Record<string, (when: string) => string>;
 
 export const track = {
   fundLine: "קופה",
@@ -1001,6 +1021,7 @@ export const formulaKeys: Record<string, { lines?: string[]; symbols: [tex: stri
   "F-130": {
     lines: ["מה שהאינפלציה מורידה ממה שנשאר אחרי החשבון והקרן", "מה שנשאר אחרי החשבון והקרן, בהתחשב באינפלציה, פחות חלק המדינה, גם הוא בהתחשב באינפלציה"],
     symbols: [
+      ["inflation", "מה שהאינפלציה מורידה ממה שנשאר אחרי החשבון והקרן"],
       ["B^{nom}", "מה שנשאר אחרי החשבון והקרן, בלי להתחשב באינפלציה"],
       ["B^{real}", "אותו סכום בהתחשב באינפלציה"],
       ["state", "חלק המדינה, בהתחשב באינפלציה"],
@@ -3714,6 +3735,8 @@ export const guideSignature = {
       kind: { custody: "דמי ניהול פיקדון ניירות ערך", withAccount: "דמי ניהול פיקדון ניירות ערך ודמי חשבון קבועים" },
       redeem: "המס הוא {rate} מ־{base}: הניכיון.",
       about: { base: "הסכום שהמס מחושב עליו", fees: "דמי ניהול פיקדון ניירות ערך של שנת המס שירדו מהרווח. התקנות מתירות לנכות אותם מרווח ממכירת ניירות ערך באותה שנה." },
+      /** The taxed fees' head line by what the house charges (the `kind` above): custody alone, or custody and the account's fixed fee. */
+      feesAbout: { custody: "דמי ניהול פיקדון ניירות ערך של שנת המס שירדו מהרווח", withAccount: "דמי ניהול פיקדון ניירות ערך ודמי חשבון קבועים של שנת המס שירדו מהרווח" },
     },
     // `stated` is the words that state GOV-06, how the price follows the yield (D116)
     yieldLine: { stated: "המחיר עולה לפי תשואה", before: "של", after: "בשנה. התשואה היא הנחה של האתר, לא ריבית שפורסמה." },
@@ -3941,7 +3964,7 @@ export const guideSignature = {
       net: "ההפקדה של העובד פחות הזיכוי ממס",
       depositFee: "דמי הניהול מההפקדה, באחוז הממוצע שדווח, מסך ההפקדות החודשי",
       insurance: "דמי הביטוח בקרן הפנסיה: האחוז שהזנתם מסך ההפקדות החודשי",
-      balance: "מה שנצבר בקרן מכל ההפקדות (של העובד ושל המעסיק), אחרי דמי ניהול וביטוח ובהתחשב באינפלציה, לפני שהקרן הופכת אותו לקצבה. מה שיוצא מהכיס שלכם אחרי הזיכוי נשאר באותו סכום בכל השנים. לכן מ־2028, כשתקרות הזיכוי עולות, ההפקדה של העובד יכולה לגדול",
+      balance: "מה שנצבר בקרן מכל ההפקדות (של העובד ושל המעסיק), אחרי דמי ניהול וביטוח ובהתחשב באינפלציה, לפני שהקרן הופכת אותו לקצבה",
     },
   },
 } as const;
@@ -4057,7 +4080,7 @@ export const houseAverage = {
   link: "למחשבון העמלות של הבורסה",
   /** The sheet's head line for the figure, and what it is and is not, in the words of BRK-33's definition (individuals and small businesses, orders carried out, no derivatives). */
   about: (house: string) => `העמלה ש${house} גבה בפועל בממוצע, לפי מחשבון העמלות של הבורסה`,
-  sheetLead: "ממוצע העמלות שנגבו בפועל בתקופה שבמחשבון. הוא כולל רק לקוחות יחידים ועסקים קטנים, ורק פעולות שבוצעו בניירות ערך (בלי נגזרים). זה לא המחיר שתשלמו: האתר מציג אותו לידיעה בלבד, ומחשב תמיד לפי התעריפון.",
+  sheetLead: "הממוצע כולל רק לקוחות יחידים ועסקים קטנים, ורק פעולות שבוצעו בניירות ערך (בלי נגזרים). זה לא המחיר שתשלמו.",
   /** On /deal, the words on the line of what the price leaves out that open the house's averages, and the sheet's last line, before its link. */
   tap: "מה נגבה בפועל בממוצע",
   periodLine: (from: string, to: string) => `בתקופה ${from} עד ${to}, לפי גודל התיק.`,
@@ -4071,11 +4094,13 @@ export const invest = {
   agreements: {
     searchTitle: (distributor: string) => `דיווחי מנהלי הקרנות באתר מאיה על הסכמי הפצה עם ${distributor}`,
   },
-  /** The notes on a money-market fund's zero trade and custody lines at a bank (lib/instruments.server.ts): the rule, and what the example assumes. */
+  /** The notes on a money-market fund's zero trade and custody lines at a bank (lib/instruments.server.ts): what the example assumes (the rule is the line's chip). */
   bankMoneyMarketZero: {
-    trade: "כשיש הסכם הפצה על קרן כספית, מפיץ שלא משווק השקעות, כמו בנק, לא רשאי לגבות מבעל היחידה עמלה על קנייה, החזקה או פדיון. ההדגמה מניחה שלבנק יש הסכם הפצה עם הקרן.",
-    custody: "בבנק אי אפשר לגבות דמי ניהול פיקדון ניירות ערך על קרן כספית. ההדגמה מניחה שהקרן נקנית דרך הבנק.",
+    trade: "ההדגמה מניחה שלבנק יש הסכם הפצה עם הקרן.",
+    custody: "ההדגמה מניחה שהקרן נקנית דרך הבנק.",
   },
+  /** The note on a deposit fee of 0 where the regulator's field is empty: it says why that empty field means 0, that the product may charge from the balance only (PF-06, also the chip). */
+  depositFeeNoneByRule: (track: number) => `השדה של ממוצע דמי הניהול מהפקדות ריק בנתוני רשות שוק ההון למסלול ${track}. בסוג הקופה הזה מותר לגבות דמי ניהול רק מהיתרה, ולכן החישוב לוקח 0.`,
   shownPair,
   /** The plan's inputs as a computed figure's sheet lists them (`planInputs` in lib/invest.ts): a figure lists only those its formula uses. */
   planInputs: { amount: "סכום", monthly: "הפקדה חודשית", years: "שנים", return: "תשואה", inflation: "אינפלציה" },

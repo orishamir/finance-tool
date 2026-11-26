@@ -127,6 +127,8 @@ function checkFormulas(values: readonly SiteValue[]): { checked: number; noValue
     const standing = [...standsFor(w, inputs).values()].flat().sort();
     for (const [k, input] of Object.entries(inputs)) if (typeof input.value === "number") expect(standing, `${name}: input ${k} stands for a symbol`).toContain(k);
     expect(keyOfLine(line, keyRows, w, inputs).flatMap((r) => r.inputs.map((x) => x.key)).sort(), name).toEqual(standing);
+    // the key has a row for the symbol a line with an "=" works out, the figure the sheet heads with, and only one
+    expect(keyOfLine(line, keyRows, w, inputs).filter((r) => r.result).map((r) => r.tex), name).toHaveLength(line.includes("=") ? 1 : 0);
     const head = headText(v, false);
     const worked = withValues(line, w, inputs, digitsFor(head));
     if (worked === null) {

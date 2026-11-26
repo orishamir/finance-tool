@@ -178,18 +178,20 @@ export function withValues(tex: string, working: FormulaWorking, inputs: Record<
 
 /**
  * The key to a line: each symbol of the entry's key that stands in the line, in the key's order, with its words and the inputs that stand
- * for it (none for a symbol that is no input of this figure: what the line works out, a constant of the entry).
+ * for it (none for a symbol that is no input of this figure: what the line works out, a constant of the entry). `result` marks the symbol
+ * the line works out, the one left of its `=` that no input stands for: the figure the sheet heads with.
  */
-export function keyOfLine(tex: string, key: readonly (readonly [tex: string, words: string])[], working: FormulaWorking, inputs: Record<string, SiteValue>): { tex: string; words: string; inputs: { key: string; input: SiteValue }[] }[] {
-  const inLine = new Set(symbolsIn(tex, key.map(([s]) => s)).map((f) => f.symbol));
+export function keyOfLine(tex: string, key: readonly (readonly [tex: string, words: string])[], working: FormulaWorking, inputs: Record<string, SiteValue>): { tex: string; words: string; result: boolean; inputs: { key: string; input: SiteValue }[] }[] {
+  const symbols = key.map(([s]) => s);
+  const inLine = new Set(symbolsIn(tex, symbols).map((f) => f.symbol));
+  const leftSide = new Set(symbolsIn(rightOf(tex).left, symbols).map((f) => f.symbol));
   const keysOf = standsFor(working, inputs);
   return key
     .filter(([s]) => inLine.has(s))
-    .map(([s, words]) => ({
-      tex: s,
-      words,
-      inputs: (keysOf.get(s) ?? []).flatMap((k) => (inputs[k] ? [{ key: k, input: inputs[k] }] : [])),
-    }));
+    .map(([s, words]) => {
+      const standing = (keysOf.get(s) ?? []).flatMap((k) => (inputs[k] ? [{ key: k, input: inputs[k] }] : []));
+      return { tex: s, words, result: leftSide.has(s) && standing.length === 0, inputs: standing };
+    });
 }
 
 /** F-106's line, `P = C_0 + 12 × n × C`: what was paid in, in today's money, by the inputs that hold the amount now, the monthly deposit and the years. */
