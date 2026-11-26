@@ -36,17 +36,19 @@ describe("nisPer", () => {
     expect(v.about).toBe("מחושב משערי הייחוס של הבנק המרכזי האירופי, 23.10.2026");
     expect(fxLabel(fx)).toBe(v.about);
     expect(v.notes).toContain("ECB");
+    // the attribution the ECB's terms require is a field of its own, which the sheet always draws
+    expect(v.obligation).toBe(fx.attribution);
     expect(Object.keys(v.computed_from!.inputs)).toHaveLength(2);
     const input = Object.values(v.computed_from!.inputs)[0] as { source: { url: string; strength: string } };
     expect(input.source.url).toContain("ecb.europa.eu");
     expect(v.weakest).toBe("primary");
-    expect(v.stale).toBeNull();
+    expect(v.stale).toBeUndefined();
   });
   it("one input for the euro", () => {
     expect(Object.keys(nisPer(fx, "EUR", "2026-10-25")!.computed_from!.inputs)).toHaveLength(1);
   });
   it("goes stale after stale_after_days", () => {
-    expect(nisPer(fx, "USD", "2026-10-28")!.stale).toBeNull();
+    expect(nisPer(fx, "USD", "2026-10-28")!.stale).toBeUndefined();
     expect(nisPer(fx, "USD", "2026-10-29")!.stale).toEqual({ since: "2026-10-23", cadence: "daily" });
   });
 });

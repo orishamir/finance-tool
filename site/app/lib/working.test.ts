@@ -186,7 +186,7 @@ describe("every figure marked as a line of math comes to its head when its line 
     for (const years of [1, 3, 10, 20]) {
       const s = stretchRange(history.points, years);
       if (!s) continue;
-      const y = [invest.planInputs.years, entered(years, "years", today)] as const;
+      const y = [invest.planInputs.years, years] as const;
       values.push(dollarStretchChange(history, s.lowAt, s.low, y, today, "low"), dollarStretchChange(history, s.highAt, s.high, y, today, "high"));
     }
     const { checked, noValues } = checkFormulas(values);
