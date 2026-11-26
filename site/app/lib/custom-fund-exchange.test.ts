@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import type { FundExchange, FundRecord } from "@finance-tool/schema";
 import { draftWithKind, fundDraftOf, fundFromDraft, fundsAsRead, recordOfFund, validCustomFunds, withCustomEntries, type CustomFund, type FundDomicile } from "./custom-entries";
 import { buildInvest, dealOnPlan, dealRunOf, fundWayAt, indexById, venueOfFund, type DealOnPlan, type FundWay, type WayPrice } from "./invest";
+import { invest as copy } from "../copy";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { entered } from "./value";
@@ -336,6 +337,23 @@ describe("what the record says of the exchange (F-65)", () => {
     const known = wayOf(b, europe.id);
     expect(houses.filter((h) => left(known, h) !== null).length).toBeGreaterThan(3);
     for (const h of houses) expect([h, left(mine, h), reasonAt(mine, h)]).toEqual([h, left(known, h), reasonAt(known, h)]);
+  });
+});
+
+describe("the caution of a fund whose exchange is not known is on its figure (F-65)", () => {
+  const unsure = typed(null, 100, null);
+  const known = typed("us", 100, null);
+  const b = withCustomEntries(bundle, [unsure, known]);
+  const pricedAt = (w: FundWay) => houses.flatMap((h) => { const at = w.byHouse[h]; return at && "valueN" in at ? [at as WayPrice] : []; });
+
+  it("what it leaves at every account carries the doubt that says so, and that an account priced on one exchange only has none", () => {
+    const priced = pricedAt(wayOf(b, unsure.id));
+    expect(priced.length).toBeGreaterThan(3);
+    for (const at of priced) expect([at.providerId, at.value.doubt]).toEqual([at.providerId, copy.customEntries.exchangeUnknownDoubt]);
+  });
+
+  it("a fund whose exchange was given carries none", () => {
+    for (const at of pricedAt(wayOf(b, known.id))) expect([at.providerId, at.value.doubt]).toEqual([at.providerId, undefined]);
   });
 });
 

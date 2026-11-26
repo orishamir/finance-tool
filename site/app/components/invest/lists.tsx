@@ -22,7 +22,7 @@ import { invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
 import { fmt } from "../../lib/format";
 import { shortFundName } from "../../lib/fund-name";
-import { dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, venueOfFund, type FundWay, type InvestView, type WayPrice } from "../../lib/invest";
+import { dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWay, type InvestView, type WayPrice } from "../../lib/invest";
 import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
 import { priced, scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
@@ -325,8 +325,6 @@ export function PairLists(props: ListsProps) {
     return typed ? (
       <span className="flex min-w-0 items-center gap-1">
         {name}
-        {/* a fund bought abroad whose exchange and country were not given: each account is priced on the exchange that leaves less there (F-65) */}
-        {f.option === "abroad" && venueOfFund(f.rec) === null && <HelpMark tone="caution" about={c.customEntries.exchangeUnknownAbout} text={c.customEntries.exchangeUnknownText} />}
         <FundEditMark id={f.rec.id} />
       </span>
     ) : (

@@ -4467,9 +4467,8 @@ export const invest = {
     /** Under each answer: which fees each account is priced on (F-65). "Not sure" goes by the country the fund is registered in, the answer below. */
     exchangeNotes: { us: "העמלות של כל חשבון בארה״ב", europe: "העמלות של כל חשבון באירופה" },
     exchangeByDomicile: { US: "לפי המדינה שבה הקרן רשומה: העמלות בארה״ב", IE: "לפי המדינה שבה הקרן רשומה: העמלות באירופה", none: "לפי המדינה שבה הקרן רשומה. בלי מדינה: כל חשבון לפי הבורסה שמשאירה פחות" } as Record<string, string>,
-    /** The caution "?" beside the name of a typed fund bought abroad whose exchange and country were not given. */
-    exchangeUnknownAbout: "לא ידוע באיזו בורסה",
-    exchangeUnknownText: "לא הזנתם באיזו בורסה הקרן נסחרת או באיזו מדינה היא רשומה. לכן כל חשבון מחושב בבורסה שמשאירה לכם פחות אצלו, בארה״ב או באירופה. אפשר לבחור בורסה או מדינה בעריכת הקרן.",
+    /** The doubt of what a typed fund bought abroad leaves at an account, where its exchange and country were not given (F-65, invest.ts `withPlaceDoubt`). */
+    exchangeUnknownDoubt: "לא הזנתם באיזו בורסה הקרן נסחרת או באיזו מדינה היא רשומה. לכן כל חשבון מחושב בבורסה שמשאירה לכם פחות אצלו, בארה״ב או באירופה. חשבון שיש לו מחיר רק באחת משתי הבורסות מופיע בלי מחיר. אפשר לבחור בורסה או מדינה בעריכת הקרן.",
     unknown: "לא ידוע",
     domicileNames: { IE: "אירלנד", US: "ארצות הברית", other: "מדינה אחרת, או לא ידוע" } as Record<string, string>,
     noLabel: "בלי תווית",

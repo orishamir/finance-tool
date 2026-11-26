@@ -159,7 +159,8 @@ describe("a fund the person types is priced at the collected houses under its ki
     expect(stretchOf([mineAbroad], dealProviderId(movedDealId(cheap.id)))?.best).toBe(at.valueN);
     expect(at.valueN).toBeCloseTo(EXPECTED.cheapAbroad, 1);
     expect(at.value.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
-    expect(at.value.doubt).toBeUndefined();
+    // the reading makes no doubt: the figure's only doubt is that the fund's exchange and country were not given (F-65)
+    expect(at.value.doubt).toBe(invest.customEntries.exchangeUnknownDoubt);
   });
 
   it("a fund typed as US-domiciled and distributing is priced on the site's reading that its distribution is a dividend, its figures tagged with it, as a collected one's are (F-20, D85)", () => {

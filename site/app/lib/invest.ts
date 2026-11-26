@@ -1099,8 +1099,18 @@ function costValue(ctx: Ctx, row: ComparedProvider, spec: Spec, about: string | 
 }
 
 /** What is left with one account and one fund (F-65's real value), as every list and the stairs show it, with what its run reads. */
+/**
+ * F-65: what a fund whose exchange is not known leaves, priced on the exchange whose best reading leaves the least, carries that as its
+ * doubt, as F-04's cautious figures carry theirs (`SiteValue.doubt`), beside any doubt of its own.
+ */
+function withPlaceDoubt(v: SiteValue, spec: Spec | undefined): SiteValue {
+  if (spec?.place.at !== "unknown-exchange") return v;
+  const words = copy.customEntries.exchangeUnknownDoubt;
+  return { ...v, doubt: v.doubt ? `${v.doubt} ${words}` : words };
+}
+
 function valueFigure(ctx: Ctx, row: ComparedProvider, reads: RunReads, about: string, extra: Record<string, SiteValue> = {}): SiteValue {
-  return computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, { ...reads, tax: "after", profileUsed: row.run.profileUsed }), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: labelsOf(row), about });
+  return withPlaceDoubt(computed(row.real, "nis", "F-65", { ...inputsOfRun(ctx, { ...reads, tax: "after", profileUsed: row.run.profileUsed }), ...extra }, { today: ctx.bundle.today, rules: rulesOf(row), statements: statementsOf(row), flags: [...row.run.flags.map((f) => f.code).filter((c) => !COST_FLAGS.includes(c)), ...tariffQuestions(row)], labels: labelsOf(row), about }), reads.spec);
 }
 
 function wayPrice(ctx: Ctx, p: Extract<Priced, { kind: "ok" }>, providerId: string, about: string, fundId: string, spec: Spec): WayPrice {
@@ -1642,7 +1652,10 @@ export function dealOnFunds(a: InvestArgs & { fundIds: readonly string[]; provid
     }
     const row = got.row;
     const reads: RunReads = { house: s.id, fund: fundId, spec: fs.spec, row, profileUsed: row.run.profileUsed };
-    const of = (tax: RunReads["tax"]) => (n: number, about: string) => computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, tax }), { today: ctx.bundle.today, rules: rulesOf(row), ...(tax === "after" ? { statements: statementsOf(row), labels: labelsOf(row) } : { labels: row.run.labels.filter(beforeExitTax) }), about });
+    const of = (tax: RunReads["tax"]) => (n: number, about: string) => {
+      const v = computed(n, "nis", "F-128", inputsOfRun(ctx, { ...reads, tax }), { today: ctx.bundle.today, rules: rulesOf(row), ...(tax === "after" ? { statements: statementsOf(row), labels: labelsOf(row) } : { labels: row.run.labels.filter(beforeExitTax) }), about });
+      return tax === "after" ? withPlaceDoubt(v, fs.spec) : v;
+    };
     out.set(fundId, { kind: "ok", valueN: row.real, byFee, accountCost: row.horizonCostBeforeTax, reach: row.run.dealReach ?? [], figure: of(undefined), left: of("after"), listing: got.listing });
   }
   return out;
