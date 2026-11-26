@@ -29,55 +29,23 @@
     "ETF-93",
     "ETF-94",
     "ETF-95",
-    "MF-01",
-    "MF-02",
-    "MF-08",
     "MF-13",
     "MF-16",
     "MF-17",
-    "MF-18",
     "MF-21",
     "MF-24",
     "MF-26",
     "MF-29",
     "MF-31",
     "MF-32",
-    "MF-34",
     "MF-36",
-    "MF-37",
     "MF-40",
     "MF-43",
-    "MF-45",
     "MF-47",
     "MF-49",
-    "MF-50",
     "MF-58",
-    "MF-59",
     "MF-60",
-    "MF-65",
-    "MF-67",
-    "MF-68",
-    "MF-69",
-    "MF-70",
-    "MF-71",
-    "MF-72"
-  ],
-  "research-talk": [
-    "MF-01",
-    "MF-15",
-    "MF-45",
-    "MF-47",
-    "MF-59",
-    "MF-65",
-    "MF-70",
-    "MF-72"
-  ],
-  "spelled-number": [
-    "MF-13"
-  ],
-  "typed-figure": [
-    "MF-60",
-    "MF-71"
+    "MF-68"
   ],
   "figure-title": [
     "MF-74#foreign_securities_line"
@@ -94,22 +62,6 @@
     "ETF-92",
     "ETF-99",
     "MF-43",
-    "MF-47",
-    "MF-71",
-    "MF-76"
-  ],
-  "pointer-word": [
-    "MF-07"
-  ],
-  "title-ditto": [
-    "MF-36",
-    "MF-48",
-    "MF-74"
-  ],
-  "page-copy": [
-    "MF-59#government-bond",
-    "MF-62#limited-bond-fund",
-    "MF-65#limited-bond-fund",
-    "MF-73#money-market-fund-renewable"
+    "MF-47"
   ]
 }
