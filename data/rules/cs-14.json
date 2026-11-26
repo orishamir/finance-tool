@@ -1,7 +1,7 @@
 {
   "id": "CS-14",
-  "title": "Withdrawal at 18 and at 21; parental consent; payment time",
-  "title_he": "משיכה מחיסכון לכל ילד: גיל, אישור הורה ומועד התשלום",
+  "title": "Withdrawal at 18 and at 21; parental consent; paid to the member's own account",
+  "title_he": "משיכה מחיסכון לכל ילד: גיל, חתימת הורה ולאן הכסף משולם",
   "strength": "primary",
   "dimensions": [
     "liquidity-lockup",
@@ -49,66 +49,17 @@
       ],
       "state": "sourced",
       "notes": "Up to 21 a parent must sign the withdrawal; Harel's bylaw s.10.2 limits the consent requirement to ages 18 to 21 minus one day. From 21 the child withdraws alone."
-    },
-    "provident_payout_business_days": {
-      "value": 4,
-      "unit": "business_days",
-      "source": {
-        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1056/he/regulation_h2016-9-20a.pdf",
-        "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20), p.5, s.10.4",
-        "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
-      },
-      "checked": "2026-10-25",
-      "effective_from": null,
-      "effective_to": null,
-      "tax_year": null,
-      "update_rule": "fixed in regulation",
-      "rule_ids": [
-        "CS-14"
-      ],
-      "state": "sourced",
-      "notes": "CMA standard child bylaw s.10.4-10.5: within four business days of the request reaching the manager, to the member's bank account only; deferral to the 4th business day if the date falls in the month's first three business days; report within 10 business days (s.11). Reg. 41יא of the 1964 rules gives the same 4 business days, since the fund is a kupat gemel lehashkaa (circular 2022-9-29 s.1)."
     }
   },
-  "text_he": "מושכים רק מגיל הפדיון (מסוף חודש יום ההולדת), את כל הכסף או חלק ממנו. עד סוף התקופה שבה נדרשת חתימת הורה, ההורה חותם על המשיכה. אחריה הילד מושך לבד. הבקשה מוגשת לקופה או לבנק, לא לביטוח הלאומי. בקופת גמל הכסף משולם לחשבון הבנק של העמית בלבד, בתוך ימי העסקים לתשלום מקופה מהיום שהבקשה הגיעה לחברה. אם המועד חל באחד משלושת ימי העסקים הראשונים של החודש, התשלום יכול לעבור ליום העסקים הרביעי. אין משיכה בשל מצוקה כלכלית, ומועד כללי לתשלום מבנק לא נמצא.",
+  "text_he": "מחיסכון לכל ילד מושכים רק אחרי שמלאו לילד {CS-14:withdrawal_age} (מסוף חודש יום ההולדת), את כל הכסף או חלק ממנו. עד שמלאו לו {CS-14:parent_signature_until_age} הורה חותם על המשיכה, ואחר כך הילד מושך לבד. הבקשה מוגשת לקופה או לבנק, לא לביטוח הלאומי, ובקופת גמל הכסף משולם לחשבון הבנק של העמית בלבד. אין משיכה בשל מצוקה כלכלית, ומועד כללי לתשלום מבנק לא נמצא.",
   "figure_names_he": {
     "withdrawal_age": "גיל הפדיון",
-    "parent_signature_until_age": "גיל שעד אליו נדרשת חתימת הורה",
-    "provident_payout_business_days": "ימי עסקים לתשלום מקופה"
+    "parent_signature_until_age": "גיל שעד אליו נדרשת חתימת הורה"
   },
   "il_finance_file": "child-savings.md",
   "checked": "2026-11-07",
   "scope": "general",
   "sources": [
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=19",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004)",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ד-2004, קובץ התקנות 6332 (5.8.2004)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.19 (gazette p.873), reg. 44",
-      "locator_he": "עמוד הקובץ 19 (עמוד הרשומות 873), תקנה 44",
-      "page": 19,
-      "quote": "ביקש העמית לקבל את הכספים בתשלומים חודשיים רצופים",
-      "checked": "2026-11-07"
-    },
-    {
-      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6380%2Fheb#page=3",
-      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ה-2005, קובץ התקנות 6380 (10.4.2005)",
-      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 3), התשס\"ה-2005, קובץ התקנות 6380 (10.4.2005)",
-      "publisher": "Reshumot (Ministry of Justice)",
-      "publisher_he": "רשומות (משרד המשפטים)",
-      "kind": "regulation",
-      "strength": "primary",
-      "locator": "file p.3 (gazette p.603), reg. 9",
-      "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 603), תקנה 9",
-      "page": 3,
-      "quote": "רשאית הקופה לדחות את מועד התשלום ליום העסקים הרביעי באותו חודש",
-      "checked": "2026-11-07"
-    },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1056/he/regulation_h2016-9-20a.pdf",
       "title": "תקנון תקני לקופת גמל להשקעה לחיסכון ארוך טווח לילד (נספח לחוזר גופים מוסדיים 2016-9-20)",
@@ -185,5 +136,8 @@
       "quote": "יעביר המוסד לסכום החיסכון הצבור הכולל סכום של 500 שקלים חדשים",
       "checked": "2026-11-07"
     }
+  ],
+  "derived_from": [
+    "KH-16"
   ]
 }
