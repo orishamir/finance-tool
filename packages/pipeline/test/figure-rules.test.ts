@@ -1,6 +1,11 @@
 // The figure-rules table (src/figure-rules.ts): which ids a deposit's values may name, in which state, and the standing allow for the
 // card that holds a value's source. Over the repository's own data the check in src/checks/figure-rules.ts runs in validate.test.ts.
+import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import * as figureRulesCheck from "../src/checks/figure-rules.ts";
+import { testData } from "../src/checks/lib/kit.ts";
 import { FIGURE_RULES, figureRuleProblems, judgeId, pathOf, rowFor, type CardSources } from "../src/figure-rules.ts";
 
 const src = (url: string) => ({ url, title: "t", publisher: "p", strength: "institution" });
@@ -82,5 +87,31 @@ describe("figure-rules table", () => {
     const brk = (bank: string) => deposit({ bank, break: { allowed: true, penalty: "with_penalty", mechanism_text: "", rule_ids: ["BANK-06", "BANK-33"] } });
     expect(figureRuleProblems("terms/deposits", brk("discount"), noCards)).toEqual([]);
     expect(figureRuleProblems("terms/deposits", brk("leumi"), noCards)).toEqual([{ pointer: "/break", id: "BANK-33", verdict: "disallowed" }]);
+  });
+});
+
+describe("figure-rules check", () => {
+  /** A data folder of deposit records under terms/deposits/, each file named by its record id (and a date, for a dated snapshot). */
+  function folder(files: Record<string, unknown>): string {
+    const dir = mkdtempSync(join(tmpdir(), "data-"));
+    mkdirSync(join(dir, "terms", "deposits"), { recursive: true });
+    for (const [name, content] of Object.entries(files)) writeFileSync(join(dir, "terms", "deposits", `${name}.json`), JSON.stringify(content));
+    return dir;
+  }
+
+  it("fails a disallowed id and an unknown one on the latest snapshot, and leaves an older snapshot alone", () => {
+    expect(figureRulesCheck.name).toBe("figure-rules");
+    const dir = folder({
+      "bank-pikadon-leshana@2026-10-01": deposit({ rate_offered: vo(2, ["BANK-13", "BANK-34"]) }),
+      "bank-pikadon-leshana@2026-11-01": deposit({ rate_offered: vo(2, ["BANK-13", "BANK-28", "BANK-99"]) }),
+    });
+    expect(figureRulesCheck.check(testData(dir)).map((p) => p.message)).toEqual([
+      expect.stringMatching(/^terms\/deposits\/bank-pikadon-leshana#\/rate_offered names BANK-28, which the figure-rules table does not admit/),
+      expect.stringMatching(/^terms\/deposits\/bank-pikadon-leshana#\/rate_offered names BANK-99, which no row of the figure-rules table knows/),
+    ]);
+  });
+
+  it("passes a record whose ids the table admits", () => {
+    expect(figureRulesCheck.check(testData(folder({ "bank-pikadon-leshana": deposit() })))).toEqual([]);
   });
 });
