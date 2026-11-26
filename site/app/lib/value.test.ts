@@ -344,9 +344,10 @@ describe("a site parameter's value shows its rationale whatever its update rule 
     expect(isParameter(asParameter(p05, cash))).toBe(true);
     expect(asParameter(p05, cash).parameter?.rationaleHe).toBe("למה");
   });
-  it("a value no parameter marks is none, whatever its update rule", () => {
-    expect(isParameter(fig("primary", { update_rule: "founder" }))).toBe(false);
+  it("a value no parameter marks is none, unless the founder updates it, which only a parameter's is", () => {
+    expect(isParameter(fig("primary", { update_rule: "founder" }))).toBe(true);
     expect(isParameter(fig("primary", { update_rule: "market" }))).toBe(false);
+    expect(isParameter(entered(5, "nis", "2026-11-26"))).toBe(false);
   });
 });
 
@@ -360,8 +361,11 @@ describe("plain differences and sums", () => {
     sumOf({ א: a }, "F-91", { today, statements: [] });
     expect(true).toBe(true);
   });
-  it("a difference of two figures under one name throws, since one would hide the other", () => {
-    expect(() => differenceOf(["א", a], ["א", entered(200, "nis", today)], "F-91", { today })).toThrow(/both figures are named/);
+  it("a difference of two figures under one name keeps both, the second told apart by its order, and shows no working", () => {
+    const d = differenceOf(["א", a], ["א", entered(200, "nis", today)], "F-91", { today });
+    expect(d.value).toBe(300);
+    expect(Object.keys(d.computed_from!.inputs)).toEqual(["א", "א (2)"]);
+    expect(d.computed_from!.working).toBeUndefined();
   });
   it("the gate sends these back to the input list, with no receipt: agorot that miss the total, a figure a phone row may write short, a figure that does not read back", () => {
     const working = (v: SiteValue) => v.computed_from?.working?.kind;

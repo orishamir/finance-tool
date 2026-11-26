@@ -162,10 +162,10 @@ export function ownEach(values: Record<string, SiteValue>, company: string, pick
 /**
  * A site parameter's value (data/parameters), whose sheet tags it and shows the parameter's rationale: one the loader marked as a
  * parameter's (`asParameter`, `p05Value`), whatever its update rule, so a parameter that quotes a published figure (P-05's cash rate, the
- * Bank of Israel's) shows the assumption too.
+ * Bank of Israel's) shows the assumption too; or one updated by the founder, which only a parameter is.
  */
 export function isParameter(v: SiteValue): boolean {
-  return !!v.parameter && v.state === "sourced";
+  return v.state === "sourced" && (!!v.parameter || v.update_rule === "founder");
 }
 
 
@@ -402,18 +402,19 @@ function readsBack(v: number, unit: string, state: SiteValue["state"], parameter
  * two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either is not a number. `round`
  * shapes the result (its size alone). It is plain (`plain`): it carries the two's labels, doubt, staleness and flags as every computed
  * figure does (`computed`), and lists no rule. Its sheet shows it as the difference it is (`Working` "difference"), where the two as written
- * come to it as written (`addsUp`), unless the options name a line of math it is (`working`). The two names must differ, since each is the
- * key its input is listed under.
+ * come to it as written (`addsUp`), unless the options name a line of math it is (`working`). Two figures under one name (a list's row against
+ * itself) are both kept, the second told apart by its order, and it shows no working, which would name one key for two lines.
  */
 export function differenceOf(a: readonly [name: string, value: SiteValue], b: readonly [name: string, value: SiteValue], formula: string, options: PlainOptions): SiteValue {
   const [an, av] = a;
   const [bn, bv] = b;
-  if (an === bn) throw new Error(`differenceOf: both figures are named "${an}", so one would hide the other in the inputs (${formula})`);
+  const same = an === bn;
+  const bk = same ? `${bn} (2)` : bn;
   const n = typeof av.value === "number" && typeof bv.value === "number" ? amountShown(av.value, av.unit, av.state, isParameter(av)) - amountShown(bv.value, bv.unit, bv.state, isParameter(bv)) : null;
   const value = n === null ? null : (options.round ?? ((x: number) => x))(n);
   const unit = options.unit ?? av.unit;
-  const shown = options.working ?? (value !== null && addsUp([[1, av], [-1, bv]], value, unit) ? ({ kind: "difference", from: an, less: bn } as const) : undefined);
-  return plain(computed(value, unit, formula, { [an]: av, [bn]: bv }, { ...options, ...(shown ? { working: shown } : {}) }), { [an]: av, [bn]: bv });
+  const shown = same ? undefined : (options.working ?? (value !== null && addsUp([[1, av], [-1, bv]], value, unit) ? ({ kind: "difference", from: an, less: bn } as const) : undefined));
+  return plain(computed(value, unit, formula, { [an]: av, [bk]: bv }, { ...options, working: undefined, ...(shown ? { working: shown } : {}) }), { [an]: av, [bk]: bv });
 }
 
 /**
