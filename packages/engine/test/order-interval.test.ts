@@ -5,6 +5,8 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { feesSnapshot, type ValueObject } from "@finance-tool/schema";
 import { intervalChosen, intervalWays, wayChosen, providerWorkbench, runSecurities, waitingReal, type ComparedProvider, type Deal, type DealProvider, type ProviderWorkbench, type SecuritiesInput, type WorkbenchInput } from "../src/index.ts";
+import { runSecuritiesChosen } from "../src/ledgers/securities.ts";
+import type { RunResult } from "../src/result.ts";
 import { context, loadRules } from "./golden/harness.ts";
 
 const ctx = context(loadRules());
@@ -122,6 +124,21 @@ describe("the run at an order interval (F-133)", () => {
   it("refuses an interval with several orders a month (A-28), and an interval that is not one of the six", () => {
     expect(() => runSecurities({ ...base, ordersPerMonth: 2, way: { orderEvery: 3 } }, ctx)).toThrow(/F-133/);
     expect(() => runSecurities({ ...base, way: { orderEvery: 5 as 4 } }, ctx)).toThrow(/F-133/);
+  });
+});
+
+describe("the run chosen among a way's intervals (runSecuritiesChosen)", () => {
+  it("is the run of the interval that leaves the most, as each run alone gives it, and the same when asked again", () => {
+    // 100 ₪ a month for 7 months at no return, a 10 ₪ minimum: monthly pays 70, every 2 months 30, every 3 20, every 6 10, the deposits
+    // after the last order waiting to the sale, so every 6 months leaves the most, 690
+    const seven = { ...base, goal: { amountNow: 0, monthly: 100, months: 7 }, tariff: { buy: { rate: 0, min: 10 } } };
+    const ways = [undefined, { orderEvery: 2 as const }, { orderEvery: 3 as const }, { orderEvery: 6 as const }];
+    const choose = (runs: readonly RunResult[]) => intervalChosen(runs.map((run, i) => ({ way: ways[i] ?? {}, run })));
+    const chosen = runSecuritiesChosen("F-133", seven, ways, ctx, choose);
+    expect(chosen.index).toBe(3);
+    expect(chosen.run.nominal).toBeCloseTo(690, 9);
+    expect(chosen.run).toEqual(runSecurities({ ...seven, way: { orderEvery: 6 } }, ctx));
+    expect(runSecuritiesChosen("F-133", seven, ways, ctx, choose)).toEqual(chosen);
   });
 });
 
