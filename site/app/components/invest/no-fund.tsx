@@ -38,13 +38,13 @@ function splitOf(h: HouseRow): CostSplit {
   return h.split;
 }
 
-/** The houses the list ranks: priced ones by what the account charges, then the ones it cannot price, those not sold there last. */
+/** The houses the list ranks: priced ones by the account's whole part, its fees and the waiting cash (`BrokerCell.rankN`), then the ones it cannot price, those not sold there last. */
 function ordered(view: InvestView) {
   const rows = view.houses;
   const ok = rows
     .filter((h): h is HouseRow & { generic: NonNullable<HouseRow["generic"]> } => !!h.generic)
     .map((h) => ({ ...h, split: splitOf(h) }))
-    .sort((a, b) => a.generic.costN! - b.generic.costN! || a.provider.short.localeCompare(b.provider.short, "he"));
+    .sort((a, b) => a.generic.rankN! - b.generic.rankN! || a.provider.short.localeCompare(b.provider.short, "he"));
   const missing = rows.filter((h) => !h.generic).sort((a, b) => Number(!!a.unavailable) - Number(!!b.unavailable) || a.provider.short.localeCompare(b.provider.short, "he"));
   return { rows, ok, missing };
 }
@@ -115,8 +115,9 @@ export function NoFundAccountColumn({ view, bundle, years, monthly = 1, chosen, 
   const standingCount = local.filter((h) => h.standing).length;
   const asideCount = local.filter((h) => h.aside.length > 0).length;
   const kinds = view.options.filter((o) => o.exists).map((o) => o.id);
-  // equal costs share a place, and a first place shared by two crowns neither; the tie threshold is for what is left, not for costs
-  const places = placesOf(ok.map((h) => h.generic.costN!), 0);
+  // equal costs share a place, and a first place shared by two crowns neither; the tie threshold is for what is left, not for costs.
+  // A place reads the account's whole part, the waiting cash with the fees, as the order does (`BrokerCell.rankN`)
+  const places = placesOf(ok.map((h) => h.generic.rankN!), 0);
   const crown = firstCount(places) === 1;
   const snapOf = (id: string) => bundle.snapshots.find((s) => s.id === id);
   // the tag's room on a house that sells a kind of fund only by phone on some exchange, whichever the plan makes cheapest

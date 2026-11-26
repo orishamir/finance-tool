@@ -86,11 +86,11 @@ describe("the index page's sections render", () => {
     expect(out).toContain(invest.noFund.callTitle);
     expect(out).toContain(invest.noFund.fundTitle);
     expect(out).toContain(invest.funds.request);
-    // every house keeps a row, and the priced ones stand in the order of what they charge
+    // every house keeps a row, and the priced ones stand in the order of the account's whole part, the waiting cash with the fees
     for (const h of v.houses) expect(out).toContain(h.provider.short);
-    const costs = v.houses.filter((h) => h.generic).map((h) => h.generic!.costN!).sort((a, b) => a - b);
+    const costs = v.houses.filter((h) => h.generic).map((h) => h.generic!.rankN!).sort((a, b) => a - b);
     const shown = [...out.matchAll(/data-pick-key="([^"]+)"/g)].map((m) => m[1]!).filter((id) => v.houses.find((h) => h.provider.id === id)?.generic);
-    expect(shown.map((id) => v.houses.find((h) => h.provider.id === id)!.generic!.costN!)).toEqual(costs);
+    expect(shown.map((id) => v.houses.find((h) => h.provider.id === id)!.generic!.rankN!)).toEqual(costs);
   });
   it("a custom index: the waiting cash is its own line, apart from what the account charges, and the remainder is the fees' alone (F-91, F-133)", () => {
     const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });

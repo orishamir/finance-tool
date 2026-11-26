@@ -200,7 +200,13 @@ export interface BrokerCell {
    * cell's only figure: no tax index enters it (method F-04, G-40), so nothing after tax of the generic fund is kept to rank on.
    */
   cost?: SiteValue;
+  /** `cost` as a number: the account's fees before tax, without what the cash its way leaves waiting did, which is shown on its own line. */
   costN?: number;
+  /**
+   * What ranks the cell, its house and the cheapest kind of fund: the account's whole part before tax (F-91), its fees (`costN`) and what
+   * the cash its way leaves waiting did (F-109, F-133), which costs the person as a fee does though it is not one.
+   */
+  rankN?: number;
   /** Abroad: the exchange the price rests on; null when the tariff has one line for all. */
   venue?: Venue | null;
   /** The monthly purchases ran on the house's printed standing-order line (F-12, D41). */
@@ -1296,6 +1302,7 @@ function computeOption(ctx: Ctx, index: IndexRef, option: OptionId): OptionView 
         option,
         cost: costValue(ctx, row, spec, copy.houses.costAbout(s.provider.name_he)),
         costN: feesOf(row),
+        rankN: row.horizonCostBeforeTax,
         venue: p.venue,
         standing: p.standing,
         aside: p.aside,
@@ -1374,7 +1381,7 @@ function housesOf(ctx: Ctx, options: OptionView[], providers: ProviderInfo[]): H
     const best = entries.find((e) => e.price) ?? null;
     // no fund record at all: the broker cost of the group's options, the cheapest
     const cells = opts.flatMap((o) => o.cells.filter((c) => c.providerId === provider.id));
-    const generic = cells.filter((c) => c.kind === "cost").sort((a, b) => a.costN! - b.costN!)[0] ?? null;
+    const generic = cells.filter((c) => c.kind === "cost").sort((a, b) => a.rankN! - b.rankN!)[0] ?? null;
     const split = generic && pairless ? splitOf(ctx, generic) : null;
     const na = cells.find((c) => c.kind === "unavailable");
     const reason = best || generic ? null : (entries.find((e) => e.reason)?.reason ?? cells.find((c) => c.reason)?.reason ?? null);
@@ -1383,7 +1390,7 @@ function housesOf(ctx: Ctx, options: OptionView[], providers: ProviderInfo[]): H
     return { provider, group, entries, best, unavailable: !best && !generic ? (na?.availability ?? null) : null, reason, generic, split, standing, aside };
   });
   const priced = (r: HouseRow) => r.best ?? r.generic;
-  const cost = (r: HouseRow) => (r.best ? -r.best.price!.valueN : r.generic ? r.generic.costN! : Infinity);
+  const cost = (r: HouseRow) => (r.best ? -r.best.price!.valueN : r.generic ? r.generic.rankN! : Infinity);
   return rows.sort((a, b) => Number(!priced(a)) - Number(!priced(b)) || a.group.localeCompare(b.group) * -1 || cost(a) - cost(b) || a.provider.name.localeCompare(b.provider.name, "he"));
 }
 

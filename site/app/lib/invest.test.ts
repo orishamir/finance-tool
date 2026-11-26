@@ -408,6 +408,33 @@ describe("invest page computation", () => {
     expect(kinds.unhedged).toBeGreaterThan(0);
   });
 
+  it("an index with no fund ranks its houses and picks each one's kind of fund by the account's whole part, the waiting cash with the fees (F-91, F-109, F-133)", () => {
+    const c: CustomIndex = { id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t };
+    const at = (amount: number, monthly: number, years: number) => plan({ amountNow: amount, monthly, years, values: { ...plan().values, amount: entered(amount, "nis", t), monthly: entered(monthly, "nis_per_month", t), years: entered(years, "years", t) } });
+    let feesAloneDiffer = false;
+    for (const p of [plan(), at(0, 300, 3), at(0, 100, 10), at(0, 1000, 15)]) {
+      const v = buildInvest({ bundle, index: refOfCustom(c), plan: p });
+      const priced = v.houses.filter((h) => h.generic && h.split);
+      expect(priced.length).toBeGreaterThan(1);
+      // the whole part: the fees shown and the waiting cash on its own line
+      const whole = (h: (typeof priced)[number]) => h.generic!.costN! + ((h.split!.waiting?.value.value as number | undefined) ?? 0);
+      // the houses stand by group, Israeli first, then by cost
+      for (const group of ["il", "foreign"]) {
+        const inGroup = priced.filter((h) => h.group === group);
+        const shown = inGroup.map(whole);
+        expect(shown, `${group} ${p.amountNow}/${p.monthly}/${p.years}`).toEqual([...shown].sort((a, b) => a - b));
+        const byFees = inGroup.map((h) => h.generic!.costN!);
+        if (byFees.some((x, i) => i > 0 && x < byFees[i - 1]!)) feesAloneDiffer = true;
+      }
+      for (const h of priced) {
+        expect(h.generic!.rankN, h.provider.id).toBeCloseTo(whole(h), 6);
+        const cells = v.options.flatMap((o) => o.cells).filter((x) => x.providerId === h.provider.id && x.kind === "cost");
+        expect(h.generic!.rankN, h.provider.id).toBe(Math.min(...cells.map((x) => x.rankN!)));
+      }
+    }
+    expect(feesAloneDiffer, "on none of these plans do the fees alone order the houses otherwise: pick another").toBe(true);
+  });
+
   it("reads the exchange a tariff band names", () => {
     expect(venueOfBand('מניות הנסחרות בארה"ב')).toBe("us");
     expect(venueOfBand("מניות ו-ETF הנסחרות בבורסות אירופה")).toBe("europe");
