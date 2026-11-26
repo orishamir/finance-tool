@@ -133,7 +133,7 @@ Importance is a judgement, so it is a parameter: the data-driven score (engine u
 | 5 | TXH-09, KH-15 | when a study fund is liquid without tax |
 | 6 | BANK-23, REG-04, REG-06 | is money in a deposit insured |
 | 7 | PF-06, PF-02 | the management-fee cap |
-| 8 | PF-19, SW-06 | transfer between funds: how long, what it costs |
+| 8 | PF-19 | transfer between funds: how long, what it costs |
 | 9 | PF-13, PF-14, SW-15 | a fee discount: for how long is it guaranteed |
 | 10 | TXS-24, MF-37 | whether all money-market funds are the same |
 | 11 | BANK-20 | money sitting in a current account: what the bank must say |
