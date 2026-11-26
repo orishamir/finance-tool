@@ -5,6 +5,7 @@
 import { isOwnDocument, listedAt, notRules, type OwnDocumentKeys, type RuleRecord } from "@finance-tool/schema";
 import { documentsPath } from "./site-paths";
 import { scopeWords } from "../copy";
+import { slotIds } from "./figure-slots";
 
 export type Scope = RuleRecord["scope"];
 
@@ -193,11 +194,12 @@ export function figureRuleIds(rule: Pick<RuleRecord, "figures">): string[] {
 }
 
 /**
- * The records a rule card points at: its derivations, its examples (a general rule's companies' terms) and the rules its figures cite.
- * They travel with the card, so each chip on it, or on a figure's sheet, opens its record.
+ * The records a rule card points at: its derivations, its examples (a general rule's companies' terms), the rules its figures cite and
+ * the rules whose figures fill its text's slots. They travel with the card, so each chip on it, or on a figure's sheet, opens its
+ * record, and each slot in its text is a figure, never "—".
  */
-export function pointedIds(rule: Pick<RuleRecord, "id" | "derived_from" | "examples" | "figures">): string[] {
-  return [...new Set([...(rule.derived_from ?? []), ...(rule.examples ?? []), ...figureRuleIds(rule)])].filter((id) => id !== rule.id);
+export function pointedIds(rule: Pick<RuleRecord, "id" | "derived_from" | "examples" | "figures" | "text_he">): string[] {
+  return [...new Set([...(rule.derived_from ?? []), ...(rule.examples ?? []), ...figureRuleIds(rule), ...slotIds(rule.text_he ?? "")])].filter((id) => id !== rule.id);
 }
 
 /** Records by id from bundles' lists (a bundle's `pointed`), for `ProvenanceData.pointed` on a page built from bundles. */

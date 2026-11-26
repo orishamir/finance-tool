@@ -22,6 +22,7 @@ import { MQ, useMedia } from "../lib/hooks";
 import { facetCounts, filtersToSearch, groupProducts, idInField, parseFilters, passesFilters, shelfGroups, shownShelf, type Filters, type LightRule } from "../lib/rules-filter";
 import { shelfIds, type ShelfId } from "../lib/rule-shelves";
 import { ruleTitle } from "../lib/rule-title";
+import { slotsAsText, type SlotSource } from "../lib/figure-slots";
 import { analyze, isRuleKind, relaxedHits, searchEntries } from "../lib/search";
 import { pickSources, type SourcedRule } from "../lib/sources";
 import { moveAddress, useAddressSearch, useHash } from "../lib/address";
@@ -29,8 +30,8 @@ import { hashId } from "../lib/address-hash";
 import type { RuleRecord } from "@finance-tool/schema";
 
 /** A rule's title for a list: the record's Hebrew title or text; never the English working title (the topic's Hebrew name stands in). */
-function listTitle(r: Parameters<typeof ruleTitle>[0] & { il_finance_file: string }): string {
-  const t = ruleTitle(r);
+function listTitle(r: Parameters<typeof ruleTitle>[0] & { il_finance_file: string }, slots: SlotSource): string {
+  const t = ruleTitle(r, slots);
   return t.english ? topicName(r.il_finance_file) : t.text;
 }
 
@@ -49,13 +50,15 @@ export async function loader() {
   const products = ruleProducts();
   const pinned = loadPinnedRules();
   const publishersHe = loadPublishersHe();
+  // a text's figure slots are written as the figures the card shows
+  const slots: SlotSource = { rules, today: now };
 
   const light: LightRule[] = all
     .map((r) => {
       const src = rowSource(r as unknown as SourcedRule, publishersHe);
       return {
         id: r.id,
-        title: listTitle(r),
+        title: listTitle(r, slots),
         shelf: shelfOf(r),
         file: r.il_finance_file,
         strength: r.strength,
@@ -63,7 +66,7 @@ export async function loader() {
         recheck_date: r.recheck_date,
         score: scores[r.id] ?? 0,
         products: products[r.id] ?? [],
-        lead: firstSentence(r.text_he),
+        lead: firstSentence(r.text_he && slotsAsText(r.text_he, slots)),
         ...(openPart(r) ? { openPart: true } : {}),
         pills: rowPills(r, year),
         authority: src.authority,

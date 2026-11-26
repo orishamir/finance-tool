@@ -818,8 +818,8 @@ function RuleFigures({ rule, id, pageValue = (v) => v, head }: { rule: RuleRecor
   );
 }
 
-function ShownRuleTitle({ rule }: { rule: RuleRecord }) {
-  const t = ruleTitle(rule);
+function ShownRuleTitle({ rule, slots }: { rule: RuleRecord; slots: SlotSource }) {
+  const t = ruleTitle(rule, slots);
   return t.english ? <bdi dir="ltr">{t.text}</bdi> : <>{t.text}</>;
 }
 
@@ -856,7 +856,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
           {open && <>{ruleCopy.open.title} </>}
           <bdi dir="ltr" className="slashed-zero">{id}</bdi>
           {!open && " · "}
-          {!open && <ShownRuleTitle rule={rule} />}
+          {!open && <ShownRuleTitle rule={rule} slots={data} />}
         </h2>
         {/* who it applies to (D30): a neutral label, never a warning; the strength tag stays only for an open or second-hand source, or a general rule read from a company's document */}
         <div className="flex flex-wrap items-center gap-1.5">
@@ -869,12 +869,15 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       {open ? (
         <Callout tone="blocked">
           <span className="block">
-            <ShownRuleTitle rule={rule} />
+            <ShownRuleTitle rule={rule} slots={data} />
           </span>
           <span className="block">{ruleCopy.open.last}</span>
         </Callout>
       ) : rule.text_he ? (
-        <p className="text-sm">{rule.text_he}</p>
+        // its figure slots read the page's records: the card's own record and those it points at (`pointedIds`)
+        <p className="text-sm">
+          <SlottedText text={rule.text_he} source={data} />
+        </p>
       ) : (
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
       )}
@@ -929,7 +932,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       {uses && uses.pages.length === 0 && !uses.engine && <p className="text-xs text-muted-foreground">{ruleCardMore.usesNone}</p>}
       {/* the card's foot: pushed to the bottom, so cards side by side have it at one height */}
       <div className="mt-auto flex flex-col gap-3 pt-1">
-        {sources[0] && <CitationBox text={citationText(sourced, sources[0], sources[0].checked)} />}
+        {sources[0] && <CitationBox text={citationText(sourced, sources[0], sources[0].checked, data)} />}
         {!inline && <CardFoot rule={rule} data={data} />}
       </div>
     </div>
@@ -986,7 +989,8 @@ function CopyCitation({ text }: { text: string }) {
 }
 
 /** A rule's sources by document: one block per address (its names, its PDF tag), each cited place in it on its own line with its quoted words, then when it was read and the document's copy button. */
-function SourcesByDocument({ sources, rule, today }: { sources: readonly RuleSource[]; rule: SourcedRule; today: string }) {
+function SourcesByDocument({ sources, rule, slots }: { sources: readonly RuleSource[]; rule: SourcedRule; /** The page's records and its day: a citation's title read from the text fills its slots. */ slots: SlotSource }) {
+  const today = slots.today;
   const publishersHe = useContext(DataCtx)?.publishersHe;
   const docs: RuleSource[][] = [];
   const at = new Map<string, number>();
@@ -1053,7 +1057,7 @@ function SourcesByDocument({ sources, rule, today }: { sources: readonly RuleSou
                   {sourceCopy.checked} <Iso ltr>{fmt.date(dates[0]!)}</Iso>
                 </p>
               )}
-              <CopyCitation text={list.map((s) => citationText(rule, s, s.checked)).join("\n")} />
+              <CopyCitation text={list.map((s) => citationText(rule, s, s.checked, slots)).join("\n")} />
             </div>
           </div>
         );
@@ -1083,7 +1087,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
       <header className="flex flex-col gap-2 -mt-3">
         <h2 id={headId} tabIndex={-1} className="text-xl font-semibold leading-snug outline-none">
           {open && <>{ruleCopy.open.title} </>}
-          <ShownRuleTitle rule={rule} />
+          <ShownRuleTitle rule={rule} slots={data} />
         </h2>
         <div className="flex flex-wrap items-center gap-1.5">
           {products.map((p) => (
@@ -1100,14 +1104,16 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
           <span className="block">{ruleCopy.open.last}</span>
         </Callout>
       ) : rule.text_he ? (
-        <p className="text-base leading-relaxed">{rule.text_he}</p>
+        <p className="text-base leading-relaxed">
+          <SlottedText text={rule.text_he} source={data} />
+        </p>
       ) : (
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
       )}
       {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs, tagCompanies(rule, data.ownDocs))}</p>}
       <RulePointers rule={rule} />
       <RuleFigures rule={rule} id={id} head={<GroupHead>{ruleCopy.figures}</GroupHead>} />
-      {sources.length > 0 ? <SourcesByDocument sources={sources} rule={sourced} today={data.today} /> : <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>}
+      {sources.length > 0 ? <SourcesByDocument sources={sources} rule={sourced} slots={data} /> : <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>}
       {(dims.length > 0 || uses || sources.length === 0 || rule.recheck_date) && (
       <dl className="sheet-dl border-t border-border pt-3">
         {dims.length > 0 && (
@@ -1185,7 +1191,7 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
       <span className="text-xs-flow font-medium text-primary">{label}</span>
       <h3 className="text-lg font-semibold leading-snug -mt-1">
         <button type="button" onClick={onOpen} className="text-start hover:underline">
-          <ShownRuleTitle rule={rule} />
+          <ShownRuleTitle rule={rule} slots={data} />
         </button>
       </h3>
       {figures.length > 0 ? (

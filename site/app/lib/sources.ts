@@ -8,6 +8,7 @@ import { monthsBefore } from "./dates";
 import { recheckStale } from "./value";
 import { hostOf, isHebrewTitle, hebrewCitation } from "./source-label";
 import { ruleTitle } from "./rule-title";
+import type { SlotSource } from "./figure-slots";
 
 export type SourceStrength = "primary" | "institution" | "secondary";
 
@@ -198,12 +199,12 @@ export function sourceParts(source: RuleSource): { publisher: string | null; tit
   return { publisher: !n.publisher || title.text.startsWith(n.publisher) ? null : n.publisher, title, locator: n.locator, pdf: n.pdf };
 }
 
-/** `{title_he} — {publisher}, {document}, {locator}. {url} (נבדק {date})`, the line the copy button writes. */
-export function citationText(rule: Pick<SourcedRule, "title" | "title_he" | "text_he">, source: RuleSource, date: string): string {
+/** `{title_he} — {publisher}, {document}, {locator}. {url} (נבדק {date})`, the line the copy button writes; `slots` fill a title read from the text. */
+export function citationText(rule: Pick<SourcedRule, "title" | "title_he" | "text_he">, source: RuleSource, date: string, slots: SlotSource): string {
   const n = sourceParts(source);
   const parts = [n.publisher, n.title?.text].filter((x): x is string => !!x);
   if (n.locator) parts.push(n.locator);
-  const claim = ruleTitle(rule).text;
+  const claim = ruleTitle(rule, slots).text;
   return `${claim} — ${parts.join(", ")}. ${sourceHref(source)} (${sourceBlock.citation.checked} ${fmt.date(date)})`;
 }
 

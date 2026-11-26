@@ -564,7 +564,7 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   if (kind === "proof" && !asLabel) return <ProofsChip ids={[id]} className={className} />;
   // an open question's chip says a word, not its code: the sentence around it says "שאלה פתוחה", the sheet says which
   const title = titled && kind === "question" ? questionOf(data, shown)?.title_he : undefined;
-  const ruleName = rule ? ruleTitle(rule) : undefined;
+  const ruleName = rule && data ? ruleTitle(rule, data) : undefined;
   let card: string | undefined;
   if (kind === "parameter") card = data?.parameters ? data.parameters[id] : id;
   if (kind === "assumption") card = data?.parameters?.[id];
@@ -713,10 +713,10 @@ export function RuleTitleRow({ id, scope = true, className }: { id: string; /** 
   const data = useContext(DataCtx);
   const rule = ruleOf(data, id);
   // a record the page does not hold: the row still opens the card, which says so
-  if (!rule) return <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} className={className}>{ruleCopy.title}</TitleRow>;
-  const title = ruleTitle(rule);
+  if (!rule || !data) return <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} className={className}>{ruleCopy.title}</TitleRow>;
+  const title = ruleTitle(rule, data);
   return (
-    <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} under={scope && !isGeneral(rule) ? scopeTag(rule, data?.ownDocs, { company: data?.company }) : undefined} className={className}>
+    <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} under={scope && !isGeneral(rule) ? scopeTag(rule, data.ownDocs, { company: data.company }) : undefined} className={className}>
       {title.english ? <bdi dir="ltr">{title.text}</bdi> : gershayim(title.text)}
     </TitleRow>
   );

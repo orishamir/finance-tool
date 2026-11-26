@@ -56,7 +56,7 @@ describe("sourceLabel2", () => {
 describe("citationText", () => {
   const rule = { title: "x", title_he: "מעבר מסלול אינו אירוע מס" };
   it("writes the one line", () => {
-    const t = citationText(rule, src({ publisher_he: "רשות המסים", title_he: "פקודת מס הכנסה", locator_he: "סעיף 3" }), "2026-10-24");
+    const t = citationText(rule, src({ publisher_he: "רשות המסים", title_he: "פקודת מס הכנסה", locator_he: "סעיף 3" }), "2026-10-24", { rules: {}, today: "2026-10-24" });
     expect(t).toBe("מעבר מסלול אינו אירוע מס — רשות המסים, פקודת מס הכנסה, סעיף 3. https://example.gov.il/a (נבדק 24.10.2026)");
   });
 });
