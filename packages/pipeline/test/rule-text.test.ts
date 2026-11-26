@@ -109,6 +109,10 @@ describe("textFlaws and the ratchet", () => {
       "text_he: the slot {TXS-09:other} names a figure TXS-09 does not have (rate)",
     ]);
   });
+  it("reads the month a figure takes effect as a slot of that figure", () => {
+    const rules = new Map<string, RuleText>([["TXS-09", { id: "TXS-09", text_he: "מ{TXS-09:rate.from} המס {TXS-09:rate}, ומ{TXS-09:other.from} אחרת.", figures: { rate: pct(25) } }]]);
+    expect(ruleTextProblems(rules, none).map((p) => p.message)).toEqual(["text_he: the slot {TXS-09:other} names a figure TXS-09 does not have (rate)"]);
+  });
   it("says a listed record is gone once its text no longer carries the flaw, or it has no record", () => {
     const listed = { ...none, leftovers: { ...none.leftovers, long: ["TXS-09", "TXS-98"] } };
     expect(staleTextLeftovers(new Map([["TXS-09", long]]), listed)).toEqual([expect.stringMatching(/TXS-98 under "long", and it has no record/)]);

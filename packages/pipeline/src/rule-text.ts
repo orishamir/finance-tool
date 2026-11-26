@@ -6,8 +6,8 @@
 import { readFileSync } from "node:fs";
 import { z } from "zod";
 
-/** A figure slot: "{ID:figure}", a rule's id and the name of one of its figures. */
-const FIGURE_SLOT = /\{([A-Z0-9-]+):([a-z0-9_]+)\}/g;
+/** A figure slot: "{ID:figure}", a rule's id and the name of one of its figures; "{ID:figure.from}" is the month that figure takes effect (the site's `parseAnswer`). */
+const FIGURE_SLOT = /\{([A-Z0-9-]+):([a-z0-9_]+)(?:\.from)?\}/g;
 
 /** The figure slots in a sentence, in order. */
 export function figureSlots(text: string): { id: string; figure: string }[] {
