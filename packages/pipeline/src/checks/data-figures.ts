@@ -24,8 +24,8 @@ function figureForms(cards: ReturnType<typeof ruleCards>): Map<string, { id: str
   for (const card of cards.values())
     for (const [key, figure] of Object.entries(card.figures ?? {}))
       for (const { node } of objectsIn(figure))
-        if (isValueObject(node) && typeof node.value === "number" && typeof (node as { unit?: unknown }).unit === "string")
-          for (const form of telltaleForms(node.value, (node as { unit: string }).unit)) out.set(form, [...(out.get(form) ?? []), { id: card.id, key }]);
+        if (isValueObject(node) && typeof node.value === "number" && typeof node.unit === "string")
+          for (const form of telltaleForms(node.value, node.unit)) out.set(form, [...(out.get(form) ?? []), { id: card.id, key }]);
   return out;
 }
 

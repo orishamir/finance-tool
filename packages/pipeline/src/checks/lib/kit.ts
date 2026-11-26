@@ -197,7 +197,7 @@ export function latestRecords(data: CheckData, collection: string): LatestRecord
 }
 
 /** A value object: an object with a value and a source (data-schema §1). */
-export function isValueObject(node: unknown): node is { value: unknown; source: unknown; notes?: unknown; rule_ids?: unknown } {
+export function isValueObject(node: unknown): node is { value: unknown; unit?: unknown; source: unknown; notes?: unknown; rule_ids?: unknown } {
   return !!node && typeof node === "object" && !Array.isArray(node) && "value" in node && "source" in node;
 }
 
