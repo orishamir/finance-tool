@@ -9,7 +9,12 @@ import { PairReceipt } from "./receipt";
 import { bundle, html, plan, shown, t } from "./render-fixtures";
 
 const w = invest.receipt.batched;
-const sp = indexById(bundle, "index-sp500")!;
+/** `v`, or the test stops with `why` where it is missing. */
+function need<T>(v: T | null | undefined, why: string): T {
+  if (v === null || v === undefined) throw new Error(why);
+  return v;
+}
+const sp = need(indexById(bundle, "index-sp500"), "the S&P 500 index is in the data");
 /** What the reader sees, the isolates and the no-break spaces as plain text. */
 const bare = (out: string) => shown(out).replace(/[⁦-⁩‎‏]/g, "").replace(/ /g, " ");
 const receipt = (p: typeof plan, pick: { house: string; fund: string }, layout: "paper" | "ticket") => html(createElement(PairReceipt, { view: buildInvest({ bundle, index: sp, plan: p }), bundle, plan: p, pick, chosen: true, layout }));
@@ -25,8 +30,8 @@ const psagot = { house: "psagot", fund: "ie00bfmxxd54" };
 describe("the line under what is left, where the pair is priced buying every few months (F-133)", () => {
   const pc = pairCosts({ bundle, index: sp, plan, fundId: psagot.fund, providerId: psagot.house });
   it("says the interval and each purchase, the monthly deposit times the interval, at both widths, in place of the account's tag", () => {
-    expect(pc?.orderEvery, "the pair is no longer priced every few months: pick another").toBeGreaterThan(1);
-    const k = pc!.orderEvery;
+    const k = need(pc, "the pair is priced").orderEvery;
+    expect(k, "the pair is no longer priced every few months: pick another").toBeGreaterThan(1);
     const line = w.line(k).replace("{amount}", `${(400 * k).toLocaleString("en-US")} ₪`);
     for (const layout of ["paper", "ticket"] as const) {
       const raw = receipt(plan, psagot, layout);
@@ -41,16 +46,15 @@ describe("the line under what is left, where the pair is priced buying every few
     }
   });
   it("is not there where the pair buys every month", () => {
-    const monthly = pairWhere(plan, (k) => k === 1);
-    expect(monthly, "no pair buys every month on the plan").not.toBeNull();
-    for (const layout of ["paper", "ticket"] as const) expect(bare(receipt(plan, monthly!, layout))).not.toContain(w.lineAlone(2).split(" ").slice(0, 2).join(" "));
+    const monthly = need(pairWhere(plan, (k) => k === 1), "no pair buys every month on the plan");
+    for (const layout of ["paper", "ticket"] as const) expect(bare(receipt(plan, monthly, layout))).not.toContain(w.lineAlone(2).split(" ").slice(0, 2).join(" "));
   });
   it("with no monthly deposit, where only payouts wait, says the interval alone", () => {
     const p = planOf(t, { years: 20, monthly: 0 });
-    const pair = pairWhere(p, (k) => k > 1);
-    expect(pair, "no pair is priced every few months with no monthly deposit: pick another plan").not.toBeNull();
-    const out = bare(receipt(p, pair!, "ticket"));
-    expect(out).toContain(w.lineAlone(pair!.k));
-    expect(out).not.toContain(w.line(pair!.k).split("{amount}")[1]!.trim());
+    const pair = need(pairWhere(p, (k) => k > 1), "no pair is priced every few months with no monthly deposit: pick another plan");
+    const out = bare(receipt(p, pair, "ticket"));
+    expect(out).toContain(w.lineAlone(pair.k));
+    // the words after the amount
+    expect(out).not.toContain(w.line(pair.k).slice(w.line(pair.k).indexOf("{amount}") + "{amount}".length).trim());
   });
 });

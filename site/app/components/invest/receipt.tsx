@@ -206,7 +206,7 @@ function BatchedLine({ pc, house, className }: { pc: PairCosts; /** The house's 
   const k = pc.orderEvery;
   const words = b.perOrder === null ? w.lineAlone(k) : <Tpl t={w.line(k)} vars={{ amount: <bdi>{fmt.nisWhole(b.perOrder)}</bdi> }} />;
   return (
-    <WordsSheet title={w.why(k)} body={() => <BatchedWhy pc={pc} house={house} />} className={className}>
+    <WordsSheet title={w.why(k)} body={<BatchedWhy pc={pc} house={house} />} className={className}>
       {words}
     </WordsSheet>
   );

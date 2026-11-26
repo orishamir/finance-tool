@@ -2088,7 +2088,7 @@ function Lists({ today, statements }: { today: string; statements: readonly TaxI
       <Demo name="WordsSheet" use={g.uses.WordsSheet}>
         <State label="a line under a figure: the words wrap with it and open a sheet titled with its question, whose sentences hold figures that each open their own">
           <div className="max-w-xs text-center text-sm">
-            <WordsSheet title={g.sample.wordsSheet.title} body={() => <Sentence>{g.sample.wordsSheet.body} <Num value={computed(1500, "nis", "F-08", {}, { today, about: g.sampleAbout })} /></Sentence>}>
+            <WordsSheet title={g.sample.wordsSheet.title} body={<Sentence>{g.sample.wordsSheet.body} <Num value={computed(1500, "nis", "F-08", {}, { today, about: g.sampleAbout })} /></Sentence>}>
               {g.sample.wordsSheet.line}
             </WordsSheet>
           </div>

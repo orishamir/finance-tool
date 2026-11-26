@@ -26,9 +26,9 @@ export function OwnSheet({ anchor, onClose, title, children }: { anchor: HTMLEle
 /**
  * Words that open a sheet of their own (`OwnSheet`): a button drawn as a glossary term. The words wrap with the line they stand in (a
  * glossary term keeps to one line; these may be a whole line on a narrow phone). The body is drawn only while the sheet is open, so what
- * it reads is worked out only then.
+ * its components read is worked out only then.
  */
-export function WordsSheet({ title, body, children, className }: { title: ReactNode; /** The sheet's text under its title, as a function, so it is worked out only when opened. */ body: () => ReactNode; children: ReactNode; className?: string }) {
+export function WordsSheet({ title, body, children, className }: { title: ReactNode; /** The sheet's text under its title. */ body: ReactNode; children: ReactNode; className?: string }) {
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   return (
     <>
@@ -36,7 +36,7 @@ export function WordsSheet({ title, body, children, className }: { title: ReactN
         {children}
       </button>
       <OwnSheet anchor={anchor} onClose={() => setAnchor(null)} title={title}>
-        {anchor && <div className="flex flex-col gap-2.5 max-w-measure">{body()}</div>}
+        <div className="flex flex-col gap-2.5 max-w-measure">{body}</div>
       </OwnSheet>
     </>
   );

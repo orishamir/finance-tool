@@ -169,7 +169,7 @@ export function orderCharge(priced: PairCosts["priced"]): OrderCharge | null {
   if (priced.entered) return null;
   const regular = (base: SnapLine["base"]): SnapLine | null => {
     const lines = priced.lines.filter((l) => l.base === base && l.band !== STANDING_ORDER_BAND && l.band !== STANDING_CONVERSION_BAND);
-    return lines.length === 1 ? lines[0]! : null;
+    return lines.length === 1 ? (lines[0] ?? null) : null;
   };
   const upTo = (l: SnapLine): { value: Figure; upTo: Figure } | null => {
     const f = l.flat_up_to;
