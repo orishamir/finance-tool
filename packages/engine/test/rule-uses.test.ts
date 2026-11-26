@@ -193,6 +193,13 @@ describe("the parts each run's rules went into", () => {
     for (const id of ["TXG-04", "TXG-07", "TXS-23"]) expect(changedIn(sixty, id), id).toEqual(["taxAtExit"]);
   });
 
+  it("flags the withholding a kupat gemel lehashkaa's return settles at 60 and takes it on no part", () => {
+    const sixty = run("kupat gemel lehashkaa at 60, fees above the caps");
+    expect(sixty.flags.map((f) => f.code)).toContain("TXK-26");
+    expect(read(sixty, "TXK-26")).toBe(true);
+    expect(changedIn(sixty, "TXK-26")).toEqual([]);
+  });
+
   it("takes TXG-04 on the exit of a keren hishtalmut withdrawn early at 65", () => {
     expect(changedIn(run("keren hishtalmut, early withdrawal at 65"), "TXG-04")).toEqual(["taxAtExit"]);
     expect(changedIn(run("S24 keren hishtalmut, early withdrawal"), "TXG-04")).toEqual([]);

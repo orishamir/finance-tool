@@ -405,7 +405,8 @@ function runProvidentUnder(input: ProvidentInput, ctx: RunContext): ProvidentRes
       else {
         incomeTax = bracketTaxOnTopSlice(otherIncomeOf(profile), Math.max(0, real), exit.inYear(taxYearOf(T, first)).peek.brackets("TXG-04", "brackets"), realRate);
         sixtyLowered(exit, profile, incomeTax, flatTax, ["TXG-04", "TXG-07"]);
-        exit.cite("TXK-26");
+        // the 25% withheld is settled by the annual return to the tax above: it sets no figure, and the flag says the settlement
+        exit.peek.cite("TXK-26");
         tally.flag("TXK-26");
       }
       detail.fullRateTax = flatTax;
