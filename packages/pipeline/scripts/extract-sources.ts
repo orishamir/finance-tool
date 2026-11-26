@@ -517,7 +517,7 @@ export function documentName(title: string): string {
 const urlBase = (url: string): string => url.replace(/#.*$/, "");
 
 /**
- * A link title written out from the link before it on the line (Q57's ditto rule, docs/data-schema.md §3.1): a ditto names that link's
+ * A link title written out from the link before it on the line (the ditto rule, docs/data-schema.md §3.1): a ditto names that link's
  * document in place of its pointer, its other parts kept unless that name already holds them; a title that is only a place takes the
  * document's name when the link before it opens the same document. Any other title, or one with no link before it, stays as written.
  */
