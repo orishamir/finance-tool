@@ -316,3 +316,24 @@ describe("the popup's place tile (F-128)", () => {
     expect(tiles.place).toBeNull();
   });
 });
+
+describe("what the record says of the exchange (F-65)", () => {
+  it("says it is not known only where neither the exchange nor the country was given; with a country it follows it, as a collected record's", () => {
+    expect(recordOfFund(typed(null, null, null), "USD").exchange).toBe("unknown");
+    expect(recordOfFund(typed(null, null, "IE"), "USD").exchange).toBeUndefined();
+    expect(recordOfFund(typed("us", null, null), "USD").exchange).toBe("us");
+  });
+
+  it("a collected record with no exchange ticker and a country other than the two is read on Europe at every house, not on each exchange", () => {
+    const europe = typed("europe", 100, null);
+    const { exchange: _, ...rec } = recordOfFund(typed(null, 100, null), "USD");
+    const collected: FundRecord = { ...rec, id: "collected-lu", domicile: "LU" };
+    expect(venueOfFund(collected)).toBe("europe");
+    const b0 = withCustomEntries(bundle, [europe]);
+    const b = { ...b0, funds: [...b0.funds, collected] };
+    const mine = wayOf(b, collected.id);
+    const known = wayOf(b, europe.id);
+    expect(houses.filter((h) => left(known, h) !== null).length).toBeGreaterThan(3);
+    for (const h of houses) expect([h, left(mine, h), reasonAt(mine, h)]).toEqual([h, left(known, h), reasonAt(known, h)]);
+  });
+});

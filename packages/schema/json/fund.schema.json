@@ -2953,7 +2953,8 @@
           ]
         },
         {
-          "type": "null"
+          "type": "string",
+          "const": "unknown"
         }
       ]
     },

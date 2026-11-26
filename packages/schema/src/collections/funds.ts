@@ -259,11 +259,12 @@ export const fundRecord = z.strictObject({
    */
   share_price: valueObject.optional(),
   /**
-   * data-schema §3.5, F-65, F-128: the exchange abroad a fund the person types abroad trades on, as they said it (`us`, `europe`), or `null`
-   * for "not sure", the exchange then following the domicile they gave. Left out on a collected record, whose tickers and domicile name its
-   * exchange; the data check refuses it there.
+   * data-schema §3.5, F-65, F-128: the exchange abroad a fund the person types abroad trades on, as they said it (`us`, `europe`), or
+   * `unknown` where they said neither it nor the country the fund is registered in. Left out where the exchange follows the domicile: on a
+   * collected record, whose tickers and domicile name it (the data check refuses the field there), and on a typed fund whose exchange was
+   * not said and whose country was.
    */
-  exchange: fundExchange.nullable().optional(),
+  exchange: z.union([fundExchange, z.literal("unknown")]).optional(),
   /** data-schema §3.5: the fund's fees lowered for a stated period (F-121); the data check holds each to its fee. */
   promotions: z.array(fundPromotion).min(1).optional(),
   snapshot: isoDate,

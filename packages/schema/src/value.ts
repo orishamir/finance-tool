@@ -61,6 +61,19 @@ export const unit = z.enum([
 ]);
 
 /**
+ * F-109: the units a fund's unit price (`share_price`) may be in, each with the currency it is an amount of (ISO 4217, "ILS" for the
+ * shekel) and what one of the unit is in that currency.
+ */
+export const unitPriceUnits = {
+  nis: { code: "ILS", scale: 1 },
+  agorot: { code: "ILS", scale: 0.01 },
+  usd: { code: "USD", scale: 1 },
+  eur: { code: "EUR", scale: 1 },
+} as const satisfies Partial<Record<z.infer<typeof unit>, { code: string; scale: number }>>;
+export type UnitPriceUnit = keyof typeof unitPriceUnits;
+export const isUnitPriceUnit = (u: unknown): u is UnitPriceUnit => typeof u === "string" && Object.hasOwn(unitPriceUnits, u);
+
+/**
  * data-schema §2: where a value in `pct_per_year_effective` may stand, by collection and path: P-05's `cash_rate` (a run's cash rate), the
  * one place a rate may be either kind. Each run reads the unit there (F-60); the validator fails it anywhere else. A deposit record's
  * `rate_offered` is a directive 447 rate, nominal (BANK-50).

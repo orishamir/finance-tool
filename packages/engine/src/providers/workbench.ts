@@ -845,10 +845,26 @@ export function wholeUnitsAt(input: Pick<WorkbenchInput, "listing" | "instrument
   return { price, ...(plan ? { monthlyByAmount: true } : {}) };
 }
 
+/** F-109: a fund a house may buy in whole units where it is listed: one with a unit price, not a tracking fund (bought from its manager by amount). */
+const unitPriced = (input: Pick<WorkbenchInput, "instrumentClass" | "fund">): boolean => input.instrumentClass !== "mutual_fund_units" && !!input.fund.sharePrice;
+
+/** The two kinds of account a run prices: a house's price list (`ProviderInput`) and a deal the person keeps (`DealProvider`, F-128). */
+export type AccountKind = "price-list" | "deal";
+
+/**
+ * F-109, F-128: whether where the fund is bought (`WorkbenchInput.listing`) changes an account's run. A deal's account is read for it, its
+ * cases for what the plan buys (F-114); a house's price list reads it only for whole units (`wholeUnitsAt`), which need a unit price. The
+ * trade line a house's list prices the fund on names its exchange in its band, which the caller picks (F-63), not the listing.
+ */
+export function listingChangesRun(input: Pick<WorkbenchInput, "instrumentClass" | "fund">, account: AccountKind): boolean {
+  const changes: Record<AccountKind, () => boolean> = { deal: () => true, "price-list": () => unitPriced(input) };
+  return changes[account]();
+}
+
 /** F-109: the unit's price in shekels at the run's start, where the fund is bought on an exchange and has one; undefined otherwise. */
 function unitPriceAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">): number | undefined {
   const price = input.fund.sharePrice;
-  if (!input.listing || input.instrumentClass === "mutual_fund_units" || !price) return undefined;
+  if (!input.listing || !unitPriced(input) || !price) return undefined;
   const code = input.fund.sharePriceCurrency ?? input.currency?.code ?? "ILS";
   const rate = code === "ILS" ? 1 : code === input.currency?.code ? input.currency.startRate : rateOf(input.fx, code, "the fund's unit price");
   return price * rate;

@@ -4,7 +4,7 @@
 // typed account is read back only to move it into a deal (the move, method §10.4; lib/deal-account/move.ts).
 //
 // No runtime import of invest.ts or the engine: state.ts reads this file on every page.
-import { fundExchange, groupPrice, isShekel, valueObject, type ExposureRecord, type FundExchange, type FundRecord, type ValueObject } from "@finance-tool/schema";
+import { fundExchange, groupPrice, isShekel, isUnitPriceUnit, unitPriceUnits, valueObject, type ExposureRecord, type FundExchange, type FundRecord, type UnitPriceUnit, type ValueObject } from "@finance-tool/schema";
 import type { ProviderInput } from "@finance-tool/engine";
 import { invest as copy } from "../copy";
 import type { CustomIndex, OptionId } from "./invest";
@@ -88,16 +88,19 @@ export const PAYOUTS: readonly FundPayout[] = ["accumulating", "distributing"];
 export const DOMICILES: readonly FundDomicile[] = ["IE", "US"];
 export const TRACKINGS: readonly FundTracking[] = ["physical", "swap", "futures", "mixed"];
 export const PER_YEAR: readonly PerYear[] = [1, 2, 4, 12];
-export const EXCHANGES = fundExchange.options;
 
 /**
- * The units a typed fund's unit price can be in, by its kind (F-109): abroad the fund's own currency, which the engine has a unit price in;
- * on TASE agorot, as TASE quotes a unit (ETF-32, for the foreign funds traded on TASE; no rule yet for Israeli ETFs); none for a tracking fund, bought from its manager by amount.
+ * How a typed fund's unit price is typed, by its kind (F-109): abroad in the fund's own currency (a unit price unit of scale one in that
+ * currency, `unitPriceUnits`); on TASE in agorot, as TASE quotes a unit (ETF-32, for the foreign funds traded on TASE; no rule yet for
+ * Israeli ETFs); none for a tracking fund, bought from its manager by amount.
  */
-const PRICE_UNITS = { abroad: ["usd", "eur"], "il-etf": ["agorot"], "tase-foreign": ["agorot"], "il-tracking": [] } as const satisfies Record<OptionId, readonly ValueObject["unit"][]>;
-type PriceUnit = (typeof PRICE_UNITS)[OptionId][number];
-/** A fund abroad's unit price unit, by the currency it is in. */
-const ABROAD_PRICE_UNIT: Readonly<Record<string, PriceUnit>> = { USD: "usd", EUR: "eur" };
+const UNIT_PRICE_BY_KIND = { abroad: "fund-currency", "il-etf": "agorot", "tase-foreign": "agorot", "il-tracking": null } as const satisfies Record<OptionId, "fund-currency" | UnitPriceUnit | null>;
+
+/** The unit price unit that is a whole amount of a currency (`unitPriceUnits`, scale one); null where none is. */
+function unitOfCurrency(code: string): UnitPriceUnit | null {
+  for (const [u, read] of Object.entries(unitPriceUnits)) if (read.code === code && read.scale === 1 && isUnitPriceUnit(u)) return u;
+  return null;
+}
 
 const BROKER_ID = /^custom-broker-[a-z0-9-]+$/;
 const FUND_ID = /^custom-fund-[a-z0-9-]+$/;
@@ -118,14 +121,12 @@ export const newFundId = () => newId("custom-fund-");
 const currencyOfTypedFund = (kind: OptionId, currencyOfIndex: string | null): string => (isForeignKind(kind) ? (currencyOfIndex && !isShekel(currencyOfIndex) ? currencyOfIndex : "USD") : "NIS");
 
 /**
- * The unit a typed fund's unit price is typed in (`PRICE_UNITS`): abroad the fund's currency, on TASE agorot; null where it is bought by
- * amount, or is in a currency the engine has no unit price in.
+ * The unit a typed fund's unit price is typed in (`UNIT_PRICE_BY_KIND`): abroad the fund's currency, on TASE agorot; null where it is
+ * bought by amount, or is in a currency no unit price unit is an amount of.
  */
-export function unitPriceUnit(kind: OptionId, currencyOfIndex: string | null): PriceUnit | null {
-  const units: readonly PriceUnit[] = PRICE_UNITS[kind];
-  // a fund abroad has one unit of the two, its currency's
-  const unit = units.length > 1 ? ABROAD_PRICE_UNIT[currencyOfTypedFund(kind, currencyOfIndex)] : units[0];
-  return unit !== undefined && units.includes(unit) ? unit : null;
+export function unitPriceUnit(kind: OptionId, currencyOfIndex: string | null): UnitPriceUnit | null {
+  const how = UNIT_PRICE_BY_KIND[kind];
+  return how === "fund-currency" ? unitOfCurrency(currencyOfTypedFund(kind, currencyOfIndex)) : how;
 }
 
 // ---------------------------------------------------------------- reading it back
@@ -227,9 +228,8 @@ export function validCustomFunds(list: unknown[]): CustomFund[] {
     // a fund saved before these were asked has neither: it reads as not sure, and as no unit price typed
     const exchange = kind === "abroad" ? fundExchange.safeParse(f.exchange).data ?? null : null;
     // a price in a unit its kind is not typed in is not read: the fund is kept, bought by amount
-    const units: readonly unknown[] = PRICE_UNITS[kind];
     const rawUnit = isObj(f.unitPrice) ? f.unitPrice.unit : undefined;
-    const unitPrice = units.includes(rawUnit) ? figure(f.unitPrice, rawUnit as PriceUnit, ANY_SUM) : null;
+    const unitPrice = isUnitPriceUnit(rawUnit) && unitPriceUnit(kind, unitPriceUnits[rawUnit].code) === rawUnit ? figure(f.unitPrice, rawUnit, ANY_SUM) : null;
     if (unitPrice === undefined) continue;
     out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: foreign ? null : variable, trustee: foreign ? null : trustee, hedged: f.hedged, ...(f.shekelIndex === true && !f.hedged ? { shekelIndex: true as const } : {}), payout, yield: yieldPct, perYear, domicile, tracking, ...(exchange ? { exchange } : {}), ...(unitPrice && unitPrice.value !== 0 ? { unitPrice } : {}), added: f.added });
   }
@@ -392,8 +392,9 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     ...(f.hedged ? { hedged: true } : {}),
     ...(f.payout === "distributing" && f.yield && f.perYear ? { distribution: { yield: f.yield, per_year: f.perYear } } : {}),
     ...(f.tracking ? { replication: { method: f.tracking, source: { url: "local", checked: f.added } } } : {}),
-    // F-109, F-128: the exchange abroad as the person said it, or stated as not known; the unit price as they typed it
-    ...(f.kind === "abroad" ? { exchange: f.exchange ?? null } : {}),
+    // F-65, F-109, F-128: the exchange abroad as the person said it; not said, it follows the country they gave, as a collected record's
+    // with no exchange ticker; with neither, the record says it is not known. The unit price as they typed it
+    ...(f.kind === "abroad" && (f.exchange || !f.domicile) ? { exchange: f.exchange ?? ("unknown" as const) } : {}),
     ...(f.unitPrice ? { share_price: f.unitPrice } : {}),
     snapshot: f.added,
   };

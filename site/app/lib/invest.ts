@@ -4,7 +4,7 @@
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { rankByValue } from "./rank";
 import { gershayim } from "./format";
-import { BlockedError, openReadings, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, listingChangesRun, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
 import { fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { customFundGap, isCustomFund } from "./custom-entries";
@@ -46,6 +46,8 @@ export function optionOfFund(rec: FundRecord, exposure: ExposureRecord | undefin
 
 export type Venue = FundExchange;
 const EXCHANGES = fundExchange.options;
+/** F-109 (D94): where a fund is bought, TASE or the exchange abroad it trades on. */
+type Listing = NonNullable<DealRun["listing"]>;
 const US_RE = /ארה["״]ב|ארצות הברית/;
 const EU_RE = /אירופה|לונדון|London|LSE/;
 const OUTSIDE_US_RE = /מחוץ לארה|למעט ארה/;
@@ -53,19 +55,16 @@ export const venueOfBand = (band: string | null | undefined): Venue | null => (!
 
 /**
  * The exchange a fund bought abroad trades on (F-65): the one a typed fund's record states; else the one its tickers name; else by its
- * domicile, the United States for a fund registered there, Europe for one registered in Ireland or, on a collected record, anywhere else.
- * Null where none says: an Israeli fund, and a typed fund whose exchange and domicile were both not given, which every account reads on
- * each exchange (`Spec.eachExchange`).
+ * domicile, the United States for a fund registered there, Europe for any other foreign one. Null where none says: an Israeli fund, and a
+ * typed fund whose record says its exchange is not known (`exchange: "unknown"`), which every account reads on each exchange
+ * (`Place` "unknown-exchange").
  */
 export function venueOfFund(rec: FundRecord): Venue | null {
-  if (rec.exchange) return rec.exchange;
+  if (rec.exchange !== undefined) return rec.exchange === "unknown" ? null : rec.exchange;
   const keys = Object.keys(rec.identifiers.ticker ?? {});
   if (keys.some((k) => /^(LSE|Euronext|Xetra|London)/i.test(k))) return "europe";
   if (keys.some((k) => /^(NYSE|NASDAQ|Cboe|BATS|Arca)/i.test(k))) return "us";
   if (rec.domicile === "US") return "us";
-  if (rec.domicile === "IE") return "europe";
-  // a typed fund says its exchange is not known (`exchange: null`), and its domicile was not given either
-  if (rec.exchange === null) return null;
   return rec.domicile === "IL" ? null : "europe";
 }
 
@@ -386,7 +385,7 @@ const providerInfo = (s: FeesSnapshot): ProviderInfo => {
 interface Cand {
   venue: Venue | null;
   band?: string[];
-  /** F-109, F-128: the exchange the reading buys the fund on, where the fund's own listing is not known (`Spec.listing` absent). */
+  /** F-109, F-128: the exchange the reading buys the fund on, where the spec reads each exchange (`readsEachExchange`). */
   listing?: Venue;
 }
 
@@ -394,15 +393,14 @@ interface Cand {
  * The ways to read a snapshot for an option, the cheapest that computes winning (F-63). For a fund bought abroad: one per exchange its tariff
  * names and per pricing plan on that exchange (Interactive Brokers prints Fixed and Tiered for each), each with the standard conversion and
  * with every other way the house converts (a banded conversion line with no currency of its own and no recurring plan: Interactive Brokers'
- * automatic conversion, F-13); then the plain reading. Where the exchange the fund trades on is not known (`Spec.eachExchange`), each
- * reading buys it on an exchange (F-65, F-128): one an exchange's line names on that exchange, and the plain reading once on each where the
- * exchange changes what it charges, a deal's (its case for what is bought, F-128) and, with a unit price, a house's (whole units, F-109);
- * a house's plain reading of a fund with no unit price is the same on both, and runs once.
+ * automatic conversion, F-13); then the plain reading. Where the spec reads each exchange (`readsEachExchange`), each reading buys the fund
+ * on an exchange (F-65, F-128): one an exchange's line names on that exchange, and the plain reading once on each where the listing changes
+ * the account's run (`listingChangesRun`), else once.
  */
-function candidates(s: FeesSnapshot, option: OptionId, spec: Pick<Spec, "listing" | "eachExchange" | "fund">): Cand[] {
+function candidates(ctx: Ctx, s: FeesSnapshot, option: OptionId, spec: Pick<Spec, "place" | "fund" | "cls">): Cand[] {
   if (option !== "abroad") return [{ venue: null }];
-  const unknown = !spec.listing && spec.eachExchange !== undefined;
-  const plainEach = unknown && (isDealProviderId(s.id) || spec.fund?.sharePrice !== undefined);
+  const unknown = readsEachExchange(spec.place);
+  const plainEach = unknown && listingChangesRun({ instrumentClass: spec.cls, fund: spec.fund }, accountKindOf(ctx, s));
   const plain: Cand[] = plainEach ? EXCHANGES.map((v) => ({ venue: null, listing: v })) : [{ venue: null }];
   const trade = s.lines.filter((l) => l.base === "trade" && l.level === "list" && l.applies_to.includes("foreign_securities") && l.band);
   const ways = [...new Set(s.lines.filter((l) => l.base === "fx" && l.level === "list" && l.band && l.band !== STANDING_CONVERSION_BAND && !l.conversion_currency && l.applies_to.some((a) => a === "foreign_securities" || a === "all")).map((l) => l.band!))];
@@ -426,19 +424,29 @@ function onlyVenueAbroad(s: FeesSnapshot): Venue | null {
 
 // ---------------------------------------------------------------- the run
 
+/**
+ * Where a spec's fund is bought (F-109, F-65):
+ * - `listed`: on TASE or on the exchange abroad it trades on, so each house buys it in whole units or by amount there (D94);
+ * - `any-exchange`: the generic fund abroad, which stands for every fund of the kind, so an account buys it on whichever exchange its best
+ *   reading is on (a house's cheapest, F-63);
+ * - `unknown-exchange`: one fund bought abroad whose record says its exchange is not known, priced on the exchange whose best reading
+ *   leaves the least (F-65, as D56 prices a house at the most its documents let it charge);
+ * - `none`: no listing, so every order is by amount: a tracking fund (bought from its manager), a generic fund of a TASE kind, and a fund
+ *   abroad whose record names no exchange and no foreign domicile.
+ */
+type Place = { at: "listed"; listing: Listing } | { at: "any-exchange" } | { at: "unknown-exchange" } | { at: "none" };
+
+/** The fund's listing where the place names one. */
+const listingOfPlace = (place: Place): Listing | undefined => (place.at === "listed" ? place.listing : undefined);
+/** A place on an exchange abroad not given: each reading buys the fund on an exchange (`Cand.listing`). */
+const readsEachExchange = (place: Place): boolean => place.at === "any-exchange" || place.at === "unknown-exchange";
+
 interface Spec {
   fund: Parameters<typeof providerWorkbench>[0]["fund"];
   market: { grossReturn: number; returnIn?: "instrument" | "nis"; fxChange?: number; principalFxChange?: number };
   currency?: { code: string; startRate: number };
   cls: string;
-  /** F-109 (D94): where the fund is bought (TASE, or the exchange abroad it trades on), so each house buys it in whole units or by amount. */
-  listing?: "tase" | "us" | "europe";
-  /**
-   * A fund bought abroad whose exchange is not known (`listing` absent): each reading buys it on an exchange (`Cand.listing`), and each
-   * account is priced on the exchange whose best reading leaves the most, the generic fund abroad (a house's cheapest, F-63), or the least,
-   * a typed fund of no stated exchange or domicile (F-65, as D56 prices a house at the most its documents let it charge).
-   */
-  eachExchange?: "most" | "least";
+  place: Place;
 }
 
 interface Ctx {
@@ -472,11 +480,11 @@ function makeCtx(bundle: IndicesBundle, plan: WorkbenchInputs, assumptions: Fund
  */
 function genericSpec(ctx: Ctx, option: OptionId): Spec | null {
   const market = { grossReturn: ctx.plan.grossReturn };
-  if (option === "il-tracking" || option === "il-etf") return { fund: { kind: "israeli-fund", drag: {} }, market, cls: OPTION_CLASS[option] };
-  if (option === "tase-foreign") return { fund: { kind: "tase-foreign-fund", drag: {} }, market, cls: OPTION_CLASS[option] };
+  if (option === "il-tracking" || option === "il-etf") return { fund: { kind: "israeli-fund", drag: {} }, market, cls: OPTION_CLASS[option], place: { at: "none" } };
+  if (option === "tase-foreign") return { fund: { kind: "tase-foreign-fund", drag: {} }, market, cls: OPTION_CLASS[option], place: { at: "none" } };
   const usd = ctx.fx.USD;
   if (!usd) return null;
-  return { fund: { kind: "foreign-fund", drag: {} }, market: { ...market, returnIn: "instrument", fxChange: 0 }, currency: { code: "USD", startRate: usd }, cls: OPTION_CLASS.abroad, eachExchange: "most" };
+  return { fund: { kind: "foreign-fund", drag: {} }, market: { ...market, returnIn: "instrument", fxChange: 0 }, currency: { code: "USD", startRate: usd }, cls: OPTION_CLASS.abroad, place: { at: "any-exchange" } };
 }
 
 /** The open rule a run of the spec's fund would rest on (F-04), with the question that stops it where one does, or null. A question whose
@@ -488,6 +496,9 @@ const blockedBy = (ctx: Ctx, spec: Spec): SecuritiesStop | null => securitiesBlo
  * account: it stays as the move tests' oracle, the figure a typed account left before it became a deal (deal-account/move-fixtures.ts).
  */
 const houseOfSnap = (ctx: Ctx, s: FeesSnapshot): string => ctx.bundle.entered?.bases?.[s.id] ?? s.id;
+
+/** What prices a snapshot's account: a deal the person keeps (F-128), else a house's price list. */
+const accountKindOf = (ctx: Ctx, s: FeesSnapshot): AccountKind => (ctx.bundle.deals?.byId[s.id] ? "deal" : "price-list");
 
 /**
  * The row counts a current account (F-102, D64): only on the indices page, at a bank whose record prices one. An account built on a bank (F-101) is an account at that bank, so it reads the bank's record.
@@ -512,7 +523,7 @@ const goalOf = (ctx: Ctx) => ({ amountNow: ctx.plan.amountNow, monthly: ctx.plan
 
 function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[]): ProviderRow[] {
   const profile = profileOf(ctx);
-  const input = (list: typeof items, listing: Spec["listing"]) => ({
+  const input = (list: typeof items, listing: Listing | undefined) => ({
     goal: goalOf(ctx),
     market: { ...spec.market, inflation: ctx.plan.inflation },
     fund: spec.fund,
@@ -545,9 +556,9 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
   const inOrder = (list: typeof items, rows: ProviderRow[]): ProviderRow[] => list.map((x) => rows.find((r) => r.id === x.s.id)!);
   // the fund's listing, else the exchange each reading buys it on (`Cand.listing`): one run for each
   const run = (list: typeof items): ProviderRow[] => {
-    const byListing = new Map<Spec["listing"], typeof items>();
+    const byListing = new Map<Listing | undefined, typeof items>();
     for (const x of list) {
-      const listing = spec.listing ?? x.cand.listing;
+      const listing = listingOfPlace(spec.place) ?? x.cand.listing;
       byListing.set(listing, [...(byListing.get(listing) ?? []), x]);
     }
     return inOrder(list, [...byListing].flatMap(([listing, group]) => providerWorkbench(input(group, listing), ruleContext(ctx.bundle)).rows));
@@ -580,7 +591,7 @@ export function listReading(bundle: IndicesBundle, s: FeesSnapshot, option: Opti
   const spec = genericSpec(ctx, option);
   if (!spec) return null;
   const scopedSnap = scoped(s);
-  const builds = candidates(scopedSnap, option, spec).flatMap((cand) => {
+  const builds = candidates(ctx, scopedSnap, option, spec).flatMap((cand) => {
     try {
       const built = buildTariff(
         { goal: { amountNow: plan.amountNow, monthly: plan.monthly, months: 12 * plan.years, firstMonth: calendarMonthOf(ctx.bundle.today) }, market: { ...spec.market, inflation: plan.inflation }, profile: {}, instrumentClass: spec.cls, channel: "direct", ...(spec.currency ? { currency: spec.currency } : {}), fx: ctx.fx, theta: ctx.theta, providers: [] },
@@ -629,7 +640,7 @@ function reasonOf(row: NotComparableProvider, s: FeesSnapshot): NotComparable {
  * `cand`: the reading of the tariff the price is on (an account built on a house: the house's). `listing`: where the fund is bought on that
  * reading, the fund's own, else the exchange the reading buys it on (`Cand.listing`); on a failure, that of the reading whose reason it gives.
  */
-type Priced = { kind: "ok"; row: ComparedProvider; venue: Venue | null; standing: boolean; aside: string[]; cand: Cand; listing: Spec["listing"] } | { kind: "fail"; reason: NotComparable; listing: Spec["listing"] };
+type Priced = { kind: "ok"; row: ComparedProvider; venue: Venue | null; standing: boolean; aside: string[]; cand: Cand; listing: Listing | undefined } | { kind: "fail"; reason: NotComparable; listing: Listing | undefined };
 /** What a row leaves at the horizon after tax, the figure a house's readings are chosen on (F-63); null when not priced. */
 const leftOf = (row: ProviderRow): number | null => (row.kind === "compared" ? row.real : null);
 
@@ -680,7 +691,7 @@ function priceMany(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
   // a fund whose tax index rests on an open rule is priced nowhere after tax (F-04: the kind with no fund record, TXF-04), so no house is
   // ranked on a guess
   const open = blockedBy(ctx, spec);
-  if (open) return new Map(snaps.map((s): [string, Priced] => [s.id, { kind: "fail", reason: { code: "rule-open", ...open }, listing: spec.listing }]));
+  if (open) return new Map(snaps.map((s): [string, Priced] => [s.id, { kind: "fail", reason: { code: "rule-open", ...open }, listing: listingOfPlace(spec.place) }]));
   return priceRows(ctx, spec, option, snaps, fundVenue);
 }
 
@@ -697,7 +708,8 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
   // #190: the layered run has no line of its own to say which exchange it trades on, and was priced where the house's list has no line)
   const bases = [...new Set(snaps.flatMap((s) => { const b = baseOf(s) ?? dealHouseOf(s); return b && !snaps.some((x) => x.id === b) ? [b] : []; }))].flatMap((b) => ctx.bundle.snapshots.filter((x) => x.id === b));
   const all = [...snaps, ...bases];
-  const per = all.map((s) => ({ s, cands: candidates(scoped(s), option, spec).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
+  const listing = listingOfPlace(spec.place);
+  const per = all.map((s) => ({ s, cands: candidates(ctx, scoped(s), option, spec).filter((c) => fundVenue === null || c.venue === null || c.venue === fundVenue) }));
   const results = new Map<string, { row: ProviderRow; cand: Cand }[]>();
   const slots = Math.max(0, ...per.map((p) => p.cands.length));
   for (let k = 0; k < slots; k++) {
@@ -721,7 +733,7 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
       const at = out.get(base);
       const cand = at?.kind === "ok" ? at.cand : undefined;
       const mine = cand ? (results.get(s.id) ?? []).find((g) => sameCand(g.cand, cand)) : undefined;
-      if (!at || at.kind === "fail") out.set(s.id, at ?? { kind: "fail", reason: { code: "data-missing", recorded: null }, listing: spec.listing });
+      if (!at || at.kind === "fail") out.set(s.id, at ?? { kind: "fail", reason: { code: "data-missing", recorded: null }, listing });
       else if (mine && mine.row.kind !== "not-comparable") out.set(s.id, { kind: "ok", row: mine.row, venue: at.venue, standing: at.standing, aside: [], cand: at.cand, listing: at.listing });
       else out.set(s.id, { kind: "fail", reason: mine?.row.kind === "not-comparable" ? reasonOf(mine.row, scoped(s)) : { code: "data-missing", recorded: null }, listing: at.listing });
       continue;
@@ -729,7 +741,7 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
     const got = results.get(s.id) ?? [];
     const priced: Reading[] = [];
     // a reading set aside because the fund trades on another exchange than the one its line names: the house's lines abroad name only that one
-    let otherVenue: { venue: Venue; listing: Spec["listing"] } | null = null;
+    let otherVenue: { venue: Venue; listing: Listing | undefined } | null = null;
     for (const g of got) {
       if (g.row.kind === "not-comparable") continue;
       // no trade line for the class: the run would charge nothing, which the tariff does not say; derived availability (spec 6, S3)
@@ -738,39 +750,39 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
       // the exchange the fund is bought on: its own, else the reading's
       const on = fundVenue ?? g.cand.listing ?? null;
       if (on !== null && venue !== null && venue !== on) {
-        otherVenue = { venue, listing: spec.listing ?? g.cand.listing };
+        otherVenue = { venue, listing: listing ?? g.cand.listing };
         continue;
       }
       priced.push({ row: g.row, venue, cand: g.cand });
     }
-    const least = spec.eachExchange === "least" && !spec.listing ? leastOf(priced) : null;
+    const least = spec.place.at === "unknown-exchange" ? leastOf(priced) : null;
     const best = least ? ("reading" in least ? least.reading : null) : mostOf(priced);
     if (best) {
       const on = least && "reading" in least ? least.listing : undefined;
-      out.set(s.id, { kind: "ok", row: best.row, venue: best.venue ?? on ?? null, standing: best.row.linesUsed.some((id) => { const band = s.lines.find((l) => l.id === id)?.band; return band === STANDING_ORDER_BAND || band === STANDING_CONVERSION_BAND; }), aside: best.row.standingAside, cand: best.cand, listing: spec.listing ?? on ?? best.cand.listing });
+      out.set(s.id, { kind: "ok", row: best.row, venue: best.venue ?? on ?? null, standing: best.row.linesUsed.some((id) => { const band = s.lines.find((l) => l.id === id)?.band; return band === STANDING_ORDER_BAND || band === STANDING_CONVERSION_BAND; }), aside: best.row.standingAside, cand: best.cand, listing: listing ?? on ?? best.cand.listing });
       continue;
     }
     // where a fund of no known exchange is priced on one exchange and not the other, the reasons are those of the exchange with no price
     const lacking = least && "lacking" in least ? least.lacking : null;
     const fails = got.flatMap((g) => {
-      const listing = spec.listing ?? g.cand.listing;
+      const on = listing ?? g.cand.listing;
       if (lacking && g.cand.listing && !lacking.includes(g.cand.listing)) return [];
-      return g.row.kind === "not-comparable" ? [{ reason: reasonOf(g.row, scoped(s)), listing }] : g.row.noLine.includes("trade") ? [{ reason: { code: "no-applicable-line" as const, detail: `no trade line of the ${s.snapshot} snapshot applies to ${spec.cls}` }, listing }] : [];
+      return g.row.kind === "not-comparable" ? [{ reason: reasonOf(g.row, scoped(s)), listing: on }] : g.row.noLine.includes("trade") ? [{ reason: { code: "no-applicable-line" as const, detail: `no trade line of the ${s.snapshot} snapshot applies to ${spec.cls}` }, listing: on }] : [];
     });
     // a house that trades abroad only on another exchange does not sell the fund, whatever its other readings stop on: the readings on its
     // exchange were never run for this fund, and the plain reading's failure (Altshuler Trade's three US plans read as "ambiguous") is not why;
     // for a fund of no known exchange, the exchange its lines do not name may be the fund's
     const elsewhere = option === "abroad" && (fundVenue !== null || lacking) ? onlyVenueAbroad(scoped(s)) : null;
     if (elsewhere !== null && elsewhere !== fundVenue && !lacking?.includes(elsewhere)) {
-      out.set(s.id, { kind: "fail", reason: { code: "other-venue", venue: elsewhere, fundVenue }, listing: spec.listing ?? lacking?.find((v) => v !== elsewhere) });
+      out.set(s.id, { kind: "fail", reason: { code: "other-venue", venue: elsewhere, fundVenue }, listing: listing ?? lacking?.find((v) => v !== elsewhere) });
       continue;
     }
     // the most telling reason: any but "no line" and "ambiguous", then ambiguous, then no line; with it, the exchange of its reading
-    const pick: { reason: NotComparable; listing: Spec["listing"] } =
+    const pick: { reason: NotComparable; listing: Listing | undefined } =
       fails.find((f) => f.reason.code !== "no-applicable-line" && f.reason.code !== "ambiguous") ??
       (otherVenue ? { reason: { code: "other-venue", venue: otherVenue.venue, fundVenue }, listing: otherVenue.listing } : null) ??
       fails.find((f) => f.reason.code === "ambiguous") ??
-      fails[0] ?? { reason: { code: "data-missing" as const, recorded: null }, listing: spec.listing };
+      fails[0] ?? { reason: { code: "data-missing" as const, recorded: null }, listing };
     out.set(s.id, { kind: "fail", ...pick });
   }
   return out;
@@ -1143,10 +1155,7 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   if (rec.hedged === true && !comparedYears(rec.tracking_record, list) && typeof rec.fees.tracking_difference_12m?.value !== "number") return { reason: { code: isCustomFund(rec) ? "no-hedge-entered" : "no-hedge-record" } };
   const run = fundRun(subject, exposure, ctx.plan.grossReturn, ctx.assumptions, ctx.bundle.fx, list);
   if ("kind" in run) return { reason: run.kind === "need-rate" ? { code: "need-rate", currency: run.currency } : run.kind === "need-yield" ? { code: "need-yield" } : { code: "fund-type" } };
-  const listing = listingOf(rec, subject.instrumentClass);
-  // F-65: a fund bought abroad that states neither its exchange nor its domicile is read on each exchange, priced where it leaves the least
-  const each = !listing && subject.instrumentClass === OPTION_CLASS.abroad ? { eachExchange: "least" as const } : {};
-  const spec: Spec = { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass, ...(listing ? { listing } : each) };
+  const spec: Spec = { fund: run.fund, market: run.market, ...(run.currency ? { currency: run.currency } : {}), cls: subject.instrumentClass, place: placeOf(rec, subject.instrumentClass) };
   // a fund whose tax rests on an open rule is listed with the reason and no rank (F-04); a fund whose tax index is an open reading (TXS OQ26,
   // TXF OQ10) computes, on the site's reading where the site read its documents (D119), else on the reading that leaves less where they
   // split, and a foreign fund's distribution on the site's reading that it is a dividend (F-20, D85)
@@ -1161,13 +1170,15 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
 }
 
 /**
- * F-109 (D94): where a fund is bought: an Israeli ETF and a foreign fund's Tel Aviv line on TASE, a fund abroad on the exchange it trades on.
- * A tracking fund is bought from its manager by amount and has none.
+ * F-109 (D94), F-65: where a fund is bought: an Israeli ETF and a foreign fund's Tel Aviv line on TASE, a fund abroad on the exchange it
+ * trades on, or on each where its record says that is not known. A tracking fund is bought from its manager by amount and has none.
  */
-function listingOf(rec: FundRecord, cls: string): Spec["listing"] {
-  if (cls === "etf_units" || cls === "tase_foreign_fund_units") return "tase";
-  if (cls === "foreign_securities") return venueOfFund(rec) ?? undefined;
-  return undefined;
+function placeOf(rec: FundRecord, cls: string): Place {
+  if (cls === "etf_units" || cls === "tase_foreign_fund_units") return { at: "listed", listing: "tase" };
+  if (cls !== "foreign_securities") return { at: "none" };
+  if (rec.exchange === "unknown") return { at: "unknown-exchange" };
+  const venue = venueOfFund(rec);
+  return venue ? { at: "listed", listing: venue } : { at: "none" };
 }
 
 /** F-109: a fund bought in whole units whose record holds no unit price: priced by amount, and its row says the price was not collected, or, on a fund the person typed, not entered. */
@@ -1571,7 +1582,7 @@ export function dealRunOf(a: InvestArgs & { fundId: string; listing?: DealRun["l
   const fs = fundSpec(ctx, rec);
   if ("reason" in fs) return null;
   const { spec } = fs;
-  return { instrumentClass: spec.cls, listing: spec.listing ?? a.listing, currency: spec.currency?.code ?? null, distributes: !!(spec.fund as { distribution?: unknown }).distribution, fx: ctx.fx };
+  return { instrumentClass: spec.cls, listing: listingOfPlace(spec.place) ?? a.listing, currency: spec.currency?.code ?? null, distributes: !!(spec.fund as { distribution?: unknown }).distribution, fx: ctx.fx };
 }
 
 /**

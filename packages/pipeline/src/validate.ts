@@ -36,6 +36,7 @@ import {
   isShekel,
   isTaseForeignLine,
   EFFECTIVE_RATE_PATHS,
+  isUnitPriceUnit,
 } from "@finance-tool/schema";
 import { inTrailingYear, trailingDistributionYield } from "@finance-tool/engine";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
@@ -800,7 +801,7 @@ export function checkSharePrice(rec: Pick<FundRecord, "share_price">): string[] 
   if (!p) return [];
   const out: string[] = [];
   // agorot are TASE's quote of a unit, which only a fund the person types carries (data-schema §3.5)
-  if (!["usd", "nis", "eur"].includes(p.unit)) out.push(`share_price: unit ${p.unit} is not a currency an issuer's NAV is printed in`);
+  if (!isUnitPriceUnit(p.unit) || p.unit === "agorot") out.push(`share_price: unit ${p.unit} is not a currency an issuer's NAV is printed in`);
   if (/tase\.co\.il/i.test(p.source.url)) out.push(`share_price: ${p.source.url} is TASE's or Maya's; a unit's price is the issuer's NAV from its own page (D94)`);
   return out;
 }

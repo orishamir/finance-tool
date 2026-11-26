@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { buyWithCash } from "../src/formulas/fees.ts";
 import { runSecurities, type SecuritiesInput } from "../src/ledgers/securities.ts";
-import { beforeTax, providerWorkbench, unitWaysAt, waitingReal, wholeUnitsAt, type WorkbenchInput } from "../src/providers/workbench.ts";
+import { beforeTax, listingChangesRun, providerWorkbench, unitWaysAt, waitingReal, wholeUnitsAt, type WorkbenchInput } from "../src/providers/workbench.ts";
 import { context } from "./golden/harness.ts";
 
 const ctx = context();
@@ -194,6 +194,19 @@ describe("which house buys in whole units (F-109, D94)", () => {
   });
   it("a Tel Aviv line priced at its issuer's dollar NAV takes the run's rate of the dollar", () => {
     expect(at(undefined, {}, { listing: "tase", instrumentClass: "tase_foreign_fund_units", currency: undefined, fx: { USD: 3.2 } })?.price).toBeCloseTo(814.9 * 3.2, 9);
+  });
+});
+
+describe("whether where the fund is bought changes an account's run (F-109, F-128)", () => {
+  const priced = { kind: "foreign-fund" as const, drag: {}, sharePrice: 814.9, sharePriceCurrency: "USD" };
+  const bare = { kind: "foreign-fund" as const, drag: {} };
+  it("a deal's account always reads it, for its cases for what the plan buys", () => {
+    expect(listingChangesRun({ instrumentClass: "foreign_securities", fund: bare }, "deal")).toBe(true);
+  });
+  it("a house's price list reads it only for whole units: a fund with a unit price that is not a tracking fund", () => {
+    expect(listingChangesRun({ instrumentClass: "foreign_securities", fund: priced }, "price-list")).toBe(true);
+    expect(listingChangesRun({ instrumentClass: "foreign_securities", fund: bare }, "price-list")).toBe(false);
+    expect(listingChangesRun({ instrumentClass: "mutual_fund_units", fund: priced }, "price-list")).toBe(false);
   });
 });
 

@@ -1,7 +1,7 @@
 // The fund the engine runs for a fund record (`fundOf`): its fees, tracking difference, spread, promotions, distribution, domicile,
 // principal currency, a Tel Aviv line's currency and unit price, read from `data/funds/`, with the record's distribution (A-10) and the exposure's F-107 inputs. The provider workbench and
 // the site build each fund they run through it. No I/O: the records arrive as data.
-import { isoCurrency, type ExposureRecord, type FundRecord, type ValueObject } from "@finance-tool/schema";
+import { isoCurrency, isUnitPriceUnit, unitPriceUnits, type ExposureRecord, type FundRecord, type ValueObject } from "@finance-tool/schema";
 import { comparedYears, trackingBeyondFees, variableForward, type GapList } from "../formulas/fund-gap.ts";
 import type { Fund } from "../ledgers/securities.ts";
 import { RecordInputError } from "../resolver.ts";
@@ -13,9 +13,6 @@ function fraction(vo: ValueObject | null | undefined, unit: ValueObject["unit"],
   if (typeof vo.value !== "number") throw new RecordInputError(`${what}: value ${JSON.stringify(vo.value)} is not a number`);
   return vo.value / 100;
 }
-
-/** F-109: the currency a unit price is in and what one of its units is in that currency, by the price's unit. */
-const PRICE_UNITS: Partial<Record<ValueObject["unit"], { code: string; scale: number }>> = { nis: { code: "ILS", scale: 1 }, agorot: { code: "ILS", scale: 0.01 }, usd: { code: "USD", scale: 1 }, eur: { code: "EUR", scale: 1 } };
 
 /** The drag part each fee a promotion may lower is charged in (F-10, F-121). */
 const PROMOTED_PART = { fixed_management: "management", variable_management: "variable", trustee: "trustee" } as const;
@@ -154,8 +151,8 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   // unit's, as TASE quotes it, ETF-32) is a hundredth of a shekel.
   const price = rec.share_price;
   if (price && typeof price.value === "number") {
-    const read = PRICE_UNITS[price.unit];
-    if (!read) throw new RecordInputError(`fund ${rec.id} share_price: unit is ${price.unit}, expected a currency`);
+    if (!isUnitPriceUnit(price.unit)) throw new RecordInputError(`fund ${rec.id} share_price: unit is ${price.unit}, expected a currency`);
+    const read = unitPriceUnits[price.unit];
     fund.sharePrice = price.value * read.scale;
     fund.sharePriceCurrency = read.code;
   }

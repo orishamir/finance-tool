@@ -363,7 +363,7 @@ describe("the exchange of a fund bought abroad (F-65)", () => {
   it("is refused on a collected record, whose tickers and domicile name it", () => {
     expect(checkFundExchange({})).toEqual([]);
     expect(checkFundExchange({ exchange: "us" })[0]).toMatch(/typed fund's only/);
-    expect(checkFundExchange({ exchange: null })[0]).toMatch(/typed fund's only/);
+    expect(checkFundExchange({ exchange: "unknown" })[0]).toMatch(/typed fund's only/);
   });
 });
 
