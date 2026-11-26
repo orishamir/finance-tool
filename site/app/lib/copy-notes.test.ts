@@ -59,11 +59,10 @@ const NOTE_LEFTOVERS: Partial<Record<NoteFlaw, string[]>> = {
 };
 
 /**
- * The phrases an interface string may hold: they say what the site does or will not do (its status lines, "האתר לא הצליח לחשב", and
- * what guidelines/wording.md tells a page to say where the site lacks a fact or will not guess, "האתר לא מצא בכללים שקרא", "האתר לא
- * מנחש תשואה"), never how it read a rule. A figure's note is held to them all (above).
+ * The phrase an interface string may hold: what guidelines/wording.md tells a page to say where the site lacks a fact or will not guess
+ * ("האתר לא מצא בכללים שקרא", "האתר לא מנחש תשואה", "האתר לא ממליץ"), never how it read a rule. A figure's note is held to it too (above).
  */
-const SITE_DOES = ["האתר לא", "האתר מציג", "האתר מחשב", "האתר לוקח"];
+const SITE_DOES = ["האתר לא"];
 const COPY_TALK = talk.phrases.filter((p) => !SITE_DOES.includes(p));
 
 /** The interface strings still allowed a research-talk phrase, by where they are in copy.ts. */
@@ -74,8 +73,10 @@ const TALK_LEFTOVERS: string[] = [
   "feeDeal.builder.unread",
   "feeDeal.cases.noCurrency",
   "feeDeal.cases.notPrinted",
+  "feeDeal.cases.stated.capRead",
   "feeDeal.cases.unmatched",
   "feeDeal.leftOut.unread",
+  "feeDeal.read.held.perSecurity",
   "feeDeal.read.law.notJudged",
   "feeDeal.standing.bindsUnjudged",
   "feeDeal.standing.caveat.closing_account",
@@ -84,13 +85,22 @@ const TALK_LEFTOVERS: string[] = [
   "feeDeal.standing.notSourced",
   "feeDeal.standing.otherForm",
   "flags.G-42",
+  "flags.TXS-OQ26",
   "groupPrices.states.no_mention",
   "guideBlocks.exit.onlyAt.after",
+  "guideBlocks.terms.pick.accountCount",
+  "guideSignature.hishtalmut.story.early.linkage.after",
   "invest.kinds.gapTyped",
+  "invest.labels.tax-currency-unknown.explain",
+  "invest.labels.tax-on-sale-ruling.explain",
+  "kit.gallery.sample.leftOut.why",
   "kit.gallery.uses.StepTag",
   "kit.gallery.uses.TypedPlain",
+  "notCovered.institution.after",
   "numbers.readingDoubt.TXS-14.status",
+  "provenance.sourced.notYetInForce",
   "rulesFront.claim.companiesNone",
+  "signatureFacts.brokerCount",
   "sourceBlock.legendLine",
 ];
 
@@ -127,10 +137,11 @@ describe("the interface strings", () => {
   it("leave no listed string that is fixed or gone (the list only shrinks)", () => {
     expect(TALK_LEFTOVERS.filter((where) => !offend.includes(where))).toEqual([]);
   });
-  it("let what the site does or will not do through, and catch a planted phrase about how it read a rule", () => {
+  it("let what the site will not do through, and catch a planted phrase about how it read a rule", () => {
     expect(hasTalk("האתר לא מצא בכללים שקרא.")).toBe(false);
     expect(hasTalk("האתר לא הצליח לחשב את הגרף.")).toBe(false);
     expect(hasTalk("האתר קרא את התקנון.")).toBe(true);
     expect(hasTalk("השיעור לא נקרא בתעריפון.")).toBe(true);
+    for (const phrase of ["האתר מחשב", "האתר לוקח", "האתר מציג"]) expect(hasTalk(`${phrase} את השיעור מהתעריפון.`)).toBe(true);
   });
 });
