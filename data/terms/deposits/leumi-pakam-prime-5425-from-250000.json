@@ -139,12 +139,12 @@
     "value": false,
     "max_renewals": null
   },
-  "conditions_he": "בטבלה מופיעה גם הטבת דיגיטל של 0.05%, ולא כתוב אם היא כלולה בשיעור או נוספת עליו.",
   "snapshot": "2026-11-09",
   "source": {
     "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
     "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון', 'הנתונים נכונים ליום: 09.11.2026', 'שיעורי הריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון'",
     "publisher": "Bank Leumi le-Israel B.M.",
     "strength": "institution"
-  }
+  },
+  "doubt_he": "בטבלה מופיעה גם הטבת דיגיטל של 0.05%, ולא כתוב אם היא כלולה בשיעור או נוספת עליו."
 }
