@@ -1,7 +1,8 @@
 // A rule's text may carry {ID:figure} slots, so a figure in it is the record's and never typed: the card draws each slot as the figure,
 // and every place that reads the text as a string (a search text, a row's first sentence, a title, a citation) writes the figure as the
 // card shows it. A slot whose record or figure the card's data lacks would print "—" inside a sentence: every slot in every record's
-// text resolves with the records its card travels with (the record and those it points at, `pointedRecords`).
+// text resolves with the records its card travels with (the record and those it points at, `pointedRecords`), and with a company's view
+// of the record on that company's page.
 import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -9,6 +10,8 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
 import { loadRules, pointedRecords } from "./data.server";
+import { companyLinks } from "./institutions.server";
+import { pageView, scopeCompanies } from "./scope";
 import { parseAnswer } from "./answer-slots";
 import { fillSlot, missingSlot, slotsAsText } from "./figure-slots";
 import { citationText, pickSources, type SourcedRule } from "./sources";
@@ -21,12 +24,21 @@ import { RuleCard, RuleDetail } from "../components/provenance-sheets";
 const today = "2026-11-26";
 
 describe("every slot in a rule's text", () => {
+  const all = loadRules();
+  /** The slots of a record's text that the given view of the record, with the records it points at, leaves without a figure. */
+  const unfilled = (r: RuleRecord, view: RuleRecord, where: string) => {
+    const held = { ...pointedRecords([r], all), [r.id]: view };
+    return parseAnswer(r.text_he ?? "").flatMap((p) => (p.kind === "slot" && fillSlot(p, { rules: held, today }).kind === "missing" ? [`${r.id}${where}: {${p.id}:${p.figure}}`] : []));
+  };
+
   it("names a figure the records its card is given hold", () => {
-    const all = loadRules();
-    const bad = Object.values(all).flatMap((r) => {
-      const held = { [r.id]: r, ...pointedRecords([r], all) };
-      return parseAnswer(r.text_he ?? "").flatMap((p) => (p.kind === "slot" && fillSlot(p, { rules: held, today }).kind === "missing" ? [`${r.id}: {${p.id}:${p.figure}}`] : []));
-    });
+    expect(Object.values(all).flatMap((r) => unfilled(r, r, ""))).toEqual([]);
+  });
+
+  // on a company's page the card shows only that company's part of the record (D30, `pageView`), and its text reads that part
+  it("names a figure a company's page keeps, on the page of each company the record names", () => {
+    const links = companyLinks();
+    const bad = Object.values(all).flatMap((r) => scopeCompanies(r).flatMap((c) => unfilled(r, pageView(r, [c.id], links), ` on ${c.id}`)));
     expect(bad).toEqual([]);
   });
 });

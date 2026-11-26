@@ -839,6 +839,8 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   // on a company's page only that company's part of the record (D30): its name, its own documents, the law and the regulator, its figures
   const page = data.pageCompanies ?? (data.company ? [data.company] : []);
   const rule = pageView(record, page, data.companies);
+  // the text's slots, its shown title and its citation read the card's own view of the record, so none names a figure the card hides
+  const slots: SlotSource = { ...data, rules: { ...data.rules, [id]: rule } };
   const open = rule.strength === "open";
   const sourced = asSourced(rule);
   const sources = page.length ? sourcesForPage(rule, pickSources(sourced), page, data.companies) : pickSources(sourced);
@@ -856,7 +858,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
           {open && <>{ruleCopy.open.title} </>}
           <bdi dir="ltr" className="slashed-zero">{id}</bdi>
           {!open && " · "}
-          {!open && <ShownRuleTitle rule={rule} slots={data} />}
+          {!open && <ShownRuleTitle rule={rule} slots={slots} />}
         </h2>
         {/* who it applies to (D30): a neutral label, never a warning; the strength tag stays only for an open or second-hand source, or a general rule read from a company's document */}
         <div className="flex flex-wrap items-center gap-1.5">
@@ -869,14 +871,14 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       {open ? (
         <Callout tone="blocked">
           <span className="block">
-            <ShownRuleTitle rule={rule} slots={data} />
+            <ShownRuleTitle rule={rule} slots={slots} />
           </span>
           <span className="block">{ruleCopy.open.last}</span>
         </Callout>
       ) : rule.text_he ? (
-        // its figure slots read the page's records: the card's own record and those it points at (`pointedIds`)
+        // its figure slots read the card's own view of the record and the records it points at (`pointedIds`)
         <p className="text-sm">
-          <SlottedText text={rule.text_he} source={data} />
+          <SlottedText text={rule.text_he} source={slots} />
         </p>
       ) : (
         <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
@@ -932,7 +934,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
       {uses && uses.pages.length === 0 && !uses.engine && <p className="text-xs text-muted-foreground">{ruleCardMore.usesNone}</p>}
       {/* the card's foot: pushed to the bottom, so cards side by side have it at one height */}
       <div className="mt-auto flex flex-col gap-3 pt-1">
-        {sources[0] && <CitationBox text={citationText(sourced, sources[0], sources[0].checked, data)} />}
+        {sources[0] && <CitationBox text={citationText(sourced, sources[0], sources[0].checked, slots)} />}
         {!inline && <CardFoot rule={rule} data={data} />}
       </div>
     </div>
