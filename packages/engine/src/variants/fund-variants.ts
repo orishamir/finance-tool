@@ -14,10 +14,10 @@ function fraction(vo: ValueObject | null | undefined, unit: ValueObject["unit"],
   return vo.value / 100;
 }
 
-/** The drag part each fee a promotion may lower is charged in (F-10, F-121). */
 /** F-109: the currency a unit price is in and what one of its units is in that currency, by the price's unit. */
 const PRICE_UNITS: Partial<Record<ValueObject["unit"], { code: string; scale: number }>> = { nis: { code: "ILS", scale: 1 }, agorot: { code: "ILS", scale: 0.01 }, usd: { code: "USD", scale: 1 }, eur: { code: "EUR", scale: 1 } };
 
+/** The drag part each fee a promotion may lower is charged in (F-10, F-121). */
 const PROMOTED_PART = { fixed_management: "management", variable_management: "variable", trustee: "trustee" } as const;
 
 /** The fund's listed fixed, variable and trustee fees together, as an annual fraction (0 for a fee not collected). */

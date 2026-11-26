@@ -92,7 +92,7 @@ export const EXCHANGES = fundExchange.options;
 
 /**
  * The units a typed fund's unit price can be in, by its kind (F-109): abroad the fund's own currency, which the engine has a unit price in;
- * on TASE agorot, as TASE quotes a unit (ETF-32); none for a tracking fund, bought from its manager by amount.
+ * on TASE agorot, as TASE quotes a unit (ETF-32, for the foreign funds traded on TASE; no rule yet for Israeli ETFs); none for a tracking fund, bought from its manager by amount.
  */
 const PRICE_UNITS = { abroad: ["usd", "eur"], "il-etf": ["agorot"], "tase-foreign": ["agorot"], "il-tracking": [] } as const satisfies Record<OptionId, readonly ValueObject["unit"][]>;
 type PriceUnit = (typeof PRICE_UNITS)[OptionId][number];

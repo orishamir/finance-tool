@@ -101,6 +101,8 @@ describe("a fund typed abroad whose exchange is not given follows the country it
     const b = withCustomEntries(bundle, [f]);
     expect(reasonAt(wayOf(b, "ie00b5bmr087"), "one-zero")).toBe("other-venue");
     expect(reasonAt(wayOf(b, f.id), "one-zero")).toBe("other-venue");
+    const at = wayOf(b, f.id).byHouse["one-zero"];
+    expect(at && "reason" in at ? at.reason : null).toEqual({ code: "other-venue", venue: "us", fundVenue: "europe" });
   });
 });
 
@@ -126,6 +128,11 @@ describe("a fund typed abroad with neither its exchange nor its country (F-65)",
 
     it("a house whose lines abroad name one exchange does not sell it, as on the other exchange", () => {
       expect(reasonAt(unsure, "one-zero")).toBe("other-venue");
+    });
+
+    it("its reason does not say which exchange the fund trades on, which nobody gave", () => {
+      const at = unsure.byHouse["one-zero"];
+      expect(at && "reason" in at ? at.reason : null).toEqual({ code: "other-venue", venue: "us", fundVenue: null });
     });
 
     it("each row names the exchange its price is on (F-63)", () => {

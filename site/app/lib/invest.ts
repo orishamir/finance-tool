@@ -762,13 +762,13 @@ function priceRows(ctx: Ctx, spec: Spec, option: OptionId, snaps: FeesSnapshot[]
     // for a fund of no known exchange, the exchange its lines do not name may be the fund's
     const elsewhere = option === "abroad" && (fundVenue !== null || lacking) ? onlyVenueAbroad(scoped(s)) : null;
     if (elsewhere !== null && elsewhere !== fundVenue && !lacking?.includes(elsewhere)) {
-      out.set(s.id, { kind: "fail", reason: { code: "other-venue", venue: elsewhere }, listing: spec.listing ?? lacking?.find((v) => v !== elsewhere) });
+      out.set(s.id, { kind: "fail", reason: { code: "other-venue", venue: elsewhere, fundVenue }, listing: spec.listing ?? lacking?.find((v) => v !== elsewhere) });
       continue;
     }
     // the most telling reason: any but "no line" and "ambiguous", then ambiguous, then no line; with it, the exchange of its reading
     const pick: { reason: NotComparable; listing: Spec["listing"] } =
       fails.find((f) => f.reason.code !== "no-applicable-line" && f.reason.code !== "ambiguous") ??
-      (otherVenue ? { reason: { code: "other-venue", venue: otherVenue.venue }, listing: otherVenue.listing } : null) ??
+      (otherVenue ? { reason: { code: "other-venue", venue: otherVenue.venue, fundVenue }, listing: otherVenue.listing } : null) ??
       fails.find((f) => f.reason.code === "ambiguous") ??
       fails[0] ?? { reason: { code: "data-missing" as const, recorded: null }, listing: spec.listing };
     out.set(s.id, { kind: "fail", ...pick });

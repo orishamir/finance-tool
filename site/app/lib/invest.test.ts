@@ -141,7 +141,7 @@ describe("invest page computation", () => {
     const europe = abroad.filter((f) => f.rec.identifiers.isin?.startsWith("IE"));
     expect(europe.length).toBeGreaterThan(0);
     for (const id of ["altshuler-trade", "one-zero"]) {
-      for (const f of europe) expect((f.byHouse[id] as { reason?: unknown } | undefined)?.reason, `${id} ${f.rec.id}`).toEqual({ code: "other-venue", venue: "us" });
+      for (const f of europe) expect((f.byHouse[id] as { reason?: unknown } | undefined)?.reason, `${id} ${f.rec.id}`).toEqual({ code: "other-venue", venue: "us", fundVenue: "europe" });
       // and a fund that trades in the United States is priced there
       expect((abroad.find((f) => f.rec.id === "us-voo")?.byHouse[id] as { valueN?: number } | undefined)?.valueN, id).toBeGreaterThan(0);
     }

@@ -395,7 +395,7 @@ export type NotComparable =
   | { code: "needs-share-price" | "needs-fx-rate" | "record-error"; detail: string }
   | { code: "ambiguous"; detail: string; lines: { id: string; name: string; band: string | null }[] }
   /** the house's trade lines abroad name one exchange (`venue`) and the fund trades on the other. */
-  | { code: "other-venue"; venue: "us" | "europe" }
+  | { code: "other-venue"; venue: "us" | "europe"; /** The exchange the fund trades on; null where neither its exchange nor its country was given. */ fundVenue: "us" | "europe" | null }
   /** the run would rest on a rule that is open (F-04: a TASE foreign fund that distributes, TXF-04): nothing is computed after tax or
    *  ranked. `question`: the open question that stopped the run, its
    *  readings giving it different results (method §13), whose card the reason opens; `gap`: the method gap that stopped it where no reading of

@@ -3237,7 +3237,9 @@ export const r4workbench = {
     dataMissing: "התעריפון לא נאסף.",
     noLine: (cls: string) => `בתעריפון אין שורה ל${cls}.`,
     // a house whose trade lines abroad name one exchange only (One Zero: "ניירות ערך זרים הנסחרים בארה״ב"), and a fund on the other
-    otherVenue: (houseVenue: "us" | "europe") => (houseVenue === "us" ? "בחשבון הזה קונים בחו״ל רק ניירות ערך שנסחרים בארה״ב, והקרן הזו נסחרת באירופה." : "בחשבון הזה קונים בחו״ל רק ניירות ערך שנסחרים באירופה, והקרן הזו נסחרת בארה״ב."),
+    // a fund with neither its exchange nor its country given: the site does not know where it trades, so the sentence does not say
+    otherVenue: (houseVenue: "us" | "europe", fundVenue: "us" | "europe" | null) =>
+      `בחשבון הזה קונים בחו״ל רק ניירות ערך שנסחרים ${houseVenue === "us" ? "בארה״ב" : "באירופה"}, ${fundVenue === null ? "ולא ידוע איפה הקרן הזו נסחרת." : fundVenue === "us" ? "והקרן הזו נסחרת בארה״ב." : "והקרן הזו נסחרת באירופה."}`,
     noLineChannel: (cls: string, channel: string) => `בתעריפון אין שורה ל${cls} ב${channel}.`,
     noAverage: (cls: string) => `לא נאסף ממוצע לשורות שחלות על ${cls}.`,
     lineWithoutValue: (name: string) => `בשורה ״${name}״ חסר ערך בתעריפון.`,

@@ -82,7 +82,7 @@ export function reasonSentence(r: NotComparable, instrumentClass: string, channe
     case "record-error":
       return n.recordError;
     case "other-venue":
-      return n.otherVenue(r.venue);
+      return n.otherVenue(r.venue, r.fundVenue);
     case "rule-open":
       return (r.question ? c.reasons.ruleOpen[r.question] : undefined) ?? c.reasons.ruleOpen[r.ruleId] ?? c.reasons.ruleOpenOther;
     case "deal-unpriced":

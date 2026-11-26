@@ -255,7 +255,7 @@ export const fundRecord = z.strictObject({
    * `nis`, `eur`), for per-share commissions and for buying whole units; a Tel Aviv line of a foreign fund takes its issuer's NAV of the same
    * share class, which the line's own Israeli document names; never a price from TASE or Maya (the data check refuses one). On a fund the
    * person types, the price they type, dated the day they typed it: abroad in the fund's own currency, on TASE in `agorot`, as TASE quotes
-   * a unit (ETF-32).
+   * a unit (ETF-32, for the foreign funds traded on TASE; no rule yet for Israeli ETFs).
    */
   share_price: valueObject.optional(),
   /**
