@@ -10,7 +10,7 @@ import { ruleCardMore, rule as ruleCopy, scopeWords, sourceBlock, strength } fro
 import { fmt } from "../lib/format";
 import { joinNames, ownDocCompanies } from "../lib/scope";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
-import { RuleCard, RuleDetail, ValueSheet } from "./provenance-sheets";
+import { RuleCard, RuleDetail, TermCard, ValueSheet } from "./provenance-sheets";
 import type { SiteValue } from "../lib/value";
 
 const root = new URL("../../../", import.meta.url);
@@ -135,5 +135,113 @@ describe("a sourced figure's sheet", () => {
     expect(text).not.toMatch(/מהמקור שלמטה/);
     expect(text).not.toContain(strength.institution.label);
     expect(text).toContain(`${sourceBlock.checked} ${fmt.date("2026-10-25")}`);
+  });
+});
+
+/** The card's markup on a page at `path`, inside the router. */
+const html = (el: ReturnType<typeof createElement>, data: ProvenanceData, path = "/") =>
+  renderToStaticMarkup(createElement(MemoryRouter, { initialEntries: [path] }, createElement(ProvenanceProvider, { data } as never, el))).replace(/<!-- -->/g, "");
+
+describe("a record that is not a rule", () => {
+  it("says so on its card and its detail, general or not (CS-22, a general not-rule)", () => {
+    const r = record("CS-22");
+    expect(r.scope).toBe("general");
+    const data = dataOf({ [r.id]: r });
+    for (const el of [createElement(RuleCard, { id: r.id, data, inline: true }), createElement(RuleDetail, { id: r.id, data, products: [] })]) expect(words(el, data)).toContain(scopeWords.notRule.tag);
+  });
+});
+
+describe("an open record", () => {
+  const r = record("TXF-04");
+  const text = (r.text_he ?? "").replace(/\{[^}]+\}/g, "");
+  const card = (uses: ProvenanceData["ruleUses"]) => {
+    const data = dataOf({ [r.id]: r }, uses ? { ruleUses: uses } : {});
+    return [createElement(RuleCard, { id: r.id, data, inline: true }), createElement(RuleDetail, { id: r.id, data, products: [] })].map((el) => words(el, data));
+  };
+  it("shows its text in the callout", () => {
+    expect(r.strength).toBe("open");
+    const first = must(text.split(/[.,:]/)[0], "TXF-04's first words").trim();
+    expect(first.length).toBeGreaterThan(10);
+    for (const t of card(undefined)) expect(t).toContain(first);
+  });
+  it("says the site does not compute it only where the calculation does not read it", () => {
+    for (const t of card({ [r.id]: { pages: [], engine: false } })) expect(t).toContain(ruleCopy.open.last);
+    for (const t of card({ [r.id]: { pages: [], engine: true } })) expect(t).not.toContain(ruleCopy.open.last);
+    for (const t of card(undefined)) expect(t).not.toContain(ruleCopy.open.last);
+  });
+  it("carries no strength tag under a heading that already says it is open", () => {
+    // the words "שאלה פתוחה" stand in the heading only (and wherever the record's own title or text says them)
+    const own = count(`${r.title_he ?? ""} ${text}`, strength.open.label);
+    for (const t of card(undefined)) expect(count(t, strength.open.label)).toBe(1 + own);
+  });
+});
+
+describe("a rule card's order", () => {
+  it("draws its sources right after its text, before who it applies to and the rules it points to (BANK-37)", async () => {
+    const { loadRules } = await import("../lib/data.server");
+    const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
+    const rules = loadRules();
+    const r = must(rules["BANK-37"], "BANK-37");
+    const data = dataOf(rules, { ownDocs: ownDocuments(rules), companies: companyLinks() });
+    const t = words(createElement(RuleCard, { id: r.id, data, inline: true }), data);
+    const source = t.indexOf(sourceBlock.checked);
+    expect(source).toBeGreaterThan(-1);
+    expect(source).toBeLessThan(t.indexOf(ruleCardMore.seeAlso));
+    expect(source).toBeLessThan(t.indexOf(scopeWords.line.institutionTagged));
+  });
+});
+
+describe("a rule card's foot", () => {
+  const real = async () => {
+    const { loadRules } = await import("../lib/data.server");
+    const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
+    const rules = loadRules();
+    return dataOf(rules, { ownDocs: ownDocuments(rules), companies: companyLinks() });
+  };
+  it("leads to the company's page, except on that page (BANK-30)", async () => {
+    const data = await real();
+    const id = "BANK-30";
+    const company = must(ownDocCompanies(must(data.rules[id], id), data.ownDocs)[0], "BANK-30's company");
+    const page = must(data.companies?.[company.id], "its link");
+    expect(page.hasPage).toBe(true);
+    const href = `href="${page.href}#${id}"`;
+    expect(html(createElement(RuleCard, { id, data }), data, "/guide/bank-deposit")).toContain(href);
+    expect(html(createElement(RuleCard, { id, data }), data, page.href)).not.toContain(href);
+  });
+  it("names one place once where two of the record's companies share a page", async () => {
+    const data = await real();
+    const id = "BANK-33";
+    const companies = ownDocCompanies(must(data.rules[id], id), data.ownDocs);
+    expect(companies.length).toBeGreaterThan(1);
+    // both companies' links lead to the first one's page
+    const first = must(data.companies?.[must(companies[0], "a company").id], "its link");
+    const shared = { ...data, companies: { ...data.companies, ...Object.fromEntries(companies.map((c) => [c.id, first])) } };
+    const out = html(createElement(RuleCard, { id, data: shared }), shared, "/guide/bank-deposit");
+    expect(count(out, `href="${first.href}#${id}"`)).toBe(1);
+  });
+});
+
+describe("a term card", () => {
+  it("lists only the rules the page holds, and no strength row for a primary source", () => {
+    const r = record("TXA-30");
+    const term = { he: "מונח", explanation: "הסבר", variants: [], ruleIds: [r.id, "ZZZ-99"], source: { url: "https://example.org", title: "מקור", publisher: "p", strength: "primary" as const, checked: "2026-10-01" }, where: [], wrapperIds: [], exposureIds: [] };
+    const data = dataOf({ [r.id]: r }, { terms: { [term.he]: term } as never });
+    const out = html(createElement(TermCard, { id: term.he, data }), data);
+    expect(out).toContain(`data-opens="${r.id}"`);
+    expect(out).not.toContain("ZZZ-99");
+    expect(out).not.toContain(strength.primary.label);
+    expect(out).not.toMatch(/<dt><\/dt>/);
+  });
+});
+
+describe("a computed figure's sheet", () => {
+  const fee = (st: "institution" | "primary"): SiteValue => ({ value: 0.5, unit: "pct_per_year", source: { url: "https://example.org/fees.pdf", title: "תעריפון", publisher: "Bank", strength: st }, checked: "2026-10-25", effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced" });
+  it("says nothing of an input from a company's document; the input's own sheet does", async () => {
+    const { differenceOf } = await import("../lib/value");
+    const diff = differenceOf(["החברה", fee("institution")], ["החוק", fee("primary")], "F-92", { today: "2026-11-26" });
+    const data = dataOf({});
+    const sheet = (v: SiteValue) => words(createElement(ValueSheet, { value: v, exact: false, data, headId: "h", descId: "d" }), data);
+    expect(sheet(diff)).not.toContain(strength.institution.line);
+    expect(sheet(fee("institution"))).toContain(strength.institution.line);
   });
 });
