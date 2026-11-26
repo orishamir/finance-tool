@@ -251,7 +251,8 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
   Separately, the ISA reports that Israeli managers usually reach foreign indices through unfunded swaps (ETF-11).
 - Conditions / exceptions: This is a marketing article by a portfolio manager in the Meitav group, not a fund document. No Israeli gold fund's prospectus or annual report was read, so each fund's method (futures, swaps, foreign ETFs or ETCs) is open (open question 8). The More S&P 500 ETF annual report lists futures roll ("גלגול חוזה עתידי") as a tracking risk. Whether gold funds state the same risk is not confirmed.
 - Figures: none.
-- Source: [Meitav, "תנודתיות בשווקים? אפשרות להשקעה בזהב דרך קרנות סל", 29.9.2025](https://www.meitav.co.il/portfolio_management/study/investing_in_gold_through_etfs/) · checked 2026-10-22 · institution (marketing article). [ISA 2024 report, p.20](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf), via ETF-11 · primary. [More, annual report "מור סל (4D) S&P 500" (1165810), 31.12.2025, p.3](https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732871-00.pdf) · checked 2026-10-22 · institution
+- Source: [Meitav, "תנודתיות בשווקים? אפשרות להשקעה בזהב דרך קרנות סל", 29.9.2025](https://www.meitav.co.il/portfolio_management/study/investing_in_gold_through_etfs/) · checked 2026-10-22 · institution. [ISA 2024 report, p.20](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/fundsReport24.pdf), via ETF-11 · primary. [More, annual report "מור סל (4D) S&P 500" (1165810), 31.12.2025, p.3](https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732871-00.pdf) · checked 2026-10-22 · institution
+- Scope: unsettled: each Israeli gold fund's own prospectus or annual report stating how the fund gets its gold exposure (open question 8); seen at: Meitav
 - Dimensions: protection
 - Proposed dimension: replication-counterparty (as in `etfs-and-index-funds.md`)
 - Likely to change: no
@@ -272,7 +273,8 @@ Out (and where): physical gold (bars, coins) is out of scope under D2 and is not
   Funder quotes the hedged Kesem fund's policy: "מנהל הקרן יפעל לנטרול מלא של החשיפה למט"ח, ובכל מקרה החשיפה כאמור לא תעלה בערך מוחלט על 10% משווי נכסי הקרן". The Meitav hedged fund's page states the same 10% limit.
 - Conditions / exceptions: The cost of hedging inside these funds was not found (open question 10). What a hedged tracking fund's hedge is made of, in general, is ETF-75 in `etfs-and-index-funds.md`.
 - Figures: FX cap of 10% on hedged funds and 120% on unhedged funds.
-- Source: [Funder fund 5142096](https://funder.co.il/fund/5142096) · checked 2026-10-22 · secondary. [Funder fund 5141627](https://www.funder.co.il/fund/5141627) · checked 2026-10-22 · secondary. Exposure code: MF-43 (`mutual-funds-and-money-market-funds.md`)
+- Source: [תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס"ח-2007, ק״ת 6625 (28.11.2007), עמ' 152](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/dDKkjTfMz0H3iRxP7u8fphh3DPmvYX3FiarYq7bbZFo=#page=26); [תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום) (תיקון), התשע"ו-2016, ק״ת 7653 (5.5.2016)](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=11), regulations 1, 3(א)(4) (via MF-43) · checked 2026-10-31 · primary. [Funder fund 5142096](https://funder.co.il/fund/5142096) · checked 2026-10-22 · secondary. [Funder fund 5141627](https://www.funder.co.il/fund/5141627) · checked 2026-10-22 · secondary. Exposure code: MF-43 (`mutual-funds-and-money-market-funds.md`)
+- Scope: general
 - Dimensions: currency
 - Likely to change: no
 
