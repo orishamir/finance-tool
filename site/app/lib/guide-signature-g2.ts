@@ -16,6 +16,7 @@ import {
   runInputs,
   runPlanned,
   taxAtBrackets,
+  type Flag,
   type InstrumentTerms,
   type Label,
   type LimitStanding,
@@ -261,7 +262,7 @@ export interface PensionModel {
    * The engine's end balance of the deposits, both lines, in today's money, before the fund turns it into a pension (F-49 blocked), with
    * the rules both runs read and how each used them.
    */
-  balance: { real: number; years: number; flags: string[]; labels: Label[]; rules: UsedRule[] } | null;
+  balance: { real: number; years: number; flags: Flag[]; labels: Label[]; rules: UsedRule[] } | null;
   /** Why there is no balance: no fees for the wrapper, a run that failed, or on the general fund's page, no deposit above the
    *  comprehensive fund's ceiling (`below-ceiling`) or an excess the rule base does not divide between the parts (`general-split`). */
   balanceGap: "no-fees" | "no-run" | "below-ceiling" | "general-split" | null;
@@ -353,7 +354,8 @@ export function pensionModel(d: SignatureData, id: string, c: PensionCase): Pens
           const index = own.series[own.series.length - 1]!.index;
           // what is in the fund: the employer line's balance before the salary tax on any TXP-10 excess, which the salary pays (F-52)
           // the balance rests on what both runs rest on: their flags (G-36 from 2028, the credit's TXP-OQ20 and G-23, and the rest) and labels
-          const flags = [...new Set([...own.flags, ...line.flags].map((f) => f.code))];
+          // each flag with the month its run found it from; a figure keeps the earliest (`computed`)
+          const flags = [...own.flags, ...line.flags];
           const labels = [...new Map([...own.labels, ...line.labels].map((l) => [`${l.code} ${l.ruleId}`, l])).values()];
           balance = { real: (own.nominal + (line.detail.grossBalance ?? line.nominal)) / index, years: c.years, flags, labels, rules: mergedRules([own, line]) };
           for (const u of [...own.rules, ...line.rules]) used.add(u.id);

@@ -145,11 +145,11 @@ function gainOf(pc: Costs, today: string): SiteValue {
 
 /**
  * What is left, in today's money, as its sheet opens it: what was paid in at today's prices (F-106) and the gain, which add up to it, the
- * gain opening the run's own figure, where the run's rules and statements are. It carries the run's flags and labels, which the figure rests on.
+ * gain opening the run's own figure, where the run's rules and statements are. It carries the run's labels, which the figure rests on, and
+ * the run's flags, each with the month it applies from, through the gain (`sumOf` carries its inputs' flags).
  */
 export function leftOf(pc: Costs, today: string): SiteValue {
-  const run = pc.left;
-  return sumOf({ [c.receipt.paidInToday]: whole(pc.paidIn), [c.receipt.gain]: gainOf(pc, today) }, "F-91", { today, about: c.receipt.leftAbout, flags: run.flags ?? [], labels: run.labels });
+  return sumOf({ [c.receipt.paidInToday]: whole(pc.paidIn), [c.receipt.gain]: gainOf(pc, today) }, "F-91", { today, about: c.receipt.leftAbout, labels: pc.left.labels });
 }
 
 /**

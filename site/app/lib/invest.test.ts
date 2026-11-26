@@ -11,6 +11,7 @@ import { feesData } from "./fees.server";
 import { houseDeal } from "./deal-account/house-deal";
 import { dealProviderId, withDeals } from "./deal-account/bundle";
 import { invest as words, numbers } from "../copy";
+import { leftOf } from "../components/invest/receipt";
 
 // The page's data as built, but for the exchange rates: frozen at the ECB's rates of 16.11.2026 (units per euro) and dated today, so
 // the figures pinned below move with a fund's or a house's data, never with the daily rate refresh (which turned the check red on
@@ -603,6 +604,18 @@ describe("BANK-35 sits on the account's cost, not on what is left (independent c
     expect(pc.left.flags ?? []).not.toContain("BANK-35");
   });
   const view0 = () => buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: true }) });
+});
+
+describe("an engine flag keeps the month it applies from", () => {
+  it("the receipt's what-is-left keeps the month of a flag the pair's left records (TXF-27, from the month the holding passes the threshold)", () => {
+    const big = plan({ amountNow: 1_000_000, values: { ...plan().values, amount: entered(1_000_000, "nis", t) } });
+    const pc = pairCosts({ bundle, index: sp, plan: big, fundId: "us-voo", providerId: "interactive-brokers" });
+    const month = pc?.left.flagMonths?.["TXF-27"];
+    expect(month, "a US fund held above the estate threshold").toBeDefined();
+    const left = leftOf(pc!, t);
+    expect(left.flags).toContain("TXF-27");
+    expect(left.flagMonths?.["TXF-27"]).toBe(month);
+  });
 });
 
 describe("each figure of a run lists the rules of the parts its number is made of", () => {
