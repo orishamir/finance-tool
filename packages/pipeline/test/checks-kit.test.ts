@@ -58,13 +58,13 @@ describe("a ratchet list", () => {
   const record = (e: string) => e !== "A-03";
   const offends = (e: string) => e === "A-01";
   it("over the whole of data/, says strike it for an entry that no longer offends or whose record is gone", () => {
-    expect(staleEntries(listed, { whole: true }, record, offends, () => "x.json")).toEqual([
-      "x.json lists A-02, which no longer offends: strike it (the list only shrinks)",
-      "x.json lists A-03, and its record is gone: strike it (the list only shrinks)",
+    expect(staleEntries(listed, { whole: true }, record, offends, () => ({ file: "x.json", list: "long" }))).toEqual([
+      'x.json lists A-02 under "long", which no longer offends: strike it (the list only shrinks)',
+      'x.json lists A-03 under "long", and its record is gone: strike it (the list only shrinks)',
     ]);
   });
   it("judges nothing over a test's folder, whose records stand in for the real ones", () => {
-    expect(staleEntries(listed, { whole: false }, record, offends, () => "x.json")).toEqual([]);
+    expect(staleEntries(listed, { whole: false }, record, offends, () => ({ file: "x.json", list: "long" }))).toEqual([]);
   });
 });
 

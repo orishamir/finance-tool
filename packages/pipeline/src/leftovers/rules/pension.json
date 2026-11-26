@@ -133,5 +133,15 @@
     "PF-45",
     "SW-44",
     "SW-52"
+  ],
+  "notes/latin": [
+    "SW-33#/figures/same_client_transfer_cap/notes"
+  ],
+  "notes/quote-mark": [
+    "SW-33#/figures/same_client_transfer_cap/notes",
+    "SW-41#/figures/forward_request/notes",
+    "SW-41#/figures/rejection_notice/notes",
+    "SW-42#/figures/transfer_deadline/notes",
+    "SW-43#/figures/start/notes"
   ]
 }

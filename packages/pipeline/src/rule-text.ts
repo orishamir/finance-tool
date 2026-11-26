@@ -4,6 +4,7 @@
 // in digits or spelled in words. Each kind of flaw a script can find is a `TextFlaw`; the records that still carry one are listed by id in
 // their group's file, leftovers/rules/<group>.json, the phrases the checks look for are in leftovers/phrases.json, and each list only
 // shrinks (data-schema §4 item 23). checks/rule-text.ts runs it in the data check.
+import { sentenceCount } from "@finance-tool/schema";
 import { z } from "zod";
 import { readLeftovers, readRuleList, ruleListFile } from "./checks/lib/kit.ts";
 
@@ -20,28 +21,8 @@ export function withoutSlots(text: string): string {
   return text.replace(FIGURE_SLOT, " ");
 }
 
-/** A full stop after letters joined by full stops ("U.S.", "ע.מ."), after any prefix joined by a hyphen ("ה־U.S."), is part of the abbreviation. */
-const ABBREVIATION = /^(?:[A-Za-zא-ת]\.)+[A-Za-zא-ת]$/;
-/** A sentence's end: ".", "?" or "!" (with any closing quote or bracket) before a space or the end of the text. */
-const SENTENCE_END = /[.?!]+["'״׳”)\]]*(?=\s|$)/g;
-
-/**
- * The number of sentences in a text. A sentence ends at ".", "?" or "!" followed by a space or the end; a full stop inside a number or a
- * date (2.5, 10.11.2026) is followed by a digit, and one inside an abbreviation written with full stops ("ע.מ.") follows letters joined
- * by them, so neither ends one. Words after the last end are a sentence too.
- */
-export function sentenceCount(text: string): number {
-  const t = text.trim();
-  if (!t) return 0;
-  let ends = 0;
-  let last = 0;
-  for (const m of t.matchAll(SENTENCE_END)) {
-    last = m.index + m[0].length;
-    if (m[0].startsWith(".") && ABBREVIATION.test(t.slice(0, m.index).split(/[\s־-]/).pop() ?? "")) continue;
-    ends++;
-  }
-  return ends + (t.slice(last).trim() ? 1 : 0);
-}
+/** The number of sentences in a text: the schema package's, which the note checks count by too. */
+export { sentenceCount };
 
 const LETTER = "\\u05D0-\\u05EA";
 /** The Hebrew number words of ten and more: the tens, ten itself, the teens, hundreds and thousands. */

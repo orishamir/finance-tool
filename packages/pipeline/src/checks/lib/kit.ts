@@ -89,20 +89,21 @@ export function unreadRuleLists(): string[] {
 export const ruleListFile = (entry: string): string => `leftovers/rules/${ruleGroup(entry) ?? "(no group)"}.json`;
 
 /**
- * The stale entries of a ratchet list, over the whole of data/ only: an entry whose record is gone, or that no longer offends. `record`
- * says whether an entry's record is present; `offends`, whether it still carries the flaw.
+ * The stale entries of the ratchet list `list` in `file`, over the whole of data/ only: an entry whose record is gone, or that no longer
+ * offends. `record` says whether an entry's record is present; `offends`, whether it still carries the flaw.
  */
 export function staleEntries(
   entries: readonly string[],
   data: Pick<CheckData, "whole">,
   record: (entry: string) => boolean,
   offends: (entry: string) => boolean,
-  where: (entry: string) => string,
+  where: (entry: string) => { file: string; list: string },
 ): string[] {
   if (!data.whole) return [];
   return entries.flatMap((entry) => {
-    if (!record(entry)) return [`${where(entry)} lists ${entry}, and its record is gone: strike it (the list only shrinks)`];
-    return offends(entry) ? [] : [`${where(entry)} lists ${entry}, which no longer offends: strike it (the list only shrinks)`];
+    const { file, list } = where(entry);
+    if (!record(entry)) return [`${file} lists ${entry} under "${list}", and its record is gone: strike it (the list only shrinks)`];
+    return offends(entry) ? [] : [`${file} lists ${entry} under "${list}", which no longer offends: strike it (the list only shrinks)`];
   });
 }
 
