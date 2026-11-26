@@ -42,6 +42,7 @@ import {
 import { inTrailingYear, trailingDistributionYield } from "@finance-tool/engine";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
+import { figureSlots, withoutSlots } from "./rule-text.ts";
 import { checkFundPromotions, checkLineFacts, checkSnapshotFacts } from "./price-list-facts.ts";
 
 /**
@@ -1345,9 +1346,8 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
     if (rule.sources && !rule.sources.some((s) => s.strength === "primary")) report(file, `pinned-rules: fact ${id} has no primary source`);
     const text = fact.text_he ?? "";
     if (text.length > 200) report(file, `pinned-rules: fact ${id} is ${text.length} characters; the block's cards hold 200`);
-    if (/\d/.test(text.replace(/\{[A-Z0-9-]+:[a-z0-9_]+\}/g, ""))) report(file, `pinned-rules: fact ${id} carries a typed digit; use a {ID:figure} slot`);
-    for (const m of text.matchAll(/\{([A-Z0-9-]+):([a-z0-9_]+)\}/g)) {
-      const [, slotId, figure] = m as unknown as [string, string, string];
+    if (/\d/.test(withoutSlots(text))) report(file, `pinned-rules: fact ${id} carries a typed digit; use a {ID:figure} slot`);
+    for (const { id: slotId, figure } of figureSlots(text)) {
       if (slotId !== id) report(file, `pinned-rules: fact ${id} has a slot of another rule ({${slotId}:${figure}})`);
       else if (!(figure in (rule.figures ?? {}))) report(file, `pinned-rules: fact ${id} names a figure the rule does not have (${figure})`);
     }
@@ -1359,10 +1359,8 @@ function checkPinnedRules(files: string[], dataDir: string, all: Map<string, Rul
       report(file, `pinned-rules: the first rule of a row (${first}) has no primary source`);
     // the answer line of the questions page: no digit typed by hand; every figure is a {ID:figure} slot over one of the row's rules
     if (typeof row.answer_he === "string") {
-      const plain = row.answer_he.replace(/\{[A-Z0-9-]+:[a-z0-9_]+\}/g, "");
-      if (/\d/.test(plain)) report(file, `pinned-rules: the answer to "${row.ids?.join(",")}" carries a typed digit; use a {ID:figure} slot`);
-      for (const m of row.answer_he.matchAll(/\{([A-Z0-9-]+):([a-z0-9_]+)\}/g)) {
-        const [, id, figure] = m as unknown as [string, string, string];
+      if (/\d/.test(withoutSlots(row.answer_he))) report(file, `pinned-rules: the answer to "${row.ids?.join(",")}" carries a typed digit; use a {ID:figure} slot`);
+      for (const { id, figure } of figureSlots(row.answer_he)) {
         if (!row.ids?.includes(id)) report(file, `pinned-rules: the answer slot {${id}:${figure}} names a rule outside the row (${row.ids?.join(",")})`);
         const figures = (all.get(id) as { figures?: Record<string, unknown> } | undefined)?.figures ?? {};
         if (!(figure in figures)) report(file, `pinned-rules: the answer slot {${id}:${figure}} names a figure ${id} does not have (${Object.keys(figures).join(",") || "none"})`);
