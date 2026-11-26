@@ -17,7 +17,8 @@
         "url": "https://market.tase.co.il/he/market_data/index/142/about",
         "title": "הבורסה, \"ת\"א-35 אודות המדד\" (מדד 142; נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "quote": "מס' ני\"ע במדד 35"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -28,7 +29,7 @@
         "ETF-44"
       ],
       "state": "sourced",
-      "notes": "Index page \"מס' ני\"ע במדד 35\"; annex 1 s.3."
+      "notes": "Annex 1 s.3."
     },
     "weight_cap": {
       "value": 7,
@@ -37,7 +38,8 @@
         "url": "https://market.tase.co.il/he/market_data/index/142/about",
         "title": "הבורסה, \"ת\"א-35 אודות המדד\" (מדד 142; נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "quote": "מגבלת משקל 7%"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -48,7 +50,7 @@
         "ETF-44"
       ],
       "state": "sourced",
-      "notes": "Index page \"מגבלת משקל 7%\"; annex 1 footnote: the committee set 7% and a specific cap for each share of a U.S.-incorporated company."
+      "notes": "Annex 1 footnote: the committee set 7% and a specific cap for each share of a U.S.-incorporated company."
     },
     "weight_cap_ceiling": {
       "value": 10,
@@ -60,7 +62,8 @@
         "strength": "primary",
         "locator": "p.29, annex 1 s.6",
         "locator_he": "עמוד 29, נספח 1 סעיף 6",
-        "page": 29
+        "page": 29,
+        "quote": "ובלבד שלא תעלה על 10%"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -70,8 +73,7 @@
       "rule_ids": [
         "ETF-44"
       ],
-      "state": "sourced",
-      "notes": "\"ובלבד שלא תעלה על 10%\"."
+      "state": "sourced"
     },
     "min_public_holdings": {
       "value": 30,
