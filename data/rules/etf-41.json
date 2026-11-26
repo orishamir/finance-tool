@@ -1,7 +1,7 @@
 {
   "id": "ETF-41",
   "title": "TA-125's own rules: the shares of TA-35 and TA-90, a weight cap the index committee set at 5% (the rules allow up to 10%), entry and exit by average-market-value rank in the two parent indices",
-  "title_he": "ת״א 125: מדדי האם, תקרת משקל, כניסה",
+  "title_he": "ת״א-125: מדדי האם, תקרת משקל, כניסה",
   "strength": "primary",
   "dimensions": [
     "currency",
@@ -237,7 +237,7 @@
       "notes": "Annexes 1 and 4 footnote: the committee decided that no more than 4 foreign shares linked to the same country are included."
     }
   },
-  "text_he": "לפי הנחיות הבורסה, המדד מורכב מהמניות של שני מדדי האם שלו, ומתעדכן יחד איתם. מדדי האם הם מדד שלושים וחמש המניות הגדולות, ומדד התשעים שאחריהן. בכל אחד משני המדדים האלה המניות מדורגות לפי שווי השוק הממוצע. מניה נכנסת כשהיא מדורגת מספיק גבוה, ויוצאת כשהיא יורדת מתחת לדירוג היציאה. כך לא מחליפים מניה על כל שינוי קטן. ועדת המדדים קובעת תקרת משקל למניה בודדת במדד, עד הגבול שההנחיות מתירות, והיא קבעה חמישה אחוזים.",
+  "text_he": "לפי הנחיות הבורסה, המדד מורכב מהמניות של שני מדדי האם שלו, ומתעדכן יחד איתם. מדדי האם הם מדד {ETF-41:ta35_constituents} המניות הגדולות, ומדד {ETF-41:ta90_constituents} המניות שאחריהן. בכל אחד משני המדדים האלה המניות מדורגות לפי שווי השוק הממוצע: מניה נכנסת כשהיא מדורגת מספיק גבוה, ויוצאת כשהיא יורדת מתחת לדירוג היציאה. ועדת המדדים קובעת תקרת משקל למניה בודדת במדד, עד הגבול שההנחיות מתירות, והיא קבעה {ETF-41:weight_cap}.",
   "figure_names_he": {
     "constituents": "מספר ניירות הערך במדד",
     "weight_cap": "תקרת המשקל למניה",

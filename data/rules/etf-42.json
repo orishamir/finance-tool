@@ -1,7 +1,7 @@
 {
   "id": "ETF-42",
   "title": "TA-125 is a gross total return index in shekels (dividends counted before any tax), computed every 15 seconds, launched 2 January 1992 at base 100 and expanded from 100 to 125 shares on 9 February 2017",
-  "title_he": "ת״א 125: תשואה כוללת ברוטו, בשקלים",
+  "title_he": "ת״א-125: תשואה כוללת ברוטו, בשקלים",
   "strength": "primary",
   "dimensions": [
     "distribution-policy",
@@ -95,7 +95,7 @@
       "notes": "The knowledge-centre page behind ETF-35 says two weeks; not reconciled."
     }
   },
-  "text_he": "הבורסה מחשבת את המדד כמדד תשואה כוללת ברוטו. ביום האקס של דיבידנד, הדיבידנד ברוטו נספר במדד כאילו הושקע בו מחדש, בלי להוריד מס. לכן קרן שעוקבת אחרי המדד נמדדת מול מדד שלפני מס. המדד מחושב בשקלים ומתפרסם ברציפות במהלך יום המסחר. הוא הושק בתחילת שנות התשעים כמדד של מאה מניות, והורחב למאה עשרים וחמש מניות בתחילת שנת אלפיים ושבע עשרה.",
+  "text_he": "הבורסה מחשבת את המדד כמדד תשואה כוללת ברוטו. ביום האקס של דיבידנד, הדיבידנד ברוטו נספר במדד כאילו הושקע בו מחדש, בלי להוריד מס. לכן קרן שעוקבת אחרי המדד נמדדת מול מדד שלפני מס. המדד מחושב בשקלים ומתפרסם ברציפות במהלך יום המסחר.",
   "figure_names_he": {
     "calculation_interval_seconds": "מרווח החישוב, בשניות",
     "launch_date": "מועד השקת המדד",
