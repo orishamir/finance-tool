@@ -41,8 +41,8 @@
       "publisher_he": "הראל",
       "kind": "institution_doc",
       "strength": "institution",
-      "locator": "p.3",
-      "locator_he": "עמוד 3",
+      "locator": "p.3; pp. 2, 4",
+      "locator_he": "עמוד 3; עמודים 2, 4",
       "page": 3,
       "checked": "2026-10-22"
     }

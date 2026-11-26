@@ -244,21 +244,30 @@ Executive insurance is a life-insurance plan approved as a provident fund (קו�
 ### INS-31 Harel's executive policies: the fees they state (plan 1286 of 2009; the 2016 policy "הראל מור למנהלים")
 - Rule: Harel's executive plan 1286 (7/2009) allows a fee from the balance "בשיעור שנתי שלא יעלה על 1.7%". It charges no fee from deposits, including one-time deposits and transfers in (s. 10.1, 10.2). During annuity payment the fee is 0.5% a year (s. 10.3). Harel's 2016 differential policy "הראל מור למנהלים" charges 3% of the premium and 0.5% a year of the balance. The balance fee rises to 1.05% if premiums stop (Harel letter, annex א).
 - Conditions / exceptions: Harel's own policy terms. Plan 1286 was issued before 1 January 2013, so the regulation-2 cap does not apply to it and its fees are contractual; the cap and its start date are INS-15. The insurer may lower plan 1286's fees (s. 10.5). Split from INS-15 on 2026-11-26.
+  - **Older contract types** (Harel's June 2016 letter, pp. 2, 4; moved from INS-16 on 2026-11-26). Harel lists classic policies ("קלאסיות (מעורב, גמלא וחיסכון)"), guaranteed-return "עדיף" policies, "עדיף" profit-sharing policies bought before June 2001, and policies bought after 2001. Deposit rates cannot be raised in guaranteed-return and classic policies. When the extension order raised contributions in 2016, the increase for those policies, and for pre-June-2001 profit-sharing policies with salary over NIS 15,000, went into a new separate policy.
 - Figures: plan 1286: up to 1.7% a year of the balance, no deposit fee, 0.5% a year during annuity payment; 2016 policy: 3% of the premium and 0.5% a year of the balance, 1.05% if premiums stop.
-- Source: [Harel plan 1286](https://www.harel-group.co.il/Policies/2010.pdf) p.13, s.10 · checked 2026-10-22 · institution; [Harel, הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf) p.3 · checked 2026-10-22 · institution; INS-15
+- Source: [Harel plan 1286](https://www.harel-group.co.il/Policies/2010.pdf) p.13, s.10 · checked 2026-10-22 · institution; [Harel, הגדלת שיעורי הפקדה למוצר פנסיוני בהתאם לצו ההרחבה, June 2016](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf) p.3; pp. 2, 4 · checked 2026-10-22 · institution; INS-15
 - Scope: institution: Harel
 - Dimensions: `fee-management-balance`, `fee-deposit`, `fee-change-over-time`, `issue-cohort` (proposed)
 - Likely to change: no; the insurer can lower plan 1286's contractual fees (s. 10.5)
 
 ### INS-16 Issue-period cohorts: what the 1990-91, 1992-2003 and 2004+ split means for a holder
 - Rule: Bituach-Net classifies every insurer track by policy issue period ("תקופת הקמת המסלול"): "פוליסות שהונפקו בשנים 1990-1991", "פוליסות שהונפקו בשנים 1992-2003", "פוליסות שהונפקו החל משנת 2004" (CAT-10). What the cohort means for a holder, as far as sourced:
-  - **Fee structure of older profit-sharing policies.** Phoenix's legacy "מניב" policy, described as "פוליסה משתתפת ברווחים או מבטיחת תשואה", charges a fixed "0.6% שנתי מהצבירה" plus 15% of the real return. The variable part is charged only once the cumulative real return is positive. It carries no fee discounts.
-  - **Older contract types.** Harel lists classic policies ("קלאסיות (מעורב, גמלא וחיסכון)"), guaranteed-return "עדיף" policies, "עדיף" profit-sharing policies bought before June 2001, and policies bought after 2001. Deposit rates cannot be raised in guaranteed-return and classic policies. When the extension order raised contributions in 2016, the increase for those policies, and for pre-June-2001 profit-sharing policies with salary over NIS 15,000, went into a new separate policy.
+  - **Fee structure of older policies.** Some older policies have another fee structure. A company example is The Phoenix's legacy "מניב", with a fixed part and a variable part (INS-32).
   - **Fee level by cohort in the data.** In Bituach-Net 202609, `AVG_ANNUAL_MANAGEMENT_FEE` for 1990-91 and 1992-2003 tracks mostly ranges from about 1.5 to 3.8, against about 0.4 to 1.4 for most 2004+ tracks. Example: "כלל-קרן י'" 2.19, "מגדל-קרן י'" 2.21, "הפניקס -קרן י'" 2.72.
-- Conditions / exceptions: Whether the old-cohort fee field includes the 15% variable fee is not stated by the CMA (open question 9). Phoenix's page is partly garbled and mixes products. The cohort boundaries are the CMA's; no official text explaining why 1991/1992 and 2003/2004 are the cut-offs was found (open question 9). The CMA return table also splits profit-sharing policies "שהונפקו לפני שנת 2004" and "החל משנת 2004". Returns are history, not a ranking key (product.md section 4).
-- Figures: Phoenix legacy 0.6% + 15% of real return; Bituach-Net values as above, 202609.
-- Source: [Bituach-Net 202609 query](https://data.gov.il/api/3/action/datastore_search?resource_id=c6c62cc7-fe02-4b18-8f3e-813abfbb4647&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=FUND_ID,FUND_NAME,PARENT_COMPANY_NAME,FUND_CLASSIFICATION,TOTAL_ASSETS,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE&limit=500&sort=PARENT_COMPANY_NAME%20asc) · checked 2026-10-22 · primary; [Phoenix, פוליסת מניב](https://www.fnx.co.il/life-insurance/meniv/) · checked 2026-10-22 · institution; [Harel June 2016 letter](https://biz.harel-group.co.il/DocumentsAndForms/הגדלת%20שיעורי%20הפקדה%20למוצר%20פנסיוני%20בהתאם%20לצו%20ההרחבה.pdf), pp. 2, 4 · checked 2026-10-22 · institution; [CMA report 2024, chapter 4 (gov.il)](https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=13), table ד-12, file p. 13 (printed p. 54) · checked 2026-11-08 · primary
+- Conditions / exceptions: Where a policy's fee has a variable part (as in INS-32), whether the old-cohort fee field includes it is not stated by the CMA (open question 9). The cohort boundaries are the CMA's; no official text explaining why 1991/1992 and 2003/2004 are the cut-offs was found (open question 9). The CMA return table also splits profit-sharing policies "שהונפקו לפני שנת 2004" and "החל משנת 2004". Returns are history, not a ranking key (product.md section 4). Split on 2026-11-26: The Phoenix's "מניב" fees moved to INS-32, and Harel's older contract types, with Harel's June 2016 letter, to INS-31's conditions.
+- Figures: Bituach-Net values as above, 202609.
+- Source: [Bituach-Net 202609 query](https://data.gov.il/api/3/action/datastore_search?resource_id=c6c62cc7-fe02-4b18-8f3e-813abfbb4647&filters=%7B%22REPORT_PERIOD%22%3A202609%7D&fields=FUND_ID,FUND_NAME,PARENT_COMPANY_NAME,FUND_CLASSIFICATION,TOTAL_ASSETS,AVG_ANNUAL_MANAGEMENT_FEE,AVG_DEPOSIT_FEE&limit=500&sort=PARENT_COMPANY_NAME%20asc) · checked 2026-10-22 · primary; [CMA report 2024, chapter 4 (gov.il)](https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=13), table ד-12, file p. 13 (printed p. 54) · checked 2026-11-08 · primary; company example: INS-32
 - Scope: general
+- Dimensions: `fee-management-balance`, `issue-cohort` (proposed)
+- Likely to change: no (closed cohorts)
+
+### INS-32 The Phoenix's legacy "מניב" policy: 0.6% a year of the savings plus 15% of the real return, the variable part only when the cumulative real return is positive
+- Rule: The Phoenix's legacy "מניב" policy, described as "פוליסה משתתפת ברווחים או מבטיחת תשואה", charges a fixed "0.6% שנתי מהצבירה" plus 15% of the real return. The variable part is charged only once the cumulative real return is positive. It carries no fee discounts.
+- Conditions / exceptions: The Phoenix's own page, which is partly garbled and mixes products. Whether the CMA's old-cohort fee field in Bituach-Net includes the variable part is not stated by the CMA (INS-16, open question 9). Split from INS-16 on 2026-11-26.
+- Figures: 0.6% a year of the savings plus 15% of the real return.
+- Source: [Phoenix, פוליסת מניב](https://www.fnx.co.il/life-insurance/meniv/) · checked 2026-10-22 · institution; INS-16
+- Scope: institution: The Phoenix
 - Dimensions: `fee-management-balance`, `real-vs-nominal`, `issue-cohort` (proposed)
 - Likely to change: no (closed cohorts)
 
@@ -512,7 +521,7 @@ D2: a tier-2 instrument moves to tier 1 when it has a sourced record and its tax
 - Sourced now:
   - legal type and the law provisions that apply (INS-13, INS-14, primary);
   - fee caps by issue date (INS-15, primary; Harel's own fees as company examples in INS-31);
-  - the cohort split and partial fee-structure evidence (INS-16);
+  - the cohort split and partial fee-structure evidence (INS-16; The Phoenix's "מניב" fees as a company example in INS-32);
   - one guaranteed-annuity-factor example (INS-17);
   - mandatory-pension fit (INS-18);
   - insurance-component pricing spread (INS-19);
