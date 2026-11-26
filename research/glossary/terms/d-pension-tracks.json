@@ -2525,7 +2525,7 @@
     ],
     "explain_he": "המסלול שאליו נכנס הכסף כשלא בוחרים מסלול השקעה בעת ההצטרפות",
     "rule_ids": [
-      "CAT-18",
+      "KH-19",
       "CAT-58",
       "PEN-17",
       "PF-24"
@@ -2543,7 +2543,7 @@
       "guide:provident-for-annuity",
       "decoder:track"
     ],
-    "notes": "In pension and tagmulim funds the default is the age-dependent track (CAT-58, PEN-17); in kupat gemel lehashkaa it is set in the bylaws; in keren hishtalmut it must be general or flexible index-tracking (CAT-18). Meitav's label for track 7978 is the second variant. Not the same as the default insurance track in a pension fund (PEN-11).",
+    "notes": "In pension and tagmulim funds the default is the age-dependent track (CAT-58, PEN-17); in kupat gemel lehashkaa it is set in the bylaws; in keren hishtalmut it must be general or flexible index-tracking (KH-19, PF-24). Meitav's label for track 7978 is the second variant. Not the same as the default insurance track in a pension fund (PEN-11).",
     "id": "mslvl-hshkah-bryrt-mchdl"
   },
   {
@@ -3187,7 +3187,7 @@
       "app",
       "decoder:track"
     ],
-    "notes": "Policy text from Meitav (institution). Meitav moves these tracks to an actively managed, more balanced mix from 1.7.2026 (CAT-24). Old name 'פאסיבי - כללי' looks like a general track but is this one (CAT-26). Mandatory offering in provident funds other than study and investment-provident funds; allowed default for study funds (CAT-18).",
+    "notes": "Policy text from Meitav (institution). Meitav moves these tracks to an actively managed, more balanced mix from 1.7.2026 (CAT-24). Old name 'פאסיבי - כללי' looks like a general track but is this one (CAT-26). Mandatory offering in provident funds other than study and investment-provident funds; allowed default for study funds (KH-19).",
     "id": "avkb-mddym-gmysh"
   },
   {

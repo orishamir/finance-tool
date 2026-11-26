@@ -213,11 +213,11 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 - Dimensions: regulator, fee-management-balance (cluster 2)
 - Likely to change: yes
 
-### CAT-18 What a kupat gemel lehashkaa (and keren hishtalmut) may offer, and its default track
-- Rule: In study funds, investment provident funds and non-insurance-fund policies, an institution may manage a **general track** and the specialized tracks of s.6, without the s.6(ב) obligation to offer "משולב סחיר" and "עוקב מדדים גמיש" (s.7(א)). The institution must set a **default track** ("מסלול השקעה ברירת מחדל") in the bylaws of an investment provident fund or such a policy (s.7(ב)). A study fund's default must be either "מסלול השקעה כללי" or "מסלול השקעה עוקב מדדים גמיש" (s.7(ג)). The age-dependent model (s.3 to 4, CAT-58) applies only to provident funds that are **not** study funds and **not** investment provident funds. So a kupat gemel lehashkaa has a default track but no age-based default under this circular.
-- Conditions / exceptions: Within cluster 5, an institution may manage only one track of each type (s.6(ד)). A cluster-2 track may be offered only if the institution manages a cluster-1 track with the same specialization (s.6(ג)). The board must approve that each specialized track's regulatory policy differs clearly from every other specialized track in the same fund (s.6(ד)). Child-savings tracks are governed by a separate circular, 2022-9-29 (s.7(ה)), not read here (see `child-savings.md`).
+### CAT-18 What a kupat gemel lehashkaa (and keren hishtalmut) may offer: a general track and the specialized tracks
+- Rule: In study funds, investment provident funds and non-insurance-fund policies, an institution may manage a **general track** and the specialized tracks of s.6, without the s.6(ב) obligation to offer "משולב סחיר" and "עוקב מדדים גמיש" (s.7(א)). The age-dependent model (s.3 to 4, CAT-58) applies only to provident funds that are **not** study funds and **not** investment provident funds.
+- Conditions / exceptions: Within cluster 5, an institution may manage only one track of each type (s.6(ד)). A cluster-2 track may be offered only if the institution manages a cluster-1 track with the same specialization (s.6(ג)). The board must approve that each specialized track's regulatory policy differs clearly from every other specialized track in the same fund (s.6(ד)). Child-savings tracks are governed by a separate circular, 2022-9-29 (s.7(ה)), not read here (see `child-savings.md`). The **default track** ("מסלול השקעה ברירת מחדל"): the institution must set one in the bylaws of an investment provident fund (s.7(ב)), and a study fund's default must be either "מסלול השקעה כללי" or "מסלול השקעה עוקב מדדים גמיש" (s.7(ג)): as in PF-24 and KH-19. s.7(ב) requires the default track in the bylaws of such a policy too; PF-24 does not state this. So a kupat gemel lehashkaa has a default track but no age-based default under this circular (the age model: CAT-58). *2026-11-26 trim:* the default-track sentences, stated in the rule here before, are PF-24's and KH-19's from the same circular.
 - Figures: n/a
-- Source: [חוזר גופים מוסדיים 2022-9-30 מסלולי השקעה בקופות גמל - תיקון](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf), pp.4 to 6, ss.3, 4, 6, 7 · checked 2026-10-25 · primary
+- Source: [חוזר גופים מוסדיים 2022-9-30 מסלולי השקעה בקופות גמל - תיקון](https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf), pp.4 to 6, ss.3, 4, 6, 7 · checked 2026-10-25 · primary. See also PF-24, KH-19, CAT-58.
 - Scope: general
 - Dimensions: regulator, eligibility
 - Likely to change: yes
@@ -709,7 +709,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 
 ## Proposed dimensions
 
-- `default-track`: which track a saver lands in without choosing (CAT-18, CAT-58, CAT-25). It matters for 3.6 ("did you choose this?") and for the catalogue's "most common".
+- `default-track`: which track a saver lands in without choosing (PF-24, CAT-58, CAT-25). It matters for 3.6 ("did you choose this?") and for the catalogue's "most common".
 - `track-mandate`: the gap between a track's name, its regulatory policy and its current actual mix (CAT-15, CAT-22, CAT-24).
 
 ## Terms
@@ -776,7 +776,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 | אשכול 4 – מסלולי השקעה עוקבי מדדים | Cluster 4, index-tracking | | Circular | CAT-17 |
 | אשכול 5 – מסלולי אמונה וקיימות | Cluster 5 | The cluster of the sustainability and environmental tracks | Circular | CAT-17, CAT-50 |
 | מתמחים בניהול אקטיבי / מתמחים באפיקי השקעה סחירים / עוקבי מדדים | Category labels as written in the data | | CMA data | CAT-10 |
-| מסלול ברירת מחדל / מסלול השקעה ברירת מחדל | Default track | Track for those who do not choose | Circular, institution site | CAT-18 |
+| מסלול ברירת מחדל / מסלול השקעה ברירת מחדל | Default track | Track for those who do not choose | Circular, institution site | PF-24 |
 | מסלול ברירת המחדל בעת ההצטרפות לקופת הגמל | Default track on joining | Meitav's label for 7978 | Institution site | CAT-25 |
 | מודל השקעות תלוי גיל / מדרגות | Age-dependent model / "steps" | | Circular, CMA data | CAT-58 |
 | לבני 50 ומטה / לבני 50 עד 60 / לבני 60 ומעלה | Age-band tracks | | App, statements | CAT-58 |
