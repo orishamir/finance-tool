@@ -62,9 +62,9 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
   - (10) "העברת מטבע חוץ בארץ ומבנק אחר בארץ". The price to or from the same customer's account is a dollar amount marked "(בפיקוח)". A transfer to the same customer's account on closing an account may not exceed NIS 10.
   - (11) "ימי ערך", "לפי פירוט שיקבע התאגיד הבנקאי בנספח לתעריפון".
   - (12) automatic cover of a debit balance in an FX account, priced as a percentage.
-- Conditions / exceptions: Part 5 has no line for managing or holding an FX account, or for opening or holding an FX deposit. A bank may charge only for services in the full tariff (BANK-16). The reduced tariffs listed in BANK-16 do not include FX. The rules fix fee types and structure; prices are each bank's, except items marked "(בפיקוח)". Whether a bank may also earn a spread between its own buy and sell rates on top of the conversion fee is not addressed in part 5 as read (open question 2).
+- Conditions / exceptions: Part 5 has no line for managing or holding an FX account, or for opening or holding an FX deposit. The reduced tariffs listed in BANK-16 do not include FX. The rules fix fee types and structure; prices are each bank's, except items marked "(בפיקוח)". Whether a bank may also earn a spread between its own buy and sell rates on top of the conversion fee is not addressed in part 5 as read (open question 2).
 - Figures: NIS 10 cap on transfer to the customer's own account on account closure; fixed in the rules (consolidated to the amendment of 9.4.2025).
-- Source: [Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy](https://boi.org.il/media/jbwnaivp/159a.pdf), First Schedule part 5, items (1) to (12) and notes, pp.18-19 · checked 2026-10-22 · primary
+- Source: [Banking Rules (Customer Service) (Fees) 2008, consolidated to 9.4.2025, BoI copy](https://boi.org.il/media/jbwnaivp/159a.pdf), First Schedule part 5, items (1) to (12) and notes, pp.18-19 · checked 2026-10-22 · primary. As in BANK-16.
 - Scope: general
 - Dimensions: fee-fx, fee-exit, regulator
 - Likely to change: yes. The fee rules have been amended repeatedly.
