@@ -72,8 +72,9 @@ describe("a rule text with slots", () => {
       expect(text).toContain(`הגיל הוא ${ownShown} לפי המסמך, והמס `);
       expect(text).toContain(slotsAsText(slottedText, source));
       expect(text).not.toMatch(/\{[A-Z0-9]+-[A-Z0-9]+:/);
-      // a slot is a figure the reader opens, as anywhere else on the site
-      expect(html).toMatch(/num-sourced/);
+      // a slot is a figure the reader opens, as anywhere else on the site: a button whose words are the figure
+      const buttons = [...html.matchAll(/<button[^>]*>([\s\S]*?)<\/button>/g)].map((m) => (m[1] ?? "").replace(/<[^>]+>/g, ""));
+      expect(buttons).toContain(formatValue(own.value, own.unit, "sourced"));
     }
   });
 
