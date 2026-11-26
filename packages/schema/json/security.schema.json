@@ -267,6 +267,89 @@
                 "type": "string"
               },
               "additionalProperties": {}
+            },
+            "working": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "difference"
+                    },
+                    "from": {
+                      "type": "string"
+                    },
+                    "less": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "from",
+                    "less"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "sum"
+                    },
+                    "parts": {
+                      "minItems": 1,
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "parts"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "formula"
+                    },
+                    "entry": {
+                      "type": "string",
+                      "pattern": "^F-\\d{2,3}$"
+                    },
+                    "line": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "symbols": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "terms": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "entry",
+                    "line",
+                    "symbols"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
             }
           },
           "required": [
@@ -521,6 +604,89 @@
                   "type": "string"
                 },
                 "additionalProperties": {}
+              },
+              "working": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "difference"
+                      },
+                      "from": {
+                        "type": "string"
+                      },
+                      "less": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "from",
+                      "less"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "sum"
+                      },
+                      "parts": {
+                        "minItems": 1,
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "parts"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "formula"
+                      },
+                      "entry": {
+                        "type": "string",
+                        "pattern": "^F-\\d{2,3}$"
+                      },
+                      "line": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 9007199254740991
+                      },
+                      "symbols": {
+                        "type": "object",
+                        "propertyNames": {
+                          "type": "string"
+                        },
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
+                      "terms": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "entry",
+                      "line",
+                      "symbols"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
               }
             },
             "required": [
@@ -748,6 +914,89 @@
                         "type": "string"
                       },
                       "additionalProperties": {}
+                    },
+                    "working": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "difference"
+                            },
+                            "from": {
+                              "type": "string"
+                            },
+                            "less": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "from",
+                            "less"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "sum"
+                            },
+                            "parts": {
+                              "minItems": 1,
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "parts"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "formula"
+                            },
+                            "entry": {
+                              "type": "string",
+                              "pattern": "^F-\\d{2,3}$"
+                            },
+                            "line": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "symbols": {
+                              "type": "object",
+                              "propertyNames": {
+                                "type": "string"
+                              },
+                              "additionalProperties": {
+                                "type": "string"
+                              }
+                            },
+                            "terms": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "entry",
+                            "line",
+                            "symbols"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
                     }
                   },
                   "required": [
@@ -1047,6 +1296,89 @@
                     "type": "string"
                   },
                   "additionalProperties": {}
+                },
+                "working": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "difference"
+                        },
+                        "from": {
+                          "type": "string"
+                        },
+                        "less": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "from",
+                        "less"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "sum"
+                        },
+                        "parts": {
+                          "minItems": 1,
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "parts"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "formula"
+                        },
+                        "entry": {
+                          "type": "string",
+                          "pattern": "^F-\\d{2,3}$"
+                        },
+                        "line": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "symbols": {
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "terms": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "entry",
+                        "line",
+                        "symbols"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
                 }
               },
               "required": [
@@ -1250,6 +1582,89 @@
                     "type": "string"
                   },
                   "additionalProperties": {}
+                },
+                "working": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "difference"
+                        },
+                        "from": {
+                          "type": "string"
+                        },
+                        "less": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "from",
+                        "less"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "sum"
+                        },
+                        "parts": {
+                          "minItems": 1,
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "parts"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "formula"
+                        },
+                        "entry": {
+                          "type": "string",
+                          "pattern": "^F-\\d{2,3}$"
+                        },
+                        "line": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "symbols": {
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "terms": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "entry",
+                        "line",
+                        "symbols"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
                 }
               },
               "required": [
@@ -1453,6 +1868,89 @@
                     "type": "string"
                   },
                   "additionalProperties": {}
+                },
+                "working": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "difference"
+                        },
+                        "from": {
+                          "type": "string"
+                        },
+                        "less": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "from",
+                        "less"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "sum"
+                        },
+                        "parts": {
+                          "minItems": 1,
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "parts"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "formula"
+                        },
+                        "entry": {
+                          "type": "string",
+                          "pattern": "^F-\\d{2,3}$"
+                        },
+                        "line": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "symbols": {
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "terms": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "entry",
+                        "line",
+                        "symbols"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
                 }
               },
               "required": [
@@ -1656,6 +2154,89 @@
                     "type": "string"
                   },
                   "additionalProperties": {}
+                },
+                "working": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "difference"
+                        },
+                        "from": {
+                          "type": "string"
+                        },
+                        "less": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "from",
+                        "less"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "sum"
+                        },
+                        "parts": {
+                          "minItems": 1,
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "parts"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "formula"
+                        },
+                        "entry": {
+                          "type": "string",
+                          "pattern": "^F-\\d{2,3}$"
+                        },
+                        "line": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "symbols": {
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "type": "string"
+                          }
+                        },
+                        "terms": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "entry",
+                        "line",
+                        "symbols"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
                 }
               },
               "required": [
@@ -1869,6 +2450,89 @@
                 "type": "string"
               },
               "additionalProperties": {}
+            },
+            "working": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "difference"
+                    },
+                    "from": {
+                      "type": "string"
+                    },
+                    "less": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "from",
+                    "less"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "sum"
+                    },
+                    "parts": {
+                      "minItems": 1,
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "parts"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "formula"
+                    },
+                    "entry": {
+                      "type": "string",
+                      "pattern": "^F-\\d{2,3}$"
+                    },
+                    "line": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "symbols": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string"
+                      },
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    },
+                    "terms": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "entry",
+                    "line",
+                    "symbols"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
             }
           },
           "required": [

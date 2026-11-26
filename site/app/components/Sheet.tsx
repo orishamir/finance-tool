@@ -22,6 +22,8 @@ export interface SheetProps {
   pc?: "popover" | "center";
   /** As a share of the screen height on a phone. */
   height?: 70 | 78 | 80 | 100;
+  /** How much of a computer's window a popover card may take: `roomy`, wider and taller than a `card`, for a figure's calculation. */
+  size?: "card" | "roomy";
   labelledBy?: string;
   describedBy?: string;
   onBack?: () => void;
@@ -85,7 +87,10 @@ function unlockScroll() {
 }
 
 
-export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labelledBy, describedBy, onBack, view, focusAfter, children, className }: SheetProps) {
+/** The share of the window's height a popover card may take, by its size. */
+const POPOVER_SHARE: Record<NonNullable<SheetProps["size"]>, number> = { card: 0.6, roomy: 0.85 };
+
+export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, size = "card", labelledBy, describedBy, onBack, view, focusAfter, children, className }: SheetProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const closing = useRef<number | null>(null);
   // Many sheets drop their content when they close: what was in it stays until the sheet has finished leaving.
@@ -167,7 +172,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
         dialog.showModal();
         dialog.querySelector<HTMLElement>("[data-autofocus]")?.focus();
       }
-      place(dialog, anchor ?? null, pc, wide);
+      place(dialog, anchor ?? null, pc, wide, POPOVER_SHARE[size]);
     } else if (stacked.current) {
       const s = stacked.current;
       if (!dialog.open) {
@@ -188,7 +193,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
     }
     wasOpen.current = open;
     lastView.current = view;
-  }, [open, anchor, pc, view, wide, covered]);
+  }, [open, anchor, pc, view, wide, covered, size]);
 
   // a sheet that leaves the page while open leaves the stack too
   useEffect(
@@ -213,10 +218,10 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
 
   useEffect(() => {
     if (!open) return;
-    const onResize = () => ref.current && place(ref.current, anchor ?? null, pc, wide);
+    const onResize = () => ref.current && place(ref.current, anchor ?? null, pc, wide, POPOVER_SHARE[size]);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, [open, anchor, pc, wide]);
+  }, [open, anchor, pc, wide, size]);
 
   // The page behind an open sheet does not scroll; a count, since sheets can stack.
   useEffect(() => {
@@ -246,6 +251,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
       ref={ref}
       className={cx("sheet", className)}
       data-pc={pc}
+      data-size={size}
       style={{ "--sheet-height": `${height}vh` } as React.CSSProperties}
       aria-labelledby={labelledBy}
       aria-describedby={describedBy}
@@ -323,10 +329,10 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
 }
 
 /** On PC (`isPc`, the `lg` width), puts a popover card beside its anchor (right edges aligned), on the side with more room: below it, unless
- * it does not fit there and the room above is larger. The card's max-height is capped to that room, which starts under the site's header:
- * the card never covers the header nor its anchor. Where neither side has room for a few lines (a window only a few hundred pixels tall),
- * the page first scrolls the anchor up to just under the header, so the card opens below it. */
-function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popover" | "center", isPc: boolean) {
+ * it does not fit there and the room above is larger. The card's max-height is capped to that room, which starts under the site's header,
+ * and to `share` of the window's height: the card never covers the header nor its anchor. Where neither side has room for a few lines (a
+ * window only a few hundred pixels tall), the page first scrolls the anchor up to just under the header, so the card opens below it. */
+function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popover" | "center", isPc: boolean, share: number) {
   dialog.style.top = "";
   dialog.style.left = "";
   dialog.style.maxHeight = "";
@@ -338,8 +344,8 @@ function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popov
   const ceiling = Math.max(0, document.querySelector("[data-site-header]")?.getBoundingClientRect().bottom ?? 0);
   // an anchor with no box (inside a sheet this card covers, which has closed as a dialog under it): the card stands in the window's middle
   if (!anchor.getClientRects().length) {
-    const h = Math.min(natural, window.innerHeight * 0.6);
-    dialog.style.maxHeight = `${window.innerHeight * 0.6}px`;
+    const h = Math.min(natural, window.innerHeight * share);
+    dialog.style.maxHeight = `${window.innerHeight * share}px`;
     dialog.style.top = `${Math.max(ceiling + gap, (window.innerHeight - h) / 2)}px`;
     dialog.style.left = `${Math.max(gap, (window.innerWidth - w) / 2)}px`;
     return;
@@ -354,10 +360,10 @@ function place(dialog: HTMLDialogElement, anchor: HTMLElement | null, pc: "popov
   const below = natural <= roomBelow || roomBelow >= roomAbove;
   const room = Math.max(0, below ? roomBelow : roomAbove);
   const h = Math.min(natural, room);
-  dialog.style.maxHeight = `${Math.min(room, window.innerHeight * 0.6)}px`;
+  dialog.style.maxHeight = `${Math.min(room, window.innerHeight * share)}px`;
   let left = r.right - w;
   left = Math.max(gap, Math.min(left, window.innerWidth - w - gap));
-  const top = below ? r.bottom + gap : r.top - gap - Math.min(h, window.innerHeight * 0.6);
+  const top = below ? r.bottom + gap : r.top - gap - Math.min(h, window.innerHeight * share);
   dialog.style.top = `${Math.max(ceiling + gap, top)}px`;
   dialog.style.left = `${left}px`;
 }

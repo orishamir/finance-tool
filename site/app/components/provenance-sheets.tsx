@@ -1,7 +1,7 @@
 // What the provenance sheet shows (design-system 3.2, design-spec 1.3 and 3): a figure's source and how it was computed, a rule's card,
 // a term's card, a formula, an open question, a statement math proves, and the cards the rules page lays out. A script apart from the figures and chips
 // (provenance.tsx `loadSheets`), fetched while the page hydrates (entry.client.tsx), so a page shows itself without waiting for it.
-import { useContext, useState, type ReactNode } from "react";
+import { useContext, useEffect, useState, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link } from "react-router";
 import { assertNever, type RuleRecord } from "@finance-tool/schema";
@@ -10,7 +10,8 @@ import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, 
 import { ruleTitle } from "../lib/rule-title";
 import { ownFigures, spanWords } from "../lib/rule-row";
 import { fillSlot, missingSlot, wordUnits, type SlotSource } from "../lib/figure-slots";
-import { fmt, formatValue } from "../lib/format";
+import { fmt } from "../lib/format";
+import { digitsFor, headText, keyOfLine, receiptLines, withValues } from "../lib/working";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
@@ -21,7 +22,7 @@ import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { Card, CompanyLinks, DocLink, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
 import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, sameCompanies, scopeCompanies, tagCompanies, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
 import type { SheetPart } from "./provenance";
-import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData } from "./provenance";
+import { CloseCtx, DataCtx, FormulaLink, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData } from "./provenance";
 import { proofOf } from "../content/proofs";
 
 /** What words that state several rules (`Ruled`) open: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
@@ -168,9 +169,27 @@ export function SheetContent({ item, data, headId, descId }: { item: Item; data:
   );
 }
 
+let anchorsOnce: Promise<Record<string, string>> | undefined;
+/** The anchor of the heading docs/method.md defines this formula under (routes/method-anchors.ts), once fetched; undefined before then, or if the fetch fails. */
+function useMethodAnchor(id: string, wanted: boolean): string | undefined {
+  const [anchors, setAnchors] = useState<Record<string, string>>();
+  useEffect(() => {
+    if (!wanted) return;
+    let live = true;
+    anchorsOnce ??= fetch(`${import.meta.env.BASE_URL}method-anchors.json`).then((r) => (r.ok ? (r.json() as Promise<Record<string, string>>) : {}), () => ({}));
+    void anchorsOnce.then((a) => {
+      if (live) setAnchors(a);
+    });
+    return () => {
+      live = false;
+    };
+  }, [wanted]);
+  return anchors?.[id];
+}
+
 /**
- * A formula's sheet: its Hebrew name; the formula itself in math type with a key to its symbols, when docs/method.md writes it as math
- * , else a link to its full definition there; and the
+ * A formula's sheet: its Hebrew name; the formula itself in math type with a key to its symbols, when docs/method.md writes it as math,
+ * else a link to its full definition there, at the section it stands in; and the
  * site parameters it uses, each a chip to its card (left out when there are none, or when the page did not pass `formulas`).
  */
 function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; headId: string }) {
@@ -179,6 +198,7 @@ function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; 
   const parameters = known?.parameters ?? [];
   const tex = known?.tex ?? [];
   const key = formulaKeys[id];
+  const anchor = useMethodAnchor(id, tex.length === 0);
   return (
     <div className="flex flex-col gap-3">
       <h2 id={headId} data-code-ok className="text-lg font-semibold">
@@ -187,7 +207,7 @@ function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; 
       {tex.length > 0 ? (
         <FormulaBlock lines={tex.map((t, i) => ({ tex: t, label: tex.length > 1 ? key?.lines?.[i] : undefined }))} symbols={key?.symbols ?? []} where={copy.formulaSheet.where} />
       ) : (
-        <a href={METHOD_URL} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-start gap-1 text-sm hover:underline" dir="ltr">
+        <a href={anchor ? `${METHOD_URL}#${anchor}` : METHOD_URL} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-start gap-1 text-sm hover:underline" dir="ltr">
           <span className="min-w-0 [overflow-wrap:anywhere]">{copy.formulaSheet.full}</span>
           <IconExternal size={16} className="shrink-0 mt-0.5" />
         </a>
@@ -471,15 +491,91 @@ function statementShown(st: FundStatement): { sentence: string; href: string; do
   }
 }
 
+/** A computed figure's input as its sheet shows it: a figure that opens its own sheet, with its source, and the parameter tag on a site parameter. */
+function InputFigure({ label, input }: { label: string; input: SiteValue }) {
+  return (
+    <>
+      <Num value={input} display={inputDisplay(label, input)} />
+      {/* a field's value (its default or what the reader typed) shows plainly: no parameter tag */}
+      {isParameter(input) && !input.field && <Tag tone="parameter">{numbers.parameter}</Tag>}
+    </>
+  );
+}
+
+/** A computed figure's inputs, each by its name with its figure: the list a figure with no working of its own shows, and what a line of math leaves out. */
+function InputList({ inputs }: { inputs: readonly (readonly [label: string, input: SiteValue])[] }) {
+  if (inputs.length === 0) return null;
+  return (
+    <div className="flex flex-col gap-1.5">
+      <span className="text-sm text-muted-foreground">{copy.computed.inputs}</span>
+      <dl className="readout">
+        {/* each input is a figure that opens its own sheet, with its source: the sheet names no source of its own under it */}
+        {inputs.map(([label, input]) => (
+          <div key={label} className="readout-row">
+            <dt>{inputName(label)}</dt>
+            <dd>
+              <InputFigure label={label} input={input} />
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
+
+/**
+ * How a computed figure was worked out, under its warnings (`Working`): a difference or a sum as the lines of a receipt, each figure as the
+ * page writes it; a line of math method.md draws, with the figure's values put in and the key to its symbols, each input once, beside the
+ * symbol it stands for; else, the formula's name as a chip to its sheet and the inputs. `result` is the figure as the head shows it.
+ */
+function ComputedWorking({ value, computedFrom, result, data }: { value: SiteValue; computedFrom: NonNullable<SiteValue["computed_from"]>; result: string; data: ProvenanceData }) {
+  const inputs = computedFrom.inputs as Record<string, SiteValue>;
+  const working = typeof value.value === "number" ? computedFrom.working : undefined;
+  const tex = working?.kind === "formula" ? data.formulas?.[working.entry]?.tex?.[working.line] : undefined;
+  if (working && working.kind !== "formula") {
+    return <FormulaBlock variant="receipt" label={copy.computed.working} lines={receiptLines(working, inputs).map((l) => ({ key: l.key, sign: l.sign, name: inputName(l.key), value: <InputFigure label={l.key} input={l.input} /> }))} result={result} />;
+  }
+  if (working?.kind === "formula" && tex) {
+    const rows = keyOfLine(tex, formulaKeys[working.entry]?.symbols ?? [], working, inputs);
+    const keyed = new Set(rows.flatMap((r) => r.inputs.map((x) => x.key)));
+    return (
+      <>
+        <FormulaBlock
+          variant="worked"
+          label={formulaKeys[working.entry]?.lines?.[working.line] ?? formulaNames[working.entry]}
+          tex={tex}
+          values={withValues(tex, working, inputs, digitsFor(result))}
+          result={result}
+          rows={rows.map((r) => ({ tex: r.tex, words: r.words, inputs: r.inputs.map((x) => ({ key: x.key, name: inputName(x.key), value: <InputFigure label={x.key} input={x.input} /> })) }))}
+          where={copy.formulaSheet.where}
+          after={<FormulaLink id={working.entry} />}
+        />
+        <InputList inputs={Object.entries(inputs).filter(([k]) => !keyed.has(k))} />
+      </>
+    );
+  }
+  return (
+    <>
+      <dl className="sheet-dl">
+        <Row label={computedFrom.formula.startsWith("A-") ? copy.idRef.howComputed : copy.computed.formula}>
+          {/* the chip says the formula's name; its sheet holds the math */}
+          <IdRef id={computedFrom.formula} />
+        </Row>
+      </dl>
+      {/* a figure computed from no value (a count of a comparison's own options) has no inputs to list, and no heading over nothing */}
+      <InputList inputs={Object.entries(inputs)} />
+    </>
+  );
+}
+
 /** The sheet behind a figure (exported for the render tests). */
 export function ValueSheet({ value, exact, display, data, headId, descId }: { value: SiteValue; exact: boolean; display?: string; data: ProvenanceData; headId: string; descId: string }) {
   const strength = strengthOf(value);
   const param = isParameter(value);
   const today = useContext(TodayCtx);
   const blocked = isOpenValue(value);
-  const bare = (typeof value.value !== "number" ? display : undefined) ?? value.written ?? (blocked ? strengthCopy.open.label : formatValue(value.value, value.unit, exact ? undefined : value.state, param));
   // a figure shown with its sign heads its sheet with it: "+0.37%" in the row read "0.37%" in the sheet
-  const text = value.signed && typeof value.value === "number" && value.value !== 0 ? `${value.value > 0 ? "+" : "−"}${formatValue(Math.abs(value.value), value.unit, exact ? undefined : value.state, param)}` : bare;
+  const text = headText(value, exact, display);
   // a long word (a deposit's tax: "ריבית לא צמודה. השיעור בעמוד המדריך.") wraps in a smaller size; kept on one line it ran past a phone's edge
   const longHead = text.length > 24;
   // the row's own words where they differ from the unit's (a one-year gap: "ב־2025"), so the head says what the row says (copy 10.4)
@@ -614,31 +710,7 @@ export function ValueSheet({ value, exact, display, data, headId, descId }: { va
 
       {value.state === "computed" && value.computed_from && (
         <>
-          <dl className="sheet-dl">
-            <Row label={value.computed_from.formula.startsWith("A-") ? copy.idRef.howComputed : copy.computed.formula}>
-              {/* the chip says the formula's name; its sheet holds the math */}
-              <IdRef id={value.computed_from.formula} />
-            </Row>
-          </dl>
-          {/* a figure computed from no value (a count of a comparison's own options) has no inputs to list, and no heading over nothing */}
-          {Object.keys(value.computed_from.inputs).length > 0 && (
-          <div className="flex flex-col gap-1.5">
-            <span className="text-sm text-muted-foreground">{copy.computed.inputs}</span>
-            <dl className="readout">
-              {/* each input is a figure that opens its own sheet, with its source: the sheet names no source of its own under it */}
-              {Object.entries(value.computed_from.inputs as Record<string, SiteValue>).map(([label, input]) => (
-                <div key={label} className="readout-row">
-                  <dt>{inputName(label)}</dt>
-                  <dd>
-                    <Num value={input} display={inputDisplay(label, input)} />
-                    {/* a field's value (its default or what the reader typed) shows plainly: no parameter tag */}
-                    {isParameter(input) && !input.field && <Tag tone="parameter">{numbers.parameter}</Tag>}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-          )}
+          <ComputedWorking value={value} computedFrom={value.computed_from} result={unitWord ? `${text} ${unitWord}` : text} data={data} />
           {rulesNamed.length > 0 && (
             <div className="flex flex-col gap-1.5">
               <span className="text-sm text-muted-foreground">{copy.computed.rules}</span>

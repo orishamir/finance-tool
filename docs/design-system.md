@@ -432,6 +432,19 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   figures names those figures, as the weak inputs are named: said in its own words on a difference of two funds, "the fund" named neither,
   and each figure's own sheet says it in words. An entered figure's sheet shows the value it replaced. A source line wraps at every width
   and is never cut, so a figure's source, its name and date, stay in view.
+- **A computed figure shows its working,** under its warnings, so the formula and the numbers that went into it are on screen together:
+  - a difference or a sum: the lines of a receipt, each figure as the page writes it (so the lines add up exactly), its sign at the start
+    of its line, then "=" and the figure as its head shows it. No formula chip: a subtraction under the name of a large formula explained
+    nothing.
+  - a figure that is exactly one line of math docs/method.md draws: that line in symbols, the same line with the figure's values put in,
+    and "=" with the figure. The values are put in by code from the line and the inputs, never typed, each with the digits the result
+    needs, units and names left to the key. Under it the key: each symbol's words, with this figure's input beside the symbol it stands
+    for, so each input shows once; then one quiet line to the formula's own sheet. A line that cannot be worked out from the inputs (a
+    symbol no input holds) shows the symbols and the key without values.
+  - any other figure: its formula's name as a chip to the formula's sheet, and its inputs.
+
+  A computed figure's sheet is taller on a phone and wider on a computer than a card. It keeps that size for everything opened from
+  inside it and on the way back, so the card never jumps.
 - **A source opens where it says it.** A link to a cited source opens at the cited words: a web page by text fragment, a PDF at its page
   (Chrome's PDF viewer does not follow a text fragment), a dataset at this fund's own record rather than the dataset's front page. Every
   such link is built by `sourceHref` (`site/app/lib/sources.ts`), never from a raw address (guard 23), and `tools/quote-fragments.mjs`
@@ -843,8 +856,9 @@ in the kit fits is added to the kit.
   sight without taking the room the terms need.
 - `GroupPriceFold`, `GroupPriceRows`: group prices (D43), stated beside a ranking and never in it.
 - `ClaimCheck`, `ClaimList`: a claim of a house's advertising set against its binding documents (D56, D57); never a figure of a ranking.
-- `FormulaBlock`, `Tex`: a formula in math type on a formula's sheet, where docs/method.md writes it as math; math always runs left to
-  right.
+- `FormulaBlock`, `Tex`: a formula in math type on a formula's sheet, where docs/method.md writes it as math; on a computed figure's
+  sheet, its working (3.2): its line with its values put in, or the lines of a difference or a sum. Math always runs left to right, and a
+  line too wide for its box scrolls inside it with a fading edge.
 
 *Surfaces and structure*
 

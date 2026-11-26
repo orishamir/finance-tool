@@ -497,7 +497,7 @@ describe("an open question a value names has Hebrew lines", () => {
 describe("ratchet: a formula the site shows has words beside its id", () => {
   // a value sheet read "נוסחה: חישוב של האתר F-92", the id with no words. Every formula id the site's
   // source passes has a Hebrew name in `formulaNames`, which the sheet shows beside the id's chip. Today's leftovers, by id; the list only shrinks.
-  const LEFTOVERS = ["F-31", "F-32", "F-45", "F-48", "F-49", "F-52", "F-53", "F-54", "F-86", "F-97", "F-98"];
+  const LEFTOVERS = ["F-45", "F-48", "F-52", "F-54"];
   const src = walk(root).filter((f) => /\.tsx?$/.test(f) && !/\.test\./.test(f));
   const copySrc = readFileSync(join(root, "copy.ts"), "utf8");
   const block = copySrc.slice(copySrc.indexOf("export const formulaNames"), copySrc.indexOf("_other:", copySrc.indexOf("export const formulaNames")));

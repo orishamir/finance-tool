@@ -254,15 +254,23 @@ function showsWhole(v: number, state: "sourced" | "computed" | "entered" | undef
 const SHEKEL_SUMS: ReadonlySet<string> = new Set(["nis", "nis_per_month", "nis_per_trade", "nis_per_transfer"]);
 
 /**
- * The number a shekel amount reads as on the page: the number `formatValue` writes, read back from its text, so the two are one rounding
- * (method §13). A figure worked out from shown amounts starts from these, so it agrees with them as written. Any other unit is returned
- * as it is.
+ * The number a figure reads as on the page: the text `formatValue` writes for it, read back, so the two are one rounding (method §13): a
+ * shekel amount in the shekels or agorot it shows, a percent to the decimals it shows. Where the text is not the number in its own unit (a
+ * sum written in billions, a rate written in agorot), so that writing the number read back gives other text, the value as it is.
+ */
+export function numberShown(v: number, unit: string, state?: "sourced" | "computed" | "entered", parameter = false): number {
+  const text = formatValue(v, unit, state, parameter);
+  const digits = Number(text.replace(/[^\d.]/g, ""));
+  const n = text.includes("\u2212") ? -digits : digits;
+  return formatValue(n, unit, state, parameter) === text ? n : v;
+}
+
+/**
+ * The number a shekel amount reads as on the page (`numberShown`). A figure worked out from shown amounts starts from these, so it agrees
+ * with them as written. Any other unit is returned as it is.
  */
 export function amountShown(v: number, unit: string, state?: "sourced" | "computed" | "entered", parameter = false): number {
-  if (!SHEKEL_SUMS.has(unit)) return v;
-  const text = formatValue(v, unit, state, parameter);
-  const n = Number(text.replace(/[^\d.]/g, ""));
-  return text.includes("\u2212") ? -n : n;
+  return SHEKEL_SUMS.has(unit) ? numberShown(v, unit, state, parameter) : v;
 }
 
 /**
@@ -438,6 +446,18 @@ export function parseNumber(text: string, kind: NumberKind = "amount"): number {
  * own, its number and sign joined by a no-break space, so it is neither reordered ("עד 10 $", never "$ 10 עד") nor wrapped apart.
  */
 export const amountWords = (text: string): string => `\u2066${text.replace(/ /g, "\u00a0")}\u2069`;
+
+/**
+ * A number in TeX, for a calculation's line with its values put in (`lib/working.ts`): at most `significant` significant digits, never fewer
+ * than its whole part has, trailing zeros dropped, the thousands separator in TeX's braces (`1{,}325.38`, so TeX spaces it as a separator
+ * and not as a list's comma) and a hyphen for a minus, which TeX draws as the minus sign.
+ */
+export function texNumber(v: number, significant: number): string {
+  const a = Math.abs(v);
+  const place = a === 0 ? 0 : Math.floor(Math.log10(a));
+  const decimals = Math.min(20, Math.max(0, significant - 1 - place));
+  return numberFormat({ maximumFractionDigits: decimals }, "en-US").format(v).replace(/,/g, "{,}");
+}
 
 /** Thousands separators for a typed field, left to right (`1,500`, `5`, `-2.5`). */
 export function formatTyped(n: number): string {
