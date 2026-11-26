@@ -1,7 +1,7 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
 import { BlockedError } from "@finance-tool/engine";
-import { accountSum, blockedReason, buildInvest, dealOnFunds, listReading, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
+import { accountSum, blockedReason, buildInvest, dealOnFunds, listReading, pairCosts, pairRow, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "./custom-entries";
 import type { WorkbenchInputs } from "./providers";
@@ -613,6 +613,49 @@ describe("each figure of a run lists the rules of the parts its number is made o
     expect(pairs.length).toBeGreaterThan(3);
     expect(ACCOUNT_LINES.filter((l) => FUND_LINES.includes(l))).toEqual([]);
     for (const pc of pairs) for (const l of pc.account) expect(ACCOUNT_LINES, `${pc.providerId} ${l.line}`).toContain(l.line);
+  });
+  it("each fee line's figure lists exactly the rules that changed that line, and every line the run books outside the fund's is the account's", () => {
+    // the cheapest pair at each house on the S&P 500 and on the MSCI ACWI (whose fund carries the US tax inside its price, TXF-16, on its
+    // own line), and the Irish fund that pays out at every house that prices it, on an income above the surtax's threshold
+    const acwi = indexById(bundle, "index-msci-acwi")!;
+    const rich = plan({ income: 900_000, values: { ...plan().values, income: entered(900_000, "nis", t) } });
+    const irishId = "ie0031442068";
+    const cases = [
+      ...[sp, acwi].flatMap((index) => buildInvest({ bundle, index, plan: plan() }).houses.flatMap((h) => (h.best ? [{ index, p: plan(), fundId: h.best.fund.rec.id, providerId: h.provider.id }] : []))),
+      ...bundle.snapshots.map((s) => ({ index: sp, p: rich, fundId: irishId, providerId: s.id })),
+    ];
+    const booked = new Set<string>();
+    let lines = 0;
+    let paying = 0;
+    for (const c of cases) {
+      const pc = pairCosts({ bundle, index: c.index, plan: c.p, fundId: c.fundId, providerId: c.providerId });
+      if (!pc) continue;
+      const row = pairRow({ bundle, index: c.index, plan: c.p, fundId: c.fundId, providerId: c.providerId, fxChange: 0 });
+      if (!row) throw new Error(`${c.providerId}: the pair has no run`);
+      const at = `${c.index.id} ${c.fundId} ${c.providerId}`;
+      const changed = row.run.rules.flatMap((r) => r.uses.filter((u) => u.changed).map((u) => ({ id: r.id, u })));
+      for (const { u } of changed) if (u.part === "fees" && u.line && !FUND_LINES.includes(u.line)) booked.add(u.line);
+      // on a fund that pays out, a difference of B adds the whole tax during the run, a money carried to the horizon the payout's tax alone
+      const during = new Set(pc.distributes ? changed.filter((x) => x.u.part === "taxDuring").map((x) => x.id) : []);
+      const payoutTax = new Set([...during].filter((id) => !SURTAX_RULES.includes(id)));
+      if (pc.distributes) paying++;
+      const onLines = (ls: readonly string[]) => new Set(changed.filter((x) => x.u.part === "fees" && x.u.line !== undefined && ls.includes(x.u.line)).map((x) => x.id));
+      // a rule an input of the figure already lists is left to that input, which opens it (`computed`)
+      const exactly = (v: SiteValue, want: Set<string>, what: string) => {
+        const held = new Set(Object.values((v.computed_from?.inputs ?? {}) as Record<string, SiteValue>).flatMap((x) => ids(x)));
+        expect(ids(v).sort(), `${at} ${what}`).toEqual([...want].filter((id) => !held.has(id)).sort());
+      };
+      for (const l of pc.account) {
+        exactly(l.cost, new Set([...onLines([l.line]), ...(pc.units ? payoutTax : during)]), l.line);
+        lines++;
+      }
+      exactly(pc.remainder, new Set([...onLines(ACCOUNT_LINES), ...during]), "remainder");
+      exactly(pc.fund, new Set([...onLines(FUND_LINES), ...during]), "fund");
+      if (pc.waiting) exactly(pc.waiting, payoutTax, "waiting");
+    }
+    expect(lines).toBeGreaterThan(5);
+    expect(paying, "a pair on the fund that pays out").toBeGreaterThan(0);
+    for (const line of booked) expect(ACCOUNT_LINES, line).toContain(line);
   });
   it("on a fund that pays nothing out, a figure before tax lists no tax rule, the fund's part only the US tax inside its price (TXF-16)", () => {
     const ways = view.options.flatMap((o) => o.funds).flatMap((f) => Object.values(f.byHouse).flatMap((x) => ("valueN" in x ? [{ f, x }] : [])));
