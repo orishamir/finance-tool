@@ -22,9 +22,13 @@
       "unit": "years",
       "source": {
         "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
-        "title": "חוק גיל פרישה, התשס\"ד-2004, p.1, s.5: \"גיל 60 לגבר ולאישה\"",
+        "title": "חוק גיל פרישה, התשס\"ד-2004",
         "publisher": "The Knesset",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1, s.5",
+        "locator_he": "עמוד 1, סעיף 5",
+        "page": 1,
+        "quote": "גיל 60 לגבר ולאישה"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -42,9 +46,13 @@
       "unit": "years",
       "source": {
         "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
-        "title": "חוק גיל פרישה, התשס\"ד-2004, p.1, s.3: \"גיל 67 לגבר\"",
+        "title": "חוק גיל פרישה, התשס\"ד-2004",
         "publisher": "The Knesset",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1, s.3",
+        "locator_he": "עמוד 1, סעיף 3",
+        "page": 1,
+        "quote": "גיל 67 לגבר"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -82,9 +90,12 @@
       "unit": "text",
       "source": {
         "url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf#page=174",
-        "title": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021, p.174, s.73(6) (התוספת לחוק גיל פרישה, חלק ב')",
+        "title": "חוק התכנית הכלכלית (תיקוני חקיקה ליישום המדיניות הכלכלית לשנות התקציב 2021 ו-2022), התשפ\"ב-2021",
         "publisher": "The Knesset",
         "strength": "primary",
+        "locator": "p.174, s.73(6) (התוספת לחוק גיל פרישה, חלק ב')",
+        "locator_he": "עמוד 174, סעיף 73(6) (התוספת לחוק גיל פרישה, חלק ב')",
+        "page": 174,
         "quote": "ינואר 1969 עד דצמבר 1969"
       },
       "checked": "2026-11-12",

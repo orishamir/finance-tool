@@ -15,9 +15,11 @@
       "unit": "pct_of_trade",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YeLGailVs4sAQNAXci5Zo3BCViCj7pr1tFrgiQP0KVw=#page=10",
-        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ו-2016 (קובץ התקנות 7653), עמוד 10 (עמוד הרשומות 1098), תקנה 2(ב)-(ד)",
+        "title": "תקנות השקעות משותפות בנאמנות (עמלת הפצה) (תיקון), התשע\"ו-2016 (קובץ התקנות 7653)",
         "publisher": "רשומות (משרד המשפטים)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "עמוד 10 (עמוד הרשומות 1098), תקנה 2(ב)-(ד)",
+        "locator_he": "עמוד 10 (עמוד הרשומות 1098), תקנה 2(ב)-(ד)"
       },
       "checked": "2026-10-25",
       "effective_from": null,

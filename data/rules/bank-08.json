@@ -21,7 +21,8 @@
       "kind": "regulation",
       "strength": "primary",
       "locator": "s.8, 12, 30(c), 30(e), Schedule E",
-      "checked": "2026-10-22"
+      "checked": "2026-10-22",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

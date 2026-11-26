@@ -53,7 +53,8 @@
       "locator": "p.6, First Schedule part 1, item 1(א)(1)",
       "locator_he": "עמוד 6, התוספת הראשונה חלק 1, פרט 1(א)(1)",
       "page": 6,
-      "checked": "2026-11-12"
+      "checked": "2026-11-12",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
@@ -67,7 +68,8 @@
       "locator_he": "עמוד 7, הערה 3",
       "page": 7,
       "quote": "עמלת מינימום בסכום שאינו עולה על מחיר של פעולה אחת על ידי פקיד",
-      "checked": "2026-11-12"
+      "checked": "2026-11-12",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://boi.org.il/media/jbwnaivp/159a.pdf",
@@ -80,7 +82,8 @@
       "locator": "p.25, Second Schedule, item 1",
       "page": 25,
       "quote": "דמי ניהול (נמחק)",
-      "checked": "2026-11-12"
+      "checked": "2026-11-12",
+      "standing": "consolidated-not-binding"
     }
   ],
   "derived_from": [

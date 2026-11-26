@@ -26,7 +26,8 @@
       "locator_he": "עמוד 21, סעיף 3(ה4)(3)",
       "page": 21,
       "quote": "יראו אותם כאילו נמשכו על חשבון קרן, ריבית והפרשי הצמדה, באופן יחסי",
-      "checked": "2026-11-07"
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=269",
@@ -40,7 +41,8 @@
       "locator_he": "עמוד 269, סעיף 245(א)",
       "page": 269,
       "quote": "לא יותרו ניכויים או קיזוזים",
-      "checked": "2026-11-07"
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/service/report126/he/Service_Pages_Income_tax_annual-report-2026_856-2017-2025.pdf#page=14",
@@ -83,7 +85,8 @@
       "page": 3,
       "quote": "אם הכספים שהצטברו בקופת הגמל להשקעה נשאו רווחים, יראו ברווחים כאמור הכנסה",
       "checked": "2026-11-07",
-      "qualifier": "(explanatory notes of the government bill; the operative text is s.3(ה4)(3))"
+      "qualifier": "(explanatory notes of the government bill; the operative text is s.3(ה4)(3))",
+      "standing": "bill"
     }
   ],
   "derived_from": [

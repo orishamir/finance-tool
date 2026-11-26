@@ -73,7 +73,8 @@
       "locator_he": "עמוד 201, סעיף 121(ב)(1)",
       "page": 201,
       "quote": "לגבי הכנסה חייבת בשנת המס מיגיעה אישית ולגבי הכנסה חייבת בשנת המס של יחיד שמלאו לו 60 שנים, יחולו שיעורים אלה",
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
@@ -100,7 +101,8 @@
       "locator_he": "עמוד 204, סעיף 125ג(א)-(ה)",
       "page": 204,
       "quote": "בשיעור שלא יעלה על 25%",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://fs.knesset.gov.il/20/law/20_ls1_323033.pdf",
@@ -115,7 +117,8 @@
       "page": 3,
       "quote": "יראו ברווחים כאמור הכנסה ולפיכך הם יהיו חייבים במס רווחי הון בשיעור 25% מהרווח הריאלי",
       "checked": "2026-10-25",
-      "qualifier": "(explanatory notes of the government bill; the operative text is s.3(ה4)(3))"
+      "qualifier": "(explanatory notes of the government bill; the operative text is s.3(ה4)(3))",
+      "standing": "bill"
     }
   ],
   "derived_from": [

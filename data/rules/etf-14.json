@@ -22,9 +22,12 @@
       "unit": "pct",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=5",
-        "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038, p.5 (gazette p.2397), reg. 11",
+        "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
         "publisher": "רשומות (משרד המשפטים)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5 (gazette p.2397), reg. 11",
+        "locator_he": "עמוד 5 (עמוד הרשומות 2397), תקנה 11",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -42,9 +45,12 @@
       "unit": "pct",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=5",
-        "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038, p.5 (gazette p.2397), reg. 11",
+        "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
         "publisher": "רשומות (משרד המשפטים)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5 (gazette p.2397), reg. 11",
+        "locator_he": "עמוד 5 (עמוד הרשומות 2397), תקנה 11",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -62,9 +68,12 @@
       "unit": "pct",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=5",
-        "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038, p.5 (gazette p.2397), reg. 11",
+        "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
         "publisher": "רשומות (משרד המשפטים)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5 (gazette p.2397), reg. 11",
+        "locator_he": "עמוד 5 (עמוד הרשומות 2397), תקנה 11",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -82,9 +91,12 @@
       "unit": "pct",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=5",
-        "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038, p.5 (gazette p.2397), reg. 11",
+        "title": "תקנות השקעות משותפות בנאמנות (קרנות מחקות), התשע\"ח-2018, קובץ התקנות 8038",
         "publisher": "רשומות (משרד המשפטים)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5 (gazette p.2397), reg. 11",
+        "locator_he": "עמוד 5 (עמוד הרשומות 2397), תקנה 11",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": null,

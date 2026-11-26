@@ -18,9 +18,12 @@
       "unit": "nis",
       "source": {
         "url": "https://content.tase.co.il/media/mwsduioc/274698.pdf",
-        "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698), פרק ב' s.1(ב), p.ב5 (update 130, 5.2.24): \"בתעודות התחייבות - 1 ש\"ח ערך נקוב\"",
+        "title": "TASE, מדריך המסחר – הנחיות על פי החלק השלישי לתקנון (doc. 274698) (update 130, 5.2.24)",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "פרק ב' s.1(ב), p.ב5",
+        "locator_he": "פרק ב' סעיף 1(ב), עמוד ב5",
+        "quote": "בתעודות התחייבות - 1 ש״ח ערך נקוב"
       },
       "checked": "2026-10-26",
       "effective_from": null,

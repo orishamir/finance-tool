@@ -18,9 +18,13 @@
       "unit": "months",
       "source": {
         "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_H096.pdf",
-        "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, 2011, p.4, s.6(ה)-(ו): \"מיד בתום 6 חודשים מתחילת העבודה\"",
+        "title": "צו הרחבה (נוסח משולב) לפנסיה חובה, 2011",
         "publisher": "Ministry of Labour (scan on gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.4, s.6(ה)-(ו)",
+        "locator_he": "עמוד 4, סעיף 6(ה)-(ו)",
+        "page": 4,
+        "quote": "מיד בתום 6 חודשים מתחילת העבודה"
       },
       "checked": "2026-10-25",
       "effective_from": null,

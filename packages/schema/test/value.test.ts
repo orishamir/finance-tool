@@ -36,6 +36,30 @@ describe("value object (data-schema §1)", () => {
     expect(valueObject.safeParse({ ...sourced, update_rule: "frozen 2025-2027" }).success).toBe(true);
     expect(valueObject.safeParse({ ...sourced, update_rule: "frozen" }).success).toBe(false);
   });
+
+  it("says why a sourced value is empty only on a sourced null, in one of its words", () => {
+    const empty = { ...sourced, value: null, notes: "הסיבה לא ידועה." };
+    expect(valueObject.safeParse({ ...empty, empty_because: "unknown" }).success).toBe(true);
+    expect(valueObject.safeParse({ ...empty, empty_because: "too-young" }).success).toBe(true);
+    expect(valueObject.safeParse({ ...empty, empty_because: "missing" }).success).toBe(false);
+    expect(valueObject.safeParse({ ...sourced, empty_because: "unknown" }).success).toBe(false);
+    expect(valueObject.safeParse({ ...empty, state: "entered", empty_because: "unknown" }).success).toBe(false);
+  });
+
+  it("says a sourced value is empty by a rule only where it names that rule", () => {
+    const { rule_ids: _, ...unruled } = sourced;
+    const empty = { ...unruled, value: null, notes: "התקנות אינן מתירות דמי ניהול מההפקדה." };
+    expect(valueObject.safeParse({ ...empty, empty_because: "none-by-rule" }).success).toBe(false);
+    expect(valueObject.safeParse({ ...empty, empty_because: "none-by-rule", rule_ids: [] }).success).toBe(false);
+    expect(valueObject.safeParse({ ...empty, empty_because: "none-by-rule", rule_ids: ["PF-06"] }).success).toBe(true);
+  });
+
+  it("keeps a Hebrew note, a Hebrew publisher and a machine address apart from the fields a reader opens", () => {
+    const parsed = valueObject.parse({ ...sourced, notes_he: "לפני מס.", source: { ...sourced.source, publisher_he: "הכנסת", fetched_from: "https://example.org/api/data.json" } });
+    expect(parsed.notes_he).toBe("לפני מס.");
+    expect(parsed.source).toMatchObject({ url: "https://example.org/reg", publisher_he: "הכנסת", fetched_from: "https://example.org/api/data.json" });
+    expect(valueObject.safeParse({ ...sourced, source: { ...sourced.source, fetched_from: "not an address" } }).success).toBe(false);
+  });
 });
 
 describe("rule record (data-schema §3.1)", () => {
@@ -61,6 +85,31 @@ describe("rule record (data-schema §3.1)", () => {
 
   it("requires a recheck date when the rule is likely to change", () => {
     expect(ruleRecord.safeParse({ ...rule, likely_to_change: "yes" }).success).toBe(false);
+  });
+
+  it("keeps a figure's place in its document on the figure's source, so the title names the document alone", () => {
+    const placed = { ...sourced, source: { ...sourced.source, title: "תקנות", locator: "reg. 2(a)", locator_he: "תקנה 2(א)", page: 4, quote: "שיעור דמי הניהול" } };
+    const parsed = ruleRecord.parse({ ...rule, figures: { balance_cap: placed, by_year: { by_tax_year: { "2026": placed } }, brackets: [{ up_to: placed, rate: placed }] } });
+    for (const v of [parsed.figures!.balance_cap, (parsed.figures!.by_year as { by_tax_year: Record<string, unknown> }).by_tax_year["2026"], (parsed.figures!.brackets as { rate: unknown }[])[0]!.rate])
+      expect(v).toMatchObject({ source: { locator: "reg. 2(a)", locator_he: "תקנה 2(א)", page: 4, quote: "שיעור דמי הניהול" } });
+    expect(ruleRecord.safeParse({ ...rule, figures: { balance_cap: { ...placed, source: { ...placed.source, quote: "" } } } }).success).toBe(false);
+  });
+
+  it("names a source's standing in its closed words only", () => {
+    const src = { url: "https://example.org/draft.pdf", title: "draft", publisher: "CMA", kind: "official_pdf", strength: "primary", checked: "2026-10-22" };
+    expect(ruleRecord.safeParse({ ...rule, sources: [{ ...src, qualifier: "(draft)", standing: "draft" }] }).success).toBe(true);
+    expect(ruleRecord.safeParse({ ...rule, sources: [{ ...src, standing: "consolidated-not-binding" }] }).success).toBe(true);
+    expect(ruleRecord.safeParse({ ...rule, sources: [{ ...src, standing: "historical" }] }).success).toBe(false);
+  });
+
+  it("points to a method entry or an open question by kind, each in its own form", () => {
+    expect(ruleRecord.parse({ ...rule, see_also: [{ kind: "method", id: "F-104" }, { kind: "question", id: "TXS OQ26" }] }).see_also).toEqual([
+      { kind: "method", id: "F-104" },
+      { kind: "question", id: "TXS OQ26" },
+    ]);
+    expect(ruleRecord.safeParse({ ...rule, see_also: [{ kind: "method", id: "TXS OQ26" }] }).success).toBe(false);
+    expect(ruleRecord.safeParse({ ...rule, see_also: [{ kind: "question", id: "F-04" }] }).success).toBe(false);
+    expect(ruleRecord.safeParse({ ...rule, see_also: [{ kind: "rule", id: "PF-02" }] }).success).toBe(false);
   });
 
   // D30 (spec 2026-10-25-rules-scope §3): every rule says who it applies to

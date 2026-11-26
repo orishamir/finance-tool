@@ -23,7 +23,8 @@
       "locator": "p.5, s.4; p.56, s.76; p.57, s.78; p.58, s.79",
       "locator_he": "עמוד 5, סעיף 4; עמוד 56, סעיף 76; עמוד 57, סעיף 78; עמוד 58, סעיף 79",
       "page": 5,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     }
   ],
   "derived_from": [

@@ -37,7 +37,8 @@
       "strength": "primary",
       "quote": "Because of market risk, it’s important to consider your time horizon when purchasing a bond or any other type of investment.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign regulator, general mechanism)"
+      "qualifier": "(foreign regulator, general mechanism)",
+      "standing": "foreign-view"
     }
   ],
   "derived_from": [

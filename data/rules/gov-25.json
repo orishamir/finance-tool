@@ -19,9 +19,11 @@
       "unit": "pct_per_year",
       "source": {
         "url": "https://www.gov.il/he/pages/govermental-bonds",
-        "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו, tab מאפייני אג״ח סחיר (updated 02.01.2011), row גליל",
+        "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו, tab מאפייני אג״ח סחיר (updated 02.01.2011)",
         "publisher": "Ministry of Finance (Accountant General)",
         "strength": "primary",
+        "locator": "row גליל",
+        "locator_he": "שורה גליל",
         "quote": "לכל הפחות 1% לשנה"
       },
       "checked": "2026-11-15",
@@ -40,9 +42,11 @@
       "unit": "count",
       "source": {
         "url": "https://www.gov.il/he/pages/govermental-bonds",
-        "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו, tab מאפייני אג״ח סחיר (updated 02.01.2011), row גליל",
+        "title": "משרד האוצר, אגף החשב הכללי: מאפייני אג\"ח סחיר ולא סחיר ותקנותיו, tab מאפייני אג״ח סחיר (updated 02.01.2011)",
         "publisher": "Ministry of Finance (Accountant General)",
         "strength": "primary",
+        "locator": "row גליל",
+        "locator_he": "שורה גליל",
         "quote": "אחת לשנה"
       },
       "checked": "2026-11-15",

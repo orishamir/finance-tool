@@ -17,9 +17,11 @@
       "unit": "days",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=69",
-        "title": "חוק השקעות משותפות בנאמנות, סעיף 106(א)",
+        "title": "חוק השקעות משותפות בנאמנות",
         "publisher": "רשות ניירות ערך (נוסח משולב)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "סעיף 106(א)",
+        "locator_he": "סעיף 106(א)"
       },
       "checked": "2026-11-02",
       "effective_from": null,
@@ -37,9 +39,11 @@
       "unit": "days",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-628ccfb552dac/Hashka01.pdf#page=69",
-        "title": "חוק השקעות משותפות בנאמנות, סעיף 106(א)",
+        "title": "חוק השקעות משותפות בנאמנות",
         "publisher": "רשות ניירות ערך (נוסח משולב)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "סעיף 106(א)",
+        "locator_he": "סעיף 106(א)"
       },
       "checked": "2026-11-02",
       "effective_from": null,

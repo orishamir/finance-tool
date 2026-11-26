@@ -20,9 +20,12 @@
       "unit": "months",
       "source": {
         "url": "https://boi.org.il/media/5folwk5o/119.pdf",
-        "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026, נוסח בנק ישראל (1.7.2026), p.2, s.16(ב)",
+        "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026, נוסח בנק ישראל (1.7.2026)",
         "publisher": "Bank of Israel",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, s.16(ב)",
+        "locator_he": "עמוד 2, סעיף 16(ב)",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": "2026-03-31",
@@ -40,9 +43,12 @@
       "unit": "months",
       "source": {
         "url": "https://boi.org.il/media/5folwk5o/119.pdf",
-        "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026, נוסח בנק ישראל (1.7.2026), p.2, s.16(ג)",
+        "title": "חוק לקידום התחרות בשוק הבנקאות (תיקוני חקיקה), התשפ\"ו-2026, נוסח בנק ישראל (1.7.2026)",
         "publisher": "Bank of Israel",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, s.16(ג)",
+        "locator_he": "עמוד 2, סעיף 16(ג)",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": "2026-03-31",

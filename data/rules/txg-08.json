@@ -71,7 +71,8 @@
       "publisher_he": "רשות המסים",
       "kind": "law",
       "strength": "primary",
-      "checked": "2026-11-07"
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
     }
   ],
   "derived_from": [

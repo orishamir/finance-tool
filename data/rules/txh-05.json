@@ -73,7 +73,8 @@
       "locator_he": "עמוד 62, סעיף 17(5א)",
       "page": 62,
       "quote": "סכומים ששילם יחיד לקרן השתלמות לעצמאים לא יעלו על 4.5%",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",
@@ -113,7 +114,8 @@
       "locator": "p.200, s.120א, s.120ב(א)",
       "locator_he": "עמוד 200, סעיף 120א, סעיף 120ב(א)",
       "page": 200,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lsr_5396578.pdf",

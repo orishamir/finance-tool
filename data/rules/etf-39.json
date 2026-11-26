@@ -34,9 +34,12 @@
       "unit": "business_days",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.18",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403)",
         "publisher": "S&P Dow Jones Indices",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.18",
+        "locator_he": "עמוד 18",
+        "page": 18
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -54,9 +57,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.spglobal.com/spdji/en/documents/methodologies/methodology-sp-us-indices.pdf",
-        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403), p.18",
+        "title": "S&P Dow Jones Indices, S&P U.S. Indices Methodology, July 2026 (read in Chrome; curl returns 403)",
         "publisher": "S&P Dow Jones Indices",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.18",
+        "locator_he": "עמוד 18",
+        "page": 18
       },
       "checked": "2026-10-25",
       "effective_from": null,

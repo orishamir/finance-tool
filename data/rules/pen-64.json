@@ -19,9 +19,12 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=2",
-        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017), p.2, s.1(א)(1)",
+        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.2, s.1(א)(1)",
+        "locator_he": "עמוד 2, סעיף 1(א)(1)",
+        "page": 2,
         "quote": "גיל פרישה לפנסיית זקנה לא יפחת מגיל 60"
       },
       "checked": "2026-11-15",
@@ -40,9 +43,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1015/he/regulation_h_2017-3-2.pdf#page=2",
-        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017), p.2, s.1(א)(4)",
+        "title": "חוזר פנסיה 2017-3-2 – הוראות לניהול קרן חדשה כללית (3.5.2017)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.2, s.1(א)(4)",
+        "locator_he": "עמוד 2, סעיף 1(א)(4)",
+        "page": 2,
         "quote": "לא תעלה על 35% מסך מצטבר של תגמולי המעביד והעובד"
       },
       "checked": "2026-11-15",

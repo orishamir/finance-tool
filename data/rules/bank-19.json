@@ -19,9 +19,12 @@
       "unit": "days",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lsr_4048300.pdf",
-        "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 37), התשפ\"ד-2024, ספר החוקים 3152, p.2, s.1 (סעיף 5א1א(ב))",
+        "title": "חוק הבנקאות (שירות ללקוח) (תיקון מס' 37), התשפ\"ד-2024, ספר החוקים 3152",
         "publisher": "הכנסת",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, s.1 (סעיף 5א1א(ב))",
+        "locator_he": "עמוד 2, סעיף 1 (סעיף 5א1א(ב))",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": null,

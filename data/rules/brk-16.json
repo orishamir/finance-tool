@@ -29,7 +29,8 @@
       "locator_he": "עמוד 16, חלק 4(א)(4), הערה 2",
       "page": 16,
       "quote": "בשל ביצוע השירות בניירות ערך שאינם נסחרים",
-      "checked": "2026-11-14"
+      "checked": "2026-11-14",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
@@ -42,7 +43,8 @@
       "locator": "pp.3, 15 to 18, s.2(א)",
       "locator_he": "עמודים 3, 15 עד 18, סעיף 2(א)",
       "page": 3,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

@@ -22,9 +22,12 @@
       "unit": "text",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=2",
-        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597), p.2, regs. 1-4",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597)",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, regs. 1-4",
+        "locator_he": "עמוד 2, תקנות 1-4",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -42,9 +45,13 @@
       "unit": "boolean",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=2",
-        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597), p.2, reg. 4 (\"ואיגרות החוב לא ישאו ריבית\")",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597)",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, reg. 4",
+        "locator_he": "עמוד 2, תקנה 4",
+        "page": 2,
+        "quote": "ואיגרות החוב לא ישאו ריבית"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -62,9 +69,12 @@
       "unit": "nis",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=2",
-        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597), p.2, reg. 3",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597)",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, reg. 3",
+        "locator_he": "עמוד 2, תקנה 3",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -82,9 +92,12 @@
       "unit": "months",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=3",
-        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597), p.3, reg. 5",
+        "title": "תקנות מילווה המדינה (אגרות חוב מסוג \"אג\"ח ממשלתית קצרה\"), התשס\"ז-2007 (קובץ התקנות 6597)",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, reg. 5",
+        "locator_he": "עמוד 3, תקנה 5",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,

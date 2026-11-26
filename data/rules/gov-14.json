@@ -39,9 +39,13 @@
       "unit": "months",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=6",
-        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\"), התשס\"ו-2006 (קובץ התקנות 6457), p.6 (gazette p.404), reg. 1 (תקופת ריבית): \"ביום העסקים הבנקאי האחרון בחודש השלישי שקדם לו\"",
+        "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית - ריבית משתנה\"), התשס\"ו-2006 (קובץ התקנות 6457)",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.6 (gazette p.404), reg. 1 (תקופת ריבית)",
+        "locator_he": "עמוד 6 (עמוד הרשומות 404), תקנה 1 (תקופת ריבית)",
+        "page": 6,
+        "quote": "ביום העסקים הבנקאי האחרון בחודש השלישי שקדם לו"
       },
       "checked": "2026-10-26",
       "effective_from": null,

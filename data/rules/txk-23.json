@@ -52,7 +52,8 @@
       "locator_he": "עמוד 204, סעיף 125ג(ב)",
       "page": 204,
       "quote": "יחיד חייב במס על הכנסה מריבית בשיעור שלא יעלה על 25%",
-      "checked": "2026-11-07"
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-304/he/Provident%20fund%20for%20long-term%20child%20savings.pdf#page=3",
@@ -118,7 +119,8 @@
       "locator": "p.21, s.3(ה4)(3)",
       "locator_he": "עמוד 21, סעיף 3(ה4)(3)",
       "page": 21,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8OfazOM9J2n~VjyzV5AWsITYS27PjZHrqw3iJWE0YJI=#page=10",

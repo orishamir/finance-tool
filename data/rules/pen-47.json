@@ -20,9 +20,12 @@
       "unit": "years",
       "source": {
         "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
-        "title": "Mor gemel standard bylaws 18.02.2026, p.13, s.45.1",
+        "title": "Mor gemel standard bylaws 18.02.2026",
         "publisher": "Mor",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.13, s.45.1",
+        "locator_he": "עמוד 13, סעיף 45.1",
+        "page": 13
       },
       "checked": "2026-10-26",
       "effective_from": null,
@@ -40,9 +43,11 @@
       "unit": "months",
       "source": {
         "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
-        "title": "Mor gemel standard bylaws 18.02.2026, s.45.2",
+        "title": "Mor gemel standard bylaws 18.02.2026",
         "publisher": "Mor",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "s.45.2",
+        "locator_he": "סעיף 45.2"
       },
       "checked": "2026-10-26",
       "effective_from": null,
@@ -60,9 +65,11 @@
       "unit": "months",
       "source": {
         "url": "https://www.moreinvest.co.il/media/5z0eicf4/res_גמל-לחיסכון-פברואר-2026-נקי-הוספת-מסלול-השקעה.pdf",
-        "title": "Mor gemel standard bylaws 18.02.2026, s.46",
+        "title": "Mor gemel standard bylaws 18.02.2026",
         "publisher": "Mor",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "s.46",
+        "locator_he": "סעיף 46"
       },
       "checked": "2026-10-26",
       "effective_from": null,

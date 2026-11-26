@@ -35,9 +35,12 @@
       "unit": "pct",
       "source": {
         "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-        "title": "Harel child-savings standard bylaw, edition 3, April 2026, p.11, Annex A (increased-risk track, fund 11377)",
+        "title": "Harel child-savings standard bylaw, edition 3, April 2026 (increased-risk track, fund 11377)",
         "publisher": "Harel Pension and Gemel",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.11, Annex A",
+        "locator_he": "עמוד 11, נספח א",
+        "page": 11
       },
       "checked": "2026-10-25",
       "effective_from": null,

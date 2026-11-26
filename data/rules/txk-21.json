@@ -21,9 +21,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/news/press020726/he/%D7%93%D7%95%D7%97%20%D7%9E%D7%A1%D7%9B%D7%9D%20%D7%95%D7%A2%D7%93%D7%AA%20%D7%94%D7%90%D7%A8%D7%91%D7%99%D7%98%D7%A8%D7%90%D7%96%20-%D7%99%D7%95%D7%9C%D7%99%202026%20%D7%97%D7%AA%D7%95%D7%9D.pdf#page=14",
-        "title": "הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני, דו\"ח מסכם, יולי 2026, p.14, s.5.1-5.2",
+        "title": "הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני, דו\"ח מסכם, יולי 2026",
         "publisher": "Finance Ministry team (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.14, s.5.1-5.2",
+        "locator_he": "עמוד 14, סעיף 5.1-5.2",
+        "page": 14
       },
       "checked": "2026-11-06",
       "effective_from": null,
@@ -41,9 +44,13 @@
       "unit": "text",
       "source": {
         "url": "https://www.gov.il/BlobFolder/news/press020726/he/%D7%93%D7%95%D7%97%20%D7%9E%D7%A1%D7%9B%D7%9D%20%D7%95%D7%A2%D7%93%D7%AA%20%D7%94%D7%90%D7%A8%D7%91%D7%99%D7%98%D7%A8%D7%90%D7%96%20-%D7%99%D7%95%D7%9C%D7%99%202026%20%D7%97%D7%AA%D7%95%D7%9D.pdf#page=1",
-        "title": "הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני, דו\"ח מסכם, p.1: \"יולי 2026\"",
+        "title": "הצוות לצמצום הפערים במכשירי השקעה בחיסכון לטווח קצר ובינוני, דו\"ח מסכם",
         "publisher": "Finance Ministry team (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1,
+        "quote": "יולי 2026"
       },
       "checked": "2026-11-12",
       "effective_from": null,
@@ -133,7 +140,8 @@
       "page": 1,
       "quote": "חשבון השקעה",
       "checked": "2026-11-07",
-      "qualifier": "(a private bill's own text on the Knesset's site: what it proposes, not law; library 6ad4ba0dd88d02dc)"
+      "qualifier": "(a private bill's own text on the Knesset's site: what it proposes, not law; library 6ad4ba0dd88d02dc)",
+      "standing": "bill"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_2708087.pdf",
@@ -148,7 +156,8 @@
       "page": 2,
       "quote": "פטור ממס על רווח הון",
       "checked": "2026-11-07",
-      "qualifier": "(a private bill's own text on the Knesset's site: what it proposes, not law; library 6ad4ba0dd88d02dc)"
+      "qualifier": "(a private bill's own text on the Knesset's site: what it proposes, not law; library 6ad4ba0dd88d02dc)",
+      "standing": "bill"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_2708087.pdf",
@@ -162,7 +171,8 @@
       "locator_he": "עמוד 3",
       "page": 3,
       "checked": "2026-11-07",
-      "qualifier": "(a private bill's own text on the Knesset's site: what it proposes, not law; library 6ad4ba0dd88d02dc)"
+      "qualifier": "(a private bill's own text on the Knesset's site: what it proposes, not law; library 6ad4ba0dd88d02dc)",
+      "standing": "bill"
     }
   ]
 }

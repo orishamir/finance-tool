@@ -27,7 +27,8 @@
       "page": 5,
       "quote": "בפקדון שניתן לפרעון גם לפני מועד הפרעון הסופי",
       "checked": "2026-11-07",
-      "qualifier": "(state body's consolidated copy)"
+      "qualifier": "(state body's consolidated copy)",
+      "standing": "consolidated-not-binding"
     }
   ],
   "derived_from": [

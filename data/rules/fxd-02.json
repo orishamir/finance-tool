@@ -24,7 +24,8 @@
       "strength": "primary",
       "locator": "s.1",
       "locator_he": "סעיף 1",
-      "checked": "2026-10-22"
+      "checked": "2026-10-22",
+      "standing": "consolidated-not-binding"
     }
   ],
   "derived_from": [

@@ -115,6 +115,10 @@
               "type": "string",
               "minLength": 1
             },
+            "publisher_he": {
+              "type": "string",
+              "minLength": 1
+            },
             "strength": {
               "type": "string",
               "enum": [
@@ -124,6 +128,10 @@
                 "open",
                 "entered"
               ]
+            },
+            "fetched_from": {
+              "type": "string",
+              "format": "uri"
             }
           },
           "required": [
@@ -319,6 +327,21 @@
         "notes": {
           "type": "string"
         },
+        "notes_he": {
+          "type": "string",
+          "minLength": 1
+        },
+        "empty_because": {
+          "type": "string",
+          "enum": [
+            "too-young",
+            "none-by-rule",
+            "not-reported",
+            "not-collected",
+            "not-applicable",
+            "unknown"
+          ]
+        },
         "rationale_he": {
           "type": "string",
           "minLength": 1
@@ -452,6 +475,10 @@
                 "type": "string",
                 "minLength": 1
               },
+              "publisher_he": {
+                "type": "string",
+                "minLength": 1
+              },
               "strength": {
                 "type": "string",
                 "enum": [
@@ -461,6 +488,10 @@
                   "open",
                   "entered"
                 ]
+              },
+              "fetched_from": {
+                "type": "string",
+                "format": "uri"
               }
             },
             "required": [
@@ -656,6 +687,21 @@
           "notes": {
             "type": "string"
           },
+          "notes_he": {
+            "type": "string",
+            "minLength": 1
+          },
+          "empty_because": {
+            "type": "string",
+            "enum": [
+              "too-young",
+              "none-by-rule",
+              "not-reported",
+              "not-collected",
+              "not-applicable",
+              "unknown"
+            ]
+          },
           "rationale_he": {
             "type": "string",
             "minLength": 1
@@ -762,6 +808,10 @@
                       "type": "string",
                       "minLength": 1
                     },
+                    "publisher_he": {
+                      "type": "string",
+                      "minLength": 1
+                    },
                     "strength": {
                       "type": "string",
                       "enum": [
@@ -771,6 +821,10 @@
                         "open",
                         "entered"
                       ]
+                    },
+                    "fetched_from": {
+                      "type": "string",
+                      "format": "uri"
                     }
                   },
                   "required": [
@@ -966,6 +1020,21 @@
                 "notes": {
                   "type": "string"
                 },
+                "notes_he": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "empty_because": {
+                  "type": "string",
+                  "enum": [
+                    "too-young",
+                    "none-by-rule",
+                    "not-reported",
+                    "not-collected",
+                    "not-applicable",
+                    "unknown"
+                  ]
+                },
                 "rationale_he": {
                   "type": "string",
                   "minLength": 1
@@ -1144,6 +1213,10 @@
                   "type": "string",
                   "minLength": 1
                 },
+                "publisher_he": {
+                  "type": "string",
+                  "minLength": 1
+                },
                 "strength": {
                   "type": "string",
                   "enum": [
@@ -1153,6 +1226,10 @@
                     "open",
                     "entered"
                   ]
+                },
+                "fetched_from": {
+                  "type": "string",
+                  "format": "uri"
                 }
               },
               "required": [
@@ -1347,6 +1424,21 @@
             },
             "notes": {
               "type": "string"
+            },
+            "notes_he": {
+              "type": "string",
+              "minLength": 1
+            },
+            "empty_because": {
+              "type": "string",
+              "enum": [
+                "too-young",
+                "none-by-rule",
+                "not-reported",
+                "not-collected",
+                "not-applicable",
+                "unknown"
+              ]
             },
             "rationale_he": {
               "type": "string",
@@ -1430,6 +1522,10 @@
                   "type": "string",
                   "minLength": 1
                 },
+                "publisher_he": {
+                  "type": "string",
+                  "minLength": 1
+                },
                 "strength": {
                   "type": "string",
                   "enum": [
@@ -1439,6 +1535,10 @@
                     "open",
                     "entered"
                   ]
+                },
+                "fetched_from": {
+                  "type": "string",
+                  "format": "uri"
                 }
               },
               "required": [
@@ -1633,6 +1733,21 @@
             },
             "notes": {
               "type": "string"
+            },
+            "notes_he": {
+              "type": "string",
+              "minLength": 1
+            },
+            "empty_because": {
+              "type": "string",
+              "enum": [
+                "too-young",
+                "none-by-rule",
+                "not-reported",
+                "not-collected",
+                "not-applicable",
+                "unknown"
+              ]
             },
             "rationale_he": {
               "type": "string",
@@ -1716,6 +1831,10 @@
                   "type": "string",
                   "minLength": 1
                 },
+                "publisher_he": {
+                  "type": "string",
+                  "minLength": 1
+                },
                 "strength": {
                   "type": "string",
                   "enum": [
@@ -1725,6 +1844,10 @@
                     "open",
                     "entered"
                   ]
+                },
+                "fetched_from": {
+                  "type": "string",
+                  "format": "uri"
                 }
               },
               "required": [
@@ -1919,6 +2042,21 @@
             },
             "notes": {
               "type": "string"
+            },
+            "notes_he": {
+              "type": "string",
+              "minLength": 1
+            },
+            "empty_because": {
+              "type": "string",
+              "enum": [
+                "too-young",
+                "none-by-rule",
+                "not-reported",
+                "not-collected",
+                "not-applicable",
+                "unknown"
+              ]
             },
             "rationale_he": {
               "type": "string",
@@ -2002,6 +2140,10 @@
                   "type": "string",
                   "minLength": 1
                 },
+                "publisher_he": {
+                  "type": "string",
+                  "minLength": 1
+                },
                 "strength": {
                   "type": "string",
                   "enum": [
@@ -2011,6 +2153,10 @@
                     "open",
                     "entered"
                   ]
+                },
+                "fetched_from": {
+                  "type": "string",
+                  "format": "uri"
                 }
               },
               "required": [
@@ -2205,6 +2351,21 @@
             },
             "notes": {
               "type": "string"
+            },
+            "notes_he": {
+              "type": "string",
+              "minLength": 1
+            },
+            "empty_because": {
+              "type": "string",
+              "enum": [
+                "too-young",
+                "none-by-rule",
+                "not-reported",
+                "not-collected",
+                "not-applicable",
+                "unknown"
+              ]
             },
             "rationale_he": {
               "type": "string",
@@ -2298,6 +2459,10 @@
               "type": "string",
               "minLength": 1
             },
+            "publisher_he": {
+              "type": "string",
+              "minLength": 1
+            },
             "strength": {
               "type": "string",
               "enum": [
@@ -2307,6 +2472,10 @@
                 "open",
                 "entered"
               ]
+            },
+            "fetched_from": {
+              "type": "string",
+              "format": "uri"
             }
           },
           "required": [
@@ -2502,6 +2671,21 @@
         "notes": {
           "type": "string"
         },
+        "notes_he": {
+          "type": "string",
+          "minLength": 1
+        },
+        "empty_because": {
+          "type": "string",
+          "enum": [
+            "too-young",
+            "none-by-rule",
+            "not-reported",
+            "not-collected",
+            "not-applicable",
+            "unknown"
+          ]
+        },
         "rationale_he": {
           "type": "string",
           "minLength": 1
@@ -2682,6 +2866,13 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "context_rule_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
       }
     },
     "effective_to": {

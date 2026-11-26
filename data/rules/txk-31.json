@@ -21,9 +21,13 @@
       "unit": "years",
       "source": {
         "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6332%2Fheb#page=10",
-        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס׳ 3), התשס\"ד-2004, קובץ התקנות 6332, file p.10 (gazette p.864), reg. 16(1): reg. 34(ב)(1) \"בהגיעו לגיל 60 שנים\"",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס׳ 3), התשס\"ד-2004, קובץ התקנות 6332",
         "publisher": "רשומות",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "file p.10 (gazette p.864), reg. 16(1): reg. 34(ב)(1)",
+        "locator_he": "עמוד הקובץ 10 (עמוד הרשומות 864), תקנה 16(1): תקנה 34(ב)(1)",
+        "page": 10,
+        "quote": "בהגיעו לגיל 60 שנים"
       },
       "checked": "2026-11-15",
       "effective_from": null,
@@ -41,9 +45,13 @@
       "unit": "years",
       "source": {
         "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6377%2Fheb#page=3",
-        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס׳ 2), התשס\"ה-2005, קובץ התקנות 6377, file p.3 (gazette p.563), reg. 5(1)(ב): \"אם עברו חמש שנים מיום שהחל להפקיד כספים באותו חשבון\"",
+        "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס׳ 2), התשס\"ה-2005, קובץ התקנות 6377",
         "publisher": "רשומות",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "file p.3 (gazette p.563), reg. 5(1)(ב)",
+        "locator_he": "עמוד הקובץ 3 (עמוד הרשומות 563), תקנה 5(1)(ב)",
+        "page": 3,
+        "quote": "אם עברו חמש שנים מיום שהחל להפקיד כספים באותו חשבון"
       },
       "checked": "2026-11-15",
       "effective_from": null,
@@ -113,7 +121,8 @@
       "locator_he": "עמוד 44, סעיף 9(17)",
       "page": 44,
       "quote": "עד גובה תשלומי המעביד לקופת גמל לתגמולים וכספים אלה אינם חייבים במס על פי סעיף 87",
-      "checked": "2026-10-31"
+      "checked": "2026-10-31",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=45",
@@ -127,7 +136,8 @@
       "locator_he": "עמוד 45, סעיף 9(18)",
       "page": 45,
       "quote": "אשר מקורם בסכומים שהפקידו היחיד או מעבידו לקופת הגמל",
-      "checked": "2026-10-31"
+      "checked": "2026-10-31",
+      "standing": "consolidated-not-binding"
     }
   ],
   "derived_from": [

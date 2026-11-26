@@ -26,7 +26,8 @@
       "page": 45,
       "quote": "ישוב הנאמן ויבחן את עמדתם לעניין הגשת",
       "checked": "2026-11-12",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=43",
@@ -41,7 +42,8 @@
       "page": 43,
       "quote": "ברוב של המחזיקים בשלושה רבעים לפחות",
       "checked": "2026-11-12",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=53",
@@ -56,7 +58,8 @@
       "page": 53,
       "quote": "ברוב קולות של המחזיקים בתעודות",
       "checked": "2026-11-12",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Nyarot01.pdf#page=43",
@@ -70,7 +73,8 @@
       "locator_he": "סעיפים 35ח(ד2ב), 35ז(3), 35יב17(ב)",
       "page": 43,
       "checked": "2026-10-31",
-      "qualifier": "(state body's consolidated copy, not the binding gazette wording)"
+      "qualifier": "(state body's consolidated copy, not the binding gazette wording)",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

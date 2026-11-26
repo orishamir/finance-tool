@@ -148,6 +148,11 @@ export const depositTerms = z.strictObject({
   variant: z.array(z.enum(["campaign", "closed_system", "new_customers", "interest_during_term", "best_of"])).min(1).optional(),
   /** One plain-Hebrew sentence on an open doubt about the record (the printed rate and its conditions disagree, a stated end date has passed). The page shows it beside the figure. Absent when there is none. */
   doubt_he: z.string().min(1).optional(),
+  /**
+   * The field `doubt_he` is about, where it is not the rate: the term, the amount range, the linkage, the exit points or the break terms.
+   * Absent, the doubt is about the rate. The page shows the doubt beside that field alone.
+   */
+  doubt_on: z.enum(["term_months", "amount_range", "linkage", "exits", "break"]).optional(),
   snapshot: isoDate,
   source,
 })

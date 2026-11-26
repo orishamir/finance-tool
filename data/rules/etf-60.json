@@ -20,9 +20,12 @@
       "unit": "pct",
       "source": {
         "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-        "title": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500 (1148162), p.9",
+        "title": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500 (1148162)",
         "publisher": "אי.בי.אי",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.9",
+        "locator_he": "עמוד 9",
+        "page": 9
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -40,9 +43,12 @@
       "unit": "pct",
       "source": {
         "url": "https://mayafiles.tase.co.il/rpdf/1727001-1728000/P1727829-00.pdf",
-        "title": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500 (1148162), p.1",
+        "title": "דוח שנתי ליום 31.12.2025 של אי.בי.אי. סל (4D) S&P 500 (1148162)",
         "publisher": "אי.בי.אי",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1
       },
       "checked": "2026-10-25",
       "effective_from": null,

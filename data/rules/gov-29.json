@@ -19,9 +19,13 @@
       "unit": "pct",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=3",
-        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951), p.3, reg. 1 (ריבית משתנה): \"ושלא יעלה על 4%\"",
+        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951)",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, reg. 1 (ריבית משתנה)",
+        "locator_he": "עמוד 3, תקנה 1 (ריבית משתנה)",
+        "page": 3,
+        "quote": "ושלא יעלה על 4%"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -39,9 +43,12 @@
       "unit": "pct",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/eoe4vDYzpfM5D9J9SFlkgpyvqTXlCSUfYWr0ONo8ZQU=#page=3",
-        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951), p.3, reg. 7(ג)-(ד)",
+        "title": "תקנות מילווה המדינה (סדרות מסוג \"גילון חדש\"), התשנ\"ט-1999 (קובץ התקנות 5951)",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, reg. 7(ג)-(ד)",
+        "locator_he": "עמוד 3, תקנה 7(ג)-(ד)",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,

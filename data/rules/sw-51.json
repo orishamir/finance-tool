@@ -21,9 +21,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",
-        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026), p.4",
+        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026)",
         "publisher": "Meitav Trade",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.4",
+        "locator_he": "עמוד 4",
+        "page": 4
       },
       "checked": "2026-10-25",
       "effective_from": "2026-05-01",
@@ -41,9 +44,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",
-        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026), p.4",
+        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026)",
         "publisher": "Meitav Trade",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.4",
+        "locator_he": "עמוד 4",
+        "page": 4
       },
       "checked": "2026-10-25",
       "effective_from": "2026-05-01",
@@ -61,9 +67,12 @@
       "unit": "usd",
       "source": {
         "url": "https://www.meitav.co.il/media/qm2penhs/26061426t-תוצאות-מכרז-לניהול-אישי-2026-טרייד.pdf",
-        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026), p.4",
+        "title": "Meitav Trade annex 2.606.1.4.26T (IRA tender results 2026)",
         "publisher": "Meitav Trade",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.4",
+        "locator_he": "עמוד 4",
+        "page": 4
       },
       "checked": "2026-10-25",
       "effective_from": "2026-05-01",
