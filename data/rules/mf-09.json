@@ -52,5 +52,8 @@
       "checked": "2026-10-25",
       "qualifier": "(dated; still linked by the ISA as its full guide)"
     }
+  ],
+  "derived_from": [
+    "MF-73"
   ]
 }
