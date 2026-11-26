@@ -115,18 +115,18 @@ describe("a figure computed from figures on a reading carries the reading (D119,
       expect(v.labels).toEqual([{ code: "reading", ruleId: "TXS-14" }]);
       expect(sheetRules(v)).toEqual([]);
       // the input it opens still lists the rule and the fund's statement
-      expect(sheetRules(v.computed_from!.inputs.a!).map((r) => r.id)).toEqual(["TXS-14"]);
-      expect(v.computed_from!.inputs.a!.statements).toEqual([named]);
+      const input = (v.computed_from!.inputs as Record<string, SiteValue>).a!;
+      expect(sheetRules(input).map((r) => r.id)).toEqual(["TXS-14"]);
+      expect(input.statements).toEqual([named]);
     }
   });
-  it("keeps its own options first and carries each once; carries no cautious label, but carries the doubt it makes", () => {
+  it("keeps its own options first and carries each once; carries no cautious label, whose doubt only a plain difference or sum carries", () => {
     const both = computed(1, "nis", "F-80", { a: onReading, b: { ...onReading } }, { today, labels: [{ code: "derived", ruleId: "X-1" }] });
     expect(both.labels).toEqual([{ code: "derived", ruleId: "X-1" }, { code: "reading", ruleId: "TXS-14" }]);
     expect(both.statements).toEqual([named]);
     const fromCautious = computed(1, "nis", "F-95", { a: onCautious }, { today });
     expect(fromCautious.labels).toBeUndefined();
-    expect(fromCautious.doubt).toBe(onCautious.doubt);
-    expect(fromCautious.doubtFrom).toEqual(["a"]);
+    expect(fromCautious.doubt).toBeUndefined();
     expect(differenceOf(["a", onCautious], ["b", fig("primary", { value: 50, unit: "nis" })], "F-80", { today }).doubt).toBe(onCautious.doubt);
   });
   it("leaves the strength to its inputs: a company's own figure on a reading does not weaken what is computed from it", () => {
@@ -298,7 +298,7 @@ describe("computed() lists only the rules its own calculation adds (method §13)
   });
 });
 
-describe("computed() and sumOf carry the inputs' staleness, doubt and flags", () => {
+describe("computed() carries the inputs' staleness and flags, and a plain sum their doubt too", () => {
   const today = "2026-11-26";
   const old = fig("primary", { value: 1, unit: "nis", stale: { since: "2026-01-31", cadence: "monthly" } });
   const older = fig("primary", { value: 2, unit: "nis", stale: { since: "2025-12-31", cadence: "yearly" } });
@@ -307,13 +307,14 @@ describe("computed() and sumOf carry the inputs' staleness, doubt and flags", ()
     expect(sumOf({ a: old, b: fig("primary", { value: 2, unit: "nis" }) }, "F-91", { today }).stale).toEqual(old.stale);
     expect(computed(3, "nis", "F-1", { a: fig("primary") }, { today }).stale).toBeUndefined();
   });
-  it("takes every input's doubt once, with the rules of each and which inputs carry it", () => {
+  it("a sum takes every input's doubt once, with the rules of each and which inputs carry it; a tally computed from them does not", () => {
     const d1 = fig("primary", { value: 1, unit: "nis", doubt: "ספק א", doubtRules: ["BANK-09"] });
     const d2 = fig("primary", { value: 2, unit: "nis", doubt: "ספק ב", doubtRules: ["BANK-13"] });
     const v = sumOf({ a: d1, b: d2, c: { ...d1 } }, "F-91", { today });
     expect(v.doubt).toBe("ספק א ספק ב");
     expect(v.doubtRules).toEqual(["BANK-09", "BANK-13"]);
     expect(v.doubtFrom).toEqual(["a", "b", "c"]);
+    expect(computed(3, "nis", "F-85", { a: d1, b: d2 }, { today }).doubt).toBeUndefined();
   });
   it("takes every flag once, each with the earliest month given for it, and an engine flag keeps its month", () => {
     const a = computed(1, "nis", "F-1", {}, { today, flags: [{ code: "BANK-35", month: 7 }, "G-14"] });

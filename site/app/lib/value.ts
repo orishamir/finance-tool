@@ -237,7 +237,6 @@ export function sheetRules(v: Pick<SiteValue, "rulesUsed" | "labels" | "plain">)
  * - each input's `reading` labels, the site's own reading of a rule (an open tax index's among them, D119), with that rule as the input
  *   recorded it, and each input's fund statements, so a figure worked out from a figure on a reading tags the reading and names the fund's
  *   document as that figure does; a cautious label, the engine's or the site's (`SiteLabel`), is not carried, the doubt it makes is;
- * - the doubt of each input, every one's words once, the rules of each, and which inputs carry it (`doubtFrom`);
  * - the stalest input's staleness (the earliest `since`);
  * - every input's flags, each with the earliest month any input gives it.
  * A cost before the exit tax carries none of an open tax index's, since its inputs wear none (invest.ts `beforeExitTax`). Carried rules and
@@ -247,12 +246,9 @@ function carriedFromInputs(inputs: Record<string, SiteValue>) {
   const labels: SiteLabel[] = [];
   const rules: { id: string; strength: Strength }[] = [];
   const statements: FundStatement[] = [];
-  const doubts: string[] = [];
-  const doubtRules: string[] = [];
-  const doubtFrom: string[] = [];
   let stale: Staleness | null = null;
   const flags: Flag[] = [];
-  for (const [name, input] of Object.entries(inputs)) {
+  for (const input of Object.values(inputs)) {
     for (const l of input.labels ?? []) {
       if (l.code !== "reading") continue;
       labels.push(l);
@@ -260,15 +256,10 @@ function carriedFromInputs(inputs: Record<string, SiteValue>) {
       if (rule) rules.push(rule);
     }
     statements.push(...(input.statements ?? []));
-    if (input.doubt) {
-      doubts.push(input.doubt);
-      doubtRules.push(...(input.doubtRules ?? []));
-      doubtFrom.push(name);
-    }
     if (input.stale && (!stale || input.stale.since < stale.since)) stale = input.stale;
     for (const code of input.flags ?? []) flags.push({ code, ...(input.flagMonths?.[code] !== undefined ? { month: input.flagMonths[code] } : {}) });
   }
-  return { labels, rules, statements, doubts, doubtRules, doubtFrom, stale, flags };
+  return { labels, rules, statements, stale, flags };
 }
 
 /** `own` with each of `more` whose key it does not hold yet, in order; undefined where both are empty. */
@@ -317,8 +308,10 @@ export interface ComputedOptions {
  * A computed value with the formula and the inputs it came from (architecture 3.4), carrying what the inputs it rests on carry
  * (`carriedFromInputs`). The rules it lists are its own options' less each rule a computed input already lists, whose row opens it there
  * (the reading rules it carries stay, with their labels). A value that is null lists no rule but the one that left it empty (`blockedBy`). A
- * label of a cautious reading among its own, the engine's or the site's (`SiteLabel`), makes its doubt (`readingDoubtOf`); with none, the
- * inputs' doubts are its doubt. `working` says how its sheet shows the calculation (`Working`), where the value is exactly that.
+ * label of a cautious reading among its own, the engine's or the site's (`SiteLabel`), makes its doubt (`readingDoubtOf`); an input's doubt
+ * stays on that input, where its row opens it (a tally over the banks' rates is not tinted for one bank's doubt), except on a plain
+ * difference or sum, which is its inputs and nothing else (`plain`). `working` says how its sheet shows the calculation (`Working`), where
+ * the value is exactly that.
  */
 export function computed(value: number | null, unit: ValueObject["unit"], formula: string, inputs: Record<string, SiteValue>, options: ComputedOptions): SiteValue {
   const held = new Set(Object.values(inputs).flatMap((input) => (input.state === "computed" ? (input.rulesUsed ?? []).map((r) => r.id) : [])));
@@ -338,12 +331,7 @@ export function computed(value: number | null, unit: ValueObject["unit"], formul
     statements: withMore(options.statements, carried.statements, statementKey),
     labels: withMore(options.labels, carried.labels, (l) => `${l.code}|${l.ruleId}`),
   };
-  const ownDoubt = readingDoubtOf(options.labels);
-  const doubt: Pick<SiteValue, "doubt" | "doubtRules" | "doubtFrom"> = ownDoubt.doubt
-    ? ownDoubt
-    : carried.doubts.length
-      ? { doubt: [...new Set(carried.doubts)].join(" "), ...(carried.doubtRules.length ? { doubtRules: [...new Set(carried.doubtRules)] } : {}), doubtFrom: carried.doubtFrom }
-      : {};
+  const doubt = readingDoubtOf(options.labels);
   const flags = flagsOf([...(options.flags ?? []), ...carried.flags]);
   return {
     value,
@@ -375,11 +363,16 @@ export type PlainOptions = Omit<ComputedOptions, "rules" | "statements"> & { uni
 
 /**
  * A plain difference or sum as its sheet shows it: no rule and no statement of its own, even one an input carries on a reading, since each
- * row of its receipt is that input's own figure and opens it. Its labels, doubt, staleness and flags stay, so it keeps its tint and tags.
+ * row of its receipt is that input's own figure and opens it. Its labels, staleness and flags stay, and where its own options give it no
+ * doubt, every input's doubt is its doubt (each one's words once, the rules of each, and which inputs carry it, `doubtFrom`), since it rests
+ * on them alone: so it keeps its tint and tags.
  */
-function plain(v: SiteValue): SiteValue {
+function plain(v: SiteValue, inputs: Record<string, SiteValue>): SiteValue {
   const { rulesUsed: _rules, statements: _statements, ...rest } = v;
-  return { ...rest, plain: true };
+  const doubted = Object.entries(inputs).filter(([, x]) => x.doubt);
+  if (v.doubt || doubted.length === 0) return { ...rest, plain: true };
+  const rules = [...new Set(doubted.flatMap(([, x]) => x.doubtRules ?? []))];
+  return { ...rest, plain: true, doubt: [...new Set(doubted.map(([, x]) => x.doubt!))].join(" "), ...(rules.length ? { doubtRules: rules } : {}), doubtFrom: doubted.map(([name]) => name) };
 }
 
 /**
@@ -420,7 +413,7 @@ export function differenceOf(a: readonly [name: string, value: SiteValue], b: re
   const value = n === null ? null : (options.round ?? ((x: number) => x))(n);
   const unit = options.unit ?? av.unit;
   const shown = options.working ?? (value !== null && addsUp([[1, av], [-1, bv]], value, unit) ? ({ kind: "difference", from: an, less: bn } as const) : undefined);
-  return plain(computed(value, unit, formula, { [an]: av, [bn]: bv }, { ...options, ...(shown ? { working: shown } : {}) }));
+  return plain(computed(value, unit, formula, { [an]: av, [bn]: bv }, { ...options, ...(shown ? { working: shown } : {}) }), { [an]: av, [bn]: bv });
 }
 
 /**
@@ -449,7 +442,7 @@ export function sumOf(parts: Record<string, SiteValue>, formula: string, options
   const value = n === null ? null : (options.round ?? ((x: number) => x))(n);
   const unit = options.unit ?? list[0]?.unit ?? "nis";
   const shown = options.working ?? (value !== null && addsUp(list.map((p) => [1, p] as const), value, unit) ? ({ kind: "sum", parts: Object.keys(parts) } as const) : undefined);
-  return plain(computed(value, unit, formula, parts, { ...options, ...(shown ? { working: shown } : {}) }));
+  return plain(computed(value, unit, formula, parts, { ...options, ...(shown ? { working: shown } : {}) }), parts);
 }
 
 /**
