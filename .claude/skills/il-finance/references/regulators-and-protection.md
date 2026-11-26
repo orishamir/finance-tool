@@ -324,22 +324,18 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Dimensions: `regulator`
 - Likely to change: no
 
-### REG-26 Interactive Israel: a foreign broker reached through an Israeli introducer, not ISA-supervised, as it states
-- Rule (Interactive Israel's own statement):
-  - "Israel Interactive Trading is a brand of Mexem LTD", "regulated by the Cyprus Securities and Exchange Commission – CySEC (Licence number: 325/17)".
-  - "החברה פועלת בישראל תחת היתר לפי סעיף 49א לחוק ניירות ערך" and "אינה מפוקחת על-ידי רשות ניירות ערך בישראל".
-  - It acts as an introducing broker to Interactive Brokers LLC. Client accounts are opened at Interactive Brokers LLC (supervised by FINRA, SEC, CFTC) or at Interactive Brokers Ireland (Central Bank of Ireland).
-- Protection as Interactive Israel states it: US accounts "מוגנים ע"י ביטוח של 500,000 דולר ארה"ב עבור כל חשבון". Irish accounts "מוגנים ע"י הקרן לפיצוי משקיעים עד 20,000 יורו".
-- Conditions / exceptions: Only Interactive Israel's own page supports the record, so its scope is Interactive Israel alone (settled 2026-10-26: no Interactive Brokers document is cited). IBKR's own protection pages returned 403 at the time; the amounts are as the introducer states them (open question 14). General counterpart: section 49A and the ISA's alternative-B disclosure ("Said entity's activity is not subject to the supervision of the Israel Securities Authority", BRK-06); SIPC's own terms (REG-27). The CySEC licence was not checked on CySEC's register.
-- Figures: USD 500,000 (US); EUR 20,000 (Ireland), as the introducer states them. Both set by foreign schemes.
-- Source: [Interactive Israel, about](https://lp3.inter-il.com/about-3) · checked 2026-10-25 · institution. General counterpart: BRK-06, REG-27.
+### REG-26 Interactive Israel: a foreign broker reached through an Israeli introducer, not ISA-supervised, as it states (retired: see BRK-46)
+- Rule: Retired on 2026-11-26. It gave Interactive Israel's own statement of its status from its about page (a brand of Mexem LTD under CySEC licence 325/17, a section 49A permit, no ISA supervision, an introducing broker to Interactive Brokers LLC with accounts at IB LLC or IB Ireland), which BRK-46 in `brokerage-account.md` holds from the same page with the ISA's list. Its protection statement from the same page (USD 500,000 per US account, EUR 20,000 for Irish accounts, as the introducer states them) moved to BRK-41 with its doubt, and the note that the CySEC licence was not checked on CySEC's register moved to BRK-46. The id stays so that references to it resolve; they should point to BRK-46.
+- Conditions / exceptions: none of its own; see BRK-46 and BRK-41 in `brokerage-account.md`.
+- Figures: none
+- Source: [Interactive Israel, about](https://lp3.inter-il.com/about-3) · checked 2026-10-25 · institution. Its status: BRK-46; its stated cover: BRK-41.
 - Scope: institution: Interactive Israel
-- Dimensions: `protection`, `regulator`, `currency`
-- Likely to change: yes (foreign scheme limits)
+- Dimensions: `regulator`
+- Likely to change: no
 
 ### REG-27 SIPC: custody failure only, residence not required
 - Rule: "The limit of SIPC protection is $500,000, which includes a $250,000 limit for cash." "SIPC only protects the custody function of the broker dealer". "SIPC does not protect against the decline in value of your securities." "There is no requirement that a customer reside in or be a citizen of the United States."
-- Conditions / exceptions: Applies only to accounts at SIPC-member broker-dealers (for example IBKR LLC per REG-26). It does not apply to non-US entities of the same group.
+- Conditions / exceptions: Applies only to accounts at SIPC-member broker-dealers (for example IBKR LLC per BRK-43). It does not apply to non-US entities of the same group.
 - Figures: USD 500,000 total, USD 250,000 cash. Set by SIPC.
 - Source: [SIPC, What SIPC Protects](https://www.sipc.org/for-investors/what-sipc-protects) · checked 2026-10-25 · primary (foreign statutory body).
 - Scope: general
@@ -482,7 +478,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 | Tax Authority (רשות המסים) | Provident Funds Law s.13(ג)(1): consent of "המנהל" to first fund approval (REG-17) | Tax approval role only, in this file | Not verified (gov.il 403; open question 8) | none |
 | NII (המוסד לביטוח לאומי) | Not read here | Funds child savings (REG-23) | אגף לפניות הציבור (REG-24) | none |
 | TASE, as self-regulator | Securities Law ss.45 to 51 (REG-13) | Its members (banks, non-bank members, remote members) and clearing houses | Not found | TASE member list page: JS, **not readable**. TASE guides (PDF): counts and clearing members, **read** (REG-14). |
-| Foreign regulators (CySEC, SEC/FINRA, Central Bank of Ireland) | n/a | Foreign brokers used by Israeli residents (REG-26) | Foreign | Not checked |
+| Foreign regulators (CySEC, SEC/FINRA, Central Bank of Ireland) | n/a | Foreign brokers used by Israeli residents (BRK-46) | Foreign | Not checked |
 
 ## Protection by kind of holding (from the rules above and the files they name)
 
@@ -552,8 +548,8 @@ What protects a saver's money if the company holding it fails, for every kind of
 | החשב הכללי | Accountant General | Establishes the dedicated fund | law | REG-21 |
 | אגף לפניות הציבור | public complaints department | NII complaints unit | NII site | REG-24 |
 | נציבות תלונות הציבור | Ombudsman (State Comptroller) | Complaints against public bodies | mevaker.gov.il | REG-25 |
-| היתר לפי סעיף 49א | section 49A permit | Basis on which a foreign broker operates in Israel without ISA supervision | broker site | REG-26 |
-| הקרן לפיצוי משקיעים | investor compensation fund | Foreign scheme (EU) | broker site | REG-26 |
+| היתר לפי סעיף 49א | section 49A permit | Basis on which a foreign broker operates in Israel without ISA supervision | broker site | BRK-46 |
+| הקרן לפיצוי משקיעים | investor compensation fund | Foreign scheme (EU) | broker site | BRK-41 |
 | הממונה על פניות הציבור | public complaints officer | Institution's complaint officer | institution site | REG-29 |
 | נכסי קופת הנשייה | the estate | What an insolvent company pays its creditors from | law | REG-33 |
 | חובות מובטחים / חובות בדין קדימה / חובות כלליים / חובות דחויים | secured / priority / general / deferred debts | Ranks in the order of payment | law | REG-33 |
@@ -575,7 +571,7 @@ Registers used and what each listed on 2026-10-22:
 3. **ISA licensees (portfolio managers, advisers, marketers):** the register at investors.isa.gov.il/page/search-advisor is a JS app and could not be read. The ISA 2025 activity report gives counts (131 / 46 / 13) but no names (REG-08). Domain OQ3 stays open for names.
 4. **Mutual-fund managers and trustees:** ISA 2025 fund report, 15 managers and 4 trustees (REG-12).
 5. **CMA managing companies:** the Gemel-Net and Pensia-Net datasets are the de facto register of managing companies with funds (domain report 5.1). Re-read for Meitav only in this pass (REG-28). The CMA financial-service-provider registry returned 403.
-6. **Foreign brokers:** no Israeli register. Interactive Israel's own page (REG-26).
+6. **Foreign brokers:** no Israeli register. Interactive Israel's own page (BRK-46).
 
 ## Open questions
 

@@ -124,7 +124,7 @@ const signless = (v: SiteValue): SiteValue => (v.unit.startsWith("nis") ? { ...v
 const readAt = (r: DealRead, fee: Fee, caseId: string | undefined): number => r.fees.findIndex((x) => feeOf(x) === fee.id && x.read?.case === caseId);
 
 /**
- * The currency a case's sums in the trade's currency (`inTrade`, BRK-48) are in: what is bought's, where the reading reads the case for
+ * The currency a case's sums in the trade's currency (`inTrade`, BRK-48, BRK-76, BRK-78) are in: what is bought's, where the reading reads the case for
  * the picks; none for a case it does not read, whose trade is not the one picked, nor where the deal does not know it.
  */
 const tradeOf = (r: DealRead, fee: Fee, caseId: string | undefined): BoundCurrency | null => (readAt(r, fee, caseId) >= 0 ? tradeCurrency(r.deal.fees, r.picks) : null);
@@ -174,7 +174,7 @@ function caseRead(r: DealRead, fee: Fee, priced: Priced, caseId: string | undefi
   const i = readAt(r, fee, caseId);
   const fees = i >= 0 ? r.fees : [fee];
   const at = Math.max(i, 0);
-  // sums in the trade's currency are shown in it where the reading reads the case for the picks (BRK-48), as the reading reads them
+  // sums in the trade's currency are shown in it where the reading reads the case for the picks (BRK-48, BRK-76, BRK-78), as the reading reads them
   const views = stageViews(r, fees, at, inTradeOf(priced, tradeOf(r, fee, caseId)).stages);
   const stages = readStages(r, views);
   return { i, fees, at, stages, now: stages[0] ?? views.at(-1)! };

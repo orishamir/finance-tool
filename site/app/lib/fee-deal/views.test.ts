@@ -12,7 +12,7 @@ import { dealOfAddress, packDeal, unpackDeal } from "./link";
 import { monthKey, NAME_MAX, newDeal, newFee, readDeal, typed, untouched, type FeeDeal, type MonthKey, type Num, type SlimFee, type Stage } from "./model";
 import { FEE_KIND_IDS, type FeeKindId } from "./shapes";
 import { readDealFor } from "./deal-read";
-import { pickLine, readingOf } from "./reading";
+import { pickLine, readingOf, STATED_RULES } from "./reading";
 import { ACCOUNT_CAP_RULES, accountCapOf, type ActionView, type HeldPanelView, type HeldView } from "./charts";
 import { dataBar, dealFromTemplate, dealFromTrack, dealName, feePriceLists, fillDeal, fillFee, houseTemplate, lineFees, matching, pickTrack, rowTitle, templateOf, templateOptions, withLaterFills, withLaterFillsAll } from "./templates";
 import { addFee, setPick, updateFee } from "./edits/deal";
@@ -69,8 +69,8 @@ describe("the page's data", () => {
         }
     };
     walk([data.kinds, data.templates, data.houses, data.fx, data.terms]);
-    // a ban's words open its rules and show MF-71's figure; BANK-35's cap flags a current account's year of holding
-    for (const id of [...BAN_RULES, ...ACCOUNT_CAP_RULES]) cited.add(id);
+    // a ban's words open its rules and show MF-71's figure; BANK-35's cap flags a current account's year of holding; a stated sentence opens the rule it states (BRK-71)
+    for (const id of [...BAN_RULES, ...ACCOUNT_CAP_RULES, ...Object.values(STATED_RULES).flat()]) cited.add(id!);
     expect(cited.size).toBeGreaterThan(0);
     expect(data.rules.map((r) => r.id)).toEqual(expect.arrayContaining(["MF-71", "BANK-51"]));
     expect(data.rules.map((r) => r.id).sort()).toEqual([...cited].sort());
@@ -477,7 +477,7 @@ describe("a fee the law bans at a bank (BRK-17, MF-71)", () => {
     expect(read(makam).banned).toEqual([{ fee: "fee-c", rules: ["BRK-17", "BANK-18", "BANK-51"] }]);
     // the trade's ban is the site's reading of the rules (MF-71), and the distribution fee may still be charged; custody's is the rules' words
     const mm = read(at("bank", "moneyMarket", fees)).banned;
-    expect(mm.find((b) => b.fee === "fee-t")).toEqual({ fee: "fee-t", rules: ["MF-71", "BRK-16", "BANK-51"], reading: true, distribution: true });
+    expect(mm.find((b) => b.fee === "fee-t")).toEqual({ fee: "fee-t", rules: ["MF-71", "BRK-72", "BANK-51"], reading: true, distribution: true });
     expect(mm.find((b) => b.fee === "fee-c")).toEqual({ fee: "fee-c", rules: ["BRK-17", "BANK-18", "MF-71", "BANK-51"] });
     // a money-market fund's own deal at a bank: custody by the rules' words, its trade as the site's reading
     const fund: FeeDeal = { ...newDeal("money-market-fund-daily"), id: "deal-f", provider: "bank", fees };

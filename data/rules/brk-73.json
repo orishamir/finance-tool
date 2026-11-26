@@ -1,0 +1,40 @@
+{
+  "id": "BRK-73",
+  "title": "Bank Leumi: a securities deposit is opened under the general terms and debited and credited through the client's current account",
+  "title_he": "פיקדון ניירות ערך בבנק לאומי: נפתח לפי התנאים הכלליים ועובר דרך חשבון העובר ושב",
+  "text_he": "בבנק לאומי, פיקדון ניירות ערך נפתח לפי התנאים הכלליים של החשבון. העסקאות וההכנסות מהפיקדון מחויבות ומזוכות דרך חשבון העובר ושב של הלקוח. בחשבון משותף חל סעיף ההרשאה ההדדית שבתנאים.",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-10-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/generalpages/general%20terms/General_Terms_and_Conditions_acc.pdf",
+      "title": "Leumi general terms 08.25",
+      "title_he": "חוברת תנאים כלליים לניהול חשבון (בנק לאומי, מהדורת 8/2025)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.12 to 17, 48, s.3, 3.6.1, 25",
+      "locator_he": "עמודים 12 עד 17, 48, סעיף 3, 3.6.1, 25",
+      "page": 12,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BRK-22",
+    "BRK-24"
+  ]
+}

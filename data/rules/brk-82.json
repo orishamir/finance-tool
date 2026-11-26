@@ -1,0 +1,99 @@
+{
+  "id": "BRK-82",
+  "title": "Interactive Israel: no Israeli mutual fund, tracking fund included, for a private client",
+  "title_he": "קרנות נאמנות ישראליות באינטראקטיב ישראל: לקוח פרטי לא יכול לקנות אותן",
+  "text_he": "לפי קריאה של האתר במסמכים של אינטראקטיב ישראל, לקוח פרטי לא יכול לקנות אצלה יחידות של קרן נאמנות ישראלית, כולל קרן מחקה. לפי תנאי השימוש שלה, החשבון וכל הוראת קנייה הם אצל אינטראקטיב ברוקרס, וברשימת הקרנות שאינטראקטיב ברוקרס מציעה למי שגר בישראל אין קרן ישראלית. יחידות של קרן ישראלית מזמינים דרך חבר במסלקת הבורסה בתל אביב, ושתי החברות לא נמצאות ברשימות החברים. בתעריפון של אינטראקטיב ישראל קרנות נאמנות מתומחרות רק באירו ובדולר.",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-12",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "interactive-israel",
+      "name_he": "אינטראקטיב ישראל"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.inter-il.com/wp-content/uploads/2026/09/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F-%D7%A2%D7%9E%D7%9C%D7%95%D7%AA-23.09.2026-1.pdf",
+      "title": "תעריף עמלות מסחר - אינטראקטיב ישראל",
+      "title_he": "תעריף עמלות מסחר - אינטראקטיב ישראל",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "quote": "קרנות נאמנות",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf",
+      "title": "מסלקת הבורסה: חוקי העזר, חלק ב",
+      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק ב'",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "institution",
+      "locator": "p.89",
+      "locator_he": "עמוד 89",
+      "page": 89,
+      "quote": "חבר משמורן, שאינו חבר בורסה, אינו רשאי להגיש הזמנות ליצירה או הוראות לפדיון",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.inter-il.com/terms-and-conditions/",
+      "title": "אינטראקטיב ישראל: תנאי שימוש",
+      "title_he": "אינטראקטיב ישראל: תנאי שימוש",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "shall mean the IB’s online trading platform located at where you can trade in financial instruments and where your Client Account is located",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.inter-il.com/order-execution-policy-oct-2023-2/",
+      "title": "אינטראקטיב ישראל: מדיניות ביצוע הוראות",
+      "title_he": "אינטראקטיב ישראל: מדיניות ביצוע הוראות",
+      "publisher": "Interactive Israel",
+      "publisher_he": "אינטראקטיב ישראל",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "The Company routes client orders for execution to another broker, Interactive Brokers",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://market.tase.co.il/he/about_tase/tase_members/tase_members_list",
+      "title": "הבורסה לניירות ערך בתל אביב: רשימת חברי הבורסה",
+      "title_he": "הבורסה לניירות ערך בתל אביב: רשימת חברי הבורסה",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "dataset",
+      "strength": "institution",
+      "quote": "הרשימה לא כוללת חברים משמורנים",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://market.tase.co.il/he/about_tase/tase_members/tasech_members_list",
+      "title": "הבורסה לניירות ערך בתל אביב: רשימת חברי מסלקת הבורסה",
+      "title_he": "הבורסה לניירות ערך בתל אביב: רשימת חברי מסלקת הבורסה",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "dataset",
+      "strength": "institution",
+      "quote": "חבר משמורן (אינו פועל במסחר כחבר)",
+      "checked": "2026-11-12"
+    }
+  ],
+  "derived_from": [
+    "BRK-64",
+    "MF-11"
+  ]
+}

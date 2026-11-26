@@ -1,0 +1,53 @@
+{
+  "id": "BRK-85",
+  "title": "Mizrahi Tefahot: a conversion up to $10 is free and up to $50 a flat fee",
+  "title_he": "המרת מטבע בסכום קטן במזרחי טפחות: עד 10 דולר בלי עמלה, ועד 50 דולר מחיר קבוע",
+  "text_he": "במזרחי טפחות, קנייה או מכירה של מטבע חוץ עד 10 דולר פטורה מעמלה. עד 50 דולר היא עולה מחיר קבוע של 3.00 דולר, ובשירות האינטרנט 2.85 דולר.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-fx"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-12",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "mizrahi-tefahot",
+      "name_he": "בנק מזרחי טפחות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+      "title": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
+      "title_he": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.14, part 5",
+      "locator_he": "עמוד 14, חלק 5",
+      "page": 14,
+      "quote": "עד $10.00 - פטור",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.mizrahi-tefahot.co.il/media/smallbusinessMeugad.pdf",
+      "title": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
+      "title_he": "בנק מזרחי טפחות: תעריפון מלא לשירותי הבנק ליחידים/עסקים קטנים (קובץ מאוגד)",
+      "publisher": "Mizrahi Tefahot Bank",
+      "publisher_he": "בנק מזרחי טפחות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.48, annex E",
+      "locator_he": "עמוד 48, נספח ה",
+      "page": 48,
+      "checked": "2026-11-12"
+    }
+  ],
+  "derived_from": [
+    "BRK-16"
+  ]
+}

@@ -23,7 +23,7 @@ export interface Commission {
    * On a conversion it is the one-step form of a price by size (`SizedConversion`, `sizedOf`).
    */
   flatUpTo?: { amount: number; upTo: number };
-  /** A fee per share above a number of shares in one order (BRK-36). */
+  /** A fee per share above a number of shares in one order (BRK-40). */
   perShareAbove?: { shares: number; perShare: number };
   /** A fee per share on the whole order, in the line's currency (`in`). Needs the share price. */
   perShare?: number;

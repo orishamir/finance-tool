@@ -189,7 +189,7 @@ const SPECS = {
   offset: { kind: "off", lost: true, field: "offset", figures: [], ask: "fee", tool: "off", stated: true, used: (p: Price) => charged(p) && !!p.offset, apply: onPrice((p, on, at) => withOffset(p, on ? at.against! : null)) },
   refund: { kind: "off", lost: true, field: "refund", figures: ["refund"], ask: null, tool: "off", stated: true, used: (p: Price) => charged(p) && !!p.refund, apply: onPrice((p, on) => withRefund(p, on)) },
   unfilled: { kind: "rule", lost: true, field: "notes", figures: [], ask: null, tool: "rule", stated: true, ...noteEdit("unfilled") },
-  // a bank's order through a clerk not carried out (BRK-16) and the site's reading of a percent maximum over a minimum (F-12): a template fills them
+  // a bank's order through a clerk not carried out (BRK-71) and the site's reading of a percent maximum over a minimum (F-12): a template fills them
   unfilledClerk: { kind: "rule", lost: true, field: "notes", figures: [], ask: null, tool: null, stated: true, ...noteEdit("unfilledClerk") },
   unfilledClerkAbroad: { kind: "rule", lost: true, field: "notes", figures: [], ask: null, tool: null, stated: true, ...noteEdit("unfilledClerkAbroad") },
   capRead: { kind: "rule", lost: true, field: "notes", figures: [], ask: null, tool: null, stated: true, ...noteEdit("capRead") },

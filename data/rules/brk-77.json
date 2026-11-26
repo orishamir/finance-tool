@@ -1,0 +1,112 @@
+{
+  "id": "BRK-77",
+  "title": "Altshuler Shaham Trade: the extra fee lines in its tariff, and its prices for a trade abroad",
+  "title_he": "שורות העמלה הנוספות ומחירי מסחר בחו״ל באלטשולר שחם טרייד",
+  "text_he": "בתעריפון של אלטשולר שחם טרייד יש דמי ניהול תקופתיים בכל חודש, דמי ניהול פיקדון ניירות ערך ועמלה על תשלומי ריבית ודיבידנד. מניה או קרן סל בארצות הברית עולות סנט למניה עם מינימום 9 דולר, 11 דולר קבוע, או 0.15% עם מינימום 9 דולר. על עסקה בארצות הברית נגבים בנוסף חיובים כמו SEC, TAF ו־ORF בלי סכום כתוב, ועל עסקה מחוץ לשעות המסחר או דרך ECN או עושה שוק נגבה סנט נוסף למניה. בתל אביב, קרן עולה 0.15% עם מינימום 16 ₪, וקרן סל במסחר רציף עם מינימום 3.5 ₪.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-custody",
+    "fee-trade",
+    "fee-account",
+    "fee-exit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-14",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "altshuler-trade",
+      "name_he": "אלטשולר שחם טרייד"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+      "title": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "title_he": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2, item 7",
+      "locator_he": "עמוד 2, פרט 7",
+      "page": 2,
+      "quote": "וייגבו בנוסף לעמלה המוגדרת ללקוח",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+      "title": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "title_he": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2, item 7(ה)",
+      "locator_he": "עמוד 2, פרט 7(ה)",
+      "page": 2,
+      "quote": "יחויבו בעלות נוספת של 1 סנט למניה",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+      "title": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "title_he": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2, item 11",
+      "locator_he": "עמוד 2, פרט 11",
+      "page": 2,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+      "title": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "title_he": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "page": 2,
+      "quote": "טיפול בתשלומי ריבית/דיבידנד",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+      "title": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "title_he": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.2, item 10",
+      "locator_he": "עמוד 2, פרט 10",
+      "page": 2,
+      "quote": "דמי ניהול/טיפול פקדון",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.as-invest.co.il/media/oqdfpafo/תעריפון-מלא-אלטשולר-שחם-טרייד.pdf",
+      "title": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "title_he": "אלטשולר שחם טרייד: תעריפון מלא (בלי תאריך על המסמך)",
+      "publisher": "Altshuler Shaham",
+      "publisher_he": "אלטשולר שחם",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "דמי ניהול תקופתיים",
+      "checked": "2026-10-31"
+    }
+  ],
+  "derived_from": [
+    "BRK-24"
+  ]
+}

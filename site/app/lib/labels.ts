@@ -92,7 +92,7 @@ export const labelDefs: Record<RuleLabelId, LabelDef> = {
   "ask-estate": { icon: "scroll", tone: "caution", rules: ["TXF-27"] },
   "risk-unsupervised": { icon: "eyeOff", tone: "caution", rules: ["BRK-06", "ETF-24"] },
   "ask-w8": { icon: "fileSignature", tone: "neutral", rules: ["TXF-12", "TXF-13"] },
-  unavailable: { icon: "ban", tone: "caution", rules: ["BRK-64", "BRK-65"] },
+  unavailable: { icon: "ban", tone: "caution", rules: ["BRK-64", "BRK-65", "BRK-82"] },
 };
 
 /** A currency's own sign for its label; a currency without one in the set, or none known, takes the general currency sign. */

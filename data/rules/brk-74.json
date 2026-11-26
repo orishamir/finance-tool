@@ -1,0 +1,78 @@
+{
+  "id": "BRK-74",
+  "title": "One Zero's full tariff (published 24/6/2026, in force 26.7.2026): no makam, Maof or fund line; custody at 0%, third-party costs passed on up to printed ceilings; one buy/sell rate for clerk and internet; plan benefits in annex ו'",
+  "title_he": "תעריפון וואן זירו: בלי דמי ניהול פיקדון ניירות ערך, אותה עמלה בפקיד ובאינטרנט, והוצאות צד שלישי עד תקרה",
+  "text_he": "בתעריפון של וואן זירו, דמי ניהול פיקדון ניירות ערך ועמלת הקסטודיאן הם 0%, ועמלת הקנייה והמכירה זהה בפקיד ובאינטרנט. אין בו שורה למק״מ, לאופציות ולחוזים עתידיים, או לעמלת הפצה. חברי המסלולים בתשלום חודשי מקבלים הנחה של 66% בעמלת הקנייה והמכירה ופטור מעמלת חליפין, ובמסלול ONE PLUS גם פטור עד 10 עסקאות בחודש. מעבר לעמלות של הבנק, חלק 11 בתעריפון מעביר ללקוח הוצאות של צד שלישי לפי העלות בפועל עד תקרה, למשל עד 50 דולר ללקוח לכל ״אירוע חברה״ בחו״ל, מונח שהתעריפון לא מגדיר.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-trade",
+    "fee-custody"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "one-zero",
+      "name_he": "וואן זירו"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+      "title": "תעריפון העמלות המלא, מהדורה מיום 26.7.26",
+      "title_he": "תעריפון העמלות המלא (וואן זירו, מהדורה מיום 26.7.26)",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.17, part 11",
+      "locator_he": "עמוד 17, חלק 11",
+      "page": 17,
+      "quote": "בעלות מרבית של עד 50 דולר ארה״ב ללקוח לכל אירוע חברה",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+      "title": "תעריפון העמלות המלא, מהדורה מיום 26.7.26",
+      "title_he": "תעריפון העמלות המלא (וואן זירו, מהדורה מיום 26.7.26)",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.16, part 11 items (2) and (3)",
+      "page": 16,
+      "quote": "עד 100 יורו לעסקה",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+      "title": "תעריפון העמלות המלא, מהדורה מיום 26.7.26",
+      "title_he": "תעריפון העמלות המלא (וואן זירו, מהדורה מיום 26.7.26)",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.17, part 11 items on SEC and US",
+      "page": 17,
+      "quote": "עד 10 דולר ארה״ב ללקוח לחודש",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://www.onezerobank.com/warehouse/userUploadFiles/Image/01-%20%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F%20%D7%94%D7%A2%D7%9E%D7%9C%D7%95%D7%AA%20%D7%94%D7%9E%D7%9C%D7%90%20-%20%D7%9E%D7%94%D7%93%D7%95%D7%A8%D7%94%20%D7%9E%D7%99%D7%95%D7%9D%2026.7.26_announcement.pdf",
+      "title": "תעריפון העמלות המלא, מהדורה מיום 26.7.26",
+      "title_he": "תעריפון העמלות המלא (וואן זירו, מהדורה מיום 26.7.26)",
+      "publisher": "One Zero Bank",
+      "publisher_he": "וואן זירו",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "BRK-16",
+    "BRK-33"
+  ]
+}

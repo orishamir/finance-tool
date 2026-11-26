@@ -1558,7 +1558,7 @@ def s17_s18_s19():
         '| Step | What | Rule | Value |\n|---|---|---|---|\n'
         f'| 0 | Filled-in inputs | — | {fill} |\n'
         f'| 1 | Return 6% in USD; shekel weakens 1% a year → NIS return (1.06 × 1.01) − 1 | method A-01, A-03 | — |\n'
-        f'| 2 | Each contribution converted at 0.2% and bought with one order; commission USD 2.5 a trade while an order is under 250 shares (it always is here: at most {{shares}} shares) | {L("BRK-36", "BRK-23")} | — |\n'
+        f'| 2 | Each contribution converted at 0.2% and bought with one order; commission USD 2.5 a trade while an order is under 250 shares (it always is here: at most {{shares}} shares) | {L("BRK-40", "BRK-23")} | — |\n'
         f'| 3 | Distributions 1.3% a year, quarterly; foreign withholding credited up to the Israeli 25%; at a foreign broker the Israeli part is paid by advance (timing ignored) | {L("TXF-08", "TXF-17", "TXF-18", "TXF-21")} | — |\n'
         f'| 4 | Exit: sell, commission USD 2.5, convert at 0.2%; 25% of the real gain against the exchange rate, by advance | {L("TXF-03", "TXF-02", "TXF-22")} | — |\n')
     for sid, title, extra, wtext in (

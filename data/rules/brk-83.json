@@ -1,0 +1,40 @@
+{
+  "id": "BRK-83",
+  "title": "Discount Bank: its general terms call the current account that serves a securities deposit \"חשבון התמורה של פיקדון ניירות הערך\"",
+  "title_he": "חשבון התמורה של פיקדון ניירות ערך: השם בתנאים הכלליים של בנק דיסקונט",
+  "text_he": "בתנאים הכלליים של בנק דיסקונט, בחלק על ניירות ערך, יש חשבון עו״ש שמשרת את פיקדון ניירות הערך. התנאים קוראים לו ״חשבון התמורה של פיקדון ניירות הערך״.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-account"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-12",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "discount",
+      "name_he": "בנק דיסקונט"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.discountbank.co.il/media/c3gbk0om/general_terms.pdf",
+      "title": "בנק דיסקונט: חוברת תנאים כלליים מלאה",
+      "title_he": "בנק דיסקונט: חוברת תנאים כלליים מלאה",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.27, s.(10)",
+      "locator_he": "עמוד 27, סעיף (10)",
+      "page": 27,
+      "quote": "שישמש חשבון התמורה של פיקדון",
+      "checked": "2026-11-12"
+    }
+  ],
+  "derived_from": [
+    "BRK-61"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": "BRK-84",
+  "title": "Bank Hapoalim: a conversion up to $99 pays a flat fee",
+  "title_he": "המרת מטבע בסכום קטן בבנק הפועלים: עד 99 דולר מחיר קבוע",
+  "text_he": "בבנק הפועלים, המרה של מטבע חוץ עד 99 דולר עולה מחיר קבוע של 5.50 דולר בפקיד ו־3.3 דולר בערוץ ישיר. מעל 99 דולר חלים האחוז והמינימום של שורת עמלת החליפין.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-fx"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-12",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-12",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "hapoalim",
+      "name_he": "בנק הפועלים"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
+      "title": "בנק הפועלים: תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן (גיליון, 'נכון ליום: 05/10/2026')",
+      "title_he": "בנק הפועלים: תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן (גיליון, 'נכון ליום: 05/10/2026')",
+      "publisher": "Bank Hapoalim",
+      "publisher_he": "בנק הפועלים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים",
+      "checked": "2026-11-12"
+    }
+  ],
+  "derived_from": [
+    "BRK-16"
+  ]
+}

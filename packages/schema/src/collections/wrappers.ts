@@ -64,7 +64,7 @@ const productFields = {
    * `unsettled` records that hold the companies' own terms. The guide says "תלוי בחברה" there and links to those companies' pages;
    * the records are never cited as the product's (they are not `rule_ids`, so they mark no dimension). An entry is a record id (every
    * company whose section lists it), or `{ rule, companies }` when the record states the property for only some of its companies
-   * (BRK-28 gives a minimum for Meitav Trade, not for Leumi or Psagot).
+   * (BRK-28 gave a minimum for Meitav Trade, not for Leumi or Psagot, until it was split on 2026-11-26).
    */
   company_terms: z.record(z.string(), z.array(companyTermRef).min(1)).optional(),
   tier: z.union([z.literal(1), z.literal(2)]),

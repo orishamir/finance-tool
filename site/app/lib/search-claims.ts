@@ -49,7 +49,7 @@ export const claims: { claim: string; rules: string[] }[] = [
   { claim: "קרן נאמנות יכולה לעצור פדיון", rules: ["MF-13"] },
   { claim: "עמלת הפצה בקרן נאמנות", rules: ["MF-24"] },
   { claim: "חייבים להגיש דוח למס הכנסה על השקעות", rules: ["TXG-17", "TXG-20", "TXG-16", "TXG-18"] },
-  { claim: "הברוקר הזר מנכה מס", rules: ["BRK-27", "BRK-45", "TXF-22"] },
+  { claim: "הברוקר הזר מנכה מס", rules: ["BRK-27", "TXF-22"] },
   { claim: "הבורסה פתוחה ביום שישי", rules: ["BRK-29"] },
   { claim: "עמלה דרך פקיד יקרה יותר מבאינטרנט", rules: ["BRK-19"] },
   { claim: "מעל גיל 60 משלמים פחות מס רווח הון", rules: ["TXS-23"] },
@@ -98,8 +98,8 @@ export const unseenClaims: { claim: string; rules: string[] }[] = [
   { claim: "הילד יכול למשוך את החיסכון בגיל 18", rules: ["CS-14"] },
   { claim: "משיכה מהחיסכון של הילד מבטלת את המענק", rules: ["CS-13"] },
   { claim: "הבורסה סוחרת ביום ראשון", rules: ["BRK-29"] },
-  { claim: "מס על מניות בחשבון בחו״ל", rules: ["TXF-01", "TXF-22", "BRK-45"] },
-  { claim: "צריך טופס W-8BEN", rules: ["BRK-45", "TXF-13"] },
+  { claim: "מס על מניות בחשבון בחו״ל", rules: ["TXF-01", "TXF-22", "TXF-13", "TXF-12"] },
+  { claim: "צריך טופס W-8BEN", rules: ["TXF-13"] },
   { claim: "הקרן משלמת מס במקום החוסך", rules: ["TXS-11", "TXS-22"] },
   { claim: "דמי ניהול בקרן פנסיה תקרה", rules: ["PF-04", "PEN-21"] },
   { claim: "תלוש השכר חייב להראות הפקדות לפנסיה", rules: ["PEN-36"] },
@@ -125,7 +125,7 @@ export const reviewerClaims: { claim: string; rules: string[] }[] = [
   { claim: "חברת הפנסיה יכולה להעלות לי את דמי הניהול מתי שבא לה", rules: ["PF-13", "PF-14", "PF-16", "PEN-21"] },
   { claim: "פיטרו אותי אז אני יכול למשוך את כל הכסף מקרן הפנסיה", rules: ["PEN-30", "PEN-31", "TXP-18", "TXP-19"] },
   { claim: "אם שוברים פיקדון הבנק לוקח את כל הריבית, ככה זה בכל בנק", rules: ["BANK-06", "BANK-33"] },
-  { claim: "אם קונים דרך ברוקר בחו״ל לא צריך לדווח למס הכנסה", rules: ["BRK-45", "TXG-20", "TXF-22", "TXF-01"] },
+  { claim: "אם קונים דרך ברוקר בחו״ל לא צריך לדווח למס הכנסה", rules: ["TXG-20", "TXF-22", "TXF-01"] },
 ];
 
 /** Claims written last by someone who never saw the search, after its tuning ended; nothing was tuned on them. They chose among their drafts after reading the records, so these lean toward the records' words. */

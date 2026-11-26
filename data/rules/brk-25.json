@@ -1,8 +1,8 @@
 {
   "id": "BRK-25",
-  "title": "Interest on idle cash: a non-bank member reports it, a bank publishes its rate or says it pays none",
-  "title_he": "ריבית על כסף פנוי: חבר בורסה מדווח עליה, בנק מפרסם אותה או כותב שאין",
-  "text_he": "חבר בורסה שהוא לא בנק חייב לדווח ללקוח על הריבית שהכסף שלו הניב בחשבון. בנק מפרסם בלוח הריביות המרוכז את הריבית על יתרת זכות בעובר ושב. אם בנק לא משלם ריבית, הוא חייב לכתוב שלא מוצעת ריבית על יתרת זכות. בחשבון בנק, הכסף הפנוי נשאר בעובר ושב. אף כלל לא קובע אם חבר בורסה חייב לשלם ריבית על כסף פנוי, ובאיזה שיעור. זה כתוב בתעריפון של כל חבר.",
+  "title": "Interest on idle cash at a non-bank member: it reports the interest credited, and no rule sets whether or how much it pays",
+  "title_he": "ריבית על כסף פנוי אצל חבר בורסה שהוא לא בנק: הוא מדווח עליה, ואף כלל לא קובע אותה",
+  "text_he": "חבר בורסה שהוא לא בנק חייב לדווח ללקוח על הריבית שהכסף שלו הניב בחשבון. אף כלל לא קובע אם הוא חייב לשלם ריבית על כסף פנוי, ובאיזה שיעור. זה כתוב בתעריפון של כל חבר.",
   "strength": "primary",
   "dimensions": [
     "currency"
@@ -13,19 +13,6 @@
   "checked": "2026-10-25",
   "scope": "general",
   "sources": [
-    {
-      "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
-      "title": "הוראת ניהול בנקאי תקין 447 (5/24)",
-      "title_he": "הוראת ניהול בנקאי תקין 447 (5/24)",
-      "publisher": "Bank of Israel",
-      "publisher_he": "בנק ישראל",
-      "kind": "regulator_page",
-      "strength": "primary",
-      "locator": "p.1, s.4(א)",
-      "locator_he": "עמוד 1, סעיף 4(א)",
-      "page": 1,
-      "checked": "2026-10-25"
-    },
     {
       "url": "https://content.tase.co.il/media/g2ekpw4d/274691.pdf",
       "title": "מדריך לחברי הבורסה: הנחיות על פי החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
@@ -39,5 +26,9 @@
       "page": 98,
       "checked": "2026-10-25"
     }
+  ],
+  "derived_from": [
+    "BANK-09",
+    "BANK-13"
   ]
 }
