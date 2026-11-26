@@ -450,6 +450,11 @@ interface Spec {
   currency?: { code: string; startRate: number };
   cls: string;
   place: Place;
+  /**
+   * F-133: the interval the plan's orders are placed at, where the run is given one (`behaviour.orderEvery`); absent, the workbench tries
+   * each and takes the one that leaves the most. The receipt's reference runs take their row's, as they read only the run with no account.
+   */
+  orderEvery?: OrderInterval;
 }
 
 interface Ctx {
@@ -531,7 +536,7 @@ function runSlot(ctx: Ctx, spec: Spec, items: { s: FeesSnapshot; cand: Cand }[])
     market: { ...spec.market, inflation: ctx.plan.inflation },
     fund: spec.fund,
     profile,
-    behaviour: { ordersPerMonth: 1 },
+    behaviour: { ordersPerMonth: 1, ...(spec.orderEvery ? { orderEvery: spec.orderEvery } : {}) },
     instrumentClass: spec.cls,
     channel: "direct",
     ...(spec.currency ? { currency: spec.currency } : {}),
@@ -1503,11 +1508,13 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   if (!row) return null;
   const fund0 = fs.spec.fund as { drag?: Record<string, number>; halfSpread?: number; distribution?: unknown };
   // the fund with none of its own costs (fees, tracking, spread, withholding inside it: all the fund's, TXF-16), and the plan's
-  // return alone: the same with no distribution either, so no tax is paid along the way
+  // return alone: the same with no distribution either, so no tax is paid along the way. Each is read only with no account (`noAccount`),
+  // the same on every way and order interval, so they run on the row's interval (F-133) and not each of them
   const { distribution, ...noDist } = fund0;
-  const costsOff = { ...fs.spec, fund: { ...fund0, halfSpread: 0, drag: {} } } as Spec;
+  const reference = { ...fs.spec, orderEvery: row.way.orderEvery };
+  const costsOff = { ...reference, fund: { ...fund0, halfSpread: 0, drag: {} } } as Spec;
   const r0 = price(costsOff);
-  const rX = distribution ? price({ ...fs.spec, fund: { ...noDist, halfSpread: 0, drag: {} } } as Spec) : r0;
+  const rX = distribution ? price({ ...reference, fund: { ...noDist, halfSpread: 0, drag: {} } } as Spec) : r0;
   if (!r0 || !rX) return null;
   const noAccount = (r: ComparedProvider) => r.horizonCostBeforeTax + beforeTax(r.run);
   const base = noAccount(rX);
