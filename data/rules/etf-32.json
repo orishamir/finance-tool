@@ -1,10 +1,12 @@
 {
   "id": "ETF-32",
-  "title": "The 40 foreign funds traded on TASE: 23 iShares and 17 Invesco, quoted in agorot",
+  "title": "The foreign funds traded on TASE: TASE's list, 40 on 23/10/2026 (29 in the equity market, 11 in the bond market), 23 iShares and 17 Invesco, quoted in agorot",
   "title_he": "קרנות החוץ שנסחרות בבורסה: iShares ו־Invesco, במחירים באגורות",
-  "text_he": "עמוד קרנות החוץ הנסחרות באתר הבורסה מונה את הקרנות הזרות שנסחרות בה. המחירים שם באגורות, כלומר הקרנות נסחרות בשקלים. רובן קרנות iShares של בלאקרוק, למשל על המדד האמריקאי הרחב, על נאסד\"ק ועל מדדי מניות עולמיים ומתעוררים. יש ביניהן גם קרנות על איגרות חוב של ממשלת ארצות הברית. השאר קרנות Invesco, למשל על מדדי מניות עולמיים, אירופיים וסקטוריאליים. העמוד מאפשר סינון לפי שוק מניות או אג\"ח, ומציג לכל קרן את הסיווג ואת מדד הייחוס. הרשימה משתנה.",
+  "text_he": "עמוד קרנות החוץ הנסחרות באתר הבורסה מונה את הקרנות הזרות שנסחרות בה, במחירים באגורות, כלומר בשקלים. ב־23/10/2026 היו בו {ETF-32:foreign_funds_traded_on_tase} קרנות, כולן של iShares (בלאקרוק) או של Invesco: {ETF-32:equity_market} בשוק המניות ו־{ETF-32:bond_market} בשוק האג״ח. רובן קרנות על מדדי מניות אמריקאיים, עולמיים, אירופיים, מתעוררים וענפיים, ויש ביניהן קרנות על איגרות חוב של ממשלת ארצות הברית. הרשימה משתנה: ב־25/11/2026 היו בעמוד 43 קרנות.",
   "figure_names_he": {
-    "foreign_funds_traded_on_tase": "מספר קרנות החוץ הנסחרות בבורסה"
+    "foreign_funds_traded_on_tase": "מספר קרנות החוץ הנסחרות בבורסה",
+    "equity_market": "בשוק המניות",
+    "bond_market": "בשוק איגרות החוב"
   },
   "strength": "primary",
   "dimensions": [
@@ -12,7 +14,7 @@
     "currency"
   ],
   "likely_to_change": "yes",
-  "recheck_date": "2027-04-01",
+  "recheck_date": "2026-11-30",
   "figures": {
     "foreign_funds_traded_on_tase": {
       "value": 40,
@@ -33,6 +35,40 @@
       ],
       "state": "sourced",
       "notes": "23 iShares (BlackRock) and 17 Invesco funds, data as of 22/10/2026; prices in agorot, so they trade in shekels on TASE. Still 40 on TASE's page on 23.10.2026. The Authority's permit list read 31.10.2026 has 37 (ETF-71): the three newest TASE listings (01206895, 01207208, 01207190) are not on it by name."
+    },
+    "equity_market": {
+      "value": 29,
+      "unit": "count",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/f-etfs",
+        "title": "הבורסה, קרנות חוץ נסחרות, קטגוריה 'קרנות חוץ נסחרות בשוק המניות' (ההפרש בין הסך לסינון האג\"ח)",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "40 minus the 11 the bond-market filter returns; the equity filter itself was not run."
+    },
+    "bond_market": {
+      "value": 11,
+      "unit": "count",
+      "source": {
+        "url": "https://market.tase.co.il/he/market_data/f-etfs?dType=1&oId=18",
+        "title": "הבורסה, קרנות חוץ נסחרות, קטגוריה \"קרנות חוץ נסחרות בשוק האג\"ח\", \"סה\"כ 11 רשומות\", נכון ל-23/10/2026",
+        "publisher": "Tel Aviv Stock Exchange",
+        "strength": "primary"
+      },
+      "checked": "2026-10-25",
+      "effective_from": "2026-10-23",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "state": "sourced",
+      "notes": "Read in Chrome 2026-10-24."
     }
   },
   "il_finance_file": "etfs-and-index-funds.md",
@@ -63,6 +99,20 @@
       "strength": "primary",
       "checked": "2026-10-25",
       "qualifier": "(the exchange's list; read in Chrome; 40 records on 23/10/2026)"
+    },
+    {
+      "url": "https://market.tase.co.il/he/market_data/f-etfs?dType=1&oId=18",
+      "title": "הבורסה, קרנות חוץ נסחרות בשוק האג\"ח",
+      "title_he": "קרנות חוץ נסחרות (רשימה)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-25",
+      "qualifier": "(the exchange's list; read in Chrome; 11 records on 23/10/2026)"
     }
+  ],
+  "examples": [
+    "CAT-43"
   ]
 }

@@ -1,0 +1,85 @@
+{
+  "id": "ETF-99",
+  "title": "Yalin Lapidot S&P 500 open tracking fund (5139282): 2025 return 2.98% against 2.61% for its tracking asset, which Yalin Lapidot puts down to exposure through derivatives",
+  "title_he": "פער העקיבה בקרן המחקה של ילין לפידות על S&P 500",
+  "text_he": "הקרן המחקה הפתוחה של ילין לפידות על S&P 500 השיגה ב־2025 תשואה של {ETF-99:yalin_sp500_fund_return_2025}, ונכס המעקב שלה עלה באותה שנה ב־{ETF-99:yalin_sp500_tracking_asset_return_2025}. לפי ילין לפידות, העודף נובע מחשיפה דרך נגזרים, כשיתר הנכסים מושקעים בנכסים נזילים.",
+  "figure_names_he": {
+    "yalin_sp500_fund_return_2025": "תשואת הקרן המחקה של ילין לפידות על S&P 500 בשנה המדווחת",
+    "yalin_sp500_tracking_asset_return_2025": "שינוי נכס המעקב באותה שנה"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "figures": {
+    "yalin_sp500_fund_return_2025": {
+      "value": 2.98,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+        "title": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500 (5139282), p.6",
+        "publisher": "ילין לפידות",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-99"
+      ],
+      "state": "sourced",
+      "notes": "Yalin Lapidot open tracking fund S&P 500 (5139282), calendar 2025: fund 2.98% vs 2.61%; the manager attributes the excess to exposure through derivatives."
+    },
+    "yalin_sp500_tracking_asset_return_2025": {
+      "value": 2.61,
+      "unit": "pct",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+        "title": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500 (5139282), p.6",
+        "publisher": "ילין לפידות",
+        "strength": "institution"
+      },
+      "checked": "2026-10-25",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "ETF-99"
+      ],
+      "state": "sourced",
+      "notes": "Yalin Lapidot open tracking fund S&P 500 (5139282), calendar 2025: the change in its tracking asset (S&P 500 100%, USD 100%) as its own report gives it."
+    }
+  },
+  "il_finance_file": "etfs-and-index-funds.md",
+  "checked": "2026-10-25",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yalin-funds",
+      "name_he": "ילין לפידות קרנות נאמנות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1725001-1726000/P1725200-00.pdf",
+      "title": "Yalin Lapidot annual report 31.12.2025",
+      "title_he": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "ילין לפידות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.6",
+      "locator_he": "עמוד 6",
+      "page": 6,
+      "checked": "2026-10-25"
+    }
+  ],
+  "derived_from": [
+    "ETF-09"
+  ]
+}

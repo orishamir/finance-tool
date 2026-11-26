@@ -1,12 +1,11 @@
 {
   "id": "MF-56",
-  "title": "Bank Leumi, IBI and Meitav: their commissions and custody on fund units",
-  "title_he": "לאומי, אי.בי.אי ומיטב: העמלות ודמי ניהול פיקדון ניירות ערך על יחידות קרן",
-  "text_he": "בבנק לאומי, קרן מחקה שנקנית בהוראת קבע מחויבת בשיעור מופחת, עם מינימום ומקסימום. בלאומי, דמי ניהול פיקדון ניירות ערך חלים גם על יחידות בקרנות, אבל לא על מק״מ ולא על קרן כספית. לאומי גם מציין עמלת הפצה במקרים המותרים. באי.בי.אי, קנייה, מכירה ופדיון של קרנות שנסחרות בבורסה עולים אחוז מהעסקה, עם מינימום לעסקה. מיטב כותבת שקניית יחידות אצלה לא כרוכה בעמלות קנייה ומכירה. בנקים וברוקרים אחרים לא נבדקו, והתעריפונים משתנים כמה פעמים בשנה.",
+  "title": "Meitav: buying units of its funds carries no buy or sell commission (its fund pages)",
+  "title_he": "מיטב: קניית יחידות בקרנות שלה בלי עמלות קנייה ומכירה",
+  "text_he": "לפי מיטב, קניית יחידות בקרנות הנאמנות שלה לא כרוכה בעמלות קנייה ומכירה.",
   "strength": "institution",
   "dimensions": [
-    "fee-trade",
-    "fee-custody"
+    "fee-trade"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-01-01",
@@ -15,75 +14,11 @@
   "scope": "institution",
   "scope_institutions": [
     {
-      "id": "leumi",
-      "name_he": "בנק לאומי"
-    },
-    {
-      "id": "ibi",
-      "name_he": "אי.בי.אי"
-    },
-    {
       "id": "meitav-funds",
       "name_he": "מיטב קרנות נאמנות"
     }
   ],
   "sources": [
-    {
-      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
-      "title": "תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026",
-      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.30, note 10",
-      "locator_he": "עמוד 30, הערה 10",
-      "page": 30,
-      "quote": "בגין קנית קרן מחקה באמצעות הוראת קבע",
-      "checked": "2026-10-31"
-    },
-    {
-      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
-      "title": "תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026",
-      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.31, item 5",
-      "locator_he": "עמוד 31, פרט 5",
-      "page": 31,
-      "quote": "לרבות יחידות השתתפות בקרנות נאמנות",
-      "checked": "2026-10-31"
-    },
-    {
-      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
-      "title": "תעריפון העמלות המלא, בנק לאומי, מעודכן ל-01/10/2026",
-      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.33, item 2",
-      "locator_he": "עמוד 33, פרט 2",
-      "page": 33,
-      "quote": "במקרים המותרים לפי תקנות השקעות משותפות",
-      "checked": "2026-10-31"
-    },
-    {
-      "url": "https://campaign.ibi.co.il/PDF/TRADE/TAARIFON_IBI.pdf",
-      "title": "תעריפון עמלות אי.בי.אי, נכון ל-1.7.2026",
-      "title_he": "תעריפון עמלות אי.בי.אי, נכון ל-1.7.2026",
-      "publisher": "IBI",
-      "publisher_he": "אי.בי.אי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.3, item 2",
-      "locator_he": "עמוד 3, פרט 2",
-      "page": 3,
-      "quote": "עד 0.08% משווי העסקה",
-      "checked": "2026-10-31"
-    },
     {
       "url": "https://www.meitav.co.il/mutual_funds/",
       "title": "מיטב, קרנות נאמנות",
@@ -96,6 +31,7 @@
     }
   ],
   "derived_from": [
+    "MF-26",
     "MF-27"
   ]
 }

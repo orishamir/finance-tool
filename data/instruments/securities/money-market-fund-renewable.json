@@ -236,7 +236,7 @@
   },
   "lawful_exit": {
     "kind": "at_maturity",
-    "text": "only on the fund's fixed dates, set in the fund agreement and chosen when buying (the ISA's examples: a week, a month, a quarter); the interval between fixed dates is at most 12 months (36 with ISA leave); money cannot be withdrawn before the next fixed date; a holding that is not redeemed at a fixed date renews automatically for the next period; advance notice may be required only when the interval exceeds one year (MF-38); on a fixed date the redemption money reaches the holder's account on the day the distributor must pass the order to the clearing house in a fund whose investment policy keeps foreign securities at no more than 10% of net assets, and on the next trading day in any other fund (MF-11, prices regulations reg. 15; MF open question 4 closed 2026-10-26)"
+    "text": "only on the fund's fixed dates, set in the fund agreement and chosen when buying (the ISA's examples: a week, a month, a quarter); the interval between fixed dates is at most 12 months (36 with ISA leave); money cannot be withdrawn before the next fixed date; a holding that is not redeemed at a fixed date renews automatically for the next period; advance notice may be required only when the interval exceeds one year (MF-38); on a fixed date the redemption money reaches the holder's account on the day the distributor must pass the order to the clearing house in a fund whose investment policy keeps foreign securities at no more than 10% of net assets, and on the next trading day in any other fund (MF-74, prices regulations reg. 15; MF open question 4 closed 2026-10-26)"
   },
   "switch_is_tax_event": {
     "value": true,

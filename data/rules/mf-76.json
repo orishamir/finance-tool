@@ -1,0 +1,104 @@
+{
+  "id": "MF-76",
+  "title": "Yalin Lapidot: the manager's fee in its \"לפדיון\" funds went from 0.19% (report at 30.9.2024) to 0.24% (documents of late 2025)",
+  "title_he": "ילין לפידות: דמי הניהול בקרנות ״אג״ח לפדיון״ עלו",
+  "text_he": "בקרנות ״אג״ח לפדיון״ של ילין לפידות דמי הניהול עלו: בדוח השנתי של קרן 5137492 ל־{MF-76:fee_report_date}, שכר מנהל הקרן היה {MF-76:fee_report}. בתשקיף מ־20.12.2025 כתוב לאותה קרן 0.24%, וזה גם השיעור בדוחות השנתיים ל־30.9.2025 של הקרנות האחיות לשנת 2027. המסמכים מתאריכים שונים, ולכן הם מראים שדמי הניהול עלו, ולא שקרן גובה אחרת ממה שכתוב בתשקיף שלה. בכל דוח כתוב שהמנהל התחייב לפעול לפי המתווה של רשות ניירות ערך להעלאת דמי ניהול.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-change-over-time"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-07-01",
+  "figures": {
+    "fee_report": {
+      "value": 0.19,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629790-00.pdf#page=1",
+        "title": "דוח שנתי של קרן 5137492, 30.9.2024",
+        "publisher": "ילין לפידות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-76"
+      ],
+      "state": "sourced",
+      "notes": "דמי ניהול בדוח השנתי של קרן 5137492"
+    },
+    "fee_report_date": {
+      "value": "2024-09-30",
+      "unit": "text",
+      "source": {
+        "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629790-00.pdf#page=1",
+        "title": "דוח שנתי של קרן 5137492, 30.9.2024",
+        "publisher": "ילין לפידות",
+        "strength": "institution"
+      },
+      "checked": "2026-11-02",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "provider-set",
+      "rule_ids": [
+        "MF-76"
+      ],
+      "state": "sourced",
+      "notes": "תאריך הדוח השנתי של קרן 5137492"
+    }
+  },
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-11-14",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yalin-funds",
+      "name_he": "ילין לפידות קרנות נאמנות"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1705001-1706000/P1705240-00.pdf#page=1",
+      "title": "Yalin Lapidot, annual report, fund 5137484, 30.9.2025",
+      "title_he": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "ילין לפידות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1629001-1630000/P1629790-00.pdf#page=1",
+      "title": "Yalin Lapidot, annual report, fund 5137492, 30.9.2024",
+      "title_he": "דוח שנתי ליום 31.12.2025 של ילין לפידות מחקה (4D) S&P 500",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "ילין לפידות",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.1, 2",
+      "locator_he": "עמודים 1, 2",
+      "page": 1,
+      "checked": "2026-11-01"
+    },
+    {
+      "url": "https://mayafiles.tase.co.il/rpdf/1709001-1710000/P1709452-00.pdf#page=7",
+      "title": "Yalin Lapidot main prospectus, 20.12.2025",
+      "publisher": "Maya (TASE filings)",
+      "publisher_he": "מאיה (מערכת ההודעות של הבורסה)",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.7 to 10, p.34",
+      "locator_he": "עמודים 7 עד 10, עמוד 34",
+      "page": 7,
+      "checked": "2026-11-01"
+    }
+  ]
+}

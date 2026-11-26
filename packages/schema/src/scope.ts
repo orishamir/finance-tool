@@ -50,7 +50,6 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "IRA-03": { why: "a count", files: [] },
   "IRA-17": { why: "a range of fee averages", files: [] },
   "ETF-32": { why: "a list", files: [] },
-  "ETF-43": { why: "a count", files: [] },
   "ETF-50": { why: "a count", files: [] },
   "BRK-32": { why: "TASE's member register", files: [] },
   "TXS-24": { why: "a count over Maya's export", files: [] },
@@ -62,7 +61,7 @@ export const notRules: Readonly<Record<string, { why: string; files: readonly st
   "ETF-17": { why: "the Securities Authority's own count", files: [] },
   "ETF-18": { why: "the Securities Authority's own count", files: [] },
   "ETF-26": { why: "the Securities Authority's own count", files: [] },
-  "MF-55": { why: "website terms (the Securities Authority's)", files: ["data/dimensions/fee-management-balance.json", "data/dimensions/regulator.json"] },
+  "MF-55": { why: "website terms (the Securities Authority's)", files: ["data/dimensions/regulator.json"] },
   "CAT-43": { why: "website terms (TASE's)", files: ["data/dimensions/regulator.json"] },
   "GOV-19": { why: "where official yields are published", files: [] },
   "PF-39": { why: "website terms paragraph", files: [] },
@@ -98,7 +97,7 @@ export const ownContextExposures: Readonly<Record<string, readonly string[]>> = 
  * page shows each company's own documents, every one under that company's name. The list names the records; it only grows with a new company's document.
  */
 export const ownContextGuides: Readonly<Record<string, readonly string[]>> = {
-  "limited-bond-fund": ["MF-62", "MF-63", "MF-64", "MF-65", "MF-66", "ETF-80", "ETF-81"],
+  "limited-bond-fund": ["MF-62", "MF-63", "MF-64", "MF-65", "MF-66", "MF-75", "MF-76", "MF-77", "MF-78", "ETF-80", "ETF-81"],
   // the words "סל" and "מחקה" as two companies' fund names use them, stated under those companies' names (D55)
   "mutual-funds": ["ETF-61"],
 };
