@@ -3,12 +3,10 @@
 // forms a reader takes for one figure count: a percent ("25%"), an amount of money from 100, any other number from 100 that is no year.
 // A card that still types one is listed under "typed-data-figure" in its group's file, leftovers/rules/<group>.json, and the list only
 // shrinks.
-import { printedForms, withoutSlots } from "../rule-text.ts";
+import { printedForms, typedForm, withoutSlots } from "../rule-text.ts";
 import { isValueObject, objectsIn, ruleCards, ruleRatchet, type CheckData, type CheckProblem, type Offence } from "./lib/kit.ts";
 
 export const name = "data-figures";
-
-const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /** The printed forms of a figure's value that a reader takes for that figure, and none of a small count, an age or a year. */
 function telltaleForms(value: number, unit: string): string[] {
@@ -37,8 +35,7 @@ export function check(data: CheckData): CheckProblem[] {
     const text = withoutSlots(`${card.title_he ?? ""} ${card.text_he ?? ""}`);
     const typed = [...forms].filter(([form, owners]) => {
       if (owners.every((o) => o.id === card.id)) return false;
-      const pct = form.endsWith("%");
-      return new RegExp(`(?<![\\d.,/-])(?<!סעיף\\s)${escape(form)}(?!\\d|[.,/-]\\d${pct ? "" : "|\\s?%"})`).test(text);
+      return typedForm(form).test(text);
     });
     if (typed.length)
       found.set(card.id, {

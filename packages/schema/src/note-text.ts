@@ -68,11 +68,23 @@ const LEADING_QUOTE = /^\s*["'״׳“”„]/;
 /** A figure slot ("{PF-13:months}"), which the site fills with the figure: a rule's id inside one is not typed text. */
 const SLOT = /\{[A-Z0-9-]+:[a-z0-9_.]+\}/g;
 
-/** A title as a note may repeat it: the quotation-mark kinds made one, and runs of spaces one space. */
-const normalise = (s: string) => s.replace(/[״“”„]/g, '"').replace(/[׳’]/g, "'").replace(/\s+/g, " ").trim();
+/**
+ * A name or title as a reader tells two apart: gershayim and every double quotation mark made one, geresh and apostrophe one, runs of
+ * spaces one space. Two rules' titles, a formula's name and a term's, and a chip's title inside a note are compared by it.
+ */
+export const sameName = (s: string): string => s.replace(/[״“”„]/g, '"').replace(/[׳’]/g, "'").replace(/\s+/g, " ").trim();
+
+/**
+ * A backward ditto ("אותו", "אותה", "האלה"), a whole word with any one-letter prefix ("באותו"): a word that points back at a line before
+ * it. A rule's title, a formula's key and a figure's about line each stand alone, so none holds one.
+ */
+export const DITTO = /(?<![א-ת])[בלמשוכ]?(?:אותו|אותה|האלה)(?![א-ת])/;
+
+/** The backward dittos a text holds, in order. */
+export const dittos = (text: string): string[] => text.match(new RegExp(DITTO.source, "g")) ?? [];
 
 /** Each phrase of `phrases` the text holds, after taking out the allowed phrases that contain one. */
-function phrasesIn(text: string, phrases: readonly string[], allowed: readonly string[]): string[] {
+export function phrasesIn(text: string, phrases: readonly string[], allowed: readonly string[] = []): string[] {
   const t = allowed.reduce((s, a) => s.split(a).join(" "), text);
   return phrases.filter((p) => t.includes(p));
 }
@@ -91,8 +103,8 @@ export function noteFlaws(text: string, words: NoteWords = {}): Partial<Record<N
   if (ids) out["bare-id"] = ids.join(", ");
   const talk = phrasesIn(text, [...new Set([...(words.talk?.phrases ?? []), ...NOTE_TALK])], words.talk?.allowed ?? []);
   if (talk.length) out["research-talk"] = talk.map((p) => `"${p}"`).join(", ");
-  const said = normalise(text);
-  const titles = (words.chipTitles ?? []).filter((t) => normalise(t) && said.includes(normalise(t)));
+  const said = sameName(text);
+  const titles = (words.chipTitles ?? []).filter((t) => sameName(t) && said.includes(sameName(t)));
   if (titles.length) out["chip-title"] = titles.map((t) => `"${t}"`).join(", ");
   const date = MACHINE_DATE.exec(text);
   if (date) out["machine-date"] = date[0];

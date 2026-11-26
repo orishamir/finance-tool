@@ -3,7 +3,7 @@
 // A note or string still allowed a flaw is listed here, and each list only shrinks.
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { NOTE_FLAWS, noteFlaws, type NoteFlaw } from "@finance-tool/schema";
+import { NOTE_FLAWS, noteFlaws, phrasesIn, type NoteFlaw } from "@finance-tool/schema";
 import { describe, expect, it } from "vitest";
 import * as copy from "../copy";
 
@@ -102,8 +102,7 @@ function strings(node: unknown, path: string): [string, string][] {
   return [];
 }
 
-const talkIn = (text: string) => talk.allowed.reduce((s, a) => s.split(a).join(" "), text);
-const hasTalk = (text: string) => COPY_TALK.some((p) => talkIn(text).includes(p));
+const hasTalk = (text: string) => phrasesIn(text, COPY_TALK, talk.allowed).length > 0;
 
 describe("the notes the site's code passes", () => {
   const found = Object.entries(COPY_NOTES).flatMap(([where, text]) => (Object.keys(noteFlaws(text, { talk })) as NoteFlaw[]).map((flaw) => [where, flaw] as const));

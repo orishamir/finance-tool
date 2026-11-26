@@ -2,6 +2,7 @@
 // there would show on the pre-rendered page (the server loads every module) and not in the browser on a page that never loads that
 // module, so the first render there would not match the pre-rendered page. Test files share modules in a worker (vitest.config.ts,
 // isolate off), so the table is read from fresh copies, before and after the modules that once changed it load.
+import { DITTO, sameName } from "@finance-tool/schema";
 import { describe, expect, it, vi } from "vitest";
 
 describe("formula names", () => {
@@ -21,9 +22,6 @@ describe("formula names", () => {
 // (the quotation-mark kinds made one), and no two formulas share one. A formula's keys and a figure's about line stand alone in its sheet, so none points
 // back with a ditto ("אותו", "אותה", "האלה") at a line before it. What still does is listed here, and each list only shrinks.
 
-/** A name as a reader tells two apart: gershayim and every double quotation mark made one, geresh and apostrophe one, spaces one. */
-const sameName = (s: string): string => s.replace(/[״“”„]/g, '"').replace(/[׳’]/g, "'").replace(/\s+/g, " ").trim();
-const DITTO = /(?<![א-ת])[בלמשוכ]?(?:אותו|אותה|האלה)(?![א-ת])/;
 
 /** The names still given to more than one thing, as `sameName` writes them. */
 const NAME_LEFTOVERS: string[] = [

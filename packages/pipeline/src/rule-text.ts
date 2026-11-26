@@ -4,7 +4,7 @@
 // in digits or spelled in words. Each kind of flaw a script can find is a `TextFlaw`; the records that still carry one are listed by id in
 // their group's file, leftovers/rules/<group>.json, the phrases the checks look for are in leftovers/phrases.json, and each list only
 // shrinks (data-schema §4 item 23). checks/rule-text.ts runs it in the data check.
-import { sentenceCount } from "@finance-tool/schema";
+import { phrasesIn, sentenceCount } from "@finance-tool/schema";
 import { z } from "zod";
 import { readLeftovers, readRuleList, ruleListFile } from "./checks/lib/kit.ts";
 
@@ -21,8 +21,8 @@ export function withoutSlots(text: string): string {
   return text.replace(FIGURE_SLOT, " ");
 }
 
-/** The number of sentences in a text: the schema package's, which the note checks count by too. */
-export { sentenceCount };
+/** The number of sentences in a text and the phrases of a list a text holds: the schema package's, which the note checks read by too. */
+export { phrasesIn, sentenceCount };
 
 const LETTER = "\\u05D0-\\u05EA";
 /** The Hebrew number words of ten and more: the tens, ten itself, the teens, hundreds and thousands. */
@@ -57,12 +57,6 @@ export function spelledNumbers(text: string): string[] {
   return [...text.matchAll(SPELLED_NUMBER)].map((m) => m[0]);
 }
 
-/** Each phrase of `phrases` the text holds, after taking out the allowed phrases that contain one. */
-export function phrasesIn(text: string, phrases: readonly string[], allowed: readonly string[] = []): string[] {
-  const t = allowed.reduce((s, a) => s.split(a).join(" "), text);
-  return phrases.filter((p) => t.includes(p));
-}
-
 /** A figure's value objects: itself, or one per tax year. A table of brackets has no single value to type. */
 function figureValues(figure: unknown): { value?: unknown; unit?: unknown }[] {
   if (!figure || typeof figure !== "object" || Array.isArray(figure)) return [];
@@ -72,7 +66,6 @@ function figureValues(figure: unknown): { value?: unknown; unit?: unknown }[] {
 
 const grouped = new Intl.NumberFormat("he-IL", { maximumFractionDigits: 6 });
 const plain = new Intl.NumberFormat("he-IL", { maximumFractionDigits: 6, useGrouping: false });
-const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /**
  * The ways a reader sees a figure's value printed: a percent with its sign ("25%"), an amount of money with thousands separators
@@ -84,18 +77,25 @@ export function printedForms(value: number, unit: string): string[] {
   return [...new Set([plain.format(value), grouped.format(value)])];
 }
 
+const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 /**
- * The figures of a rule whose value its text types in digits, outside a slot. A number counts only standing alone: not part of a longer
- * number or of an id joined by hyphens or slashes ("2020-9-2"), not a section's number ("סעיף 3"), and a plain number not followed by "%".
+ * The pattern of a printed form of a figure (printedForms) typed in a text, standing alone: not part of a longer number or of an id joined
+ * by hyphens or slashes ("2020-9-2"), not a section's number ("סעיף 3"), and a form without "%" not followed by "%". The checks that read
+ * a typed figure, a card's own (typedFigures) or another card's (checks/data-figures.ts), match by it.
  */
+export function typedForm(form: string): RegExp {
+  return new RegExp(`(?<![\\d.,/-])(?<!סעיף\\s)${escape(form)}(?!\\d|[.,/-]\\d${form.endsWith("%") ? "" : "|\\s?%"})`);
+}
+
+/** The figures of a rule whose value its text types in digits, outside a slot, each form standing alone (typedForm). */
 export function typedFigures(rule: { text_he?: string; figures?: Record<string, unknown> }): string[] {
   const text = withoutSlots(rule.text_he ?? "");
   return Object.entries(rule.figures ?? {})
     .filter(([, figure]) =>
       figureValues(figure).some(({ value, unit }) => {
         if (typeof value !== "number" || typeof unit !== "string") return false;
-        const pct = unit.startsWith("pct");
-        return printedForms(value, unit).some((s) => new RegExp(`(?<![\\d.,/-])(?<!סעיף\\s)${escape(s)}(?!\\d|[.,/-]\\d${pct ? "" : "|\\s?%"})`).test(text));
+        return printedForms(value, unit).some((s) => typedForm(s).test(text));
       }),
     )
     .map(([name]) => name);
