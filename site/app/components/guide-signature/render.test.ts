@@ -192,7 +192,7 @@ describe("each figure of a visual lists only the rules that changed it (method Â
     for (const f of fees) expect(f.ids.filter((r) => r.startsWith("TX")), f.about).toEqual([]);
   });
   it("a pension deposit names only the minimum rates and the average wage", () => {
-    const deposits = [sigCopy.pension.about.you, sigCopy.pension.about.employer, sigCopy.pension.about.severance, sigCopy.pension.about.total];
+    const deposits: string[] = [sigCopy.pension.about.you, sigCopy.pension.about.employer, sigCopy.pension.about.severance, sigCopy.pension.about.total];
     for (const id of ["pension-comprehensive", "pension-general", "provident-for-annuity"]) {
       const fs = all.find((x) => x.id === id)?.figures.filter((f) => deposits.includes(f.about)) ?? [];
       expect(fs.length, id).toBeGreaterThan(0);
