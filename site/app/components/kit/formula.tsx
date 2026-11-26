@@ -47,11 +47,17 @@ function useScrollEdges(ref: RefObject<HTMLElement | null>, watch: unknown) {
 }
 
 /**
- * TeX in math type: `display` for a formula on its own line, inline for a symbol. Always left to right, isolated from the Hebrew around it.
- * A display line wider than its box scrolls inside it, its edge fading where more of it lies (`useScrollEdges`); `start` sets it at the
- * box's start instead of its middle, for lines read one under another.
+ * How a piece of TeX stands: `inline`, a symbol in a line of words; `display`, a formula on its own line, centred in its box;
+ * `display-start`, a formula on its own line set at its box's start, for lines read one under another.
  */
-export function Tex({ tex, display = false, start = false, className }: { tex: string; display?: boolean; start?: boolean; className?: string }) {
+export type TexVariant = "inline" | "display" | "display-start";
+
+/**
+ * TeX in math type, as its `variant` says. Always left to right, isolated from the Hebrew around it. A line on its own wider than its box
+ * scrolls inside it, its edge fading where more of it lies (`useScrollEdges`).
+ */
+export function Tex({ tex, variant = "inline", className }: { tex: string; variant?: TexVariant; className?: string }) {
+  const display = variant !== "inline";
   const [html, setHtml] = useState(() => (katex ? draw(katex, tex, display) : null));
   const box = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -64,9 +70,14 @@ export function Tex({ tex, display = false, start = false, className }: { tex: s
   }, [tex, display]);
   useScrollEdges(box, html);
   // Until KaTeX is in, the place is held: a display formula by about one fraction's height, a symbol by its letters in plain type.
-  if (!display) return html === null ? <span dir="ltr" className={cx("opacity-0", className)}>{tex.replace(/\\text|[\\{}]/g, "")}</span> : <span dir="ltr" className={cx("inline-block", className)} dangerouslySetInnerHTML={{ __html: html }} />;
-  if (html === null) return <div ref={box} dir="ltr" className={cx("min-h-14", className)} />;
-  return <div ref={box} dir="ltr" data-start={start ? "" : undefined} className={cx("tex-display overflow-x-auto overflow-y-hidden text-lg", className)} dangerouslySetInnerHTML={{ __html: html }} />;
+  switch (variant) {
+    case "inline":
+      return html === null ? <span dir="ltr" className={cx("opacity-0", className)}>{tex.replace(/\\text|[\\{}]/g, "")}</span> : <span dir="ltr" className={cx("inline-block", className)} dangerouslySetInnerHTML={{ __html: html }} />;
+    case "display":
+    case "display-start":
+      if (html === null) return <div ref={box} dir="ltr" className={cx("min-h-14", className)} />;
+      return <div ref={box} dir="ltr" data-start={variant === "display-start" ? "" : undefined} className={cx("tex-display overflow-x-auto overflow-y-hidden text-lg", className)} dangerouslySetInnerHTML={{ __html: html }} />;
+  }
 }
 
 /** A row of the key under a figure's line: the symbol, its words, and the figure's inputs that stand for it, each with its name and value. */
@@ -125,7 +136,7 @@ function FormulaLines({ lines, symbols, where }: { lines: readonly { tex: string
       {lines.map((l) => (
         <div key={l.tex} className="flex flex-col gap-1">
           {l.label && <span className="text-sm text-muted-foreground">{l.label}</span>}
-          <Tex tex={l.tex} display />
+          <Tex tex={l.tex} variant="display" />
         </div>
       ))}
       {symbols.length > 0 && (
@@ -152,8 +163,8 @@ function Worked({ label, tex, values, result, rows, where, after }: { label?: st
     <div className="flex flex-col gap-3">
       {label && <span className="text-sm text-muted-foreground">{label}</span>}
       <div className="flex flex-col gap-1">
-        <Tex tex={tex} display start />
-        {values !== null && <Tex tex={values} display start />}
+        <Tex tex={tex} variant="display-start" />
+        {values !== null && <Tex tex={values} variant="display-start" />}
         {values !== null && result !== null && (
           <div dir="ltr" className="text-lg tabular-nums">
             = <bdi>{result}</bdi>
