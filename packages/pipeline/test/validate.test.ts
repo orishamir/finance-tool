@@ -557,7 +557,8 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // 2026-11-26 three more, which step table an ETF's orders follow (ETF OQ41), whether a US fund trades only in the US or an Irish one
     // only in Europe (ETF OQ42), and Invesco Markets plc's own prospectus (ETF OQ43); later that day one more, whether a provident fund
     // for annuity balances actuarially (PEN OQ34), a "not found" moved out of PEN-66 in the popup sweep
-    expect(items.length).toBe(454);
+    // 455 with the IRS guidance being considered on a US fund that avoids paying out (TXF OQ28)
+    expect(items.length).toBe(455);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
