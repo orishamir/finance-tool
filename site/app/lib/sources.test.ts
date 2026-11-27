@@ -170,6 +170,14 @@ describe("the copied citation names the place the card shows", () => {
     expect(citationFor(rule, must(doc), slots, must(doc).places[1])).toBe("מעבר מסלול אינו אירוע מס — רשות המסים, חוזר, סעיף 4. https://x/a.pdf#page=5 (נבדק 20.10.2026)");
     expect(citationFor(rule, must(doc), slots)).toContain("סעיף 1. https://x/a.pdf#page=2");
   });
+  it("names a place's own title after the document's, for a second document in the same file", () => {
+    // TXG-11: an amendment's regulations printed in the booklet of other regulations
+    const head = "תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005";
+    const other = 'תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס"ו-2005';
+    const [doc] = sourceView([src({ url: "https://x/b.pdf", page: 1, title_he: head, locator_he: "תקנה 2" }), src({ url: "https://x/b.pdf", page: 9, title_he: other, locator_he: "תקנה 3", checked: "2026-10-20" })]);
+    expect(citationFor(rule, must(doc), slots, must(doc).places[1])).toBe(`מעבר מסלול אינו אירוע מס — Pub, ${head}, ${other}, תקנה 3. https://x/b.pdf#page=9 (נבדק 20.10.2026)`);
+    expect(citationFor(rule, must(doc), slots)).toContain(`${head}, תקנה 2.`);
+  });
 });
 
 describe("sourceChange", () => {

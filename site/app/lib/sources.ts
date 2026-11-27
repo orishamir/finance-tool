@@ -341,10 +341,11 @@ export function sourceView(sources: readonly RuleSource[], publishersHe?: Readon
 
 /**
  * The line the copy button writes for one place of a document, named as the document's head names it:
- * `{claim} — {publisher}, {document}, {locator}. {link} (נבדק {date})`. `place` is the source the card shows; by default the document's first.
+ * `{claim} — {publisher}, {document}, {place's own title}, {locator}. {link} (נבדק {date})`, the place's title only where it has one (a
+ * second document in the same file). `place` is the source the card shows; by default the document's first.
  */
 export function citationFor(rule: Pick<SourcedRule, "title" | "title_he" | "text_he">, view: SourceView, slots: SlotSource, place: SourcePlace = view.places[0]): string {
-  const parts = [view.publisher, view.title?.text].filter((x): x is string => !!x);
+  const parts = [view.publisher, view.title?.text, place.title].filter((x): x is string => !!x);
   if (place.locator) parts.push(place.locator);
   const claim = ruleTitle(rule, slots).text;
   return `${claim} — ${parts.join(", ")}. ${place.href} (${sourceBlock.citation.checked} ${fmt.date(place.checked)})`;
