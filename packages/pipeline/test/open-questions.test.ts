@@ -25,6 +25,7 @@ describe("an item's status", () => {
       "**Q.** ~~the trading unit~~ (closed 2026-10-31, GOV-24); hours.",
       "**Q.** Unknown. **[2026-10-25 scope pass]** Answered: two later amendments; one is not read.",
       "**Q.** Where: the file. (The units are settled by CAT-03 and CAT-35; struck 2026-11-03.)",
+      "**Q.** Unknown. **[2026-11-26]** Partly **answered**: the law sets no age, KGL-06.",
     ])
       expect([text, statusOf(text)]).toEqual([text, "narrowed"]);
   });
@@ -59,6 +60,11 @@ describe("answered_by", () => {
     expect(answeredBy("**Q.** Rates.\n   - tax on early payments (narrowed: no 35%, KGL-06);\n   - the basis of the exemption (TXK-30).", rules)).toEqual(["KGL-06"]);
   });
 
+  it("reads a note whose narrowing words carry bold marks, and ends it at the next dated note", () => {
+    expect(answeredBy("**Q.** Rates. **[2026-11-26] Closed** by KGL-06's record. **[2026-11-27]** Searched: TXK-30.", rules)).toEqual(["KGL-06"]);
+    expect(answeredBy("**Q.** Rates. **[2026-11-26]** Partly **answered**: KGL-06. [2026-11-27, a pass] TXK-30 read.", rules)).toEqual(["KGL-06"]);
+  });
+
   it("reads a range of ids as each id in it", () => {
     expect(answeredBy("**Q.** Failure. **[2026-10-26]** Narrowed by REG-04 to REG-06: no deposit insurance.", rules)).toEqual(["REG-04", "REG-05", "REG-06"]);
   });
@@ -69,12 +75,14 @@ describe("answered_by", () => {
 });
 
 describe("the rules that may answer", () => {
-  it("leaves out a rule whose scope is a company's term or rests only on company documents", () => {
+  it("leaves out a rule whose scope is a company's term or rests only on company documents, and a rule folded into another", () => {
     const blocks = new Map([
       ["A-01", { body: "- Rule: a law.\n- Scope: general\n" }],
       ["A-02", { body: "- Rule: a tariff.\n- Scope: institution\n" }],
       ["A-03", { body: "- Rule: company pages.\n- Scope: unsettled\n" }],
       ["A-04", { body: "- Rule: not reviewed.\n" }],
+      ["A-05", { body: "- Rule: Folded on 2026-11-26. The claim is in A-01.\n- Scope: general\n" }],
+      ["A-06", { body: "- Rule: Merged on 2026-11-26. The claim is in A-01.\n- Scope: general\n" }],
     ]);
     expect([...answerableRules(blocks)]).toEqual(["A-01", "A-04"]);
   });

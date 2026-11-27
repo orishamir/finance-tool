@@ -992,7 +992,6 @@
     "id": "MF OQ9",
     "status": "narrowed",
     "answered_by": [
-      "MF-54",
       "MF-57"
     ]
   },
@@ -1559,8 +1558,7 @@
       "TXK-23",
       "TXK-26",
       "TXK-29",
-      "TXK-07",
-      "TXK-25"
+      "TXK-07"
     ]
   },
   {
@@ -2282,7 +2280,6 @@
     "id": "CAT OQ1",
     "status": "narrowed",
     "answered_by": [
-      "CAT-32",
       "CAT-04",
       "CAT-35",
       "CAT-36",
