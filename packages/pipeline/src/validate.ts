@@ -44,7 +44,7 @@ import { inTrailingYear, trailingDistributionYield } from "@finance-tool/engine"
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
 import { figureSlots, readTextLeftovers, withoutSlots, type TextLeftovers } from "./rule-text.ts";
-import { forgetReads, isOwnData, rememberRead, unreadRuleLists, type CheckProblem, type DataCheck } from "./checks/lib/kit.ts";
+import { forgetReads, hostOf, isOwnData, rememberRead, unreadRuleLists, type CheckProblem, type DataCheck } from "./checks/lib/kit.ts";
 import { checkFundPromotions, checkLineFacts, checkSnapshotFacts } from "./price-list-facts.ts";
 
 /**
@@ -1065,7 +1065,7 @@ const COPY_HOSTS = ["he.wikisource.org", "nevo.co.il", "olaw.org.il", "olaw.co.i
 
 /** A copy's address: a copy-only host (or a subdomain of one) or a copy folder on an official host (COPY_PATHS). */
 export function isCopySource(url: string): boolean {
-  const host = hostOf(url).toLowerCase();
+  const host = hostOf(url);
   return COPY_HOSTS.some((h) => host === h || host.endsWith(`.${h}`)) || isCopyPath(url);
 }
 
@@ -1113,16 +1113,8 @@ export function isIssuerFiling(url: string): boolean {
 export function isUnlistedPrimary(url: string, strength: string): boolean {
   if (strength !== "primary" || !/^https?:\/\//.test(url) || isCopySource(url)) return false;
   if (isIssuerFiling(url)) return true;
-  const host = hostOf(url).toLowerCase();
+  const host = hostOf(url);
   return !onHost(host, OFFICIAL_HOSTS) && !onHost(host, OWN_STANDARD_HOSTS);
-}
-
-function hostOf(url: string): string {
-  try {
-    return new URL(url).host.replace(/^www\./, "");
-  } catch {
-    return "";
-  }
 }
 
 /**

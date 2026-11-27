@@ -1,7 +1,7 @@
 // What a value's sheet needs from the value itself, on the records the site reads (the latest snapshot) of the collections the collectors
 // write. Four checks, each its own list:
 // - `empty-because`: a sourced value that is empty says why (`empty_because`, data-schema §1), so a page words each state apart.
-// - `publisher`: a value read from a portal that serves many publishers (data.gov.il, gov.il, TASE's API, the ECB's data API) names its
+// - `publisher`: a value read from a portal that serves many publishers (data.gov.il, gov.il, TASE's API) names its
 //   publisher itself (`source.publisher_he`), since the link's host names none.
 // - `machine-url`: `source.url` is a page a reader can open and read; the machine address a collector read (an API's JSON, a CSV, an XML
 //   feed, a spreadsheet file) goes in `source.fetched_from`, and `url` takes the page the data-update skill finds.
@@ -12,15 +12,15 @@
 // value>" so the next dated snapshot keeps the key, and each list only shrinks.
 import { mostlyHebrew } from "@finance-tool/schema";
 import { z } from "zod";
-import { isValueObject, latestRecords, objectsIn, readLeftovers, staleEntries, type CheckData, type CheckProblem } from "./lib/kit.ts";
+import { hostOf, isValueObject, latestRecords, objectsIn, readLeftovers, staleEntries, type CheckData, type CheckProblem } from "./lib/kit.ts";
 
 export const name = "values";
 
 /** The collections whose values these checks hold. */
 export const VALUE_COLLECTIONS = ["cma", "series"] as const;
 
-/** Hosts that serve many publishers' data, so a source there names its publisher itself. */
-export const SHARED_PORTAL_HOSTS: ReadonlySet<string> = new Set(["data.gov.il", "gov.il", "www.gov.il", "api.tase.co.il", "data-api.ecb.europa.eu"]);
+/** Hosts that serve many publishers' data, so a source there names its publisher itself (as `hostOf` writes a host). */
+export const SHARED_PORTAL_HOSTS: ReadonlySet<string> = new Set(["data.gov.il", "gov.il", "api.tase.co.il"]);
 
 /**
  * True when `url` is an address a program reads rather than a page a person reads: a JSON, CSV, XML or spreadsheet file, an API host or
@@ -39,14 +39,6 @@ export function isMachineUrl(url: string): boolean {
   return /^(?:json|csv|csvdata|xml)$/i.test(u.searchParams.get("format") ?? "");
 }
 
-const host = (url: unknown): string | null => {
-  try {
-    return typeof url === "string" ? new URL(url).hostname : null;
-  } catch {
-    return null;
-  }
-};
-
 interface Source {
   url?: unknown;
   publisher_he?: unknown;
@@ -64,7 +56,7 @@ const CHECKS = [
     check: "publisher",
     flaw: (v: Record<string, unknown>) => {
       const s = v.source as Source;
-      const shared = [host(s.url), host(s.fetched_from)].find((h) => h !== null && SHARED_PORTAL_HOSTS.has(h));
+      const shared = [hostOf(s.url), hostOf(s.fetched_from)].find((h) => SHARED_PORTAL_HOSTS.has(h));
       return shared && typeof s.publisher_he !== "string" ? `the source is on ${shared}, which serves many publishers, and names none` : null;
     },
     fix: "write source.publisher_he, the body that publishes the data, never the portal",

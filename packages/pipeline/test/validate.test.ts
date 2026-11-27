@@ -885,6 +885,11 @@ describe("the value checks of the collected collections (src/checks/values.ts)",
     expect(values.check(testData(dataDir({ "cma/gemelnet@2026-09.json": cma }))).map((p) => p.message.replace(/: .*/, ""))).toEqual(["cma/gemelnet/7#/fees/avg_deposit_fee (empty-because)"]);
   });
 
+  it("asks a publisher of a portal whatever its host is written as, and not of a publisher's own data host", () => {
+    const bare = (url: string, fetched_from: string) => ({ url, title: "t", publisher: "x", strength: "primary", fetched_from });
+    expect(found([sourced({ source: bare("https://WWW.gov.il/he/pages/x", "https://example.org/a.csv") }), sourced({ source: bare("https://data.ecb.europa.eu/data/datasets/EXR", "https://data-api.ecb.europa.eu/service/data/EXR/M.ILS.EUR.SP00.E?format=csvdata") })])).toEqual(["series/planted#/observations/0 (publisher)"]);
+  });
+
   it("tells a machine address from a page", () => {
     for (const url of [
       "https://api.cbs.gov.il/index/data/price?id=120010&format=json",

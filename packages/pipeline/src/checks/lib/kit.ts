@@ -201,6 +201,16 @@ export function latestRecords(data: CheckData, collection: string): LatestRecord
     });
 }
 
+/** The host of an address, lower-cased and without a leading "www." ("gov.il" for https://www.gov.il/he/...); "" when it is not one. */
+export function hostOf(url: unknown): string {
+  if (typeof url !== "string") return "";
+  try {
+    return new URL(url).host.toLowerCase().replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+}
+
 /** A value object: an object with a value and a source (data-schema §1). */
 export function isValueObject(node: unknown): node is { value: unknown; unit?: unknown; source: unknown; notes?: unknown; rule_ids?: unknown } {
   return !!node && typeof node === "object" && !Array.isArray(node) && "value" in node && "source" in node;
