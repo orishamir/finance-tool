@@ -71,6 +71,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-02",
+      "TXI-04",
       "TXI-05"
     ],
     "state": "sourced",

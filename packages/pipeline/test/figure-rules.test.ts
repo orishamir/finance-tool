@@ -99,7 +99,7 @@ describe("figure-rules table", () => {
     const tax = (value: unknown, ids: string[]) => vo(value, ids, "https://www.gov.il/ordinance.pdf");
     expect(figureRuleProblems("terms/deposits", deposit({ tax_bucket: tax("unlinked_15", ["TXI-03", "TXI-04", "TXI-08"]) }), noCards).map((p) => p.id)).toEqual(["TXI-04", "TXI-08"]);
     expect(figureRuleProblems("terms/deposits", deposit({ rate_type: "variable", tax_bucket: tax("unlinked_15", ["TXI-03", "TXI-04"]) }), noCards)).toEqual([]);
-    expect(figureRuleProblems("terms/deposits", deposit({ linkage: "cpi", tax_bucket: tax("linked_25", ["TXI-02", "TXI-04", "TXI-05", "TXI-19"]) }), noCards).map((p) => p.id)).toEqual(["TXI-04", "TXI-19"]);
+    expect(figureRuleProblems("terms/deposits", deposit({ linkage: "cpi", tax_bucket: tax("linked_25", ["TXI-02", "TXI-04", "TXI-05", "TXI-19"]) }), noCards).map((p) => p.id)).toEqual(["TXI-19"]);
     expect(figureRuleProblems("terms/deposits", deposit({ wrapper_id: "current-account", tax_bucket: tax("unlinked_15", ["TXI-03", "TXI-08", "BANK-09"]) }), noCards).map((p) => p.id)).toEqual(["BANK-09"]);
   });
 

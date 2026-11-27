@@ -201,6 +201,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
         when: (r) => bucket(r) === "unlinked_15" && (variableRate(r) || field(r, "linkage") !== "none"),
         why: "what counts as linked: a prime-linked or partly linked deposit counts as unlinked",
       },
+      { id: "TXI-04", when: (r) => bucket(r) === "linked_25", why: "what counts as fully linked, which the linked bucket needs" },
       { id: "TXI-02", when: (r) => bucket(r) === "linked_25", why: "the ceiling on the tax on interest, which a fully linked deposit's real interest bears" },
       { id: "TXI-05", when: (r) => bucket(r) === "linked_25", why: "the linkage of a fully linked asset is exempt, and the interest above it is taxed" },
       { id: "TXI-08", when: currentAccount, why: "the bank withholds the tax on interest it pays an individual, a current account's credit interest included" },
