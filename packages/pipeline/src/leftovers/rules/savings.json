@@ -4,37 +4,22 @@
     "CS-07",
     "CS-11",
     "CS-13",
-    "CS-15",
-    "CS-16",
     "CS-17",
-    "CS-20",
     "CS-27",
     "CS-28",
     "INS-01",
-    "INS-09",
     "INS-18",
-    "INS-19",
-    "INS-24",
     "INS-25",
+    "IRA-02",
     "IRA-06",
     "IRA-12",
     "IRA-16",
-    "IRA-18",
     "IRA-22",
-    "IRA-23",
-    "IRA-25",
-    "IRA-27",
     "IRA-29",
-    "KGL-11",
     "KGL-12",
     "KGL-16",
     "KGL-17",
     "KGL-30",
-    "KGL-31",
-    "KH-03",
-    "KH-07",
-    "KH-12",
-    "KH-14",
     "KH-17",
     "KH-20",
     "KH-22",
@@ -46,38 +31,10 @@
     "MGD-19",
     "MGD-21"
   ],
-  "research-talk": [
-    "CS-09",
-    "CS-28",
-    "KGL-01",
-    "KGL-29",
-    "KH-03",
-    "KH-27",
-    "KH-28",
-    "KH-29",
-    "KH-30"
-  ],
-  "fixed-line": [
-    "CS-09",
-    "CS-28",
-    "KGL-29",
-    "KH-27",
-    "KH-28",
-    "KH-29",
-    "KH-30"
-  ],
-  "spelled-number": [
-    "CS-13",
-    "CS-20",
-    "CS-27",
-    "INS-19",
-    "INS-25"
-  ],
-  "typed-figure": [
-    "INS-19",
-    "IRA-12",
-    "IRA-14"
-  ],
+  "research-talk": [],
+  "fixed-line": [],
+  "spelled-number": [],
+  "typed-figure": [],
   "figure-title": [
     "CS-06#choice_months",
     "CS-09#equity_exposure_min",
@@ -95,14 +52,11 @@
     "KH-12#retirement_age_women"
   ],
   "typed-data-figure": [
-    "INS-15",
     "INS-18",
     "INS-31",
     "INS-32",
-    "IRA-12",
     "IRA-22",
     "KGL-17",
-    "KGL-31",
     "KGL-33",
     "KH-20",
     "KH-23",
@@ -110,16 +64,7 @@
     "KH-26",
     "MGD-19"
   ],
-  "pointer-word": [
-    "KH-20",
-    "MGD-21"
-  ],
-  "title-ditto": [
-    "CS-05",
-    "KH-36"
-  ],
-  "page-copy": [
-    "IRA-10#ira-hishtalmut",
-    "KH-14#keren-hishtalmut"
-  ]
+  "pointer-word": [],
+  "title-ditto": [],
+  "page-copy": []
 }
