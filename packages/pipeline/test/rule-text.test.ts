@@ -55,10 +55,14 @@ describe("phrasesIn", () => {
   const talk = leftovers.research_talk;
   it("finds a phrase that reports how the site read a rule", () => {
     expect(phrasesIn("נוסח התקנות נקרא ברשומות.", talk.phrases, talk.allowed)).toEqual(["נקרא ב"]);
-    expect(phrasesIn("האתר לא מצא את הנוסח.", talk.phrases, talk.allowed)).toEqual(["האתר לא"]);
+    expect(phrasesIn("האתר לא בדק את הנוסח.", talk.phrases, talk.allowed)).toEqual(["האתר לא"]);
   });
   it("lets the site's reading said as such stand", () => {
     expect(phrasesIn("זו קריאה של האתר לא של הרשות.", talk.phrases, talk.allowed)).toEqual([]);
+  });
+  it("lets the site say what it does not know or did not find (guidelines/wording.md 6 and 7)", () => {
+    expect(phrasesIn("האתר לא יודע אם הקרן רשומה בישראל.", talk.phrases, talk.allowed)).toEqual([]);
+    expect(phrasesIn("האתר לא מצא בכללים שקרא כלל כזה.", talk.phrases, talk.allowed)).toEqual([]);
   });
 });
 
