@@ -260,10 +260,17 @@ describe("rules in groups and the negatives", () => {
     expect(search("הלוואה")).toHaveLength(0);
     expect(search("בן זוג")).toHaveLength(0);
     // the real rule base has rules about a spouse, and the survivors' pension term names "בן או בת הזוג"
-    // (its explanation now follows the CMA's standard bylaw): only rules and terms answer, nothing in the catalogue
-    expect(top("בן זוג").every((h) => isRuleKind(h.entry.kind) || h.entry.kind === "term")).toBe(true);
-    // the real rule base does have rules about loans against a fund, so "הלוואה" now finds those and nothing in the catalogue
-    expect(top("הלוואה", false).every((h) => isRuleKind(h.entry.kind) || h.entry.kind === "term")).toBe(true);
+    // (its explanation now follows the CMA's standard bylaw), and rules about loans against a fund: what answers is the knowledge
+    // layer (rules, terms and the documents the rules rest on), nothing in the catalogue. A gazette order on a housing loan stands in
+    // the index, as one does once three rules cite it and it becomes a featured document, and a document's title may name a loan
+    const booklet = e("document", "צו הבנקאות (שירות ללקוח) (פיקוח על שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ״ו-2026", "/documents#booklet");
+    const withBooklet = [...real, booklet];
+    const knowledge = (h: SearchHit) => isRuleKind(h.entry.kind) || h.entry.kind === "term" || h.entry.kind === "document";
+    expect(searchEntries(withBooklet, normalize("בן זוג"), texts).every(knowledge)).toBe(true);
+    const loan = searchEntries(withBooklet, normalize("הלוואה"), null);
+    expect(loan.every(knowledge)).toBe(true);
+    expect(loan.some((h) => h.entry.href === booklet.href)).toBe(true);
+    expect(loan.some((h) => isRuleKind(h.entry.kind))).toBe(true);
   });
   it("shows track numbers first for a bare 25, then the 25% rules before the tracks that merely contain it", () => {
     const withTrack: SearchEntry[] = [...real, e("track", "מסלול לדוגמה", "/companies/1/2500", ["2500"])];
