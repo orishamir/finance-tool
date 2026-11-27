@@ -3,11 +3,25 @@
 import type { SearchEntry } from "../lib/search";
 import { companyPath, documentsPath, guidePath, rulesPath, trackBrowserPath, trackPath } from "../lib/site-paths";
 
+/** Each page's own list of the terms its content ships, by page id. */
+type ShippedTerms = Readonly<Record<string, { termIds: readonly string[] } | undefined>>;
+
+/**
+ * The page a term's search row opens: of the term's own guide pages, given in the guide's order, the first whose content ships the term,
+ * then the first of its exposure pages that does; null when none ships it. It stays out of lib/search, whose code ships to the browser.
+ */
+function termPage(he: string, guides: readonly string[], exposures: readonly string[], guideContent: ShippedTerms, exposureContent: ShippedTerms): { guide: string; exposure?: undefined } | { guide?: undefined; exposure: string } | null {
+  const guide = guides.find((id) => guideContent[id]?.termIds.includes(he));
+  if (guide) return { guide };
+  const exposure = exposures.find((id) => exposureContent[id]?.termIds.includes(he));
+  return exposure ? { exposure } : null;
+}
+
 export async function loader() {
   const { loadCma, loadProducts, loadRules, loadParameters, readDirFiles, today } = await import("../lib/data.server");
   const { termRecord } = await import("@finance-tool/schema");
   const { exposureHref, loadCatalog, loadExposures } = await import("../lib/instruments.server");
-  const { normalize, ruleFigs, shownEntry, termKey, termPage } = await import("../lib/search");
+  const { normalize, ruleFigs, shownEntry, termKey } = await import("../lib/search");
   const { gershayim } = await import("../lib/format");
   const { limitedBondFund, mutualFunds, search, searchMore, sourceBlock, parametersPage, topicName } = await import("../copy");
   const entries: SearchEntry[] = [];

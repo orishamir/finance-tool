@@ -63,23 +63,6 @@ export interface SearchFig {
 /** The key of a glossary term's rows in the index and in the texts file: its record's id, since several records share one name. */
 export const termKey = (id: string): string => `term:${id}`;
 
-/**
- * The page a term's search row opens: of the term's own guide pages, given in the guide's order, the first whose content ships the term,
- * then the first of its exposure pages that does; null when none ships it.
- */
-export function termPage(
-  he: string,
-  guides: readonly string[],
-  exposures: readonly string[],
-  guideContent: Readonly<Record<string, { termIds: readonly string[] } | undefined>>,
-  exposureContent: Readonly<Record<string, { termIds: readonly string[] } | undefined>>,
-): { guide: string; exposure?: undefined } | { guide?: undefined; exposure: string } | null {
-  const guide = guides.find((id) => guideContent[id]?.termIds.includes(he));
-  if (guide) return { guide };
-  const exposure = exposures.find((id) => exposureContent[id]?.termIds.includes(he));
-  return exposure ? { exposure } : null;
-}
-
 export interface SearchEntry {
   kind: SearchKind;
   name: string;
