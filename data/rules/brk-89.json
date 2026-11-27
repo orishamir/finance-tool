@@ -1,0 +1,45 @@
+{
+  "id": "BRK-89",
+  "title": "An exchange trade in securities settles at the clearing house on the next business day, and the member credits the client by the day of settlement",
+  "title_he": "סליקה במסלקת הבורסה: מתי עסקה נסלקת ומתי החשבון שלכם מתעדכן",
+  "text_he": "לפי חוקי העזר של מסלקת הבורסה, עסקה בניירות ערך בבורסה, חוץ מעסקת ריפו, נסלקת בסבב הסליקה הראשון של יום העסקים שאחרי יום המסחר. סליקת ניירות הערך נעשית בו בזמן עם הסליקה הכספית. זו הסליקה בין המסלקה לחבריה, כמו בנקים ובתי השקעות. לפי תקנון הבורסה, הבנק או בית ההשקעות מחייב ומזכה את החשבון שלכם בניירות הערך לא יאוחר מיום סליקת ניירות הערך במסלקה, ובכסף לא יאוחר מיום הסליקה הכספית.",
+  "strength": "primary",
+  "dimensions": [
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "brokerage-account.md",
+  "checked": "2026-11-27",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://content.tase.co.il/media/t3coscsb/274627.pdf#page=18",
+      "title": "חוקי העזר של מסלקת הבורסה, חלק ב'",
+      "title_he": "חוקי העזר של מסלקת הבורסה לניירות ערך בתל-אביב בע\"מ, חלק ב'",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.18, ch. ה ss.8, 9(א)",
+      "locator_he": "עמוד 18, פרק ה סעיפים 8, 9(א)",
+      "page": 18,
+      "quote": "סבב הסליקה הראשון - ביום העסקים הבא",
+      "checked": "2026-11-27"
+    },
+    {
+      "url": "https://content.tase.co.il/media/q2mhob4u/274690.pdf#page=35",
+      "title": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "title_he": "מדריך לחברי הבורסה: החלק הראשון לתקנון (מעודכן עד 1.1.2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "exchange_rules",
+      "strength": "primary",
+      "locator": "p.35, s.27א(1)-(2)",
+      "locator_he": "עמוד 35, סעיף 27א(1)-(2)",
+      "page": 35,
+      "quote": "ביצוע סליקת המלאי במסלקת הבורסה",
+      "checked": "2026-11-27",
+      "qualifier": "(exchange rules, ISA-approved)"
+    }
+  ]
+}
