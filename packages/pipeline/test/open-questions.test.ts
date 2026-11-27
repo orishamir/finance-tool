@@ -121,7 +121,7 @@ describe("data/open-questions.json", () => {
   const file = openQuestionsFile.parse(JSON.parse(readFileSync(fileURLToPath(new URL("../../../data/open-questions.json", import.meta.url)), "utf8")));
   const texts = readItemTexts(references);
   const base = readRuleBaseIds(references);
-  const answerable = answerableRules(base.blocks);
+  const answerable = answerableRules(base.blocks ?? new Map());
 
   it("reads a text for every item the validator reads, and no other", () => {
     expect([...texts.keys()].sort()).toEqual(readOpenQuestionItems(references).map((it) => it.id).sort());

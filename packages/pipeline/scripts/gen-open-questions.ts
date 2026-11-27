@@ -134,7 +134,9 @@ function main(): void {
 
   const items = readOpenQuestionItems(references);
   const texts = readItemTexts(references);
-  const rules = answerableRules(readRuleBaseIds(references).blocks);
+  const { blocks } = readRuleBaseIds(references);
+  if (!blocks) throw new Error("readRuleBaseIds read no rule blocks, so no rule could be listed in answered_by");
+  const rules = answerableRules(blocks);
   const prev = new Map<string, OpenQuestionEntry>(existsSync(OUT) ? (JSON.parse(readFileSync(OUT, "utf8")) as OpenQuestionEntry[]).map((q) => [q.id, q]) : []);
 
   const struck = items.filter((it) => it.struck);
