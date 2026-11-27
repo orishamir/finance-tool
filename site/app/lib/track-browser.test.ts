@@ -44,7 +44,9 @@ describe("the data the loader ships", () => {
 
   it("every figure is a sourced value of the regulator's file, with the stale rule", () => {
     const x = gemel.tracks.find((t) => t.id === 13414)!;
-    expect(x.fee.source.publisher).toContain("Capital Market");
+    // the regulator by the Hebrew name the source line shows; the English name and the CSV read are not shipped
+    expect(x.fee.source.publisher_he).toBe("רשות שוק ההון, ביטוח וחיסכון");
+    expect([x.fee.source.publisher, "fetched_from" in x.fee.source]).toEqual(["", false]);
     expect(x.fee.state).toBe("sourced");
     expect(x.y3?.unit).toBe("pct_per_year");
     expect(x.y3?.rule_ids).toEqual(["CAT-04", "CAT-05"]);
