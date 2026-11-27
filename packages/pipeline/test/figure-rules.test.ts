@@ -67,6 +67,15 @@ describe("figure-rules table", () => {
     ]);
   });
 
+  it("keeps the savings plans' card on a savings plan's amounts, whose limits its agreement must state, and on no deposit's", () => {
+    const amounts = (wrapper_id: string) => deposit({ wrapper_id, amount_range: { min: vo(100, ["BANK-27", "BANK-28"]), max: vo(5000, ["BANK-27", "BANK-28"]) } });
+    expect(figureRuleProblems("terms/deposits", amounts("savings-plan"), noCards)).toEqual([]);
+    expect(figureRuleProblems("terms/deposits", amounts("bank-deposit"), noCards)).toEqual([
+      { pointer: "/amount_range/min", id: "BANK-28", verdict: "disallowed" },
+      { pointer: "/amount_range/max", id: "BANK-28", verdict: "disallowed" },
+    ]);
+  });
+
   it("names the tax bucket's rules by the bucket: unlinked, linked, prime-linked, a current account", () => {
     const tax = (value: unknown, ids: string[]) => vo(value, ids, "https://www.gov.il/ordinance.pdf");
     expect(figureRuleProblems("terms/deposits", deposit({ tax_bucket: tax("unlinked_15", ["TXI-03", "TXI-04", "TXI-08"]) }), noCards).map((p) => p.id)).toEqual(["TXI-04", "TXI-08"]);

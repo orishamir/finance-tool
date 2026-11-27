@@ -94,7 +94,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "Printed '100 ₪' (minimum) and '10,000 ₪' (maximum) under 'טווח סכום להפקדה'. The product page: 'ניתן להפקיד מדי חודש החל מ-100 ₪ ועד 10,000 ₪', so both bound the monthly deposit."
@@ -114,7 +115,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "Printed '10,000 ₪'; the product page: 'ניתן להפקיד מדי חודש החל מ-100 ₪ ועד 10,000 ₪'."

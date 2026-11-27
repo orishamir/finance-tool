@@ -89,7 +89,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "Printed ' החל מ 50 עד 30000' in the deposit-amount column; read as the amount of each monthly deposit, which the column does not say in words."
@@ -109,7 +110,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "Upper bound as printed; see min."

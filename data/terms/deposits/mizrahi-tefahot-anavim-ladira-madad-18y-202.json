@@ -91,7 +91,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "Printed '₪ 100' as 'סכום הפקדה מזערי'; the deposit is monthly by standing order ('תדירות ההפקדה: הוראת קבע'). The table's amount column holds rate tiers ('טווח סכום להפקדה (לא כולל)'), not this minimum."
@@ -111,7 +112,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "Printed '₪ 10,000' as 'סכום הפקדה מקסימלי'; 'לא ניתן להגדיל או להקטין את סכום ההפקדה החודשית'."

@@ -111,7 +111,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "Printed 'החל מ-50 ₪' in the 447 table; the product sheet prints 'סכום בהוראת הקבע: מינימום 50 ₪ ומקסימום 7,500 ₪' and the same limits for an added one-off deposit."
@@ -131,7 +132,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "The sheet says 'התנאים המופיעים בהסכם זה נכונים נובמבר 2020' and that the binding terms are the joining agreement's; re-fetched 2026-11-07, unchanged (library 7d20ea72363882fc). Per monthly standing order; an added one-off deposit has the same limits, one on a standing-order date."

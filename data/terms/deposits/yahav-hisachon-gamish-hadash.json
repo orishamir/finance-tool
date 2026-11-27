@@ -135,7 +135,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "The page: 'בחסכון גמיש סכום הפקדה מינימאלי - 200 ש\"ח'; the board's amount row: 'מ-200 ש\"ח'."
@@ -155,7 +156,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "The page: 'סכום הפקדה מקסימאלי - 5,000 ש\"ח'; read as the bound of each monthly deposit, which the page does not say in words. The board prints no upper bound."

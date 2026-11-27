@@ -115,7 +115,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "The terms s.4.4: 'סכום ההפקדה לא יפחת מ-100 ש\"ח ולא יעלה על 30,000 ש\"ח'. The table prints 'מינימום - 100 ₪' and 'מקסימום - 1 מיליון ₪' under 'טווח סכום להפקדה'."
@@ -135,7 +136,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "The terms s.4.4: 'ולא יעלה על 30,000 ש\"ח' for each deposit ('סכום ההפקדה'). The table prints 'מקסימום - 1 מיליון ₪' for the same plan; the table does not say whether that bounds each deposit or the balance. Recorded is the terms' figure, the binding document for the plan (s.1.2: on a conflict with the general terms, these terms prevail); the terms are dated 2023 (v11) and the table 2026, so the conflict is in doubt_he."

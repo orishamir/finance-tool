@@ -89,7 +89,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "Printed 'החל מ-50 ₪'. No maximum is printed in the 447 table."

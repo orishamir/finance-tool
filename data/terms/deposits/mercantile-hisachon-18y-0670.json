@@ -90,7 +90,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "The product page prints 'מינימום הפקדה חודשית 50 ש\"ח, מקסימום הפקדה חודשית 250 ש\"ח'; the 447 table prints ' החל מ 50 עד 250'."
@@ -110,7 +111,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "Upper bound as printed; see min."

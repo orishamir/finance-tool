@@ -135,7 +135,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "The table prints the range '100 - 10,000' in the deposit-amount column; for a periodic-deposit plan this is read as the amount per deposit, but the page does not say so in words."
@@ -155,7 +156,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "Upper bound as printed; see min for the per-deposit reading."

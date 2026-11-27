@@ -87,7 +87,11 @@ export const FIGURE_RULES: readonly FigureRow[] = [
     allow: [
       { id: "BANK-27", why: "each bank sets the amounts a product takes, and the table prints each range on a row of its own" },
       { id: "BANK-09", when: currentAccount, why: "the minimum and maximum balance a current account's interest is paid on, which BANK-09 says the bank must show" },
-      never("BANK-28", "BANK-28 is what a savings plan's agreement says about breaking it: the break line opens it"),
+      {
+        id: "BANK-28",
+        when: savingsPlan,
+        why: "the limits on how much each deposit of a savings plan may be, which the plan's agreement must state (disclosure rules s.7(ב)(4))",
+      },
     ],
   },
   {

@@ -113,7 +113,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BANK-27"
+        "BANK-27",
+        "BANK-28"
       ],
       "state": "sourced",
       "notes": "Printed minimum 100 ('minSum'); the 447 data prints no upper bound ('maxSum' -1). Read as the amount of each monthly deposit, which the table does not say in words."
