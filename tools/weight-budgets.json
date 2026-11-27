@@ -12,7 +12,7 @@
     "company with an account": { "script": 549, "data": 111 },
     "track": { "script": 336, "data": 51 },
     "tracks": { "script": 335, "data": 102 },
-    "deposits": { "script": 345, "data": 61 },
+    "deposits": { "script": 347, "data": 62 },
     "deal": { "script": 556, "data": 126 },
     "transfer": { "script": 321, "data": 14 },
     "indices": { "script": 635, "data": 620 },
