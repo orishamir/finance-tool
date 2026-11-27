@@ -204,6 +204,7 @@ describe("a record's text on a company's page names no other company (Q64, a rat
     "BANK-38",
     "BANK-48",
     "BPN-09",
+    "BRK-44",
     "BRK-50",
     "BRK-66",
     "BRK-67",
