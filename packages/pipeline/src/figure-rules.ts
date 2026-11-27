@@ -54,6 +54,38 @@ const bucket = (r: Json): unknown => {
 };
 const bankIs = (...banks: string[]) => (r: Json) => banks.includes(String(field(r, "bank")));
 const savingsPlan = (r: Json) => field(r, "wrapper_id") === "savings-plan";
+
+/** Directive 447 Annex A's eight standard shekel deposit types, by period (BANK-14). */
+const ANNEX_A_TYPES = new Set(["פיקדון יומי", "פיקדון שבועי", "פיקדון חודשי", "פיקדון ל-3 חודשים", "פיקדון ל-6 חודשים", "פיקדון לשנה", "פיקדון לשנתיים", "פיקדון ל-3 שנים"]);
+/** A row of the type column printed as its period alone ("12 חודשים", as Mizrahi-Tefahot prints it), by the Annex A type of that period. */
+const ANNEX_A_PERIODS: Readonly<Record<string, string>> = {
+  "1 יום": "פיקדון יומי",
+  "1 שבוע": "פיקדון שבועי",
+  "1 חודש": "פיקדון חודשי",
+  "3 חודשים": "פיקדון ל-3 חודשים",
+  "6 חודשים": "פיקדון ל-6 חודשים",
+  "12 חודשים": "פיקדון לשנה",
+  שנתיים: "פיקדון לשנתיים",
+  "3 שנים": "פיקדון ל-3 שנים",
+};
+/**
+ * The record's type (`type_447`) as one of Annex A's eight, read through the ways the banks print the type column: "פקדון" for
+ * "פיקדון", "ל 3" for "ל-3", "לחודש" for "חודשי", the days after it in brackets ("פיקדון לשנה (365 יום)"), or the period alone. Null for
+ * any other type: a bank's product name ("פקצ״מ לשנה", "חסכון אודם לשנה"), a savings plan, a longer deposit.
+ */
+export function annexAType(type447: unknown): string | null {
+  if (typeof type447 !== "string") return null;
+  const t = type447
+    .trim()
+    .replace(/^פקדון/, "פיקדון")
+    .replace(/\s*\(\d+ יום\)$/, "")
+    .replace(/ ל (?=\d)/, " ל-")
+    .replace(/^פיקדון לחודש$/, "פיקדון חודשי");
+  const named = ANNEX_A_PERIODS[t] ?? t;
+  return ANNEX_A_TYPES.has(named) ? named : null;
+}
+const annexA = (r: Json) => annexAType(field(r, "type_447")) !== null;
+const ANNEX_A_TERM = "Annex A fixes the period of its eight standard deposit types, and this record is one of them; any other product's term is the bank's own";
 /** The ten banks whose terms BANK-34 read for what each calls the prime. */
 const PRIME_BANKS = ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem", "one-zero"];
 
@@ -66,7 +98,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
     closed: true,
     allow: [
       never("BANK-09", "a current account has no term, and BANK-09 sets none"),
-      never("BANK-14", "the bank sets each product's term; the annex's list of accepted types sets no product's term"),
+      { id: "BANK-14", when: annexA, why: ANNEX_A_TERM },
       never("BANK-27", "BANK-27 is about exit points and amount ranges, not the term"),
       never("BANK-28", "BANK-28 is what a savings plan's agreement says about breaking it: the break line opens it"),
     ],
@@ -76,7 +108,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
     path: "term_days",
     closed: true,
     allow: [
-      { id: "BANK-14", why: "the annex lists the accepted shekel deposit types by their period, which these days count" },
+      { id: "BANK-14", when: annexA, why: ANNEX_A_TERM },
       { id: "BANK-50", when: (_r, v) => typeof v.value === "number", why: "F-21 counts a term under a year by these days, by the formula BANK-50 holds" },
     ],
   },

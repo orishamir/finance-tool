@@ -26,7 +26,9 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [],
+    "rule_ids": [
+      "BANK-14"
+    ],
     "state": "sourced",
     "notes": "Printed as '1 יום'; recorded as 1 days, the period of a daily deposit (directive 447 Annex A, BANK-14)."
   },

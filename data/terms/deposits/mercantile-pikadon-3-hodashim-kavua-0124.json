@@ -28,7 +28,9 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [],
+    "rule_ids": [
+      "BANK-14"
+    ],
     "state": "sourced",
     "notes": "Printed as '3 חודשים' (row 'פיקדון 3 חודשים', code 0124); recorded as 3 months, the period of a three-month deposit (directive 447 Annex A, BANK-14)."
   },

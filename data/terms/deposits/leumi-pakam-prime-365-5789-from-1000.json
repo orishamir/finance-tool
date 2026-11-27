@@ -29,7 +29,9 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [],
+    "rule_ids": [
+      "BANK-14"
+    ],
     "state": "sourced",
     "notes": "Printed as 'פיקדון לשנה', model 5789/8 'פק\"מ פריים ל- 365 ימים'; recorded as 12 months, the period of a one-year deposit (directive 447 Annex A, BANK-14)."
   },

@@ -25,7 +25,9 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [],
+    "rule_ids": [
+      "BANK-14"
+    ],
     "state": "sourced",
     "notes": "Name printed 'WIN WIN לשנה'; the table prints no period column for it; recorded as 12 months from the name."
   },

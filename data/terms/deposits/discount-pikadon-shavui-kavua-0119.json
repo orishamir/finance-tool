@@ -25,7 +25,9 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [],
+    "rule_ids": [
+      "BANK-14"
+    ],
     "state": "sourced",
     "notes": "Printed as '7-13 יום' (row 'פקדון שבועי', code 0119); recorded as 7 days, the period of a weekly deposit (directive 447 Annex A, BANK-14)."
   },

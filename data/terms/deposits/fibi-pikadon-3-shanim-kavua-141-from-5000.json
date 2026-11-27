@@ -26,7 +26,9 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [],
+    "rule_ids": [
+      "BANK-14"
+    ],
     "state": "sourced",
     "notes": "Printed as product type 'פיקדון ל-3 שנים' (row 'איילון - פיקדון שיקלי בריבית קבועה לשלוש שנים ומעלה'); recorded as 36 months, the period of a three-year deposit (directive 447 Annex A, BANK-14)."
   },

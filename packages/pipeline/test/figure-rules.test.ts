@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 import * as deposits from "../src/checks/deposits.ts";
 import * as figureRulesCheck from "../src/checks/figure-rules.ts";
 import { testData } from "../src/checks/lib/kit.ts";
-import { FIGURE_RULES, figureRuleProblems, judgeId, pathOf, rowFor, type CardSources } from "../src/figure-rules.ts";
+import { annexAType, FIGURE_RULES, figureRuleProblems, judgeId, pathOf, rowFor, type CardSources } from "../src/figure-rules.ts";
 
 const src = (url: string) => ({ url, title: "t", publisher: "p", strength: "institution" });
 const vo = (value: unknown, rule_ids: string[], url = "https://bank.example/rates") => ({ value, unit: "pct_per_year", source: src(url), rule_ids });
@@ -59,11 +59,30 @@ describe("figure-rules table", () => {
     expect(figureRuleProblems("terms/deposits", deposit({ rate_type: "variable", anchor: "ריבית עוגן", rate_offered: vo(2, ["BANK-13", "BANK-25"]), spread: vo(-0.3, ["BANK-25", "BANK-34"]) }), noCards)).toEqual([{ pointer: "/spread", id: "BANK-34", verdict: "disallowed" }]);
   });
 
-  it("drops the prime's card and the savings plans' break rule from the rate, and every rule from the term", () => {
-    expect(figureRuleProblems("terms/deposits", deposit({ rate_type: "variable", rate_offered: vo(2, ["BANK-13", "BANK-25", "BANK-34", "BANK-28"]), term_months: vo(12, ["BANK-14"]) }), noCards)).toEqual([
-      { pointer: "/term_months", id: "BANK-14", verdict: "disallowed" },
+  it("drops the prime's card and the savings plans' break rule from the rate", () => {
+    expect(figureRuleProblems("terms/deposits", deposit({ rate_type: "variable", rate_offered: vo(2, ["BANK-13", "BANK-25", "BANK-34", "BANK-28"]) }), noCards)).toEqual([
       { pointer: "/rate_offered", id: "BANK-34", verdict: "disallowed" },
       { pointer: "/rate_offered", id: "BANK-28", verdict: "disallowed" },
+    ]);
+  });
+
+  it("reads a bank's type column as one of Annex A's eight types, however it prints it", () => {
+    expect(annexAType("פיקדון לשנה")).toBe("פיקדון לשנה");
+    expect(annexAType("פקדון ל-3 חודשים")).toBe("פיקדון ל-3 חודשים");
+    expect(annexAType("פיקדון ל 6 חודשים")).toBe("פיקדון ל-6 חודשים");
+    expect(annexAType("פיקדון לשנתיים (730 יום)")).toBe("פיקדון לשנתיים");
+    expect(annexAType("פיקדון לחודש")).toBe("פיקדון חודשי");
+    expect(annexAType("12 חודשים")).toBe("פיקדון לשנה");
+    expect(annexAType("1 יום")).toBe("פיקדון יומי");
+    for (const other of ["פיקדון ל-13 שנים", "פיקדון ל-15 שנים", "הו״ק ל-3 שנים", "חיסכון חודשי (לתקופה של שנה)", "חסכון אודם לשנה", "פקצ״מ לשנה", null]) expect(annexAType(other), String(other)).toBeNull();
+  });
+
+  it("names Annex A's card on the term of its eight standard types alone, in months and in days", () => {
+    const term = (type_447: string) => deposit({ type_447, term_months: vo(12, ["BANK-14"]), term_days: vo(365, ["BANK-14", "BANK-50"]) });
+    expect(figureRuleProblems("terms/deposits", term("פיקדון לשנה (365 יום)"), noCards)).toEqual([]);
+    expect(figureRuleProblems("terms/deposits", term("חיסכון ל-10 שנים"), noCards)).toEqual([
+      { pointer: "/term_months", id: "BANK-14", verdict: "disallowed" },
+      { pointer: "/term_days", id: "BANK-14", verdict: "disallowed" },
     ]);
   });
 

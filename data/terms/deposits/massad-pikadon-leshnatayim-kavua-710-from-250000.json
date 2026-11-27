@@ -26,7 +26,9 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [],
+    "rule_ids": [
+      "BANK-14"
+    ],
     "state": "sourced",
     "notes": "Printed as product type 'פיקדון לשנתיים' (row 'סער - פקדון לשנתיים עם תחנות יציאה כל רבעון'); recorded as 24 months, the period of a two-year deposit (directive 447 Annex A, BANK-14)."
   },

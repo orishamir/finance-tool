@@ -29,7 +29,9 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [],
+    "rule_ids": [
+      "BANK-14"
+    ],
     "state": "sourced",
     "notes": "Printed as 'פיקדון שבועי', model 5164/8 'פק\"מ קבוע 7-13 ימים'; recorded as 7 days, the period of a weekly deposit (directive 447 Annex A, BANK-14)."
   },

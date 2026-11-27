@@ -26,7 +26,9 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [],
+    "rule_ids": [
+      "BANK-14"
+    ],
     "state": "sourced",
     "notes": "Printed as product type 'פיקדון ל-6 חודשים' (row '(בשקלים בריבית קבועה (12 - 3 חודשים'); recorded as 6 months, the period of a six-month deposit (directive 447 Annex A, BANK-14)."
   },

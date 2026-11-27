@@ -25,7 +25,9 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [],
+    "rule_ids": [
+      "BANK-14"
+    ],
     "state": "sourced",
     "notes": "Printed as product type 'פיקדון יומי' (row 'יומי מתחדש בריבית משתנה ל 6 חודשים'); recorded as 1 days, the period of a daily deposit (directive 447 Annex A, BANK-14)."
   },
