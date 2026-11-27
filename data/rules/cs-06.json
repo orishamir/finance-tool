@@ -30,7 +30,7 @@
       "notes": "The parent's choice period: six months from birth, fixed in law 74ב(ד)(1א). Deposits for the months of the choice period are paid into the chosen body with the first deposit (regulation 3(ד))."
     }
   },
-  "text_he": "ההורה בוחר קופת גמל או בנק מהרשימה שמשרד האוצר אישר, יחד עם מסלול, בתוך שישה חודשים מהלידה. הבחירה הראשונה נעשית רק דרך הביטוח הלאומי.",
+  "text_he": "ההורה בוחר קופת גמל או בנק מהרשימה שמשרד האוצר אישר, יחד עם מסלול, בתוך {CS-06:choice_months} מהלידה. הבחירה הראשונה נעשית רק דרך הביטוח הלאומי.",
   "figure_names_he": {
     "choice_months": "חודשים לבחירה מהלידה"
   },

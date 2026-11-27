@@ -32,7 +32,7 @@
       "notes": "The CMA standard child bylaw: a track switch within three business days of a complete, signed request, under the legislative arrangement. A fund-to-fund transfer follows regulation 7: the receiving manager notifies NII within 7 business days, NII deposits from the following month, the transfer request goes within 2 business days of that deposit and the balance moves within 5 business days."
     }
   },
-  "text_he": "את המסלול אפשר לשנות בכל עת דרך הקופה. לפי התקנון התקני של רשות שוק ההון, המעבר נעשה בתוך ימי העסקים לשינוי מסלול מבקשה מלאה וחתומה. את החיסכון אפשר להעביר לקופה אחרת מהרשימה, דרך הקופה הקולטת. היתרה והרווחים עוברים, והביטוח הלאומי מפנה את ההפקדות הבאות. אי אפשר לעבור לבנק. לפני גיל 18 פועל ההורה, ואחרי 18 רק הילד.",
+  "text_he": "את המסלול אפשר לשנות בכל עת דרך הקופה. לפי התקנון התקני של רשות שוק ההון, המעבר נעשה בתוך {CS-11:track_switch_business_days} מבקשה מלאה וחתומה. את החיסכון אפשר להעביר לקופה אחרת מהרשימה, דרך הקופה הקולטת, אבל לא לבנק. היתרה והרווחים עוברים, והביטוח הלאומי מפנה את ההפקדות הבאות. לפני גיל 18 פועל ההורה, ואחרי 18 רק הילד.",
   "figure_names_he": {
     "track_switch_business_days": "ימי עסקים לשינוי מסלול"
   },
