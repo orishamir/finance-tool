@@ -1,0 +1,37 @@
+{
+  "id": "FXD-26",
+  "title": "Bank Yahav: its fixed-rate foreign-currency deposit board",
+  "title_he": "פיקדון במטבע חוץ בבנק יהב: לוח הריבית הקבועה",
+  "text_he": "בלוח הריביות של בנק יהב, בתוקף מ־6.10.2026, יש פיקדונות במטבע חוץ בריבית קבועה בשבעה מטבעות: דולר, לירה שטרלינג, דולר אוסטרלי, דולר קנדי, אירו, פרנק שווייצרי ויין. ההפקדה היא מ־2,000 יחידות מטבע, ״לפי סוג מטבע״, והתקופות הן חודש עד חודשיים, 3 עד 5 חודשים, 6 עד 11 חודשים ושנה. הריבית מוצגת כ״תעריפית״, ובלוח הזה כמה מטבעות מוצגים בריבית 0.00%.",
+  "strength": "institution",
+  "dimensions": [
+    "currency",
+    "minimum"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-22",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "Yahav rate board 13_26, effective 06/10/2026",
+      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "checked": "2026-10-22"
+    }
+  ]
+}

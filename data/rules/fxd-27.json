@@ -1,0 +1,38 @@
+{
+  "id": "FXD-27",
+  "title": "Bank Yahav: dollar-linked one-off savings with no principal guarantee",
+  "title_he": "חיסכון מישר צמוד דולר בבנק יהב: בלי הבטחת קרן",
+  "text_he": "״חיסכון מישר חד פעמי - צמוד דולר״ של בנק יהב הוא חיסכון בשקלים שצמוד לדולר, ל־365 ימים, מ־1,000 ₪. הריבית מדורגת לפי הסכום מ־100,000 ₪, ומוצגת כ״תעריפית״ וכ״מתואמת״. בהערה בלוח הריביות כתוב ״החיסכון ללא הבטחת קרן״. האתר לא יודע את התנאים המלאים, שכתובים בהסכם החיסכון.",
+  "strength": "institution",
+  "dimensions": [
+    "currency",
+    "protection",
+    "minimum"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-22",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "yahav",
+      "name_he": "בנק יהב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
+      "title": "Yahav rate board 13_26",
+      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
+      "publisher": "Bank Yahav",
+      "publisher_he": "בנק יהב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-10-22"
+    }
+  ]
+}
