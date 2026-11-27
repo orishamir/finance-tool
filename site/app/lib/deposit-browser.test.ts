@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { depositBrowser as copyDeposits } from "../copy";
 import { buildDepositBrowser, offerOf } from "./deposit-browser.server";
 import { loadDepositTerms } from "./instruments.server";
-import { TERMS, type BarGap, accessOf, interestOn, interestUnknown, isLinked, offersOf, periodBest, readSpan, rowSplit, rowsOf, sortRows, type DbData, type DbOffer, type DbRow } from "./deposit-browser";
+import { TERMS, type BarGap, accessOf, gapWords, interestOn, interestUnknown, isLinked, offersOf, periodBest, readSpan, rowSplit, rowsOf, sortRows, type DbData, type DbOffer, type DbRow } from "./deposit-browser";
 import { depositName, shownName } from "./deposit-kind";
 import { entered } from "./value";
 import type { SiteValue } from "./value";
@@ -219,18 +219,25 @@ describe("a record's doubt and notes on the deposits page", () => {
     const withConditions = records.filter((r) => r.wrapper_id === "bank-deposit" && r.conditions_he);
     expect(withConditions.length).toBeGreaterThan(0);
     const offers = buildDepositBrowser().offers;
-    for (const r of withConditions) {
-      const o = offers.find((x) => x.id === r.id);
-      if (o) expect(o.conditions).toBe(r.conditions_he);
-    }
+    const onPage = withConditions.filter((r) => offers.some((x) => x.id === r.id));
+    expect(onPage.length).toBeGreaterThan(0);
+    for (const r of onPage) expect(offers.find((x) => x.id === r.id)!.conditions, r.id).toBe(r.conditions_he);
+    // a record with none carries none
+    const without = offers.find((o) => !records.find((r) => r.id === o.id)?.conditions_he);
+    expect(without?.conditions).toBeUndefined();
   });
 });
 
 describe("a period's bar with no rate", () => {
   it("says which of the four gaps it is, each in words of its own", () => {
-    const t = copyDeposits.chart.gap;
-    const words: Record<BarGap, string> = { otherKind: t.otherKind.fixed, unknownAtAmount: t.unknownAtAmount, notAtAmount: t.notAtAmount, none: t.none };
-    expect(new Set(Object.values(words)).size).toBe(4);
-    expect(new Set([t.otherKind.variable, t.unknownAtAmount, t.notAtAmount, t.none]).size).toBe(4);
+    const gaps: BarGap[] = ["otherKind", "unknownAtAmount", "notAtAmount", "none"];
+    for (const kind of ["fixed", "variable"] as const) {
+      const words = gaps.map((g) => gapWords(g, kind, 10_000));
+      expect(new Set(words).size, kind).toBe(4);
+      for (const w of words) expect(w, kind).not.toBe("");
+    }
+    // with no amount chosen, only "the other kind only" holds
+    expect(gapWords("otherKind", "fixed", null)).toBe(copyDeposits.chart.gap.otherKind.fixed);
+    expect(gaps.slice(1).map((g) => gapWords(g, "fixed", null))).toEqual(["", "", ""]);
   });
 });

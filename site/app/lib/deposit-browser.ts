@@ -125,6 +125,9 @@ export const forCell = (o: DbOffer) => o.linkage === "none" && !o.limited;
  */
 export type BarGap = "otherKind" | "unknownAtAmount" | "notAtAmount" | "none";
 
+/** The words under a bar that has no rate, by its gap: "only the other kind" at any amount, the rest only once an amount is chosen. */
+export const gapWords = (gap: BarGap, kind: RateKind, amount: number | null): string => (gap === "otherKind" ? t.chart.gap.otherKind[kind] : amount === null ? "" : t.chart.gap[gap]);
+
 /**
  * A period's bar in the chart over the list (F-108 over every bank at once): the highest rate of the kind among the offers of the term that
  * are unlinked and open to every customer, that the amount opens, and the offer that pays it; with none, why.

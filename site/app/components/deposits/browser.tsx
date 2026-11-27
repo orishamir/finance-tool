@@ -6,7 +6,7 @@ import { useMemo, useRef, useState } from "react";
 import { depositBrowser as t } from "../../copy";
 import { MQ, useAddressParams, useMedia } from "../../lib/hooks";
 import { useAddressSort } from "../../lib/list-sort";
-import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, interestOn, interestText, isLinked, offersOf, foldedOffers, offersPhrase, opens, periodBest, readSpan, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type TermId } from "../../lib/deposit-browser";
+import { DEFAULT_SORT, KIND_TERMS, SORT_IDS, START_KIND, START_TERM, TERMS, gapWords, interestOn, interestText, isLinked, offersOf, foldedOffers, offersPhrase, opens, periodBest, readSpan, rowsOf, sortRows, type DbData, type DbOffer, type DbRow, type RateKind, type SortId, type TermId } from "../../lib/deposit-browser";
 import { fmt } from "../../lib/format";
 import { entered } from "../../lib/value";
 import { Card, ChoiceChips, Disclosure, FilterChip, HelpMark, LabelSheetHost, NumberField, PeriodBars, PhoneFold, Section, SegmentedControl, When, amountCheck, fieldRules, readFieldText, type FieldRules, type FieldText, type PeriodBar, DateSpanText } from "../kit";
@@ -76,7 +76,7 @@ export function DepositBrowser({ data }: { data: DbData }) {
     const bank = pick ? (data.banks.find((b) => b.id === pick.bank)?.name ?? pick.bank) : null;
     const rate = pick ? Number(pick.rate_offered.value) : null;
     const figure = rate !== null ? fmt.number(rate) : undefined;
-    const note = bank ?? (gap ? (gap === "otherKind" ? t.chart.gap.otherKind[kind] : amount === null ? "" : t.chart.gap[gap]) : "");
+    const note = bank ?? (gap ? gapWords(gap, kind, amount) : "");
     return { id: x, label: t.terms[x], short: t.termsShort[x], tiny: t.termsTiny[x], value: rate, figure, unit: "%", note, spoken: `${t.terms[x]}: ${rate !== null ? `${figure}%${t.chart.atBank}${bank}` : t.chart.none}` };
   });
 
