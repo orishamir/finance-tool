@@ -132,6 +132,16 @@ export function shownRate(d: Pick<DepositTerms, "rate_offered" | "rate_effective
   return typeof d.rate_offered.value !== "number" && d.rate_effective ? d.rate_effective : d.rate_offered;
 }
 
+/** The figure a deposit record's doubt is about (data-schema §3.7): the field `doubt_on` names, the rate where it names none. */
+export type DoubtField = NonNullable<DepositTerms["doubt_on"]> | "rate";
+export const doubtField = (d: Pick<DepositTerms, "doubt_on">): DoubtField => d.doubt_on ?? "rate";
+
+/**
+ * The record's doubt as the figure `on` carries it, to spread into that figure: `{ doubt }` when the record has a doubt about it, else
+ * nothing. Every page puts a deposit's doubt on its figures by this alone, so one doubt never lands on two figures.
+ */
+export const doubtFor = (d: Pick<DepositTerms, "doubt_he" | "doubt_on">, on: DoubtField): { doubt?: string } => (d.doubt_he && doubtField(d) === on ? { doubt: d.doubt_he } : {});
+
 /** The words of a note, for comparing two notes by what they say: Hebrew and Latin words and numbers, two characters or more, a maqaf a space. */
 const noteWords = (text: string): Set<string> => new Set(text.replace(/[־-]/g, " ").split(/[^\p{L}\p{N}.%]+/u).map((w) => w.replace(/^\.+|\.+$/g, "")).filter((w) => w.length >= 2));
 

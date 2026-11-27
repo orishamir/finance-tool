@@ -1,7 +1,7 @@
 // The deposits page's data (D92): every bank-deposit record, the latest of each id, as offers the page lists and the grid picks from
 // (F-108); P-11's amounts and P-05's amount to start at. Server-only. Each rate and amount is the record's own value object.
 import type { DepositTerms, ValueObject } from "@finance-tool/schema";
-import { depositLabels, depositName, exitPointsOf, restatesDoubt, shownRate } from "./deposit-kind";
+import { depositLabels, depositName, doubtFor, exitPointsOf, restatesDoubt, shownRate } from "./deposit-kind";
 import { labelRules } from "./label-rests";
 import { termOf, type DbBank, type DbData, type DbOffer } from "./deposit-browser";
 import { loadParameters, loadRules, today } from "./data.server";
@@ -21,8 +21,8 @@ function shown(v: ValueObject, t: string, d: DepositTerms, owner: string): SiteV
   return mostlyHebrew(s.notes) && !restatesDoubt(s.notes, d.doubt_he) ? s : { ...s, notes: "" };
 }
 
-/** The record's doubt as the value it is about carries it: on the rate where `doubt_on` is absent, on the amounts where it names them. */
-const doubted = (v: SiteValue, d: DepositTerms, on: "rate" | "amount_range"): SiteValue => (d.doubt_he && (d.doubt_on ?? "rate") === on ? { ...v, doubt: d.doubt_he } : v);
+/** The record's doubt as the value it is about carries it (`doubtFor`): on the rate where `doubt_on` is absent, on the amounts where it names them. */
+const doubted = (v: SiteValue, d: DepositTerms, on: "rate" | "amount_range"): SiteValue => ({ ...v, ...doubtFor(d, on) });
 
 /** One record as the page's offer; null for a term the standard table does not have. */
 export function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffer | null {

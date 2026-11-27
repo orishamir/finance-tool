@@ -4,7 +4,7 @@
 import { datedDay, tariffDated } from "./tariff-date";
 import { companyPath, documentsPath } from "./site-paths";
 import { valueRuleIds } from "./page-rules.server";
-import { depositKindRules, exitPointsOf, ownName, printedQuotes, restatesDoubt, shownName, shownRate } from "./deposit-kind";
+import { depositKindRules, doubtField, doubtFor, exitPointsOf, ownName, printedQuotes, restatesDoubt, shownName, shownRate, type DoubtField } from "./deposit-kind";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { companyTermRule, institutionsTable, ownDocumentCompanies, takesNewMembers, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
@@ -155,12 +155,12 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
   const stale = isStale(d.snapshot, t);
   const owner = shortName(d.bank, d.bank);
   const l = r4catalogue.labels;
-  const on = d.doubt_on ?? "rate";
+  const on = doubtField(d);
   // each figure says in its sheet's head which line of the card it is (its row's label); a doubt travels with the number it is about,
   // and a Hebrew note that says again what the doubt says gives way to it (Mizrahi-Tefahot 189 prints a rate per exit period)
-  const mark = (v: ValueObject, about: string, doubtOn?: typeof on): SiteValue => {
+  const mark = (v: ValueObject, about: string, doubtOn?: DoubtField): SiteValue => {
     const shown = site(v, t, d.snapshot, owner);
-    return { ...shown, ...(restatesDoubt(shown.notes, d.doubt_he) ? { notes: "" } : {}), about, ...(d.doubt_he && doubtOn === on ? { doubt: d.doubt_he } : {}) };
+    return { ...shown, ...(restatesDoubt(shown.notes, d.doubt_he) ? { notes: "" } : {}), about, ...(doubtOn ? doubtFor(d, doubtOn) : {}) };
   };
   // the day the bank's table says its rates hold from; where it prints none, the day the record was read, which claims no date of the bank's
   const asOfDate = d.rate_offered.effective_from;
@@ -182,7 +182,7 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     asOf: { ...(asOfDate ? asOf : { ...asOf, effective_from: null }), about: l.asOf },
     asOfAfterRead: !!asOfDate && asOfDate > d.rate_offered.checked,
     linkage: d.linkage,
-    linkageValue: { ...textValue(d.linkage, { source: d.source, checked: d.snapshot }, `linkage "${d.linkage}" as the record holds it`, owner), about: l.linkage, ...(d.doubt_he && on === "linkage" ? { doubt: d.doubt_he } : {}) },
+    linkageValue: { ...textValue(d.linkage, { source: d.source, checked: d.snapshot }, `linkage "${d.linkage}" as the record holds it`, owner), about: l.linkage, ...doubtFor(d, "linkage") },
     taxBucket: mark(d.tax_bucket, l.tax),
     amountMin: amountMax ? mark(d.amount_range.min, l.amount) : mark(d.amount_range.min, l.amount, "amount_range"),
     amountMax,

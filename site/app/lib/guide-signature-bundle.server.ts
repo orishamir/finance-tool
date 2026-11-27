@@ -11,7 +11,7 @@
 // across the collected banks (F-86); `oneYearDepositRecords` and `depositRange` make it, and the bank-deposit page lists each bank.
 import { breakTermOf, isTie, middleIndex, mostCommonRate, plainOneYearDeposits, rateRange, tieThreshold } from "@finance-tool/engine";
 import { guideBlocks, guideSignature, r4catalogue } from "../copy";
-import { printedLine } from "./deposit-kind";
+import { doubtFor, printedLine } from "./deposit-kind";
 import type { Bundle } from "./engine";
 import { p05Number, p05Range, runTimeline, withP05Inputs } from "./engine";
 import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
@@ -98,14 +98,13 @@ export function accountBanks(records: DepositTerms[]): AccountBank[] {
     // its sheet says it, one about the amounts the ceiling; the record's English notes stay in the data
     // D31: each rate and ceiling is the bank's own, shown on the line that names the bank
     const name = shortName(r.bank, r.bank);
-    const doubtOn = (on: "rate" | "amount_range") => (r.doubt_he && (r.doubt_on ?? "rate") === on ? { doubt: r.doubt_he } : {});
-    const rate = ownBy({ ...r.rate_offered, ...doubtOn("rate") } as SiteValue, name);
+    const rate = ownBy({ ...r.rate_offered, ...doubtFor(r, "rate") } as SiteValue, name);
     banks.push({
       id: r.id,
       bank: r.bank,
       name,
       rate,
-      ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ownBy({ ...max, ...doubtOn("amount_range") } as SiteValue, name) : null,
+      ceiling: max && max.unit === "nis" && typeof max.value === "number" ? ownBy({ ...max, ...doubtFor(r, "amount_range") } as SiteValue, name) : null,
       conditions: r.conditions_he ?? null,
       ...(typeof r.interest_calc?.periods_per_year?.value === "number" ? { periodsPerYear: r.interest_calc.periods_per_year.value } : {}),
       balanceConditions: (r.balance_conditions ?? []).map((c) => ({ measure: c.measure, bound: c.bound, inclusive: c.inclusive, value: ownBy({ ...c.value } as SiteValue, name) })),
