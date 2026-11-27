@@ -75,6 +75,11 @@ describe("figure-rules table", () => {
     expect(figureRuleProblems("terms/deposits", deposit({ wrapper_id: "current-account", tax_bucket: tax("unlinked_15", ["TXI-03", "TXI-08", "BANK-09"]) }), noCards).map((p) => p.id)).toEqual(["BANK-09"]);
   });
 
+  it("names no rule on a best-of deposit's open tax bucket: the card on its alternatives is the record's topic, not its tax", () => {
+    const winWin = deposit({ variant: ["best_of"], tax_bucket: vo(null, ["BPN-09"], "https://www.gov.il/ordinance.pdf") });
+    expect(figureRuleProblems("terms/deposits", winWin, noCards)).toEqual([{ pointer: "/tax_bucket", id: "BPN-09", verdict: "disallowed" }]);
+  });
+
   it("keeps an id no row knows and lists it as unknown", () => {
     expect(figureRuleProblems("terms/deposits", deposit({ rate_offered: vo(2, ["BANK-13", "BANK-99"]) }), noCards)).toEqual([{ pointer: "/rate_offered", id: "BANK-99", verdict: "unknown" }]);
   });

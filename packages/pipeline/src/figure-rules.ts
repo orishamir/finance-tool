@@ -168,11 +168,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
       { id: "TXI-02", when: (r) => bucket(r) === "linked_25", why: "the ceiling on the tax on interest, which a fully linked deposit's real interest bears" },
       { id: "TXI-05", when: (r) => bucket(r) === "linked_25", why: "the linkage of a fully linked asset is exempt, and the interest above it is taxed" },
       { id: "TXI-08", when: currentAccount, why: "the bank withholds the tax on interest it pays an individual, a current account's credit interest included" },
-      {
-        id: "BPN-09",
-        when: (r, v) => v.value === null && Array.isArray(field(r, "variant")) && (field(r, "variant") as unknown[]).includes("best_of"),
-        why: "a deposit that pays the better of its alternatives at the end: which tax it bears is open, and BPN-09 describes its alternatives",
-      },
+      never("BPN-09", "BPN-09 says what a best-of deposit's alternatives are, not how it is taxed: the record's topic, while its tax is an open question"),
       never("TXI-19", "a lower bracket from the qualifying age: no figure of the deposit, and the tax's own rules name it"),
       never("BANK-09", "BANK-09 is what a bank must show about a current account's interest, not its tax"),
     ],

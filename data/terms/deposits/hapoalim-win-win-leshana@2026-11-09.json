@@ -67,9 +67,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "fixed in law",
-    "rule_ids": [
-      "BPN-09"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Open: TXI OQ19 (proposed 2026-11-07; tax-interest-deposits-bonds.md): how a deposit that pays the better of an unlinked fixed rate and full CPI linkage with no interest (BPN-09) is taxed. No rule in the rule base covers it yet. BPN-09 names this kind of deposit; no TXI rule says how its interest or its linkage is taxed, so neither TXI-03 (15% on unlinked interest) nor TXI-05 (exempt linkage) is applied to it, and the source's strength is 'open' until the rule base holds one. The bank's own contract, section 8, says: 'מחוסך יחיד, במידה והחוסך מזוכה על פי מסלול א' - 15% על המענק/הריבית שנצברה. במידה והחוסך מזוכה על פי מסלול ב' - פטור ממס' (a company's statement about its own product, not a rule)."
   },
