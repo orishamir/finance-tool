@@ -476,6 +476,8 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // with TXS-02 where the exit taxes the real gain
   const exitTaxes = book.on("taxAtExit");
   const during = book.on("taxDuring");
+  // the surtax on the year's distributions is on its own line of the tax during the run (`TaxLine`)
+  const surtaxDuring = book.on("taxDuring", "surtax");
   const taxIndex = taxIndexOf(fund, exitTaxes, exitTaxes.peek);
   const tally = new Tally();
   // D84: an index a fund's own annex states is the fund's statement, carried with the run's figures as a rule it reads is
@@ -959,7 +961,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     if (taxYearOf(m, first) === taxYearOf(T, first)) exitYearFees += custody + custodySum + fixed;
 
     if (closesTaxYear(m, T, first)) {
-      if (distThisYear > 0) tally.taxDuring += yearlySurtax(during, profile, distThisYear, taxYearOf(m, first));
+      if (distThisYear > 0) tally.taxDuring += yearlySurtax(surtaxDuring, profile, distThisYear, taxYearOf(m, first));
       if (m === T) exitYearDist = distThisYear;
       distThisYear = 0;
     }

@@ -3,7 +3,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { BlockedError, employerLinePension, FigureNotUpdatedError, mergedRules, MissingRuleError, ruleBook, runBond, runDeposit, runPension, runProvident, type RunPart, type RunResult, type UsedRule } from "../src/index.ts";
+import { BlockedError, employerLinePension, FigureNotUpdatedError, mergedRules, MissingRuleError, ruleBook, runBond, runDeposit, runPension, runProvident, runSecurities, type RunPart, type RunResult, type UsedRule } from "../src/index.ts";
 import { context, loadRules } from "./golden/harness.ts";
 import { reliefPaths, runs, s23, s23Hishtalmut, s27 } from "./rule-uses-runs.ts";
 
@@ -166,6 +166,20 @@ describe("the parts each run's rules went into", () => {
     expect(changedIn(above, "TXG-10")).toEqual([]);
   });
 
+  it("files the surtax on a year's distributions on its own line of the tax during the run", () => {
+    // a fund that pays out, held by a person whose other income is above the threshold: each year's distributions pay the general surtax
+    const payout = runSecurities({ goal: { amountNow: 2_000_000, monthly: 0, months: 36 }, market: { grossReturn: 0.08, inflation: 0.02 }, fund: { kind: "israeli-fund", drag: { management: 0.001 }, distribution: { yield: 0.02, perYear: 1 } }, tariff: {}, profile: { otherIncome: 1_000_000 } }, ctx);
+    expect(changedIn(payout, "TXG-09")).toContain("taxDuring:surtax");
+    expect(changedIn(payout, "TXG-09")).not.toContain("taxDuring");
+  });
+
+  it("files the F-52 salary tax of a study fund's employer money on its own line of the tax during the run", () => {
+    const over = run("keren hishtalmut, employer money above its limit");
+    expect(detailOf(over, "employerDepositTax")).toBeGreaterThan(0);
+    for (const id of ["TXH-03", "TXG-02", "TXG-35"]) expect(changedIn(over, id), id).toContain("taxDuring:salaryTax");
+    for (const id of ["TXH-03", "TXG-35"]) expect(changedIn(over, id), id).not.toContain("taxDuring");
+  });
+
   it("takes TXG-10 for an early withdrawal only from the surtax on the gains, not from the one on gains and employer deposits", () => {
     // F-47 sums the general surtax on the gains with the employer's deposits and the capital surtax on the gains alone (provident.ts). Other
     // capital income set just under the threshold less the gains and half the deposits puts the first above it and the second below it. The
@@ -203,6 +217,14 @@ describe("the parts each run's rules went into", () => {
   it("takes TXG-04 on the exit of a keren hishtalmut withdrawn early at 65", () => {
     expect(changedIn(run("keren hishtalmut, early withdrawal at 65"), "TXG-04")).toEqual(["taxAtExit"]);
     expect(changedIn(run("S24 keren hishtalmut, early withdrawal"), "TXG-04")).toEqual([]);
+    // at 65 with the refund not claimed the tax is the fund's withholding: the age-60 brackets are looked at and set nothing, nor does the age
+    const withheld = runProvident({ ...s23, goal: { ...s23.goal, months: 48 }, hishtalmut: { ...s23Hishtalmut, earlyWithdrawal: true }, profile: { ageAtStart: 61, refundClaimed: false } }, ctx);
+    expect(withheld.taxAtExit).toBeGreaterThan(0);
+    expect(read(withheld, "TXG-04")).toBe(true);
+    expect(changedIn(withheld, "TXG-04")).toEqual([]);
+    expect(changedIn(withheld, "TXH-15")).toEqual(["taxAtExit"]);
+    expect(withheld.profileUsed).not.toContain("age");
+    expect(run("keren hishtalmut, early withdrawal at 65").profileUsed).toContain("age");
   });
 
   it("takes the work brackets on an early withdrawal only where the employer's deposits are taxed by them", () => {
@@ -215,6 +237,18 @@ describe("the parts each run's rules went into", () => {
     expect(changedIn(runProvident(input, ctx), "TXG-02")).toContain("taxAtExit");
     // with the refund not claimed the tax is what was withheld, which no bracket sets
     expect(changedIn(runProvident({ ...input, profile: { refundClaimed: false } }, ctx), "TXG-02")).not.toContain("taxAtExit");
+  });
+
+  it("takes the gains' brackets on an early withdrawal where the refund is claimed, and the fund's withholding where it is not", () => {
+    const claimed = run("S24 keren hishtalmut, early withdrawal");
+    expect(claimed.taxAtExit).toBeGreaterThan(0);
+    expect(changedIn(claimed, "TXG-03")).toEqual(["taxAtExit"]);
+    expect(read(claimed, "TXH-15")).toBe(true);
+    expect(changedIn(claimed, "TXH-15")).toEqual([]);
+    const withheld = runProvident({ ...s23, goal: { ...s23.goal, months: 48 }, hishtalmut: { ...s23Hishtalmut, earlyWithdrawal: true }, profile: { refundClaimed: false } }, ctx);
+    expect(changedIn(withheld, "TXH-15")).toEqual(["taxAtExit"]);
+    expect(read(withheld, "TXG-03")).toBe(true);
+    expect(changedIn(withheld, "TXG-03")).toEqual([]);
   });
 
   it("files the lock's exemption on the exit as well as on the term", () => {
@@ -371,6 +405,34 @@ describe("the parts each run's rules went into", () => {
     expect(changedIn(short, "PF-14")).toEqual([]);
   });
 
+  it("takes a study fund's limits on the deposit where they cut it, and on the exit's tax where the excess they leave is taxed", () => {
+    // S23: the own deposit is within TXH-08's share of a salary under the determining salary's ceiling
+    const within = run("S23 keren hishtalmut");
+    for (const id of ["TXH-08", "TXH-02"]) {
+      expect(read(within, id), id).toBe(true);
+      expect(changedIn(within, id), id).toEqual([]);
+    }
+    // S25: a salary above the ceiling, a deposit above the share of it: the share and the ceiling both cut it
+    const above = run("S25 keren hishtalmut above the determining salary");
+    for (const id of ["TXH-08", "TXH-02"]) expect(changedIn(above, id), id).toEqual(["deposit", "taxAtExit"]);
+    // a self-employed person's yearly benefited amount (TXH-08), passed by the year's deposits
+    const self = run("keren hishtalmut, self-employed past the benefited amount");
+    expect(detailOf(self, "excessYear")).toBeGreaterThan(0);
+    expect(changedIn(self, "TXH-08")).toEqual(["deposit", "taxAtExit"]);
+    expect(changedIn(self, "TXH-11")).toEqual(["taxAtExit"]);
+    expect(changedIn(run("keren hishtalmut, self-employed"), "TXH-08")).toEqual([]);
+    // the employer's money above its share of the salary: TXH-01 cut the deposit, and sets both the salary tax and the exit's
+    const employer = run("keren hishtalmut, employer money above its limit");
+    expect(changedIn(employer, "TXH-01")).toEqual(["deposit", "taxDuring:salaryTax", "taxAtExit"]);
+    expect(changedIn(employer, "TXH-02")).toEqual([]);
+    // withdrawn early, the employer's deposits taxed at the exit are the benefited ones TXH-01 capped, so it sets that tax as well
+    const early = run("keren hishtalmut, employer money above its limit, early withdrawal");
+    expect(detailOf(early, "earlyEmployerDeposits")).toBeGreaterThan(0);
+    expect(changedIn(early, "TXH-01")).toContain("taxAtExit");
+    // an early withdrawal taxes every gain whatever the limit, so the limit sets no tax at the exit of own money
+    expect(changedIn(runProvident({ ...s23, goal: { ...s23.goal, monthly: 500, months: 48 }, hishtalmut: { ...s23Hishtalmut, monthlySalary: 20_000, earlyWithdrawal: true } }, ctx), "TXH-08")).toEqual(["deposit"]);
+  });
+
   it("takes a fee cap and a deposit ceiling only where they cut", () => {
     const under = run("S20 kupat gemel lehashkaa");
     for (const id of ["PF-02", "KGL-02", "KGL-03", "KGL-04"]) expect(changedIn(under, id), id).toEqual([]);
@@ -388,6 +450,37 @@ describe("the pension runs", () => {
     expect(changedIn(over, "PEN-08")).toEqual([]);
   });
 
+  it("takes the wrapper's fee caps on their fee lines only where they cut a fee", () => {
+    for (const [wrapper, id] of [["pension-comprehensive", "PF-04"], ["pension-general", "PF-05"], ["provident-for-annuity", "PEN-22"]] as const) {
+      const insurance = { rate: wrapper === "provident-for-annuity" ? 0 : s27.insurance.rate };
+      const under = runPension({ ...s27, wrapper, insurance, fees: { deposit: 0, balance: 0.001, direct: 0 } }, ctx);
+      expect(read(under, id), id).toBe(true);
+      expect(changedIn(under, id), id).toEqual([]);
+      const above = runPension({ ...s27, wrapper, insurance, fees: { deposit: 0.5, balance: 0.05, direct: 0 } }, ctx);
+      expect(changedIn(above, id), id).toEqual(["fees:balance", "fees:deposit"]);
+    }
+  });
+
+  it("takes PF-13's minimum on the balance fee whose discount it extended", () => {
+    // a two-year discount on a fund that keeps receiving deposits holds for PF-13's five years
+    const discount = { months: 24, listRate: 0.005 };
+    const s30 = { ...s27, wrapper: "provident-for-annuity" as const, insurance: { rate: 0 } };
+    expect(changedIn(runPension({ ...s30, fees: { deposit: 0, balance: 0.002, direct: 0, discount } }, ctx), "PF-13")).toEqual(["fees:balance"]);
+    expect(changedIn(runPension({ ...s30, fees: { deposit: 0.01, balance: 0.002, direct: 0, depositDiscount: { months: 24, listRate: 0.02 } } }, ctx), "PF-13")).toEqual(["fees:deposit"]);
+    const plain = run("S30 provident fund for annuity");
+    expect(read(plain, "PF-13")).toBe(true);
+    expect(changedIn(plain, "PF-13")).toEqual([]);
+  });
+
+  it("files the direct expenses on their line, the insurance rule on the deposit and the fund's exemption on the tax during the run", () => {
+    const direct = runPension({ ...s27, fees: { ...s27.fees, direct: 0.001 } }, ctx);
+    expect(changedIn(direct, "PF-10")).toEqual(["fees:direct"]);
+    expect(changedIn(run("S20 kupat gemel lehashkaa"), "PF-10")).toEqual(["fees:direct"]);
+    expect(changedIn(direct, "PEN-15")).toEqual(["deposit"]);
+    expect(changedIn(direct, "TXP-13")).toEqual(["taxDuring"]);
+    expect(changedIn(run("S30 provident fund for annuity"), "PEN-35")).toEqual(["deposit"]);
+  });
+
   it("looks at the blocked exit's rules and takes none of them, the exit's tax not being computed", () => {
     for (const r of [runPension(s27, ctx), employerLinePension(s27, ctx)]) {
       expect(r.taxAtExit).toBe(0);
@@ -400,20 +493,20 @@ describe("the pension runs", () => {
   it("flags the employer's severance above its ceiling and takes the ceiling on no part", () => {
     const high = employerLinePension({ ...s27, pension: { ...s27.pension, monthlySalary: 50_000, employer: { pensionRate: 0.065, severanceRate: 0.0833 } } }, ctx);
     expect(high.flags.map((f) => f.code)).toContain("TXP-11");
-    expect(high.rules.find((u) => u.id === "TXP-11")?.uses).toEqual([{ part: "taxDuring", changed: false, figures: ["severance_ceiling"] }]);
+    expect(high.rules.find((u) => u.id === "TXP-11")?.uses).toEqual([{ part: "taxDuring", line: "salaryTax", changed: false, figures: ["severance_ceiling"] }]);
   });
 
   it("takes the brackets on the employer line's salary tax only where the employer's money passes its exempt limit", () => {
     // S27: 6.5% of a salary under the ceiling, under TXP-10's 7.5%: no tax, and the exemption is what makes it none
     const under = employerLinePension(s27, ctx);
     expect(detailOf(under, "depositTax")).toBe(0);
-    expect(changedIn(under, "TXP-10")).toEqual(["taxDuring"]);
+    expect(changedIn(under, "TXP-10")).toEqual(["taxDuring:salaryTax"]);
     expect(read(under, "TXG-02")).toBe(true);
     expect(changedIn(under, "TXG-02")).toEqual([]);
     // a salary above TXP-10's ceiling: the 6.5% on the part above it is salary, taxed at the brackets
     const over = employerLinePension({ ...s27, pension: { ...s27.pension, monthlySalary: 50_000 } }, ctx);
     expect(detailOf(over, "depositTax")).toBeGreaterThan(0);
-    for (const id of ["TXP-10", "TXG-02"]) expect(changedIn(over, id), id).toEqual(["taxDuring"]);
+    for (const id of ["TXP-10", "TXG-02"]) expect(changedIn(over, id), id).toEqual(["taxDuring:salaryTax"]);
   });
 });
 

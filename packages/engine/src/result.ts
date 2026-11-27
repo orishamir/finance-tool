@@ -37,22 +37,30 @@ export type FeeType =
  * - `fundTax`: the tax a fund pays inside its price (TXS-12, TXS-44);
  * - `taxDuring` and `taxAtExit`: the `RunResult` fields of those names; an exemption that zeroes one is a use on it. `taxDuring` also holds
  *   the F-52 salary tax on an employer's deposit above its exempt limit, which a run deducts from `nominal` as a detail
- *   (`employerDepositTax`, `depositTax`) and does not add to the field;
+ *   (`employerDepositTax`, `depositTax`) and does not add to the field: its uses are on the `salaryTax` line (`TaxLine`);
  * - `term`: when the money can come out (a lock, a fund's fixed dates).
  */
 export type RunPart = "deposit" | "relief" | "fees" | "fundTax" | "taxDuring" | "taxAtExit" | "term";
 
 /**
+ * The line of a `taxDuring` use that a figure may need apart from the rest of the part (`RuleBook.on("taxDuring", line)`):
+ * - `surtax`: the F-43 surtax on the year's distributions, settled on the year's whole income against its threshold, so a shekel of
+ *   distribution moves it only above the threshold;
+ * - `salaryTax`: the F-52 salary tax on an employer's deposit above its exempt limit, which the run's `taxDuring` field does not hold.
+ * A `taxDuring` use with no line is the rest of the tax during the run.
+ */
+export type TaxLine = "surtax" | "salaryTax";
+
+/**
  * How a run used a rule in one part of its result: `part` null for a read on the run's root book, which reaches only figures of the whole
- * result; `line` the fee line of a `fees` use; `changed` whether the rule changed the number (false for a read only looked at, `peek`);
+ * result; `line` the fee line of a `fees` use, or the `TaxLine` of a `taxDuring` use that has one; `changed` whether the rule changed the number (false for a read only looked at, `peek`);
  * `figures` the figure names read through this use. A rule's uses are one per (part, line).
  */
-export interface RuleUse {
-  part: RunPart | null;
-  line?: FeeType;
-  changed: boolean;
-  figures: string[];
-}
+export type RuleUse = { changed: boolean; figures: string[] } & (
+  | { part: "fees"; line?: FeeType }
+  | { part: "taxDuring"; line?: TaxLine }
+  | { part: Exclude<RunPart, "fees" | "taxDuring"> | null; line?: undefined }
+);
 
 /** A G-ID, rule ID, assumption ID (A-nn) or open-question code the page must show, with the month it first applies. */
 export interface Flag {

@@ -44,11 +44,15 @@ export function studyFundEarlyWithdrawal(book: RuleBook, i: EarlyWithdrawalInput
   const gains = Math.max(0, i.gains);
   const deposits = Math.max(0, i.employerDeposits);
   book.cite("TXH-13");
-  const gainBrackets = i.sixtyOrOver ? book.brackets("TXG-04", "brackets") : book.brackets("TXG-03", "brackets");
+  // the gains' brackets and the withholding are looked at; the tax that stands is taken from the one that sets it (A-14)
+  const gainRule = i.sixtyOrOver ? "TXG-04" : "TXG-03";
+  const gainBrackets = book.peek.brackets(gainRule, "brackets");
   const taxOnGains = bracketTaxOnTopSlice(i.otherIncome + deposits, gains, gainBrackets, Infinity);
   const taxOnDeposits = deductionValue(i.workBrackets, i.otherIncome + deposits, deposits);
-  const withheld = book.rate("TXH-15", "withholding_early") * (gains + deposits);
+  const withheld = book.peek.rate("TXH-15", "withholding_early") * (gains + deposits);
   const computed = taxOnGains + taxOnDeposits;
   const tax = i.refundClaimed ? computed : withheld;
+  if (!i.refundClaimed) book.took("TXH-15");
+  else if (gains > 0) book.took(gainRule);
   return { taxOnGains, taxOnDeposits, withheld, tax, refund: withheld - tax };
 }
