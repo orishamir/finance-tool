@@ -96,6 +96,20 @@
         "minLength": 1
       }
     },
+    "also_called": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "search": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
     "rule_ids": {
       "type": "array",
       "items": {
@@ -118,6 +132,10 @@
           "type": "string",
           "minLength": 1
         },
+        "publisher_he": {
+          "type": "string",
+          "minLength": 1
+        },
         "strength": {
           "type": "string",
           "enum": [
@@ -127,6 +145,10 @@
             "open",
             "entered"
           ]
+        },
+        "fetched_from": {
+          "type": "string",
+          "format": "uri"
         },
         "checked": {
           "type": "string",

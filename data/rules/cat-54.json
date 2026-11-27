@@ -1,0 +1,243 @@
+{
+  "id": "CAT-54",
+  "title": "Joining the four general tracks of the guaranteed-yield funds: what each company's own documents say",
+  "title_he": "הצטרפות למסלול הכללי בקופות גמל מבטיחות תשואה: מה כתוב במסמכי החברות",
+  "strength": "institution",
+  "dimensions": [
+    "eligibility"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "text_he": "בקופות של כלל ושל מנורה מבטחים, המסמכים של החברה סוגרים למצטרפים חדשים רק את המסלולים מבטיחי התשואה, ומתירים להצטרף למסלול הכללי רק ככל שההסדר התחיקתי, כלומר החוק והוראות רשות שוק ההון, מאפשר זאת. כלל מציעה באתר שלה להצטרף לקופת ״בר״, ותקנון ״מנורה מבטחים יותר״ קובע איך מצטרפים למסלול שלא מבטיח תשואה; תקנון ״בר״ של כלל ותקנון ״מנורה מבטחים יותר״ מתירים לחברה לסרב להצטרפות לפי שיקול דעתה, בלי לנמק. שתי שאלות פתוחות: אם החברות מקבלות היום מצטרף חדש למסלול הכללי, ואם החוזר של רשות שוק ההון שסוגר מסלול כללי למצטרפים חדשים חל על המסלול הכללי בקופות האלה. מיטב מציגה באתר שלה את המסלול ״מיטב ביטחון ללא הבטחת תשואה״ (מספר המסלול 923) בין המסלולים שלא פתוחים להצטרפות.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-11-26",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "clal",
+      "name_he": "כלל"
+    },
+    {
+      "id": "menora-mivtachim",
+      "name_he": "מנורה מבטחים"
+    },
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.clalbit.co.il/media/zokfjfqo/%D7%91%D7%A8-%D7%A7%D7%A8%D7%9F-%D7%92%D7%9E%D7%95%D7%9C%D7%99%D7%9D.pdf#page=3",
+      "title": "תקנון בר קרן גמולים, קופת גמל לתגמולים ולפיצויים, מהדורה מעודכנת ליום 26.08.10",
+      "title_he": "תקנון בר קרן גמולים, קופת גמל לתגמולים ולפיצויים, מהדורה מעודכנת ליום 26.08.10",
+      "publisher": "Clal Insurance",
+      "publisher_he": "כלל ביטוח",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3, s.6.1",
+      "locator_he": "עמוד 3, סעיף 6.1",
+      "page": 3,
+      "quote": "ככל שהדבר אפשרי בהתאם להוראות ההסדר התחיקתי",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://www.clalbit.co.il/media/zokfjfqo/%D7%91%D7%A8-%D7%A7%D7%A8%D7%9F-%D7%92%D7%9E%D7%95%D7%9C%D7%99%D7%9D.pdf#page=3",
+      "title": "תקנון בר קרן גמולים, קופת גמל לתגמולים ולפיצויים, מהדורה מעודכנת ליום 26.08.10",
+      "title_he": "תקנון בר קרן גמולים, קופת גמל לתגמולים ולפיצויים, מהדורה מעודכנת ליום 26.08.10",
+      "publisher": "Clal Insurance",
+      "publisher_he": "כלל ביטוח",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3, s.6.3",
+      "locator_he": "עמוד 3, סעיף 6.3",
+      "page": 3,
+      "quote": "לסרב לאשרה",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://cdn.menoramivt.co.il/public/docs/%D7%9E%D7%91%D7%98%D7%97%D7%99%D7%9D-%D7%99%D7%95%D7%AA%D7%A8-%D7%93'-119-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-2013-12-31.pdf#page=1",
+      "title": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "title_he": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://cdn.menoramivt.co.il/public/docs/%D7%9E%D7%91%D7%98%D7%97%D7%99%D7%9D-%D7%99%D7%95%D7%AA%D7%A8-%D7%93'-119-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-2013-12-31.pdf#page=4",
+      "title": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "title_he": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4, s.7 (פסקה ראשונה)",
+      "locator_he": "עמוד 4, סעיף 7 (פסקה ראשונה)",
+      "page": 4,
+      "quote": "לא ניתן עוד להצטרף למסלולים מבטיחי התשואה",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://cdn.menoramivt.co.il/public/docs/%D7%9E%D7%91%D7%98%D7%97%D7%99%D7%9D-%D7%99%D7%95%D7%AA%D7%A8-%D7%93'-119-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-2013-12-31.pdf#page=4",
+      "title": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "title_he": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4, s.7 (פסקה שנייה)",
+      "locator_he": "עמוד 4, סעיף 7 (פסקה שנייה)",
+      "page": 4,
+      "quote": "ככל שהדבר אפשרי בהתאם להוראות ההסדר התחיקתי",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://cdn.menoramivt.co.il/public/docs/%D7%9E%D7%91%D7%98%D7%97%D7%99%D7%9D-%D7%99%D7%95%D7%AA%D7%A8-%D7%93'-119-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-2013-12-31.pdf#page=5",
+      "title": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "title_he": "תקנון מנורה מבטחים יותר, מהדורה מיום 31.12.2013",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.5, s.7.2",
+      "locator_he": "עמוד 5, סעיף 7.2",
+      "page": 5,
+      "quote": "או לסרב לבקשתו",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://cdn.menoramivt.co.il/public/docs/%D7%9E%D7%91%D7%98%D7%97%D7%99%D7%9D-%D7%90%D7%9E%D7%99%D7%A8-%D7%9B%D7%9C%D7%9C%D7%99-260-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-2013-12.pdf#page=3",
+      "title": "תקנון קופת גמל לתגמולים של מנורה מבטחים אמיר, מהדורה מדצמבר 2013",
+      "title_he": "תקנון קופת גמל לתגמולים של מנורה מבטחים אמיר, מהדורה מדצמבר 2013",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3, s.6",
+      "locator_he": "עמוד 3, סעיף 6",
+      "page": 3,
+      "quote": "אדם יצטרף לקופה בהתאם לקבוע בתקנון ובהסדר התחיקתי",
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://cdn.menoramivt.co.il/public/docs/%D7%9E%D7%91%D7%98%D7%97%D7%99%D7%9D-%D7%90%D7%9E%D7%99%D7%A8-%D7%9B%D7%9C%D7%9C%D7%99-260-%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-2013-12.pdf#page=4",
+      "title": "תקנון קופת גמל לתגמולים של מנורה מבטחים אמיר, מהדורה מדצמבר 2013",
+      "title_he": "תקנון קופת גמל לתגמולים של מנורה מבטחים אמיר, מהדורה מדצמבר 2013",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4, s.11",
+      "locator_he": "עמוד 4, סעיף 11",
+      "page": 4,
+      "checked": "2026-11-26"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/4r3ibeiu/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%91%D7%98%D7%97%D7%95%D7%9F-120-2023.pdf#page=1",
+      "title": "תקנון \"מיטב בטחון\", מהדורה עדכנית מיום 28.2.2023",
+      "title_he": "תקנון \"מיטב בטחון\", מהדורה עדכנית מיום 28.2.2023",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.1, s.1.1",
+      "locator_he": "עמוד 1, סעיף 1.1",
+      "page": 1,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/4r3ibeiu/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%91%D7%98%D7%97%D7%95%D7%9F-120-2023.pdf#page=3",
+      "title": "תקנון \"מיטב בטחון\", מהדורה עדכנית מיום 28.2.2023",
+      "title_he": "תקנון \"מיטב בטחון\", מהדורה עדכנית מיום 28.2.2023",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.3, s.2.1",
+      "locator_he": "עמוד 3, סעיף 2.1",
+      "page": 3,
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.meitav.co.il/media/4r3ibeiu/%D7%AA%D7%A7%D7%A0%D7%95%D7%9F-%D7%A7%D7%95%D7%A4%D7%AA-%D7%92%D7%9E%D7%9C-%D7%91%D7%98%D7%97%D7%95%D7%9F-120-2023.pdf#page=4",
+      "title": "תקנון \"מיטב בטחון\", מהדורה עדכנית מיום 28.2.2023",
+      "title_he": "תקנון \"מיטב בטחון\", מהדורה עדכנית מיום 28.2.2023",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.4, s.2.2.2",
+      "locator_he": "עמוד 4, סעיף 2.2.2",
+      "page": 4,
+      "quote": "לאחר יום 31.5.88",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.clalbit.co.il/providentfund/clalbar/",
+      "title": "קופת גמל בר - כלל ביטוח",
+      "title_he": "קופת גמל בר - כלל ביטוח",
+      "publisher": "Clal Insurance",
+      "publisher_he": "כלל ביטוח",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "עיקרי התכנית",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.menoramivt.co.il/funds/pension-and-gemel/gemel-hishtalmut-list/menora-gemel/119",
+      "title": "מבטחים יותר ד' 119",
+      "title_he": "מבטחים יותר ד' 119",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.menoramivt.co.il/funds/pension-and-gemel/gemel-hishtalmut-list/menora-gemel/260",
+      "title": "מנורה מבטחים אמיר כללי 260",
+      "title_he": "מנורה מבטחים אמיר כללי 260",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.menoramivt.co.il/funds/pension-and-gemel/gemel-hishtalmut-list/menora-gemel/530",
+      "title": "מנורה מבטחים יותר א' 530",
+      "title_he": "מנורה מבטחים יותר א' 530",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.menoramivt.co.il/funds/pension-and-gemel/gemel-hishtalmut-list/menora-gemel/533",
+      "title": "מנורה מבטחים אמיר מדד ידוע 533",
+      "title_he": "מנורה מבטחים אמיר מדד ידוע 533",
+      "publisher": "Menora Mivtachim",
+      "publisher_he": "מנורה מבטחים",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-11-14"
+    },
+    {
+      "url": "https://www.meitav.co.il/provident_pension/kupa_gemel_reports/",
+      "title": "דוחות תשואה גמל | מיטב בית השקעות",
+      "title_he": "דוחות תשואה גמל | מיטב בית השקעות",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "quote": "מסלולים שאינם פתוחים להצטרפות",
+      "checked": "2026-11-14"
+    }
+  ]
+}

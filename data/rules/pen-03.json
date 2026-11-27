@@ -22,9 +22,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_Pension2016.pdf",
-        "title": "צו הרחבה בדבר הגדלת ההפרשות לביטוח פנסיוני במשק (2016), p.2, s.3(1): ניכוי מהעובד לרכיב תגמולים, 6% מיום 1.1.17",
+        "title": "צו הרחבה בדבר הגדלת ההפרשות לביטוח פנסיוני במשק (2016)",
         "publisher": "Ministry of Economy (scan on gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, s.3(1): ניכוי מהעובד לרכיב תגמולים, 6% מיום 1.1.17",
+        "locator_he": "עמוד 2, סעיף 3(1): ניכוי מהעובד לרכיב תגמולים, 6% מיום 1.1.17",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": "2017-01-01",
@@ -42,9 +45,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_Pension2016.pdf",
-        "title": "צו הרחבה בדבר הגדלת ההפרשות לביטוח פנסיוני במשק (2016), p.2, s.3(2): תשלום המעסיק לרכיב תגמולים, 6.5% מיום 1.1.17",
+        "title": "צו הרחבה בדבר הגדלת ההפרשות לביטוח פנסיוני במשק (2016)",
         "publisher": "Ministry of Economy (scan on gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, s.3(2): תשלום המעסיק לרכיב תגמולים, 6.5% מיום 1.1.17",
+        "locator_he": "עמוד 2, סעיף 3(2): תשלום המעסיק לרכיב תגמולים, 6.5% מיום 1.1.17",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": "2017-01-01",
@@ -62,9 +68,12 @@
       "unit": "pct",
       "source": {
         "url": "https://www.gov.il/BlobFolder/guide/labor-wage/he/workers-rights_working-conditions_pension_Pension2016.pdf",
-        "title": "צו הרחבה בדבר הגדלת ההפרשות לביטוח פנסיוני במשק (2016), p.2, s.3(3): פיצויי פיטורים, לא יפחת מ-6% מהשכר הקובע",
+        "title": "צו הרחבה בדבר הגדלת ההפרשות לביטוח פנסיוני במשק (2016)",
         "publisher": "Ministry of Economy (scan on gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, s.3(3): פיצויי פיטורים, לא יפחת מ-6% מהשכר הקובע",
+        "locator_he": "עמוד 2, סעיף 3(3): פיצויי פיטורים, לא יפחת מ-6% מהשכר הקובע",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": "2017-01-01",

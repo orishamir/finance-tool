@@ -61,13 +61,14 @@ def load_rules():
             src = re.search(r'(?m)^- Source: (.*)$', block)
             src = src.group(1) if src else ''
             chk = re.search(r'checked (\d{4}-\d{2}-\d{2})', src)
-            strength = re.search(r'checked \d{4}-\d{2}-\d{2} · ([a-z][^·\[]*)', src)
+            # the strength word and its own bracketed note, never the pointers that may follow it ("primary. The ceiling: KGL-02")
+            strength = re.search(r'checked \d{4}-\d{2}-\d{2} · ([a-z]+(?: \((?:[^()]|\([^()]*\))*\))?)', src)
             rules[m.group(1)] = {
                 'title': m.group(2).strip(),
                 'file': fn,
                 'url': _first_link(src),
                 'checked': chk.group(1) if chk else '',
-                'strength': strength.group(1).strip().rstrip('.').strip() if strength else '',
+                'strength': strength.group(1) if strength else '',
             }
     return rules
 

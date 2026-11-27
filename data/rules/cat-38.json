@@ -41,7 +41,8 @@
       "locator_he": "עמוד 16",
       "page": 16,
       "checked": "2026-10-25",
-      "qualifier": "(draft labelled)"
+      "qualifier": "(draft labelled)",
+      "standing": "draft"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-3157/he/regulation_t2013-138b.pdf",
@@ -55,7 +56,8 @@
       "locator_he": "עמוד 4",
       "page": 4,
       "checked": "2026-10-25",
-      "qualifier": "(draft labelled)"
+      "qualifier": "(draft labelled)",
+      "standing": "draft"
     },
     {
       "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1630/he/regulation_2013-2-1.pdf",
@@ -79,7 +81,8 @@
       "kind": "circular",
       "strength": "primary",
       "checked": "2026-10-25",
-      "qualifier": "(draft labelled)"
+      "qualifier": "(draft labelled)",
+      "standing": "draft"
     }
   ]
 }

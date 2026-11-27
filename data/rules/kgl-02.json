@@ -19,9 +19,12 @@
       "unit": "nis",
       "source": {
         "url": "https://fs.knesset.gov.il/20/law/20_lsr_343169.pdf",
-        "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016, p.2, s.3 (מוסיף לסעיף 22(א) לחוק)",
+        "title": "חוק הפיקוח על שירותים פיננסיים (קופות גמל) (תיקון מס' 15), התשע\"ו-2016",
         "publisher": "The Knesset",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, s.3 (מוסיף לסעיף 22(א) לחוק)",
+        "locator_he": "עמוד 2, סעיף 3 (מוסיף לסעיף 22(א) לחוק)",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": null,

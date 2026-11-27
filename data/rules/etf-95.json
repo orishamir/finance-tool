@@ -25,7 +25,8 @@
       "page": 13,
       "quote": "a UCITS at least one unit or share class of which is traded throughout the day on at least one regulated market or multilateral trading facility",
       "checked": "2026-11-26",
-      "qualifier": "(foreign regulator)"
+      "qualifier": "(foreign regulator)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://www.irishstatutebook.ie/pdf/2026/en.si.2026.0316.pdf#page=12",
@@ -39,7 +40,8 @@
       "page": 12,
       "quote": "has the meaning given to the term in Article 4 of MiFID",
       "checked": "2026-11-26",
-      "qualifier": "(foreign regulator)"
+      "qualifier": "(foreign regulator)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://www.irishstatutebook.ie/pdf/2026/en.si.2026.0316.pdf#page=14",
@@ -52,7 +54,8 @@
       "locator_he": "עמוד הקובץ 14, תקנה 2(3)",
       "page": 14,
       "checked": "2026-11-26",
-      "qualifier": "(foreign regulator)"
+      "qualifier": "(foreign regulator)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://www.irishstatutebook.ie/pdf/2026/en.si.2026.0316.pdf#page=92",
@@ -65,7 +68,8 @@
       "locator_he": "עמוד הקובץ 92, תקנה 131",
       "page": 92,
       "checked": "2026-11-26",
-      "qualifier": "(foreign regulator)"
+      "qualifier": "(foreign regulator)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://www.esma.europa.eu/sites/default/files/library/2015/11/esma-2014-0011-01-00_en_0.pdf#page=3",
@@ -79,7 +83,8 @@
       "page": 3,
       "quote": "A UCITS ETF is a UCITS at least one unit or share class of which is traded throughout the day on at least one regulated market or Multilateral Trading Facility",
       "checked": "2026-11-26",
-      "qualifier": "(foreign regulator)"
+      "qualifier": "(foreign regulator)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32014L0065",
@@ -90,7 +95,8 @@
       "strength": "primary",
       "locator": "Art. 4(1)(22)",
       "checked": "2026-11-26",
-      "qualifier": "(EU law)"
+      "qualifier": "(EU law)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://www.irishstatutebook.ie/pdf/2011/en.si.2011.0352.pdf#page=59",
@@ -104,7 +110,8 @@
       "page": 59,
       "quote": "another regulated market in a third country which operates regularly and is recognised and open to the public",
       "checked": "2026-11-26",
-      "qualifier": "(foreign law, as made)"
+      "qualifier": "(foreign law, as made)",
+      "standing": "foreign-view"
     }
   ]
 }

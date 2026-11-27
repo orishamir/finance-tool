@@ -115,7 +115,8 @@
       "locator_he": "עמודים 2, 5, 6 עד 8, סעיף 1",
       "page": 2,
       "quote": "מסלול בסיסי",
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.boi.org.il/media/mi2driua/159a.pdf",
@@ -129,7 +130,8 @@
       "locator_he": "עמוד 5, סעיף 4א(ב1)-(ב2)",
       "page": 5,
       "quote": "יצרפו למסלול הבסיסי או המורחב, בהתאם לממוצע ההפרשים הגבוה יותר",
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "standing": "consolidated-not-binding"
     }
   ],
   "derived_from": [

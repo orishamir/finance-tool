@@ -30,9 +30,13 @@
       "unit": "pct_of_deposit",
       "source": {
         "url": "https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter2%20ver6_digital.pdf",
-        "title": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 2, p.2: \"דמי הניהול שנקבעו עומדים על 1% מההפקדה ועל 0.22% מהצבירה\"",
+        "title": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 2",
         "publisher": "Capital Market, Insurance and Savings Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2",
+        "locator_he": "עמוד 2",
+        "page": 2,
+        "quote": "דמי הניהול שנקבעו עומדים על 1% מההפקדה ועל 0.22% מהצבירה"
       },
       "checked": "2026-10-25",
       "effective_from": "2024-11-01",
@@ -50,9 +54,13 @@
       "unit": "pct_per_year",
       "source": {
         "url": "https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter2%20ver6_digital.pdf",
-        "title": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 2, p.2: \"דמי הניהול שנקבעו עומדים על 1% מההפקדה ועל 0.22% מהצבירה\"",
+        "title": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 2",
         "publisher": "Capital Market, Insurance and Savings Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2",
+        "locator_he": "עמוד 2",
+        "page": 2,
+        "quote": "דמי הניהול שנקבעו עומדים על 1% מההפקדה ועל 0.22% מהצבירה"
       },
       "checked": "2026-10-25",
       "effective_from": "2024-11-01",
@@ -70,9 +78,13 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2024-097/he/Regulations_regarding_the_selection_of_%20a_provident_fund-updating%20_(pdf).pdf",
-        "title": "חוזר גופים מוסדיים 2024-9-6 – הוראות לעניין בחירת קופת גמל – עדכון, p.5, annex s.5: \"יהיו בתוקף למשך 10 שנים לפחות ממועד הצטרפותו לקרן\"",
+        "title": "חוזר גופים מוסדיים 2024-9-6 – הוראות לעניין בחירת קופת גמל – עדכון",
         "publisher": "Capital Market, Insurance and Savings Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5, annex s.5",
+        "locator_he": "עמוד 5, נספח סעיף 5",
+        "page": 5,
+        "quote": "יהיו בתוקף למשך 10 שנים לפחות ממועד הצטרפותו לקרן"
       },
       "checked": "2026-10-25",
       "effective_from": "2024-11-01",
@@ -90,9 +102,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
-        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1,
         "quote": "החל מיום 1 בנובמבר 2024"
       },
       "checked": "2026-11-12",
@@ -111,9 +126,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
-        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1,
         "quote": "ועד ליום 31 באוקטובר 2028"
       },
       "checked": "2026-11-12",
@@ -132,9 +150,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
-        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1,
         "quote": "החל מיום 1 ביוני 2025"
       },
       "checked": "2026-11-12",
@@ -153,9 +174,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
-        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1,
         "quote": "אינפיניטי"
       },
       "checked": "2026-11-12",
@@ -174,9 +198,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
-        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1,
         "quote": "מור"
       },
       "checked": "2026-11-12",
@@ -195,9 +222,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
-        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1,
         "quote": "אלטשולר שחם"
       },
       "checked": "2026-11-12",
@@ -216,9 +246,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2025-26/he/clarification_regarding_the_selected_funds_procedure_pdf.pdf#page=1",
-        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025), p.1",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: הבהרה לעניין הליך קביעת קרנות נבחרות (שה. 2025-1264, 10.6.2025)",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1,
         "quote": "מיטב"
       },
       "checked": "2026-11-12",

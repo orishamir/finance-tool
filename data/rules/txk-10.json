@@ -20,9 +20,13 @@
       "unit": "years",
       "source": {
         "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
-        "title": "חוק גיל פרישה, התשס\"ד-2004, ספר החוקים, p.1, s.5: \"גיל 60 לגבר ולאישה\"",
+        "title": "חוק גיל פרישה, התשס\"ד-2004, ספר החוקים",
         "publisher": "הכנסת",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1, s.5",
+        "locator_he": "עמוד 1, סעיף 5",
+        "page": 1,
+        "quote": "גיל 60 לגבר ולאישה"
       },
       "checked": "2026-10-25",
       "effective_from": null,

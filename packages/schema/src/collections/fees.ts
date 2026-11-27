@@ -3,18 +3,13 @@
 // illustrative guide timeline runs on are collected (method F-67, scenario S47); the workbench's
 // averages, bands and minimums arrive with R4.
 import { z } from "zod";
-import { feeBase, instrumentClass, isoDate, source, textFragment, valueObject } from "../value.ts";
+import { citedPlace, feeBase, instrumentClass, isoDate, source, textFragment, valueObject } from "../value.ts";
 import { companyName } from "../scope.ts";
 
 const ruleIds = z.array(z.string().min(1));
 
-/**
- * Where in the document a fee value stands. `page` is the file's own page of a
- * PDF (the library's count, not the number printed on the sheet); `quote` is the document's own words,
- * at most 240 characters. A web page has only `quote`. Both optional: no page means not yet confirmed.
- */
-const place = { page: z.number().int().positive().optional(), quote: z.string().min(1).max(240).optional(), fragment: textFragment.optional() };
-const feeValue = valueObject.safeExtend({ source: source.extend(place) });
+/** A fee value: its source names its place in the document (`citedPlace`). */
+const feeValue = valueObject.safeExtend({ source: source.extend(citedPlace) });
 /** A document's place where a fact that is not a value stands: its link, name, the day it was read, its page in a PDF and its own words. */
 const quotedSource = z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, page: z.number().int().positive().optional(), quote: z.string().min(1).max(240), fragment: textFragment.optional() });
 
@@ -120,7 +115,7 @@ export const feeLine = z.strictObject({
    * data-schema §3.6a item 2: where the scope is read from another document of the house than the one `max` quotes (the house's own sheet in
    * TASE's fee calculator, which the house fills, BRK-24), that document's place, the house's own words and the day it was read.
    */
-  max_per_source: source.extend({ ...place, quote: z.string().min(1).max(240), checked: isoDate }).optional(),
+  max_per_source: source.extend({ ...citedPlace, quote: z.string().min(1).max(240), checked: isoDate }).optional(),
   /** data-schema §3.6a item 2: a second maximum on the whole deposit, printed beside a `max` on each security (unit `nis`, with its quote). */
   max_deposit: feeValue.optional(),
   /** data-schema §3.6a item 3: a conversion priced by its size, step by step from the smallest (`fx` lines); the run prices each step at the list level (F-13). */
@@ -145,7 +140,7 @@ export const availabilityEntry = z.strictObject({
   applies_to: z.array(instrumentClass).min(1),
   /** "unknown": the documents leave it open, so the class is not priced anywhere and the row says why in `reason_he`. */
   available: z.union([z.boolean(), z.literal("unknown")]),
-  source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, ...place }),
+  source: z.strictObject({ url: z.string().min(1), title: z.string().min(1), checked: isoDate, ...citedPlace }),
   note: z.string().optional(),
   reason_he: z.string().min(1).optional(),
   /** The rules of the rule base that hold this fact: the house's row opens their cards from the words that say the class cannot be bought there, or that it is unclear. Display only; it changes no price and no ranking. */

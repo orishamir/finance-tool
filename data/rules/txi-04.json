@@ -40,7 +40,8 @@
       "locator_he": "עמוד 146, סעיף 88, הגדרת מדד",
       "page": 146,
       "quote": "על אף האמור, לענין נייר ערך בידי יחיד, הנקוב במטבע חוץ או שערכו צמוד למטבע חוץ, יראו את שער המטבע כמדד",
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf",
@@ -68,7 +69,8 @@
       "locator_he": "עמוד 204, סעיף 125ג(א), הגדרת מדד",
       "page": 204,
       "quote": "ובנכס שערכו צמוד למטבע חוץ או שהוא נקוב במטבע חוץ – שער המטבע",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",

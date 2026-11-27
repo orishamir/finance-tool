@@ -40,7 +40,8 @@
       "locator": "p.51, s.9A(e)(3), s.9A(ה1)",
       "locator_he": "עמוד 51, סעיף 9א(ה)(3), סעיף 9א(ה1)",
       "page": 51,
-      "checked": "2026-11-07"
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",
@@ -65,7 +66,8 @@
       "locator": "p.201, s.121ב(ג), (ה)",
       "locator_he": "עמוד 201, סעיף 121ב(ג), (ה)",
       "page": 201,
-      "checked": "2026-10-26"
+      "checked": "2026-10-26",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/policy/inst-05-2025/he/IncomeTax_inst-05-2025.pdf",

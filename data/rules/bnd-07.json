@@ -38,7 +38,8 @@
       "strength": "primary",
       "quote": "If an issuer’s rating goes up, the price of its bonds will rise. If the rating goes down, the price will drop.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign regulator, general mechanism)"
+      "qualifier": "(foreign regulator, general mechanism)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://moneysmart.gov.au/investments-paying-interest/bonds",
@@ -49,7 +50,8 @@
       "strength": "primary",
       "quote": "Credit risk – the risk that the issuer could default or go insolvent",
       "checked": "2026-11-15",
-      "qualifier": "(foreign regulator)"
+      "qualifier": "(foreign regulator)",
+      "standing": "foreign-view"
     }
   ],
   "derived_from": [

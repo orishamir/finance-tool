@@ -29,6 +29,7 @@ import { CAPS_FROM_AGE, addressId, entryIds, splitDocGroups } from "../lib/compa
 import { companyTermsAnchor } from "../lib/scope";
 import { labelRules } from "../lib/label-rests";
 import type { SiteValue } from "../lib/value";
+import type { RuleRecord } from "@finance-tool/schema";
 
 /**
  * The order of a company page's products, by how often a reader comes for them: its tracks' products in
@@ -52,13 +53,21 @@ async function houseNotes(id: string) {
  * The house's price list split into its head and its fees (`accountOf`): its terms where its latest list fills a deal, with the data their
  * read-only fees draw on the first view but the rules and records the page holds already (`page`, its provenance's); else its table.
  */
-async function houseAccount(id: string, tariff: TariffCardData, page: { rules: Record<string, unknown>; pointed?: Record<string, unknown> | undefined }) {
+async function houseAccount(id: string, tariff: TariffCardData, page: { rules: Record<string, RuleRecord>; pointed?: Record<string, RuleRecord> | undefined }) {
   const { houseTermsData } = await import("../lib/fees.server");
-  const { today } = await import("../lib/data.server");
+  const { loadRules, pointedRecords, today } = await import("../lib/data.server");
+  const { valueRuleIds } = await import("../lib/page-rules.server");
   const account = accountOf(tariff, houseTermsData(id, today(), { rules: new Set(Object.keys(page.rules)), pointed: new Set(Object.keys(page.pointed ?? {})) }));
   // the terms' code is a script of its own, in before the render so the pre-rendered page holds them
   if (account.fees.kind === "terms") await loadTermsCode();
-  return account;
+  // the rules the account's figures name that neither the page nor the account's own data holds (its fee kinds' caps): the page ships
+  // them, so every chip in those figures' sheets opens
+  const all = loadRules();
+  const own = account.fees.kind === "terms" ? new Set([...account.fees.terms.data.rules, ...(account.fees.terms.data.pointed ?? [])].map((r) => r.id)) : new Set<string>();
+  const added = valueRuleIds(account).filter((r) => all[r] && !page.rules[r] && !page.pointed?.[r] && !own.has(r));
+  if (added.length === 0) return { account, page };
+  const rules = { ...page.rules, ...Object.fromEntries(added.flatMap((r) => (all[r] ? [[r, all[r]] as const] : []))) };
+  return { account, page: { rules, pointed: pointedRecords(rules, all) } };
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -77,8 +86,9 @@ export async function loader({ params }: Route.LoaderArgs) {
     const institution = buildInstitution(params.id);
     if (!institution) throw new Response("Not found", { status: 404 });
     const { tariff, ...rest } = institution;
-    const account = tariff ? await houseAccount(params.id, tariff, institution) : null;
-    return { kind: "institution" as const, institution: { ...rest, tariff: account?.tariff ?? null }, fees: account?.fees ?? null, notes: await houseNotes(params.id) };
+    const house = tariff ? await houseAccount(params.id, tariff, institution) : null;
+    const account = house?.account ?? null;
+    return { kind: "institution" as const, institution: { ...rest, ...house?.page, tariff: account?.tariff ?? null }, fees: account?.fees ?? null, notes: await houseNotes(params.id) };
   }
   const wrapperCaps = new Map<string, { balance: SiteValue | null; deposit: SiteValue | null }>(
     loadWrappers()
@@ -118,6 +128,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     .map((c) => ({ id: c.id, names: c.names.he, where: seenWhere(c), seen: seenValue(c) }));
   // what the site found in the company's own documents (D30): the records that cite them, by topic, with their cards' data
   const { brokeragePart, companyTermGroups, registryIdsOfPage } = await import("../lib/institutions.server");
+  const { valueRuleIds } = await import("../lib/page-rules.server");
   const { loadChecklistRows, pointedRecords } = await import("../lib/data.server");
   const { topicName } = await import("../copy");
   const allRules = loadRules();
@@ -135,14 +146,19 @@ export async function loader({ params }: Route.LoaderArgs) {
   const helpRuleIds = Object.values(helpTerms).flatMap((x) => x.ruleIds).filter((id) => allRules[id]);
   // and the rules the browser's figures name (their sheets), as on the tracks page
   const browserRuleIds = ["PF-06", "PF-10", ...templateRuleIds(browser), ...browser.products.flatMap((p) => (CAPS_FROM_AGE[p.id] ? [CAPS_FROM_AGE[p.id]!.rule] : []))].filter((id) => allRules[id]);
-  const termRules = { ...brokerage?.rules, ...Object.fromEntries([...termGroups.flatMap((g) => g.ids), ...labelRuleIds, ...helpRuleIds, ...browserRuleIds].map((id) => [id, allRules[id]!])) };
+  // and the rules the figures of the track list, the caps and the fund lists name (their sheets' chips)
+  const valueIds = valueRuleIds([browser, caps, funds]).filter((id) => allRules[id]);
+  const termRules = { ...brokerage?.rules, ...Object.fromEntries([...termGroups.flatMap((g) => g.ids), ...labelRuleIds, ...helpRuleIds, ...browserRuleIds, ...valueIds].map((id) => [id, allRules[id]!])) };
   const { loadInstitutionRegistry } = await import("../lib/institutions.server");
   const name = brand?.name ?? shortCompanyName(company!.id, company!.name);
   const shortName = brand?.name ?? loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? name;
-  const companyTerms = { groups: termGroups, rules: termRules, pointed: pointedRecords(termRules, allRules), company: registryIds[0] ?? null, pageCompanies: registryIds, helpTerms, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
+  const { pageRuleUses } = await import("../lib/rule-uses.server");
+  const house = brokerage && brand?.brokerId ? await houseAccount(brand.brokerId, brokerage.tariff, { rules: termRules, pointed: pointedRecords(termRules, allRules) }) : null;
+  const held = house?.page ?? { rules: termRules, pointed: pointedRecords(termRules, allRules) };
+  const companyTerms = { groups: termGroups, rules: held.rules, pointed: held.pointed, ruleUses: pageRuleUses(held.rules, held.pointed), company: registryIds[0] ?? null, pageCompanies: registryIds, helpTerms, name: shortName, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} };
   // the legal companies the page stands for, as their own data writes them (the CMA, the tariff, the fund records)
   const members = brand ? [...new Set([company?.name, brokerage?.tariff.providerName, ...brand.fundManagers].filter((x): x is string => !!x))] : [];
-  const brokerageCard = brokerage && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, ...(await houseAccount(brand.brokerId, brokerage.tariff, companyTerms)), ...(await houseNotes(brand.brokerId)) } : null;
+  const brokerageCard = brokerage && house && brand?.brokerId ? { id: brand.brokerId, kind: brokerage.kind, ...house.account, ...(await houseNotes(brand.brokerId)) } : null;
   return { kind: "company" as const, pageId, name, company: company ?? null, browser, caps, funds, brokerage: brokerageCard, members, period: cma.periodValue, defaultIds, unassigned, today: t, companyTerms };
 }
 
@@ -307,7 +323,7 @@ function ManagerCompany({ data }: { data: CompanyData }) {
     </>
   );
   return (
-    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
+    <PageShell current="decoder" data={{ rules: data.companyTerms.rules, pointed: data.companyTerms.pointed, ruleUses: data.companyTerms.ruleUses, terms: data.companyTerms.helpTerms, dimensions: data.companyTerms.dimensions, today: data.today, ...(data.companyTerms.company ? { company: data.companyTerms.company } : {}), pageCompanies: data.companyTerms.pageCompanies }}>
       <CompanyTemplate
         pageId={data.pageId}
         name={data.name}

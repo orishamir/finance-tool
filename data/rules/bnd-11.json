@@ -21,7 +21,8 @@
       "strength": "primary",
       "quote": "if there is an unanticipated increase in inflation, the value of savings goes down and the value of debt goes down, which transfers wealth from savers to borrowers.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign central bank, general mechanism)"
+      "qualifier": "(foreign central bank, general mechanism)",
+      "standing": "foreign-view"
     }
   ],
   "derived_from": [

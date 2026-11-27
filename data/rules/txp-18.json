@@ -183,7 +183,8 @@
       "locator_he": "עמוד 145, סעיף 87(א)(2)",
       "page": 145,
       "quote": "כספים ששולמו על ידי קופת גמל לחבריה בניגוד להוראות לפי סעיף 23 לחוק הפיקוח על קופות גמל",
-      "checked": "2026-11-14"
+      "checked": "2026-11-14",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/~Yg+aDp+~ePh0JDdCeG7hBWqLMUkCuhSPoCwN1UKmyI=#page=3",
@@ -224,7 +225,8 @@
       "locator_he": "עמוד 145, סעיף 87(ד)",
       "page": 145,
       "quote": "תקנות לפי סעיף קטן (א) לא יחולו על כספים שסכום המס החל עליהם לפי הוראות פקודה זו גבוה מסכום המס שיחול עליהם בשל החלת התקנות כאמור",
-      "checked": "2026-11-14"
+      "checked": "2026-11-14",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/policy/income-tax-professional-inst-02-2013/he/Policy_IncomeTaxInst_hoz02-2013.pdf",

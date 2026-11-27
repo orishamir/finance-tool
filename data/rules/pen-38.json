@@ -19,9 +19,13 @@
       "unit": "count",
       "source": {
         "url": "https://www.moreinvest.co.il/media/hphjzxvl/תקנון-קרן-פנסיה-כללית.pdf",
-        "title": "Mor general pension fund bylaws, version 01.04.2026, p.11, s.1 \"שכר קובע\"",
+        "title": "Mor general pension fund bylaws, version 01.04.2026",
         "publisher": "Mor Gemel and Pension",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.11, s.1",
+        "locator_he": "עמוד 11, סעיף 1",
+        "page": 11,
+        "quote": "שכר קובע"
       },
       "checked": "2026-10-25",
       "effective_from": null,

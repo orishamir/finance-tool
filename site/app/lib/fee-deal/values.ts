@@ -60,9 +60,9 @@ function sourcedValue(value: number | string, unit: Unit, s: Sourced, about?: st
   };
 }
 
-/** A reading of §10.6 (`formula` F-110 to F-113) as a computed value, with the figures it rests on. */
-export function reading(value: number, unit: Unit, formula: string, inputs: Record<string, SiteValue>, today: string): SiteValue {
-  return computed(value, unit, formula, inputs, { today });
+/** A reading of §10.6 (`formula` F-110 to F-113) as a computed value, with the figures it rests on and what it is of (`about`, its sheet's line under the figure). */
+export function reading(value: number, unit: Unit, formula: string, inputs: Record<string, SiteValue>, today: string, about?: string): SiteValue {
+  return computed(value, unit, formula, inputs, { today, ...(about ? { about } : {}) });
 }
 
 /** A record's value object as the site shows it (a cap of the kind's record): sourced, as the record holds it. */

@@ -63,7 +63,8 @@
       "locator_he": "עמוד 4",
       "page": 4,
       "checked": "2026-10-25",
-      "qualifier": "(historical)"
+      "qualifier": "(historical)",
+      "standing": "superseded"
     },
     {
       "url": "https://data.gov.il/he/datasets/mof/savingsplaninterest",

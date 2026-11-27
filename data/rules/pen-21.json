@@ -19,9 +19,12 @@
       "unit": "pct_per_year",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/8HBFRznZ1PqBBqBlhhXAb7L47e1dgbmyX~fXnBHkch8=#page=2",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942), p.2, s.2 (תקנה 3(א)(1א)): 0.3% לשנה",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול) (תיקון), התשפ\"ב-2022 (קובץ התקנות 9942)",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.2, s.2 (תקנה 3(א)(1א)): 0.3% לשנה",
+        "locator_he": "עמוד 2, סעיף 2 (תקנה 3(א)(1א)): 0.3% לשנה",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": "2022-02-01",

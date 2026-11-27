@@ -19,9 +19,12 @@
       "unit": "pct_per_year",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.5, reg. 3(א)(1)",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
         "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5, reg. 3(א)(1)",
+        "locator_he": "עמוד 5, תקנה 3(א)(1)",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -39,9 +42,12 @@
       "unit": "pct_of_deposit",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=5",
-        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131), p.5, reg. 3(א)(2)",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
         "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.5, reg. 3(א)(2)",
+        "locator_he": "עמוד 5, תקנה 3(א)(2)",
+        "page": 5
       },
       "checked": "2026-10-25",
       "effective_from": null,

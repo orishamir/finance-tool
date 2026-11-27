@@ -20,9 +20,12 @@
       "unit": "months",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
-        "title": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024), p.27, s.1.1.1(א)",
+        "title": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
         "publisher": "רשות ניירות ערך",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.27, s.1.1.1(א)",
+        "locator_he": "עמוד 27, סעיף 1.1.1(א)",
+        "page": 27
       },
       "checked": "2026-10-25",
       "effective_from": "2024-10-03",
@@ -40,9 +43,12 @@
       "unit": "months",
       "source": {
         "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/MoneyMarketFundReg24.pdf",
-        "title": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024), p.27, s.1.1.1(ג)",
+        "title": "הוראה למנהלי קרנות ונאמנים בדבר תנאים שיחולו לגבי קרן כספית (2024)",
         "publisher": "רשות ניירות ערך",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.27, s.1.1.1(ג)",
+        "locator_he": "עמוד 27, סעיף 1.1.1(ג)",
+        "page": 27
       },
       "checked": "2026-10-25",
       "effective_from": "2024-10-03",

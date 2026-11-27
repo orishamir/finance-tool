@@ -21,9 +21,13 @@
       "unit": "pct",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-        "title": "Tax Authority deductions booklet 2026, p.11 (\"מס נוסף על הכנסות גבוהות\")",
+        "title": "Tax Authority deductions booklet 2026",
         "publisher": "Israel Tax Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.11",
+        "locator_he": "עמוד 11",
+        "page": 11,
+        "quote": "מס נוסף על הכנסות גבוהות"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -41,9 +45,13 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-        "title": "Tax Authority deductions booklet 2026, p.11 (\"מס נוסף על הכנסות גבוהות\")",
+        "title": "Tax Authority deductions booklet 2026",
         "publisher": "Israel Tax Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.11",
+        "locator_he": "עמוד 11",
+        "page": 11,
+        "quote": "מס נוסף על הכנסות גבוהות"
       },
       "checked": "2026-10-25",
       "effective_from": "2024-01-01",
@@ -100,7 +108,8 @@
       "locator": "p.15, s.1, definition מדד",
       "locator_he": "עמוד 15, סעיף 1, הגדרת מדד",
       "page": 15,
-      "checked": "2026-10-31"
+      "checked": "2026-10-31",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf#page=201",
@@ -114,7 +123,8 @@
       "locator_he": "עמוד 201, סעיף 120ב(ד)",
       "page": 201,
       "quote": "שר האוצר רשאי לקבוע כללים לעיגול סכומים שתואמו לפי סעיף זה",
-      "checked": "2026-10-31"
+      "checked": "2026-10-31",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
@@ -155,7 +165,8 @@
       "locator": "p.201, s.121ב(א)",
       "locator_he": "עמוד 201, סעיף 121ב(א)",
       "page": 201,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -168,7 +179,8 @@
       "locator": "p.200, s.120א, s.120ב(א)",
       "locator_he": "עמוד 200, סעיף 120א, סעיף 120ב(א)",
       "page": 200,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_ls1_5122141.pdf#page=3",

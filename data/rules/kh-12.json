@@ -20,9 +20,13 @@
       "unit": "years",
       "source": {
         "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",
-        "title": "חוק גיל פרישה, התשס\"ד-2004, p.1, s.3: \"גיל 67 לגבר\"",
+        "title": "חוק גיל פרישה, התשס\"ד-2004",
         "publisher": "The Knesset",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1, s.3",
+        "locator_he": "עמוד 1, סעיף 3",
+        "page": 1,
+        "quote": "גיל 67 לגבר"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -86,7 +90,8 @@
       "locator_he": "עמוד 12, סעיף 1",
       "page": 12,
       "quote": "גיל הפרישה כמשמעותו בחוק גיל פרישה",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://fs.knesset.gov.il/16/law/16_lsr_300990.pdf",

@@ -3,6 +3,7 @@
 // computed here but the stale flag (D3: a snapshot older than three months, until the schema holds its own rule).
 import { datedDay, tariffDated } from "./tariff-date";
 import { companyPath, documentsPath } from "./site-paths";
+import { valueRuleIds } from "./page-rules.server";
 import { depositKindRules, exitPointsOf, ownName, printedQuotes, shownName, shownRate } from "./deposit-kind";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
@@ -295,9 +296,10 @@ export function brokeragePart(id: string): { kind: InstitutionKind; tariff: Tari
   const allRules = loadRules();
   const cited = new Set<string>(["BRK-20", "BRK-21", "BRK-16"]);
   for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids, ...cardRuleIds(snap)]) cited.add(r);
-  for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
+  const tariff = tariffCard(snap, allRules, today());
+  for (const r of valueRuleIds(tariff)) cited.add(r);
   const rules = Object.fromEntries([...cited].filter((r) => allRules[r]).map((r) => [r, allRules[r]!]));
-  return { kind: "broker", tariff: tariffCard(snap, allRules, today()), rules };
+  return { kind: "broker", tariff, rules };
 }
 
 // ---------------------------------------------------------------- the page
@@ -328,10 +330,8 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     for (const r of d.break.rule_ids) cited.add(r);
     for (const r of depositKindRules(d.variant)) cited.add(r);
   }
-  if (snap) {
-    for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids, ...cardRuleIds(snap)]) cited.add(r);
-    for (const l of snap.lines) for (const r of l.rate.rule_ids ?? []) cited.add(r);
-  }
+  if (snap) for (const r of [...snap.provider.protection_rule_ids, ...snap.notice_rule_ids, ...cardRuleIds(snap)]) cited.add(r);
+  for (const r of valueRuleIds([tariff, rows])) cited.add(r);
   // the glossary card behind the "?" of a deposit table's rate head (the deposits page's), with the rules it cites
   const helpTerms = deposits.length ? Object.fromEntries(loadTerms().filter((x) => x.he === DEPOSIT_TERMS.rate).map((x) => [x.he, x])) : {};
   for (const term of Object.values(helpTerms)) for (const r of term.ruleIds) cited.add(r);

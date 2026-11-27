@@ -19,9 +19,13 @@
       "unit": "nis_per_transfer",
       "source": {
         "url": "https://www.discountbank.co.il/media/bjudw31y/part4_securities07022025.pdf",
-        "title": "דיסקונט – תעריפון, חלק 4 ניירות ערך (07/02/2025), p.5, item 4.6.1 \"5 ₪ להעברה (פיקוח)\"",
+        "title": "דיסקונט – תעריפון, חלק 4 ניירות ערך (07/02/2025)",
         "publisher": "Discount Bank",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "p.5, item 4.6.1",
+        "locator_he": "עמוד 5, פרט 4.6.1",
+        "page": 5,
+        "quote": "5 ₪ להעברה (פיקוח)"
       },
       "checked": "2026-10-25",
       "effective_from": "2025-02-07",

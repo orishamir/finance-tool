@@ -348,6 +348,10 @@
                     "type": "string",
                     "minLength": 1
                   },
+                  "publisher_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
                   "strength": {
                     "type": "string",
                     "enum": [
@@ -357,6 +361,10 @@
                       "open",
                       "entered"
                     ]
+                  },
+                  "fetched_from": {
+                    "type": "string",
+                    "format": "uri"
                   },
                   "page": {
                     "type": "integer",
@@ -392,6 +400,14 @@
                       "start"
                     ],
                     "additionalProperties": false
+                  },
+                  "locator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "locator_he": {
+                    "type": "string",
+                    "minLength": 1
                   }
                 },
                 "required": [
@@ -587,6 +603,21 @@
               "notes": {
                 "type": "string"
               },
+              "notes_he": {
+                "type": "string",
+                "minLength": 1
+              },
+              "empty_because": {
+                "type": "string",
+                "enum": [
+                  "too-young",
+                  "none-by-rule",
+                  "not-reported",
+                  "not-collected",
+                  "not-applicable",
+                  "unknown"
+                ]
+              },
               "rationale_he": {
                 "type": "string",
                 "minLength": 1
@@ -671,6 +702,10 @@
                         "type": "string",
                         "minLength": 1
                       },
+                      "publisher_he": {
+                        "type": "string",
+                        "minLength": 1
+                      },
                       "strength": {
                         "type": "string",
                         "enum": [
@@ -680,6 +715,10 @@
                           "open",
                           "entered"
                         ]
+                      },
+                      "fetched_from": {
+                        "type": "string",
+                        "format": "uri"
                       },
                       "page": {
                         "type": "integer",
@@ -715,6 +754,14 @@
                           "start"
                         ],
                         "additionalProperties": false
+                      },
+                      "locator": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "locator_he": {
+                        "type": "string",
+                        "minLength": 1
                       }
                     },
                     "required": [
@@ -909,6 +956,21 @@
                   },
                   "notes": {
                     "type": "string"
+                  },
+                  "notes_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "empty_because": {
+                    "type": "string",
+                    "enum": [
+                      "too-young",
+                      "none-by-rule",
+                      "not-reported",
+                      "not-collected",
+                      "not-applicable",
+                      "unknown"
+                    ]
                   },
                   "rationale_he": {
                     "type": "string",
@@ -999,6 +1061,10 @@
                         "type": "string",
                         "minLength": 1
                       },
+                      "publisher_he": {
+                        "type": "string",
+                        "minLength": 1
+                      },
                       "strength": {
                         "type": "string",
                         "enum": [
@@ -1008,6 +1074,10 @@
                           "open",
                           "entered"
                         ]
+                      },
+                      "fetched_from": {
+                        "type": "string",
+                        "format": "uri"
                       },
                       "page": {
                         "type": "integer",
@@ -1043,6 +1113,14 @@
                           "start"
                         ],
                         "additionalProperties": false
+                      },
+                      "locator": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "locator_he": {
+                        "type": "string",
+                        "minLength": 1
                       }
                     },
                     "required": [
@@ -1238,6 +1316,21 @@
                   "notes": {
                     "type": "string"
                   },
+                  "notes_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "empty_because": {
+                    "type": "string",
+                    "enum": [
+                      "too-young",
+                      "none-by-rule",
+                      "not-reported",
+                      "not-collected",
+                      "not-applicable",
+                      "unknown"
+                    ]
+                  },
                   "rationale_he": {
                     "type": "string",
                     "minLength": 1
@@ -1325,6 +1418,10 @@
                     "type": "string",
                     "minLength": 1
                   },
+                  "publisher_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
                   "strength": {
                     "type": "string",
                     "enum": [
@@ -1334,6 +1431,10 @@
                       "open",
                       "entered"
                     ]
+                  },
+                  "fetched_from": {
+                    "type": "string",
+                    "format": "uri"
                   },
                   "page": {
                     "type": "integer",
@@ -1369,6 +1470,14 @@
                       "start"
                     ],
                     "additionalProperties": false
+                  },
+                  "locator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "locator_he": {
+                    "type": "string",
+                    "minLength": 1
                   }
                 },
                 "required": [
@@ -1564,6 +1673,21 @@
               "notes": {
                 "type": "string"
               },
+              "notes_he": {
+                "type": "string",
+                "minLength": 1
+              },
+              "empty_because": {
+                "type": "string",
+                "enum": [
+                  "too-young",
+                  "none-by-rule",
+                  "not-reported",
+                  "not-collected",
+                  "not-applicable",
+                  "unknown"
+                ]
+              },
               "rationale_he": {
                 "type": "string",
                 "minLength": 1
@@ -1649,6 +1773,10 @@
                         "type": "string",
                         "minLength": 1
                       },
+                      "publisher_he": {
+                        "type": "string",
+                        "minLength": 1
+                      },
                       "strength": {
                         "type": "string",
                         "enum": [
@@ -1658,6 +1786,10 @@
                           "open",
                           "entered"
                         ]
+                      },
+                      "fetched_from": {
+                        "type": "string",
+                        "format": "uri"
                       },
                       "page": {
                         "type": "integer",
@@ -1693,6 +1825,14 @@
                           "start"
                         ],
                         "additionalProperties": false
+                      },
+                      "locator": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "locator_he": {
+                        "type": "string",
+                        "minLength": 1
                       }
                     },
                     "required": [
@@ -1887,6 +2027,21 @@
                   },
                   "notes": {
                     "type": "string"
+                  },
+                  "notes_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "empty_because": {
+                    "type": "string",
+                    "enum": [
+                      "too-young",
+                      "none-by-rule",
+                      "not-reported",
+                      "not-collected",
+                      "not-applicable",
+                      "unknown"
+                    ]
                   },
                   "rationale_he": {
                     "type": "string",
@@ -1970,6 +2125,10 @@
                         "type": "string",
                         "minLength": 1
                       },
+                      "publisher_he": {
+                        "type": "string",
+                        "minLength": 1
+                      },
                       "strength": {
                         "type": "string",
                         "enum": [
@@ -1979,6 +2138,10 @@
                           "open",
                           "entered"
                         ]
+                      },
+                      "fetched_from": {
+                        "type": "string",
+                        "format": "uri"
                       },
                       "page": {
                         "type": "integer",
@@ -2014,6 +2177,14 @@
                           "start"
                         ],
                         "additionalProperties": false
+                      },
+                      "locator": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "locator_he": {
+                        "type": "string",
+                        "minLength": 1
                       }
                     },
                     "required": [
@@ -2208,6 +2379,21 @@
                   },
                   "notes": {
                     "type": "string"
+                  },
+                  "notes_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "empty_because": {
+                    "type": "string",
+                    "enum": [
+                      "too-young",
+                      "none-by-rule",
+                      "not-reported",
+                      "not-collected",
+                      "not-applicable",
+                      "unknown"
+                    ]
                   },
                   "rationale_he": {
                     "type": "string",
@@ -2300,6 +2486,10 @@
                         "type": "string",
                         "minLength": 1
                       },
+                      "publisher_he": {
+                        "type": "string",
+                        "minLength": 1
+                      },
                       "strength": {
                         "type": "string",
                         "enum": [
@@ -2309,6 +2499,10 @@
                           "open",
                           "entered"
                         ]
+                      },
+                      "fetched_from": {
+                        "type": "string",
+                        "format": "uri"
                       },
                       "page": {
                         "type": "integer",
@@ -2344,6 +2538,14 @@
                           "start"
                         ],
                         "additionalProperties": false
+                      },
+                      "locator": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "locator_he": {
+                        "type": "string",
+                        "minLength": 1
                       }
                     },
                     "required": [
@@ -2538,6 +2740,21 @@
                   },
                   "notes": {
                     "type": "string"
+                  },
+                  "notes_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "empty_because": {
+                    "type": "string",
+                    "enum": [
+                      "too-young",
+                      "none-by-rule",
+                      "not-reported",
+                      "not-collected",
+                      "not-applicable",
+                      "unknown"
+                    ]
                   },
                   "rationale_he": {
                     "type": "string",
@@ -2741,6 +2958,10 @@
                     "type": "string",
                     "minLength": 1
                   },
+                  "publisher_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
                   "strength": {
                     "type": "string",
                     "enum": [
@@ -2750,6 +2971,10 @@
                       "open",
                       "entered"
                     ]
+                  },
+                  "fetched_from": {
+                    "type": "string",
+                    "format": "uri"
                   },
                   "page": {
                     "type": "integer",
@@ -2785,6 +3010,14 @@
                       "start"
                     ],
                     "additionalProperties": false
+                  },
+                  "locator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "locator_he": {
+                    "type": "string",
+                    "minLength": 1
                   }
                 },
                 "required": [
@@ -2979,6 +3212,21 @@
               },
               "notes": {
                 "type": "string"
+              },
+              "notes_he": {
+                "type": "string",
+                "minLength": 1
+              },
+              "empty_because": {
+                "type": "string",
+                "enum": [
+                  "too-young",
+                  "none-by-rule",
+                  "not-reported",
+                  "not-collected",
+                  "not-applicable",
+                  "unknown"
+                ]
               },
               "rationale_he": {
                 "type": "string",
@@ -3062,6 +3310,10 @@
                     "type": "string",
                     "minLength": 1
                   },
+                  "publisher_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
                   "strength": {
                     "type": "string",
                     "enum": [
@@ -3071,6 +3323,10 @@
                       "open",
                       "entered"
                     ]
+                  },
+                  "fetched_from": {
+                    "type": "string",
+                    "format": "uri"
                   },
                   "page": {
                     "type": "integer",
@@ -3106,6 +3362,14 @@
                       "start"
                     ],
                     "additionalProperties": false
+                  },
+                  "locator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "locator_he": {
+                    "type": "string",
+                    "minLength": 1
                   }
                 },
                 "required": [
@@ -3300,6 +3564,21 @@
               },
               "notes": {
                 "type": "string"
+              },
+              "notes_he": {
+                "type": "string",
+                "minLength": 1
+              },
+              "empty_because": {
+                "type": "string",
+                "enum": [
+                  "too-young",
+                  "none-by-rule",
+                  "not-reported",
+                  "not-collected",
+                  "not-applicable",
+                  "unknown"
+                ]
               },
               "rationale_he": {
                 "type": "string",
@@ -3451,6 +3730,10 @@
                 "type": "string",
                 "minLength": 1
               },
+              "publisher_he": {
+                "type": "string",
+                "minLength": 1
+              },
               "strength": {
                 "type": "string",
                 "enum": [
@@ -3460,6 +3743,10 @@
                   "open",
                   "entered"
                 ]
+              },
+              "fetched_from": {
+                "type": "string",
+                "format": "uri"
               },
               "page": {
                 "type": "integer",
@@ -3495,6 +3782,14 @@
                   "start"
                 ],
                 "additionalProperties": false
+              },
+              "locator": {
+                "type": "string",
+                "minLength": 1
+              },
+              "locator_he": {
+                "type": "string",
+                "minLength": 1
               },
               "checked": {
                 "type": "string",
@@ -3576,6 +3871,10 @@
                     "type": "string",
                     "minLength": 1
                   },
+                  "publisher_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
                   "strength": {
                     "type": "string",
                     "enum": [
@@ -3585,6 +3884,10 @@
                       "open",
                       "entered"
                     ]
+                  },
+                  "fetched_from": {
+                    "type": "string",
+                    "format": "uri"
                   },
                   "page": {
                     "type": "integer",
@@ -3620,6 +3923,14 @@
                       "start"
                     ],
                     "additionalProperties": false
+                  },
+                  "locator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "locator_he": {
+                    "type": "string",
+                    "minLength": 1
                   }
                 },
                 "required": [
@@ -3815,6 +4126,21 @@
               "notes": {
                 "type": "string"
               },
+              "notes_he": {
+                "type": "string",
+                "minLength": 1
+              },
+              "empty_because": {
+                "type": "string",
+                "enum": [
+                  "too-young",
+                  "none-by-rule",
+                  "not-reported",
+                  "not-collected",
+                  "not-applicable",
+                  "unknown"
+                ]
+              },
               "rationale_he": {
                 "type": "string",
                 "minLength": 1
@@ -3905,6 +4231,10 @@
                               "type": "string",
                               "minLength": 1
                             },
+                            "publisher_he": {
+                              "type": "string",
+                              "minLength": 1
+                            },
                             "strength": {
                               "type": "string",
                               "enum": [
@@ -3914,6 +4244,10 @@
                                 "open",
                                 "entered"
                               ]
+                            },
+                            "fetched_from": {
+                              "type": "string",
+                              "format": "uri"
                             },
                             "page": {
                               "type": "integer",
@@ -3949,6 +4283,14 @@
                                 "start"
                               ],
                               "additionalProperties": false
+                            },
+                            "locator": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "locator_he": {
+                              "type": "string",
+                              "minLength": 1
                             }
                           },
                           "required": [
@@ -4144,6 +4486,21 @@
                         "notes": {
                           "type": "string"
                         },
+                        "notes_he": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "empty_because": {
+                          "type": "string",
+                          "enum": [
+                            "too-young",
+                            "none-by-rule",
+                            "not-reported",
+                            "not-collected",
+                            "not-applicable",
+                            "unknown"
+                          ]
+                        },
                         "rationale_he": {
                           "type": "string",
                           "minLength": 1
@@ -4242,6 +4599,10 @@
                           "type": "string",
                           "minLength": 1
                         },
+                        "publisher_he": {
+                          "type": "string",
+                          "minLength": 1
+                        },
                         "strength": {
                           "type": "string",
                           "enum": [
@@ -4251,6 +4612,10 @@
                             "open",
                             "entered"
                           ]
+                        },
+                        "fetched_from": {
+                          "type": "string",
+                          "format": "uri"
                         },
                         "page": {
                           "type": "integer",
@@ -4286,6 +4651,14 @@
                             "start"
                           ],
                           "additionalProperties": false
+                        },
+                        "locator": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "locator_he": {
+                          "type": "string",
+                          "minLength": 1
                         }
                       },
                       "required": [
@@ -4480,6 +4853,21 @@
                     },
                     "notes": {
                       "type": "string"
+                    },
+                    "notes_he": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "empty_because": {
+                      "type": "string",
+                      "enum": [
+                        "too-young",
+                        "none-by-rule",
+                        "not-reported",
+                        "not-collected",
+                        "not-applicable",
+                        "unknown"
+                      ]
                     },
                     "rationale_he": {
                       "type": "string",
@@ -4566,6 +4954,10 @@
                           "type": "string",
                           "minLength": 1
                         },
+                        "publisher_he": {
+                          "type": "string",
+                          "minLength": 1
+                        },
                         "strength": {
                           "type": "string",
                           "enum": [
@@ -4575,6 +4967,10 @@
                             "open",
                             "entered"
                           ]
+                        },
+                        "fetched_from": {
+                          "type": "string",
+                          "format": "uri"
                         },
                         "page": {
                           "type": "integer",
@@ -4610,6 +5006,14 @@
                             "start"
                           ],
                           "additionalProperties": false
+                        },
+                        "locator": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "locator_he": {
+                          "type": "string",
+                          "minLength": 1
                         }
                       },
                       "required": [
@@ -4804,6 +5208,21 @@
                     },
                     "notes": {
                       "type": "string"
+                    },
+                    "notes_he": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "empty_because": {
+                      "type": "string",
+                      "enum": [
+                        "too-young",
+                        "none-by-rule",
+                        "not-reported",
+                        "not-collected",
+                        "not-applicable",
+                        "unknown"
+                      ]
                     },
                     "rationale_he": {
                       "type": "string",
@@ -4887,6 +5306,10 @@
                           "type": "string",
                           "minLength": 1
                         },
+                        "publisher_he": {
+                          "type": "string",
+                          "minLength": 1
+                        },
                         "strength": {
                           "type": "string",
                           "enum": [
@@ -4896,6 +5319,10 @@
                             "open",
                             "entered"
                           ]
+                        },
+                        "fetched_from": {
+                          "type": "string",
+                          "format": "uri"
                         },
                         "page": {
                           "type": "integer",
@@ -4931,6 +5358,14 @@
                             "start"
                           ],
                           "additionalProperties": false
+                        },
+                        "locator": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "locator_he": {
+                          "type": "string",
+                          "minLength": 1
                         }
                       },
                       "required": [
@@ -5125,6 +5560,21 @@
                     },
                     "notes": {
                       "type": "string"
+                    },
+                    "notes_he": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "empty_because": {
+                      "type": "string",
+                      "enum": [
+                        "too-young",
+                        "none-by-rule",
+                        "not-reported",
+                        "not-collected",
+                        "not-applicable",
+                        "unknown"
+                      ]
                     },
                     "rationale_he": {
                       "type": "string",
@@ -5463,6 +5913,10 @@
                     "type": "string",
                     "minLength": 1
                   },
+                  "publisher_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
                   "strength": {
                     "type": "string",
                     "enum": [
@@ -5472,6 +5926,10 @@
                       "open",
                       "entered"
                     ]
+                  },
+                  "fetched_from": {
+                    "type": "string",
+                    "format": "uri"
                   },
                   "page": {
                     "type": "integer",
@@ -5507,6 +5965,14 @@
                       "start"
                     ],
                     "additionalProperties": false
+                  },
+                  "locator": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "locator_he": {
+                    "type": "string",
+                    "minLength": 1
                   }
                 },
                 "required": [
@@ -5702,6 +6168,21 @@
               "notes": {
                 "type": "string"
               },
+              "notes_he": {
+                "type": "string",
+                "minLength": 1
+              },
+              "empty_because": {
+                "type": "string",
+                "enum": [
+                  "too-young",
+                  "none-by-rule",
+                  "not-reported",
+                  "not-collected",
+                  "not-applicable",
+                  "unknown"
+                ]
+              },
               "rationale_he": {
                 "type": "string",
                 "minLength": 1
@@ -5799,6 +6280,10 @@
                       "type": "string",
                       "minLength": 1
                     },
+                    "publisher_he": {
+                      "type": "string",
+                      "minLength": 1
+                    },
                     "strength": {
                       "type": "string",
                       "enum": [
@@ -5808,6 +6293,10 @@
                         "open",
                         "entered"
                       ]
+                    },
+                    "fetched_from": {
+                      "type": "string",
+                      "format": "uri"
                     },
                     "page": {
                       "type": "integer",
@@ -5843,6 +6332,14 @@
                         "start"
                       ],
                       "additionalProperties": false
+                    },
+                    "locator": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "locator_he": {
+                      "type": "string",
+                      "minLength": 1
                     }
                   },
                   "required": [
@@ -6038,6 +6535,21 @@
                 "notes": {
                   "type": "string"
                 },
+                "notes_he": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "empty_because": {
+                  "type": "string",
+                  "enum": [
+                    "too-young",
+                    "none-by-rule",
+                    "not-reported",
+                    "not-collected",
+                    "not-applicable",
+                    "unknown"
+                  ]
+                },
                 "rationale_he": {
                   "type": "string",
                   "minLength": 1
@@ -6134,6 +6646,10 @@
                   "type": "string",
                   "minLength": 1
                 },
+                "publisher_he": {
+                  "type": "string",
+                  "minLength": 1
+                },
                 "strength": {
                   "type": "string",
                   "enum": [
@@ -6143,6 +6659,10 @@
                     "open",
                     "entered"
                   ]
+                },
+                "fetched_from": {
+                  "type": "string",
+                  "format": "uri"
                 },
                 "page": {
                   "type": "integer",
@@ -6178,6 +6698,14 @@
                     "start"
                   ],
                   "additionalProperties": false
+                },
+                "locator": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "locator_he": {
+                  "type": "string",
+                  "minLength": 1
                 }
               },
               "required": [
@@ -6373,6 +6901,21 @@
             "notes": {
               "type": "string"
             },
+            "notes_he": {
+              "type": "string",
+              "minLength": 1
+            },
+            "empty_because": {
+              "type": "string",
+              "enum": [
+                "too-young",
+                "none-by-rule",
+                "not-reported",
+                "not-collected",
+                "not-applicable",
+                "unknown"
+              ]
+            },
             "rationale_he": {
               "type": "string",
               "minLength": 1
@@ -6486,6 +7029,14 @@
                   "start"
                 ],
                 "additionalProperties": false
+              },
+              "locator": {
+                "type": "string",
+                "minLength": 1
+              },
+              "locator_he": {
+                "type": "string",
+                "minLength": 1
               }
             },
             "required": [
@@ -7506,6 +8057,10 @@
                         "type": "string",
                         "minLength": 1
                       },
+                      "publisher_he": {
+                        "type": "string",
+                        "minLength": 1
+                      },
                       "strength": {
                         "type": "string",
                         "enum": [
@@ -7515,6 +8070,10 @@
                           "open",
                           "entered"
                         ]
+                      },
+                      "fetched_from": {
+                        "type": "string",
+                        "format": "uri"
                       },
                       "page": {
                         "type": "integer",
@@ -7550,6 +8109,14 @@
                           "start"
                         ],
                         "additionalProperties": false
+                      },
+                      "locator": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "locator_he": {
+                        "type": "string",
+                        "minLength": 1
                       }
                     },
                     "required": [
@@ -7744,6 +8311,21 @@
                   },
                   "notes": {
                     "type": "string"
+                  },
+                  "notes_he": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "empty_because": {
+                    "type": "string",
+                    "enum": [
+                      "too-young",
+                      "none-by-rule",
+                      "not-reported",
+                      "not-collected",
+                      "not-applicable",
+                      "unknown"
+                    ]
                   },
                   "rationale_he": {
                     "type": "string",

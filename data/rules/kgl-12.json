@@ -136,7 +136,8 @@
       "locator": "annex sections 7–14",
       "locator_he": "נספח סעיפים 7–14",
       "checked": "2026-10-22",
-      "qualifier": "(history)"
+      "qualifier": "(history)",
+      "standing": "superseded"
     },
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb",

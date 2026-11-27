@@ -19,9 +19,11 @@
       "unit": "months",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lsr_4619060.pdf",
-        "title": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024, ספר החוקים 3232, pp.2-3 (gazette pp.990-991), s.7 (new s.47(א))",
+        "title": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024, ספר החוקים 3232",
         "publisher": "הכנסת",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.2-3 (gazette pp.990-991), s.7 (new s.47(א))",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": "2024-10-03",
@@ -39,9 +41,11 @@
       "unit": "months",
       "source": {
         "url": "https://fs.knesset.gov.il/25/law/25_lsr_4619060.pdf",
-        "title": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024, ספר החוקים 3232, pp.2-3 (gazette pp.990-991), s.7 (new s.47(א))",
+        "title": "חוק השקעות משותפות בנאמנות (תיקון מס' 31), התשפ\"ד-2024, ספר החוקים 3232",
         "publisher": "הכנסת",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.2-3 (gazette pp.990-991), s.7 (new s.47(א))",
+        "page": 2
       },
       "checked": "2026-10-25",
       "effective_from": "2024-10-03",

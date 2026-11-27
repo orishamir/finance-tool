@@ -1280,6 +1280,8 @@ export const computedInputs = {
   realGain: "רווח ריאלי",
   taxRate: "שיעור המס",
   taxAtExit: "מס במשיכה",
+  /** The timeline's tax as an input of what is left: the whole of it, along the way and at the exit, as the figure it opens is named. */
+  taxTotal: "כל המס",
   fees: "דמי ניהול",
   // a run on a tariff: commissions and custody beside a fund's own fee
   feesTariff: "עמלות ודמי ניהול",
@@ -1288,6 +1290,8 @@ export const computedInputs = {
     headlineTariff: "מה שנשאר אחרי עמלות, דמי ניהול ומס, אם מושכים בסוף התקופה",
     net: "מה שנשאר אם מושכים בסוף שנה",
     tax: "המס אם מושכים בסוף שנה",
+    /** The timeline's tax: what the run takes along the way and at the exit together (F-67's two series). */
+    taxTotal: "כל המס, בדרך ובמשיכה, אם מושכים בסוף שנה",
     fees: "דמי הניהול שנגבו עד סוף שנה",
     feesTariff: "העמלות ודמי הניהול שנגבו עד סוף שנה",
     contributions: "כל מה שהפקדתם עד סוף שנה",
@@ -3908,7 +3912,15 @@ export const guideSignature = {
     } as Record<string, string>,
     // the pension visual's assumptions, in the short form of the indices page's plan line (DotLine)
     assumption: { site: "הנחות של האתר, לא תחזית", ret: "תשואה", inflation: "אינפלציה", perYear: "בשנה" },
-    inputNames: { trackFee: "דמי הניהול של המסלול", lockYears: "שנות הנעילה", cap: "תקרת המשכורת הקובעת", selfBenefited: "תקרת ההפקדה המוטבת לעצמאי בשנה" },
+    inputNames: {
+      trackFee: "דמי הניהול של המסלול",
+      lockYears: "שנות הנעילה",
+      cap: "תקרת המשכורת הקובעת",
+      selfBenefited: "תקרת ההפקדה המוטבת לעצמאי בשנה",
+      // the limits a typed share is measured against (TXH-01, TXH-08), listed beside the share the reader typed
+      employerLimit: "תקרת ההפקדה של המעסיק",
+      ownLimit: "תקרת ההפקדה המוטבת של העובד",
+    },
   },
   pension: {
     // the `stated` parts below are the words that state a rule and open it (D116): here PEN-67, severance deposits in place of severance pay

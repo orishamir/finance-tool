@@ -21,9 +21,12 @@
       "unit": "days",
       "source": {
         "url": "https://www.boi.org.il/boi_files/hanpaka.pdf",
-        "title": "בנק ישראל, מק\"מ - מועדי הנפקות עתידיים, p.1",
+        "title": "בנק ישראל, מק\"מ - מועדי הנפקות עתידיים",
         "publisher": "Bank of Israel",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1
       },
       "checked": "2026-11-23",
       "effective_from": "2026-12-01",
@@ -41,9 +44,12 @@
       "unit": "days",
       "source": {
         "url": "https://www.boi.org.il/boi_files/hanpaka.pdf",
-        "title": "בנק ישראל, מק\"מ - מועדי הנפקות עתידיים, p.1",
+        "title": "בנק ישראל, מק\"מ - מועדי הנפקות עתידיים",
         "publisher": "Bank of Israel",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1
       },
       "checked": "2026-11-23",
       "effective_from": "2026-12-01",
@@ -137,5 +143,11 @@
   ],
   "derived_from": [
     "GOV-03"
+  ],
+  "see_also": [
+    {
+      "kind": "question",
+      "id": "GOV OQ3"
+    }
   ]
 }

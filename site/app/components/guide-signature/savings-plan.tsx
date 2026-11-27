@@ -10,7 +10,8 @@ import { fact, factNumber, planModel } from "../../lib/guide-signature";
 
 import { Callout, ChartLegend, InputSlot, LongestCase, Marker, MarkerMark, Stat, StatRow, Swatch, useWidth } from "../kit";
 import { Num, Ruled, Term } from "../provenance";
-import { figure, inputSite, rulesOfBundle, SigAmountField, useSigInputs, typed, type VisualProps } from "./kit";
+import { figure, inputSite, SigAmountField, useSigInputs, typed, type VisualProps } from "./kit";
+import { rulesOfRun } from "../../lib/run-rules";
 
 const TOP = 22;
 const AXIS = 24;
@@ -59,7 +60,7 @@ export function SavingsPlanVisual({ data, today }: VisualProps) {
   const runInputs = { [copy.common.inputNames.monthly]: monthlyIn, [copy.common.inputNames.rate]: rate, [copy.common.inputNames.term]: termFact };
   const dateIn = typed(m, "months", today, copy.plan.marker);
   // free: nothing before the plan's end, then every deposit with its interest, after tax
-  const free = model && at ? figure(at.freeValue, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn }, today, copy.plan.about.free, rulesOfBundle(bundle)) : null;
+  const free = model && at ? figure(at.freeValue, "nis", "F-22", { ...runInputs, [copy.plan.marker]: dateIn }, today, copy.plan.about.free, at.freeValue > 0 ? rulesOfRun(model.rules, "all") : []) : null;
   // what is still locked is the deposits made by then, at their face: no interest in it
   const locked = model && at ? figure(at.lockedPrincipal, "nis", "F-22", { [copy.common.inputNames.monthly]: monthlyIn, [copy.common.inputNames.term]: termFact, [copy.plan.marker]: dateIn }, today, copy.plan.about.locked) : null;
   const end = model ? figure(model.term, "months", "F-22", { [copy.common.inputNames.term]: termFact }, today, copy.plan.about.last) : null;

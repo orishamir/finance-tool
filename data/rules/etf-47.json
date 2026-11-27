@@ -15,9 +15,12 @@
       "unit": "pct",
       "source": {
         "url": "https://indexes.nasdaqomx.com/docs/NDX%20Versions.pdf",
-        "title": "Nasdaq, \"NDX Index Versions\" (PDF of 9.9.2026), p.1",
+        "title": "Nasdaq, \"NDX Index Versions\" (PDF of 9.9.2026)",
         "publisher": "Nasdaq",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -35,9 +38,12 @@
       "unit": "pct",
       "source": {
         "url": "https://indexes.nasdaqomx.com/docs/NDX%20Versions.pdf",
-        "title": "Nasdaq, \"NDX Index Versions\" (PDF of 9.9.2026), p.1",
+        "title": "Nasdaq, \"NDX Index Versions\" (PDF of 9.9.2026)",
         "publisher": "Nasdaq",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1
       },
       "checked": "2026-10-25",
       "effective_from": null,

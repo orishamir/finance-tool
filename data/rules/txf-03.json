@@ -53,7 +53,8 @@
       "locator_he": "עמוד 149, סעיף 88, הגדרות סכום אינפלציוני, ריווח הון ריאלי",
       "page": 149,
       "quote": "חלק ריווח ההון השווה לסכום שבו עולה יתרת המחיר המקורי המתואם על יתרת המחיר המקורי",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
@@ -66,7 +67,8 @@
       "locator": "p.146, s.88, definition מדד",
       "locator_he": "עמוד 146, סעיף 88, הגדרת מדד",
       "page": 146,
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     }
   ]
 }

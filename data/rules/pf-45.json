@@ -18,9 +18,12 @@
       "unit": "nis",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-legislation301/he/Institutional-Bodies-Customer-Service-Circular-Amendment-pdf.pdf",
-        "title": "חוזר גופים מוסדיים 2026-9-5, שירות ללקוחות גופים מוסדיים - תיקון, 12.7.2026, p.7, annex s.7ד",
+        "title": "חוזר גופים מוסדיים 2026-9-5, שירות ללקוחות גופים מוסדיים - תיקון, 12.7.2026",
         "publisher": "Capital Market, Insurance and Savings Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.7, annex s.7ד",
+        "locator_he": "עמוד 7, נספח סעיף 7ד",
+        "page": 7
       },
       "checked": "2026-10-31",
       "effective_from": null,

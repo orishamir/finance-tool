@@ -15,9 +15,11 @@
       "unit": "pct",
       "source": {
         "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
-        "title": "MSCI, \"MSCI Index Calculation Methodology\", September 2026, pp.25, 51",
+        "title": "MSCI, \"MSCI Index Calculation Methodology\", September 2026",
         "publisher": "MSCI",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.25, 51",
+        "locator_he": "עמודים 25, 51"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -35,9 +37,11 @@
       "unit": "pct",
       "source": {
         "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
-        "title": "MSCI, \"MSCI Index Calculation Methodology\", September 2026, pp.25, 51",
+        "title": "MSCI, \"MSCI Index Calculation Methodology\", September 2026",
         "publisher": "MSCI",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "pp.25, 51",
+        "locator_he": "עמודים 25, 51"
       },
       "checked": "2026-10-25",
       "effective_from": null,

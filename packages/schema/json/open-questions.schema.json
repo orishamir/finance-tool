@@ -22,6 +22,18 @@
       "blocks_he": {
         "type": "string",
         "minLength": 1
+      },
+      "answered_by": {
+        "minItems": 1,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]+-[A-Z0-9]+$"
+        }
+      },
+      "meanwhile_he": {
+        "type": "string",
+        "minLength": 1
       }
     },
     "required": [

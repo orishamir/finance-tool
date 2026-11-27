@@ -35,7 +35,8 @@
       "strength": "primary",
       "quote": "In particular, longer-term interest rates depend in part on market expectations about the future course of short-term rates.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign central bank, general mechanism)"
+      "qualifier": "(foreign central bank, general mechanism)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://www.ecb.europa.eu/stats/financial_markets_and_interest_rates/euro_area_yield_curves/html/index.en.html",
@@ -46,7 +47,8 @@
       "strength": "primary",
       "quote": "When buying and selling bonds, investors include their expectations of future inflation, real interest rates and their assessment of risks.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign central bank)"
+      "qualifier": "(foreign central bank)",
+      "standing": "foreign-view"
     },
     {
       "url": "https://www.getsmarteraboutmoney.ca/invest/investment-products/bonds/3-factors-that-affect-bond-prices/",
@@ -57,7 +59,8 @@
       "strength": "primary",
       "quote": "This is because long-term bonds pay higher yields than short-term bonds.",
       "checked": "2026-11-15",
-      "qualifier": "(foreign regulator)"
+      "qualifier": "(foreign regulator)",
+      "standing": "foreign-view"
     }
   ],
   "derived_from": [

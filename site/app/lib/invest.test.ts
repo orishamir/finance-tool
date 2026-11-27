@@ -1,17 +1,29 @@
 // "השקעה במדד" on the collected data (spec §8): the founder's plan, the grid, the custom index and D27.
 import { describe, expect, it } from "vitest";
 import { BlockedError } from "@finance-tool/engine";
-import { accountSum, blockedReason, buildInvest, listReading, pairCosts, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
+import { accountSum, blockedReason, buildInvest, dealOnFunds, listReading, pairCosts, pairRow, indexById, knownIndices, matchKnownIndex, optionOfFund, refOfCustom, venueOfBand, type CustomIndex, doubtOf, placesOf, firstCount, phoneOnlyOf, phoneOnlyValue } from "./invest";
 import { buildIndicesBundle } from "./providers.server";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "./custom-entries";
 import type { WorkbenchInputs } from "./providers";
-import { entered, sheetRules, type SiteValue } from "./value";
+import { differenceOf, entered, sheetRules, type SiteValue } from "./value";
+import { ACCOUNT_LINES, FUND_LINES, SURTAX_RULES } from "./run-rules";
+import { feesData } from "./fees.server";
+import { houseDeal } from "./deal-account/house-deal";
+import { dealProviderId, withDeals } from "./deal-account/bundle";
 import { invest as words, numbers } from "../copy";
+import { inflationOf, leftOf } from "../components/invest/receipt";
+import { receiptChain } from "./receipt";
 
 // The page's data as built, but for the exchange rates: frozen at the ECB's rates of 16.11.2026 (units per euro) and dated today, so
 // the figures pinned below move with a fund's or a house's data, never with the daily rate refresh (which turned the check red on
 // 16.11.2026), and never read as stale. Re-pin with the data, never to fit.
 const FROZEN_PER_EUR = { USD: 1.1014, ILS: 3.5509, GBP: 0.8345, CHF: 0.9244, JPY: 175.78, CAD: 1.5734, AUD: 1.6301 };
+/** The value, or the test fails here where it is missing. */
+function need<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
+  return v;
+}
+
 const live = buildIndicesBundle();
 const bundle: typeof live = live.fx ? { ...live, fx: { ...live.fx, date: live.today, perEur: { ...live.fx.perEur, ...FROZEN_PER_EUR } } } : live;
 const t = bundle.today;
@@ -349,10 +361,13 @@ describe("invest page computation", () => {
     if (!("value" in at)) throw new Error("Psagot prices 1159250");
     // the account's fees: its whole part (F-91) less what the cash waiting for a whole unit did (F-109), as the receipt writes them
     expect(Math.round(at.accountCost)).toBe(2_751);
-    // what it rests on: the fund's US tax (TXF-16) and that nothing is taxed before the sale (TXF-11, the fund's own ruling); never TXF-04,
-    // whose place the annex's own statement takes, named as the fund's, its page linked
+    // what it rests on: that nothing is taxed before the sale (TXF-11, the fund's own ruling), and the fund's US tax (TXF-16), which the
+    // input of that tax lists and opens, so the figure itself does not list it again; never TXF-04, whose place the annex's own statement
+    // takes, named as the fund's, its page linked
     const used = at.value.rulesUsed!.map((r) => r.id);
-    expect(used).toEqual(expect.arrayContaining(["TXF-16", "TXF-11"]));
+    expect(used).toEqual(expect.arrayContaining(["TXF-11"]));
+    expect(used).not.toContain("TXF-16");
+    expect(Object.values(need(at.value.computed_from, "the figure's inputs").inputs as Record<string, SiteValue>).flatMap((x) => x.rulesUsed ?? []).map((r) => r.id)).toContain("TXF-16");
     expect(used).not.toContain("TXF-04");
     expect(at.value.statements).toEqual([expect.objectContaining({ term: "tax-index", index: "fx", currency: "USD", page: 17, source: expect.objectContaining({ url: f.rec.tax_ruling!.source.url }) })]);
     // the account's cost before tax reads no tax index, and so no statement
@@ -640,7 +655,129 @@ describe("BANK-35 sits on the account's cost, not on what is left (independent c
     for (const w of ways) {
       expect(w.cost.flags).toContain("BANK-35");
       expect(w.value.flags ?? []).not.toContain("BANK-35");
+      // a flag only: it sets none of the cost, so no figure lists it as a rule (method F-102)
+      expect(w.cost.rulesUsed?.map((r) => r.id) ?? []).not.toContain("BANK-35");
     }
+  });
+  it("the pair's current-account line and the account's sum carry it, with the month the run found it from; what is left does not", () => {
+    const fundId = need(need(view0().houses.find((h) => h.provider.id === "leumi"), "Leumi's house").best, "Leumi's best fund").fund.rec.id;
+    const pc = need(pairCosts({ bundle, index: sp, plan: plan({ currentAccounts: true }), fundId, providerId: "leumi" }), "Leumi's pair");
+    const line = pc.account.find((l) => l.line === "account");
+    expect(line, "Leumi's pair counts its current account").toBeDefined();
+    if (!line) throw new Error("Leumi's pair has no current-account line");
+    expect(line.cost.flags).toContain("BANK-35");
+    expect(line.cost.flagMonths?.["BANK-35"]).toBeGreaterThan(0);
+    for (const l of pc.account.filter((x) => x.line !== "account")) expect(l.cost.flags ?? []).not.toContain("BANK-35");
+    const sum = accountSum(pc, "x", t);
+    expect(sum.flags).toContain("BANK-35");
+    expect(sum.rulesUsed ?? []).toEqual([]);
+    expect(pc.left.flags ?? []).not.toContain("BANK-35");
+    // the receipt's value before tax (F-129) and the inflation on it (F-130) are what is left, not a cost: the flag stays on the account's row
+    const inflation = inflationOf(pc, receiptChain(pc), "x", t);
+    const before = need((need(inflation.computed_from, "the inflation's inputs").inputs as Record<string, SiteValue>)[words.receipt.beforeTax.nominal], "the value before tax");
+    expect(need((need(before.computed_from, "the inputs of the value before tax").inputs as Record<string, SiteValue>)[words.receipt.parts.account], "the account's part").flags).toContain("BANK-35");
+    for (const v of [before, inflation]) {
+      expect(v.flags ?? []).not.toContain("BANK-35");
+      expect(v.flagMonths?.["BANK-35"]).toBeUndefined();
+    }
+  });
+  const view0 = () => buildInvest({ bundle, index: sp, plan: plan({ currentAccounts: true }) });
+});
+
+describe("an engine flag keeps the month it applies from", () => {
+  it("the receipt's what-is-left keeps the month of a flag the pair's left records (TXF-27, from the month the holding passes the threshold)", () => {
+    const big = plan({ amountNow: 1_000_000, values: { ...plan().values, amount: entered(1_000_000, "nis", t) } });
+    const pc = pairCosts({ bundle, index: sp, plan: big, fundId: "us-voo", providerId: "interactive-brokers" });
+    const month = pc?.left.flagMonths?.["TXF-27"];
+    expect(month, "a US fund held above the estate threshold").toBeDefined();
+    const left = leftOf(need(pc, "the VOO pair"), t);
+    expect(left.flags).toContain("TXF-27");
+    expect(left.flagMonths?.["TXF-27"]).toBe(month);
+  });
+});
+
+describe("each figure of a run lists the rules of the parts its number is made of", () => {
+  const view = buildInvest({ bundle, index: sp, plan: plan() });
+  const ids = (v: SiteValue) => (v.rulesUsed ?? []).map((r) => r.id);
+  const pairs = view.houses.flatMap((h) => (h.best ? [pairCosts({ bundle, index: sp, plan: plan(), fundId: h.best.fund.rec.id, providerId: h.provider.id })] : [])).filter((x): x is NonNullable<typeof x> => !!x);
+  it("an account's line is one of the account's fee lines, and the account's and the fund's lines are apart", () => {
+    expect(pairs.length).toBeGreaterThan(3);
+    expect(ACCOUNT_LINES.filter((l) => FUND_LINES.includes(l))).toEqual([]);
+    for (const pc of pairs) for (const l of pc.account) expect(ACCOUNT_LINES, `${pc.providerId} ${l.line}`).toContain(l.line);
+  });
+  it("each fee line's figure lists exactly the rules that changed that line, and every line the run books outside the fund's is the account's", () => {
+    // the cheapest pair at each house on the S&P 500 and on the MSCI ACWI (whose fund carries the US tax inside its price, TXF-16, on its
+    // own line), and the Irish fund that pays out at every house that prices it, on an income above the surtax's threshold
+    const acwi = need(indexById(bundle, "index-msci-acwi"), "the MSCI ACWI");
+    const rich = plan({ income: 900_000, values: { ...plan().values, income: entered(900_000, "nis", t) } });
+    const irishId = "ie0031442068";
+    const cases = [
+      ...[sp, acwi].flatMap((index) => buildInvest({ bundle, index, plan: plan() }).houses.flatMap((h) => (h.best ? [{ index, p: plan(), fundId: h.best.fund.rec.id, providerId: h.provider.id }] : []))),
+      ...bundle.snapshots.map((s) => ({ index: sp, p: rich, fundId: irishId, providerId: s.id })),
+    ];
+    const booked = new Set<string>();
+    let lines = 0;
+    let paying = 0;
+    for (const c of cases) {
+      const pc = pairCosts({ bundle, index: c.index, plan: c.p, fundId: c.fundId, providerId: c.providerId });
+      if (!pc) continue;
+      const row = pairRow({ bundle, index: c.index, plan: c.p, fundId: c.fundId, providerId: c.providerId, fxChange: 0 });
+      if (!row) throw new Error(`${c.providerId}: the pair has no run`);
+      const at = `${c.index.id} ${c.fundId} ${c.providerId}`;
+      const changed = row.run.rules.flatMap((r) => r.uses.filter((u) => u.changed).map((u) => ({ id: r.id, u })));
+      for (const { u } of changed) if (u.part === "fees" && u.line && !FUND_LINES.includes(u.line)) booked.add(u.line);
+      // on a fund that pays out, a difference of B adds the whole tax during the run, a money carried to the horizon the payout's tax alone
+      const during = new Set(pc.distributes ? changed.filter((x) => x.u.part === "taxDuring").map((x) => x.id) : []);
+      const payoutTax = new Set([...during].filter((id) => !SURTAX_RULES.includes(id)));
+      if (pc.distributes) paying++;
+      const onLines = (ls: readonly string[]) => new Set(changed.filter((x) => x.u.part === "fees" && x.u.line !== undefined && ls.includes(x.u.line)).map((x) => x.id));
+      // a rule an input of the figure already lists is left to that input, which opens it (`computed`)
+      const exactly = (v: SiteValue, want: Set<string>, what: string) => {
+        const held = new Set(Object.values((v.computed_from?.inputs ?? {}) as Record<string, SiteValue>).flatMap((x) => ids(x)));
+        expect(ids(v).sort(), `${at} ${what}`).toEqual([...want].filter((id) => !held.has(id)).sort());
+      };
+      for (const l of pc.account) {
+        exactly(l.cost, new Set([...onLines([l.line]), ...(pc.units ? payoutTax : during)]), l.line);
+        lines++;
+      }
+      exactly(pc.remainder, new Set([...onLines(ACCOUNT_LINES), ...during]), "remainder");
+      exactly(pc.fund, new Set([...onLines(FUND_LINES), ...during]), "fund");
+      if (pc.waiting) exactly(pc.waiting, payoutTax, "waiting");
+    }
+    expect(lines).toBeGreaterThan(5);
+    expect(paying, "a pair on the fund that pays out").toBeGreaterThan(0);
+    for (const line of booked) expect(ACCOUNT_LINES, line).toContain(line);
+  });
+  it("on a fund that pays nothing out, a figure before tax lists no tax rule, the fund's part only the US tax inside its price (TXF-16)", () => {
+    const ways = view.options.flatMap((o) => o.funds).flatMap((f) => Object.values(f.byHouse).flatMap((x) => ("valueN" in x ? [{ f, x }] : [])));
+    expect(ways.length).toBeGreaterThan(10);
+    for (const { f, x } of ways) if (!f.rec.distribution) expect(ids(x.cost).filter((id) => id.startsWith("TX")), `${f.rec.id} cost`).toEqual([]);
+    for (const pc of pairs) {
+      const rec = need(bundle.funds.find((r) => r.id === pc.fundId), `the fund ${pc.fundId}`);
+      if (pc.distributes) continue;
+      // the US tax on the dividends inside the fund's price is one of the fund's own costs, booked on its line (F-107)
+      expect(ids(pc.fund).filter((id) => id.startsWith("TX") && id !== "TXF-16"), `${pc.fundId} fund`).toEqual([]);
+      for (const l of pc.account) expect(ids(l.cost).filter((id) => id.startsWith("TX")), `${pc.providerId} ${l.line}`).toEqual([]);
+      expect(ids(pc.remainder).filter((id) => id.startsWith("TX")), `${pc.providerId} remainder`).toEqual([]);
+      expect(rec.distribution).toBeFalsy();
+    }
+  });
+  it("the state's part lists only tax rules, and what is left lists every rule its own step adds", () => {
+    for (const pc of pairs) {
+      for (const id of ids(pc.tax)) expect(id.startsWith("TX"), `${pc.providerId} tax ${id}`).toBe(true);
+      expect(ids(pc.left).length, pc.providerId).toBeGreaterThan(0);
+    }
+  });
+  it("a difference from the pair on the receipt lists no rule; each of its two figures lists its own, which the page ships", () => {
+    const shipped = new Set(bundle.rules.map((r) => r.id));
+    const ways = view.options.flatMap((o) => o.funds).filter((f) => f.best);
+    const [a, b] = [need(ways[0]?.best, "the first fund's best"), need(ways[1]?.best, "the second fund's best")];
+    const gap = differenceOf(["א", a.value], ["ב", b.value], "F-65", { today: t });
+    expect(gap.rulesUsed ?? []).toEqual([]);
+    expect(sheetRules(gap)).toEqual([]);
+    const reached = Object.values(need(gap.computed_from, "the difference's inputs").inputs as Record<string, SiteValue>).flatMap((v) => sheetRules(v).map((r) => r.id));
+    expect(reached.length).toBeGreaterThan(0);
+    for (const id of reached) expect(shipped.has(id), id).toBe(true);
   });
 });
 
@@ -760,6 +897,41 @@ describe("what each figure's sheet lists", () => {
     expect(inputs(carried.remainder)[words.pair.incomeInput]?.value).toBe(900_000);
     for (const l of carried.account) expect(inputs(l.cost)[words.pair.incomeInput]).toBeUndefined();
     if (carried.waiting) expect(inputs(carried.waiting)[words.pair.incomeInput]).toBeUndefined();
+    // and so of the rules: every figure rests on the payout's tax; a difference of B takes the surtax with it, a carried money does not
+    const tx = (v: SiteValue) => (v.rulesUsed ?? []).map((r) => r.id).filter((id) => id.startsWith("TX"));
+    expect(tx(carried.tax).some((id) => SURTAX_RULES.includes(id))).toBe(true);
+    for (const v of [carried.fund, carried.remainder]) expect(tx(v).some((id) => SURTAX_RULES.includes(id))).toBe(true);
+    for (const v of [...carried.account.map((l) => l.cost), ...(carried.waiting ? [carried.waiting] : [])]) {
+      expect(tx(v).length).toBeGreaterThan(0);
+      expect(tx(v).filter((id) => SURTAX_RULES.includes(id))).toEqual([]);
+    }
+  });
+
+  it("a deal's fee on a fund that pays out lists the same rules on the pair's receipt as in the deal's popup: the payout's tax, no surtax", () => {
+    const p = plan({ income: 900_000, values: { ...plan().values, income: entered(900_000, "nis", t) }, currentAccounts: true });
+    const data = feesData();
+    let compared = 0;
+    for (const house of data.houses) {
+      const deal = houseDeal(`house:${house.id}`, data, t);
+      if (!deal) continue;
+      const b = withDeals(bundle, [deal], data.kinds);
+      const providerId = dealProviderId(deal.id);
+      const pc = pairCosts({ bundle: b, index: sp, plan: p, fundId: irish.rec.id, providerId });
+      const at = dealOnFunds({ bundle: b, index: sp, plan: p, fundIds: [irish.rec.id], providerId }).get(irish.rec.id);
+      if (!pc?.dealLines?.length || at?.kind !== "ok") continue;
+      expect(pc.distributes).toBe(true);
+      // the income is above the surtax's threshold, so the run's tax took the surtax
+      expect((pc.tax.rulesUsed ?? []).some((r) => SURTAX_RULES.includes(r.id)), house.id).toBe(true);
+      for (const l of pc.dealLines) {
+        const onReceipt = (l.cost.rulesUsed ?? []).map((r) => r.id).sort();
+        expect((at.figure(l.cost.value as number, "x", l.fee).rulesUsed ?? []).map((r) => r.id).sort(), `${house.id} ${l.fee}`).toEqual(onReceipt);
+        // the money a fee took is carried at the fund's return less the payout's tax (F-91's t), which leaves the surtax out
+        expect(onReceipt.filter((id) => id.startsWith("TX")).length, `${house.id} ${l.fee}`).toBeGreaterThan(0);
+        expect(onReceipt.filter((id) => SURTAX_RULES.includes(id)), `${house.id} ${l.fee}`).toEqual([]);
+      }
+      compared++;
+    }
+    expect(compared, "a house whose deal prices the fund that pays out").toBeGreaterThan(0);
   });
 
   it("the deposits' sheet says the monthly deposit rises with prices (A-04, F-05)", () => {

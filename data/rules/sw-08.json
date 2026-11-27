@@ -19,9 +19,12 @@
       "unit": "days",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
-        "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל, p.3, s.3(יב)",
+        "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, s.3(יב)",
+        "locator_he": "עמוד 3, סעיף 3(יב)",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -39,9 +42,12 @@
       "unit": "days",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
-        "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל, p.3, s.3(יב)",
+        "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, s.3(יב)",
+        "locator_he": "עמוד 3, סעיף 3(יב)",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -59,9 +65,12 @@
       "unit": "days",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-988/he/regulation_h_2017-9-17.pdf",
-        "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל, p.3, s.3(יג)",
+        "title": "חוזר גופים מוסדיים 2017-9-17 – העברת כספים בין קופות גמל",
         "publisher": "Capital Market, Insurance and Savings Authority (gov.il)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, s.3(יג)",
+        "locator_he": "עמוד 3, סעיף 3(יג)",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": null,

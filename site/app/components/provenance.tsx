@@ -5,14 +5,14 @@
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, type MouseEvent, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router";
-import { companyTermRule, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
+import { companyTermRule, isOwnDocument, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { formulaNames, numbers, parametersPage, provenance as copy, rule as ruleCopy, scopeWords, strength as strengthCopy } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
-import { isOpenValue, isParameter, isWeak, strengthOf, type SiteValue, type Strength } from "../lib/value";
+import { isOpenValue, isParameter, isWeak, ownBy, strengthOf, type SiteValue, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconCalculator, IconClock, IconDrillIn, IconFile, IconLock, IconPencil } from "./icons";
-import { Sheet } from "./Sheet";
+import { OwnCompanyCtx, Sheet, StaleSaidCtx } from "./Sheet";
 import { Button, cx, Disclosure, Tag } from "./ui";
 import { CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
@@ -233,16 +233,13 @@ export const InsideSheetCtx = createContext(false);
 /** The element whose tap opened the sheet, while the sheet is open (null when it is closed): words that opened it show so (`TapWords`). */
 const OpenAnchorCtx = createContext<HTMLElement | null>(null);
 /**
- * A page about one company (its company page, a track's page): every company-sourced figure on it is that company's own (D31), so
- * none carries "לפי החברה" or its caution.
+ * A page about one company (its company page, a track's page): a company-sourced figure on it that rests on a document of the page's
+ * company is that company's own (D31), so it carries no "לפי החברה" or its caution (`Num`), in the page and in every sheet opened on it
+ * alike; a figure from another company's document keeps both.
  */
-const OwnCompanyCtx = createContext(false);
 export function OwnCompanyPage({ children }: { children: ReactNode }) {
   return <OwnCompanyCtx.Provider value={true}>{children}</OwnCompanyCtx.Provider>;
 }
-
-/** A notice above already says the figures are old. */
-const StaleSaidCtx = createContext(false);
 
 /**
  * Inside a block that sums up figures the person typed in boxes elsewhere on the screen (the kit's `TypedPlain`): an entered figure is
@@ -348,10 +345,36 @@ export function opensAround(el: Element, insideSheet: boolean): string[] {
   return [...ids];
 }
 
+/**
+ * The page's company a company-sourced figure is the own figure of (D31): the one whose document is its source, or, for a computed
+ * figure, the one company whose documents every company-sourced input it rests on comes from; none where that is not one of the page's.
+ */
+function pageOwner(v: SiteValue, data: ProvenanceData | null): string | null {
+  if (v.state === "computed") {
+    const weak = Object.values((v.computed_from?.inputs ?? {}) as Record<string, SiteValue>).filter((x) => strengthOf(x) === "institution" && !x.own);
+    const owners = new Set(weak.map((x) => pageOwner(x, data)));
+    const [c] = owners;
+    return owners.size === 1 && c ? c : null;
+  }
+  return (
+    (data?.pageCompanies ?? []).find((id) => {
+      const docs = data?.companies?.[id]?.docs;
+      return !!docs && isOwnDocument(v.source, docs);
+    }) ?? null
+  );
+}
+
+/** A company-sourced figure on a page about one company, marked as that company's own where it rests on that company's documents. */
+function ownOnPage(v: SiteValue, data: ProvenanceData | null): SiteValue {
+  const c = pageOwner(v, data);
+  return c ? ownBy(v, c) : v;
+}
+
 /** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
 export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord, name, wrap }: NumProps) {
   const ownPage = useContext(OwnCompanyCtx);
-  const value = ownPage && !given.own && strengthOf(given) === "institution" ? { ...given, own: "page" } : given;
+  const pageData = useContext(DataCtx);
+  const value = ownPage && !given.own && strengthOf(given) === "institution" ? ownOnPage(given, pageData) : given;
   const open = useOpen();
   const inside = useContext(InsideSheetCtx);
   const today = useContext(TodayCtx);
@@ -393,7 +416,7 @@ export function Num({ value: given, size = "inline", display, animate, className
   const doubt = value.doubt ? numbers.doubt : null;
   const label = [name, fullWord ?? text, blocked ? null : stateWord[value.state], param ? numbers.parameter : null, weak, doubt, future, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ");
   // one caution icon, before the digits, for a weak source or a date still ahead (the sheet says which); a computed figure
-  // carries the weak-source icon only at figure size, since its sheet names the weak input. The words stay out of the line: a
+  // carries the weak-source icon only at figure size, and each of its inputs says its own source in its own sheet. The words stay out of the line: a
   // word between a number and its unit ("4 לפי החברה ימי עסקים") broke the sentence. At figure size a date ahead
   // is also said in words, before the digits.
   const markWeak = weak && (value.state !== "computed" || size === "figure");

@@ -41,9 +41,12 @@
       "unit": "pct_of_deposit",
       "source": {
         "url": "https://media.harel-group.co.il/media/lved10ua/תקנון-הראל-חיסכון-לכל-ילד-אפריל-2026-_.pdf",
-        "title": "Harel child-savings standard bylaw, April 2026, pp.9-10, s.31.1.2 (0% of deposits)",
+        "title": "Harel child-savings standard bylaw, April 2026 (0% of deposits)",
         "publisher": "Harel Insurance and Finance",
-        "strength": "institution"
+        "strength": "institution",
+        "locator": "pp.9-10, s.31.1.2",
+        "locator_he": "עמודים 9 עד 10, סעיף 31.1.2",
+        "page": 9
       },
       "checked": "2026-10-25",
       "effective_from": null,

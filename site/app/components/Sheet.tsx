@@ -4,7 +4,7 @@
 // (sheet-stack.ts). It is a modal dialog, so Escape on a computer and the phone's Back reach it as the browser's close request, with no
 // history entry of its own; its owner's state follows the dialog's own close. A page the router opens from inside it (a link, a search)
 // leaves it closed. Its first thing to act on, marked `data-autofocus`, takes the focus as it opens.
-import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { createContext, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { useLocation } from "react-router";
 import { site } from "../copy";
 import { IconArrowBack, IconChevronDown, IconClose } from "./icons";
@@ -13,6 +13,14 @@ import { cssMs } from "./kit/chart-glide-math";
 import { MQ, useIsoLayoutEffect, useMedia } from "../lib/hooks";
 import { FailureNotice } from "./failure-notice";
 import { closeUnder, coversOther, dropSheet, isCovered, pushSheet, watchSheets, type StackedSheet } from "./sheet-stack";
+
+/**
+ * What a page says around its figures (provenance.tsx): that the page is about one company, whose own figures carry no "לפי החברה"
+ * (`OwnCompanyPage`), which holds in every sheet opened on it, since each figure is judged by the document it rests on; and that a notice
+ * above already says the figures are old (`StaleSaid`), which no sheet inherits, since a sheet's figures stand without that notice.
+ */
+export const OwnCompanyCtx = createContext(false);
+export const StaleSaidCtx = createContext(false);
 
 export interface SheetProps {
   open: boolean;
@@ -313,7 +321,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, size
             <IconClose size={20} />
           </Button>
         </div>
-        {open || !ref.current?.open ? children : kept.current}
+        <StaleSaidCtx.Provider value={false}>{open || !ref.current?.open ? children : kept.current}</StaleSaidCtx.Provider>
       </div>
       {open && !covered && <FailureNotice where="sheet" />}
       {/* a strip of its own under the scrolling body, always there at one height: never covers a line, never moves one, empty at the end */}

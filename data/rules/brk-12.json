@@ -18,9 +18,13 @@
       "unit": "nis_millions",
       "source": {
         "url": "https://content.tase.co.il/media/r1phfszz/274625.pdf",
-        "title": "חוקי העזר של מסלקת הבורסה, חלק א', p.20, ch.ג s.1.1ב: \"בכל מקרה לא יפחת סכום קרן הסיכונים מארבע מאות מיליון ש\"ח\"",
+        "title": "חוקי העזר של מסלקת הבורסה, חלק א'",
         "publisher": "מסלקת הבורסה לניירות ערך בתל אביב",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.20, ch.ג s.1.1ב",
+        "locator_he": "עמוד 20, פרק ג סעיף 1.1ב",
+        "page": 20,
+        "quote": "בכל מקרה לא יפחת סכום קרן הסיכונים מארבע מאות מיליון ש״ח"
       },
       "checked": "2026-11-06",
       "effective_from": null,
@@ -50,7 +54,8 @@
       "locator_he": "עמודים 93 עד 94, סעיף 50א(ב)-(ג); עמוד 96, סעיפים 50ב-50ג",
       "page": 93,
       "checked": "2026-11-06",
-      "qualifier": "(text before the 2017 amendments; the amended s.50א and ss.50א3-50א4 are in REG-15)"
+      "qualifier": "(text before the 2017 amendments; the amended s.50א and ss.50א3-50א4 are in REG-15)",
+      "standing": "superseded"
     },
     {
       "url": "https://content.tase.co.il/media/r1phfszz/274625.pdf#page=20",

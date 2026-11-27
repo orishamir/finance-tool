@@ -14,9 +14,12 @@
       "unit": "text",
       "source": {
         "url": "https://www.boi.org.il/media/wxoksahf/h2833.pdf",
-        "title": "חוזר ח-06-2833, 26.11.2025, p.3, סעיף 9 תחילה",
+        "title": "חוזר ח-06-2833, 26.11.2025",
         "publisher": "Bank of Israel, Banking Supervision",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.3, סעיף 9 תחילה",
+        "locator_he": "עמוד 3, סעיף 9 תחילה",
+        "page": 3
       },
       "checked": "2026-10-25",
       "effective_from": "2025-11-26",

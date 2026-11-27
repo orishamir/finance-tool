@@ -22,7 +22,8 @@
       "strength": "primary",
       "quote": "The limit of SIPC protection is $500,000, which includes a $250,000 limit for cash.",
       "checked": "2026-11-12",
-      "qualifier": "(foreign statutory body)"
+      "qualifier": "(foreign statutory body)",
+      "standing": "foreign-view"
     }
   ],
   "examples": [

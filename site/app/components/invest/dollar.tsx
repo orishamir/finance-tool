@@ -105,7 +105,8 @@ export function DollarSection({ view, bundle, plan, d }: { view: InvestView; bun
   const num = (x: number, about: string, formula: string, inputs: Record<string, SiteValue>) => <Num value={fig(x, about, formula, inputs)} display={fmt.signedPct(x, 1)} />;
   // a change of the dollar (F-93) is computed from shekels per dollar at two month ends, each from the ECB's two end-of-month rates (F-84)
   const dollarOf = (year: number, pct: number) => dollarYearChange(history, year, pct, today, c.dollar.inputDollar(year));
-  const yearsInput = [c.planInputs.years, plan.values.years] as const;
+  // the stretch is h whole years, the engine's (`stretchRange`), so the line's H is that number, not the plan's years as typed
+  const yearsInput = [c.planInputs.years, h] as const;
   const stretchNum = (s: Stretch<FxHistory["points"][number]>, pct: number, about: string) => <Num value={dollarStretchChange(history, s, pct, yearsInput, today, about)} display={fmt.signedPct(pct, 1)} />;
   // each year's dollar and index; the years together compound them (F-95), so their sheet lists each year's
   const yearFigs = new Map(rec.years.map((y) => [y.year, { dollar: dollarOf(y.year, y.dollar), index: fig(y.index, c.dollar.colIndex, "F-95", indexInputs(y.year)) }]));

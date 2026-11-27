@@ -20,9 +20,12 @@
       "unit": "text",
       "source": {
         "url": "https://boi.org.il/media/0zllhi2z/h2670.pdf",
-        "title": "חוזר ח-2670, 17.8.2021, p.1",
+        "title": "חוזר ח-2670, 17.8.2021",
         "publisher": "Bank of Israel (Banking Supervision)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.1",
+        "locator_he": "עמוד 1",
+        "page": 1
       },
       "checked": "2026-10-25",
       "effective_from": "2021-09-22",

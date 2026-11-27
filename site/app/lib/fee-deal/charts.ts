@@ -947,9 +947,12 @@ const isAccount = (fee: ChartFee): boolean => fee.ref.kind === "current_account"
  */
 const capFlag = (p: DealPeriod, accountYear: number, cap: AccountCap | null): AccountCap | null => (cap !== null && reachesCap(p, cap) && accountYear / 12 > cap.value ? cap : null);
 
-/** A year of holding's cost (F-112), with BANK-35's flag where `flagged` gives its cap: the cost may be too high from the cap's start (F-102). */
+/**
+ * A year of holding's cost (F-112), with BANK-35's flag where `flagged` gives its cap: the cost may be too high from the cap's start (F-102).
+ * BANK-35 is a flag only: it sets none of the cost, so the figure lists no rule for it (method F-102).
+ */
 const yearCostOf = (value: number, formula: string, inputs: Record<string, SiteValue>, today: string, flagged: AccountCap | null): SiteValue =>
-  flagged ? computed(value, "nis", formula, inputs, { today, rules: [{ id: "BANK-35", strength: flagged.strength }], flags: ["BANK-35"] }) : reading(value, "nis", formula, inputs, today);
+  flagged ? computed(value, "nis", formula, inputs, { today, flags: ["BANK-35"] }) : reading(value, "nis", formula, inputs, today);
 
 function heldView(r: DealRead, p: DealPeriod, prev: DealPeriod | null, fx: FxSnapshot | null, period: PeriodCard | undefined, cap: AccountCap | null): HeldPanelView {
   const at = monthKey(p.from);

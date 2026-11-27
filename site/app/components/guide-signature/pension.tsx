@@ -17,7 +17,9 @@ import { useInputs } from "../../lib/inputs";
 import { asField, computed, type SiteValue } from "../../lib/value";
 import { amountCheck, Callout, DotLine, NumberField, PercentField, Sentence, Stat, StatRow, MixedName } from "../kit";
 import { IdRef, Num, Ruled, Term } from "../provenance";
-import { figure, Gap, inputSite, rulesOfBundle, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
+import { figure, Gap, inputSite, SigYearsField, termInputs, useSigInputs, yearsRange, typed, type VisualProps } from "./kit";
+import { mergedRules } from "@finance-tool/engine";
+import { rulesOfRun, withoutSalaryTax } from "../../lib/run-rules";
 
 export function PensionVisual(props: VisualProps) {
   const bundle = props.data.bundles[props.data.id];
@@ -93,11 +95,15 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
     ...(inflationPct ? { [copy.common.inputNames.inflation]: inflationPct } : {}),
     ...termInputs(bundle),
   };
-  const rules = rulesOfBundle(bundle);
-  const m = (value: number, about: string, inputs: Record<string, SiteValue>) => figure(value, "nis", "F-67", inputs, today, about, rules);
+  // each figure lists the rules that changed its part (method §13): a deposit the minimum rates (PEN-03), and the average wage only where
+  // it caps the salary (PEN-04); the relief and what the deposit costs after it the relief's rules; the balance everything its runs changed
+  // but the salary's tax on the employer's money above its limit, which the salary pays and the balance is before
+  const depositRules = rulesOfRun(model.used, ["deposit"]);
+  const reliefRules = rulesOfRun(model.used, ["relief"]);
+  const m = (value: number, about: string, inputs: Record<string, SiteValue>) => figure(value, "nis", "F-67", inputs, today, about, depositRules);
   // the relief carries its open readings: the credit capped at the year's tax (TXP OQ20) and that tax, and any deduction, at the brackets
   // without credit points (G-23)
-  const reliefFigure = (value: number, about: string) => computed(value, "nis", model.relief.formula, reliefIn, { today, about, rules, flags: model.relief.flags, labels: model.relief.labels });
+  const reliefFigure = (value: number, about: string) => computed(value, "nis", model.relief.formula, reliefIn, { today, about, rules: reliefRules, flags: model.relief.flags, labels: model.relief.labels });
   const v = {
     you: m(model.you, copy.pension.about.you, youIn),
     employer: m(model.employer, copy.pension.about.employer, employerIn),
@@ -108,8 +114,8 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
     depositFee: depositFee ? figure((Number(depositFee.value) / 100) * model.total, "nis", "F-11", { ...base, [copy.pension.inputNames.depositFee]: depositFee }, today, copy.pension.about.depositFee) : null,
     insurance: model.insuranceMonthly !== null && insuranceIn ? figure(model.insuranceMonthly, "nis", "F-53", { ...base, [copy.pension.insuranceAbout]: insuranceIn }, today, copy.pension.about.insurance) : null,
     // the balance carries its runs' flags and labels, each flag with its line (copy.ts `flags`)
-    balance: model.balance ? computed(model.balance.real, "nis", "F-67", balanceIn, { today, about: copy.pension.about.balance, rules, flags: model.balance.flags, labels: model.balance.labels }) : null,
-    toGeneral: model.general && ceiling ? figure(model.general.toGeneral, "nis", "F-67", { ...base, [copy.pension.general.below.term]: ceiling }, today, copy.pension.general.toGeneral, rules) : null,
+    balance: model.balance ? computed(model.balance.real, "nis", "F-67", balanceIn, { today, about: copy.pension.about.balance, rules: rulesOfRun(withoutSalaryTax(mergedRules([{ rules: model.used }, { rules: model.balance.rules }])), "all"), flags: model.balance.flags, labels: model.balance.labels }) : null,
+    toGeneral: model.general && ceiling ? figure(model.general.toGeneral, "nis", "F-67", { ...base, [copy.pension.general.below.term]: ceiling }, today, copy.pension.general.toGeneral, depositRules) : null,
   };
   const share = (n: number) => `${(n / model.total) * 100}%`;
   const parts = [

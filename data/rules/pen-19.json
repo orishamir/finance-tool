@@ -20,9 +20,12 @@
       "unit": "months",
       "source": {
         "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/regulation-1075/he/regulation_h_2016-3-4-appendixb.pdf#page=65",
-        "title": "חוזר פנסיה 2016-3-4, נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, p.65, s.109(א)(1)",
+        "title": "חוזר פנסיה 2016-3-4",
         "publisher": "Capital Market, Insurance and Savings Authority",
         "strength": "primary",
+        "locator": "נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, p.65, s.109(א)(1)",
+        "locator_he": "נספח ב': תקנון של קרן פנסיה, מהדורת ינואר 2018, עמוד 65, סעיף 109(א)(1)",
+        "page": 65,
         "quote": "ייזקף בכל רבעון"
       },
       "checked": "2026-11-12",

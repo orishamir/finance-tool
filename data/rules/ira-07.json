@@ -19,9 +19,12 @@
       "unit": "count",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/YWZP5bJenUsJq8XlM540e3hb~slMjpWNpg18mW8KtBk=#page=3",
-        "title": "קובץ התקנות 7819: תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017, p.3, reg. 2(ב)",
+        "title": "קובץ התקנות 7819: תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (קופת גמל בניהול אישי) (תיקון), התשע\"ז-2017",
         "publisher": "Reshumot (Ministry of Justice)",
         "strength": "primary",
+        "locator": "p.3, reg. 2(ב)",
+        "locator_he": "עמוד 3, תקנה 2(ב)",
+        "page": 3,
         "quote": "בסכום כולל שאינו עולה על ארבע פעמים"
       },
       "checked": "2026-11-12",
@@ -67,7 +70,8 @@
       "page": 6,
       "quote": "סוגי הכספים",
       "checked": "2026-10-25",
-      "qualifier": "(draft; not binding)"
+      "qualifier": "(draft; not binding)",
+      "standing": "draft"
     }
   ],
   "derived_from": [

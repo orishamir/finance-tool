@@ -14,9 +14,12 @@
       "unit": "pct",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=13",
-        "title": "קובץ התקנות 8038, p.13 (gazette p.2405), תקנות הנכסים תקנה 8א",
+        "title": "קובץ התקנות 8038",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.13 (gazette p.2405), תקנות הנכסים תקנה 8א",
+        "locator_he": "עמוד 13 (עמוד הרשומות 2405), תקנות הנכסים תקנה 8א",
+        "page": 13
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -34,9 +37,12 @@
       "unit": "pct",
       "source": {
         "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/MOnw27H4IBa9ZTkifP5j5xzxBdxgaU9CgjQ1742zkV4=#page=13",
-        "title": "קובץ התקנות 8038, p.13 (gazette p.2405), תקנות הנכסים תקנה 8א",
+        "title": "קובץ התקנות 8038",
         "publisher": "Reshumot (Ministry of Justice)",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.13 (gazette p.2405), תקנות הנכסים תקנה 8א",
+        "locator_he": "עמוד 13 (עמוד הרשומות 2405), תקנות הנכסים תקנה 8א",
+        "page": 13
       },
       "checked": "2026-10-25",
       "effective_from": null,

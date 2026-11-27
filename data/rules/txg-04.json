@@ -23,9 +23,12 @@
           "unit": "nis",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -44,9 +47,12 @@
           "unit": "pct",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -66,9 +72,12 @@
           "unit": "nis",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -87,9 +96,12 @@
           "unit": "pct",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -109,9 +121,12 @@
           "unit": "nis",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -130,9 +145,12 @@
           "unit": "pct",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -152,9 +170,12 @@
           "unit": "nis",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -173,9 +194,12 @@
           "unit": "pct",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -195,9 +219,12 @@
           "unit": "nis",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -217,9 +244,12 @@
           "unit": "pct",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -240,9 +270,12 @@
           "unit": "nis",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -262,9 +295,12 @@
           "unit": "pct",
           "source": {
             "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-monthly-deductions-booklet/he/generalInformation_income-tax-monthly-deductions-booklet_monthly-deductions-booklet-2026.pdf",
-            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\", p.10 (2026 tables)",
+            "title": "Tax Authority deductions booklet \"לחודש ינואר 2026 ואילך, מעודכן לאפריל 2026\" (2026 tables)",
             "publisher": "Israel Tax Authority",
-            "strength": "primary"
+            "strength": "primary",
+            "locator": "p.10",
+            "locator_he": "עמוד 10",
+            "page": 10
           },
           "checked": "2026-10-25",
           "effective_from": "2026-01-01",
@@ -285,9 +321,13 @@
       "unit": "years",
       "source": {
         "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
-        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים, p.201, s.121(ב)(1): \"הכנסה חייבת בשנת המס של יחיד שמלאו לו 60 שנים\"",
+        "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
         "publisher": "Israel Tax Authority",
-        "strength": "primary"
+        "strength": "primary",
+        "locator": "p.201, s.121(ב)(1)",
+        "locator_he": "עמוד 201, סעיף 121(ב)(1)",
+        "page": 201,
+        "quote": "הכנסה חייבת בשנת המס של יחיד שמלאו לו 60 שנים"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -317,7 +357,8 @@
       "locator_he": "עמוד 201, סעיף 121(ב)(1)",
       "page": 201,
       "quote": "הכנסה חייבת בשנת המס של יחיד שמלאו לו 60 שנים",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "standing": "consolidated-not-binding"
     },
     {
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf",

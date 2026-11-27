@@ -135,8 +135,29 @@ export const source = z.object({
   url: z.string().min(1),
   title: z.string().min(1),
   publisher: z.string().min(1),
+  /** The publisher's Hebrew name, as the source line shows it; the record's own name wins over any name the site finds by host. */
+  publisher_he: z.string().min(1).optional(),
   strength,
+  /**
+   * The machine address a collector read (an API's JSON, a CSV, an XML feed, a spreadsheet file), where `url` is the page a reader opens
+   * to see the same figures. Absent when the collector read the page itself.
+   */
+  fetched_from: z.string().url().optional(),
 });
+
+/**
+ * Where in the document a value stands, beside its source's link and name. `page` is the file's own page of a PDF (the library's count,
+ * not the number printed on the sheet); `quote` is the document's own words, at most 240 characters. A web page has only `quote`. Both
+ * optional: no page means not yet confirmed. `locator` is the place as the record writes it ("s.3(ה4)(3)", "p.10"), `locator_he` its
+ * Hebrew form where it translates fully, so the source's title names the document alone.
+ */
+export const citedPlace = {
+  page: z.number().int().positive().optional(),
+  quote: z.string().min(1).max(240).optional(),
+  fragment: textFragment.optional(),
+  locator: z.string().min(1).optional(),
+  locator_he: z.string().min(1).optional(),
+};
 
 /**
  * How a computed value's sheet shows its working, by kind: `difference`, the input `from` less the input `less`; `sum`, the inputs `parts`
@@ -161,6 +182,20 @@ export const computedFrom = z.object({
   working: working.optional(),
 });
 
+/**
+ * data-schema §1: why a sourced value is empty, one word per state, so a page names each state in words of its own. `too-young`: the
+ * product or track is younger than the period the figure covers (a yield's window, a fee's calendar year). `none-by-rule`: a rule named
+ * in `rule_ids` states that the product has no such charge or figure, so empty means none; the schema fails it without that rule, since
+ * no rule found is not a rule saying none. `not-reported`: the source has a place for the figure and states that the body reporting to it
+ * gave none. `not-collected`: the site has not read the figure from its source. `not-applicable`: the figure does not exist for the
+ * product by its nature, with no rule involved, though the record's shape has a place for it. `unknown`: the source leaves it empty and
+ * nothing read says why. A rule's own figure for a fee it bars stays a 0 value (data-schema §3.1); `none-by-rule` is for a source's own
+ * empty field, which keeps its null.
+ */
+export const emptyBecause = z.enum(["too-young", "none-by-rule", "not-reported", "not-collected", "not-applicable", "unknown"]);
+
+export type EmptyBecause = z.infer<typeof emptyBecause>;
+
 /** data-schema §1: a number never appears bare. */
 export const valueObject = z
   .object({
@@ -178,6 +213,10 @@ export const valueObject = z
     state: numberState,
     computed_from: computedFrom.optional(),
     notes: z.string().optional(),
+    /** A note in plain Hebrew that the value's sheet shows, what is true of this one value beyond its name and its rules; `notes` stays the working text. */
+    notes_he: z.string().min(1).optional(),
+    /** Why a sourced value is empty (`emptyBecause`); only on a sourced value whose `value` is null. */
+    empty_because: emptyBecause.optional(),
     /**
      * Site parameters only (`data/parameters/`, data-schema §3.2): the reader's own short line for this one number, in plain
      * Hebrew. The number's sheet shows it first; the parameter file's general `rationale_he` waits behind "more". It never
@@ -192,6 +231,14 @@ export const valueObject = z
   .refine((v) => v.state !== "computed" || v.computed_from !== undefined, {
     message: "a computed value must carry computed_from",
     path: ["computed_from"],
+  })
+  .refine((v) => v.empty_because === undefined || (v.value === null && v.state === "sourced"), {
+    message: "empty_because says why a sourced value is empty: only on a sourced value whose value is null",
+    path: ["empty_because"],
+  })
+  .refine((v) => v.empty_because !== "none-by-rule" || (v.rule_ids ?? []).length > 0, {
+    message: "empty_because none-by-rule says a rule states there is none: rule_ids must name that rule",
+    path: ["rule_ids"],
   });
 
 export type ValueObject = z.infer<typeof valueObject>;

@@ -13,7 +13,7 @@ import { breakTermOf, isTie, middleIndex, mostCommonRate, plainOneYearDeposits, 
 import { guideBlocks, guideSignature, r4catalogue } from "../copy";
 import { printedLine } from "./deposit-kind";
 import type { Bundle } from "./engine";
-import { p05Number, p05Range, runTimeline } from "./engine";
+import { p05Number, p05Range, runTimeline, withP05Inputs } from "./engine";
 import type { DepositTerms, ParameterRecord, RuleRecord, ValueObject, ProductId, ProductRecord } from "@finance-tool/schema";
 import type { AccountBank } from "./guide-signature";
 import { runWith, sideOf } from "./guide-signature-g2";
@@ -21,7 +21,7 @@ import { buildInstrumentTerms, loadDepositTerms, loadFunds } from "./instruments
 import { loadFees, loadParameters } from "./data.server";
 import { latestOf, latestSnapshots } from "./providers.server";
 import { onlyWhatCanBeDoneFor, shortName } from "./providers";
-import { asParameter, computed, ownBy, type SiteValue, type Strength } from "./value";
+import { asParameter, computed, ownBy, type SiteValue } from "./value";
 import { publisherHe } from "./publisher-he.server";
 
 /** The rules a run may read, found by running the engine over the profiles that change its path. */
@@ -127,13 +127,13 @@ export interface CommonAccountRate {
   ceiling: SiteValue | null;
 }
 
-export function commonAccountRate(banks: AccountBank[], rules: Record<string, RuleRecord>, today: string): CommonAccountRate | null {
+/** `_rules` is unused: the rate and its counts list no rule. */
+export function commonAccountRate(banks: AccountBank[], _rules: Record<string, RuleRecord>, today: string): CommonAccountRate | null {
   const result = mostCommonRate(banks.map((b) => Number(b.rate.value)));
   if (!result) return null;
   const inputs = Object.fromEntries(banks.map((b) => [b.name, b.rate]));
-  const bank09 = rules["BANK-09"];
-  const ruleRefs = bank09 ? [{ id: "BANK-09", strength: bank09.strength as Strength }] : [];
-  const make = (value: number, unit: SiteValue["unit"], about: string) => computed(value, unit, "F-85", inputs, { today, rules: ruleRefs, about });
+  // the rate and the counts are a tally of the banks' printed rates (F-85): no rule sets them, so they list none; each bank's rate opens its own
+  const make = (value: number, unit: SiteValue["unit"], about: string) => computed(value, unit, "F-85", inputs, { today, about });
   const same = banks.filter((b) => Math.abs(Number(b.rate.value) - result.rate) < 1e-9);
   const ceilings = same.map((b) => b.ceiling);
   const ceiling =
@@ -170,8 +170,7 @@ export function depositRange(banks: AccountBank[], today: string): DepositRange 
 
 /** P-05 with a published rate in place of `cash_rate` (the engine reads that input for every cash-like run). */
 export function withPublishedRate(p05: ParameterRecord, rate: ValueObject): ParameterRecord {
-  const inputs = (p05 as unknown as { inputs: Record<string, unknown> }).inputs;
-  return { ...p05, inputs: { ...inputs, cash_rate: rate } } as unknown as ParameterRecord;
+  return withP05Inputs(p05, { cash_rate: rate });
 }
 
 export function familyOf(id: ProductId): "provident" | "deposit" | "securities" | "makam" | "bond" | null {
