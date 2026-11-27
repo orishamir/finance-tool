@@ -42,7 +42,7 @@ describe("groupDocuments", () => {
   });
 });
 
-describe("the figures of the data records rest on documents too (Q21)", () => {
+describe("the figures of the data records rest on documents too", () => {
   const fig = (url: string, extra: object = {}) => ({ value: 1, unit: "pct", source: { url, title: "Tariff", publisher: "Bank X", strength: "institution", ...extra }, checked: "2026-11-01" });
   const values = valueEntriesOf([{ fees: { a: fig("https://bank.example/tariff.pdf"), b: fig("https://bank.example/tariff.pdf#page=2") } }, { rows: [fig("https://example.org/doc.pdf"), fig("docs/company-answers.md#x")] }]);
   const cards = groupDocuments({ "A-4": rule("A-4", [src("https://example.org/doc.pdf", "A guide", { kind: "other" })]) }, [], {}, undefined, values);

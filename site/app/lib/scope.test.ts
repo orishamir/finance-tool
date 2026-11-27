@@ -94,7 +94,7 @@ describe("scope helpers", () => {
     expect(chipName({ id: "X-2", scope_institutions: [harel] }, own, undefined, more)).toBe("הראל");
     expect(chipName({ id: "X-3" }, own, undefined, more)).toBeNull();
   });
-  it("on a brand's page names the member the record names, though it is not the brand's first (Q68)", () => {
+  it("on a brand's page names the member the record names, though it is not the brand's first", () => {
     const own = { "X-1": ["harel", "altshuler-shaham"] };
     expect(chipName({ id: "X-1", scope_institutions: [harel, as] }, own, ["altshuler-shaham-funds", "altshuler-shaham"], more)).toBe("אלטשולר שחם");
     expect(tagCompanies({ id: "X-1", scope_institutions: [harel, as] }, own, { company: ["altshuler-shaham-funds", "altshuler-shaham"] })).toEqual([as]);
@@ -195,7 +195,7 @@ describe("a company's section holds only records from its own documents", () => 
 // A company's page shows a record that names several companies narrowed to its own (pageView): its tag, its sources and its figures.
 // Its text stays whole, so it may still name the other companies; until the data gives such records a text per company, the records
 // that do are listed here, and the list only shrinks.
-describe("a record's text on a company's page names no other company (Q64, a ratchet)", () => {
+describe("a record's text on a company's page names no other company (a ratchet)", () => {
   const all = Object.fromEntries([...rules].map(([id, r]) => [id, r as unknown as RuleRecord]));
   const own = ownDocuments(all);
   const known = new Set<string>([

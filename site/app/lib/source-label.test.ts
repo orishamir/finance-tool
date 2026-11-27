@@ -39,7 +39,7 @@ describe("a document's Hebrew title", () => {
   });
 });
 
-describe("a source title's direction follows the words shown (Q63)", () => {
+describe("a source title's direction follows the words shown", () => {
   it("a kind's word standing in for an English title reads right to left; a host and an English name left to right", () => {
     expect(shownTitleLtr(shownTitle("s.2", "https://www.gov.il/x", "law"))).toBe(false);
     expect(shownTitleLtr(shownTitle("Ordinance", "https://www.gov.il/x"))).toBe(true);

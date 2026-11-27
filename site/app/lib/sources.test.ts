@@ -140,7 +140,7 @@ describe("sourceView: one shape for every source drawing", () => {
   });
 });
 
-describe("the copied citation names the place the card shows (Q42)", () => {
+describe("the copied citation names the place the card shows", () => {
   const rule = { title: "x", title_he: "מעבר מסלול אינו אירוע מס" };
   const slots = { rules: {}, today: "2026-10-24" };
   it("writes the chosen place's locator, link and date under the document's shared names", () => {
@@ -150,7 +150,7 @@ describe("the copied citation names the place the card shows (Q42)", () => {
   });
 });
 
-describe("sourceChange (Q58, Q68)", () => {
+describe("sourceChange", () => {
   const today = "2026-12-10";
   it("says unknown when no rule is loaded and the read is recent, and may-have-changed past six months whatever is loaded", () => {
     expect(sourceChange([], { checked: "2026-11-01" }, today)).toBe("unknown");
@@ -166,9 +166,9 @@ describe("sourceChange (Q58, Q68)", () => {
   });
 });
 
-// The drawings that name a source each read its names from one place (Q20): the source block, the copied citation, the documents
+// The drawings that name a source each read its names from one place: the source block, the copied citation, the documents
 // page and the company a figure belongs to agree on who published one source and what it is called.
-describe("one source, named alike by every drawing (Q20)", () => {
+describe("one source, named alike by every drawing", () => {
   const source = src({ url: "https://www.boi.org.il/x", publisher: "Bank of Israel", title_he: "הוראת ניהול בנקאי תקין 425", locator_he: "סעיף 3", kind: "regulation" });
   const publishers = { "boi.org.il": { publisher_he: "בנק ישראל" } };
   const [view] = sourceView([source], { "boi.org.il": "בנק ישראל" });

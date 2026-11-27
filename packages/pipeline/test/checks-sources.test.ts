@@ -20,7 +20,7 @@ const run = (check: DataCheck["check"], files: Record<string, unknown>) => check
 const src = (extra: Record<string, unknown> = {}) => ({ url: "https://www.gov.il/x.pdf", title: "חוק המס", publisher: "p", strength: "primary", kind: "law", checked: "2026-10-01", ...extra });
 const vo = (source: Record<string, unknown>, extra: Record<string, unknown> = {}) => ({ value: 25, unit: "pct", source, update_rule: "market", ...extra });
 
-describe("sources: a shown source title names the document (Q10)", () => {
+describe("sources: a shown source title names the document", () => {
   it("fails a file name, a web address, and an English title with no kind on a figure whose document the record does not cite", () => {
     expect(sources.name).toBe("sources");
     const messages = run(sources.check, {
@@ -35,7 +35,7 @@ describe("sources: a shown source title names the document (Q10)", () => {
   });
 });
 
-describe("sources: fixed in law beside a bill (Q22)", () => {
+describe("sources: fixed in law beside a bill", () => {
   it("fails a figure fixed in law on a record that cites a bill or a draft, and passes one fixed by a document", () => {
     const fixed = vo({ url: "https://www.gov.il/x.pdf", title: "חוק", publisher: "p", strength: "primary" }, { update_rule: "fixed in law" });
     expect(run(sources.check, { "rules/reg-91.json": { id: "REG-91", sources: [src({ standing: "bill" })], figures: { cap: fixed } } })).toEqual([expect.stringMatching(/^REG-91 \(fixed-in-law-bill\): /)]);
@@ -43,7 +43,7 @@ describe("sources: fixed in law beside a bill (Q22)", () => {
   });
 });
 
-describe("terms: also_called holds only other names (Q34)", () => {
+describe("terms: also_called holds only other names", () => {
   const term = (id: string, he: string, also_called: string[]) => ({ id, he, also_called });
   it("fails the head spelled another way, a label with a colon or a number the head lacks, and another card's name", () => {
     expect(terms.name).toBe("terms");

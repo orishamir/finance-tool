@@ -435,7 +435,7 @@ describe("a glossary term's rows", () => {
   });
 });
 
-// A term's row opens its card on a page whose content ships the term (Q43). Where none of the term's pages ships it, the row opens
+// A term's row opens its card on a page whose content ships the term. Where none of the term's pages ships it, the row opens
 // the first of them, where the word is not marked; those terms are listed here, and the list only shrinks.
 describe("a term's row opens a page that ships it (a ratchet)", () => {
   const opensAlone = new Set<string>([
