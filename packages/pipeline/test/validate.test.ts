@@ -583,6 +583,11 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     expect(text).toMatch(/note/);
   });
 
+  it("fails an answered_by id the rule base does not hold", () => {
+    const withAnswers = fromMarkdown.map((q) => (q.id === "PEN OQ7" ? { ...q, status: "narrowed", answered_by: ["PEN-15", "PEN-999"] } : q));
+    expect(run({ "open-questions.json": withAnswers }).problems.map((p) => p.message)).toEqual(["PEN OQ7 answered_by: PEN-999 is not a rule in il-finance (data-schema §4 item 2)"]);
+  });
+
   it("warns when the file is behind the markdown", () => {
     const behind = fromMarkdown.filter((q) => q.id !== "BANK OQ1");
     const { problems, lines } = run({ "open-questions.json": [...behind, { id: "ZZZ OQ1", status: "open" }] });

@@ -1511,7 +1511,8 @@ export function staleTermCopies(terms: readonly { id: string; he: string; meanin
  * Fails: a struck item left in a rule base's open questions (an answered question is deleted once its answer is in a rule);
  * a code (`TXI OQ19`, `TXI-OQ19`) in any text of data/ or of `ctx.citing`, or a question a rule-base file names in words
  * ("open question 7"), that is not a question of the rule base; a guide record that marks a dimension a bare `blocked`, or blocks one
- * on a question its `open_questions` does not list. Warns when the file is behind the markdown (an id missing or extra).
+ * on a question its `open_questions` does not list; an `answered_by` id that is not a rule of the rule base. Warns when the file is
+ * behind the markdown (an id missing or extra).
  */
 function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (file: string, message: string) => void, warn: (category: string, id: string) => void) {
   const refsDir = join(ctx.dataDir, "..", ".claude/skills/il-finance/references");
@@ -1542,6 +1543,8 @@ function checkOpenQuestions(files: string[], ctx: ValidationContext, report: (fi
     for (const q of ctx.ruleBase.questions) if (!byId.has(q.id)) warn(behind, `${q.id} missing`);
     for (const q of list) if (!md.has(q.id)) warn(behind, `${q.id} not in the markdown`);
   }
+  for (const q of list)
+    for (const id of q.answered_by ?? []) if (!ctx.ruleBase.rules.has(id)) report(file, `${q.id} answered_by: ${id} is not a rule in il-finance (data-schema §4 item 2)`);
   for (const f of files) {
     if (!relative(ctx.dataDir, f).split(/[\\/]/).join("/").startsWith("instruments/") || !f.endsWith(".json")) continue;
     const rec = parseJson(readFileSync(f, "utf8")).value;
