@@ -79,14 +79,29 @@ describe("figure-rules table", () => {
     expect(figureRuleProblems("terms/deposits", deposit({ rate_offered: vo(2, ["BANK-13", "BANK-99"]) }), noCards)).toEqual([{ pointer: "/rate_offered", id: "BANK-99", verdict: "unknown" }]);
   });
 
-  it("allows an id the row does not list when its card holds the value's source, and lets a row that lists the id decide", () => {
+  it("allows an id no row covers when its card holds the value's source, and lets a row that lists the id decide", () => {
     const cards: CardSources = new Map([
       ["BANK-99", ["https://bank.example/rates#page=2"]],
       ["TXI-19", ["https://www.gov.il/ordinance.pdf"]],
     ]);
-    const record = deposit({ rate_offered: vo(2, ["BANK-13", "BANK-99"]), linkage: "cpi", tax_bucket: vo("linked_25", ["TXI-02", "TXI-05", "TXI-19"], "https://www.gov.il/ordinance.pdf") });
-    expect(judgeId("terms/deposits", record, "/rate_offered", record.rate_offered, "BANK-99", cards)).toBe("allowed");
+    const record = deposit({ linkage: "cpi", tax_bucket: vo("linked_25", ["TXI-02", "TXI-05", "TXI-19"], "https://www.gov.il/ordinance.pdf") });
+    // no row covers a value at /exit_points, so the standing allow holds there
+    expect(judgeId("terms/deposits", record, "/exit_points", vo(true, ["BANK-99"]), "BANK-99", cards)).toBe("allowed");
+    expect(judgeId("terms/deposits", record, "/exit_points", vo(true, ["BANK-98"]), "BANK-98", cards)).toBe("unknown");
     expect(figureRuleProblems("terms/deposits", record, cards)).toEqual([{ pointer: "/tax_bucket", id: "TXI-19", verdict: "disallowed" }]);
+  });
+
+  it("closes every deposit row to the standing allow: an id it does not list is unknown though its card cites the value's source", () => {
+    expect(FIGURE_RULES.filter((r) => r.collection === "terms/deposits").every((r) => r.closed)).toBe(true);
+    const cards: CardSources = new Map([
+      ["BANK-99", ["https://bank.example/rates#page=2"]],
+      ["TXI-14", ["https://www.gov.il/ordinance.pdf"]],
+    ]);
+    const record = deposit({ rate_offered: vo(2, ["BANK-13", "BANK-99"]), tax_bucket: vo("unlinked_15", ["TXI-03", "TXI-14"], "https://www.gov.il/ordinance.pdf") });
+    expect(figureRuleProblems("terms/deposits", record, cards)).toEqual([
+      { pointer: "/rate_offered", id: "BANK-99", verdict: "unknown" },
+      { pointer: "/tax_bucket", id: "TXI-14", verdict: "unknown" },
+    ]);
   });
 
   it("keeps a bank's own break card on that bank's records only", () => {

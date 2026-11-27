@@ -8,7 +8,10 @@
 // is kept and listed, and goes to a finance reviewer before a row admits it. Besides the rows, one standing allow holds for every id a
 // row does not list: an id whose card under data/rules/ lists, among its sources, the document the value's own source is (its address
 // without the part after "#"), since that card holds the source the figure's sheet names. A row that lists the id decides it: a tax
-// bucket's source is the Income Tax Ordinance, which many tax cards cite, and its row still says which of them set the bucket.
+// bucket's source is the Income Tax Ordinance, which many tax cards cite, and its row still says which of them set the bucket. A row can
+// close itself to the standing allow (`closed`): then an id it does not list is unknown even when its card cites the value's source.
+// Every deposit row is closed: a deposit's values cite a bank's table or the Ordinance, which cards about other products cite too, so
+// citing the same document says nothing about whether the card sets the value.
 //
 // Only the record the site reads (the latest snapshot of each record) is judged; the older dated snapshots stay as they were.
 
@@ -33,6 +36,8 @@ export interface FigureRow {
   /** The value's place in the record, its keys joined by "." and any array index written "[]" ("balance_conditions[].value"). A row covers the values under its path too ("amount_range" covers "amount_range.min"). */
   path: string;
   allow: readonly FigureAllow[];
+  /** True when the standing allow does not hold here: an id the row does not list is unknown, whatever its card cites. */
+  closed?: boolean;
 }
 
 /** An id the row knows and never admits, with why it does not belong on that value. */
@@ -55,6 +60,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
   {
     collection: deposits,
     path: "term_months",
+    closed: true,
     allow: [
       never("BANK-09", "a current account has no term, and BANK-09 sets none"),
       never("BANK-14", "the bank sets each product's term; the annex's list of accepted types sets no product's term"),
@@ -65,6 +71,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
   {
     collection: deposits,
     path: "term_days",
+    closed: true,
     allow: [
       { id: "BANK-14", why: "the annex lists the accepted shekel deposit types by their period, which these days count" },
       { id: "BANK-50", when: (_r, v) => typeof v.value === "number", why: "F-21 counts a term under a year by these days, by the formula BANK-50 holds" },
@@ -73,6 +80,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
   {
     collection: deposits,
     path: "amount_range",
+    closed: true,
     allow: [
       { id: "BANK-27", why: "each bank sets the amounts a product takes, and the table prints each range on a row of its own" },
       { id: "BANK-09", when: currentAccount, why: "the minimum and maximum balance a current account's interest is paid on, which BANK-09 says the bank must show" },
@@ -82,6 +90,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
   {
     collection: deposits,
     path: "rate_offered",
+    closed: true,
     allow: [
       { id: "BANK-13", why: "the offered rate is the minimum the bank commits to in its consolidated publication, a yearly nominal rate before tax" },
       { id: "BANK-25", when: variableRate, why: "a variable rate is its anchor with a spread known in advance, as the table must print it" },
@@ -93,6 +102,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
   {
     collection: deposits,
     path: "rate_effective",
+    closed: true,
     allow: [
       { id: "BANK-50", why: "the printed rate is nominal, and BANK-50 holds how it becomes the rate over the deposit's period" },
       { id: "BANK-04", why: "the disclosure rules make the bank state the adjusted yearly rate of an unlinked shekel deposit, compounded" },
@@ -101,6 +111,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
   {
     collection: deposits,
     path: "interest_calc.effective_annual",
+    closed: true,
     allow: [
       { id: "BANK-50", why: "the printed rate is nominal, and BANK-50 holds how it becomes the rate over the deposit's period" },
       { id: "BANK-04", why: "the disclosure rules make the bank state the adjusted yearly rate of an unlinked shekel deposit, compounded" },
@@ -109,11 +120,13 @@ export const FIGURE_RULES: readonly FigureRow[] = [
   {
     collection: deposits,
     path: "interest_calc.effective_decimals",
+    closed: true,
     allow: [{ id: "BANK-50", why: "the precision F-21 reads the times a year from, in the formula BANK-50 holds" }],
   },
   {
     collection: deposits,
     path: "interest_calc.periods_per_year",
+    closed: true,
     allow: [
       { id: "BANK-50", why: "the times a year interest is calculated, which BANK-50's formula leaves to each product" },
       { id: "BANK-09", when: currentAccount, why: "the dates a current account's interest is credited, which BANK-09 says the bank must show" },
@@ -122,11 +135,13 @@ export const FIGURE_RULES: readonly FigureRow[] = [
   {
     collection: deposits,
     path: "balance_conditions[].value",
+    closed: true,
     allow: [{ id: "BANK-09", why: "the balance a current account's interest is paid on, which BANK-09 says the bank must show" }],
   },
   {
     collection: deposits,
     path: "spread",
+    closed: true,
     allow: [
       { id: "BANK-25", why: "a variable rate's spread over its anchor, known in advance, as the table must print it" },
       { id: "BANK-34", when: (r) => field(r, "anchor") === "prime", why: "the spread is over the prime, and BANK-34 says what each bank calls the prime" },
@@ -135,6 +150,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
   {
     collection: deposits,
     path: "tax_bucket",
+    closed: true,
     allow: [
       { id: "TXI-03", when: (r) => bucket(r) === "unlinked_15", why: "the fixed rate on the whole nominal interest of an asset not fully linked to the index" },
       {
@@ -157,6 +173,7 @@ export const FIGURE_RULES: readonly FigureRow[] = [
   {
     collection: deposits,
     path: "break",
+    closed: true,
     allow: [
       { id: "BANK-06", why: "breaking a deposit: the bank's consent, the form and what it costs" },
       { id: "BANK-14", why: "the annex makes the table show whether each accepted type can be broken" },
@@ -213,8 +230,10 @@ export type IdVerdict = "allowed" | "disallowed" | "unknown";
 
 /** The verdict on `id` named by `value` at `pointer` of `record`. */
 export function judgeId(collection: FigureCollection, record: Json, pointer: string, value: Json, id: string, cards: CardSources): IdVerdict {
-  const allow = rowFor(collection, pointer)?.allow.filter((a) => a.id === id) ?? [];
+  const row = rowFor(collection, pointer);
+  const allow = row?.allow.filter((a) => a.id === id) ?? [];
   if (allow.length > 0) return allow.some((a) => !a.when || a.when(record, value)) ? "allowed" : "disallowed";
+  if (row?.closed) return "unknown";
   const url = (value.source as Json | undefined)?.url;
   return typeof url === "string" && (cards.get(id) ?? []).some((u) => documentOf(u) === documentOf(url)) ? "allowed" : "unknown";
 }
