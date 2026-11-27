@@ -17,10 +17,10 @@
     "transfer": { "script": 321, "data": 14 },
     "indices": { "script": 635, "data": 620 },
     "rules": { "script": 369, "data": 111 },
-    "rules shelf": { "script": 313, "data": 139 },
+    "rules shelf": { "script": 313, "data": 141 },
     "documents": { "script": 347, "data": 65 },
     "parameters": { "script": 313, "data": 23 },
-    "not covered": { "script": 324, "data": 53 },
+    "not covered": { "script": 324, "data": 54 },
     "kit": { "script": 509, "data": 14 }
   }
 }
