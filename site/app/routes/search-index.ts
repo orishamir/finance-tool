@@ -39,7 +39,7 @@ export async function loader() {
   for (const name of mutualFunds.searchNames) entries.push(guideRow(name, "/guide/mutual-funds"));
   // the parts of each guide a question can lead to (tax, cost, money in and out, who offers it, risks), found only through a product's
   // name in the question (lib/search.ts `leadRows`), and the page that compares the product across providers
-  const { guideLayout, sectionTitle, topicSection } = await import("../lib/guide-nav");
+  const { inGuideOrder, sectionTitle, topicSection } = await import("../lib/guide-nav");
   const { sectionTopicWords } = await import("../lib/search-aliases");
   const proseSections: Record<string, readonly { id: string; title: string }[]> = { "limited-bond-fund": limitedBondFund.sections, "mutual-funds": mutualFunds.sections };
   for (const [href, title] of titles) {
@@ -109,9 +109,8 @@ export async function loader() {
   // since several records share a name, and is found by its name, its other names and its search strings
   const { guideContent } = await import("../content/guide");
   const { exposureContent } = await import("../content/exposure");
-  const guideOrder = [...new Set([...guideLayout.flatMap((g) => g.ids), ...wrappers.map((w) => w.id)])];
   for (const { record: term } of readDirFiles("data/terms", termRecord)) {
-    const ownGuides = guideOrder.filter((id) => term.wrapper_ids.some((w) => w === id) && wrappers.some((w) => w.id === id));
+    const ownGuides = inGuideOrder(wrappers.map((w) => w.id).filter((id) => term.wrapper_ids.some((w) => w === id)));
     const ownExposures = (term.exposure_ids ?? []).filter((id) => exposures.some((e) => e.id === id));
     const marked = termPage(term.he, ownGuides, ownExposures, guideContent, exposureContent);
     const guide = marked ? marked.guide : ownGuides[0];
