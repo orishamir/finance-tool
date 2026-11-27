@@ -17,7 +17,7 @@ import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl,
 import { useInputs } from "../lib/inputs";
 import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetFlags, sheetReading, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
-import type { RuleCardFile, RuleHead } from "../lib/rule-card-file";
+import type { RuleCardFile } from "../lib/rule-card-file";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { Card, CompanyLinks, DocLink, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
@@ -198,12 +198,15 @@ export async function loadCardFile(id: string): Promise<CardFetch> {
   return { kind: "loaded", file: parsed.data };
 }
 
-/** Fetches a rule's card file (routes/rule-card.ts), unless it is in or on its way; a failed one is fetched again. */
-function fetchCard(id: string): void {
+/**
+ * Fetches a rule's card file (routes/rule-card.ts), unless it is in or on its way; a failed one is fetched again. Settles when the fetch
+ * does. Exported for its test.
+ */
+export function fetchCard(id: string): Promise<void> {
   const now = cardFetches.get(id);
-  if (now && now.kind !== "failed") return;
+  if (now && now.kind !== "failed") return Promise.resolve();
   setCardFetch(id, { kind: "loading" });
-  void loadCardFile(id).then(
+  return loadCardFile(id).then(
     (f) => setCardFetch(id, f),
     (e: unknown) => {
       // the site's own file is broken: the card says it failed, and the page's notice that something broke says it too
@@ -211,6 +214,17 @@ function fetchCard(id: string): void {
       throw e;
     },
   );
+}
+
+/** Where the fetch of a rule's card file stands, fetching it as the card opens; nothing for a card the page holds the record of (`id` null). */
+function useCardFile(id: string | null): CardFetch | undefined {
+  // the server never fetches, so the store it reads is empty, as the browser's is before a card opens
+  const get = () => (id ? cardFetches.get(id) : undefined);
+  const fetched = useSyncExternalStore(watchCardFetches, get, get);
+  useEffect(() => {
+    if (id) void fetchCard(id);
+  }, [id]);
+  return fetched;
 }
 
 /**
@@ -1007,13 +1021,15 @@ function NoRecordCard({ id, headId }: { id: string; headId?: string }) {
 
 /**
  * A rule card's heading: "id · title" (D25), or an open question's words before its code, then who it applies to and a weak source's
- * strength. The same on the card and while the card's file is on its way (`CardOnWay`), so the heading stays put when the body comes.
+ * strength. The same element on the card and while the card's file is on its way (`CardOnWay`), so the heading stays put when the body
+ * comes. While the body is on its way it holds nothing to act on, so the heading takes the focus a new view in the sheet gives
+ * (`data-autofocus`), and keeps it as the body comes.
  */
-function RuleCardHead({ id, rule, title, data, headId }: { id: string; rule: Pick<RuleRecord, "id" | "strength" | "scope" | "scope_institutions">; title: ReactNode; data: ProvenanceData; headId: string | undefined }) {
+function RuleCardHead({ id, rule, title, data, headId, waiting }: { id: string; rule: Pick<RuleRecord, "id" | "strength" | "scope" | "scope_institutions">; title: ReactNode; data: ProvenanceData; headId: string | undefined; waiting?: boolean }) {
   const open = rule.strength === "open";
   return (
     <header className="flex flex-col gap-1.5">
-      <h2 id={headId} className="text-lg font-semibold leading-snug">
+      <h2 id={headId} tabIndex={-1} data-autofocus={waiting || undefined} className="text-lg font-semibold leading-snug outline-none">
         {open && <>{ruleCopy.open.title} </>}
         <bdi dir="ltr" className="slashed-zero">{id}</bdi>
         {!open && " · "}
@@ -1032,44 +1048,43 @@ function RuleCardHead({ id, rule, title, data, headId }: { id: string; rule: Pic
 }
 
 /**
- * The card of a rule the page does not ship, while its file is on its way (`fetchCard`) or after its fetch failed: the heading the card
- * will have, from the rule's head, with the title its chip shows, and in the body's place a quiet "טוען…", or that it did not load and
- * a retry. The body holds a few lines' room, so the card does not jump when it comes. Once the file is in, the sheet's data holds the
- * record (`withFetched`) and `RuleCard` draws the card itself.
+ * In the body's place, while a card's file is on its way (`fetchCard`) or after its fetch failed: a quiet "טוען…", or that it did not
+ * load and a retry. It holds a few lines' room, so the card does not jump when the body comes.
  */
-function CardOnWay({ id, head, data, headId }: { id: string; head: RuleHead; data: ProvenanceData; headId: string | undefined }) {
-  const fetched = useSyncExternalStore(watchCardFetches, () => cardFetches.get(id), () => undefined);
-  useEffect(() => {
-    fetchCard(id);
-  }, [id]);
-  const title = head.title.english ? <bdi dir="ltr">{head.title.text}</bdi> : head.title.text;
-  return (
-    <div data-code-ok data-opens-scope data-opens={id} className={cx("flex-1 flex flex-col gap-3", head.strength === "open" && "rule-open")}>
-      <RuleCardHead id={id} rule={head} title={title} data={data} headId={headId} />
-      {fetched?.kind === "failed" ? (
-        <div className="flex min-h-24 flex-col items-start gap-1">
-          <p role="status" className="text-sm">
-            {ruleCopy.loadFailed}
-          </p>
-          <Button variant="quiet" flush size="sm" onClick={() => fetchCard(id)}>
-            {ruleCopy.retry}
-          </Button>
-        </div>
-      ) : (
-        <p role="status" className="min-h-24 text-sm text-muted-foreground">
-          {system.loading}
-        </p>
-      )}
+function CardOnWay({ id, fetched }: { id: string; fetched: CardFetch | undefined }) {
+  return fetched?.kind === "failed" ? (
+    <div className="flex min-h-24 flex-col items-start gap-1">
+      <p role="status" className="text-sm">
+        {ruleCopy.loadFailed}
+      </p>
+      <Button variant="quiet" flush size="sm" onClick={() => void fetchCard(id)}>
+        {ruleCopy.retry}
+      </Button>
     </div>
+  ) : (
+    <p role="status" className="min-h-24 text-sm text-muted-foreground">
+      {system.loading}
+    </p>
   );
 }
 
 export function RuleCard({ id, data, headId, inline }: { id: string; data: ProvenanceData; headId?: string; inline?: boolean }) {
   const record = ruleOf(data, id);
+  // a rule the page ships only the head of: its card comes from its own file, fetched as it opens; once the file is in, the sheet's data
+  // holds the record (`withFetched`)
+  const head = record ? undefined : data.heads?.[id];
+  const fetched = useCardFile(head ? id : null);
   if (!record) {
-    // a rule the page ships only the head of: its card comes from its own file
-    const head = data.heads?.[id];
-    return head ? <CardOnWay id={id} head={head} data={data} headId={headId} /> : <NoRecordCard id={id} headId={headId} />;
+    if (!head) return <NoRecordCard id={id} headId={headId} />;
+    // the heading the card will have, from the rule's head, with the title its chip shows: the same root and heading as the card below,
+    // so both stay in place as the body comes
+    const title = head.title.english ? <bdi dir="ltr">{head.title.text}</bdi> : head.title.text;
+    return (
+      <div data-code-ok data-opens-scope data-opens={id} className={cx("flex-1 flex flex-col gap-3", head.strength === "open" && "rule-open")}>
+        <RuleCardHead id={id} rule={head} title={title} data={data} headId={headId} waiting />
+        <CardOnWay id={id} fetched={fetched} />
+      </div>
+    );
   }
   // on a company's page only that company's part of the record (D30): its name, its own documents, the law and the regulator, its figures
   const page = data.pageCompanies ?? (data.company ? [data.company] : []);

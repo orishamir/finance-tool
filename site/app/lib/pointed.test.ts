@@ -362,6 +362,16 @@ describe("a card whose rule the page does not ship is fetched when opened", () =
     expect(drawn(page(), "BRK-51")).toContain(ruleCopy.noText);
   });
 
+  it("while its file is on its way, the card's heading takes the focus a new view in the sheet gives, since its body holds nothing to act on", () => {
+    const head = { id: "BRK-51", title: { text: "כותרת לבדיקה", english: false }, strength: file.record.strength, scope: file.record.scope };
+    const card = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(RuleCard, { id: "BRK-51", data: page({ heads: { "BRK-51": head } }) })));
+    // Sheet.tsx gives a new view's focus to its `data-autofocus`, else to the first control in the body, which a loading card has none of
+    expect(card).not.toMatch(/<(button|a|input)[\s>]/);
+    const heading = must(/<h2[^>]*>/.exec(card), "the card's heading")[0];
+    expect(heading).toContain('tabindex="-1"');
+    expect(heading).toContain("data-autofocus");
+  });
+
   it("reads the file, says a missing one or a failed one did not load, and throws on a file that does not match its schema", async () => {
     vi.stubGlobal("fetch", answer(file));
     const loaded = await loadCardFile("BRK-51");
