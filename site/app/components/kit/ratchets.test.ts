@@ -464,7 +464,7 @@ describe("ratchet: a word the terminology table replaced", () => {
 // where the sheet finds it) has `title_he` in data/open-questions.json (an answered question is deleted, so one the file
 // lacks fails here as well as in the data check). A value whose source is `open` names its
 // question on the page today, so it has no leftovers; the others are listed by name, and the list only shrinks.
-const QUESTION_NO_HEBREW = ["BANK OQ2", "BRK OQ13", "CAT OQ22", "CAT OQ4", "CS OQ7", "FXD OQ2", "INS OQ16", "REG OQ12", "TXF OQ10", "TXF OQ19", "TXS OQ17"];
+const QUESTION_NO_HEBREW = ["BANK OQ2", "BRK OQ13", "CS OQ7", "FXD OQ2", "INS OQ16", "REG OQ12", "TXF OQ10", "TXF OQ19", "TXS OQ17"];
 
 describe("an open question a value names has Hebrew lines", () => {
   const dataRoot = fileURLToPath(new URL("../../../../data/", import.meta.url));
