@@ -53,6 +53,9 @@ const bucket = (r: Json): unknown => {
   return t && typeof t === "object" ? (t as Json).value : undefined;
 };
 const bankIs = (...banks: string[]) => (r: Json) => banks.includes(String(field(r, "bank")));
+const savingsPlan = (r: Json) => field(r, "wrapper_id") === "savings-plan";
+/** The ten banks whose terms BANK-34 read for what each calls the prime. */
+const PRIME_BANKS = ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem", "one-zero"];
 
 const deposits = "terms/deposits" as const;
 
@@ -144,7 +147,11 @@ export const FIGURE_RULES: readonly FigureRow[] = [
     closed: true,
     allow: [
       { id: "BANK-25", why: "a variable rate's spread over its anchor, known in advance, as the table must print it" },
-      { id: "BANK-34", when: (r) => field(r, "anchor") === "prime", why: "the spread is over the prime, and BANK-34 says what each bank calls the prime" },
+      {
+        id: "BANK-34",
+        when: (r) => field(r, "anchor") === "prime" && bankIs(...PRIME_BANKS)(r),
+        why: "the spread is over the prime, and BANK-34 says what each of the ten banks it read calls the prime",
+      },
     ],
   },
   {
@@ -179,11 +186,15 @@ export const FIGURE_RULES: readonly FigureRow[] = [
       { id: "BANK-14", why: "the annex makes the table show whether each accepted type can be broken" },
       { id: "BANK-28", why: "what a savings plan's agreement and disclosure must say about breaking it, and that no rule sets the price" },
       { id: "BANK-09", when: currentAccount, why: "a current account is not broken: its money is there at any time" },
-      { id: "BANK-33", when: bankIs("discount", "mercantile"), why: "Discount's and Mercantile's own break penalty" },
+      {
+        id: "BANK-33",
+        when: (r) => bankIs("discount")(r) || (bankIs("mercantile")(r) && savingsPlan(r)),
+        why: "Discount's own break penalty on its deposits and standing-order plans, and Mercantile's on its standing-order plans",
+      },
       { id: "BANK-49", when: bankIs("one-zero"), why: "One Zero's own break terms" },
       { id: "BANK-55", when: bankIs("yahav"), why: "Yahav's own break terms" },
-      { id: "BANK-56", when: bankIs("jerusalem"), why: "Bank of Jerusalem's own break terms" },
-      { id: "BPN-10", when: bankIs("hapoalim"), why: "Hapoalim's savings plans' own withdrawal and break terms" },
+      { id: "BANK-56", when: (r) => bankIs("jerusalem")(r) && savingsPlan(r), why: "Bank of Jerusalem's savings plans' own break terms" },
+      { id: "BPN-10", when: (r) => bankIs("hapoalim")(r) && savingsPlan(r), why: "Hapoalim's savings plans' own withdrawal and break terms" },
     ],
   },
 ];

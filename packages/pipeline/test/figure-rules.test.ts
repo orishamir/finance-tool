@@ -109,6 +109,26 @@ describe("figure-rules table", () => {
     expect(figureRuleProblems("terms/deposits", brk("discount"), noCards)).toEqual([]);
     expect(figureRuleProblems("terms/deposits", brk("leumi"), noCards)).toEqual([{ pointer: "/break", id: "BANK-33", verdict: "disallowed" }]);
   });
+
+  it("keeps a bank's own break card only on the products the card is about", () => {
+    const brk = (bank: string, wrapper_id: string, id: string) => deposit({ bank, wrapper_id, break: { allowed: true, penalty: "with_penalty", mechanism_text: "", rule_ids: ["BANK-06", id] } });
+    const ids = (r: ReturnType<typeof deposit>) => figureRuleProblems("terms/deposits", r, noCards).map((p) => p.id);
+    // BANK-33: Discount's deposits and plans, Mercantile's standing-order plans only
+    expect(ids(brk("discount", "bank-deposit", "BANK-33"))).toEqual([]);
+    expect(ids(brk("mercantile", "savings-plan", "BANK-33"))).toEqual([]);
+    expect(ids(brk("mercantile", "bank-deposit", "BANK-33"))).toEqual(["BANK-33"]);
+    // BANK-56 and BPN-10: the bank's savings plans only
+    expect(ids(brk("jerusalem", "savings-plan", "BANK-56"))).toEqual([]);
+    expect(ids(brk("jerusalem", "bank-deposit", "BANK-56"))).toEqual(["BANK-56"]);
+    expect(ids(brk("hapoalim", "savings-plan", "BPN-10"))).toEqual([]);
+    expect(ids(brk("hapoalim", "bank-deposit", "BPN-10"))).toEqual(["BPN-10"]);
+  });
+
+  it("keeps the prime's card on a spread only at the ten banks it read", () => {
+    const spread = (bank: string) => deposit({ bank, rate_type: "variable", anchor: "prime", rate_offered: vo(2, ["BANK-13", "BANK-25"]), spread: vo(-2, ["BANK-25", "BANK-34"]) });
+    expect(figureRuleProblems("terms/deposits", spread("one-zero"), noCards)).toEqual([]);
+    expect(figureRuleProblems("terms/deposits", spread("esh"), noCards)).toEqual([{ pointer: "/spread", id: "BANK-34", verdict: "disallowed" }]);
+  });
 });
 
 describe("figure-rules check", () => {
