@@ -210,13 +210,14 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   // tax: an Israeli fund on a foreign index that is not a foreign-investment fund is taxed on the currency move too (TXS-09, TXS-14); one
   // whose documents name a principal currency is run on it, the site's reading of TXS OQ26, which its figures' sheets say and no chip does
   // (D119); one whose status is not known (a fund the person typed among them, whose documents the site did not read) is run on both
-  // readings, and its chip says the status is not known (F-04). An Irish fund pays tax inside on dividends (TXF-16).
+  // readings, and its chip says the status is not known (F-04). An Irish fund pays tax inside on dividends (TXF-16), but not one that
+  // follows its index through a swap: it holds none of the index's shares, and its run is charged none (F-107).
   const status = rec.tax_status.foreign_investment_fund;
   if (rec.domicile === "IL" && !index.israeli && typeof status?.value !== "string") {
     if (status?.value === null) out.push(label("tax-currency-unknown"));
     else if (rec.hedged !== true) out.push(label("tax-currency"));
   }
-  if (rec.domicile === "IE") out.push(label("tax-fund-dividend"));
+  if (rec.domicile === "IE" && rec.replication?.method !== "swap") out.push(label("tax-fund-dividend"));
   if (rec.distribution_policy === "distributing") out.push(label("tax-distribution"));
   // a Tel Aviv line taxed only at sale on the ruling its own annex reports (TXF-11), by the engine's own test (`saleOnlyRulingOf`); any
   // other accumulating foreign fund, the same units bought abroad among them, is run on the site's reading of the rule, which its figures'

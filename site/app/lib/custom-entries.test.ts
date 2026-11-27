@@ -312,6 +312,8 @@ describe("what the person says the fund does (2026-11-05): nothing is filled in 
     const f = fundFromDraft({ ...abroadDraft, domicile: "US", tracking: "swap" }, "custom-fund-us", "index-sp500", t);
     expect(ids(f)).toEqual(expect.arrayContaining(["follow-swap", "pays-accumulating", "ask-estate", "ask-w8"]));
     expect(ids(fundFromDraft({ ...abroadDraft, domicile: "IE" }, "custom-fund-ie", "index-sp500", t))).toContain("tax-fund-dividend");
+    // an Irish fund on a swap holds none of the index's shares: its run is charged no tax inside (F-107), so no label says one
+    expect(ids(fundFromDraft({ ...abroadDraft, domicile: "IE", tracking: "swap" }, "custom-fund-ie-swap", "index-sp500", t))).not.toContain("tax-fund-dividend");
   });
 
   it("an Irish fund said to hold the shares runs with the US tax on their dividends (F-107), and its figure's sheet lists it", () => {
