@@ -3,7 +3,7 @@
 // a sourced fact or an open rule; it never praises. A label shows on every row it is true of, even when every row has it
 // ; its colour is its family's (the kit's LabelChip).
 import type { FundRecord } from "@finance-tool/schema";
-import { readsStatedIndex, saleOnlyRulingOf, taxIndexStatementOf, type TaxIndexStatement } from "@finance-tool/engine";
+import { readsStatedIndex, saleOnlyRulingOf, taxIndexStatementOf, usDividendsOf, type TaxIndexStatement } from "@finance-tool/engine";
 import { currencyWord, invest as c } from "../copy";
 import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
@@ -44,6 +44,7 @@ type LabelId =
   | "tax-currency"
   | "tax-currency-unknown"
   | "tax-fund-dividend"
+  | "tax-fund-dividend-left-out"
   | "tax-distribution"
   | "tax-on-sale-ruling"
   | "tax-index-currency"
@@ -83,6 +84,7 @@ export const labelDefs: Record<RuleLabelId, LabelDef> = {
   "tax-currency": { icon: "trendUpDown", tone: "neutral", rules: ["TXS-09", "TXS-14"] },
   "tax-currency-unknown": { icon: "scale", tone: "open", rules: ["TXS-14"] },
   "tax-fund-dividend": { icon: "badgePercent", tone: "neutral", rules: ["TXF-16"] },
+  "tax-fund-dividend-left-out": { icon: "badgePercent", tone: "open", rules: ["TXF-16"] },
   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08", "TXS-10"] },
   "tax-on-sale-ruling": { icon: "gavel", tone: "neutral", rules: ["TXF-11"] },
   "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
@@ -146,6 +148,7 @@ const familyOf: Record<RuleLabelId, Label["family"]> = {
   "tax-currency": "tax",
   "tax-currency-unknown": "tax",
   "tax-fund-dividend": "tax",
+  "tax-fund-dividend-left-out": "tax",
   "tax-distribution": "tax",
   "tax-on-sale-ruling": "tax",
   "pays-accumulating": "payout",
@@ -218,7 +221,13 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
     if (status?.value === null) out.push(label("tax-currency-unknown"));
     else if (rec.hedged !== true) out.push(label("tax-currency"));
   }
-  if (rec.domicile === "IE" && (method === "physical" || typeof rec.fees.fund_level_withholding_drag?.value === "number")) out.push(label("tax-fund-dividend"));
+  if (rec.domicile === "IE" && (method === "physical" || typeof rec.fees.fund_level_withholding_drag?.value === "number")) {
+    // F-107 works the tax out from the dividend yield of the index's US shares; on an index whose record holds none (its provider prints
+    // none, or the person added the index) the fund's figure holds none of this tax, and the label says that. A figure of the fund's own,
+    // or a published 12-month gap, which may hold the tax already, stands in for it.
+    const counted = typeof rec.fees.fund_level_withholding_drag?.value === "number" || typeof rec.fees.tracking_difference_12m?.value === "number" || (!!index.exposure && usDividendsOf(index.exposure) !== undefined);
+    out.push(label(counted ? "tax-fund-dividend" : "tax-fund-dividend-left-out"));
+  }
   if (rec.distribution_policy === "distributing") out.push(label("tax-distribution"));
   // a Tel Aviv line taxed only at sale on the ruling its own annex reports (TXF-11), by the engine's own test (`saleOnlyRulingOf`); any
   // other accumulating foreign fund, the same units bought abroad among them, is run on the site's reading of the rule, which its figures'
