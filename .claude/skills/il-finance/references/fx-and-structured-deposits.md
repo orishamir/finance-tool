@@ -87,7 +87,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 
 ### FXD-07 Bank Hapoalim: its foreign-currency deposit terms
 - Rule: Bank Hapoalim says its FX deposits rest on "התחייבות הבנק לשלם למפקיד ריבית, על פי תנאי הפיקדון". The rate depends on "סכום ההשקעה, תקופת ההשקעה ותנאי הפיקדון האחרים". Main currencies are USD, GBP, EUR and JPY, plus CAD and AUD. There are separate product lines for residents, "בעל פטור" (exempt) and "תושב חוץ" (non-resident). Day-based terms run 7 to 370 days. Data are "אינדיקטיביים בלבד", may update daily, and the deposit agreement sets the rate.
-- Conditions / exceptions: No regulatory standard for FX deposit terms was found: each bank sets currencies, periods, rates, tiers and categories itself, and the general rule on leaving early is FXD-22. Hapoalim's page states no break penalty for an FX deposit, how the FX rate is derived (for example from a foreign benchmark), or the day count (open question 4). Bank Leumi's FX deposits are FXD-25; Bank Yahav's, FXD-26.
+- Conditions / exceptions: No regulatory standard for FX deposit terms was found: each bank sets currencies, periods, rates, tiers and categories itself, and the general rule on leaving early is FXD-22. Hapoalim's page states no break penalty for an FX deposit, how the FX rate is derived (for example from a foreign benchmark), or the day count (open question 4). Bank Leumi's FX deposits are FXD-25; Bank Yahav's, FXD-26. Split on 2026-11-27 (card sweep): Bank Leumi's part is FXD-25, Bank Yahav's FXD-26.
 - Figures: none.
 - Source: [Hapoalim, "שיעורי ריבית בפיקדונות במט"ח"](https://www.bankhapoalim.co.il/he/savings/product-of-the-month/forex-interest-rates) · checked 2026-10-22 · institution
 - Scope: institution: Bank Hapoalim
@@ -96,7 +96,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 
 ### FXD-25 Bank Leumi: its foreign-currency deposits (currencies, periods, customer categories)
 - Rule: Bank Leumi's rate table lists "פיקדון בדולר ארה"ב", "פיקדון באירו" and "פיקדון בלירה שטרלינג" for "תושב ישראל", "תושב חוץ" and "פיצויים" (USD and EUR). Terms run from a week to 12 months (EUR to 24, GBP to 18). There is also a USD 12-month "תשלומים - תושב ישראל". All are shown as fixed rate ("קבועה"), unlinked, with no exit points ("לא קיימת"). Leumi defines a fixed rate as one set at opening that does not change. Rates differ by customer category.
-- Conditions / exceptions: Leumi's page states no break penalty for an FX deposit, how the FX rate is derived, or the day count (open question 4). The page shows no date: its date field is an unfilled placeholder. Its rates are therefore not recorded here. The general rule on leaving early is FXD-22; Bank Hapoalim's FX deposits are FXD-07, Bank Yahav's FXD-26.
+- Conditions / exceptions: Leumi's page states no break penalty for an FX deposit, how the FX rate is derived, or the day count (open question 4). The page shows no date: its date field is an unfilled placeholder. Its rates are therefore not recorded here. The general rule on leaving early is FXD-22; Bank Hapoalim's FX deposits are FXD-07, Bank Yahav's FXD-26. Split from FXD-07 on 2026-11-27 (card sweep).
 - Figures: none.
 - Source: [Leumi interest-rate table](https://www.leumi.co.il/he/savings/interest-rate-table) · checked 2026-10-22 · institution
 - Scope: institution: Bank Leumi
@@ -105,7 +105,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 
 ### FXD-26 Bank Yahav: its fixed-rate foreign-currency deposit board
 - Rule: Bank Yahav's board 13_26 (effective 06/10/2026) has "לוח שיעורי ריבית על פקדונות במט"ח בריבית קבועה": USD, GBP, AUD, CAD, EUR, CHF and JPY, "מ-2,000 לפי סוג מטבע", with periods of 1-2 months, 3-5 months, 6-11 months and one year. Rates are quoted as "תעריפית". Several currencies showed 0.00% on the board read.
-- Conditions / exceptions: The board states no break penalty for an FX deposit, how the FX rate is derived, or the day count (open question 4). The general rule on leaving early is FXD-22; Bank Hapoalim's FX deposits are FXD-07, Bank Leumi's FXD-25.
+- Conditions / exceptions: The board states no break penalty for an FX deposit, how the FX rate is derived, or the day count (open question 4). The general rule on leaving early is FXD-22; Bank Hapoalim's FX deposits are FXD-07, Bank Leumi's FXD-25. Split from FXD-07 on 2026-11-27 (card sweep).
 - Figures: Yahav minimum 2,000 currency units per deposit, effective 06/10/2026; institution, changes at the bank's discretion.
 - Source: [Yahav rate board 13_26, effective 06/10/2026](https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf), p.3 · checked 2026-10-22 · institution
 - Scope: institution: Bank Yahav
@@ -123,7 +123,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 
 ### FXD-09 Discount Bank: its FX-linked shekel deposits (linkage base and cut-off times)
 - Rule: Discount Bank's FX-linked shekel deposits ("פיקדונות מסוג צמודי מט"ח"): "שער הפקדה - השער הבסיסי כולל תוספת בשיעור של 0.2% לשער היציג". Redemption: "שער פירעון - לפי שער יציג ידוע של יום קודם". So the linkage starts 0.2% above the representative rate. FX-linked deposits and withdrawals must be sent by stated cut-off times.
-- Conditions / exceptions: These are shekel deposits, so they sit under the general deposit rules (FXD-02, BANK-02). The full terms are in each deposit agreement, which was not read (open question 5). Discount's cut-off times: Monday to Thursday by 13:00, Fridays, holiday eves and Chol Hamoed by 10:00. Bank Yahav's dollar-linked saving is FXD-27; Bank Leumi's dollar choice deposit, FXD-28.
+- Conditions / exceptions: These are shekel deposits, so they sit under the general deposit rules (FXD-02, BANK-02). The full terms are in each deposit agreement, which was not read (open question 5). Discount's cut-off times: Monday to Thursday by 13:00, Fridays, holiday eves and Chol Hamoed by 10:00. Bank Yahav's dollar-linked saving is FXD-27; Bank Leumi's dollar choice deposit, FXD-28. Split on 2026-11-27 (card sweep): Bank Yahav's part is FXD-27, Bank Leumi's FXD-28.
 - Figures: Discount linkage base, representative rate + 0.2%. Institution term.
 - Source: [Discount money-market products page, "הבהרות"](https://www.discountbank.co.il/private/savings-investments/savings-interest/) · checked 2026-10-22 · institution
 - Scope: institution: Discount Bank
@@ -132,7 +132,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 
 ### FXD-27 Bank Yahav: dollar-linked one-off savings with no principal guarantee
 - Rule: Bank Yahav's "חיסכון מישר חד פעמי - צמוד דולר", a shekel saving linked to the US dollar: 365 days, from NIS 1,000, rate tiers from NIS 100,000, quoted as "תעריפית" and "מתואמת". Footnote: "החיסכון ללא הבטחת קרן".
-- Conditions / exceptions: A shekel saving, so it sits under the general deposit rules (FXD-02, BANK-02). Whether the principal can fall with the dollar depends on the product wording; this one says "ללא הבטחת קרן". Bank Yahav's CPI-linked "חסכון אודם", on the same board, carries "החיסכון מעניק הבטחת קרן" (BANK-63). The full terms are in the saving's agreement, which was not read (open question 5).
+- Conditions / exceptions: A shekel saving, so it sits under the general deposit rules (FXD-02, BANK-02). Whether the principal can fall with the dollar depends on the product wording; this one says "ללא הבטחת קרן". Bank Yahav's CPI-linked "חסכון אודם", on the same board, carries "החיסכון מעניק הבטחת קרן" (BANK-63). The full terms are in the saving's agreement, which was not read (open question 5). Split from FXD-09 on 2026-11-27 (card sweep).
 - Figures: Yahav minimum NIS 1,000 (board effective 06/10/2026). Institution term.
 - Source: [Yahav rate board 13_26](https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf), p.4 · checked 2026-10-22 · institution
 - Scope: institution: Bank Yahav
@@ -141,7 +141,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 
 ### FXD-28 Bank Leumi: a one-year deposit paying the better of dollar linkage and a fixed rate (265/9)
 - Rule: Bank Leumi's "ברירה צמוד דולר-שקל לשנה" (model 265/9), a shekel deposit: one year, no exit points, paying "הגבוהה מבין הצמדה לדולר ארה"ב לבין ריבית קבועה".
-- Conditions / exceptions: A shekel deposit, so it sits under the general deposit rules (FXD-02, BANK-02). A choice that guarantees the higher of dollar linkage and a fixed rate is read in FXD-10 as fitting the law's principal-guarantee exclusion. The full terms are in the deposit agreement, which was not read (open question 5).
+- Conditions / exceptions: A shekel deposit, so it sits under the general deposit rules (FXD-02, BANK-02). A choice that guarantees the higher of dollar linkage and a fixed rate is read in FXD-10 as fitting the law's principal-guarantee exclusion. The full terms are in the deposit agreement, which was not read (open question 5). Split from FXD-09 on 2026-11-27 (card sweep).
 - Figures: none.
 - Source: [Leumi interest-rate table](https://www.leumi.co.il/he/savings/interest-rate-table) · checked 2026-10-22 · institution
 - Scope: institution: Bank Leumi
