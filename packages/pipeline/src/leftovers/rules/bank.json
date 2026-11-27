@@ -13,7 +13,6 @@
     "BANK-21",
     "BANK-22",
     "BANK-25",
-    "BANK-31",
     "BANK-32",
     "BANK-34",
     "BANK-35",
@@ -51,7 +50,6 @@
   ],
   "fixed-line": [
     "BANK-30",
-    "BANK-31",
     "BANK-38"
   ],
   "spelled-number": [
