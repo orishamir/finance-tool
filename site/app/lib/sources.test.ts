@@ -120,6 +120,25 @@ describe("sourceView: one shape for every source drawing", () => {
     expect(must(doc).publisher).toBe("רשות המסים");
     expect(must(doc).places.map((p) => p.title)).toEqual([null, null, "שאלות ותשובות"]);
   });
+  // the title pairs of one document as rule records write them: the head's title first, then a place's own
+  const placeTitle = (head: string, place: string) => {
+    const [doc] = sourceView([src({ url: "https://x.example/d.pdf#page=1", title_he: head }), src({ url: "https://x.example/d.pdf#page=2", title_he: place })]);
+    return must(doc).places[1]?.title;
+  };
+  it("gives a place no title of its own when it names the head's title with other quote marks, or one title starts the other", () => {
+    // CS-18: a gershayim for a straight quote, and the booklet's number only on the head
+    expect(placeTitle('תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע"ב-2012 (קובץ התקנות 7131)', "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012")).toBeNull();
+    // CS-15 and TXK-19: the head adds the date, the section and the amended law
+    expect(placeTitle('חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי המדיניות הכלכלית לשנות התקציב 2017 ו-2018), התשע"ז-2016, ספר החוקים 2592 (29.12.2016), סעיפים 162-164: חוק הביטוח הלאומי (תיקון מס\' 189)', 'חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי המדיניות הכלכלית לשנות התקציב 2017 ו-2018), התשע"ז-2016, ספר החוקים 2592')).toBeNull();
+    expect(placeTitle('חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו-2016), התשע"ו-2015, ספר החוקים 2511 (30.11.2015), סעיף 28: חוק הביטוח הלאומי (תיקון מס\' 164)', 'חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2015 ו-2016), התשע"ו-2015, ספר החוקים 2511')).toBeNull();
+    // TXF-11: the place adds the subtitle and the date
+    expect(placeTitle("חוזר מס הכנסה 7/2003", "חוזר מס הכנסה 7/2003: הרפורמה במס הכנסה – מיסוי קרנות נאמנות ובעלי היחידות בהן (22.5.2003)")).toBeNull();
+  });
+  it("keeps a place's own title when it names another document in the same file", () => {
+    // TXG-11: two sets of regulations in one booklet
+    const other = 'תקנות מס הכנסה (ניכוי מתמורה, מתשלום או מרווח הון במכירת נייר ערך או בעסקה עתידית) (תיקון), התשס"ו-2005, קובץ התקנות 6449 (29.12.2005)';
+    expect(placeTitle("תקנות מס הכנסה (ניכוי מריבית, מדיבידנד ומרווחים מסוימים), התשס״ו-2005", other)).toBe(other);
+  });
   it("drops the publisher wherever the title holds it, and keeps the title whole", () => {
     const [doc] = sourceView([src({ publisher_he: "רשות המסים", title_he: "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)" })]);
     expect(must(doc).publisher).toBeNull();

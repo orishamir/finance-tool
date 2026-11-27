@@ -301,6 +301,19 @@ function documentNames(group: readonly [RuleSource, ...RuleSource[]], publishers
   return { publisher: title.text.includes(publisher) ? null : publisher, title, hebrew };
 }
 
+/** A title with its spaces and quote marks (״ " ׳ ') set aside: one title typed with a gershayim or a straight quote is the same title. */
+const titleLetters = (title: string): string => title.replace(/[\s״"׳']/g, "");
+
+/**
+ * True when a place's own title names its document's head title: the same letters, or one of them the other's start (a booklet number,
+ * a date or a subtitle added to one of them).
+ */
+function sameTitle(place: string, head: string): boolean {
+  const a = titleLetters(place);
+  const b = titleLetters(head);
+  return a.startsWith(b) || b.startsWith(a);
+}
+
 /**
  * The one shape every source drawing reads: a list of sources grouped by the document they cite, in the order each document first
  * appears, each named once (`documentNames`) with a head link to the document and a line for each place in it.
@@ -319,7 +332,7 @@ export function sourceView(sources: readonly RuleSource[], publishersHe?: Readon
       // only a title of its own in Hebrew: a kind's word or a host stands in for a missing title, and names nothing more than the head
       const raw = s.title_he ?? s.title;
       const own = isHebrewTitle(raw) ? shownTitle(raw, s.url, s.kind).text : null;
-      return { source: s, href: sourceHref(s), locator: sourceLabel2(s).locator, quote: s.quote ?? null, checked: s.checked, title: own && names.title && own !== names.title.text ? own : null };
+      return { source: s, href: sourceHref(s), locator: sourceLabel2(s).locator, quote: s.quote ?? null, checked: s.checked, title: own && names.title && !sameTitle(own, names.title.text) ? own : null };
     };
     const [first, ...rest] = group;
     return { key, href: key, ...names, pdf: isPdfUrl(first.url), places: [placeOf(first), ...rest.map(placeOf)], checked: [...new Set(group.map((s) => s.checked))] };
