@@ -1539,7 +1539,10 @@
   },
   {
     "id": "SW OQ14",
-    "status": "narrowed"
+    "status": "narrowed",
+    "answered_by": [
+      "PF-17"
+    ]
   },
   {
     "id": "SW OQ17",
