@@ -117,7 +117,6 @@
     "max_renewals": null
   },
   "doubt_he": "הבנק מפרסם ריבית לפי מועד המשיכה ולא מפרסם את משך התוכנית. התקופה והריבית כאן הן של מועד המשיכה האחרון בטבלה.",
-  "doubt_on": "term_months",
   "snapshot": "2026-11-07",
   "source": {
     "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",
