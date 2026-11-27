@@ -2,7 +2,7 @@
   "id": "TXP-05",
   "title": "s.47 deduction for someone who is not a beneficiary member",
   "title_he": "הניכוי למי שהוא לא עמית מוטב",
-  "text_he": "יחיד שהוא לא עמית מוטב, ששילם (הוא או בן זוגו) לקופת גמל לקצבה או לשמירת זכויות פנסיה, רשאי לנכות את התשלומים בשני רכיבים. הרכיב הראשון: {TXP-05:deduction_pct_non_work} מההכנסה המזכה שלא מעבודה, עד {TXP-05:eligible_income_cap_non_work}, ועוד תוספת על החלק ששולם מעל סף מסוים מאותה הכנסה. הרכיב השני: הנמוך מבין {TXP-05:non_insured_work_pct} מההכנסה המזכה מעבודה שלא מבוטחת, ו־{TXP-05:non_insured_work_pct} מהכנסת העבודה החייבת עד {TXP-05:taxable_work_income_cap} בניכוי ההכנסה המבוטחת. מגיל 50 מדריך רשות המסים מוסיף שיעורים מוגדלים. התקרות קפואות בשנים 2025 עד 2027.",
+  "text_he": "יחיד שהוא לא עמית מוטב, ששילם (הוא או בן זוגו) לקופת גמל לקצבה או לשמירת זכויות פנסיה, רשאי לנכות את התשלומים בשני רכיבים. הרכיב הראשון: {TXP-05:deduction_pct_non_work} מההכנסה המזכה שלא מעבודה, עד {TXP-05:eligible_income_cap_non_work}, ועוד עד {TXP-06:second_tier_extra_pct} על החלק ששולם מעל {TXP-06:second_tier_extra_above_pct} מאותה הכנסה. הרכיב השני: הנמוך מבין {TXP-05:non_insured_work_pct} מההכנסה המזכה מעבודה שלא מבוטחת, ו־{TXP-05:non_insured_work_pct} מהכנסת העבודה החייבת עד {TXP-05:taxable_work_income_cap} בניכוי ההכנסה המבוטחת. מגיל 50 מדריך רשות המסים מוסיף שיעורים מוגדלים. התקרות קפואות בשנים 2025 עד 2027.",
   "figure_names_he": {
     "deduction_pct_non_work": "שיעור הניכוי מהכנסה שלא מעבודה",
     "eligible_income_cap_non_work": "תקרת ההכנסה המזכה שלא מעבודה (שנתי)",

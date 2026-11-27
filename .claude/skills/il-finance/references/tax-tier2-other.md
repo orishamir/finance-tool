@@ -131,7 +131,7 @@ How sources were read: the Income Tax Ordinance was read on the Hebrew Wikisourc
 ### TX2-12 REIT units inside an Israeli exempt mutual fund
 - Rule: Tax withheld from REIT income passed to an exempt mutual fund is final: "יראו מס ששולם לפי פסקה זו כמס סופי שקרן הנאמנות הפטורה חייבת בו" (s.64A5(a)(4)). Per the fetch tool's reading of that paragraph: no withholding on capital gains from property that is not short-term-held, 60% on extraordinary income, and the s.126(a) corporate rate on other taxable income. The saver then pays the exempt-fund rules on the fund unit (TXS-08 to TXS-10).
 - Conditions / exceptions: Provident funds and some other holders are exempt on REIT pass-through income (s.64A4(f)); that belongs to the wrapper tax files.
-- Figures: 60%; s.126(a) rate (2026).
+- Figures: 60%; s.126(a) rate (2026). Both are the fetch tool's summary of s.64A5(a)(4) and were not checked against the text.
 - Source: [פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים](https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf), p.107, s.64A5(a)(4) ("יראו מס ששולם לפי פסקה זו כמס סופי שקרן הנאמנות הפטורה חייבת בו"); p.106, s.64A4(f) · checked 2026-11-07 · primary (read for the quoted sentence; the sub-rates are a fetch tool's summary)
 - Scope: general
 - Dimensions: `tax-during`
