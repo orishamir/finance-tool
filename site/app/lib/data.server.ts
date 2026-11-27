@@ -83,28 +83,6 @@ export function loadRules(): Record<string, RuleRecord> {
 }
 
 /**
- * The records a page's rule cards point at (`derived_from`, a general rule's `examples`, and the rules its figures cite, which a
- * figure's sheet shows as chips), and the ones those point at in turn, that the page does not hold itself, all in full: what a page
- * whose provenance does not take heads passes as `ProvenanceData.pointed`, so every chip on a card opens its record (BRK-35's
- * "לדוגמה" chip, TXG-04's figure chips TXG-02 and TXG-03). A page that takes heads ships less (`pointedShipment`). They never join
- * the page's own rules, which its checklist and its runs read.
- */
-export function pointedRecords(have: Record<string, RuleRecord> | readonly RuleRecord[], all: Record<string, RuleRecord> = loadRules()): Record<string, RuleRecord> {
-  const own = new Set(Array.isArray(have) ? have.map((r) => r.id) : Object.keys(have));
-  const out: Record<string, RuleRecord> = {};
-  const queue = (Array.isArray(have) ? [...have] : Object.values(have)) as RuleRecord[];
-  while (queue.length > 0) {
-    const r = queue.pop()!;
-    for (const id of pointedIds(r)) {
-      if (own.has(id) || out[id] || !all[id]) continue;
-      out[id] = all[id]!;
-      queue.push(all[id]!);
-    }
-  }
-  return out;
-}
-
-/**
  * The records the flags' words read (`{ID:figure}` slots in copy.ts `flags`): a page whose runs can raise a flag passes those it does
  * not hold as `pointed` (`withFlagSlots`), so the flag's figure is the record's and never "—".
  */

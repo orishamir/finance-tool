@@ -3,8 +3,7 @@
 // that did the same. A card's chips are its record's `derived_from` and `examples`, and every `rule_ids` inside its figures (each
 // figure opens a value sheet that shows them), with the rules whose figures fill its text's `{ID:figure}` slots. A page ships in full its
 // own rules and the records whose figures fill its cards' slots (`pointed`), and of every other rule its cards point at a head, whose
-// card is fetched from the rule's own file when its chip is tapped (`pointedShipment`, routes/rule-card.ts); a page that does not take
-// heads ships them all in full (`pointedRecords`). This walks the pages' data: for every record a page holds in full, every chip its card
+// card is fetched from the rule's own file when its chip is tapped (`pointedShipment`, routes/rule-card.ts). This walks the pages' data: for every record a page holds in full, every chip its card
 // or its figures can show opens a record the page holds, or has a head and a file the build pre-renders; every slot reads a record the
 // page holds. The chips are read from the record here, not through `pointedIds`.
 import { createElement } from "react";
