@@ -79,8 +79,9 @@ for (const collection of collections) {
       const was = Array.isArray(old) ? old.filter((x): x is string => typeof x === "string") : [];
       const back = new Set(was.filter((id) => !ids.includes(id) && judge(id) === "allowed"));
       for (const id of back) count(restored, `${collection} ${pathOf(pointer)} ${id}`);
-      if (kept.length !== ids.length || back.size > 0) {
-        at(out, pointer)!.rule_ids = back.size > 0 ? merged(was, kept, back) : kept;
+      const holder = at(out, pointer);
+      if (holder && (kept.length !== ids.length || back.size > 0)) {
+        holder.rule_ids = back.size > 0 ? merged(was, kept, back) : kept;
         changed = true;
       }
     }

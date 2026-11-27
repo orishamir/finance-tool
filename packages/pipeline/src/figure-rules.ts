@@ -24,7 +24,7 @@ export type FigureCollection = "terms/deposits" | "fees" | "funds" | "instrument
 type Json = Readonly<Record<string, unknown>>;
 
 /** One id a row admits: in the state `when` holds of the record and the value (always, when absent), for the reason `why`. */
-export interface FigureAllow {
+interface FigureAllow {
   id: string;
   when?: (record: Json, value: Json) => boolean;
   why: string;

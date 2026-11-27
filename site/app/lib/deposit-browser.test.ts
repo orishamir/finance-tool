@@ -201,7 +201,9 @@ describe("a record's doubt and notes on the deposits page", () => {
     expect(litchi.rate_effective?.notes).toMatch(/ארבעה שיעורי ריבית/);
     expect(offerOfRecord(litchi).rate_offered.notes).toBe("");
     const limit = "הבנק כותב שהריבית הזו היא ״לתקופה הראשונה״.";
-    const other = { ...litchi, rate_effective: { ...litchi.rate_effective!, notes: limit } };
+    const effective = litchi.rate_effective;
+    if (!effective) throw new Error("Litchi's record holds no effective rate");
+    const other = { ...litchi, rate_effective: { ...effective, notes: limit } };
     expect(offerOfRecord(other).rate_offered.notes).toBe(limit);
   });
 
@@ -221,7 +223,7 @@ describe("a record's doubt and notes on the deposits page", () => {
     const offers = buildDepositBrowser().offers;
     const onPage = withConditions.filter((r) => offers.some((x) => x.id === r.id));
     expect(onPage.length).toBeGreaterThan(0);
-    for (const r of onPage) expect(offers.find((x) => x.id === r.id)!.conditions, r.id).toBe(r.conditions_he);
+    for (const r of onPage) expect(offers.find((x) => x.id === r.id)?.conditions, r.id).toBe(r.conditions_he);
     // a record with none carries none
     const without = offers.find((o) => !records.find((r) => r.id === o.id)?.conditions_he);
     expect(without?.conditions).toBeUndefined();
