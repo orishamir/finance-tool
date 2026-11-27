@@ -39,8 +39,8 @@ import { buildInvest, indexById, pairCosts } from "./invest";
 import type { IndicesBundle, WorkbenchInputs } from "./providers";
 import { entered } from "./value";
 import { rule as ruleCopy, system } from "../copy";
-import { ProvenanceProvider, ruleOf, type ProvenanceData } from "../components/provenance";
-import { RuleCard, loadCardFile, withFetched, type CardFetch } from "../components/provenance-sheets";
+import { ProvenanceProvider, RuleRef, ruleOf, type ProvenanceData } from "../components/provenance";
+import { RuleCard, fetchCard, loadCardFile, withFetched, type CardFetch } from "../components/provenance-sheets";
 
 const all = loadRules();
 /** A value the test needs, or a failure that names it. */
@@ -384,6 +384,42 @@ describe("a card whose rule the page does not ship is fetched when opened", () =
     const scopeLine = (data: ProvenanceData) => must(/<\/h2>(.*?)<\/header>/.exec(renderToStaticMarkup(createElement(MemoryRouter, null, createElement(RuleCard, { id: record.id, data })))), "the heading's scope line")[1];
     const loaded = scopeLine({ ...base, pointed: { [record.id]: record } });
     expect(scopeLine({ ...base, heads: { [record.id]: ruleHeadOf(record, { rules: all, today: base.today }) } })).toBe(loaded);
+  });
+
+  it("a chip whose rule the page holds only the head of says the head's title, or the company the rule is about", () => {
+    const general = must(Object.values(all).find((r) => r.scope === "general" && r.strength !== "open"), "a general rule");
+    const own = must(Object.values(all).find((r) => r.scope === "institution" && r.scope_institutions?.length === 1), "a rule about one company");
+    const company = must(own.scope_institutions?.[0], "its company");
+    const headOf = (r: RuleRecord) => ({ ...ruleHeadOf(r, { rules: all, today: "2026-11-26" }), title: { text: `כותרת של ${r.id}`, english: false } });
+    const data: ProvenanceData = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-26", heads: { [general.id]: headOf(general), [own.id]: headOf(own) } };
+    // the words the chip shows: the first button's text, the sheet the provider draws after it aside
+    const chip = (id: string) =>
+      must(/<button[^>]*>(.*?)<\/button>/.exec(renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(RuleRef, { id }))))), `${id}'s chip`)[1]
+        ?.replace(/<[^>]+>/g, "")
+        .trim();
+    expect(chip(general.id)).toBe(`כותרת של ${general.id}`);
+    expect(chip(own.id)).toContain(company.name_he);
+  });
+
+  it("a fetch that failed says so with its retry, and the retry fetches the file again", async () => {
+    // an id of its own, so the visit's store of fetched files holds this test's fetches only
+    const id = "BRK-51-RETRY";
+    const head = { id, title: { text: "כותרת לבדיקה", english: false }, strength: file.record.strength, scope: file.record.scope };
+    const failing = vi.fn(async () => Promise.reject(new TypeError("Failed to fetch")));
+    vi.stubGlobal("fetch", failing);
+    await fetchCard(id);
+    const text = drawn(page({ heads: { [id]: head } }), id);
+    expect(text).toContain(ruleCopy.loadFailed);
+    expect(text).toContain(ruleCopy.retry);
+    expect(text).not.toContain(system.loading);
+    const answering = answer(file);
+    vi.stubGlobal("fetch", answering);
+    await fetchCard(id);
+    expect(answering).toHaveBeenCalledTimes(1);
+    expect(drawn(page({ heads: { [id]: head } }), id)).not.toContain(ruleCopy.loadFailed);
+    // a file in is not fetched again
+    await fetchCard(id);
+    expect(answering).toHaveBeenCalledTimes(1);
   });
 
   it("reads the file, says a missing one or a failed one did not load, and throws on a file that does not match its schema", async () => {
