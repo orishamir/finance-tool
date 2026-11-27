@@ -43,6 +43,21 @@ describe("sources: fixed in law beside a bill", () => {
   });
 });
 
+describe("sources: a shared portal named as the publisher", () => {
+  const table = { "sources/publishers.json": { "gov.il": { publisher: "gov.il", publisher_he: "אתר הממשלה (gov.il)" } } };
+  it("fails a portal source whose publisher is the portal's table name or its host", () => {
+    const messages = run(sources.check, {
+      ...table,
+      "rules/sw-91.json": { id: "SW-91", sources: [src({ publisher: "Capital Market Authority", publisher_he: "אתר הממשלה (gov.il)" })] },
+      "rules/sw-92.json": { id: "SW-92", sources: [src({ url: "https://data.gov.il/dataset/x", publisher: "data.gov.il", publisher_he: "משרד האוצר" })] },
+    });
+    expect(messages).toEqual([expect.stringMatching(/^SW-91 \(portal-publisher\): .*gov\.il/), expect.stringMatching(/^SW-92 \(portal-publisher\): .*data\.gov\.il/)]);
+  });
+  it("passes an authority on a portal, and a host's name off the portals", () => {
+    expect(run(sources.check, { ...table, "rules/sw-93.json": { id: "SW-93", sources: [src({ publisher: "Israel Tax Authority", publisher_he: "רשות המסים" }), src({ url: "https://www.boi.org.il/x", publisher: "boi.org.il" })] } })).toEqual([]);
+  });
+});
+
 describe("terms: also_called holds only other names", () => {
   const term = (id: string, he: string, also_called: string[]) => ({ id, he, also_called });
   it("fails the head spelled another way, a label with a colon or a number the head lacks, and another card's name", () => {

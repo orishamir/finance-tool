@@ -8,7 +8,7 @@ import { join } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { documents as documentsCopy } from "../copy";
 import { hebrewDocTitle } from "./source-label";
-import { publisherName } from "./sources";
+import { onSharedPortal, publisherName } from "./sources";
 import { ruleTitle } from "./rule-title";
 import type { Strength } from "./value";
 import * as dataServer from "./data.server";
@@ -228,7 +228,6 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
     // page's data part, not as a document
     const entries = cited.filter((e) => e.ruleId);
     if (entries.length === 0) continue;
-    const hosts = entries.map((e) => hostOf(e.url));
     const pub = (e: Entry): PublisherRow | undefined => publishers[hostOf(e.url)];
     // a title written in Hebrew, a web host before it allowed: "data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים" is a Hebrew title, and
     // "Tax Authority, מדריך…" an English working title that quotes one (a count of letters alone showed it)
@@ -237,8 +236,9 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
     const kind0 = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x));
     // never an English working title: the kind's word stands in
     const title = titleHe ?? (kind0 ? (documentsCopy.kinds as Record<string, string>)[kind0] : undefined) ?? hostOf(url0);
-    // the record's own Hebrew name before the host table's, and never a shared portal's (`publisherName`)
-    const publisher = doc?.publisher_he ?? mostCommon(entries.map((e) => publisherName({ url: e.url, publisher: e.publisher ?? "", ...(e.publisher_he ? { publisher_he: e.publisher_he } : {}) }, publishersHe)).filter((x) => !!x)) ?? hosts[0] ?? "";
+    // the record's own Hebrew name before the host table's, and never a shared portal's name or host (`publisherName`): there the
+    // title names who published the document
+    const publisher = doc?.publisher_he ?? mostCommon(entries.map((e) => publisherName({ url: e.url, publisher: e.publisher ?? "", ...(e.publisher_he ? { publisher_he: e.publisher_he } : {}) }, publishersHe)).filter((x) => !!x)) ?? entries.filter((e) => !onSharedPortal(e.url)).map((e) => hostOf(e.url))[0] ?? "";
     const kind = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x)) ?? pub(entries[0]!)?.kind ?? "other";
     // an official url is the card's link; without one the most common url
     const url = doc?.official_url ?? mostCommon(entries.map((e) => e.url))!;

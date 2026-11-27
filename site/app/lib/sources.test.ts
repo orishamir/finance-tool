@@ -1,5 +1,8 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { citationFor, citationText, documentKey, isPdfUrl, mayHaveChanged, moreSourcesLabel, onSharedPortal, pickSources, publicUrl, publisherName, sourceChange, sourceHref, sourceLabel2, sourceView, withoutCodes, type RuleSource } from "./sources";
+import { citationFor, citationText, documentKey, isPdfUrl, mayHaveChanged, moreSourcesLabel, onSharedPortal, pickSources, publicUrl, publisherName, sourceChange, sourceHref, sourceLabel2, sourceView, withoutCodes, type RuleSource, type SourcedRule } from "./sources";
+import { root } from "./data.server";
 import { groupDocuments } from "./documents.server";
 import { publisherHe } from "./publisher-he.server";
 
@@ -163,6 +166,40 @@ describe("sourceChange", () => {
   });
   it("takes the source's own date: read again on or after the recheck date, it is current", () => {
     expect(sourceChange([{ recheck_date: "2026-12-01" }], { checked: "2026-12-05" }, today)).toBe("current");
+  });
+});
+
+// A shared portal keeps the site, never publishes the document: a record that names the portal as publisher (its table name, or its
+// host) names nobody, and the document's own title says who published it.
+describe("a shared portal is never named as the publisher", () => {
+  const table = { "gov.il": "אתר הממשלה (gov.il)", "data.gov.il": "מאגר המידע הממשלתי (data.gov.il)", "boi.org.il": "בנק ישראל" };
+  it("leaves out the portal's table name and host, from the Hebrew field and from the English one", () => {
+    expect(publisherName(src({ url: "https://www.gov.il/BlobFolder/x/a.pdf", publisher: "gov.il", publisher_he: "אתר הממשלה (gov.il)" }), table)).toBe("");
+    expect(publisherName(src({ url: "https://data.gov.il/he/datasets/x", publisher: "data.gov.il", publisher_he: "מאגר המידע הממשלתי (data.gov.il)" }), table)).toBe("");
+    expect(publisherName(src({ url: "https://www.gov.il/he/pages/x", publisher: "www.gov.il" }))).toBe("");
+    expect(publisherName(src({ url: "https://www.gov.il/he/pages/x", publisher: "Israel Tax Authority", publisher_he: "אתר הממשלה (gov.il)" }), table)).toBe("Israel Tax Authority");
+    expect(publisherName(src({ url: "https://www.gov.il/he/pages/x", publisher: "gov.il", publisher_he: "רשות המסים" }), table)).toBe("רשות המסים");
+  });
+  it("is a name like any other off the portal", () => expect(publisherName(src({ url: "https://www.boi.org.il/x", publisher: "boi.org.il" }), table)).toBe("בנק ישראל"));
+  const record = (id: string) => JSON.parse(readFileSync(join(root, "data/rules", `${id}.json`), "utf8")) as SourcedRule & { id: string };
+  const publishers = JSON.parse(readFileSync(join(root, "data/sources/publishers.json"), "utf8")) as Record<string, { publisher?: string; publisher_he?: string }>;
+  const portalNames = new Set(["gov.il", "www.gov.il", "data.gov.il", ...["gov.il", "data.gov.il"].flatMap((h) => [publishers[h]?.publisher, publishers[h]?.publisher_he]).filter((n): n is string => !!n)]);
+  const he = Object.fromEntries(Object.entries(publishers).flatMap(([h, r]) => (r.publisher_he ? [[h, r.publisher_he]] : [])));
+  // records whose portal sources name the portal itself as publisher: a circular's page, a tax booklet on gov.il, a dataset on data.gov.il
+  for (const id of ["sw-42", "ira-08", "cs-22"]) {
+    it(`${id}: no drawing names a portal as the publisher`, () => {
+      const rule = record(id);
+      const sources = pickSources(rule);
+      expect(sources.length).toBeGreaterThan(0);
+      for (const view of sourceView(sources, he)) expect(portalNames.has(view.publisher ?? "")).toBe(false);
+      for (const card of groupDocuments({ [rule.id]: rule as never }, [], publishers)) expect(portalNames.has(card.publisher)).toBe(false);
+      for (const s of sources) expect(portalNames.has(publisherHe({ source: s } as never))).toBe(false);
+    });
+  }
+  it("names the authority in the title of a portal document that names no other publisher", () => {
+    const views = sourceView(pickSources(record("sw-42")), he).filter((v) => onSharedPortal(v.key));
+    expect(views.length).toBeGreaterThan(0);
+    for (const v of views) if (v.publisher === null) expect(must(v.title).host).toBe(false);
   });
 });
 

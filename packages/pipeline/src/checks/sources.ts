@@ -6,14 +6,18 @@
 //   for the record's sources and "<rule id>#<figure key>" for a figure's.
 // - "fixed-in-law-bill": a figure marked "fixed in law" on a record that cites a bill or a draft (a source's standing): the figure is
 //   fixed by no law yet. Keyed "<rule id>".
+// - "portal-publisher": a source on a shared portal whose publisher, in either field, is the portal's own name: its host, or the
+//   publishers table's name for it ("אתר הממשלה (gov.il)"). The portal keeps the site and publishes nothing, so the site names no
+//   publisher for that source and the field wants the authority that published the document. Keyed "<rule id>".
 // The entries still allowed each flaw are listed in leftovers/sources.json, and each list only shrinks.
+import { join } from "node:path";
 import { isHebrewTitle } from "@finance-tool/schema";
 import { z } from "zod";
-import { isValueObject, objectsIn, readLeftovers, ruleCards, staleEntries, type CheckData, type CheckProblem, type Offence, type RuleCard } from "./lib/kit.ts";
+import { hostOf, isValueObject, objectsIn, readData, readLeftovers, ruleCards, staleEntries, type CheckData, type CheckProblem, type Offence, type RuleCard } from "./lib/kit.ts";
 
 export const name = "sources";
 
-const FLAWS = ["source-title", "fixed-in-law-bill"] as const;
+const FLAWS = ["source-title", "fixed-in-law-bill", "portal-publisher"] as const;
 type Flaw = (typeof FLAWS)[number];
 const leftovers = z.partialRecord(z.enum(FLAWS), z.array(z.string()));
 const FILE = "sources.json";
@@ -26,9 +30,14 @@ interface SourceLike {
   url?: unknown;
   title?: unknown;
   title_he?: unknown;
+  publisher?: unknown;
+  publisher_he?: unknown;
   kind?: unknown;
   standing?: unknown;
 }
+
+/** Hosts that carry many publishers' documents, as the site's SHARED_PORTAL_HOSTS (site/app/lib/sources.ts) lists them. */
+const SHARED_PORTAL_HOSTS: ReadonlySet<string> = new Set(["gov.il", "data.gov.il", "api.tase.co.il", "data-api.ecb.europa.eu"]);
 
 /** What is wrong with the title a source line shows, or null: a file name, a web address, or a host shown in place of a title. */
 function shownTitleFlaw(source: SourceLike): string | null {
@@ -77,10 +86,32 @@ function billOffences(cards: ReadonlyMap<string, RuleCard>): Map<string, Offence
   return found;
 }
 
+/** Each shared portal's own names: its host, "www." and the host, and the publishers table's names for it. */
+function portalNames(data: CheckData): Map<string, Set<string>> {
+  const table = readData(join(data.dataDir, "sources", "publishers.json"));
+  const rows = table && typeof table === "object" ? (table as Record<string, { publisher?: unknown; publisher_he?: unknown } | undefined>) : {};
+  return new Map(
+    [...SHARED_PORTAL_HOSTS].map((host) => [host, new Set([host, `www.${host}`, ...[rows[host]?.publisher, rows[host]?.publisher_he].filter((n): n is string => typeof n === "string")])]),
+  );
+}
+
+function portalOffences(cards: ReadonlyMap<string, RuleCard>, data: CheckData): Map<string, Offence> {
+  const names = portalNames(data);
+  const found = new Map<string, Offence>();
+  for (const card of cards.values()) {
+    const named = sourcesOf(card).find((s) => {
+      const own = names.get(hostOf(s.url));
+      return !!own && [s.publisher, s.publisher_he].some((n) => typeof n === "string" && own.has(n));
+    });
+    if (named) found.set(card.id, { file: card.file, what: `a source on ${hostOf(named.url)} names the portal as its publisher`, fix: "name the authority that published the document in publisher and publisher_he" });
+  }
+  return found;
+}
+
 export function check(data: CheckData): CheckProblem[] {
   const cards = ruleCards(data);
   const lists = leftovers.parse(readLeftovers(FILE) ?? {});
-  const found: Record<Flaw, Map<string, Offence>> = { "source-title": titleOffences(cards), "fixed-in-law-bill": billOffences(cards) };
+  const found: Record<Flaw, Map<string, Offence>> = { "source-title": titleOffences(cards), "fixed-in-law-bill": billOffences(cards), "portal-publisher": portalOffences(cards, data) };
   const out: CheckProblem[] = [];
   for (const flaw of FLAWS) {
     const listed = lists[flaw] ?? [];

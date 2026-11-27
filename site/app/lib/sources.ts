@@ -226,14 +226,25 @@ export const SHARED_PORTAL_HOSTS: readonly string[] = ["gov.il", "data.gov.il", 
 export const onSharedPortal = (url: string): boolean => SHARED_PORTAL_HOSTS.includes(hostOf(url) ?? "");
 
 /**
+ * True when a name is a shared portal's own, for a source on that portal: its host ("gov.il", "www.gov.il") or the publishers table's
+ * name for it ("אתר הממשלה (gov.il)"). Such a name says who keeps the site, so it names no publisher; without the table only the host
+ * is known.
+ */
+function isPortalName(name: string, url: string, publishersHe?: Readonly<Record<string, string>>): boolean {
+  const host = hostOf(url);
+  if (!host || !onSharedPortal(url)) return false;
+  return name === host || name === `www.${host}` || name === publishersHe?.[host];
+}
+
+/**
  * Who published a source, in Hebrew where anyone wrote it: the record's own Hebrew name first, then the publishers table's name for
- * the link's host (never for a shared portal), then the record's own name.
+ * the link's host (never for a shared portal), then the record's own name. A portal's own name (`isPortalName`) is no name, and with
+ * none left the result is empty: the document's title then names who published it.
  */
 export function publisherName(source: Pick<RuleSource, "url" | "publisher" | "publisher_he">, publishersHe?: Readonly<Record<string, string>>): string {
-  if (source.publisher_he) return source.publisher_he;
   const host = hostOf(source.url);
   const byHost = host && !onSharedPortal(source.url) ? publishersHe?.[host] : undefined;
-  return byHost ?? source.publisher;
+  return [source.publisher_he, byHost, source.publisher].find((n): n is string => !!n && !isPortalName(n, source.url, publishersHe)) ?? "";
 }
 
 /** The address of the document a source is in: without the place in it (`#page=`, an anchor, the quoted words), but a page's own `#/` route kept, which names another page. */
