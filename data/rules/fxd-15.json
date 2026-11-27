@@ -27,19 +27,6 @@
       "strength": "primary",
       "checked": "2026-11-07",
       "qualifier": "(the State's own prospectus, filed by the State)"
-    },
-    {
-      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
-      "title": "Leumi tariff",
-      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.38",
-      "locator_he": "עמוד 38",
-      "page": 38,
-      "checked": "2026-10-22"
     }
   ]
 }
