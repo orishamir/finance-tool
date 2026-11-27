@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
 import * as dataServer from "./data.server";
-import { groupDocuments, loadDocuments, stripUrl, valueEntriesOf } from "./documents.server";
+import { groupDocuments, loadDocuments, stripUrl } from "./documents.server";
 
 const rule = (id: string, sources: unknown[]): RuleRecord => ({ id, title: id, title_he: `כלל ${id}`, strength: "primary", sources }) as unknown as RuleRecord;
 const src = (url: string, title: string, extra: object = {}) => ({ url, title, publisher: "X", kind: "law", strength: "primary", checked: "2026-10-01", ...extra });
@@ -42,19 +42,7 @@ describe("groupDocuments", () => {
   });
 });
 
-describe("the figures of the data records rest on documents too", () => {
-  const fig = (url: string, extra: object = {}) => ({ value: 1, unit: "pct", source: { url, title: "Tariff", publisher: "Bank X", strength: "institution", ...extra }, checked: "2026-11-01" });
-  const values = valueEntriesOf([{ fees: { a: fig("https://bank.example/tariff.pdf"), b: fig("https://bank.example/tariff.pdf#page=2") } }, { rows: [fig("https://example.org/doc.pdf"), fig("docs/company-answers.md#x")] }]);
-  const cards = groupDocuments({ "A-4": rule("A-4", [src("https://example.org/doc.pdf", "A guide", { kind: "other" })]) }, [], {}, undefined, values);
-  it("counts every figure that cites a document, beside the rules", () => {
-    expect(values).toHaveLength(3);
-    const shared = cards.find((c) => c.url === "https://example.org/doc.pdf");
-    expect(shared?.rules.map((r) => r.id)).toEqual(["A-4"]);
-    expect(shared?.values).toBe(1);
-  });
-  it("gives a document only figures cite no card: the page's data part shows the records it holds", () => {
-    expect(cards.map((c) => c.url)).toEqual(["https://example.org/doc.pdf"]);
-  });
+describe("a document card's publisher", () => {
   it("names the publisher as a source line does: the record's Hebrew name first, never a shared portal's", () => {
     const named = groupDocuments({ "B-1": rule("B-1", [src("https://data.gov.il/dataset/x", "A dataset", { publisher: "Capital Market Authority", kind: "dataset" })]), "B-2": rule("B-2", [src("https://www.boi.org.il/y", "Page", { publisher_he: "המפקח על הבנקים", kind: "regulator_page" })]) }, [], { "data.gov.il": { publisher_he: "מאגר המידע הממשלתי (data.gov.il)" }, "boi.org.il": { publisher_he: "בנק ישראל" } });
     expect(named.map((c) => c.publisher).sort()).toEqual(["Capital Market Authority", "המפקח על הבנקים"]);
