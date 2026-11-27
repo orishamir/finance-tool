@@ -20,7 +20,7 @@ export const name = "values";
 export const VALUE_COLLECTIONS = ["cma", "series"] as const;
 
 /** Hosts that serve many publishers' data, so a source there names its publisher itself (as `hostOf` writes a host). */
-export const SHARED_PORTAL_HOSTS: ReadonlySet<string> = new Set(["data.gov.il", "gov.il", "api.tase.co.il"]);
+const SHARED_PORTAL_HOSTS: ReadonlySet<string> = new Set(["data.gov.il", "gov.il", "api.tase.co.il"]);
 
 /**
  * True when `url` is an address a program reads rather than a page a person reads: a JSON, CSV, XML or spreadsheet file, an API host or

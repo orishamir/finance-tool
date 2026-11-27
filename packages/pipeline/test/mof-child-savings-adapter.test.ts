@@ -122,8 +122,8 @@ describe("normalise", () => {
     }
     // a stored observation with an older source takes today's, and keeps its checked date
     const stored = { ...first, observations: first.observations.map((o) => ({ ...o, source: { ...o.source, url: DOWNLOAD_URL, fetched_from: undefined } })) };
-    const next = normalise(dl(), stored, { ...ctx, runDate: "2026-10-24" }).file!;
-    expect(next.observations.every((o) => o.checked === "2026-10-23" && o.source.url === "https://data.gov.il/he/datasets/mof/savingsplaninterest")).toBe(true);
+    const next = normalise(dl(), stored, { ...ctx, runDate: "2026-10-24" }).file;
+    expect(next?.observations.every((o) => o.checked === "2026-10-23" && o.source.url === "https://data.gov.il/he/datasets/mof/savingsplaninterest")).toBe(true);
   });
   it("returns no file when there are no usable rows", () => {
     const r = normalise(dl(new TextEncoder().encode("a,b\n1,2\n")), null, ctx);

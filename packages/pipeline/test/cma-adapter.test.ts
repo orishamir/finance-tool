@@ -573,7 +573,7 @@ describe("where each value comes from, and why an empty one is empty", () => {
       expect(v.source.url).toBe("https://data.gov.il/he/datasets/cma/gemelnet");
       expect(v.source.fetched_from).toBe("https://data.gov.il/dataset/5265b154-c2e2-4f3d-a22e-fba593240d9a/resource/a30dcbea-a1d2-482c-ae29-8f781f5025fb/download/file.csv");
     }
-    expect(file.source).toEqual(expect.objectContaining({ publisher_he: "רשות שוק ההון, ביטוח וחיסכון", fetched_from: values[0]!.source.fetched_from }));
+    expect(file.source).toEqual(expect.objectContaining({ publisher_he: "רשות שוק ההון, ביטוח וחיסכון", fetched_from: values[0]?.source.fetched_from }));
     // a Pension-Net value points at its own CSV
     const p = buildFees({ ...base, dataset: "pensia-net" }, { raw_fields: { AVG_ANNUAL_MANAGEMENT_FEE: "0.1", AVG_DEPOSIT_FEE: "1" }, inception_date: null }).avg_deposit_fee;
     expect(p.source.fetched_from).toContain("6d47d6b5-cb08-488b-b333-f1e717b1e1bd");
@@ -586,9 +586,9 @@ describe("where each value comes from, and why an empty one is empty", () => {
     expect(buildFees(base, { raw_fields: raw, inception_date: "2025-03-01" }).avg_annual_management_fee.empty_because).toBe("too-young");
     const study = buildFees(base, { raw_fields: { AVG_ANNUAL_MANAGEMENT_FEE: "0.5", AVG_DEPOSIT_FEE: "" }, inception_date: "2010-01-01", fund_classification: "קרנות השתלמות" }).avg_deposit_fee;
     expect([study.empty_because, study.rule_ids]).toEqual(["none-by-rule", ["PF-06"]]);
-    expect(buildHoldings(base, { raw_fields: { TOTAL_ASSETS: "", STOCK_MARKET_EXPOSURE: "1" } })!.total_assets.empty_because).toBe("unknown");
-    const y = buildYields(base, { raw_fields: { AVG_ANNUAL_YIELD_TRAILING_3YRS: "", AVG_ANNUAL_YIELD_TRAILING_5YRS: "" }, inception_date: "2022-05-01" })!;
-    expect([y.avg_annual_yield_3y.empty_because, y.avg_annual_yield_5y.empty_because]).toEqual(["unknown", "too-young"]);
+    expect(buildHoldings(base, { raw_fields: { TOTAL_ASSETS: "", STOCK_MARKET_EXPOSURE: "1" } })?.total_assets.empty_because).toBe("unknown");
+    const y = buildYields(base, { raw_fields: { AVG_ANNUAL_YIELD_TRAILING_3YRS: "", AVG_ANNUAL_YIELD_TRAILING_5YRS: "" }, inception_date: "2022-05-01" });
+    expect([y?.avg_annual_yield_3y.empty_because, y?.avg_annual_yield_5y.empty_because]).toEqual(["unknown", "too-young"]);
   });
 
   it("renormaliseFees gives a stored file written before these fields its publisher and the CSV it read", () => {

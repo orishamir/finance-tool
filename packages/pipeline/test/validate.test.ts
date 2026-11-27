@@ -906,6 +906,7 @@ describe("the value checks of the collected collections (src/checks/values.ts)",
   });
 
   it("lists each check's leftovers in a file of its own per collection", () => {
+    expect(values.name).toBe("values");
     for (const check of ["empty-because", "publisher", "machine-url", "notes-he"]) for (const collection of values.VALUE_COLLECTIONS) expect(valuesFile(check, collection)).toBe(`values/${check}/${collection}.json`);
     expect(readdirSync(fileURLToPath(new URL("../src/leftovers/values/", import.meta.url))).sort()).toEqual(["empty-because", "machine-url", "notes-he", "publisher"]);
   });

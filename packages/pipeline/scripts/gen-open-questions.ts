@@ -76,7 +76,7 @@ export function readItemTexts(referencesDir: string): Map<string, string> {
     const text = readFileSync(path, "utf8");
     const start = text.search(/^## Open questions/m);
     if (start < 0) continue;
-    const section = text.slice(start).split(/^## (?!Open questions)/m)[0]!;
+    const section = text.slice(start).split(/^## (?!Open questions)/m)[0] ?? "";
     for (const m of section.matchAll(/^(\d+)\. (.*)((?:\n[ \t]+\S.*)*)/gm)) out.set(`${prefix} OQ${m[1]}`, `${m[2]}${m[3]}`);
   }
   return out;
@@ -150,7 +150,12 @@ function main(): void {
     process.exit(1);
   }
 
-  const out = items.map((it) => buildEntry(it.id, texts.get(it.id)!, prev.get(it.id), rules));
+  const textOf = (id: string): string => {
+    const text = texts.get(id);
+    if (text === undefined) throw new Error(`no text read for ${id}`);
+    return text;
+  };
+  const out = items.map((it) => buildEntry(it.id, textOf(it.id), prev.get(it.id), rules));
   const ids = new Set(out.map((q) => q.id));
   const dropped = [...prev.values()].filter((q) => !ids.has(q.id));
   const parsed = openQuestionsFile.safeParse(out);
@@ -161,11 +166,14 @@ function main(): void {
   writeFileSync(OUT, JSON.stringify(out, null, 2) + "\n");
 
   const count = (st: string) => out.filter((q) => q.status === st).length;
-  const changed = out.filter((q) => prev.has(q.id) && prev.get(q.id)!.status !== q.status);
+  const changed = out.flatMap((q) => {
+    const was = prev.get(q.id);
+    return was && was.status !== q.status ? [{ q, was: was.status }] : [];
+  });
   console.log(
     `data/open-questions.json: ${out.length} questions (${count("open")} open, ${count("narrowed")} narrowed); ${out.filter((q) => q.title_he).length} with a Hebrew title, ${out.filter((q) => q.answered_by).length} with answered_by, ${out.filter((q) => q.meanwhile_he).length} with meanwhile_he`,
   );
-  for (const q of changed) console.log(`status: ${q.id} ${prev.get(q.id)!.status} -> ${q.status}${q.title_he ? ` "${q.title_he}"` : ""}`);
+  for (const { q, was } of changed) console.log(`status: ${q.id} ${was} -> ${q.status}${q.title_he ? ` "${q.title_he}"` : ""}`);
   for (const q of dropped) console.warn(droppedLine(q));
 }
 

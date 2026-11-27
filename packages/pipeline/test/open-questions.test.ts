@@ -107,8 +107,7 @@ describe("an entry", () => {
   });
 
   it("takes a list a person wrote for the item in place of the scan's", () => {
-    const [id, list] = Object.entries(ANSWERED_BY_READ)[0]!;
-    expect(buildEntry(id, text, undefined, rules).answered_by).toEqual(list);
+    for (const [id, list] of Object.entries(ANSWERED_BY_READ)) expect(buildEntry(id, text, undefined, rules).answered_by).toEqual(list);
   });
 
   it("an id that left the markdown is printed with everything written by hand for it", () => {
@@ -131,8 +130,9 @@ describe("data/open-questions.json", () => {
     for (const q of file) {
       const text = texts.get(q.id);
       expect(text, q.id).toBeDefined();
-      expect([q.id, q.status]).toEqual([q.id, statusOf(text!)]);
-      const made = q.status === "open" ? [] : (ANSWERED_BY_READ[q.id] ?? answeredBy(text!, answerable));
+      if (text === undefined) continue;
+      expect([q.id, q.status]).toEqual([q.id, statusOf(text)]);
+      const made = q.status === "open" ? [] : (ANSWERED_BY_READ[q.id] ?? answeredBy(text, answerable));
       expect([q.id, q.answered_by ?? []]).toEqual([q.id, made]);
     }
   });

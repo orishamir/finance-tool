@@ -382,7 +382,7 @@
    "packages/pipeline/scripts/extract-sources.ts": 36,
    "packages/pipeline/scripts/gen-terms.ts": 5,
    "packages/pipeline/src/adapters/cbs-cpi.ts": 2,
-   "packages/pipeline/src/adapters/cma.ts": 10,
+   "packages/pipeline/src/adapters/cma.ts": 7,
    "packages/pipeline/src/adapters/ecb-fx.ts": 7,
    "packages/pipeline/src/adapters/mof-child-savings.ts": 4,
    "packages/pipeline/src/price-list-facts.ts": 4,

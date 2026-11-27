@@ -43,6 +43,13 @@ export const DATASETS: DatasetConfig[] = [
  */
 export const datasetPageUrl = (c: DatasetConfig): string => `https://data.gov.il/he/datasets/cma/${c.dataset}`;
 
+/** The configuration of `dataset`; a dataset outside DATASETS is a broken invariant, since CmaDataset names only those. */
+function datasetConfig(dataset: CmaDataset): DatasetConfig {
+  const config = DATASETS.find((d) => d.dataset === dataset);
+  if (!config) throw new Error(`cma: no configuration for the dataset ${dataset}`);
+  return config;
+}
+
 export const downloadUrl = (c: DatasetConfig): string =>
   `https://data.gov.il/dataset/${c.datasetUuid}/resource/${c.resourceId}/download/file.csv`;
 
@@ -62,7 +69,7 @@ const valueSource = (file: Pick<CmaPeriodFile, "dataset" | "source">, title: str
   publisher: file.source.publisher,
   publisher_he: PUBLISHER_HE,
   strength: "primary",
-  fetched_from: downloadUrl(DATASETS.find((d) => d.dataset === file.dataset)!),
+  fetched_from: downloadUrl(datasetConfig(file.dataset)),
 });
 
 export const USER_AGENT =
@@ -556,7 +563,7 @@ export function buildFees(
   file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
   fund: Pick<CmaFund, "raw_fields" | "inception_date"> & Partial<Pick<CmaFund, "fund_classification" | "names" | "fund_id">>,
 ): CmaFund["fees"] {
-  const config = DATASETS.find((d) => d.dataset === file.dataset)!;
+  const config = datasetConfig(file.dataset);
   const year = feeYear(file.report_period);
   const pension = file.dataset === "pensia-net";
   const make = (f: (typeof FEE_FIELDS)[number]) => {
@@ -638,7 +645,7 @@ export function buildHoldings(
   fund: Pick<CmaFund, "raw_fields">,
 ): CmaFund["holdings"] | undefined {
   if (!HOLDINGS_FIELDS.some((f) => f.raw in fund.raw_fields)) return undefined;
-  const config = DATASETS.find((d) => d.dataset === file.dataset)!;
+  const config = datasetConfig(file.dataset);
   const make = (f: (typeof HOLDINGS_FIELDS)[number]) => {
     const rawText = (fund.raw_fields[f.raw] ?? "").trim();
     const n = rawText === "" ? null : Number(rawText);
@@ -691,7 +698,7 @@ export function buildYields(
   fund: Pick<CmaFund, "raw_fields" | "inception_date">,
 ): CmaFund["yields"] | undefined {
   if (!YIELD_FIELDS.some((f) => f.raw in fund.raw_fields)) return undefined;
-  const config = DATASETS.find((d) => d.dataset === file.dataset)!;
+  const config = datasetConfig(file.dataset);
   const make = (f: (typeof YIELD_FIELDS)[number]) => {
     const rawText = (fund.raw_fields[f.raw] ?? "").trim();
     const n = rawText === "" ? null : Number(rawText);
@@ -748,7 +755,7 @@ const derive = (file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked
  * readings, and give the file's source the publisher's Hebrew name and the CSV it was read from; nothing else changes.
  */
 export function renormaliseFees(file: CmaPeriodFile): CmaPeriodFile {
-  const config = DATASETS.find((d) => d.dataset === file.dataset)!;
+  const config = datasetConfig(file.dataset);
   const next = { ...file, source: { ...file.source, publisher_he: PUBLISHER_HE, fetched_from: downloadUrl(config) } };
   return { ...next, funds: file.funds.map((f) => derive(next, f)) };
 }
