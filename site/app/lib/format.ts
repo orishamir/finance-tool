@@ -1,4 +1,5 @@
 // Number, date and identifier formats: docs/design-system.md 2.7. Always Intl with he-IL; never hand-built.
+import { PERCENT_UNITS } from "@finance-tool/engine";
 import { numbers, values as valuesCopy } from "../copy";
 import { countPhrase } from "./count";
 import { numberFormat, plainNumber, withMinus } from "./number-format";
@@ -358,14 +359,8 @@ export function formatValue(value: number | string | boolean | null, unit: strin
       return `${fmt.number(value)} ${numbers.inTradeCurrency}`;
     case "fx_per_eur":
       return withMinus(ecbRate.format(value));
-    case "pct":
-    case "pct_per_year":
-    case "pct_of_deposit":
-    case "pct_of_trade":
-    case "pct_of_balance_per_period":
-      return fmt.pct(value);
     default:
-      return fmt.number(value);
+      return PERCENT_UNITS.has(unit) ? fmt.pct(value) : fmt.number(value);
   }
 }
 

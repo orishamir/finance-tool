@@ -5,7 +5,7 @@ import { p05Number } from "./engine";
 import { buildGuidePage } from "./guide.server";
 import { fact } from "./guide-signature";
 import { pensionModel, studyYears } from "./guide-signature-g2";
-import { ACCOUNT_LINES, DISTRIBUTION_TAX, FUND_LINES, SALARY_TAX_RULES, rulesOfRun, rulesOfRuns, salaryTaxOnly, withoutSalaryTax } from "./run-rules";
+import { ACCOUNT_LINES, DISTRIBUTION_TAX, FUND_LINES, rulesOfRun, rulesOfRuns, salaryTaxOnly, withoutSalaryTax } from "./run-rules";
 import { entered } from "./value";
 
 const rule = (id: string, uses: UsedRule["uses"], figures: UsedRule["figures"] = [], strength: UsedRule["strength"] = "primary"): UsedRule => ({ id, strength, dimensions: [], figures, uses });
@@ -26,9 +26,9 @@ describe("rulesOfRun", () => {
     expect(rulesOfRun(run, ["taxDuring", "taxAtExit"]).map((r) => r.id)).toEqual(["TXS-02"]);
     expect(rulesOfRun(run, [])).toEqual([]);
   });
-  it("the payout's tax is the tax during the run without the surtax's uses (F-91's t)", () => {
+  it("the payout's tax is the tax during the run without its surtax line (F-91's t)", () => {
     const payout = rule("TXF-08", [{ part: "taxDuring", changed: true, figures: ["rate"] }]);
-    const surtax = rule("TXG-09", [{ part: "taxDuring", changed: true, figures: ["rate"] }]);
+    const surtax = rule("TXG-09", [{ part: "taxDuring", line: "surtax", changed: true, figures: ["rate"] }]);
     expect(rulesOfRun([payout, surtax, exitTax], [DISTRIBUTION_TAX]).map((r) => r.id)).toEqual(["TXF-08"]);
     expect(rulesOfRun([payout, surtax, exitTax], ["taxDuring"]).map((r) => r.id)).toEqual(["TXF-08", "TXG-09"]);
   });
@@ -102,11 +102,13 @@ describe("the guides' runs: each figure lists the rules of its part", () => {
     expect(year.slice?.taxFromSalary ?? 0).toBeGreaterThan(0);
     const rules = mergedRules(year.runs);
     expect(rulesOfRun(rules, ["taxDuring"]).map((r) => r.id)).toContain("TXH-03");
+    // the salary tax's own rules (TXH-03, at TXG-35's national insurance) stay off the run's tax fields; the employer's limit (TXH-01) and the
+    // determining salary (TXH-02) also set what is above the limit, whose gains the exit taxes, and the brackets (TXG-02) the exit's tax too
     const taxFields = ids(rulesOfRun(withoutSalaryTax(rules), ["taxDuring", "taxAtExit"]));
-    for (const id of SALARY_TAX_RULES.filter((x) => x !== "TXG-02")) expect(taxFields, id).not.toContain(id);
+    for (const id of ["TXH-03", "TXG-35"]) expect(taxFields, id).not.toContain(id);
     const salary = ids(rulesOfRun(salaryTaxOnly(rules), ["taxDuring"]));
-    expect(salary).toContain("TXH-03");
-    for (const id of salary) expect(SALARY_TAX_RULES, id).toContain(id);
+    expect(salary).toEqual(expect.arrayContaining(["TXH-01", "TXH-03"]));
+    for (const id of salary) expect(["TXH-01", "TXH-02", "TXH-03", "TXG-02", "TXG-35"], id).toContain(id);
   });
 
   it("a pension employer line above TXP-10's limit: its salary tax stays off a balance before that tax", () => {

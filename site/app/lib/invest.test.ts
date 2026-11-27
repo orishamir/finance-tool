@@ -6,13 +6,16 @@ import { buildIndicesBundle } from "./providers.server";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "./custom-entries";
 import type { WorkbenchInputs } from "./providers";
 import { differenceOf, entered, sheetRules, type SiteValue } from "./value";
-import { ACCOUNT_LINES, FUND_LINES, SURTAX_RULES } from "./run-rules";
+import { ACCOUNT_LINES, FUND_LINES } from "./run-rules";
 import { feesData } from "./fees.server";
 import { houseDeal } from "./deal-account/house-deal";
 import { dealProviderId, withDeals } from "./deal-account/bundle";
 import { invest as words, numbers } from "../copy";
 import { inflationOf, leftOf } from "../components/invest/receipt";
 import { receiptChain } from "./receipt";
+
+/** The surtax's rules (F-43), to check which a figure lists: a figure's rules carry no engine line to pick them by. */
+const SURTAX_RULES = ["TXG-09", "TXG-10"];
 
 // The page's data as built, but for the exchange rates: frozen at the ECB's rates of 16.11.2026 (units per euro) and dated today, so
 // the figures pinned below move with a fund's or a house's data, never with the daily rate refresh (which turned the check red on
@@ -728,7 +731,7 @@ describe("each figure of a run lists the rules of the parts its number is made o
       for (const { u } of changed) if (u.part === "fees" && u.line && !FUND_LINES.includes(u.line)) booked.add(u.line);
       // on a fund that pays out, a difference of B adds the whole tax during the run, a money carried to the horizon the payout's tax alone
       const during = new Set(pc.distributes ? changed.filter((x) => x.u.part === "taxDuring").map((x) => x.id) : []);
-      const payoutTax = new Set([...during].filter((id) => !SURTAX_RULES.includes(id)));
+      const payoutTax = new Set(pc.distributes ? changed.filter((x) => x.u.part === "taxDuring" && x.u.line !== "surtax").map((x) => x.id) : []);
       if (pc.distributes) paying++;
       const onLines = (ls: readonly string[]) => new Set(changed.filter((x) => x.u.part === "fees" && x.u.line !== undefined && ls.includes(x.u.line)).map((x) => x.id));
       // a rule an input of the figure already lists is left to that input, which opens it (`computed`)

@@ -26,6 +26,7 @@ export * from "./ledgers/deal-account.ts";
 export * from "./ledgers/provident.ts";
 export * from "./ledgers/pension.ts";
 export * from "./resolver.ts";
+export * from "./units.ts";
 export * from "./open-readings.ts";
 export { withRunMemo } from "./run-memo.ts";
 export * from "./result.ts";

@@ -5,8 +5,9 @@
 // reading the run's context chooses.
 import type { RuleRecord, ValueObject } from "@finance-tool/schema";
 import { amountInYear, movesBy, movingYears, yearlyMoveOf } from "./formulas/indexation.ts";
+import { PERCENT_UNITS } from "./units.ts";
 import { OpenReadingError, openReadingOf, type OpenReading, type TaxIndexOpenReading, type TaxIndexReadingId } from "./open-readings.ts";
-import { labelWeight, type FeeType, type Label, type NotKnown, type RuleLabel, type RuleUse, type RunContext, type RunPart } from "./result.ts";
+import { labelWeight, type FeeType, type Label, type NotKnown, type RuleLabel, type RuleUse, type RunContext, type RunPart, type TaxLine } from "./result.ts";
 
 type Strength = RuleRecord["strength"] | ValueObject["source"]["strength"];
 
@@ -71,8 +72,6 @@ export class MissingRuleError extends Error {
   }
 }
 
-const percentUnits = new Set(["pct", "pct_per_year", "pct_of_deposit", "pct_of_trade", "pct_of_balance_per_period"]);
-
 const labelFor: Partial<Record<Strength, RuleLabel["code"]>> = {
   secondary: "secondary-source",
   institution: "institution-source",
@@ -95,10 +94,11 @@ export interface RuleBook {
   /** Records that a rule with no figure governs this run (a treatment, not a number). */
   cite(ruleId: string): void;
   /**
-   * A view on the same store whose every read is a changed use on `part` (a `fees` use always on its fee line). The view's `inYear` keeps
-   * the part and the line; the root book records part null.
+   * A view on the same store whose every read is a changed use on `part` (a `fees` use always on its fee line, a `taxDuring` use on its
+   * `TaxLine` where it has one). The view's `inYear` keeps the part and the line; the root book records part null.
    */
-  on(part: Exclude<RunPart, "fees">): RuleBook;
+  on(part: Exclude<RunPart, "fees" | "taxDuring">): RuleBook;
+  on(part: "taxDuring", line?: TaxLine): RuleBook;
   on(part: "fees", line: FeeType): RuleBook;
   /**
    * The same reads with the same checks (an open, stale or missing rule stops the run as a read does), recorded on this book's part and line
@@ -173,14 +173,15 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
   /** Where a book's reads go: the part of the result and the fee line, part null on the root book. */
   interface At {
     part: RunPart | null;
-    line?: FeeType;
+    line?: FeeType | TaxLine;
   }
 
   /** The rule's use at `at`, added if absent with `figures`; `changed` is ORed into it. */
   function ruleUse(u: UsedRule, at: At, changed: boolean, figures: () => string[] = () => []): RuleUse {
     let use = u.uses.find((x) => x.part === at.part && x.line === at.line);
     if (!use) {
-      use = { part: at.part, ...(at.line === undefined ? {} : { line: at.line }), changed, figures: figures() };
+      // a view's part and line pair as `RuleBook.on` allows, so the use is one of `RuleUse`'s kinds
+      use = { part: at.part, ...(at.line === undefined ? {} : { line: at.line }), changed, figures: figures() } as RuleUse;
       u.uses.push(use);
     } else use.changed ||= changed;
     return use;
@@ -219,7 +220,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
 
   function numeric(id: string, name: string, v: ValueObject): number {
     if (typeof v.value !== "number") throw new MissingRuleError(id, name);
-    return percentUnits.has(v.unit) ? v.value / 100 : v.value;
+    return PERCENT_UNITS.has(v.unit) ? v.value / 100 : v.value;
   }
 
   /**
@@ -257,7 +258,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
       rate(id, name) {
         const { f, use } = figure(id, name, at, changed);
         const v = current(id, name, f, use);
-        if (!percentUnits.has(v.unit)) throw new MissingRuleError(id, `${name} as a percentage`);
+        if (!PERCENT_UNITS.has(v.unit)) throw new MissingRuleError(id, `${name} as a percentage`);
         return numeric(id, name, v);
       },
       amount(id, name, currency) {
@@ -265,7 +266,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
         const v = current(id, name, f, use);
         if ((v.currency ?? "NIS") !== (currency ?? "NIS")) throw new MissingRuleError(id, `${name} in ${currency ?? "NIS"}`);
         const n = numeric(id, name, v);
-        return percentUnits.has(v.unit) ? n : inYearOf(id, name, v, n, taxYear);
+        return PERCENT_UNITS.has(v.unit) ? n : inYearOf(id, name, v, n, taxYear);
       },
       fact(id, name) {
         const { f, use } = figure(id, name, at, changed);
@@ -297,7 +298,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     taxYear,
     ...readsFor(taxYear, at, true),
     peek: readsFor(taxYear, at, false),
-    on: (part: RunPart, line?: FeeType) => bookFor(taxYear, line === undefined ? { part } : { part, line }),
+    on: (part: RunPart, line?: FeeType | TaxLine) => bookFor(taxYear, line === undefined ? { part } : { part, line }),
     took(id) {
       const u = used.get(id);
       if (!u) throw new Error(`took(${id}): the run holds no read of ${id}, so it cannot have changed the number`);

@@ -2,6 +2,7 @@
 // one line of math docs/method.md draws for the figure's entry, then the same line with the figure's own values put in place of its symbols.
 // The line with values is made here from the drawn line and the inputs, never typed: each value is a number in the math, its unit and its
 // name stay in the key beside it.
+import { PERCENT_UNITS } from "@finance-tool/engine";
 import { assertNever, type Working } from "@finance-tool/schema";
 import { strength as strengthCopy } from "../copy";
 import { formatValue, texNumber } from "./format";
@@ -76,9 +77,6 @@ export function readable(tex: string): boolean {
   }
   return true;
 }
-
-/** A unit whose number is a percent: put into the math with TeX's percent sign, so the line reads as the page does (15% is 0.15). */
-const PERCENT_UNITS: ReadonlySet<string> = new Set(["pct", "pct_per_year", "pct_per_year_effective", "pct_of_deposit", "pct_of_trade", "pct_of_balance_per_period"]);
 
 /**
  * How many significant digits each value put into a line gets: four more than the figure's head shows, and at least six, so the line
