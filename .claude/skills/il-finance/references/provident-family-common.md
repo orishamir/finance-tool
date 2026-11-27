@@ -77,7 +77,7 @@ The caps on what a manager may charge are in one regulation, the Provident Funds
 - Rule: For a member whose contact was lost (one year after they became one) or who died, where the manager did not complete the search steps required by the locating regulations within the required period, the fee may not exceed 0.3% a year of the balance or the rate last charged, whichever is lower (reg. 8(א)).
 - Conditions / exceptions: Not applicable to sector funds, most old pension funds, and certain deceased annuitants (reg. 8(ד)). If contact is restored, the manager may return to the prior rate and collect the difference for the gap period, capped at 0.5% a year. That detail comes from a summary of reg. 8(ב); the exact wording was not quoted. For what counts as lost contact, see PF-27.
 - Figures: 0.3% a year. Fixed.
-- Source: [s.8, gazette ק״ת תשע״ב, 1260](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6) · checked 2026-10-22 · primary
+- Source: [s.8, gazette ק״ת תשע״ב, 1260](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6) · checked 2026-10-22 · primary; [תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע"ב-2012](https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6) p.6, reg. 8(א) "בשיעור שלא יעלה על 0.3% לשנה או בשיעור החודשי שגבה הגוף המוסדי מחשבון העמית" · checked 2026-10-31 · primary
 - Scope: general
 - Dimensions: `fee-management-balance`, `fee-change-over-time`
 - Likely to change: no
