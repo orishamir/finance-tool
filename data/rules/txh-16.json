@@ -1,0 +1,45 @@
+{
+  "id": "TXH-16",
+  "title": "The fund keeps benefited and taxable money apart",
+  "title_he": "קופת גמל לתגמולים וקרן השתלמות: רישום נפרד של כסף מוטב וכסף חייב",
+  "text_he": "הקופה רושמת לכל עמית לחוד את התשלומים עד 31.12.2002 (בקרן השתלמות לעצמאים עד 30.11.2002), ואת התשלומים שאחריהם היא מחלקת לתשלומי ההפקדה המוטבת ולתשלומים החייבים. אצל שכיר היא מפרידה גם בין חלק המעסיק, חלק העובד ורכיב הפיצויים, אם יש כזה. פעם בחודש לפחות היא מייחסת לכל חלק את הרווחים ומחייבת אותו בהוצאות. כל משיכה נרשמת לפי החלקים שממנה נמשכה ולפי המס שנוכה. בהעברה לקופה אחרת, הקופה המעבירה מעבירה אליה את כל הרישומים השנתיים של החשבון.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-hishtalmut.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6230%2Fheb#page=10",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון), התשס\"ג-2003, קובץ התקנות 6230 (9.3.2003)",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון), התשס\"ג-2003, קובץ התקנות 6230 (9.3.2003)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file pp.10-11 (gazette pp.582-583), s.17",
+      "locator_he": "עמודי הקובץ 10 עד 11 (עמודי הרשומות 582 עד 583), סעיף 17",
+      "page": 10,
+      "quote": "ובתשלומים לקרן השתלמות לעצמאים - עד יום כ״ה בכסלו התשס״ג (30 בנובמבר 2002)",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://api.justice.gov.il/reshumot/resolver?path=akn%2Fil%2FofficialGazette%2FgeneralSL%2F6377%2Fheb#page=6",
+      "title": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 2), התשס\"ה-2005, קובץ התקנות 6377 (17.3.2005)",
+      "title_he": "תקנות מס הכנסה (כללים לאישור ולניהול קופות גמל) (תיקון מס' 2), התשס\"ה-2005, קובץ התקנות 6377 (17.3.2005)",
+      "publisher": "Reshumot (Ministry of Justice)",
+      "publisher_he": "רשומות (משרד המשפטים)",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "file p.6 (gazette p.566), s.17",
+      "locator_he": "עמוד הקובץ 6 (עמוד הרשומות 566), סעיף 17",
+      "page": 6,
+      "quote": "תעביר קופת הגמל המעבירה לקופת הגמל האחרת את כל הרישומים השנתיים בשל חשבון קופת הגמל",
+      "checked": "2026-11-12"
+    }
+  ]
+}
