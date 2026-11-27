@@ -4572,7 +4572,7 @@
       "url": "https://boi.org.il/media/5folwk5o/119.pdf#page=2"
     },
     "variants_he": [],
-    "explain_he": "ערבות שהחוק נותן מראש לכסף שהופקד בבנק, אם הבנק נכשל. בישראל אין חוק כזה. מה שיש: סמכות של הנגיד, באישור הממשלה, להכריז על ערבות לפיקדונות בבנק שנקלע לקשיים, חוק שמחייב לבחון את הצורך, והצעת חוק.",
+    "explain_he": "ערבות שהחוק נותן מראש לכסף שהופקד בבנק, אם הבנק נכשל. בישראל אין חוק כזה. מה שיש: סמכות של הנגיד, באישור הממשלה, להכריז על ערבות לפיקדונות בבנק שנקלע לקשיים, וחוק שמחייב לבחון את הצורך.",
     "rule_ids": [
       "BANK-23",
       "REG-04",
@@ -4604,7 +4604,7 @@
       "guide:provident-for-annuity",
       "guide:savings-plan"
     ],
-    "notes": "A 2026 law orders the Finance Minister and the Governor to examine within a year whether it is needed (REG-04); a private bill is only tabled (REG-05). Re-check item.",
+    "notes": "A 2026 law orders the Finance Minister and the Governor to examine within a year whether it is needed (REG-04); a private bill was tabled and lapsed when the new Knesset convened on 10.11.2026 (REG-05). Re-check item.",
     "id": "bytvch-pykdvnvt-d"
   },
   {
