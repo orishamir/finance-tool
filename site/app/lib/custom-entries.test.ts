@@ -305,15 +305,20 @@ describe("what the person says the fund does (2026-11-05): nothing is filled in 
     const full = fundFromDraft({ ...abroadDraft, payout: "distributing", domicile: "IE", yield: 1.2, perYear: 4 }, "custom-fund-dist", "index-sp500", t);
     expect(priceOf(full).reason).toBeUndefined();
     expect(priceOf(full).best?.valueN).toBeGreaterThan(0);
-    expect(ids(full)).toEqual(expect.arrayContaining(["pays-distributing", "tax-distribution", "tax-fund-dividend"]));
+    expect(ids(full)).toEqual(expect.arrayContaining(["pays-distributing", "tax-distribution"]));
   });
 
   it("the country and the way it follows its index are its labels", () => {
     const f = fundFromDraft({ ...abroadDraft, domicile: "US", tracking: "swap" }, "custom-fund-us", "index-sp500", t);
-    expect(ids(f)).toEqual(expect.arrayContaining(["follow-swap", "pays-accumulating", "ask-estate", "ask-w8"]));
-    expect(ids(fundFromDraft({ ...abroadDraft, domicile: "IE" }, "custom-fund-ie", "index-sp500", t))).toContain("tax-fund-dividend");
-    // an Irish fund on a swap holds none of the index's shares: its run is charged no tax inside (F-107), so no label says one
+    expect(ids(f)).toEqual(expect.arrayContaining(["follow-swap", "pays-accumulating", "ask-estate"]));
+    // the form bears only on what a US fund pays out: a fund that pays nothing out has no figure that assumes it
+    expect(ids(f)).not.toContain("ask-w8");
+    expect(ids(fundFromDraft({ ...abroadDraft, domicile: "US", payout: "distributing", yield: 1.2, perYear: 4 }, "custom-fund-us-dist", "index-sp500", t))).toContain("ask-w8");
+    // the tax inside an Irish fund is charged, and said, only where the fund holds the index's shares (F-107): not on a swap, and not
+    // where the person did not say how the fund follows its index
+    expect(ids(fundFromDraft({ ...abroadDraft, domicile: "IE", tracking: "physical" }, "custom-fund-ie", "index-sp500", t))).toContain("tax-fund-dividend");
     expect(ids(fundFromDraft({ ...abroadDraft, domicile: "IE", tracking: "swap" }, "custom-fund-ie-swap", "index-sp500", t))).not.toContain("tax-fund-dividend");
+    expect(ids(fundFromDraft({ ...abroadDraft, domicile: "IE" }, "custom-fund-ie-silent", "index-sp500", t))).not.toContain("tax-fund-dividend");
   });
 
   it("an Irish fund said to hold the shares runs with the US tax on their dividends (F-107), and its figure's sheet lists it", () => {
