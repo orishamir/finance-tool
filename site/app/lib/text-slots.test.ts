@@ -1,7 +1,7 @@
 // A rule's text may carry {ID:figure} slots, so a figure in it is the record's and never typed: the card draws each slot as the figure,
 // and every place that reads the text as a string (a search text, a row's first sentence, a title, a citation) writes the figure as the
 // card shows it. A slot whose record or figure the card's data lacks would print "—" inside a sentence: every slot in every record's
-// text resolves with the records its card travels with (the record and those it points at, `pointedRecords`), and with a company's view
+// text resolves with the records its card travels with (the record and those whose figures its slots read, `pointedShipment`), and with a company's view
 // of the record on that company's page.
 import { readFileSync } from "node:fs";
 import { createElement } from "react";
@@ -9,7 +9,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { loadRules, pointedRecords } from "./data.server";
+import { loadRules, pointedShipment } from "./data.server";
 import { companyLinks } from "./institutions.server";
 import { pageView, scopeCompanies } from "./scope";
 import { parseAnswer } from "./answer-slots";
@@ -27,7 +27,7 @@ describe("every slot in a rule's text", () => {
   const all = loadRules();
   /** The slots of a record's text that the given view of the record, with the records it points at, leaves without a figure. */
   const unfilled = (r: RuleRecord, view: RuleRecord, where: string) => {
-    const held = { ...pointedRecords([r], all), [r.id]: view };
+    const held = { ...pointedShipment([r], all).pointed, [r.id]: view };
     return parseAnswer(r.text_he ?? "").flatMap((p) => (p.kind === "slot" && fillSlot(p, { rules: held, today }).kind === "missing" ? [`${r.id}${where}: {${p.id}:${p.figure}}`] : []));
   };
 
@@ -60,7 +60,7 @@ describe("a rule text with slots", () => {
   const source = { rules: { [slotted.id]: slotted, "TXS-01": txs01 }, today };
 
   it("travels with the records its slots read", () => {
-    expect(Object.keys(pointedRecords([slotted], { "TXA-30": slotted, "TXS-01": txs01 }))).toContain("TXS-01");
+    expect(Object.keys(pointedShipment([slotted], { "TXA-30": slotted, "TXS-01": txs01 }).pointed)).toContain("TXS-01");
   });
 
   it("is drawn on the card and on the rules page with each slot as its figure", () => {

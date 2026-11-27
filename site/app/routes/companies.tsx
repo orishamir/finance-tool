@@ -17,7 +17,7 @@ import { MQ, useMedia } from "../lib/hooks";
 
 export async function loader() {
   const { buildCompanyFocus } = await import("../lib/company-focus.server");
-  const { loadChecklistRows, loadRules, pointedRecords, today } = await import("../lib/data.server");
+  const { loadChecklistRows, loadRules, pointedShipment, today } = await import("../lib/data.server");
   const { latestSnapshots } = await import("../lib/institutions.server");
   const { accountSections } = await import("../components/decoder/institutions/sections");
   const { data: built, figures, accounts } = buildCompanyFocus();
@@ -41,7 +41,7 @@ export async function loader() {
   });
   const all = loadRules();
   const rules = Object.fromEntries([...ids].filter((id) => all[id]).map((id) => [id, all[id]!]));
-  return { focus: data, today: today(), rules, pointed: pointedRecords(rules, all), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) };
+  return { focus: data, today: today(), rules, ...pointedShipment(rules, all), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) };
 }
 
 export function meta({ location }: MetaPlace) {
@@ -65,7 +65,7 @@ function fetchFigures(): Promise<FocusFigures> {
 }
 
 export default function Companies() {
-  const { focus: data, today, rules, pointed, dimensions } = useLoaderData<typeof loader>();
+  const { focus: data, today, rules, pointed, heads, dimensions } = useLoaderData<typeof loader>();
   // on a first visit the first company of the first group is in focus
   const first = useMemo(() => data.companies.find((c) => c.group === companyGroups[0])!.id, [data]);
   const [s, setS] = useState<FocusState>({ type: "all", product: null, q: "", focus: first });
@@ -127,7 +127,7 @@ export default function Companies() {
   const summary = [s.product ? data.kinds.find((k) => k.id === s.product)?.name : w.types[s.type], s.q.trim() ? w.quoted(s.q.trim()) : null].filter(Boolean).join(" · ");
 
   return (
-    <PageShell current="decoder" data={{ rules, pointed, terms: {}, dimensions, today }}>
+    <PageShell current="decoder" data={{ rules, pointed, heads, terms: {}, dimensions, today }}>
       <div className="flex flex-col gap-6">
         <PageHead tabs={<CompanyTabs current="company" />} title={copy.title} />
         <div className="flex flex-col gap-3">

@@ -20,7 +20,7 @@ import type {
   TariffLineRow,
 } from "../components/decoder/institutions/types";
 import { distributionRuleIds } from "../components/decoder/institutions/types";
-import { loadChecklistRows, loadRules, loadProducts, loadTerms, loadWrappers, pointedRecords, root, today } from "./data.server";
+import { loadChecklistRows, loadRules, loadProducts, loadTerms, loadWrappers, pointedShipment, root, today } from "./data.server";
 import { HELP_TERMS as DEPOSIT_TERMS } from "./deposit-browser";
 import { asOfSpan } from "./bank-table";
 import { topicName } from "../copy";
@@ -340,8 +340,8 @@ export function buildInstitution(id: string): InstitutionPageData | null {
   const registryIds = registryIdsOfPage(id);
   const termGroups = companyTermGroups(registryIds, allRules, topicName);
   for (const rid of termGroups.flatMap((g) => g.ids)) rules[rid] = allRules[rid]!;
-  // the records those cards point at (derived_from, examples), so every chip on them opens
-  const pointed = pointedRecords(rules, allRules);
+  // what those cards point at (derived_from, examples): the records their slots read, and the heads of the rest, so every chip on them opens
+  const { pointed, heads } = pointedShipment(rules, allRules);
 
   return {
     id,
@@ -358,6 +358,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     catalogue,
     rules,
     pointed,
+    heads,
     helpTerms,
     terms: { groups: termGroups, company: registryIds[0] ?? null, pageCompanies: registryIds, name: loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? snap?.provider.name_he ?? id, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} },
   };

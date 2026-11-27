@@ -102,9 +102,8 @@ export function isOwnSourceOf(rule: Pick<RuleRecord, "id" | "scope_institutions"
  * (opened from a chip), is returned whole.
  */
 export function pageView(rule: RuleRecord, page: readonly string[], companies: Record<string, CompanyLink> | undefined): RuleRecord {
-  if (isGeneral(rule) || page.length === 0) return rule;
-  const mine = scopeCompanies(rule).filter((c) => page.includes(c.id));
-  if (mine.length === 0) return rule;
+  const scoped = pageScope(rule, page);
+  if (scoped === rule) return rule;
   const foreign = (s: { url: string; title: string; title_he?: string }) => {
     const c = sourceCompany(rule, s, companies);
     return !!c && !page.includes(c.id);
@@ -112,7 +111,17 @@ export function pageView(rule: RuleRecord, page: readonly string[], companies: R
   const figures = Object.fromEntries(
     Object.entries(rule.figures ?? {}).filter(([, f]) => Array.isArray(f) || "by_tax_year" in f || !(f.source.strength === "institution" && foreign(f.source))),
   ) as RuleRecord["figures"];
-  return { ...rule, scope_institutions: mine, sources: (rule.sources ?? []).filter((s) => !foreign(s)), figures };
+  return { ...scoped, sources: (rule.sources ?? []).filter((s) => !foreign(s)), figures };
+}
+
+/**
+ * The companies a record's card names on a company's page (`pageView`), for its record or only its head (a card whose file is on its
+ * way heads as it will once the record comes): only the page's own, where it names any of them; else all it names.
+ */
+export function pageScope<R extends Pick<RuleRecord, "scope" | "scope_institutions">>(rule: R, page: readonly string[]): R {
+  if (isGeneral(rule) || page.length === 0) return rule;
+  const mine = scopeCompanies(rule).filter((c) => page.includes(c.id));
+  return mine.length === 0 ? rule : { ...rule, scope_institutions: mine };
 }
 
 /** Of the companies a record names, the one whose own document a source is; null for a law or a regulator. */

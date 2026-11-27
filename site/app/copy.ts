@@ -516,6 +516,9 @@ export const rule = {
   noText: "הנוסח במילים פשוטות עוד לא נכתב. הכותרת מופיעה כפי שהיא במאגר החוקים והכללים.",
   // the "מקור" row of a rule with no link yet
   sourceMissing: "הקישור למקור עוד לא צורף.",
+  /** A card whose rule the page does not ship, when its fetch failed (components/provenance-sheets.tsx, `CardOnWay`), and its retry. */
+  loadFailed: "הפרטים לא נטענו.",
+  retry: "לנסות שוב",
 } as const;
 
 export const rulesPage = {

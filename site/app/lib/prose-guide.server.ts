@@ -1,7 +1,7 @@
 // The data of a guide page that is prose only (no product record, no comparison): its rules, the glossary cards its prose opens,
 // and what the rule cards need. Its rules are the ones its content file names (and the parts that file imports).
 import type { RuleRecord } from "@finance-tool/schema";
-import { loadChecklistRows, loadRules, pointedRecords, termsFor, today, type TermRow } from "./data.server";
+import { loadChecklistRows, loadRules, pointedShipment, termsFor, today, type TermRow } from "./data.server";
 import { addTermRules } from "./page-rules.server";
 import { pageRuleUses } from "./rule-uses.server";
 import { scanRuleIds } from "./scan-rule-ids.server";
@@ -13,8 +13,8 @@ export function proseGuideData({ content, ruleIds = [], termIds, product }: { /*
   const terms: Record<string, TermRow> = termsFor(termIds, product);
   // the rules the term cards cite ship with the page too
   addTermRules(rules, terms, all);
-  const pointed = pointedRecords(rules, all);
-  return { rules, pointed, terms, ruleUses: pageRuleUses(rules, pointed), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])), today: today() };
+  const { pointed, heads } = pointedShipment(rules, all);
+  return { rules, pointed, heads, terms, ruleUses: pageRuleUses(rules, pointed), dimensions: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])), today: today() };
 }
 
 export type ProseGuideData = ReturnType<typeof proseGuideData>;

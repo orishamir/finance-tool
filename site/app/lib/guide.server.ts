@@ -7,7 +7,8 @@ import { buildHishtalmutTerms, exposureFolds, loadExposures, loadFunds } from ".
 import { minDiscountMonths, pricedLine, providentLists, providentTerms } from "./provident-lists.server";
 import { shortName } from "./providers";
 import { guideBlocks, guideSignature, r4catalogue, signatureFacts } from "../copy";
-import { collectRuleIds, loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedRecords, today, type TermRow } from "./data.server";
+import { collectRuleIds, loadChecklistRows, loadCma, loadCmaFees, loadFees, loadParameters, loadRules, loadTerms, loadProducts, pointedShipment, today, type TermRow } from "./data.server";
+import type { RuleHead } from "./rule-card-file";
 import { runTimeline, type Bundle, type Timeline } from "./engine";
 import { guideInstrumentBundle, familyOf, rulesTouched } from "./guide-signature-bundle.server";
 import { breakFact, breakInput, buildSignatureData } from "./guide-signature.server";
@@ -28,8 +29,10 @@ export interface GuidePageData {
   initial: Timeline | null;
   /** Rule records the page cites anywhere, for the rule cards. */
   rules: Record<string, RuleRecord>;
-  /** The records those cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
+  /** The records those cards point at that the page does not cite and ships in full (`pointedShipment`): only chips and cards read them. */
   pointed: Record<string, RuleRecord>;
+  /** The heads of the other rules they point at: a chip names its rule from them, and its card is fetched when tapped. */
+  heads: Record<string, RuleHead>;
   termsById: Record<string, TermRow>;
   dimensionNames: Record<string, string>;
   companies: { id: string; name: string }[];
@@ -336,7 +339,7 @@ export function buildGuidePage(id: string, extraTermIds: string[] = [], relatedI
     if (rec) rules[r] = rec;
   }
 
-  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, pointed: pointedRecords(rules, allRules), heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, feeRange, listRange, breakTerms, exampleFund, today: t };
+  return { record, name: record.names.he[0]!, lede, bundle, initial, rules, ...pointedShipment(rules, allRules), heldIn, securities, termsById, dimensionNames, companies, exposures, exitTextRules, signature, pendingFormulas, related, feeRange, listRange, breakTerms, exampleFund, today: t };
 }
 
 export { familyOf };
@@ -359,8 +362,10 @@ export interface ExposurePageData {
   name: string;
   lede: string | null;
   rules: Record<string, RuleRecord>;
-  /** The records those cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
+  /** The records those cards point at that the page does not cite and ships in full (`pointedShipment`): only chips and cards read them. */
   pointed: Record<string, RuleRecord>;
+  /** The heads of the other rules they point at: a chip names its rule from them, and its card is fetched when tapped. */
+  heads: Record<string, RuleHead>;
   termsById: Record<string, TermRow>;
   /**
    * Wrappers that can hold this exposure. `blockedBy` are the wrapper's own exit-tax blockers (its record's
@@ -403,5 +408,5 @@ export function buildExposurePage(id: string, extraTermIds: string[] = []): Expo
   const name = record.names.he[0] ?? record.id;
   // the exposure record's own one-line description, else the glossary line (F: one_line_he)
   const lede = record.one_line_he ?? termsById[name]?.explanation ?? all.find((r) => r.he === name)?.explanation ?? null;
-  return { record, name, lede, rules, pointed: pointedRecords(rules, allRules), termsById, holders, dimensionNames: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])), today: t };
+  return { record, name, lede, rules, ...pointedShipment(rules, allRules), termsById, holders, dimensionNames: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])), today: t };
 }

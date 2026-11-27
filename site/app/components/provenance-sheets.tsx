@@ -1,12 +1,12 @@
 // What the provenance sheet shows (design-system 3.2, design-spec 1.3 and 3): a figure's source and how it was computed, a rule's card,
 // a term's card, a formula, an open question, a statement math proves, and the cards the rules page lays out. A script apart from the figures and chips
 // (provenance.tsx `loadSheets`), fetched while the page hydrates (entry.client.tsx), so a page shows itself without waiting for it.
-import { useContext, useEffect, useState, type ReactNode } from "react";
+import { useContext, useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link, useLocation } from "react-router";
 import { assertNever, type RuleRecord } from "@finance-tool/schema";
 import type { FundStatement } from "@finance-tool/engine";
-import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
+import { system, buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { ownFigures, spanWords } from "../lib/rule-row";
 import { fillSlot, missingSlot, wordUnits, type SlotSource } from "../lib/figure-slots";
@@ -17,12 +17,13 @@ import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl,
 import { useInputs } from "../lib/inputs";
 import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetFlags, sheetReading, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
+import type { RuleCardFile } from "../lib/rule-card-file";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { Card, CompanyLinks, DocLink, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
-import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, sameCompanies, scopeCompanies, tagCompanies, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
+import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, sameCompanies, scopeCompanies, tagCompanies, pageScope, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
 import type { SheetPart } from "./provenance";
-import { CloseCtx, DataCtx, FormulaLink, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData } from "./provenance";
+import { CloseCtx, DataCtx, FormulaLink, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, headOf, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData } from "./provenance";
 import { proofOf } from "../content/proofs";
 
 /** What words that state several rules (`Ruled`) open: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
@@ -153,8 +154,102 @@ export function SourceBlock({ source, rule, today, inline, english, own, strengt
 // ---------------------------------------------------------------- sheet content
 
 /** The body of the sheet for what was opened (provenance.tsx renders it inside its `Sheet`). */
-export function SheetContent({ item, data, headId, descId }: { item: Item; data: ProvenanceData; headId: string; descId: string }) {
+// ---------------------------------------------------------------- the cards fetched when opened
+
+/** Where the fetch of one rule's card file stands: on its way, in, or failed (tried again on the retry). */
+export type CardFetch = { kind: "loading" } | { kind: "loaded"; file: RuleCardFile } | { kind: "failed" };
+
+/** The card files fetched in this visit, by rule id, kept for the session: a card opened again, on this page or another, draws at once. */
+let cardFetches: ReadonlyMap<string, CardFetch> = new Map();
+const noFetches: ReadonlyMap<string, CardFetch> = new Map();
+const cardListeners = new Set<() => void>();
+function setCardFetch(id: string, f: CardFetch): void {
+  cardFetches = new Map(cardFetches).set(id, f);
+  for (const l of cardListeners) l();
+}
+function watchCardFetches(l: () => void): () => void {
+  cardListeners.add(l);
+  return () => {
+    cardListeners.delete(l);
+  };
+}
+
+/**
+ * A rule's card file, read: a dropped connection, a server's error or no file is a failure; a file that does not match its schema
+ * throws. A file is fetched only for a rule the page has the head of, which the build gives a file, so no file means the page is older
+ * than the site's files, and the card says it did not load rather than that the rule has no text. The schema comes with the first file
+ * fetched, so a page's own script carries none of it. Exported for its test.
+ */
+export async function loadCardFile(id: string): Promise<CardFetch> {
+  let r: Response;
+  let body: unknown;
+  let schema: typeof import("../lib/rule-card-file");
+  try {
+    schema = await import("../lib/rule-card-file");
+    r = await fetch(`${import.meta.env.BASE_URL}${schema.ruleCardPath(id).slice(1)}`);
+    body = r.ok ? await r.json() : null;
+  } catch {
+    // the connection dropped, or the body was cut short: the card says the fetch failed, with its retry
+    return { kind: "failed" };
+  }
+  if (!r.ok) return { kind: "failed" };
+  const parsed = schema.ruleCardFile.safeParse(body);
+  if (!parsed.success) throw new Error(`the card file of ${id} does not match its schema`, { cause: parsed.error });
+  return { kind: "loaded", file: parsed.data };
+}
+
+/**
+ * Fetches a rule's card file (routes/rule-card.ts), unless it is in or on its way; a failed one is fetched again. Settles when the fetch
+ * does. Exported for its test.
+ */
+export function fetchCard(id: string): Promise<void> {
+  const now = cardFetches.get(id);
+  if (now && now.kind !== "failed") return Promise.resolve();
+  setCardFetch(id, { kind: "loading" });
+  return loadCardFile(id).then(
+    (f) => setCardFetch(id, f),
+    (e: unknown) => {
+      // the site's own file is broken: the card says it failed, and the page's notice that something broke says it too
+      setCardFetch(id, { kind: "failed" });
+      throw e;
+    },
+  );
+}
+
+/** Where the fetch of a rule's card file stands, fetching it as the card opens; nothing for a card the page holds the record of (`id` null). */
+function useCardFile(id: string | null): CardFetch | undefined {
+  // the server never fetches, so the store it reads is empty, as the browser's is before a card opens
+  const get = () => (id ? cardFetches.get(id) : undefined);
+  const fetched = useSyncExternalStore(watchCardFetches, get, get);
+  useEffect(() => {
+    if (id) void fetchCard(id);
+  }, [id]);
+  return fetched;
+}
+
+/**
+ * The page's data with every card file fetched in this visit over it: a fetched card, the chips in it and its figures' sheets read its
+ * records and heads as they read the page's own. Where each record is used joins only a page whose cards say it (`ruleUses`). Exported for
+ * its test.
+ */
+export function withFetched(data: ProvenanceData, fetches: ReadonlyMap<string, CardFetch>): ProvenanceData {
+  const files = [...fetches.values()].flatMap((f) => (f.kind === "loaded" ? [f.file] : []));
+  if (files.length === 0) return data;
+  const pointed = { ...data.pointed };
+  const heads = { ...data.heads };
+  const uses = { ...data.ruleUses };
+  for (const f of files) {
+    Object.assign(heads, f.heads);
+    Object.assign(pointed, f.pointed, { [f.record.id]: f.record });
+    Object.assign(uses, f.uses);
+  }
+  return { ...data, pointed, heads, ...(data.ruleUses ? { ruleUses: uses } : {}) };
+}
+
+export function SheetContent({ item, data: page, headId, descId }: { item: Item; data: ProvenanceData; headId: string; descId: string }) {
+  const data = withFetched(page, useSyncExternalStore(watchCardFetches, () => cardFetches, () => noFetches));
   return (
+    <DataCtx.Provider value={data}>
     <InsideSheetCtx.Provider value={true}>
       {item.kind === "value" && <ValueSheet value={item.value} exact={!!item.exact} display={item.display} shown={item.shown} data={data} headId={headId} descId={descId} />}
       {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
@@ -166,6 +261,7 @@ export function SheetContent({ item, data, headId, descId }: { item: Item; data:
       {item.kind === "proof" && <ProofSheet id={item.id} headId={headId} />}
       {item.kind === "proofs" && <ProofsListSheet ids={item.ids} headId={headId} />}
     </InsideSheetCtx.Provider>
+    </DataCtx.Provider>
   );
 }
 
@@ -910,21 +1006,88 @@ function ShownRuleTitle({ rule, slots }: { rule: RuleRecord; slots: SlotSource }
   return t.english ? <bdi dir="ltr">{t.text}</bdi> : <>{t.text}</>;
 }
 
+/** The card of a rule that has no record (none in data/rules, or none the page holds or has the head of): its code, and that its text is not written. */
+function NoRecordCard({ id, headId }: { id: string; headId?: string }) {
+  return (
+    <div data-code-ok className="flex flex-col gap-2">
+      <h2 id={headId} className="text-lg font-semibold">
+        <bdi dir="ltr" className="slashed-zero">{id}</bdi>
+      </h2>
+      <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
+      <LinkButton to="/rules">{ruleCopy.all}</LinkButton>
+    </div>
+  );
+}
+
+/**
+ * A rule card's heading: "id · title" (D25), or an open question's words before its code, then who it applies to and a weak source's
+ * strength. The same element on the card and while the card's file is on its way (`CardOnWay`), so the heading stays put when the body
+ * comes. While the body is on its way it holds nothing to act on, so the heading takes the focus a new view in the sheet gives
+ * (`data-autofocus`), and keeps it as the body comes.
+ */
+function RuleCardHead({ id, rule, title, data, headId, waiting }: { id: string; rule: Pick<RuleRecord, "id" | "strength" | "scope" | "scope_institutions">; title: ReactNode; data: ProvenanceData; headId: string | undefined; waiting?: boolean }) {
+  const open = rule.strength === "open";
+  return (
+    <header className="flex flex-col gap-1.5">
+      <h2 id={headId} tabIndex={-1} data-autofocus={waiting || undefined} className="text-lg font-semibold leading-snug outline-none">
+        {open && <>{ruleCopy.open.title} </>}
+        <bdi dir="ltr" className="slashed-zero">{id}</bdi>
+        {!open && " · "}
+        {!open && title}
+      </h2>
+      {/* who it applies to (D30): a neutral label, never a warning; the strength tag stays only for an open or second-hand source, or a general rule read from a company's document */}
+      <div className="flex flex-wrap items-center gap-1.5">
+        <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs, { company: data.company })}</Tag>
+        {/* a record the rule base keeps that is not a rule says so, general or not: its foot leads to "לא נכלל ככלל" on /companies */}
+        {isNotRule(id) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
+        {/* an open record's heading already says it is an open question */}
+        {(rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />}
+      </div>
+    </header>
+  );
+}
+
+/**
+ * In the body's place, while a card's file is on its way (`fetchCard`) or after its fetch failed: a quiet "טוען…", or that it did not
+ * load and a retry. It holds a few lines' room, so the card does not jump when the body comes.
+ */
+function CardOnWay({ id, fetched }: { id: string; fetched: CardFetch | undefined }) {
+  return fetched?.kind === "failed" ? (
+    <div className="flex min-h-24 flex-col items-start gap-1">
+      <p role="status" className="text-sm">
+        {ruleCopy.loadFailed}
+      </p>
+      <Button variant="quiet" flush size="sm" onClick={() => void fetchCard(id)}>
+        {ruleCopy.retry}
+      </Button>
+    </div>
+  ) : (
+    <p role="status" className="min-h-24 text-sm text-muted-foreground">
+      {system.loading}
+    </p>
+  );
+}
+
 export function RuleCard({ id, data, headId, inline }: { id: string; data: ProvenanceData; headId?: string; inline?: boolean }) {
   const record = ruleOf(data, id);
+  // a rule the page ships only the head of: its card comes from its own file, fetched as it opens; once the file is in, the sheet's data
+  // holds the record (`withFetched`)
+  const head = record ? undefined : data.heads?.[id];
+  const fetched = useCardFile(head ? id : null);
+  // on a company's page only that company's part of the record (D30): its name, its own documents, the law and the regulator, its figures
+  const page = data.pageCompanies ?? (data.company ? [data.company] : []);
   if (!record) {
+    if (!head) return <NoRecordCard id={id} headId={headId} />;
+    // the heading the card will have, from the rule's head, with the title its chip shows and the page's companies its record will name
+    // (`pageScope`): the same root and heading as the card below, so both stay in place as the body comes
+    const title = head.title.english ? <bdi dir="ltr">{head.title.text}</bdi> : head.title.text;
     return (
-      <div data-code-ok className="flex flex-col gap-2">
-        <h2 id={headId} className="text-lg font-semibold">
-          <bdi dir="ltr" className="slashed-zero">{id}</bdi>
-        </h2>
-        <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
-        <LinkButton to="/rules">{ruleCopy.all}</LinkButton>
+      <div data-code-ok data-opens-scope data-opens={id} className={cx("flex-1 flex flex-col gap-3", head.strength === "open" && "rule-open")}>
+        <RuleCardHead id={id} rule={pageScope(head, page)} title={title} data={data} headId={headId} waiting />
+        <CardOnWay id={id} fetched={fetched} />
       </div>
     );
   }
-  // on a company's page only that company's part of the record (D30): its name, its own documents, the law and the regulator, its figures
-  const page = data.pageCompanies ?? (data.company ? [data.company] : []);
   const rule = pageView(record, page, data.companies);
   // the text's slots, its shown title and its citation read the card's own view of the record, so none names a figure the card hides
   const slots: SlotSource = { ...data, rules: { ...data.rules, [id]: rule } };
@@ -941,22 +1104,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
     // the rule's own card: the one place outside the rules page where its code stands, in the heading "id · title" (D25)
     // a figure of the card opens no chip of the card's own rule (`opensAround`)
     <div data-code-ok data-opens-scope data-opens={id} className={cx("flex-1 flex flex-col gap-3", open && "rule-open")}>
-      <header className="flex flex-col gap-1.5">
-        <h2 id={headId} className="text-lg font-semibold leading-snug">
-          {open && <>{ruleCopy.open.title} </>}
-          <bdi dir="ltr" className="slashed-zero">{id}</bdi>
-          {!open && " · "}
-          {!open && <ShownRuleTitle rule={rule} slots={slots} />}
-        </h2>
-        {/* who it applies to (D30): a neutral label, never a warning; the strength tag stays only for an open or second-hand source, or a general rule read from a company's document */}
-        <div className="flex flex-wrap items-center gap-1.5">
-          <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs, { company: data.company })}</Tag>
-          {/* a record the rule base keeps that is not a rule says so, general or not: its foot leads to "לא נכלל ככלל" on /companies */}
-          {isNotRule(id) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
-          {/* an open record's heading already says it is an open question */}
-          {(rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />}
-        </div>
-      </header>
+      <RuleCardHead id={id} rule={rule} title={<ShownRuleTitle rule={rule} slots={slots} />} data={data} headId={headId} />
       {open ? (
         <Callout tone="blocked">
           <span className="block">
@@ -1438,7 +1586,7 @@ export function TermCard({ id, data, headId, sub }: { id: string; data: Provenan
       {/* a definition rests on general rules only (D30): a company's term the glossary row cites is on that company's page; the rules are
           a list whose rows are the rules, each by its title (D116), and only those whose record the page holds (a row whose rule has no
           record anywhere would open an empty card) */}
-      <RuleTitleList ids={generalOnly(term.ruleIds.filter((r) => ruleOf(data, r)), { ...data.pointed, ...data.rules })} />
+      <RuleTitleList ids={generalOnly(term.ruleIds.filter((r) => headOf(data, r)), { ...data.heads, ...data.pointed, ...data.rules })} />
     </div>
   );
 }

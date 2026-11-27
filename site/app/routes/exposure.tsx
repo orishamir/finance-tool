@@ -42,7 +42,7 @@ export default function ExposurePage() {
   const current = useCurrentSection(copy.sections.map((s) => s.id));
   const figure = (ruleId: string, name: string): SiteValue | null => (rules[ruleId] ? ruleFigure(rules[ruleId]!, name, today) : null);
   const cp = { figure };
-  const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today };
+  const provenance = { rules, pointed: data.pointed, heads: data.heads, terms: data.termsById, dimensions: data.dimensionNames, today };
   // the card beside the title: the page's own figures, then what the record says it is and its currency
   const glance: GlanceItem[] = [...(content?.glance?.(cp) ?? [])];
   if (record.kind !== "other") glance.push({ id: "kind", label: copy.kindLabel, value: copy.kinds[record.kind] ?? record.kind });

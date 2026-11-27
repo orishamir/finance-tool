@@ -99,7 +99,7 @@ export default function Invest() {
   }, []);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries([...data.feeRules, ...(wb?.rules ?? [])].map((r) => [r.id, r as RuleRecord]));
-    return { rules, pointed: recordsById(wb?.pointed), terms: data.feeTerms, dimensions: data.dimensions, today: data.today };
+    return { rules, pointed: recordsById(wb?.pointed), ...(wb?.heads ? { heads: wb.heads } : {}), terms: data.feeTerms, dimensions: data.dimensions, today: data.today };
   }, [wb, data.today, data.feeRules, data.feeTerms, data.dimensions]);
   return (
     <PageShell current="other" data={provenance}>

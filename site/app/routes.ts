@@ -14,6 +14,7 @@ export default [
   route("rules", "routes/rules.tsx"),
   route("rules/:shelf", "routes/rules-shelf.tsx"),
   route("rules-data/:shelf.json", "routes/rules-data.ts"),
+  route("rule-card/:id.json", "routes/rule-card.ts"),
   route("documents", "routes/documents.tsx"),
   route("documents-data.json", "routes/documents-data.ts"),
   route("parameters", "routes/parameters.tsx"),

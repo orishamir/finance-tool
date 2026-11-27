@@ -24,7 +24,7 @@ function exposureOf(h: Holdings | undefined, period: string, today: string): Exp
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const { loadChecklistRows, loadCma, loadCmaFees, loadCmaHoldings, loadRules, loadTerms, loadWrappers, pointedRecords, today } = await import("../lib/data.server");
+  const { loadChecklistRows, loadCma, loadCmaFees, loadCmaHoldings, loadRules, loadTerms, loadWrappers, pointedShipment, today } = await import("../lib/data.server");
   const { institutionCompanies, loadCatalog, seenValue, seenWhere } = await import("../lib/instruments.server");
   const { feeTemplate } = await import("../lib/track-browser.server");
   const { pageRuleUses } = await import("../lib/rule-uses.server");
@@ -89,7 +89,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   // and the rules the two fee averages name (what the average is, its year), so their chips carry their titles
   const feeRules = [...new Set([fees.balance, fees.deposit].flatMap((v) => v.rule_ids ?? []))];
   const citedRules = Object.fromEntries([...cited, ...[...exposureRules, ...feeRules].flatMap((id) => (rules[id] ? [rules[id]] : [])), ...(childAge && rules["CS-18"] ? [rules["CS-18"]] : [])].map((r) => [r.id, r]));
-  const pointed = pointedRecords(citedRules, rules);
+  const { pointed, heads } = pointedShipment(citedRules, rules);
   // names the catalogue gives this track alone (a fund-level or programme-level name is not this track's name)
   const catalog = loadCatalog();
   const owner = institutionCompanies(catalog, cma.tracks);
@@ -113,6 +113,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     rules: citedRules,
     terms: exposureTerm ? { [exposureTerm.he]: exposureTerm } : {},
     pointed,
+    heads,
     ruleUses: pageRuleUses(citedRules, pointed),
     dimensionNames: Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])),
     values: {
@@ -149,7 +150,7 @@ export default function TrackPage() {
   // a page about one company's track: its own figures carry no "לפי החברה"
   return (
     <OwnCompanyPage>
-    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, ruleUses: data.ruleUses, terms: data.terms, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>
+    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, heads: data.heads, ruleUses: data.ruleUses, terms: data.terms, dimensions: data.dimensionNames, today: data.today, ...(data.companyIds[0] ? { company: data.companyIds[0], pageCompanies: data.companyIds } : {}) }}>
       <div className="flex flex-col gap-8">
         <PageHead
           crumb={<Breadcrumb parent={{ href: companyPath(track.companyId), label: gershayim(track.companyName) }} current={gershayim(track.name)} />}

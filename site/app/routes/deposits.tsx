@@ -12,7 +12,7 @@ import { PageHead } from "../components/kit";
 
 export async function loader() {
   const { buildDepositBrowser, depositBrowserRuleIds } = await import("../lib/deposit-browser.server");
-  const { loadRules, termsFor, pointedRecords } = await import("../lib/data.server");
+  const { loadRules, termsFor, pointedShipment } = await import("../lib/data.server");
   const data = buildDepositBrowser();
   const all = loadRules();
   // the rules the figures, the labels and the line's words open, and the cards behind the "?" of the column heads and of the kind of rate,
@@ -21,7 +21,7 @@ export async function loader() {
   const wanted = new Set(depositBrowserRuleIds(data));
   for (const term of Object.values(terms)) for (const id of term.ruleIds) wanted.add(id);
   const rules = Object.fromEntries([...wanted].filter((id) => all[id]).map((id) => [id, all[id]!]));
-  return { data, rules, pointed: pointedRecords(rules, all), terms };
+  return { data, rules, ...pointedShipment(rules, all), terms };
 }
 
 export function meta({ location }: MetaPlace) {
@@ -29,9 +29,9 @@ export function meta({ location }: MetaPlace) {
 }
 
 export default function Deposits() {
-  const { data, rules, pointed, terms } = useLoaderData<typeof loader>();
+  const { data, rules, pointed, heads, terms } = useLoaderData<typeof loader>();
   return (
-    <PageShell current={DEPOSITS_PLACE.menu} data={{ rules, pointed, terms, dimensions: {}, today: data.today }}>
+    <PageShell current={DEPOSITS_PLACE.menu} data={{ rules, pointed, heads, terms, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-5 lg:gap-6">
         <PageHead tabs={DEPOSITS_PLACE.tab && <CompanyTabs current="deposits" />} title={copy.title} lede={<>{copy.lead.before} <Ruled id={["BANK-13", "BANK-50"]}>{copy.lead.stated}</Ruled>{copy.lead.after}</>} />
         <DepositBrowser data={data} />

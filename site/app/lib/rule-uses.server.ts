@@ -8,7 +8,8 @@ import { join, relative, sep } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { feeDeal, guideIndex, invest, limitedBondFund, mutualFunds, r3transfer, trackBrowser, companies as companiesCopy } from "../copy";
 import { exposureHref, loadExposures } from "./instruments.server";
-import { loadRules, loadProducts, pointedRecords, root } from "./data.server";
+import { loadRules, loadProducts, pointedShipment, root } from "./data.server";
+import type { RuleCardFile, RuleHead } from "./rule-card-file";
 import { fileProducts, commonRulesFile, shelfOf, tier2RuleFiles, type ShelfId } from "./rule-shelves";
 import { readTextCached } from "./read-cache.server";
 
@@ -251,6 +252,18 @@ export function pageRuleUses(rules: Record<string, RuleRecord>, pointed: Record<
   return loadRuleUses(new Set([...Object.keys(rules), ...Object.keys(pointed)]));
 }
 
+/**
+ * One rule's card file (`/rule-card/<id>.json`, `RuleCardFile`): its record, and what its card needs to draw as a page that ships it
+ * would (`pointedShipment`), with where each record in full is used. Null for an id with no record.
+ */
+export function ruleCardData(id: string): RuleCardFile | null {
+  const all = loadRules();
+  const record = all[id];
+  if (!record) return null;
+  const { pointed, heads } = pointedShipment({ [id]: record }, all);
+  return { record, pointed, heads, uses: loadRuleUses([id, ...Object.keys(pointed)]) };
+}
+
 /** The score of every rule (orders rules inside a group and picks teasers; never the pinned list). */
 export function ruleScores(): Record<string, number> {
   return Object.fromEntries(Object.entries(scan().uses).map(([id, u]) => [id, u.score]));
@@ -282,21 +295,26 @@ export function ruleProducts(): Record<string, string[]> {
   return (productsCache = out);
 }
 
-/** One shelf's data file (`/rules-data/<shelf>.json`): the full records of its rules, plus the records they derive from, and where each is used. */
+/**
+ * A bundle's records with what their cards point at (`pointedShipment`): in full, the records whose figures fill their slots; of the
+ * rest, only heads, each card fetched from its own file when its chip is tapped. Where each record in full is used comes with them.
+ */
+function withPointed(rules: Record<string, RuleRecord>, all: Record<string, RuleRecord>): { rules: Record<string, RuleRecord>; heads: Record<string, RuleHead>; ruleUses: RuleUsesSlim } {
+  const { pointed, heads } = pointedShipment(rules, all);
+  const full = { ...rules, ...pointed };
+  return { rules: full, heads, ruleUses: loadRuleUses(Object.keys(full)) };
+}
+
+/** One shelf's data file (`/rules-data/<shelf>.json`): the full records of its rules, what their cards point at, and where each is used. */
 export function shelfBundle(shelf: ShelfId) {
   const all = loadRules();
-  // the rules page lists general rules only (D30); a company's term a card points at (an example) still travels below, so its chip opens
+  // the rules page lists general rules only (D30); a company's term a card points at (an example) has its head below, so its chip opens
   const mine = Object.values(all).filter((r) => r.scope === "general" && shelfOf(r) === shelf);
-  const rules: Record<string, RuleRecord> = Object.fromEntries(mine.map((r) => [r.id, r]));
-  // a rule a card points at (derived_from, examples) may live on another shelf: its record travels too, so the chip opens it
-  Object.assign(rules, pointedRecords(rules, all));
-  return { rules, ruleUses: loadRuleUses(Object.keys(rules)) };
+  return withPointed(Object.fromEntries(mine.map((r) => [r.id, r])), all);
 }
 
 /** Every company's term, for the file a claim's results read: the same shape as a shelf's. */
 export function companyTermsBundle() {
   const all = loadRules();
-  const rules: Record<string, RuleRecord> = Object.fromEntries(Object.values(all).filter((r) => r.scope !== "general").map((r) => [r.id, r]));
-  Object.assign(rules, pointedRecords(rules, all));
-  return { rules, ruleUses: loadRuleUses(Object.keys(rules)) };
+  return withPointed(Object.fromEntries(Object.values(all).filter((r) => r.scope !== "general").map((r) => [r.id, r])), all);
 }
