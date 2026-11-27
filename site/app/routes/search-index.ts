@@ -97,7 +97,7 @@ export async function loader() {
   const { exposureContent } = await import("../content/exposure");
   const guideOrder = [...new Set([...guideLayout.flatMap((g) => g.ids), ...wrappers.map((w) => w.id)])];
   for (const { record: term } of readDirFiles("data/terms", termRecord)) {
-    const ownGuides = guideOrder.filter((id) => term.wrapper_ids.includes(id) && wrappers.some((w) => w.id === id));
+    const ownGuides = guideOrder.filter((id) => term.wrapper_ids.some((w) => w === id) && wrappers.some((w) => w.id === id));
     const ownExposures = (term.exposure_ids ?? []).filter((id) => exposures.some((e) => e.id === id));
     const marked = termPage(term.he, ownGuides, ownExposures, guideContent, exposureContent);
     const guide = marked ? marked.guide : ownGuides[0];
