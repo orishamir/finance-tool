@@ -3,23 +3,52 @@
 //
 // - `id` comes from the markdown (readOpenQuestionItems in src/references.ts, the same parse the validator uses). An answered question
 //   is deleted from the markdown once its answer is in a rule; a struck item left there stops the script.
-// - `status` comes from the item's own text: an item whose notes say part of it is answered (`NARROWING`: "Narrowed", "Partly
-//   answered", "Mostly closed by", "Closed by", "Answered generally", "one side is settled") is `narrowed`, any other `open`.
-// - `answered_by` is the rules those narrowing notes name, those the rule base holds; an id written there by hand is kept beside them.
+// - `status` comes from the item's own text: an item whose notes say part of it is answered (`NARROWING`) is `narrowed`, any other
+//   `open`.
+// - `answered_by` is made afresh on every run: the rules a narrowing note names before it turns to what is still open, those the rule
+//   base holds whose scope is not a company's (`answerableRules`), or, for an item a person has read, the list in `ANSWERED_BY_READ`.
+//   An open item has none. What the file held before is not read back, so an id leaves when the note or the rule changes.
 // - `title_he`, `blocks_he` and `meanwhile_he` are written by hand and kept. An id that left the markdown is dropped, and the script
 //   prints it with everything written by hand for it, so nothing goes silently.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { openQuestionsFile, type OpenQuestionEntry } from "@finance-tool/schema";
-import { readOpenQuestionItems, readQuestionPrefixes, readRuleBaseIds } from "../src/references.ts";
+import { readOpenQuestionItems, readQuestionPrefixes, readRuleBaseIds, type RuleBlock } from "../src/references.ts";
 
 /**
  * The words with which an item's notes say part of the question is answered. Each is a phrase the rule base writes in a dated note
  * ("**[2026-10-31]** Narrowed: ...", "Still open (narrowed)", "Partly answered: ...", "Mostly closed by CAT-44", "Closed for payment
- * dates: ...", "the regulations side is settled"); "partly" alone is not one, since an item may ask whether a deposit is "partly linked".
+ * dates: ...", "**[2026-11-26] Closed** by ...", "the regulations side is settled", "Period closed (...)", "(closed 2026-10-31, GOV-24)",
+ * "Answered: ...", "settled by CAT-03"); "partly" alone is not one, since an item may ask whether a deposit is "partly linked", and
+ * "not settled by" is not one either.
  */
-export const NARROWING = /\bnarrowed\b|\bpartly (?:closed|answered|settled)\b|\bmostly (?:closed|answered)\b|\bclosed (?:by|for)\b|\banswered (?:for|generally)\b|\b(?:half|side) is (?:closed|settled)\b/gi;
+export const NARROWING =
+  /\bnarrowed\b|\bpartly (?:closed|answered|settled)\b|\bmostly (?:closed|answered)\b|\bclosed(?:\*\*)? (?:by|for)\b|\banswered (?:for|generally)\b|\b(?:half|side) is (?:closed|settled)\b|\bclosed \(|\(closed \d{4}|\banswered:|(?<!\bnot )\bsettled by\b/gi;
+
+/**
+ * Where a narrowing note turns to the part still open ("Still open: ...", "Still open for One Zero", "what still stands open", "stays
+ * unsettled"); the rules named after it are about that part. "Narrowed, still open." and "Still open (narrowed)" only state the status.
+ */
+export const STILL_OPEN = /\bstill open(?=\s*(?::|for\b|in that\b))|\bwhat (?:still )?(?:stands|remains|stays|is) open\b|\b(?:stays?|remains?) (?:open|unsettled)\b|\bopen part\b|\bunsettled\b/i;
+
+/**
+ * The items a person has read for which rules hold the answered part, where a note says so in a way the scan does not catch; the list
+ * replaces the scan's for that item. GOV OQ7: the note of 2026-11-26 gives the ids after GOV-24 and GOV-09 were split.
+ */
+export const ANSWERED_BY_READ: Readonly<Record<string, readonly string[]>> = {
+  "GOV OQ7": ["GOV-24", "CORP-18", "GOV-30", "GOV-17", "GOV-32", "GOV-06"],
+};
+
+/**
+ * The rules that may stand as an answer on a question's sheet: every rule of the rule base but those whose Scope line is
+ * `institution` or `unsettled`, which hold only a company's term (il-finance rules 5 and 6).
+ */
+export function answerableRules(blocks: ReadonlyMap<string, Pick<RuleBlock, "body">>): Set<string> {
+  const out = new Set<string>();
+  for (const [id, { body }] of blocks) if (!/^- Scope: (?:institution|unsettled)\b/m.test(body)) out.add(id);
+  return out;
+}
 
 /** A rule id as the rule base writes one ("CAT-44", "TX2-19"). */
 const RULE_ID = /\b[A-Z][A-Z0-9]*-[A-Z]?\d+[A-Z]?\b/g;
@@ -46,26 +75,35 @@ export function readItemTexts(referencesDir: string): Map<string, string> {
 /** `narrowed` where the item's notes say part of it is answered (`NARROWING`), else `open`. */
 export const statusOf = (text: string): OpenQuestionEntry["status"] => (new RegExp(NARROWING.source, "i").test(text) ? "narrowed" : "open");
 
+/** A range of rule ids written out ("REG-04 to REG-06" as "REG-04 REG-05 REG-06"). */
+const expandRanges = (text: string): string =>
+  text.replace(/\b([A-Z][A-Z0-9]*)-(\d+) to \1-(\d+)\b/g, (_, p: string, a: string, b: string) =>
+    Array.from({ length: Math.max(0, Number(b) - Number(a) + 1) }, (_x, i) => `${p}-${String(Number(a) + i).padStart(a.length, "0")}`).join(" "),
+  );
+
 /**
- * The rules an item's narrowing notes name: each note runs from its narrowing words to the next dated note ("**[") or the item's end.
- * Only ids the rule base holds (`rules`), each once, in the order the notes name them.
+ * The rules an item's narrowing notes name for the part they answer: each note runs from its narrowing words to the next dated note
+ * ("**["), the end of its line or where it turns to what is still open (`STILL_OPEN`). Only ids in `rules`, each once, in the order the
+ * notes name them.
  */
 export function answeredBy(text: string, rules: ReadonlySet<string>): string[] {
   const ids: string[] = [];
   for (const m of text.matchAll(new RegExp(NARROWING.source, "gi"))) {
     const rest = text.slice(m.index);
-    const end = rest.indexOf("**[", 1);
-    for (const id of (end < 0 ? rest : rest.slice(0, end)).match(RULE_ID) ?? []) if (rules.has(id) && !ids.includes(id)) ids.push(id);
+    const ends = [rest.indexOf("**[", 1), rest.indexOf("\n"), rest.slice(m[0].length).search(STILL_OPEN) + m[0].length].filter((e) => e >= m[0].length);
+    const note = expandRanges(ends.length ? rest.slice(0, Math.min(...ends)) : rest);
+    for (const id of note.match(RULE_ID) ?? []) if (rules.has(id) && !ids.includes(id)) ids.push(id);
   }
   return ids;
 }
 
 /** One entry of the file: the id, the status and answered_by from the item's text, and what was written by hand for it (`was`). */
 export function buildEntry(id: string, text: string, was: OpenQuestionEntry | undefined, rules: ReadonlySet<string>): OpenQuestionEntry {
-  const answered = [...new Set([...answeredBy(text, rules), ...(was?.answered_by ?? [])])];
+  const status = statusOf(text);
+  const answered = status === "open" ? [] : [...(ANSWERED_BY_READ[id] ?? answeredBy(text, rules))];
   return {
     id,
-    status: statusOf(text),
+    status,
     ...(was?.title_he ? { title_he: was.title_he } : {}),
     ...(was?.blocks_he ? { blocks_he: was.blocks_he } : {}),
     ...(answered.length > 0 ? { answered_by: answered } : {}),
@@ -84,7 +122,7 @@ function main(): void {
 
   const items = readOpenQuestionItems(references);
   const texts = readItemTexts(references);
-  const rules = readRuleBaseIds(references).rules;
+  const rules = answerableRules(readRuleBaseIds(references).blocks);
   const prev = new Map<string, OpenQuestionEntry>(existsSync(OUT) ? (JSON.parse(readFileSync(OUT, "utf8")) as OpenQuestionEntry[]).map((q) => [q.id, q]) : []);
 
   const struck = items.filter((it) => it.struck);
