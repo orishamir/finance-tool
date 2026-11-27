@@ -1128,7 +1128,7 @@ export const flags: Record<string, string> = {
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה. האתר עוד לא בדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
   // F-133 at a house that is not a bank: a distribution's net waits in the fund's currency for the next order, and whether its exchange gain is
   // taxed there is open (TX2-04 (b), TX2 OQ4, TXF OQ4); the run counts no gain and no loss
-  "TX2-OQ4": "כשקונים כל כמה חודשים, הדיבידנד שהקרן מחלקת מחכה בחשבון במטבע של הקרן עד הקנייה הבאה. בזמן הזה שער המטבע זז. בבית השקעות שהוא לא בנק, האתר לא מצא בכללים שקרא אם הרווח מהשער חייב במס רווחי הון, ואם אפשר לקזז הפסד ממנו. החישוב לא מחשיב את השינוי ברווח או בהפסד.",
+  "TX2-OQ4": "כשקונים כל כמה חודשים, הדיבידנד שהקרן מחלקת מחכה בחשבון במטבע של הקרן עד הקנייה הבאה, ובינתיים השער זז. בבית השקעות שאינו בנק, לא ידוע אם רווח מהשער הזה חייב במס רווחי הון ואם אפשר לקזז ממנו הפסד. החישוב לא כולל מס או קיזוז כזה.",
   // F-04, method §13: a fund the site does not know, run under both readings of TXS OQ26 (TXS-14), beside a figure both readings give
   "TXS-OQ26": "לא ידוע אם הרווח בקרן הזו נמדד מול שער המטבע העיקרי שלה או מול מדד המחירים לצרכן. כמטבע העיקרי האתר לוקח את המטבע שהמדד מחושב בו. בתוכנית הזו שתי הדרכים נותנות אותו מס רווחי הון.",
   // F-04, method §13: a TASE foreign fund whose annex states no index and whose documents the site did not read, run under both readings of
