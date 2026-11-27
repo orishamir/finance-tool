@@ -9,6 +9,7 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { notAName } from "../src/checks/terms.ts";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const scripts = join(root, "packages/pipeline/scripts");
@@ -50,4 +51,25 @@ describe("the glossary's generated files match their sources", () => {
       expect(differ).toEqual([]);
     });
   }
+});
+
+// A row's other names and its search strings are written apart: the card lists `also_called` under "נקרא גם" (and `variants`, which
+// repeats it, for the readers that still read it); `search` only finds the term.
+describe("a term's other names and its search strings", () => {
+  const records = () =>
+    jsonFiles(join(root, "data/terms")).map((f) => JSON.parse(readFileSync(join(root, "data/terms", f), "utf8")) as { id: string; he: string; variants: string[]; also_called?: string[]; search?: string[] });
+  it("are apart, and variants repeats the other names", () => {
+    const bad = records().filter((r) => JSON.stringify(r.also_called ?? []) !== JSON.stringify(r.variants) || (r.search ?? []).some((x) => (r.also_called ?? []).includes(x) || x === r.he));
+    expect(bad.map((r) => r.id)).toEqual([]);
+  });
+  it("the other names hold no spelling of the head, no label and no other card's name", () => {
+    const all = records();
+    const heads = new Set(all.map((r) => r.he));
+    const bad = all.flatMap((r) => (r.also_called ?? []).flatMap((n) => notAName(r.he, n, new Set([...heads].filter((h) => h !== r.he))) ?? []));
+    expect(bad).toEqual([]);
+  });
+  it("a search string a row moved out of its other names still finds the term", () => {
+    const row = records().find((r) => r.id === "mvdl-hshkavt-tlvy-gyl");
+    expect(row?.search).toEqual(expect.arrayContaining(["לבני 50 ומטה", "לבני 50 עד 60", "לבני 60 ומעלה"]));
+  });
 });
