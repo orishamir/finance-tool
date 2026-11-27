@@ -201,7 +201,7 @@ describe("new collections", () => {
   });
 
   it("rejects a deposit whose break column contradicts itself, and a tax bucket outside its values", () => {
-    const deposit = JSON.parse(readFileSync(`${root}data/terms/deposits/hapoalim-pikadon-leshana-kavua.json`, "utf8"));
+    const deposit = JSON.parse(readFileSync(`${root}data/terms/deposits/hapoalim-pikadon-leshana-kavua@2026-11-09.json`, "utf8"));
     expect(run({ "terms/deposits/x.json": deposit })).toEqual([]);
     const contradicts = run({ "terms/deposits/x.json": { ...deposit, break: { ...deposit.break, allowed: true, penalty: "not_allowed" } } });
     expect(contradicts[0]?.message).toMatch(/break\.allowed is false exactly when break\.penalty is "not_allowed"/);
@@ -210,7 +210,7 @@ describe("new collections", () => {
     // a null bucket comes only with an open source (code review, 2026-11-07)
     const nullAtPrimary = run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null } } });
     expect(nullAtPrimary[0]?.message).toMatch(/tax_bucket\.value is null only when its source strength is "open"/);
-    expect(run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null, source: { ...deposit.tax_bucket.source, strength: "open" } } } })).toEqual([]);
+    expect(run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null, source: { ...deposit.tax_bucket.source, strength: "open" }, rule_ids: [] } } })).toEqual([]);
   });
 
   it("rejects a catalogue track that is not in the latest CMA period", () => {

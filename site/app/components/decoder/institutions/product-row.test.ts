@@ -52,7 +52,8 @@ describe("bank product rows", () => {
     const exits = (r: (typeof rows)[number]) => /תחנות יציאה\s*<\/dt>\s*<dd[^>]*>(?:\s*<span[^>]*>)+([^<]*)</.exec(render(r))?.[1]?.trim();
     expect(exits(daily)).toBe(r4catalogue.exits.someCard);
     const said = (r: (typeof rows)[number]) => (r.p.exitPoints.exists && exitTiming(r.p.exitPoints) === null && r.p.conditions ? r4catalogue.exits.someCard : exitWords(r.p.exitPoints));
-    for (const r of rows) expect(exits(r), r.p.id).toBe(said(r));
+    // a current account's card has no exit-points line: its money is there at any time
+    for (const r of rows) expect(exits(r), r.p.id).toBe(r.p.currentAccount ? undefined : said(r));
     // a deposit that cannot be broken but has exits says where the money comes out
     const breakWord = (r: (typeof rows)[number]) => /שבירה\s*<\/dt>\s*<dd[^>]*>(?:\s*<span[^>]*>)+([^<]*)</.exec(render(r))?.[1]?.trim();
     expect(breakWord(daily)).toBe(r4catalogue.breakAtExits);
@@ -78,7 +79,9 @@ describe("bank product rows", () => {
     for (const r of rows) for (const id of depositKindRules(r.p.variant).filter((id) => allRules[id])) expect(r.known.has(id), `${r.p.id} ${id}`).toBe(true);
     expect(rows.find((r) => r.p.id === "discount-kvua-leshana-mivtza-0183")!.p.variant).toContain("campaign");
     const litchi = rows.find((r) => r.p.id === "mizrahi-tefahot-litchi-kvua-shana-189")!;
-    expect(litchi.p.rate.notes).toBe(litchi.p.doubt);
+    // the doubt travels as the rate's own, and the Hebrew note that only said it again is left out
+    expect(litchi.p.rate.doubt).toBe(litchi.p.doubt);
+    expect(litchi.p.rate.notes).toBe("");
   });
 
   it("quote only the bank's own words about a break", () => {
