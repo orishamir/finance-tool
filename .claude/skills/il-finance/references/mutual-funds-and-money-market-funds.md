@@ -429,7 +429,7 @@ A fund's life can be limited: the law's heading is "תקופת קיום הקרן
 - Source: [ISA 2025 report](https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf), pp. 3, 6, 10, 12, 19 · checked 2026-11-08 · primary
 - Scope: general
 - Dimensions: currency
-- Likely to change: yes, yearly
+- Likely to change: yes, yearly; the ISA's next yearly report is expected mid-2027 (MF-55), so the record is rechecked by 30.6.2027.
 
 ### MF-43 Exposure profile code in every fund name (פרופיל חשיפה)
 - Rule: Under the Joint Investment Trust Regulations (Classification of Funds for Publication) (תקנות השקעות משותפות בנאמנות (סיווג קרנות לצורך פרסום), התשס"ח-2007), the exposure profile is "צמד תווים שיהיו חלק משם הקרן": the first character is the maximum equity exposure grade, the second (to its right) the maximum FX exposure grade, each by absolute value under the fund's investment policy. Equity: 0 none; 1 up to 10%; 2 up to 30%; 3 up to 50%; 4 up to 120%; 5 up to 200%; 6 above 200%. FX: 0 none; A up to 10%; B up to 30%; C up to 50%; D up to 120%; E up to 200%; F above 200%. Exposure includes derivatives (market value plus the equivalent exposure of derivative positions), as a share of net assets. "Equities" includes commodities, share-like assets and convertibles.
