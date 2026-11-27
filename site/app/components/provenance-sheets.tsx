@@ -21,7 +21,7 @@ import type { RuleCardFile } from "../lib/rule-card-file";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { Card, CompanyLinks, DocLink, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
-import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, sameCompanies, scopeCompanies, tagCompanies, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
+import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, sameCompanies, scopeCompanies, tagCompanies, pageScope, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
 import type { SheetPart } from "./provenance";
 import { CloseCtx, DataCtx, FormulaLink, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, headOf, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData } from "./provenance";
 import { proofOf } from "../content/proofs";
@@ -1074,20 +1074,20 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
   // holds the record (`withFetched`)
   const head = record ? undefined : data.heads?.[id];
   const fetched = useCardFile(head ? id : null);
+  // on a company's page only that company's part of the record (D30): its name, its own documents, the law and the regulator, its figures
+  const page = data.pageCompanies ?? (data.company ? [data.company] : []);
   if (!record) {
     if (!head) return <NoRecordCard id={id} headId={headId} />;
-    // the heading the card will have, from the rule's head, with the title its chip shows: the same root and heading as the card below,
-    // so both stay in place as the body comes
+    // the heading the card will have, from the rule's head, with the title its chip shows and the page's companies its record will name
+    // (`pageScope`): the same root and heading as the card below, so both stay in place as the body comes
     const title = head.title.english ? <bdi dir="ltr">{head.title.text}</bdi> : head.title.text;
     return (
       <div data-code-ok data-opens-scope data-opens={id} className={cx("flex-1 flex flex-col gap-3", head.strength === "open" && "rule-open")}>
-        <RuleCardHead id={id} rule={head} title={title} data={data} headId={headId} waiting />
+        <RuleCardHead id={id} rule={pageScope(head, page)} title={title} data={data} headId={headId} waiting />
         <CardOnWay id={id} fetched={fetched} />
       </div>
     );
   }
-  // on a company's page only that company's part of the record (D30): its name, its own documents, the law and the regulator, its figures
-  const page = data.pageCompanies ?? (data.company ? [data.company] : []);
   const rule = pageView(record, page, data.companies);
   // the text's slots, its shown title and its citation read the card's own view of the record, so none names a figure the card hides
   const slots: SlotSource = { ...data, rules: { ...data.rules, [id]: rule } };

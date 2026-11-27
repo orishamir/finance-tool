@@ -31,6 +31,7 @@ import { valueRuleIds } from "./page-rules.server";
 import { ruleCardData } from "./rule-uses.server";
 import { prerenderPaths } from "./paths.server";
 import { ruleCardPath } from "./rule-card-file";
+import { ruleHeadOf } from "./rule-head";
 import { shelfIds } from "./rule-shelves";
 import { flags } from "../copy";
 import { parseAnswer } from "./answer-slots";
@@ -370,6 +371,19 @@ describe("a card whose rule the page does not ship is fetched when opened", () =
     const heading = must(/<h2[^>]*>/.exec(card), "the card's heading")[0];
     expect(heading).toContain('tabindex="-1"');
     expect(heading).toContain("data-autofocus");
+  });
+
+  it("on a company's page, the heading names while the card loads the companies the card names once it is in", () => {
+    const record = must(
+      Object.values(all).find((r) => r.scope !== "general" && (r.scope_institutions?.length ?? 0) >= 3 && !r.text_he?.includes("{")),
+      "a record about three companies or more",
+    );
+    // a brand's page stands for its companies (`pageCompanies`), with no one company the chip would name alone
+    const company = must(record.scope_institutions?.[1], "its second company").id;
+    const base = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-26", pageCompanies: [company] };
+    const scopeLine = (data: ProvenanceData) => must(/<\/h2>(.*?)<\/header>/.exec(renderToStaticMarkup(createElement(MemoryRouter, null, createElement(RuleCard, { id: record.id, data })))), "the heading's scope line")[1];
+    const loaded = scopeLine({ ...base, pointed: { [record.id]: record } });
+    expect(scopeLine({ ...base, heads: { [record.id]: ruleHeadOf(record, { rules: all, today: base.today }) } })).toBe(loaded);
   });
 
   it("reads the file, says a missing one or a failed one did not load, and throws on a file that does not match its schema", async () => {
