@@ -3,6 +3,7 @@
     "BANK-06",
     "BANK-08",
     "BANK-16",
+    "BANK-17",
     "BANK-20",
     "BANK-21",
     "BANK-32",
@@ -10,6 +11,7 @@
     "BANK-35",
     "BANK-42",
     "BANK-54",
+    "BANK-56",
     "BPN-09",
     "FXD-06",
     "FXD-11",
@@ -34,7 +36,6 @@
   ],
   "typed-data-figure": [
     "BANK-04",
-    "BANK-07",
     "BANK-21",
     "BANK-47",
     "FXD-06",
