@@ -46,14 +46,19 @@ describe("ECB reference rates", () => {
         fetched_from: ECB_URL,
       });
   });
-  it("opens each month-end rate's own series page on the Data Portal, with the CSV it read as fetched_from", () => {
+  it("gives every month-end rate one source naming both series, the shekel's and the dollar's, with the CSV it read as fetched_from", () => {
     const s = buildMonthSeries([{ code: "ILS", month: "2026-09", rate: 3.9 }, { code: "USD", month: "2026-09", rate: 1.17 }], ctx);
     expect(s.observations.map((o) => [o.key, o.source.url, o.source.fetched_from, o.source.publisher_he])).toEqual([
-      ["ILS", "https://data.ecb.europa.eu/data/datasets/EXR/EXR.M.ILS.EUR.SP00.E", API_URL, "הבנק המרכזי האירופי"],
-      ["USD", "https://data.ecb.europa.eu/data/datasets/EXR/EXR.M.USD.EUR.SP00.E", API_URL, "הבנק המרכזי האירופי"],
+      ["ILS", "https://data.ecb.europa.eu/data/datasets/EXR", API_URL, "הבנק המרכזי האירופי"],
+      ["USD", "https://data.ecb.europa.eu/data/datasets/EXR", API_URL, "הבנק המרכזי האירופי"],
     ]);
-    expect(s.observations[0]!.source.title).toContain("EXR.M.ILS.EUR.SP00.E");
-    expect(s.observations[0]!.source.title).not.toContain("USD");
+    for (const o of s.observations) for (const code of ["EXR.M.ILS.EUR.SP00.E", "EXR.M.USD.EUR.SP00.E"]) expect(o.source.title).toContain(code);
+  });
+  it("never gives a month-end rate the shekel series' own page, since the site takes one month's source for the dollar input too", () => {
+    const built = buildMonthSeries([{ code: "ILS", month: "2026-09", rate: 3.9 }, { code: "USD", month: "2026-09", rate: 1.17 }], ctx);
+    const stored = JSON.parse(readFileSync(new URL("../../../data/series/ecb-fx-month-end.json", import.meta.url), "utf8")) as typeof built;
+    for (const o of [...built.observations, ...renormaliseSeries(ecbMonthEndSpec, built).observations, ...stored.observations])
+      expect([o.key, o.date, o.source.url.includes("EXR.M.ILS"), o.source.title.includes("EXR.M.USD.EUR.SP00.E")]).toEqual([o.key, o.date, false, true]);
   });
   it("a rate read again keeps its stored checked date, and takes the source the adapter writes now", () => {
     const stored = buildSeries(parseEcbXml(xml), ctx);
@@ -67,7 +72,6 @@ describe("ECB reference rates", () => {
     for (const o of stored.observations) o.source = { url: API_URL, title: "both series", publisher: "European Central Bank", strength: "primary" };
     expect(renormaliseSeries(ecbMonthEndSpec, stored)).toEqual(fresh);
     expect(renormaliseSeries(ecbFxSpec, buildSeries(parseEcbXml(xml), ctx))).toEqual(buildSeries(parseEcbXml(xml), ctx));
-    expect(() => renormaliseSeries(ecbMonthEndSpec, { ...stored, observations: [{ ...stored.observations[0]!, key: undefined }] })).toThrow(/names no currency/);
   });
   it("refuses a rate that moved more than the limit, or a day older than the stored one", () => {
     const stored = buildSeries(parseEcbXml(xml), ctx);

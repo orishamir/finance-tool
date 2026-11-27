@@ -14,8 +14,12 @@ export const CODES = ["ILS", "USD"] as const;
 export const API_URL = `https://data-api.ecb.europa.eu/service/data/EXR/M.${CODES.join("+")}.EUR.SP00.E?format=csvdata&startPeriod=2000-01`;
 /** The ECB's page of the day's euro reference rates: it prints each rate of the daily XML, the shekel's among them (read). */
 export const DAILY_PAGE = "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html";
-/** The ECB Data Portal's page of one monthly end-of-period series, "EXR.M.ILS.EUR.SP00.E" (read for the shekel and the dollar). */
-export const monthSeriesPage = (code: string): string => `https://data.ecb.europa.eu/data/datasets/EXR/EXR.M.${code}.EUR.SP00.E`;
+/**
+ * The ECB Data Portal's page of the EXR dataset, which holds both month-end series the file keeps (read). Each series also has a page of
+ * its own, but the site gives one source to a month-end point and the dollar-shekel rate is read from both series, so the source names
+ * the two together.
+ */
+export const MONTH_END_PAGE = "https://data.ecb.europa.eu/data/datasets/EXR";
 export const PUBLISHER_HE = "הבנק המרכזי האירופי";
 
 /** The source of every daily rate: the page that prints the day's rates, and the XML the refresh reads as `fetched_from`. */
@@ -28,10 +32,10 @@ export const dailySource = (): SeriesObservation["source"] => ({
   fetched_from: ECB_URL,
 });
 
-/** The source of a month-end rate of the currency `code`: its series' page on the Data Portal, and the CSV the refresh reads as `fetched_from`. */
-export const monthSource = (code: string): SeriesObservation["source"] => ({
-  url: monthSeriesPage(code),
-  title: `ECB Data Portal, EXR: ECB reference exchange rates, monthly, end of period (EXR.M.${code}.EUR.SP00.E)`,
+/** The source of every month-end rate: the dataset's page on the Data Portal, naming both series, and the CSV the refresh reads as `fetched_from`. */
+export const monthEndSource = (): SeriesObservation["source"] => ({
+  url: MONTH_END_PAGE,
+  title: `ECB Data Portal, EXR: ECB reference exchange rates, monthly, end of period (${CODES.map((c) => `EXR.M.${c}.EUR.SP00.E`).join(", ")})`,
   publisher: "European Central Bank",
   publisher_he: PUBLISHER_HE,
   strength: "primary",
@@ -137,6 +141,7 @@ const lastDay = (month: string) => {
 
 /** The series file, checked (read) on `ctx.runDate`: months both currencies have, oldest first. */
 export function buildMonthSeries(rates: MonthRate[], ctx: BuildCtx): SeriesRecord {
+  const source = monthEndSource();
   const months = [...new Set(rates.map((r) => r.month))].filter((m) => CODES.every((c) => rates.some((r) => r.code === c && r.month === m))).sort();
   return {
     id: "ecb-fx-month-end",
@@ -159,7 +164,7 @@ export function buildMonthSeries(rates: MonthRate[], ctx: BuildCtx): SeriesRecor
     observations: months.flatMap((m) =>
       CODES.map((code) => {
         const date = lastDay(m);
-        return { key: code, date, value: rates.find((r) => r.code === code && r.month === m)!.rate, unit: FX_UNIT as never, source: monthSource(code), checked: ctx.runDate, effective_from: date, effective_to: date, update_rule: "market" as const, state: "sourced" as const };
+        return { key: code, date, value: rates.find((r) => r.code === code && r.month === m)!.rate, unit: FX_UNIT as never, source, checked: ctx.runDate, effective_from: date, effective_to: date, update_rule: "market" as const, state: "sourced" as const };
       }),
     ),
   };
@@ -235,10 +240,7 @@ export const ecbMonthEndSpec: SeriesSpec = {
   sanity: sanityCheck,
   diff: diffSeries,
   archive: archive("ecb-fx-month-end"),
-  sourceOf: (o) => {
-    if (!o.key) throw new Error(`ecb-fx-month-end: the observation of ${o.date} names no currency`);
-    return monthSource(o.key);
-  },
+  sourceOf: () => monthEndSource(),
 };
 
 export const refreshEcbFx = (opts: SeriesRefreshOptions): Promise<SourceReport> => refreshSeries(ecbFxSpec, opts);
