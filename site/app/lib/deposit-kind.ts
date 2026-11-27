@@ -137,8 +137,8 @@ const noteWords = (text: string): Set<string> => new Set(text.replace(/[־-]/g, 
 
 /**
  * Whether a value's note says again what the record's doubt says, judged by what the two say: at least half the note's words are in the
- * doubt. Then the doubt, which the figure's sheet shows, is the one line the reader needs. A note that carries another limit ("השיעור
- * שבטבלה הוא לתקופה הראשונה", "פותחים רק בסניף") shares few of the doubt's words and stays.
+ * doubt. Then the doubt, which the figure's sheet shows, is the one line the reader needs. A note that carries another limit ("הבנק כותב
+ * שהריבית הזו היא ״לתקופה הראשונה״", "פותחים רק בסניף") shares few of the doubt's words and stays.
  */
 export function restatesDoubt(note: string | null | undefined, doubt: string | null | undefined): boolean {
   if (!note || !doubt) return false;

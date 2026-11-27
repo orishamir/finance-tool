@@ -110,9 +110,10 @@ function rateTableUrl(bank: string): string | null {
 
 // ---------------------------------------------------------------- value objects
 
-// D31: everything on a company's page is that company's own figure about its own product; the deposits page shows each bank's the same way
+// D31: everything on a company's page is that company's own figure about its own product; the deposits page shows each bank's the same way.
+// The note its sheet shows is the value's Hebrew note (`notes_he`) where it has one; the sheet shows `notes` only where they are Hebrew.
 export function site(v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {
-  return ownBy({ ...v, stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null } as SiteValue, owner);
+  return ownBy({ ...v, ...(v.notes_he ? { notes: v.notes_he } : {}), stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null } as SiteValue, owner);
 }
 
 function dateValue(date: string, from: Pick<ValueObject, "source">, checked: string, t: string, snapshot: string, owner: string): SiteValue {
@@ -158,8 +159,8 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
   // each figure says in its sheet's head which line of the card it is (its row's label); a doubt travels with the number it is about,
   // and a Hebrew note that says again what the doubt says gives way to it (Mizrahi-Tefahot 189 prints a rate per exit period)
   const mark = (v: ValueObject, about: string, doubtOn?: typeof on): SiteValue => {
-    const shown = site(restatesDoubt(v.notes, d.doubt_he) ? { ...v, notes: "" } : v, t, d.snapshot, owner);
-    return { ...shown, about, ...(d.doubt_he && doubtOn === on ? { doubt: d.doubt_he } : {}) };
+    const shown = site(v, t, d.snapshot, owner);
+    return { ...shown, ...(restatesDoubt(shown.notes, d.doubt_he) ? { notes: "" } : {}), about, ...(d.doubt_he && doubtOn === on ? { doubt: d.doubt_he } : {}) };
   };
   // the day the bank's table says its rates hold from; where it prints none, the day the record was read, which claims no date of the bank's
   const asOfDate = d.rate_offered.effective_from;

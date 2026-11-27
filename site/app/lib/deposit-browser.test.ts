@@ -200,9 +200,19 @@ describe("a record's doubt and notes on the deposits page", () => {
     // Litchi's rate is its printed effective rate, whose Hebrew note gives the four rates its doubt speaks of
     expect(litchi.rate_effective?.notes).toMatch(/ארבעה שיעורי ריבית/);
     expect(offerOfRecord(litchi).rate_offered.notes).toBe("");
-    const limit = "השיעור שבטבלה הוא לתקופה הראשונה של הפיקדון.";
+    const limit = "הבנק כותב שהריבית הזו היא ״לתקופה הראשונה״.";
     const other = { ...litchi, rate_effective: { ...litchi.rate_effective!, notes: limit } };
     expect(offerOfRecord(other).rate_offered.notes).toBe(limit);
+  });
+
+  it("shows a rate's Hebrew note in place of its English working note, as the bank's own limit on the rate", () => {
+    const firstPeriod = record("fibi-pikadon-leshana-kavua-842-from-10000");
+    expect(firstPeriod.conditions_he).toBeUndefined();
+    expect(firstPeriod.rate_offered.notes_he).toMatch(/לתקופה הראשונה/);
+    expect(offerOfRecord(firstPeriod).rate_offered.notes).toBe(firstPeriod.rate_offered.notes_he);
+    // beside an exit-points doubt the note stays too: it says another thing
+    const withDoubt = record("fibi-pikadon-leshana-kavua-901-from-10000");
+    expect(offerOfRecord(withDoubt).rate_offered.notes).toBe(withDoubt.rate_offered.notes_he);
   });
 
   it("carries the bank's printed conditions", () => {

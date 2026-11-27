@@ -17,7 +17,8 @@ import { asParameter, type SiteValue } from "./value";
  * Hebrew one), and a Hebrew note that says again what the record's doubt says left out too, since the doubt is shown (`restatesDoubt`).
  */
 function shown(v: ValueObject, t: string, d: DepositTerms, owner: string): SiteValue {
-  return site(mostlyHebrew(v.notes) && !restatesDoubt(v.notes, d.doubt_he) ? v : { ...v, notes: "" }, t, d.snapshot, owner);
+  const s = site(v, t, d.snapshot, owner);
+  return mostlyHebrew(s.notes) && !restatesDoubt(s.notes, d.doubt_he) ? s : { ...s, notes: "" };
 }
 
 /** The record's doubt as the value it is about carries it: on the rate where `doubt_on` is absent, on the amounts where it names them. */
