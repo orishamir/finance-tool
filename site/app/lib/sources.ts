@@ -191,6 +191,7 @@ export function shownTitle(title: string, url: string, kind?: string): { text: s
  * is left out when the title opens with it ("בנק לאומי, 'שיעורי הריבית…'"); the title is left out when it is only the link's host and
  * the publisher's name holds that host already: "מאגר המידע הממשלתי (data.gov.il)", not "מאגר המידע הממשלתי (data.gov.il) · data.gov.il"
  * .
+ * @deprecated Use `sourceView`, whose `documentNames` names a document once for all its sources; removed when the source drawings switch to it.
  */
 export function sourceParts(source: RuleSource): { publisher: string | null; title: { text: string; host: boolean } | null; locator: string | null; pdf: boolean } {
   const n = sourceLabel2(source);
@@ -199,7 +200,10 @@ export function sourceParts(source: RuleSource): { publisher: string | null; tit
   return { publisher: !n.publisher || title.text.startsWith(n.publisher) ? null : n.publisher, title, locator: n.locator, pdf: n.pdf };
 }
 
-/** `{title_he} — {publisher}, {document}, {locator}. {url} (נבדק {date})`, the line the copy button writes; `slots` fill a title read from the text. */
+/**
+ * `{title_he} — {publisher}, {document}, {locator}. {url} (נבדק {date})`, the line the copy button writes; `slots` fill a title read from the text.
+ * @deprecated Use `citationFor`, which names the place as its document's `sourceView` does; removed when the source drawings switch to it.
+ */
 export function citationText(rule: Pick<SourcedRule, "title" | "title_he" | "text_he">, source: RuleSource, date: string, slots: SlotSource): string {
   const n = sourceParts(source);
   const parts = [n.publisher, n.title?.text].filter((x): x is string => !!x);
@@ -209,7 +213,8 @@ export function citationText(rule: Pick<SourcedRule, "title" | "title_he" | "tex
 }
 
 /** The "it may have changed since" line shows when the rule's recheck date has passed, or the source was read more than six months ago
- * (a rule that is likely to change but whose recheck date is still ahead shows that date instead; the line is for a read that is past its time, not a forecast). */
+ * (a rule that is likely to change but whose recheck date is still ahead shows that date instead; the line is for a read that is past its time, not a forecast).
+ * @deprecated Use `sourceChange`, which reads the source's own date and says "unknown" when no rule is loaded; removed when the source drawings switch to it. */
 export function mayHaveChanged(rule: Pick<SourcedRule, "likely_to_change" | "recheck_date">, source: Pick<RuleSource, "checked">, today: string): boolean {
   if (recheckStale(rule, today)) return true;
   return !!today && source.checked < monthsBefore(today, SOURCE_AGE_WARNING_MONTHS);
