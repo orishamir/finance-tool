@@ -13,6 +13,7 @@ describe("label icons (2026-11-05 sweep)", () => {
     ["currency", "currency-many"],
     ["hedged", "hedged-many"],
     ["tax-index-currency", "tax-index-cpi"],
+    ["tax-fund-dividend", "tax-fund-dividend-left-out"],
   ];
   const kin = (a: string, b: string) => same.some((g) => g.includes(a) && g.includes(b));
 
@@ -26,6 +27,37 @@ describe("label icons (2026-11-05 sweep)", () => {
     expect(label("currency", "EUR").icon).toBe("euro");
     expect(label("currency", "INR").icon).toBe("currency");
     expect(label("currency-foreign").icon).toBe("currency");
+  });
+});
+
+describe("the tax inside an Irish fund that holds its index's shares (TXF-16, F-107)", () => {
+  const rec = loadFunds().find((f) => f.id === "ie00b5bmr087");
+  const index = knownIndices(buildIndicesBundle()).find((i) => i.id === rec?.exposure_id);
+  const exposure = index?.exposure;
+  const replication = rec?.replication;
+  if (!rec || !index || !exposure?.us_dividends || !replication) throw new Error("the Irish S&P 500 fund ie00b5bmr087, how it follows its index, and the index's dividend yield are in the data");
+  const ids = (r: FundRecord, i: typeof index) => fundLabels(r, i, "abroad").map((l) => l.id);
+
+  it("says the tax where the figure holds it, and that it is left out where the index's record has no dividend yield to work it from", () => {
+    expect(ids(rec, index)).toContain("tax-fund-dividend");
+    expect(ids(rec, index)).not.toContain("tax-fund-dividend-left-out");
+    const { us_dividends: _none, ...bare } = exposure;
+    const noYield = { ...index, exposure: bare };
+    expect(ids(rec, noYield)).toContain("tax-fund-dividend-left-out");
+    expect(ids(rec, noYield)).not.toContain("tax-fund-dividend");
+    // a fund on a swap holds none of the shares: neither label
+    const swap = { ...rec, replication: { ...replication, method: "swap" as const } };
+    expect(ids(swap, noYield).filter((id) => id.startsWith("tax-fund-dividend"))).toEqual([]);
+  });
+
+  it("every fund on the records carries the label its own run agrees with", () => {
+    const bundle = buildIndicesBundle();
+    for (const i of knownIndices(bundle)) {
+      for (const f of bundle.funds.filter((x) => x.exposure_id === i.id && x.domicile === "IE" && x.replication?.method === "physical")) {
+        const worked = !!i.exposure?.us_dividends || typeof f.fees.fund_level_withholding_drag?.value === "number" || typeof f.fees.tracking_difference_12m?.value === "number";
+        expect(`${f.id} ${ids(f, i).filter((id) => id.startsWith("tax-fund-dividend")).join()}`).toBe(`${f.id} ${worked ? "tax-fund-dividend" : "tax-fund-dividend-left-out"}`);
+      }
+    }
   });
 });
 
