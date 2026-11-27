@@ -156,8 +156,8 @@ export function SourceBlock({ source, rule, today, inline, english, own, strengt
 /** The body of the sheet for what was opened (provenance.tsx renders it inside its `Sheet`). */
 // ---------------------------------------------------------------- the cards fetched when opened
 
-/** Where the fetch of one rule's card file stands: on its way, in, failed (tried again on the retry), or no file (no record has the id). */
-export type CardFetch = { kind: "loading" } | { kind: "loaded"; file: RuleCardFile } | { kind: "failed" } | { kind: "missing" };
+/** Where the fetch of one rule's card file stands: on its way, in, or failed (tried again on the retry). */
+export type CardFetch = { kind: "loading" } | { kind: "loaded"; file: RuleCardFile } | { kind: "failed" };
 
 /** The card files fetched in this visit, by rule id, kept for the session: a card opened again, on this page or another, draws at once. */
 let cardFetches: ReadonlyMap<string, CardFetch> = new Map();
@@ -175,8 +175,10 @@ function watchCardFetches(l: () => void): () => void {
 }
 
 /**
- * A rule's card file, read: a dropped connection or a server's error is a failure; a file that does not match its schema throws. The
- * schema comes with the first file fetched, so a page's own script carries none of it. Exported for its test.
+ * A rule's card file, read: a dropped connection, a server's error or no file is a failure; a file that does not match its schema
+ * throws. A file is fetched only for a rule the page has the head of, which the build gives a file, so no file means the page is older
+ * than the site's files, and the card says it did not load rather than that the rule has no text. The schema comes with the first file
+ * fetched, so a page's own script carries none of it. Exported for its test.
  */
 export async function loadCardFile(id: string): Promise<CardFetch> {
   let r: Response;
@@ -190,14 +192,13 @@ export async function loadCardFile(id: string): Promise<CardFetch> {
     // the connection dropped, or the body was cut short: the card says the fetch failed, with its retry
     return { kind: "failed" };
   }
-  if (r.status === 404) return { kind: "missing" };
   if (!r.ok) return { kind: "failed" };
   const parsed = schema.ruleCardFile.safeParse(body);
   if (!parsed.success) throw new Error(`the card file of ${id} does not match its schema`, { cause: parsed.error });
   return { kind: "loaded", file: parsed.data };
 }
 
-/** Fetches a rule's card file (routes/rule-card.ts), unless it is in, on its way or known to be missing; a failed one is fetched again. */
+/** Fetches a rule's card file (routes/rule-card.ts), unless it is in or on its way; a failed one is fetched again. */
 function fetchCard(id: string): void {
   const now = cardFetches.get(id);
   if (now && now.kind !== "failed") return;
@@ -991,7 +992,7 @@ function ShownRuleTitle({ rule, slots }: { rule: RuleRecord; slots: SlotSource }
   return t.english ? <bdi dir="ltr">{t.text}</bdi> : <>{t.text}</>;
 }
 
-/** The card of a rule that has no record (none in data/rules, or none the page holds or can fetch): its code, and that its text is not written. */
+/** The card of a rule that has no record (none in data/rules, or none the page holds or has the head of): its code, and that its text is not written. */
 function NoRecordCard({ id, headId }: { id: string; headId?: string }) {
   return (
     <div data-code-ok className="flex flex-col gap-2">
@@ -1041,7 +1042,6 @@ function CardOnWay({ id, head, data, headId }: { id: string; head: RuleHead; dat
   useEffect(() => {
     fetchCard(id);
   }, [id]);
-  if (fetched?.kind === "missing") return <NoRecordCard id={id} headId={headId} />;
   const title = head.title.english ? <bdi dir="ltr">{head.title.text}</bdi> : head.title.text;
   return (
     <div data-code-ok data-opens-scope data-opens={id} className={cx("flex-1 flex flex-col gap-3", head.strength === "open" && "rule-open")}>

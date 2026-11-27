@@ -362,12 +362,13 @@ describe("a card whose rule the page does not ship is fetched when opened", () =
     expect(drawn(page(), "BRK-51")).toContain(ruleCopy.noText);
   });
 
-  it("reads the file, says a missing one and a failed one apart, and throws on a file that does not match its schema", async () => {
+  it("reads the file, says a missing one or a failed one did not load, and throws on a file that does not match its schema", async () => {
     vi.stubGlobal("fetch", answer(file));
     const loaded = await loadCardFile("BRK-51");
     expect(loaded.kind === "loaded" && loaded.file.record.id).toBe("BRK-51");
+    // the page has the head, so the build gave the rule a file: none is a page older than the site's files, not a rule with no text
     vi.stubGlobal("fetch", answer("Not found", 404));
-    expect(await loadCardFile("BRK-51")).toEqual({ kind: "missing" });
+    expect(await loadCardFile("BRK-51")).toEqual({ kind: "failed" });
     vi.stubGlobal("fetch", answer("", 500));
     expect(await loadCardFile("BRK-51")).toEqual({ kind: "failed" });
     vi.stubGlobal("fetch", vi.fn(async () => Promise.reject(new TypeError("Failed to fetch"))));
