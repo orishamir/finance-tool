@@ -6,8 +6,9 @@
 // - `status` comes from the item's own text, read without its bold marks (`plainText`): an item whose notes say part of it is answered
 //   (`NARROWING`) is `narrowed`, any other `open`.
 // - `answered_by` is made afresh on every run: the rules a narrowing note names before it turns to what is still open, those the rule
-//   base holds whose scope is not a company's and that are not folded into another (`answerableRules`), or, for an item a person has read, the list in `ANSWERED_BY_READ`.
-//   An open item has none. What the file held before is not read back, so an id leaves when the note or the rule changes.
+//   base holds whose scope is not a company's and that are not folded into another (`answerableRules`), or, for an item a person has
+//   read, the list in `ANSWERED_BY_READ`. An open item has none. What the file held before is not read back, so an id leaves when the
+//   note or the rule changes.
 // - `title_he`, `blocks_he` and `meanwhile_he` are written by hand and kept. An id that left the markdown is dropped, and the script
 //   prints it with everything written by hand for it, so nothing goes silently.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -18,7 +19,7 @@ import { readOpenQuestionItems, readQuestionPrefixes, readRuleBaseIds, type Rule
 
 /**
  * The words with which an item's notes say part of the question is answered. Each is a phrase the rule base writes in a dated note
- ("[2026-10-31] Narrowed: ...", "Still open (narrowed)", "Partly answered: ...", "Mostly closed by CAT-44", "Closed for payment
+ * ("[2026-10-31] Narrowed: ...", "Still open (narrowed)", "Partly answered: ...", "Mostly closed by CAT-44", "Closed for payment
  * dates: ...", "[2026-11-26] Closed by ...", "the regulations side is settled", "Period closed (...)", "(closed 2026-10-31, GOV-24)",
  * "Answered: ...", "settled by CAT-03"), matched in `plainText`; "partly" alone is not one, since an item may ask whether a deposit is
  * "partly linked", and "not settled by" is not one either.
