@@ -5,7 +5,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { buyWithCash } from "../src/formulas/fees.ts";
-import { runSecurities, type SecuritiesInput, type WholeUnits } from "../src/ledgers/securities.ts";
+import { runSecurities, type SecuritiesInput } from "../src/ledgers/securities.ts";
 import { beforeTax, listingChangesRun, providerWorkbench, unitWaysAt, waitingReal, wholeUnitsAt, type WorkbenchInput } from "../src/providers/workbench.ts";
 import { context } from "./golden/harness.ts";
 
@@ -23,7 +23,7 @@ describe("whole units (F-109)", () => {
   it("carries what an order leaves to the next one: 1,000 ₪ now and 500 ₪ a month at 300 ₪ a unit and 10 ₪ an order", () => {
     // month 1: 1,000 buys 3 units (910), 90 waits; with the month's 500, 590 buys 1 (310), 280 waits; ... month 12 leaves 270.
     // 22 units (6,600), 13 orders (130), 270 waiting: 7,000 paid in.
-    const r = runSecurities(input({ goal: { amountNow: 1_000, monthly: 500, months: 12 }, way: { units: { price: 300 } } }), ctx);
+    const r = runSecurities(input({ goal: { amountNow: 1_000, monthly: 500, months: 12 }, wholeUnits: { price: 300 } }), ctx);
     expect(r.fees.trade).toBeCloseTo(130, 6);
     expect(r.nominal).toBeCloseTo(6_870, 6);
     expect(r.detail.cashLeft).toBeCloseTo(270, 6);
@@ -33,7 +33,7 @@ describe("whole units (F-109)", () => {
   it("a month whose cash buys no unit places no order and pays nothing: 500 ₪ a month at 1,200 ₪ a unit buys in months 3, 5, 8 and 10", () => {
     // 1,490 after the fee in month 3 buys one (1,210), 290 waits; 1,280 in month 5 (80 waits); 1,570 in month 8 (370); 1,360 in month 10
     // (160); months 11 and 12 leave 1,160 waiting at the end, part of what is left and no gain.
-    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 500, months: 12 }, way: { units: { price: 1_200 } } }), ctx);
+    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 500, months: 12 }, wholeUnits: { price: 1_200 } }), ctx);
     expect(r.fees.trade).toBeCloseTo(40, 6);
     expect(r.detail.monthlyOrders).toBe(4);
     expect(r.detail.monthlySkipped).toBe(8);
@@ -44,15 +44,15 @@ describe("whole units (F-109)", () => {
   it("the waiting cash earns nothing: at 7% a year the run with whole units leaves less than the run by amount", () => {
     const base = { goal: { amountNow: 10_000, monthly: 500, months: 120 }, market: { grossReturn: 0.07, inflation: 0.02 } };
     const byAmount = runSecurities(input(base), ctx);
-    const whole = runSecurities(input({ ...base, way: { units: { price: 2_600 } } }), ctx);
+    const whole = runSecurities(input({ ...base, wholeUnits: { price: 2_600 } }), ctx);
     expect(whole.real).toBeLessThan(byAmount.real);
     // a unit of a few agorot buys almost all of every order: the two runs meet
-    const tiny = runSecurities(input({ ...base, way: { units: { price: 0.001 } } }), ctx);
+    const tiny = runSecurities(input({ ...base, wholeUnits: { price: 0.001 } }), ctx);
     expect(Math.abs(tiny.real - byAmount.real)).toBeLessThan(1);
   });
   it("a house's recurring plan buys the monthly purchases by amount, and the amount now in whole units; what it leaves joins the first", () => {
     // 1,000 now buys no unit at 1,200 and waits; month 1 buys 1,490 by amount; every month by amount after: 12 orders, 6,880 bought
-    const r = runSecurities(input({ goal: { amountNow: 1_000, monthly: 500, months: 12 }, way: { units: { price: 1_200, monthlyByAmount: true } } }), ctx);
+    const r = runSecurities(input({ goal: { amountNow: 1_000, monthly: 500, months: 12 }, wholeUnits: { price: 1_200, monthlyByAmount: true } }), ctx);
     expect(r.fees.trade).toBeCloseTo(120, 6);
     expect(r.nominal).toBeCloseTo(6_880, 6);
     expect(r.detail.monthlySkipped).toBe(0);
@@ -67,13 +67,13 @@ describe("whole units (F-109)", () => {
   it("converts only the shekels an order spends, and converts what waits only when it is spent", () => {
     // 1,000 ₪ now, 100 dollars a unit at 4 ₪ (400 ₪), 0.5% a conversion: by amount 995 would buy; 2 units cost 800 ₪ of dollars, the
     // shekels converted c = 800 / 0.995 = 804.02, so 195.98 ₪ waits unconverted. The sale converts 800 at 0.5%: 796 + 195.98 = 991.98.
-    const foreign = (units?: WholeUnits) =>
+    const foreign = (wholeUnits?: SecuritiesInput["wholeUnits"]) =>
       runSecurities(
         input({
           goal: { amountNow: 1_000, monthly: 0, months: 1 },
           fund: { kind: "foreign-fund", drag: {} },
           tariff: { buy: { rate: 0 }, fx: 0.005, currency: { code: "USD", startRate: 4 } },
-          ...(units ? { way: { units } } : {}),
+          ...(wholeUnits ? { wholeUnits } : {}),
         }),
         ctx,
       );
@@ -85,7 +85,7 @@ describe("whole units (F-109)", () => {
   });
   it("a commission's minimum is paid on the trade made: two units where three would leave too little for the fee", () => {
     // 920 ₪ at 300 ₪ a unit and a 25 ₪ minimum: by amount 895 would buy, 2 units (625) are bought, 295 waits
-    const r = runSecurities(input({ goal: { amountNow: 920, monthly: 0, months: 1 }, tariff: { buy: { rate: 0.001, min: 25 } }, way: { units: { price: 300 } } }), ctx);
+    const r = runSecurities(input({ goal: { amountNow: 920, monthly: 0, months: 1 }, tariff: { buy: { rate: 0.001, min: 25 } }, wholeUnits: { price: 300 } }), ctx);
     expect(r.fees.trade).toBeCloseTo(25, 6);
     expect(r.detail.cashLeft).toBeCloseTo(295, 6);
   });
@@ -154,7 +154,7 @@ describe("an order its cash cannot pay is not placed, and its cash waits for the
     // waits; month 12 pays 13.4%, and its net, about 271 ₪ in dollars, buys one unit at 259.80 with 8.35.
     const tariff = { buy: { rate: 0.0015, min: 2.5, in: "instrument" as const }, fx: { rate: 0.00002, min: 10 }, currency: { code: "USD", startRate: 3.34 } };
     const fund = { kind: "foreign-fund" as const, drag: {}, domicile: "ireland" as const, distribution: { yield: 0.134, perYear: 1 } };
-    const r = runSecurities(input({ goal: { amountNow: 2_720, monthly: 0, months: 12 }, fund, tariff, way: { units: { price: 300 } } }), ctx);
+    const r = runSecurities(input({ goal: { amountNow: 2_720, monthly: 0, months: 12 }, fund, tariff, wholeUnits: { price: 300 } }), ctx);
     const net = 2_700 * 0.134 - r.taxDuring;
     const ask = 300 * (1 - 0.134);
     const commission = 2.5 * 3.34;
@@ -226,8 +226,6 @@ describe("a house that sells by amount can also buy whole units (F-109, D94)", (
     listing: "us",
     theta: 0.005,
     providers: [{ snapshot: snap, level: "list" }],
-    // the two ways at monthly orders; placed every few months, by amount can leave more (F-133, order-interval.test.ts)
-    behaviour: { orderEvery: 1 },
   });
   const compared = (wb: ReturnType<typeof providerWorkbench>) => {
     const r = wb.rows.find((x) => x.id === "altshuler-trade")!;
@@ -241,7 +239,7 @@ describe("a house that sells by amount can also buy whole units (F-109, D94)", (
     expect(both.run.detail.wholeUnits).toBe(1);
     expect(both.real).toBeGreaterThan(byAmount.real);
     // the house's own way is still run: priced on whole units only because they leave more
-    expect(unitWaysAt(ivv(756.04), snap, {})).toEqual([{}, { units: { price: 756.04 * 3.7 } }]);
+    expect(unitWaysAt(ivv(756.04), snap, {})).toEqual([undefined, { price: 756.04 * 3.7 }]);
   });
   it("where the order's minimum is small beside the deposit, by amount leaves more and is its price", () => {
     const big = { ...ivv(756.04), goal: { amountNow: 0, monthly: 20_000, months: 120 } };
@@ -267,7 +265,7 @@ describe("a fee a month for the account while the cash waits for a unit (F-17, F
   const free = { rate: 0 };
   it("the waiting cash pays the fixed fee when no unit is held: 200 ₪ a month at 2,500 ₪ a unit buys nothing in a year and pays 10 ₪ a month", () => {
     // month k holds 190k after its fee; a unit needs 2,500, which 12 months never reach: 120 ₪ of fees, 2,280 ₪ waiting at the end
-    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 200, months: 12 }, tariff: { buy: free, monthlyFee: 10 }, way: { units: { price: 2_500 } } }), ctx);
+    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 200, months: 12 }, tariff: { buy: free, monthlyFee: 10 }, wholeUnits: { price: 2_500 } }), ctx);
     expect(r.detail.monthlyOrders).toBe(0);
     expect(r.fees.fixed).toBeCloseTo(120, 9);
     expect(r.detail.cashLeft).toBeCloseTo(2_280, 9);
@@ -277,19 +275,19 @@ describe("a fee a month for the account while the cash waits for a unit (F-17, F
     expect(byAmount.fees.fixed).toBeCloseTo(120, 9);
   });
   it("a bank's current account is paid the same way, after the fixed fee", () => {
-    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 200, months: 12 }, tariff: { buy: free, monthlyFee: 10, currentAccount: 5.5 }, way: { units: { price: 2_500 } } }), ctx);
+    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 200, months: 12 }, tariff: { buy: free, monthlyFee: 10, currentAccount: 5.5 }, wholeUnits: { price: 2_500 } }), ctx);
     expect(r.fees.account).toBeCloseTo(66, 9);
     expect(r.detail.cashLeft).toBeCloseTo(2_400 - 120 - 66, 9);
   });
   it("the units pay first: where a unit is held, the waiting cash is left as it was", () => {
     // the first plan above (22 units, 270 ₪ waiting at the end) with a fee of 5 ₪ a month, taken from the units every month
-    const r = runSecurities(input({ goal: { amountNow: 1_000, monthly: 500, months: 12 }, tariff: { buy: ten, monthlyFee: 5 }, way: { units: { price: 300 } } }), ctx);
+    const r = runSecurities(input({ goal: { amountNow: 1_000, monthly: 500, months: 12 }, tariff: { buy: ten, monthlyFee: 5 }, wholeUnits: { price: 300 } }), ctx);
     expect(r.fees.fixed).toBeCloseTo(60, 9);
     expect(r.detail.cashLeft).toBeCloseTo(270, 6);
     expect(r.nominal).toBeCloseTo(6_870 - 60, 6);
   });
   it("what neither the units nor the cash can pay is not charged: a fee of 300 ₪ on 200 ₪ a month takes the 200 each month and no more", () => {
-    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 200, months: 12 }, tariff: { buy: free, monthlyFee: 300 }, way: { units: { price: 2_500 } } }), ctx);
+    const r = runSecurities(input({ goal: { amountNow: 0, monthly: 200, months: 12 }, tariff: { buy: free, monthlyFee: 300 }, wholeUnits: { price: 2_500 } }), ctx);
     expect(r.fees.fixed).toBeCloseTo(2_400, 9);
     expect(r.nominal).toBeCloseTo(0, 9);
   });
@@ -298,10 +296,10 @@ describe("a fee a month for the account while the cash waits for a unit (F-17, F
 describe("the split of a whole-units run by fee line (F-63, F-91, F-109)", () => {
   it("a run carries each fee to the exit at the fund's total return: with no return, what was paid", () => {
     // the first plan of this file: 13 orders of 10 ₪ and nothing to grow on, so the carried trade line is the 130 ₪ paid
-    const flat = runSecurities(input({ goal: { amountNow: 1_000, monthly: 500, months: 12 }, way: { units: { price: 300 } } }), ctx);
+    const flat = runSecurities(input({ goal: { amountNow: 1_000, monthly: 500, months: 12 }, wholeUnits: { price: 300 } }), ctx);
     expect(flat.feesCarried!.trade).toBeCloseTo(130, 9);
     // at 12% a year the 10 ₪ of month 1 has grown by the 12 months' return of the fund, the 10 ₪ of month 12 by none
-    const grown = runSecurities(input({ goal: { amountNow: 1_000, monthly: 0, months: 12 }, market: { grossReturn: 0.12, inflation: 0 }, tariff: { buy: ten, monthlyFee: 5 }, way: { units: { price: 300 } } }), ctx);
+    const grown = runSecurities(input({ goal: { amountNow: 1_000, monthly: 0, months: 12 }, market: { grossReturn: 0.12, inflation: 0 }, tariff: { buy: ten, monthlyFee: 5 }, wholeUnits: { price: 300 } }), ctx);
     const g = Math.pow(1.12, 1 / 12);
     // the order at the start of month 1 pays 10 ₪ before any growth; the fee of month k is paid after month k's growth
     expect(grown.feesCarried!.trade).toBeCloseTo(10 * 1.12, 6);
@@ -313,7 +311,7 @@ describe("the split of a whole-units run by fee line (F-63, F-91, F-109)", () =>
   it("a fee is carried net of the custody a shekel it took would have paid at the margin, and of none where the minimum binds", () => {
     // 3 units held from month 1, no return; custody 0.1% a month: the 10 ₪ order of month 1 would have paid 0.1% in each of the 12 months
     const at = (custody: { rate: number; min?: number; everyMonths: number }) =>
-      runSecurities(input({ goal: { amountNow: 1_000, monthly: 0, months: 12 }, tariff: { buy: ten, custody }, way: { units: { price: 300 } } }), ctx);
+      runSecurities(input({ goal: { amountNow: 1_000, monthly: 0, months: 12 }, tariff: { buy: ten, custody }, wholeUnits: { price: 300 } }), ctx);
     expect(at({ rate: 0.001, everyMonths: 1 }).feesCarried!.trade).toBeCloseTo(10 * Math.pow(0.999, 12), 9);
     // a minimum of 5 ₪ a month binds on 900 ₪ (0.90 ₪ at the rate): another shekel would pay nothing more, so the 10 ₪ is carried as paid
     expect(at({ rate: 0.001, min: 5, everyMonths: 1 }).feesCarried!.trade).toBeCloseTo(10, 9);
@@ -325,7 +323,7 @@ describe("the split of a whole-units run by fee line (F-63, F-91, F-109)", () =>
     // costs 22 ₪ before tax, the trade line is the 10 ₪ carried to 11.20, and the remainder is +10.80: the 12% the 90 ₪ waiting did not earn.
     const once = { goal: { amountNow: 1_000, monthly: 0, months: 12 }, market: { grossReturn: 0.12, inflation: 0 } } as const;
     const none = runSecurities(input({ ...once, tariff: {} }), ctx);
-    const units = runSecurities(input({ ...once, way: { units: { price: 300 } } }), ctx);
+    const units = runSecurities(input({ ...once, wholeUnits: { price: 300 } }), ctx);
     expect(beforeTax(none)).toBeCloseTo(1_120, 6);
     expect(beforeTax(units)).toBeCloseTo(1_098, 6);
     const remainder = beforeTax(none) - beforeTax(units) - units.feesCarried!.trade;
@@ -346,8 +344,6 @@ describe("the split of a whole-units run by fee line (F-63, F-91, F-109)", () =>
       channel: "direct",
       theta: 0.005,
       providers: [{ snapshot: fibi, level: "list" }],
-      // the remainder below is small where the cash waits only for a unit; placed every few months it waits longer (F-133, order-interval.test.ts)
-      behaviour: { orderEvery: 1 },
     });
     for (const [monthly, months] of [[200, 12], [200, 60], [1_000, 120]] as const) {
       const r = providerWorkbench(wb(monthly, months), ctx).rows[0]!;
@@ -374,7 +370,7 @@ describe("the waiting cash's part (F-91, F-109: W)", () => {
   // move and is carried one more month; month 2: 1,200 buys one unit at 1,000 × 1.01 = 1,010, and 190 waits through the last month.
   // W = 600 × 0.01 × 1.01 + 190 × 0.01 = 7.96. By amount: 600 × 1.01² + 600 × 1.01 = 1,218.06; in whole units 1,010 × 1.01 + 190 = 1,210.10.
   // Falling 1% a month: the unit is 990, 210 waits, W = 600 × (−0.01) × 0.99 + 210 × (−0.01) = −8.04, a gain: 1,182.06 against 1,190.10.
-  const two = (monthly: number) => input({ goal: { amountNow: 0, monthly: 600, months: 2 }, market: { grossReturn: (1 + monthly) ** 12 - 1, inflation: 0 }, tariff: {}, way: { units: { price: 1_000 } } });
+  const two = (monthly: number) => input({ goal: { amountNow: 0, monthly: 600, months: 2 }, market: { grossReturn: (1 + monthly) ** 12 - 1, inflation: 0 }, tariff: {}, wholeUnits: { price: 1_000 } });
   it("is each month's waiting cash times the month's move, carried to the exit: 7.96 ₪ when the fund rose, −8.04 ₪ when it fell", () => {
     const up = runSecurities(two(0.01), ctx);
     const down = runSecurities(two(-0.01), ctx);
@@ -382,15 +378,15 @@ describe("the waiting cash's part (F-91, F-109: W)", () => {
     expect(down.waitingCarried).toBeCloseTo(-8.04, 9);
     expect(waitingReal(up)).toBeCloseTo(7.96, 9);
     // the gap between buying by amount and in whole units, before tax, with no account fee: W itself
-    const { way: _, ...byAmount } = two(0.01);
+    const { wholeUnits: _, ...byAmount } = two(0.01);
     expect(beforeTax(runSecurities(byAmount, ctx)) - beforeTax(up)).toBeCloseTo(7.96, 9);
-    const { way: __, ...byAmountDown } = two(-0.01);
+    const { wholeUnits: __, ...byAmountDown } = two(-0.01);
     expect(beforeTax(runSecurities(byAmountDown, ctx)) - beforeTax(down)).toBeCloseTo(-8.04, 9);
   });
   it("with no account fee it is the whole gap to the run by amount, at a rise and at a fall, over ten years with inflation", () => {
     for (const grossReturn of [0.07, -0.05]) {
       const base = { goal: { amountNow: 10_000, monthly: 500, months: 120 }, market: { grossReturn, inflation: 0.02 }, tariff: {} };
-      const whole = runSecurities(input({ ...base, way: { units: { price: 2_600 } } }), ctx);
+      const whole = runSecurities(input({ ...base, wholeUnits: { price: 2_600 } }), ctx);
       const gap = beforeTax(runSecurities(input(base), ctx)) - beforeTax(whole);
       expect(waitingReal(whole)!).toBeCloseTo(gap, 6);
       expect(Math.sign(waitingReal(whole)!)).toBe(Math.sign(grossReturn));

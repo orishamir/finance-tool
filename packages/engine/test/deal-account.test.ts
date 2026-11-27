@@ -38,7 +38,7 @@ describe("F-128 a deal account runs as a tariff with the same prices", () => {
 
   it("a fund bought abroad, with a conversion of 0.2% and whole units", () => {
     const currency = { code: "USD", startRate: 3.7 };
-    const foreign: SecuritiesInput = { ...base, fund: { kind: "foreign-fund", drag: { management: 0.0007 }, sharePrice: 500 }, market: { ...base.market, returnIn: "instrument", fxChange: 0 }, way: { units: { price: 1850 } } };
+    const foreign: SecuritiesInput = { ...base, fund: { kind: "foreign-fund", drag: { management: 0.0007 }, sharePrice: 500 }, market: { ...base.market, returnIn: "instrument", fxChange: 0 }, wholeUnits: { price: 1850 } };
     const t = runSecurities({ ...foreign, tariff: { ...tariff, fx: 0.002, currency } }, ctx);
     const fx: Deal = { ...deal, fees: [...deal.fees, { base: { key: "fx" }, stages: [{ price: { kind: "action", rate: 0.002 } }] }] };
     const d = runSecurities({ ...foreign, tariff: { currency }, deal: account(fx) }, ctx);
@@ -350,7 +350,7 @@ describe("F-128 orders as the house's row places them", () => {
 
   it("an order that buys no unit is not counted among a month's orders", () => {
     // two months at 1,850 ₪ a unit: the amount now buys five units, and neither deposit buys one, so each month places one order
-    const plan: SecuritiesInput = { ...base, goal: { amountNow: 10_000, monthly: 500, months: 2 }, way: { units: { price: 1_850 } } };
+    const plan: SecuritiesInput = { ...base, goal: { amountNow: 10_000, monthly: 500, months: 2 }, wholeUnits: { price: 1_850 } };
     const steps: DealAccount = {
       ...account({ foreign: false, fees: [{ base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.001 } }] }, { base: { key: "trade" }, stages: [{ price: { kind: "action", rate: 0.003 } }] }] }),
       planWithin: [[{ on: "count", from: 0, to: 1, unit: "actions" }], [{ on: "count", from: 1, to: null, unit: "actions" }]],

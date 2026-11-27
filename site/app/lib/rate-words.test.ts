@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { FeesSnapshot } from "@finance-tool/schema";
 import { STANDING_ORDER_BAND } from "@finance-tool/engine";
-import { orderCharge, rateWords } from "./rate-words";
+import { rateWords } from "./rate-words";
 import { buildIndicesBundle } from "./providers.server";
 import { buildInvest, indexById, pairCosts, type PairCosts } from "./invest";
 import type { WorkbenchInputs } from "./providers";
@@ -90,27 +90,5 @@ describe("on the collected price lists", () => {
       }
     }
     expect(said).toBeGreaterThan(10);
-  });
-});
-
-describe("the charge each purchase pays whatever its size (F-133, the receipt's line for buying every few months)", () => {
-  type L = Partial<Line> & Pick<Line, "base" | "rate">;
-  it("the regular trade line's minimum first, never a standing order's line", () => {
-    const lines = [line({ base: "trade", rate: fig(0.15, "pct_of_trade"), min: fig(15, "eur") }), line({ base: "trade", rate: fig(0, "pct_of_trade"), min: fig(1, "nis_per_trade"), band: STANDING_ORDER_BAND }), line({ base: "fx", rate: fig(0.5, "pct_of_trade"), min: fig(5, "usd") })];
-    expect(orderCharge(priced(lines))).toMatchObject({ kind: "tradeMin", value: { value: 15, unit: "eur" } });
-  });
-  it("with no minimum on the trade line: its price per order, then its flat price for a small order", () => {
-    expect(orderCharge(priced([line({ base: "trade", rate: fig(9.9, "nis_per_trade") })]))).toMatchObject({ kind: "tradeFlat", value: { value: 9.9 } });
-    expect(orderCharge(priced([line({ base: "trade", rate: fig(0.1, "pct_of_trade"), flat_up_to: { amount: fig(4, "nis_per_trade"), up_to: fig(30000, "nis") } } as L)]))).toMatchObject({ kind: "tradeUpTo", value: { value: 4 }, upTo: { value: 30000 } });
-  });
-  it("with none on the trade line: the conversion's minimum, then its flat price", () => {
-    const trade = line({ base: "trade", rate: fig(0.1, "pct_of_trade") });
-    expect(orderCharge(priced([trade, line({ base: "fx", rate: fig(0.17, "pct_of_trade"), min: fig(5.7, "usd") })]))).toMatchObject({ kind: "fxMin", value: { value: 5.7 } });
-    expect(orderCharge(priced([trade, line({ base: "fx", rate: fig(0.17, "pct_of_trade"), flat_up_to: { amount: fig(3.3, "usd"), up_to: fig(99, "usd") } } as L)]))).toMatchObject({ kind: "fxUpTo", value: { value: 3.3 }, upTo: { value: 99 } });
-  });
-  it("none where nothing such is printed, where the prices are the person's, or where a base has two regular lines", () => {
-    expect(orderCharge(priced([line({ base: "trade", rate: fig(0.1, "pct_of_trade") })]))).toBeNull();
-    expect(orderCharge(priced([line({ base: "trade", rate: fig(0.1, "pct_of_trade"), min: fig(15, "eur") })], { entered: true }))).toBeNull();
-    expect(orderCharge(priced([line({ base: "trade", rate: fig(0.1, "pct_of_trade"), min: fig(15, "eur") }), line({ base: "trade", rate: fig(0.2, "pct_of_trade"), min: fig(2, "nis_per_trade"), id: "x" } as L)]))).toBeNull();
   });
 });

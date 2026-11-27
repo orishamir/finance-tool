@@ -3,10 +3,8 @@
 
 A fund the person types, and a securities account typed by hand before a deal took its place, which moves into a deal of its own (the
 move of a typed account, method §10.4): the figures check that deal, priced as F-128 prices a deal, against what the typed account left.
-On a plain plan: no spread, no tracking gap, no surtax. The plan's purchases are placed every k months (F-133: k of 1, 2, 3, 4, 6 and 12, the
-deposits between orders waiting in shekels, earning nothing, and above a month no order in the month of the sale); each figure is at the k
-F-133 chooses: the one that leaves the most in real value before tax, the smaller k on a tie (within a part in a billion). The tax rates
-and the collected tariff come from the data files, the terms from the test. A run on the site starts month 1 in its run date's month, so the
+On a plain plan: one order a month, no spread, no tracking gap, no surtax. The tax rates and the
+collected tariff come from the data files, the terms from the test. A run on the site starts month 1 in its run date's month, so the
 exit's tax year, whose fees are deducted from the gain (F-09), holds the months since the last January: the figures are printed for each
 calendar month of month 1, and the test reads the one of its run date. Run it and copy nothing by hand:
 `python3 tests/golden/expected_custom_entries.py`.
@@ -40,24 +38,9 @@ def commission(amount, rate, minimum, maximum=None):
     return fee
 
 
-INTERVALS = (1, 2, 3, 4, 6, 12)
-
-
-def run(*args, **kwargs):
-    """F-133: the run at the interval that leaves the most before tax, the smaller interval on a tie (within a part in a billion). Returns
-    the chosen run's real value after tax."""
-    chosen_after, most = run_every(*args, every=1, **kwargs)
-    for k in INTERVALS[1:]:
-        after, before = run_every(*args, every=k, **kwargs)
-        if before - most > 1e-9 * abs(most):
-            chosen_after, most = after, before
-    return chosen_after
-
-
-def run_every(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly_fee, fund_fee_pct, tax_rate, foreign, trade_max=None, first_month=1, every=1):
+def run(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly_fee, fund_fee_pct, tax_rate, foreign, trade_max=None, first_month=1):
     """F-08 month by month, F-09 at exit. Custody was typed as a percent a year: a twelfth a month, with the monthly minimum (F-14), as the
-    moved deal's custody charges it each month. Above monthly the deposits wait in shekels for the plan's order, placed in each month `every`
-    divides before T (F-133); what waits at the sale is left as it is, no fee and no tax. Returns the real value after tax and before it."""
+    moved deal's custody charges it each month."""
     I = [(1 + INFLATION) ** (m / 12) for m in range(T + 1)]
     # F-03 and F-04: a foreign security is indexed on the exchange rate, flat here (A-03 = 0); an Israeli fund on the CPI
     J = [1.0] * (T + 1) if foreign else I
@@ -75,14 +58,10 @@ def run_every(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly
         lots.append([trade / nav, trade, J[event]])
 
     exit_year_fees = 0.0
-    waiting = 0.0
     for m in range(1, T + 1):
         if m == 1:
             buy(AMOUNT, 0)
-        waiting += MONTHLY * I[m]
-        if every == 1 or (m % every == 0 and m < T):
-            buy(waiting, m)
-            waiting = 0.0
+        buy(MONTHLY * I[m], m)
         nav *= 1 + g - delta / 12
         value = sum(lot[0] for lot in lots) * nav
         custody = 0.0
@@ -111,7 +90,7 @@ def run_every(trade_rate, trade_min, custody_year, custody_min, fx_rate, monthly
     indexed = sum(lot[1] * J[T] / lot[2] for lot in lots)
     gain = gross - indexed - exit_year_fees
     tax = tax_rate * max(0.0, gain)
-    return (gross - sell - fx - tax + waiting) / I[T], (gross - sell - fx + waiting) / I[T]
+    return (gross - sell - fx - tax) / I[T]
 
 
 def ibi_on_tracking_fund():

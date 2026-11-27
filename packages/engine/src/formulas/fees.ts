@@ -82,20 +82,19 @@ export interface TradeTerms {
  */
 export function tradeCommission(line: Commission | undefined, amount: number, terms: TradeTerms): number {
   if (!line || amount <= 0) return 0;
-  // each sum at its currency's rate (`sumRate`), read where it is used: this runs for every order of every run, so it makes no function of its own
-  const x = terms.fxRate;
-  if (line.flatUpTo && amount <= line.flatUpTo.upTo * sumRate(line, "flatUpTo", x)) return line.flatUpTo.amount * sumRate(line, "flatUpTo", x);
+  const k = (sum: CommissionSum) => sumRate(line, sum, terms.fxRate);
+  if (line.flatUpTo && amount <= line.flatUpTo.upTo * k("flatUpTo")) return line.flatUpTo.amount * k("flatUpTo");
   let fee = line.rate * amount;
   if (line.perShare) {
     if (!terms.sharePrice) throw new RangeError("a per-share commission needs the share price (F-12)");
-    fee += line.perShare * sumRate(line, "perShare", x) * (amount / terms.fxRate / terms.sharePrice);
+    fee += line.perShare * k("perShare") * (amount / terms.fxRate / terms.sharePrice);
   }
   if (line.perCurrencyUnit) fee += line.perCurrencyUnit * (amount / terms.fxRate);
-  if (line.max !== undefined) fee = Math.min(fee, line.max * sumRate(line, "max", x));
-  if (line.min !== undefined) fee = Math.max(fee, line.min * sumRate(line, "min", x));
+  if (line.max !== undefined) fee = Math.min(fee, line.max * k("max"));
+  if (line.min !== undefined) fee = Math.max(fee, line.min * k("min"));
   if (line.perShareAbove && terms.sharePrice) {
     const shares = amount / terms.fxRate / terms.sharePrice;
-    fee += Math.max(0, shares - line.perShareAbove.shares) * line.perShareAbove.perShare * sumRate(line, "perShareAbove", x);
+    fee += Math.max(0, shares - line.perShareAbove.shares) * line.perShareAbove.perShare * k("perShareAbove");
   }
   if (line.cap !== undefined) fee = Math.min(fee, line.cap * amount);
   return fee;
@@ -378,37 +377,6 @@ export function conversionStretches(fee: ConversionPrice | undefined, spread: Co
 }
 
 /**
- * `conversionStretches` kept for a price with steps or bounds, by the price it is (its fee's or its spread's object) and the other price, for
- * the last terms it was built at (performance only): every order of a run converts at the same line and, without a move in the exchange rate,
- * at the same rate, and an order in whole units converts once for each count it tries, all at one rate. One entry per pair of prices, so a run
- * whose rate moves every month replaces it rather than piling up. The share price is part of the terms only where a line of the prices has a
- * per-share part, the one place it is read (`tradeCommission`). A price that is only percentages builds one stretch and is not kept. Kept by
- * the price objects themselves, so they go when the tariff that holds them does.
- */
-type KeptStretches = { fxRate: number; sharePrice: number | undefined; stretches: ConversionStretch[] };
-const keptByFee = new WeakMap<object, Map<ConversionPrice, KeptStretches>>();
-const keptBySpread = new WeakMap<object, Map<ConversionPrice | undefined, KeptStretches>>();
-/** Whether a line of a conversion's price has a per-share part, which reads the share price (`tradeCommission`). */
-function readsSharePrice(p: ConversionPrice | undefined): boolean {
-  if (p === undefined || typeof p === "number") return false;
-  const lines = isSized(p) ? [p.line] : [p];
-  return lines.some((l) => typeof l === "object" && (l.perShare !== undefined || l.perShareAbove !== undefined));
-}
-function stretchesKept(fee: ConversionPrice | undefined, spread: ConversionPrice, terms: TradeTerms): ConversionStretch[] {
-  const byOther = typeof fee === "object" ? keptByFee : typeof spread === "object" ? keptBySpread : null;
-  if (!byOther) return conversionStretches(fee, spread, terms);
-  const [key, other] = (typeof fee === "object" ? [fee, spread] : [spread as object, fee]) as [object, ConversionPrice];
-  let m = byOther.get(key);
-  if (!m) byOther.set(key, (m = new Map()));
-  const sharePrice = readsSharePrice(fee) || readsSharePrice(spread) ? terms.sharePrice : undefined;
-  const kept = m.get(other);
-  if (kept && kept.fxRate === terms.fxRate && kept.sharePrice === sharePrice) return kept.stretches;
-  const stretches = conversionStretches(fee, spread, terms);
-  m.set(other, { fxRate: terms.fxRate, sharePrice, stretches });
-  return stretches;
-}
-
-/**
  * F-13 The shekels whose conversion buys a deal worth `value` within one stretch, `c = value + cost(c)`: the cost rises by less than `c` does,
  * so the fixed-point iteration converges to the one solution.
  */
@@ -448,7 +416,7 @@ export function boughtFor(owed: number, stretches: readonly ConversionStretch[],
 
 /** F-13 `boughtFor` on a house's line: a cent of the fund's currency at the rate of the conversion. */
 export function convertFor(owed: number, fee: ConversionPrice | undefined, terms: TradeTerms, spread: ConversionPrice = 0): { converted: number; cost: number; extra: number } {
-  const { at: _, ...conv } = boughtFor(owed, stretchesKept(fee, spread, terms), 0.01 * terms.fxRate);
+  const { at: _, ...conv } = boughtFor(owed, conversionStretches(fee, spread, terms), 0.01 * terms.fxRate);
   return conv;
 }
 
@@ -474,7 +442,7 @@ export function mostBought(cash: number, stretches: readonly ConversionStretch[]
 
 /** F-13 `mostBought` on a house's line. */
 export function convertedAtMost(cash: number, fee: ConversionPrice | undefined, terms: TradeTerms, spread: ConversionPrice = 0): Conversion {
-  const { at: _, ...conv } = mostBought(cash, stretchesKept(fee, spread, terms));
+  const { at: _, ...conv } = mostBought(cash, conversionStretches(fee, spread, terms));
   return conv;
 }
 

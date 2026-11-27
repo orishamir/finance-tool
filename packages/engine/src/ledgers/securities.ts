@@ -253,51 +253,16 @@ export interface SecuritiesInput {
    * filed for the year of the loss (flagged). The unused part is reported in `detail.lossUnused`.
    */
   carriedLoss?: { amount: number; ruleIds: readonly string[]; carriedForward: boolean };
-  /** How the account buys the fund (`BuyWay`). Absent: every order is bought by amount, as F-08 says. */
-  way?: BuyWay;
+  /**
+   * F-109 (D94): the fund is bought in whole units. `price` is one unit's price in shekels at the run's start (the fund record's
+   * `share_price` at the run's exchange rate), moved with the fund's value as `sharePrice` is. Each order buys the most whole units its cash
+   * pays for, fees included, at the ask; what is left waits in the account, earning nothing, and joins the next order. An order whose cash
+   * buys no unit is not placed and pays nothing. `monthlyByAmount`: the monthly purchases are bought by amount (a house's recurring plan that
+   * buys fractions), every other order in whole units. Absent: every order is bought by amount, as F-08 says.
+   */
+  wholeUnits?: { price: number; monthlyByAmount?: boolean };
   profile: Profile;
 }
-
-/**
- * F-109 (D94): the fund is bought in whole units. `price` is one unit's price in shekels at the run's start (the fund record's
- * `share_price` at the run's exchange rate), moved with the fund's value as `sharePrice` is. Each order buys the most whole units its cash
- * pays for, fees included, at the ask; what is left waits in the account, earning nothing, and joins the next order. An order whose cash
- * buys no unit is not placed and pays nothing. `monthlyByAmount`: the monthly purchases are bought by amount (a house's recurring plan that
- * buys fractions), every other order in whole units.
- */
-export interface WholeUnits {
-  price: number;
-  monthlyByAmount?: boolean;
-}
-
-/**
- * F-133: the order intervals a plan's purchases may be placed at, in months: every month, and every 2, 4, 6 or 12 months. Every 3 months is
- * left out: over the ranking grid and the deal plans it moves no value by more than 0.31% of what is left, and each interval tried is one
- * more run of every house (F-133).
- */
-export const ORDER_INTERVALS = [1, 2, 4, 6, 12] as const;
-export type OrderInterval = (typeof ORDER_INTERVALS)[number];
-
-/**
- * How an account buys the fund: in whole units (`units`, F-109), or by amount where absent (F-08); and how often the plan's purchases are
- * placed (`orderEvery`, F-133), every month where absent.
- */
-export interface BuyWay {
-  units?: WholeUnits;
-  /**
-   * F-133: the plan's purchase orders are placed every this many months, in the months it divides before the month of the sale, none in
-   * that month; the deposits between orders wait in shekels, unconverted and earning nothing, and those after the last order wait to the
-   * sale. Above 1, an order is placed at the regular trade and conversion lines, never a standing order's or a recurring plan's. The amount
-   * now is bought at the start, as always.
-   */
-  orderEvery?: OrderInterval;
-}
-
-/** F-133: the months between a way's purchase orders. */
-export const orderEveryOf = (way: BuyWay | undefined): OrderInterval => way?.orderEvery ?? 1;
-
-/** F-109, F-133: whether a way leaves cash waiting between orders by design: in whole units, or placed less often than every month. */
-export const cashWaits = (way: BuyWay | undefined): boolean => !!way?.units || orderEveryOf(way) > 1;
 
 /** The run cannot be done for this input; the comparison shows "not evaluated" with the gap. */
 export class NotEvaluatedError extends Error {
@@ -453,31 +418,7 @@ export function securitiesStopOf(input: SecuritiesInput, ctx: RunContext): Secur
  * F-51 IRA: an IRA hishtalmut holding securities pays the manager's balance fee and follows F-46 at exit.
  */
 export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResult {
-  return memoRun("securities", ctx, input, () => securitiesRun(input, ctx));
-}
-
-/** The run `runSecurities` hands back, worked out afresh. */
-const securitiesRun = (input: SecuritiesInput, ctx: RunContext): RunResult => acrossReadings(ctx, (c) => securitiesLedger(input, c), RUN_RESULT_FIELDS);
-
-/**
- * The run `choose` picks among the runs of `base` bought each of `ways` (F-133: one way at each order interval; undefined, the way `base`
- * already buys by), and its index. The runs compare as `runSecurities` hands them back, so the choice and the run are the ones the caller
- * would have from it. Only the chosen run is kept as `runSecurities` keeps one, and the choice as its index, under `kind`, which names the
- * rule `choose` applies: kept, the runs that lost would push out of the `keepRuns` latest the runs the tests ask for again. Asked again for
- * the same base and ways, it reads the choice kept and the one run.
- */
-export function runSecuritiesChosen(kind: string, base: SecuritiesInput, ways: readonly (BuyWay | undefined)[], ctx: RunContext, choose: (runs: readonly RunResult[]) => number): { index: number; run: RunResult } {
-  const inputOf = (way: BuyWay | undefined): SecuritiesInput => (way === undefined ? base : { ...base, way });
-  let won: RunResult | undefined;
-  const index = memoRun(kind, ctx, [base, ways], () => {
-    const runs = ways.map((way) => securitiesRun(inputOf(way), ctx));
-    const i = choose(runs);
-    won = runs[i];
-    return i;
-  });
-  if (!(index in ways)) throw new Error(`unreachable: ${kind} chose run ${index} of ${ways.length}`);
-  const input = inputOf(ways[index]);
-  return { index, run: memoRun("securities", ctx, input, () => won ?? securitiesRun(input, ctx)) };
+  return memoRun("securities", ctx, input, () => acrossReadings(ctx, (c) => securitiesLedger(input, c), RUN_RESULT_FIELDS));
 }
 
 /**
@@ -588,28 +529,10 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   const first = ((goal.firstMonth ?? 1) - 1 + offset) % 12 + 1;
   const orders = input.ordersPerMonth ?? 1;
   if (!Number.isInteger(orders) || orders < 1) throw new RangeError(`ordersPerMonth ${orders} must be a whole number of 1 or more (A-28)`);
-  // F-133: the plan's purchases are placed every `every` months, in the months it divides and never in the month of the sale, where an
-  // order would be sold in the month it buys
-  const every = orderEveryOf(input.way);
-  if (!(ORDER_INTERVALS as readonly number[]).includes(every)) throw new RangeError(`F-133: an order interval of ${every} months is not one of ${ORDER_INTERVALS.join(", ")}`);
-  if (every > 1 && orders > 1) throw new RangeError(`F-133: a plan placed every ${every} months places one order then, not ${orders} a month (A-28)`);
-  if (every > 1) formulas.push("F-133");
   if (!Number.isInteger(offset) || offset < 0) throw new RangeError(`gridOffset ${offset} must be a whole number of months, 0 or more`);
   const I = cpiPath(market.inflation, T);
   const X = fxPath(market.fxChange ?? 0, T);
   const C = contributions(goal, I);
-  // F-133: the months a plan placed every few months orders in, and the deposits each such order spends (each month's own where it orders
-  // every month); 0 in a month that places none. Deposits after the last such month wait to the sale
-  const batchMonth = (m: number) => every > 1 && m % every === 0 && m < T;
-  const planned: number[] = Array.from({ length: T + 1 }, () => 0);
-  for (let m = 1, since = 0; m <= T; m++) {
-    since += m <= goal.months ? (C[m] ?? 0) : 0;
-    if (every === 1 ? m <= goal.months : batchMonth(m)) {
-      planned[m] = since;
-      since = 0;
-    }
-  }
-  const plannedIn = (m: number) => planned[m] ?? 0;
   // F-04, TXF OQ10: under the exchange-rate reading, a TASE foreign fund whose annex states no index, of a fund the site does not know, takes
   // its record's currency's path, the run's one (`taxIndexOf` reads a record in shekels on the CPI under both readings)
   const unstated = fund.kind === "tase-foreign-fund" && !stated;
@@ -695,16 +618,10 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // F-128: what a charge of a deal account reads of a month: the orders the run reads for it (`ActivityTrace`), else those the plan places
   // in it (the amount now and the month's deposits, a distribution reinvested, and the sale), and its trading, the trading the run reads for
   // it, else the cash the plan puts in it. An order is counted where it buys something; one that buys no unit is not placed (F-109)
-  const paysOutIn = (m: number) => !!fund.distribution && m >= 1 && m % (12 / fund.distribution.perYear) === 0;
-  // F-133: an order placed every few months spends the deposits since the last and the distributions paid since (one paid in an order's own
-  // month comes after it, F-20, and waits for the next)
-  const paidOutSince = (m: number) => Array.from({ length: every }, (_, i) => m - every + i).some(paysOutIn);
   const ordersIn = (m: number) =>
-    (m === 1 && C[0]! > 0 ? 1 : 0) +
-    (every === 1 ? (plannedIn(m) > 0 ? orders : 0) + (paysOutIn(m) ? 1 : 0) : batchMonth(m) && (plannedIn(m) > 0 || paidOutSince(m)) ? 1 : 0) +
-    (m === T ? 1 : 0);
+    (m === 1 && C[0]! > 0 ? 1 : 0) + (m <= goal.months && C[m]! > 0 ? orders : 0) + (fund.distribution && m % (12 / fund.distribution.perYear) === 0 ? 1 : 0) + (m === T ? 1 : 0);
   const countIn = (m: number) => trace?.read?.[m]?.count ?? (trace?.read ? 0 : ordersIn(m));
-  const tradingIn = (m: number) => trace?.read?.[m]?.trading ?? (trace?.read ? 0 : (m === 1 ? C[0]! : 0) + plannedIn(m));
+  const tradingIn = (m: number) => trace?.read?.[m]?.trading ?? (trace?.read ? 0 : (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0));
   const placedIn = (m: number, amount: number) => {
     if (!trace || !(amount > 0)) return;
     const at = trace.placed[m] ?? { count: 0, trading: 0 };
@@ -715,11 +632,9 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   // F-109: whole units. The unit's price in shekels moves with the fund's value per unit (`nav`, 1 at the start). Cash an order leaves waits in
   // two pockets: shekels not yet converted (`waitingNis`), and the fund's currency a distribution left (`waitingHeld`, in that currency), which
   // the next order spends without converting it again.
-  const unitBuy = input.way?.units;
+  const unitBuy = input.wholeUnits;
   if (unitBuy && !(unitBuy.price > 0)) throw new RangeError(`F-109: a unit's price of ${unitBuy.price} must be above 0`);
   if (unitBuy) formulas.push("F-109");
-  // F-91 on F-109 and F-133: the cash the way leaves waiting between orders is followed month by month (`waitingCarried`)
-  const waits = cashWaits(input.way);
   let waitingNis = 0;
   let waitingHeld = 0;
   const wait = { monthly: 0, placed: 0, skipped: 0 };
@@ -766,15 +681,13 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   };
 
   /**
-   * One order: FX fee on a contribution, then trade value and commission, bought at the ask. A plan's purchase (`plan`) is counted for the
-   * row's line on whole units. A monthly one is placed the standing-order way: the standing commission with the standing conversion, where
-   * the tariff prints them. Where the group or the person set the regular price of a side (`cheaperOfStandingTrade`, `cheaperOfStandingFx`),
-   * the person can place the order the regular way instead: the regular commission (a side with no flag keeps its standing commission, F-12)
-   * with the regular conversion. The order pays the cheaper whole order (F-101); a commission of one way never combines with the conversion
-   * of the other. A batched one (F-133) is a regular order at the regular lines.
+   * One order: FX fee on a contribution, then trade value and commission, bought at the ask. A monthly purchase (`standing`) is placed the
+   * standing-order way: the standing commission with the standing conversion, where the tariff prints them. Where the group or the person set the
+   * regular price of a side (`cheaperOfStandingTrade`, `cheaperOfStandingFx`), the person can place the order the regular way instead: the regular
+   * commission (a side with no flag keeps its standing commission, F-12) with the regular conversion. The order pays the cheaper whole order
+   * (F-101); a commission of one way never combines with the conversion of the other.
    */
-  const buy = (cash: number, month: number, eventMonth: number, convert: boolean, plan: "monthly" | "batched" | null = null) => {
-    const standing = plan === "monthly";
+  const buy = (cash: number, month: number, eventMonth: number, convert: boolean, standing = false) => {
     const at = tariffAt(month);
     const terms = { fxRate: fxRate(eventMonth) };
     const tradeTerms = { fxRate: terms.fxRate, sharePrice: sharePrice(month) };
@@ -790,7 +703,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
       placedIn(month, placed.trade);
       waitingNis = placed.leftNis;
       waitingHeld = placed.leftHeld / fxRate(eventMonth);
-      if (plan) {
+      if (standing) {
         wait.monthly++;
         if (placed.trade > 0) wait.placed++;
         else wait.skipped++;
@@ -813,7 +726,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     }
     waitingNis = chosen.leftNis;
     waitingHeld = chosen.leftHeld / fxRate(eventMonth);
-    if (plan) {
+    if (standing) {
       wait.monthly++;
       if (chosen.trade > 0) wait.placed++;
       else wait.skipped++;
@@ -931,21 +844,14 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
 
   for (let m = 1; m <= T; m++) {
     navAt[m] = nav;
-    // 1-2. Contributions at the start of the month, each its own order (A-28); placed every `every` months, a deposit waits in shekels for
-    // its month's order (F-133)
+    // 1-2. Contributions at the start of the month, each its own order (A-28).
     if (m === 1 && C[0]! > 0) buy(C[0]!, m, 0, true);
-    if (every === 1 && m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, "monthly");
-    // F-133: with no deposit since the last order, the order spends what waits (a distribution's net), where something does
-    if (every > 1) {
-      if (m <= goal.months) waitingNis += C[m]!;
-      if (batchMonth(m) && waiting(m) > 0) buy(0, m, m, true, plannedIn(m) > 0 ? "batched" : null);
-    }
+    if (m <= goal.months && C[m]! > 0) for (let k = 0; k < orders; k++) buy(C[m]! / orders, m, m, true, true);
     tally.paidIn += (m === 1 ? C[0]! : 0) + (m <= goal.months ? C[m]! : 0);
 
-    // F-109, F-133, F-91: the cash waiting for a unit or an order this month, which the month's growth and its share of the holdings do not
-    // reach (`waitingCarried`)
-    const waitingNow = waits ? waiting(m) : 0;
-    if (waits) tally.waitFrom(waitingNow);
+    // F-109, F-91: the cash waiting for a unit this month, which the month's growth and its share of the holdings do not reach (`waitingCarried`)
+    const waitingNow = unitBuy ? waiting(m) : 0;
+    if (unitBuy) tally.waitFrom(waitingNow);
     // 3. Growth less drag (F-10). The sum over the lots is kept while the lots stand: at 40 years it is 480 lots, several times a month, in every run.
     let units = lots.totalUnits();
     const before = units * nav;
@@ -973,14 +879,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
       tally.taxDuring += t.foreign + t.israeli;
       // the year's taxable distributions, for the surtax (TXG-09); a taxable fund's are exempt to the holder (TXS-11), so they are none
       if (fund.kind !== "money-market-taxable") distThisYear += dist;
-      // F-133: a plan placed every few months places no order for it: the net waits in the fund's currency and joins the next order. At a
-      // house that is not a bank, whether the exchange gain on that currency while it waits is taxed is open (TX2-04 (b), TX2 OQ4, TXF OQ4);
-      // the run counts none, and says so
-      if (every === 1) buy(t.net, m, m, false);
-      else {
-        waitingHeld += t.net / fxRate(m);
-        if (tariff.currency && t.net > 0 && (input.memberKind === "non-bank" || atForeignBroker)) tally.flag("TX2-OQ4", m);
-      }
+      buy(t.net, m, m, false);
       units = lots.totalUnits();
       // F-103: the custodian's charge for the dividend, paid by removing units oldest first; it is not a fee the sale gain is reduced by
       const asked = dc ? scaled(dc.event(m, units * nav), units * nav) : null;
@@ -1041,7 +940,7 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     const custodyAtRate = custodyLine !== undefined && custody > 0 && Math.abs(custody - custodyLine.rate * (held - manager)) <= 1e-9 * Math.max(1, custody);
     const marginal = dealHeld ? dealHeld.atRate : custodyAtRate ? custodyLine.rate : 0;
     tally.grow(1 - marginal * (1 - wrapperFee / 12) - wrapperFee / 12);
-    if (waits) tally.waitTo(waitingNow);
+    if (unitBuy) tally.waitTo(waitingNow);
     const fromUnits = custody + custodySum + manager + fixed + account - fromCash;
     if (fromUnits > 0) {
       lots.removeFifo(fromUnits / nav);

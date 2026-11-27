@@ -230,14 +230,8 @@ describe("in whole units, the fees charged and the waiting cash apart (F-91, F-1
         // the account's fees are taken: a minus, never the plus the waiting cash's gain made of them
         expect(r.account).toBeGreaterThan(0);
         expect(out).toContain(`−${r.account.toLocaleString("en-US")} ₪`);
-        // the waiting cash: its own words and its own sign, a plus where the fund fell, a minus where it rose. Its words say what it waited
-        // for: a unit, or, priced buying every few months (F-133: at a fall the cash that waits gains), the next purchase, which the line
-        // under the total says: each purchase the plan's 500 ₪ a month times the interval
-        const waitingWords = pc.orderEvery > 1 ? w.pair.waitingBatched : w.pair.waiting;
-        const why = pc.orderEvery > 1 ? w.pair.waitingBatchedWhy(pc.orderEvery) : w.pair.waitingWhy;
-        if (pc.orderEvery > 1) expect(out).toContain(w.receipt.batched.line(pc.orderEvery).replace("{amount}", `${(500 * pc.orderEvery).toLocaleString("en-US")} ₪`));
-        if (pc.orderEvery === 1) expect(out).not.toContain(w.pair.waitingBatched);
-        const at = out.indexOf(waitingWords);
+        // the waiting cash: its own words and its own sign, a plus where the fund fell, a minus where it rose
+        const at = out.indexOf(w.pair.waiting);
         expect(at).toBeGreaterThan(0);
         const sign = returnPct < 0 ? "+" : "−";
         expect(out.slice(at, at + 60)).toContain(`${sign}${Math.abs(r.waiting).toLocaleString("en-US")} ₪`);
@@ -245,9 +239,9 @@ describe("in whole units, the fees charged and the waiting cash apart (F-91, F-1
         // never a line of words under it
         if (layout === "ticket") {
           const raw = html(createElement(PairReceipt, { view, bundle, plan: p, pick, chosen: true, layout }));
-          expect(raw).toContain(help.markLabel.replace("{about}", waitingWords));
-          expect(out).not.toContain(why.fell);
-          expect(out).not.toContain(why.rose);
+          expect(raw).toContain(help.markLabel.replace("{about}", w.pair.waiting));
+          expect(out).not.toContain(w.pair.waitingWhy.fell);
+          expect(out).not.toContain(w.pair.waitingWhy.rose);
         }
         // the waiting cash is among the lines that add up to the total
         expect(r.paidIn + r.added - r.account - r.fund - r.waiting - ch.inflation - ch.tax).toBe(ch.left);

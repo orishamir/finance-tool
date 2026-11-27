@@ -674,8 +674,7 @@ function costOf(deal: Deal, period: DealPeriod, amount: number, side: "buy" | "s
     if (fee.within?.on === "action" && !inStep(fee.within, amount / shekelsPer(fee.within.currency, rates))) return [];
     return [{ fee: i, ...feeCost(fee, priceOn(fee, period.prices[i]!, side)!, a, rates, unitPrice) }];
   });
-  // `priced` is in the order of the fees, so the rest alone already is
-  const parts = fx.length ? [...fx, ...rest].sort((x, y) => x.fee - y.fee) : rest;
+  const parts = [...fx, ...rest].sort((x, y) => x.fee - y.fee);
   return { total: parts.reduce((x, p) => x + p.cost, 0), parts };
 }
 
@@ -683,29 +682,14 @@ function costOf(deal: Deal, period: DealPeriod, amount: number, side: "buy" | "s
 type OnActionPrice = Extract<DealPrice, { kind: "action" | "perUnit" | "perAction" | "perDollar" }>;
 const isOnAction = (p: DealPrice): p is OnActionPrice => p.kind === "action" || p.kind === "perUnit" || p.kind === "perAction" || p.kind === "perDollar";
 
-/**
- * The fees an action on side `side` charges in a period: each on that action whose price there is on an action (`isOnAction`). Worked out
- * once per deal, period, action and side (`chargedKept`): a purchase by amount prices dozens of trades in one period to find the one its cash
- * pays for (`tradeForCash`). The list is shared, so no caller changes it.
- */
-function chargedOnAction(deal: Deal, period: DealPeriod, action: DealAction, side: "buy" | "sell"): readonly number[] {
-  let byPeriod = chargedKept.get(deal);
-  if (!byPeriod) chargedKept.set(deal, (byPeriod = new WeakMap()));
-  let byKey = byPeriod.get(period);
-  if (!byKey) byPeriod.set(period, (byKey = new Map()));
-  const key = `${action}|${side}`;
-  let fees = byKey.get(key);
-  if (!fees) {
-    fees = onAction(deal, period, action).fees.filter((i) => {
-      const fee = deal.fees[i]!;
-      const price = priceOn(fee, period.prices[i]!, side);
-      return !!price && groupAction(deal, fee.base, price) === action && isOnAction(price);
-    });
-    byKey.set(key, fees);
-  }
-  return fees;
+/** The fees an action on side `side` charges in a period: each on that action whose price there is on an action (`isOnAction`). */
+function chargedOnAction(deal: Deal, period: DealPeriod, action: DealAction, side: "buy" | "sell"): number[] {
+  return onAction(deal, period, action).fees.filter((i) => {
+    const fee = deal.fees[i]!;
+    const price = priceOn(fee, period.prices[i]!, side);
+    return !!price && groupAction(deal, fee.base, price) === action && isOnAction(price);
+  });
 }
-const chargedKept = new WeakMap<Deal, WeakMap<DealPeriod, Map<string, readonly number[]>>>();
 
 /**
  * F-13: whether a fee is a conversion's (its fee or its spread, both on the `fx` base): on a purchase its steps and its flat prices are read

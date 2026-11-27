@@ -12,7 +12,7 @@ import type { Commission, ConversionPrice, Custody, SizeStep } from "../formulas
 import { perUnitOf } from "../formulas/deal.ts";
 import type { Goal } from "../formulas/time.ts";
 import type { Profile } from "../ledgers/common.ts";
-import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, runSecuritiesChosen, cashWaits, orderEveryOf, ORDER_INTERVALS, type BuyWay, type OrderInterval, type Fund, type SaleConversionPrice, type SecuritiesInput, type WholeUnits } from "../ledgers/securities.ts";
+import { checkTariffPeriods, hasUnitPrice, memberKindOf, runSecurities, type Fund, type SaleConversionPrice, type SecuritiesInput } from "../ledgers/securities.ts";
 import type { DealAccount } from "../ledgers/deal-account.ts";
 import { stoppedOnRule } from "../open-readings.ts";
 import { RecordInputError } from "../resolver.ts";
@@ -133,13 +133,6 @@ export function countsCurrentAccount(snapshot: Pick<FeesSnapshot, "current_accou
   return snapshot.current_account !== undefined;
 }
 
-/**
- * A-28 and F-133: how the person places the plan's orders: trades a month (`ordersPerMonth`), and the interval between the plan's purchase
- * orders (`orderEvery`). Several orders a month is a plan that orders every month, so an interval above a month goes with one order a month
- * only. Absent `orderEvery`, each interval F-133 tries is run and the row takes the one it chooses.
- */
-export type Behaviour = { ordersPerMonth?: number; orderEvery?: 1 } | { ordersPerMonth?: 1; orderEvery?: OrderInterval };
-
 export interface WorkbenchInput {
   goal: Goal;
   /** A-01 and A-02; A-03 when the fund is quoted in a foreign currency. */
@@ -148,8 +141,8 @@ export interface WorkbenchInput {
   fund: Fund;
   profile: Profile;
   broker?: SecuritiesInput["broker"];
-  /** A-28 and F-133: how the person places the plan's orders (`Behaviour`); custody follows the tariff's own period. */
-  behaviour?: Behaviour;
+  /** A-28: trades a month, as the person says they trade. FX is a percentage of each conversion, so the number of conversions does not change its cost; custody follows the tariff's own period. */
+  behaviour?: { ordersPerMonth?: number };
   /** The snapshot's instrument class the fund is (`applies_to` of a line), for example `etf_units`. */
   instrumentClass: string;
   /** The wrapper whose lines apply, default `brokerage-account`. */
@@ -244,8 +237,6 @@ export interface ComparedProvider extends ProviderBase {
   /** D7: list and average are sourced; entered is the person's. */
   feeState: "sourced" | "entered";
   tariff: SecuritiesInput["tariff"];
-  /** F-109, F-133: the way the row is priced on, the one that leaves the most at the horizon, with its order interval. */
-  way: BuyWay & { orderEvery: NonNullable<BuyWay["orderEvery"]> };
   linesUsed: string[];
   /** Level and source of the rate each line used (additive). */
   lineSources: TariffBuild["lineSources"];
@@ -845,7 +836,7 @@ const providerLines: readonly FeeLine[] = ["trade", "custody", "fx", "fixed", "a
  * the rest in whole units. An entry limited to a list of securities the house does not publish (`list_only`) names none of the site's funds
  * (D42) and changes nothing. Undefined (by amount): no listing, a tracking fund (bought from its manager by amount), or no unit price.
  */
-export function wholeUnitsAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">, snapshot: Pick<FeesSnapshot, "by_amount">, tariff: SecuritiesInput["tariff"]): WholeUnits | undefined {
+export function wholeUnitsAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">, snapshot: Pick<FeesSnapshot, "by_amount">, tariff: SecuritiesInput["tariff"]): SecuritiesInput["wholeUnits"] {
   const price = unitPriceAt(input);
   if (price === undefined) return undefined;
   const entry = (snapshot.by_amount ?? []).find((e) => e.venue === input.listing && !e.list_only && !e.shares_only);
@@ -884,77 +875,12 @@ function unitPriceAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" |
  * order or on its recurring plan, can also buy whole units: both are run and the house is priced on the one that leaves more, as a monthly
  * purchase takes the standing line or the regular one. A house that sells only whole units, and a fund with no unit price, have one way.
  */
-export function unitWaysAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">, snapshot: Pick<FeesSnapshot, "by_amount">, tariff: SecuritiesInput["tariff"]): BuyWay[] {
+export function unitWaysAt(input: Pick<WorkbenchInput, "listing" | "instrumentClass" | "fund" | "currency" | "fx">, snapshot: Pick<FeesSnapshot, "by_amount">, tariff: SecuritiesInput["tariff"]): SecuritiesInput["wholeUnits"][] {
   const own = wholeUnitsAt(input, snapshot, tariff);
   const price = unitPriceAt(input);
-  const ownWay: BuyWay = own ? { units: own } : {};
-  if (price === undefined || (own && !own.monthlyByAmount)) return [ownWay];
-  return [ownWay, { units: { price } }];
+  if (price === undefined || (own && !own.monthlyByAmount)) return [own];
+  return [own, { price }];
 }
-
-/**
- * F-133 The order interval: the runs a row tries, for each of a house's ways (F-109), in the house's own order, that way at each order
- * interval, monthly first. Above monthly no order is a recurring plan's, so a way that buys the monthly purchases by amount on one buys
- * every order in whole units, as the house's other way already does, and is tried monthly alone. Intervals are tried where the plan has an
- * order they move: a monthly deposit, or a fund that pays out, whose net waits for the next order. An interval of the plan's months or more
- * places no order before the sale, so the plan would never buy: it is not tried. A-28's several orders a month is a plan that orders every
- * month, and tries monthly alone. An interval the person gives (`behaviour.orderEvery`) is the only one tried.
- */
-export function intervalWays(ways: readonly BuyWay[], plan: { monthly: number; months: number; paysOut: boolean; behaviour?: Behaviour }): BuyWay[][] {
-  const given = plan.behaviour?.orderEvery;
-  const batches = (plan.monthly > 0 || plan.paysOut) && (plan.behaviour?.ordersPerMonth ?? 1) === 1;
-  const intervals: readonly OrderInterval[] = given !== undefined ? [given] : batches ? ORDER_INTERVALS.filter((k) => k === 1 || k < plan.months) : [1];
-  // a way with no interval left to try (a recurring plan's, at a given interval above a month) is not tried
-  return ways.map((w) => intervals.flatMap((k) => (k === 1 ? [w] : w.units?.monthlyByAmount ? [] : [{ ...w, orderEvery: k }]))).filter((tried) => tried.length > 0);
-}
-
-/**
- * F-133 Which interval, within one way: the index of the run chosen among a way's runs at each interval (`intervalWays`, monthly first where
- * it is tried), the one that leaves the most at the horizon before tax (`beforeTax`), the smaller interval on a tie. Before tax, since the tax
- * a monthly plan pays is raised by the fees G-20 leaves out of its cost basis, so after tax batching could win through that alone. A way not
- * tried monthly takes its one run.
- */
-export function intervalChosen(runs: readonly { way: BuyWay; run: RunResult }[]): number {
-  const first = runs[0];
-  if (!first) throw new Error("F-133: a way is tried at one interval at least");
-  if (orderEveryOf(first.way) !== 1) return 0;
-  let chosen = 0;
-  let most = beforeTax(first.run);
-  for (const [i, r] of runs.entries()) {
-    if (i === 0) continue;
-    const b = beforeTax(r.run);
-    if (leavesMore(b, most)) [chosen, most] = [i, b];
-  }
-  return chosen;
-}
-
-/** The item at the index a choice (`intervalChosen`, `wayChosen`) returns, which is always one of its own list's. */
-function chosenOf<T>(list: readonly T[], i: number, what: string): T {
-  const item = list[i];
-  if (item === undefined) throw new Error(`unreachable: ${what}`);
-  return item;
-}
-
-/**
- * F-109 Which way: the index of the way chosen among a house's ways, each at its own interval (`intervalChosen`), the one that leaves the most
- * at the horizon after tax (`RunResult.real`), the house's own way, the first, on a tie.
- */
-export function wayChosen(byWay: readonly { way: BuyWay; run: RunResult }[]): number {
-  const first = byWay[0];
-  if (!first) throw new Error("F-109: a house is tried in one way at least");
-  let chosen = 0;
-  let most = first.run.real;
-  byWay.forEach((w, i) => {
-    if (w.run.real > most) [chosen, most] = [i, w.run.real];
-  });
-  return chosen;
-}
-
-/**
- * F-133: whether an interval leaves more than the most of the smaller ones, by more than the rounding of a double (a part in a
- * billion): two that leave the same are a tie, which keeps the smaller interval.
- */
-const leavesMore = (a: number, b: number): boolean => a - b > 1e-9 * Math.abs(b);
 
 /** The fund as the run takes it: a share price printed in another currency than the instrument's carries the run's rate between them. */
 function fundForRun(input: Pick<WorkbenchInput, "fund" | "currency" | "fx">): Fund {
@@ -1005,8 +931,7 @@ export function beforeTax(r: RunResult): number {
 
 /**
  * F-91, F-109 helper: what the cash waiting for a whole unit did against the fund, at the horizon in today's shekels (`waitingCarried / I_T`):
- * above zero where it missed a rise, below zero where it missed a fall; null for a run whose way leaves no cash waiting (`cashWaits`: by
- * amount, every month). F-133: a run placed every few months counts the deposits waiting for their order here too.
+ * above zero where it missed a rise, below zero where it missed a fall; null for a run that is not in whole units.
  */
 export function waitingReal(r: Pick<RunResult, "waitingCarried" | "series" | "exitMonth" | "nominal" | "real">): number | null {
   return r.waitingCarried === undefined ? null : r.waitingCarried / indexAtExit(r as RunResult);
@@ -1047,7 +972,7 @@ interface ReadyProvider {
   deal?: DealAccount;
   built: TariffBuild;
   memberKind: NonNullable<SecuritiesInput["memberKind"]>;
-  ways: BuyWay[];
+  ways: SecuritiesInput["wholeUnits"][];
 }
 
 /**
@@ -1162,13 +1087,13 @@ function preparedAll(input: WorkbenchInput, runFund: Fund): (ReadyProvider | Not
 
 /** F-63's input for one run of the fund: the goal over `months`, at a tariff, a member kind and a way of buying (F-109); a deal account's deal (F-128). */
 function planOf(input: WorkbenchInput, runFund: Fund) {
-  return (tariff: SecuritiesInput["tariff"], months: number, memberKind?: SecuritiesInput["memberKind"], way?: BuyWay, deal?: DealAccount): SecuritiesInput => {
+  return (tariff: SecuritiesInput["tariff"], months: number, memberKind?: SecuritiesInput["memberKind"], wholeUnits?: SecuritiesInput["wholeUnits"], deal?: DealAccount): SecuritiesInput => {
     const p: SecuritiesInput = { goal: { ...input.goal, months }, market: input.market, fund: runFund, tariff, profile: input.profile };
     if (deal) p.deal = deal;
     if (input.broker) p.broker = input.broker;
     if (memberKind) p.memberKind = memberKind;
     if (input.behaviour?.ordersPerMonth !== undefined) p.ordersPerMonth = input.behaviour.ordersPerMonth;
-    if (way && cashWaits(way)) p.way = way;
+    if (wholeUnits) p.wholeUnits = wholeUnits;
     return p;
   };
 }
@@ -1214,24 +1139,19 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       continue;
     }
     const { base, level, built, memberKind, ways, deal } = ready;
-    // F-133: each way at the interval it chooses, before tax; F-109: of the ways, the one that leaves the most at the horizon, its own on a tie
-    const byWay = intervalWays(ways, { monthly: input.goal.monthly, months: horizon, paysOut: !!input.fund.distribution, ...(input.behaviour ? { behaviour: input.behaviour } : {}) }).map((tried) => {
-      const only = tried.length === 1 ? tried[0] : undefined;
-      if (only) return { way: only, run: runSecurities(plan(built.tariff, horizon, memberKind, only, deal), ctx) };
-      // the runs differ only in the way they buy by, which the plan carries where cash waits (`planOf`)
-      const base = plan(built.tariff, horizon, memberKind, undefined, deal);
-      const choose = (runs: readonly RunResult[]) => intervalChosen(runs.map((run, i) => ({ way: chosenOf(tried, i, "F-133: a run of each interval tried"), run })));
-      const { index, run } = runSecuritiesChosen("F-133", base, tried.map((w) => (cashWaits(w) ? w : undefined)), ctx, choose);
-      return { way: chosenOf(tried, index, "F-133: the interval chosen is one of the way's runs"), run };
-    });
-    const { way, run } = chosenOf(byWay, wayChosen(byWay), "F-109: the way chosen is one of the house's ways");
+    let units = ways[0];
+    let run = runSecurities(plan(built.tariff, horizon, memberKind, units, deal), ctx);
+    for (const w of ways.slice(1)) {
+      const other = runSecurities(plan(built.tariff, horizon, memberKind, w, deal), ctx);
+      if (other.real > run.real) [units, run] = [w, other];
+    }
     const stopped = stoppedBeforeComparing([noneT, run]);
     if (stopped) {
       rows.push({ ...base, kind: "not-comparable", reason: { code: "rule-open", ...stopped } });
       continue;
     }
-    const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind, way, deal) } as const;
-    const run12 = runSecurities(plan(built.tariff, 12, memberKind, way, deal), ctx);
+    const planF = { run: "runSecurities", input: plan(built.tariff, horizon, memberKind, units, deal) } as const;
+    const run12 = runSecurities(plan(built.tariff, 12, memberKind, units, deal), ctx);
     const total = noneT.real - run.real;
     // F-61's split takes a whole run per fee line, and a page that ranks every fund at every house reads it for few: run when first read.
     const split = once(() => {
@@ -1239,11 +1159,10 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       // F-63, F-91 in whole units (F-109): a run without one line places its orders in other months (the cash a fee no longer takes buys a unit
       // sooner, and each order pays its own minimum), so removing a line can leave less and the line would read below zero. A line is instead
       // what was paid on it, each payment carried to the horizon at the fund's total return from the month it was paid, in today's shekels;
-      // the same figure before and after tax, the tax and what whole units do left to the remainder, so the whole is unchanged. So is a run
-      // placed every few months (F-133): no line removed takes back what its waiting cash missed.
+      // the same figure before and after tax, the tax and what whole units do left to the remainder, so the whole is unchanged.
       // F-128: a deal account's lines are what each was paid, carried the same way: a run without a deal's line has no meaning apart from its
       // fees. Its lines are the ones its fees were charged on (`byFee` splits the same carry by the deal's own fees)
-      const carried = cashWaits(way) || deal ? run.feesCarried : undefined;
+      const carried = units || deal ? run.feesCarried : undefined;
       if (carried) {
         if (deal) lines.push(...providerLines.filter((l) => carried[l] !== 0 && !lines.includes(l)));
         const index = run.series.find((pt) => pt.month === run.exitMonth)?.index ?? 1;
@@ -1273,7 +1192,6 @@ export function providerWorkbench(input: WorkbenchInput, ctx: RunContext): Provi
       feeState: level === "entered" ? "entered" : "sourced",
       ...(deal ? { account: deal, byFee: (run.feesCarriedBy ?? []).map((c, fee) => ({ fee, costBeforeTax: c / exitIndex })).filter((x) => x.costBeforeTax !== 0) } : {}),
       tariff: built.tariff,
-      way: { ...way, orderEvery: orderEveryOf(way) },
       linesUsed: built.linesUsed,
       lineSources: built.lineSources,
       noLine: built.noLine,

@@ -910,7 +910,6 @@ export const formulaNames: Record<string, string> = {
   "F-106": "סך ההפקדות במחירים של היום",
   "F-107": "מס אמריקני על דיבידנדים בתוך קרן אירית",
   "F-109": "קנייה ביחידות שלמות, והכסף שמחכה ליחידה",
-  "F-133": "קנייה כל כמה חודשים, והכסף שמחכה לקנייה",
   "F-110": "התקופות של העסקה: מתי כל עמלה משתנה",
   "F-111": "על מה כל עמלה נגבית, ומה מצטבר יחד",
   "F-112": "הסכומים שהמחירים בעסקה מסמנים",
@@ -1126,9 +1125,6 @@ export const flags: Record<string, string> = {
   // F-12 at Interactive Israel's European minimum, 2.5 in the trade's currency, beside its collection sentence (BRK OQ25)
   "BRK-OQ25": "עמלת המינימום בקנייה ובמכירה כאן חושבה לפי 2.5 במטבע העסקה, כלשון התעריפון. אותו עמוד אומר גם שהעמלה נגבית במטבע הראשי של הבורסה. הוא לא אומר איך זה מתיישב עם מינימום בעסקה בדולרים, ולכן העמלה בפועל יכולה להיות שונה.",
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה. האתר עוד לא בדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
-  // F-133 at a house that is not a bank: a distribution's net waits in the fund's currency for the next order, and whether its exchange gain is
-  // taxed there is open (TX2-04 (b), TX2 OQ4, TXF OQ4); the run counts no gain and no loss
-  "TX2-OQ4": "כשקונים כל כמה חודשים, הדיבידנד שהקרן מחלקת מחכה בחשבון במטבע של הקרן עד הקנייה הבאה, ובינתיים השער זז. בבית השקעות שאינו בנק, לא ידוע אם רווח מהשער הזה חייב במס רווחי הון ואם אפשר לקזז ממנו הפסד. החישוב לא כולל מס או קיזוז כזה.",
   // F-04, method §13: a fund the site does not know, run under both readings of TXS OQ26 (TXS-14), beside a figure both readings give
   "TXS-OQ26": "לא ידוע אם הרווח בקרן הזו נמדד מול שער המטבע העיקרי שלה או מול מדד המחירים לצרכן. כמטבע העיקרי האתר לוקח את המטבע שהמדד מחושב בו. בתוכנית הזו שתי הדרכים נותנות אותו מס רווחי הון.",
   // F-04, method §13: a TASE foreign fund whose annex states no index and whose documents the site did not read, run under both readings of
@@ -4062,8 +4058,6 @@ const fromPrefix = (name: string) => (/^[A-Za-z0-9]/.test(name.replace(/^[\u2066
 const gapUnit = (n: number, year?: number) => (n === 1 && year ? `ב־${year}` : "בשנה");
 /** "בשנה אחת", "בשנתיים", "ב־10 שנים". */
 const inYears = (n: number) => countPhrase(n, { one: "בשנה אחת", two: "בשנתיים", many: "ב־{n} שנים" });
-/** F-133's interval in words: "כל חודשיים", "כל 4 חודשים", "כל 12 חודשים". */
-const everyMonths = (n: number) => countPhrase(n, { one: "כל חודש", two: "כל חודשיים", many: "כל {n} חודשים" });
 
 /**
  * The pair the receipt shows, named by whether the person picked it. Picked, it is the chosen pair. Before any pick it is the page's own:
@@ -4200,27 +4194,6 @@ export const invest = {
     gain: "הרווח שלכם",
     /** The account and the fund, by who takes their part. */
     parts: { account: "החשבון", fund: "הקרן" },
-    /**
-     * F-133: under what is left, where the pair is priced buying every few months: the interval and what each purchase buys (`{amount}`, the
-     * monthly deposit times the interval), or the interval alone with no monthly deposit; a tap opens why, its title `why`. `charge`: the
-     * charge each purchase pays whatever its size (lib/rate-words `orderCharge`, `{figure}` its price, `{upTo}` the sum a flat price holds up
-     * to), `general` where no one charge is printed; `monthly`: what the same pair leaves bought every month (`{figure}`).
-     */
-    batched: {
-      line: (months: number) => `אם קונים ${everyMonths(months)}, כ־{amount} בכל פעם`,
-      lineAlone: (months: number) => `אם קונים ${everyMonths(months)}`,
-      why: (months: number) => `למה ${everyMonths(months)}?`,
-      charge: {
-        tradeMin: (house: string) => `${inName(house)} כל קנייה עולה לפחות {figure}. כשקונים פחות פעמים, משלמים את המינימום הזה פחות פעמים, ונשאר יותר.`,
-        tradeFlat: (house: string) => `${inName(house)} כל קנייה עולה {figure}. כשקונים פחות פעמים, משלמים את העמלה הזו פחות פעמים, ונשאר יותר.`,
-        tradeUpTo: (house: string) => `${inName(house)} קנייה של עד {upTo} עולה {figure}. כשקונים פחות פעמים, משלמים את המחיר הזה פחות פעמים, ונשאר יותר.`,
-        fxMin: (house: string) => `${inName(house)} כל המרת מטבע לקנייה עולה לפחות {figure}. כשקונים פחות פעמים, משלמים את המינימום הזה פחות פעמים, ונשאר יותר.`,
-        fxUpTo: (house: string) => `${inName(house)} המרת מטבע של עד {upTo} עולה {figure}. כשקונים פחות פעמים, משלמים את המחיר הזה פחות פעמים, ונשאר יותר.`,
-      },
-      general: (house: string) => `${inName(house)} כל קנייה נושאת עמלה שלא קטנה כשהקנייה קטנה. כשקונים פחות פעמים, משלמים אותה פחות פעמים, ונשאר יותר.`,
-      monthly: "בקנייה כל חודש היה נשאר {figure}.",
-      waits: "הכסף שמחכה בין הקניות לא מרוויח בינתיים, וזה כבר נכלל בחישוב.",
-    },
     /** The fund's fees as rows under its line, each by its whole name; `charged`: the variable fee the costs rest on, after its years. */
     fundFees: { fixed: "דמי ניהול קבועים", variable: "דמי ניהול משתנים", trustee: "שכר נאמן", yearly: "דמי ניהול שנתיים" },
   },
@@ -4768,17 +4741,6 @@ export const invest = {
     waiting: "כסף שחיכה ליחידה שלמה",
     waitingAbout: "ההפרש בין הכסף שחיכה ליחידה שלמה לבין מה שהיה נעשה ממנו בקרן, עד המכירה, בהתחשב באינפלציה",
     waitingWhy: { rose: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא עלה עם הקרן.", fell: "קונים כאן רק יחידות שלמות, והכסף שחיכה לא ירד עם הקרן." },
-    /** F-133, F-91: the same line where the figure is priced buying every few months: the deposits waited for the next purchase */
-    waitingBatched: "כסף שחיכה לקנייה",
-    waitingBatchedAbout: "ההפרש בין הכסף שחיכה לקנייה הבאה לבין מה שהיה נעשה ממנו בקרן, עד המכירה, בהתחשב באינפלציה",
-    waitingBatchedWhy: (months: number) => ({
-      rose: `החישוב קונה ${everyMonths(months)}, כי כך נשאר יותר. הכסף שחיכה בין הקניות לא עלה עם הקרן.`,
-      fell: `החישוב קונה ${everyMonths(months)}, כי כך נשאר יותר. הכסף שחיכה בין הקניות לא ירד עם הקרן.`,
-    }),
-    /** F-133: beside a figure priced buying every few months, the interval that leaves the most (the fund's row at a house) */
-    orderEvery: (months: number) => `בקנייה ${everyMonths(months)}`,
-    /** F-133: the sheet of what the same pair leaves with its orders placed every month */
-    monthlyLeftAbout: "מה שהיה נשאר בקנייה כל חודש, בהתחשב באינפלציה",
     /** F-109: a fund bought in whole units whose unit price the site did not collect is priced by amount, and its row says so */
     unitPriceMissing: "מחיר יחידה של הקרן לא נאסף, אז החישוב קונה בכל סכום, גם חלק מיחידה.",
     /** The same, on a fund the person typed: they left its unit price empty (F-109). */
@@ -5036,7 +4998,7 @@ export const invest = {
     noOtherFund: "אין קרן אחרת מהסוג הזה.",
     /** `notSplit`: a step whose cost could not be split by who takes it says so, in place of a figure (no 0 that reads as a cost of nothing). */
     // the account's fees, and apart from them what the cash waiting for a whole unit did (F-91, F-109), as the receipt writes them
-    table: { step: "הצעד", fund: "הקרן", account: "החשבון", accountCost: "עמלות החשבון", waiting: "כסף שחיכה ליחידה שלמה", waitingBatched: "כסף שחיכה לקנייה", fundCost: "עלות הקרן", tax: "מס", left: "נשאר בסוף", notSplit: "לא חושב" },
+    table: { step: "הצעד", fund: "הקרן", account: "החשבון", accountCost: "עמלות החשבון", waiting: "כסף שחיכה ליחידה שלמה", fundCost: "עלות הקרן", tax: "מס", left: "נשאר בסוף", notSplit: "לא חושב" },
     stepStart: "נקודת ההתחלה:",
     here: "עכשיו:",
     hereExample: "נקודת התחלה לדוגמה:",
@@ -5501,7 +5463,6 @@ export const kit = {
       SourcedTag: "תגית קצרה על חברה שמקור עומד מאחוריה, כמו ״בטלפון בלבד״ ליד בית השקעות שמוכר סוג קרן רק בטלפון. הקשה פותחת את המקור, כמו בכל מספר. התגית לא משנה אף מספר, ושטח המגע שלה בגובה 44 פיקסלים בלי להגדיל את השורה.",
       Formula: "נוסחה בכתב מתמטי, עם מקרא שאומר מה כל סימן בה: בכרטיס של נוסחה שמסמך שיטת החישוב כותב כך, במקום קישור למסמך. בכרטיס של מספר מחושב: השורה של המספר עם הערכים שלו, או השורות של הפרש או של סכום.",
       HelpMark: "סימן שאלה ליד כותרת או תווית, שפותח בהקשה את כרטיס המונח ממילון המונחים, עם המקור, או הסבר קצר משלו: רק במקום שהוא מוסיף משהו שהכותרת לא אומרת.",
-      MarkSheet: "שורה עם סימן ? קטן אחריה, שפותח בהקשה הסבר קצר של העמוד עצמו, עם מספרים שכל אחד מהם נפתח למקור שלו. לכרטיס ממילון המונחים, Term; להסבר בלי מספרים, HelpMark.",
       TabCards: "שאלות בכרטיסים בשורה, ולוח אחד פתוח מתחתיהן: בכל כרטיס השאלה, התשובה בכמה מילים ושורה מתחתיה, והכרטיס כולו הוא הלשונית. התשובה מילים פשוטות, והמספר שבה נפתח מתוך הלוח. הכרטיס הפתוח במסגרת בצבע הפעולה, עם חץ קטן אל הלוח, ובמסך צר עם מילה שאומרת שהוא פתוח. החצים במקלדת עוברים בין הכרטיסים. כל לוח נפתח בשורה קטנה בצבע הפעולה ובמסקנה שלו (PanelHead).",
       TabStrip: "לשוניות בתוך עמוד שמחליפות חלק אחד שלו לתצוגה משלה, עם תוכן מסוג אחר, בלי לעזוב אותו (בחיפוש בעמוד החוקים והכללים: מה כתוב בחוק, ומה כתבו החברות): כל לשונית היא כפתור עם מספר השורות שבה, והחצים במקלדת עוברים ביניהן. בחירה שרק מצמצמת רשימה אחת היא ChoiceChips עם counts.",
       InlineSelect: "בחירה שיושבת בשורה של פקדים אחרים (הסינון בסוף שורת הלשוניות בחיפוש): התווית והבחירה בתוך רשימה נפתחת אחת, בלי מסגרת של שדה. labelHidden: התווית רק לקורא מסך, כשהמילים שסביבה כבר אומרות מה בוחרים.",
@@ -5735,7 +5696,6 @@ export const kit = {
       pickCardLink: "קישור בתוך הכרטיס",
       legendAfter: "הנחה לדוגמה",
       helpText: { head: "ריבית בשנה", text: "כך כל בנק פרסם את הריבית שלו. היא לא מגיעה לכל לקוח: כל בנק קובע תנאים." },
-      markSheet: { line: "אם קונים כל 6 חודשים, כ־3,000 ₪ בכל פעם (דוגמה)", title: "למה כל 6 חודשים? (דוגמה)", about: "קנייה כל 6 חודשים (דוגמה)", body: "הסבר לדוגמה, עם מספר שנפתח למקור שלו:" },
       lead: "שורת פתיחה קצרה שמסבירה מה יש בקבוצה.",
       body: "גוף הקבוצה: טקסט, רשימה או טבלה.",
       foldLabel: "הצגת הפרטים",

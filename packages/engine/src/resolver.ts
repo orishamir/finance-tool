@@ -287,13 +287,7 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     };
   }
 
-  // a book holds nothing of its own beyond its tax year and the part it reads for, so each is made once: a run asks for one each year
-  // (`inYear`) and for each part (`on`)
-  const books = new Map<string, RuleBook>();
   function bookFor(taxYear: number, at: At): RuleBook {
-    const key = `${taxYear}|${at.part ?? ""}|${"line" in at ? at.line : ""}`;
-    const kept = books.get(key);
-    if (kept) return kept;
     const self: RuleBook = {
     taxYear,
     ...readsFor(taxYear, at, true),
@@ -338,7 +332,6 @@ export function ruleBook(ctx: RunContext, years?: RunYears): RuleBook {
     },
     profileUsed: () => (["age", "income"] as const).filter((x) => profileUsed.has(x)),
     };
-    books.set(key, self);
     return self;
   }
 

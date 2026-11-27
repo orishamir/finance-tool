@@ -8,8 +8,7 @@ import { taxIndexStatementOf } from "@finance-tool/engine";
 import { invest, numbers, provenance } from "../../copy";
 import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
-import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf, pairCosts } from "../../lib/invest";
-import { chainOf, gridOf, middleStart } from "../../lib/stairs";
+import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
 import { brokerLabels, fundLabels, optionLabels } from "../../lib/labels";
 import type { SiteValue } from "../../lib/value";
 import { Fees } from "./funds";
@@ -27,11 +26,6 @@ import { PairReceipt } from "./receipt";
 import { BeforeDeciding, hedgeCard, mapTab } from "./before";
 import { useDollarCase } from "./dollar";
 import { bundle, t, plan, data, shown, html, inHost, lists, fundRow, StairsFor } from "./render-fixtures";
-
-function must<T>(v: T | null | undefined, what: string): T {
-  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
-  return v;
-}
 
 describe("the index page's sections render", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: plan, yourBroker: "leumi" });
@@ -92,31 +86,11 @@ describe("the index page's sections render", () => {
     expect(out).toContain(invest.noFund.callTitle);
     expect(out).toContain(invest.noFund.fundTitle);
     expect(out).toContain(invest.funds.request);
-    // every house keeps a row, and the priced ones stand in the order of the account's whole part, the waiting cash with the fees
+    // every house keeps a row, and the priced ones stand in the order of what they charge
     for (const h of v.houses) expect(out).toContain(h.provider.short);
-    const costs = v.houses.filter((h) => h.generic).map((h) => h.generic!.rankN!).sort((a, b) => a - b);
+    const costs = v.houses.filter((h) => h.generic).map((h) => h.generic!.costN!).sort((a, b) => a - b);
     const shown = [...out.matchAll(/data-pick-key="([^"]+)"/g)].map((m) => m[1]!).filter((id) => v.houses.find((h) => h.provider.id === id)?.generic);
-    expect(shown.map((id) => v.houses.find((h) => h.provider.id === id)!.generic!.rankN!)).toEqual(costs);
-  });
-  it("a custom index: the waiting cash is its own line, apart from what the account charges, and the remainder is the fees' alone (F-91, F-133)", () => {
-    const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
-    const out = html(createElement(NoFundAccountColumn, { view: v, bundle, years: 20, chosen: null, onPick: () => undefined }));
-    const waits = v.houses.filter((h) => h.split?.waiting && Math.round(h.split.waiting.value.value as number) !== 0);
-    expect(waits.length, "no house's way leaves cash waiting on this plan: pick another").toBeGreaterThan(0);
-    for (const h of v.houses) {
-      const sp = h.split;
-      if (!sp) continue;
-      const fees = must(h.generic?.costN, `${h.provider.id}: the account's cost`);
-      // the charge is the fees: the lines and the remainder add up to it, with no waiting cash among them
-      expect(sp.lines.reduce((a, l) => a + l.cost, 0) + sp.interaction, h.provider.id).toBeCloseTo(fees, 6);
-      expect(sp.whole.value, h.provider.id).toBe(Math.round(fees));
-    }
-    for (const h of waits) {
-      const from = out.indexOf(`data-pick-key="${h.provider.id}"`);
-      const next = out.indexOf("data-pick-key=", from + 1);
-      const row = out.slice(from, next < 0 ? undefined : next);
-      expect(row, h.provider.id).toContain(must(h.split?.waiting, `${h.provider.id}: the waiting cash`).orderEvery > 1 ? invest.pair.waitingBatched : invest.pair.waiting);
-    }
+    expect(shown.map((id) => v.houses.find((h) => h.provider.id === id)!.generic!.costN!)).toEqual(costs);
   });
   it("a custom index's account that prices no kind of fund says why in the pair page's words, which open the reason: no tag, no \"no data\", no separate source link (D105)", () => {
     // on a custom index abroad (every kind exists there) One Zero prices nothing: its Israeli funds are unknown (BRK-38) and it trades
@@ -813,34 +787,6 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
       }
     }
     expect(grey, "no grey line rendered in any account lane").toBeGreaterThan(0);
-  });
-  it("the stairs' waiting row is headed for a whole unit only where no stair with waiting cash is priced every few months (F-109, F-133)", () => {
-    const seen = { batched: 0, mixed: 0 };
-    for (const index of knownIndices(bundle)) {
-      const v = buildInvest({ bundle, index, plan });
-      // the stairs the panel draws from the page's example: its start and no step taken
-      const g = gridOf(v, bundle.snapshots);
-      const start = middleStart(g);
-      const chain = start ? chainOf(g, { start, taken: [] }) : null;
-      if (!chain) continue;
-      const waiting = chain.chain.flatMap((st) => {
-        const pc = pairCosts({ bundle, index, plan, fundId: st.pos.f, providerId: st.pos.a });
-        return pc?.waiting ? [pc.orderEvery] : [];
-      });
-      if (waiting.length === 0) continue;
-      const out = html(createElement(StairsFor, { view: v, bundle, plan, startHouse: null, startFund: null, example: true })).replace(/<!-- -->/g, "");
-      if (waiting.every((k) => k > 1)) {
-        seen.batched++;
-        expect(out, index.id).toContain(invest.stairs.table.waitingBatched);
-      } else if (waiting.some((k) => k > 1)) {
-        seen.mixed++;
-        // a stair that waited for the next purchase is never headed as waiting for a whole unit; waiting to buy fits both
-        expect(out, index.id).toContain(invest.stairs.table.waitingBatched);
-        expect(out, index.id).not.toContain(invest.stairs.table.waiting);
-      }
-    }
-    expect(seen.batched, "no index's stairs all wait for the next purchase on this plan").toBeGreaterThan(0);
-    expect(seen.mixed, "no index's stairs mix waiting for a unit and for the next purchase on this plan: pick another").toBeGreaterThan(0);
   });
   it("One Zero prices an Israeli fund where a distribution agreement its manager reports names it; any other is open, never \"not sold\" (BRK-38, BRK OQ24); no ETF; and no fund traded outside the US", () => {
     const snap = bundle.snapshots.find((s) => s.id === "one-zero")!;
