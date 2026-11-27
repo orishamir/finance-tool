@@ -55,7 +55,7 @@ interface PublisherRow {
 }
 
 /** One source entry, from a rule's `sources[]` or from a figure's own `source`. */
-export interface Entry {
+interface Entry {
   ruleId: string;
   url: string;
   title: string;
