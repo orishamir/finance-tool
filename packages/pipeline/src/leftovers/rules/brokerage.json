@@ -18,6 +18,7 @@
     "BRK-38",
     "BRK-41",
     "BRK-48",
+    "BRK-49",
     "BRK-54",
     "BRK-55",
     "BRK-67",
@@ -35,7 +36,8 @@
     "CORP-16",
     "RG-02",
     "RG-03",
-    "RG-07"
+    "RG-07",
+    "RG-19"
   ],
   "pointer-word": [],
   "title-ditto": []
