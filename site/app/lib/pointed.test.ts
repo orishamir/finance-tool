@@ -138,21 +138,24 @@ describe("every chip on a page's rule cards opens its record", () => {
     const bad: string[] = [];
     for (const id of institutionIds()) {
       const d = buildInstitution(id);
-      if (d) bad.push(...unopened(d.rules, d.pointed).map((x) => `${id}: ${x}`));
+      if (d) bad.push(...unopened(d.rules, d.pointed, d.heads).map((x) => `${id}: ${x}`));
     }
     for (const c of loadCma().companies) {
       const d = (await companyLoader({ params: { id: c.id } } as never)) as { kind: string; companyTerms?: Shipped };
       if (d.kind === "company" && d.companyTerms) bad.push(...unopened(d.companyTerms.rules, d.companyTerms.pointed, d.companyTerms.heads).map((x) => `${c.id}: ${x}`));
     }
-    const d = (await companiesLoader()) as { rules: Map_; pointed: Map_ };
-    bad.push(...unopened(d.rules, d.pointed).map((x) => `/companies: ${x}`));
+    const d = (await companiesLoader()) as Shipped;
+    bad.push(...unopened(d.rules, d.pointed, d.heads).map((x) => `/companies: ${x}`));
     expect(bad).toEqual([]);
   }, 300000);
 
   it("the rules shelves and the not-covered page", async () => {
-    const n = (await notCoveredLoader()) as { rules: Map_; pointed: Map_ };
-    const shelves = shelfIds.flatMap((s) => unopened(shelfBundle(s).rules, {}).map((x) => `${s}: ${x}`));
-    expect([...unopened(n.rules, n.pointed), ...shelves]).toEqual([]);
+    const n = (await notCoveredLoader()) as Shipped;
+    const shelves = shelfIds.flatMap((s) => {
+      const b = shelfBundle(s);
+      return unopened(b.rules, {}, b.heads).map((x) => `${s}: ${x}`);
+    });
+    expect([...unopened(n.rules, n.pointed, n.heads), ...shelves]).toEqual([]);
   }, 120000);
 
   it("the bundles the indices page and fees read, and the indices page's own rules beside its bundle's", async () => {
@@ -161,7 +164,7 @@ describe("every chip on a page's rule cards opens its record", () => {
     // the indices page's rules are its loader's (the glossary cards' rules) and its bundle's, the records they point at its bundle's
     const page = await indicesLoader({ params: {} } as never);
     const own = Object.fromEntries([...page.feeRules, ...w.rules].map((r) => [r.id, r as RuleRecord]));
-    expect([...unopened(w.rules, w.pointed), ...unopened(f.rules, f.pointed), ...unopened(own, w.pointed)]).toEqual([]);
+    expect([...unopened(w.rules, w.pointed, w.heads), ...unopened(f.rules, f.pointed, f.heads), ...unopened(own, w.pointed, w.heads)]).toEqual([]);
   }, 300000);
 });
 

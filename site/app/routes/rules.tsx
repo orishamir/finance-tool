@@ -28,6 +28,7 @@ import { pickSources, type SourcedRule } from "../lib/sources";
 import { moveAddress, useAddressSearch, useHash } from "../lib/address";
 import { hashId } from "../lib/address-hash";
 import type { RuleRecord } from "@finance-tool/schema";
+import type { RuleHead } from "../lib/rule-card-file";
 
 /** A rule's title for a list: the record's Hebrew title or text; never the English working title (the topic's Hebrew name stands in). */
 function listTitle(r: Parameters<typeof ruleTitle>[0] & { il_finance_file: string }, slots: SlotSource): string {
@@ -120,6 +121,8 @@ export function meta({ location }: MetaPlace) {
 
 interface ShelfBundle {
   rules: Record<string, RuleRecord>;
+  /** The heads of the rules its cards point at that it does not hold in full: a chip names its rule from them, and its card is fetched when tapped. */
+  heads: Record<string, RuleHead>;
   ruleUses: Record<string, RuleUses>;
 }
 
@@ -454,7 +457,8 @@ export default function Rules() {
   }, [wantedKey]);
   const rules = useMemo(() => Object.assign({}, ...Object.values(loaded).map((b) => b!.rules)) as Record<string, RuleRecord>, [loaded]);
   const ruleUses = useMemo(() => Object.assign({}, ...Object.values(loaded).map((b) => b!.ruleUses)) as Record<string, RuleUses>, [loaded]);
-  const pd = { rules, terms: {}, dimensions: data.dimensions, today: data.today, ruleUses };
+  const heads = useMemo(() => Object.assign({}, ...Object.values(loaded).map((b) => b?.heads)) as Record<string, RuleHead>, [loaded]);
+  const pd = { rules, heads, terms: {}, dimensions: data.dimensions, today: data.today, ruleUses };
 
   // ---- opening and closing a rule
   const url = (hash: string) => `${window.location.pathname}${window.location.search}${hash ? `#${encodeURIComponent(hash)}` : ""}`;

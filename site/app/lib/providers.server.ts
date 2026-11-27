@@ -3,7 +3,7 @@
 // exposure records, the saved fund lists (none yet), the rule records a securities run may read, P-01 and P-05, and the
 // link-outs. Server-only.
 import type { FeesSnapshot, ParameterRecord, RuleRecord } from "@finance-tool/schema";
-import { collectRuleIds, loadCma, loadFees, loadParameters, loadRules, pointedRecords, today } from "./data.server";
+import { collectRuleIds, loadCma, loadFees, loadParameters, loadRules, pointedShipment, today } from "./data.server";
 import { loadExposures, loadFunds } from "./instruments.server";
 import { HOUSE_CLASSES, onlyWhatCanBeDoneFundByFund, shippedSnapshot, type IndicesBundle } from "./providers";
 import { invest as investCopy } from "../copy";
@@ -71,7 +71,9 @@ export function buildIndicesBundle(): IndicesBundle {
   const p02 = find("P-02");
   const a03 = (p02 as unknown as { bounds: Record<string, { lo: { value: number }; hi: { value: number } }> }).bounds["A-03"];
   const dollarRange = a03 ? { lo: a03.lo.value, hi: a03.hi.value } : undefined;
-  const bundle: IndicesBundle = { today: t, snapshots, funds, exposures, fundLists, rules, pointed: Object.values(pointedRecords(rules, allRules)), p01: find("P-01"), p02, p05: find("P-05"), links: workbenchLinks(), providerCompany, wrapperCompanies, ...(fx ? { fx } : {}), ...(fxHistory ? { fxHistory } : {}), ...(dollarRange ? { dollarRange } : {}) };
+  const shipment = pointedShipment(rules, allRules);
+  const shipped = { pointed: Object.values(shipment.pointed), heads: shipment.heads };
+  const bundle: IndicesBundle = { today: t, snapshots, funds, exposures, fundLists, rules, ...shipped, p01: find("P-01"), p02, p05: find("P-05"), links: workbenchLinks(), providerCompany, wrapperCompanies, ...(fx ? { fx } : {}), ...(fxHistory ? { fxHistory } : {}), ...(dollarRange ? { dollarRange } : {}) };
   console.log(`[indices] bundle: ${snapshots.length} snapshots, ${funds.length} funds, ${exposures.length} exposures, ${fundLists.length} fund lists, ${rules.length} rules, ${(JSON.stringify(bundle).length / 1024).toFixed(0)} KB`);
   return bundle;
 }

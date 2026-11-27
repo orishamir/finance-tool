@@ -8,6 +8,7 @@ import type { TextFragment } from "../../../lib/sources";
 import type { SiteValue } from "../../../lib/value";
 import type { DepositVariant, ExitPoints } from "../../../lib/deposit-kind";
 import type { TermRow } from "../../../lib/data.server";
+import type { RuleHead } from "../../../lib/rule-card-file";
 import type { ColumnAverage } from "../../../lib/house-averages";
 import type { HouseTermsData } from "../../../lib/fee-page-data";
 
@@ -184,8 +185,10 @@ export interface InstitutionPageData {
   /** Names the catalogue records for this institution (data/catalog/), with where and when seen. */
   catalogue: { id: string; names: string[]; where: string; seen: SiteValue }[];
   rules: Record<string, RuleRecord>;
-  /** The records those rules' cards point at that the page does not cite (`pointedRecords`): only chips and cards read them. */
+  /** The records those rules' cards point at whose figures fill their slots, which the page ships in full (`pointedShipment`): only chips and cards read them. */
   pointed: Record<string, RuleRecord>;
+  /** The heads of the other rules they point at: a chip names its rule from them, and its card is fetched when tapped. */
+  heads: Record<string, RuleHead>;
   /** The glossary cards behind the "?" of its tables' heads (a deposit's rate), by their Hebrew names. */
   helpTerms: Record<string, TermRow>;
   /** What the site found in the company's own documents (D30): the records that name it, by topic; `company` is its registry id. */

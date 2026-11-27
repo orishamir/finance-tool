@@ -13,7 +13,7 @@ import type { NotCoveredRow } from "../lib/data.server";
 import { sourceLabel } from "../lib/source-label";
 
 export async function loader() {
-  const { loadOpenQuestions, loadRules, pointedRecords, today } = await import("../lib/data.server");
+  const { loadOpenQuestions, loadRules, pointedShipment, today } = await import("../lib/data.server");
   const { graduationStatuses, graduationRuleIds, notCoveredCards } = await import("../lib/graduation.server");
   const rules = loadRules();
   const statuses = graduationStatuses();
@@ -24,7 +24,7 @@ export async function loader() {
   // each open question in its own words (the guard in not-covered.test.ts keeps every one titled)
   const questions = loadOpenQuestions();
   const titles = Object.fromEntries(cards.flatMap((c) => c.status.open.map((o) => [o.code, questions[o.code]?.title_he ?? ""])));
-  return { cards, titles, rules: mine, pointed: pointedRecords(mine, rules), today: today() };
+  return { cards, titles, rules: mine, ...pointedShipment(mine, rules), today: today() };
 }
 
 export function meta({ location }: MetaPlace) {
@@ -125,7 +125,7 @@ function Known({ s, r, titles }: { s: GraduationStatusView; r: NotCoveredRow; ti
 export default function NotCovered() {
   const data = useLoaderData<typeof loader>();
   return (
-    <PageShell current="other" data={{ rules: data.rules, pointed: data.pointed, terms: {}, dimensions: {}, today: data.today }}>
+    <PageShell current="other" data={{ rules: data.rules, pointed: data.pointed, heads: data.heads, terms: {}, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-section">
         <PageHead title={copy.title} lede={copy.lede}>
           {/* what the site does cover, so the page is not only a list of gaps */}

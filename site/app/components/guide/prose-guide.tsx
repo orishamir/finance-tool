@@ -18,7 +18,7 @@ export function ProseGuide<Id extends string>({ copy, data, body, children }: {
 }) {
   const rules = data.rules as Record<string, RuleRecord>;
   const figure: RuleFigure = (id, name) => (rules[id] ? ruleFigure(rules[id]!, name, data.today) : null);
-  const pd = { rules, pointed: data.pointed as Record<string, RuleRecord>, terms: data.terms, dimensions: data.dimensions, today: data.today, ruleUses: data.ruleUses };
+  const pd = { rules, pointed: data.pointed as Record<string, RuleRecord>, heads: data.heads, terms: data.terms, dimensions: data.dimensions, today: data.today, ruleUses: data.ruleUses };
   const current = useCurrentSection(copy.sections.map((s) => s.id));
   const blocks = body(figure);
   return (
