@@ -18,6 +18,11 @@
     "Currency-Hedged",
     "מנוטרלת דולר"
   ],
+  "also_called": [
+    "מנוטרלת מט\"ח",
+    "Currency-Hedged",
+    "מנוטרלת דולר"
+  ],
   "rule_ids": [
     "ETF-10",
     "ETF-12",

@@ -13,6 +13,9 @@
   "variants": [
     "אינו צמוד למדד"
   ],
+  "also_called": [
+    "אינו צמוד למדד"
+  ],
   "rule_ids": [
     "BANK-14",
     "BANK-26",

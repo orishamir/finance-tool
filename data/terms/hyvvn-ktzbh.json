@@ -12,8 +12,13 @@
     "provident-for-annuity"
   ],
   "variants": [
-    "היוון",
     "קצבה מהוונת"
+  ],
+  "also_called": [
+    "קצבה מהוונת"
+  ],
+  "search": [
+    "היוון"
   ],
   "rule_ids": [
     "PEN-28",

@@ -14,6 +14,9 @@
   "variants": [
     "ריבית ניידת"
   ],
+  "also_called": [
+    "ריבית ניידת"
+  ],
   "rule_ids": [
     "BANK-25",
     "BANK-47"

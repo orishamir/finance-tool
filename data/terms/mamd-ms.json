@@ -13,6 +13,9 @@
   "variants": [
     "מסלול המס"
   ],
+  "also_called": [
+    "מסלול המס"
+  ],
   "rule_ids": [
     "TXS-07",
     "TXS-22"

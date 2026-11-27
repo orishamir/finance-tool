@@ -14,8 +14,13 @@
     "kupat-gemel-lehashkaa"
   ],
   "variants": [
-    "מוטב",
     "הוראת מוטבים"
+  ],
+  "also_called": [
+    "הוראת מוטבים"
+  ],
+  "search": [
+    "מוטב"
   ],
   "rule_ids": [
     "CS-17",

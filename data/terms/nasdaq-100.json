@@ -12,9 +12,15 @@
     "index-nasdaq100"
   ],
   "variants": [
-    "NASDAQ 100",
     "נאסד\"ק 100",
     "מדד נאסד\"ק 100"
+  ],
+  "also_called": [
+    "נאסד\"ק 100",
+    "מדד נאסד\"ק 100"
+  ],
+  "search": [
+    "NASDAQ 100"
   ],
   "rule_ids": [
     "ETF-46",

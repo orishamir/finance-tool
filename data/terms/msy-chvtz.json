@@ -13,7 +13,8 @@
   "exposure_ids": [
     "index-sp500"
   ],
-  "variants": [
+  "variants": [],
+  "search": [
     "מסי־חוץ"
   ],
   "rule_ids": [

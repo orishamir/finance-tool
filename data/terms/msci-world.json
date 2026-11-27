@@ -16,6 +16,11 @@
     "מדד MSCI World",
     "MSCI עולמי"
   ],
+  "also_called": [
+    "MSCI WORLD INDEX",
+    "מדד MSCI World",
+    "MSCI עולמי"
+  ],
   "rule_ids": [
     "ETF-48",
     "ETF-49"

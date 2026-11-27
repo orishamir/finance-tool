@@ -15,6 +15,9 @@
   "variants": [
     "פקדון"
   ],
+  "also_called": [
+    "פקדון"
+  ],
   "rule_ids": [
     "BANK-02",
     "BANK-14"

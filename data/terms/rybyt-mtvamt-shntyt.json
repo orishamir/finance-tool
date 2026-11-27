@@ -13,6 +13,9 @@
   "variants": [
     "ריבית מתואמת"
   ],
+  "also_called": [
+    "ריבית מתואמת"
+  ],
   "rule_ids": [
     "BANK-04",
     "BANK-11"

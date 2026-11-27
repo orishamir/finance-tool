@@ -14,7 +14,8 @@
     "index-sp500",
     "index-ta125"
   ],
-  "variants": [
+  "variants": [],
+  "search": [
     "מספר קרן"
   ],
   "rule_ids": [

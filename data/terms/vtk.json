@@ -14,8 +14,13 @@
     "keren-hishtalmut"
   ],
   "variants": [
-    "וותק",
     "וותק הפקדות"
+  ],
+  "also_called": [
+    "וותק הפקדות"
+  ],
+  "search": [
+    "וותק"
   ],
   "rule_ids": [
     "IRA-23",

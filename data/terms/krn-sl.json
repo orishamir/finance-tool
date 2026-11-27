@@ -18,6 +18,9 @@
   "variants": [
     "ETF"
   ],
+  "also_called": [
+    "ETF"
+  ],
   "rule_ids": [
     "ETF-01",
     "ETF-03",
