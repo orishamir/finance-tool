@@ -113,7 +113,7 @@
    "site/app/lib/data.server.ts": 3,
    "site/app/lib/deal-account/plan.ts": 2,
    "site/app/lib/deposit-browser.ts": 2,
-   "site/app/lib/documents.server.ts": 3,
+   "site/app/lib/documents.server.ts": 2,
    "site/app/lib/engine.ts": 1,
    "site/app/lib/fee-deal/cases.ts": 1,
    "site/app/lib/fee-deal/charts.ts": 11,

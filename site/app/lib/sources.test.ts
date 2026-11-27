@@ -3,6 +3,11 @@ import { citationFor, citationText, documentKey, isPdfUrl, mayHaveChanged, moreS
 import { groupDocuments } from "./documents.server";
 import { publisherHe } from "./publisher-he.server";
 
+/** The value a test needs, or a failure naming it. */
+const must = <T,>(x: T | null | undefined): T => {
+  if (x === null || x === undefined) throw new Error("the value the test reads is missing");
+  return x;
+};
 const src = (o: Partial<RuleSource> = {}): RuleSource => ({ url: "https://example.gov.il/a", title: "T", publisher: "Pub", strength: "primary", checked: "2026-10-01", ...o });
 const fig = (url: string, strength: string) => ({
   value: 1, unit: "pct", source: { url, title: "t", publisher: "p", strength }, checked: "2026-09-01", effective_from: null, effective_to: null, update_rule: "fixed in law", state: "sourced",
@@ -97,9 +102,9 @@ describe("sourceView: one shape for every source drawing", () => {
       src({ url: "https://example.org/b" }),
       src({ url: `${pdf}#page=7`, title_he: "פקודת מס הכנסה", locator_he: "סעיף 91", page: 7 }),
     ]);
-    expect(doc!.href).toBe(pdf);
-    expect(doc!.places.map((p) => [p.locator, p.href])).toEqual([["סעיף 9", `${pdf}#page=3`], ["סעיף 91", `${pdf}#page=7`]]);
-    expect(other!.href).toBe("https://example.org/b");
+    expect(must(doc).href).toBe(pdf);
+    expect(must(doc).places.map((p) => [p.locator, p.href])).toEqual([["סעיף 9", `${pdf}#page=3`], ["סעיף 91", `${pdf}#page=7`]]);
+    expect(must(other).href).toBe("https://example.org/b");
   });
   it("keeps a page's own #/ route apart: it names another page", () => {
     expect(documentKey("https://x.example/faq#/content/1")).toBe("https://x.example/faq#/content/1");
@@ -108,14 +113,14 @@ describe("sourceView: one shape for every source drawing", () => {
   });
   it("names the document once for the group, by its Hebrew title, and gives a place its own Hebrew title only where it differs", () => {
     const [doc] = sourceView([src({ url: "https://x.example/a#p1", title: "Guide", kind: "official_pdf" }), src({ url: "https://x.example/a#p2", title_he: "מדריך המס", publisher_he: "רשות המסים" }), src({ url: "https://x.example/a#p3", title_he: "שאלות ותשובות" })]);
-    expect(doc!.title!.text).toBe("מדריך המס");
-    expect(doc!.publisher).toBe("רשות המסים");
-    expect(doc!.places.map((p) => p.title)).toEqual([null, null, "שאלות ותשובות"]);
+    expect(must(must(doc).title).text).toBe("מדריך המס");
+    expect(must(doc).publisher).toBe("רשות המסים");
+    expect(must(doc).places.map((p) => p.title)).toEqual([null, null, "שאלות ותשובות"]);
   });
   it("drops the publisher wherever the title holds it, and keeps the title whole", () => {
     const [doc] = sourceView([src({ publisher_he: "רשות המסים", title_he: "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)" })]);
-    expect(doc!.publisher).toBeNull();
-    expect(doc!.title!.text).toBe("פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)");
+    expect(must(doc).publisher).toBeNull();
+    expect(must(must(doc).title).text).toBe("פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)");
   });
   it("takes the record's Hebrew publisher before the host table, and never names a shared portal as the publisher", () => {
     const table = { "boi.org.il": "בנק ישראל", "data.gov.il": "מאגר המידע הממשלתי (data.gov.il)", "gov.il": "אתר הממשלה (gov.il)" };
@@ -127,11 +132,11 @@ describe("sourceView: one shape for every source drawing", () => {
   });
   it("sets the direction from the title as shown: a kind's word is Hebrew, a host is not", () => {
     const [law] = sourceView([src({ title: "s.2", kind: "law" })]);
-    expect(law!.title!.text).toBe("חוק");
-    expect(law!.hebrew).toBe(true);
+    expect(must(must(law).title).text).toBe("חוק");
+    expect(must(law).hebrew).toBe(true);
     const [host] = sourceView([src({ title: "Some page", url: "https://example.org/p" })]);
-    expect(host!.title).toEqual({ text: "example.org", host: true });
-    expect(host!.hebrew).toBe(false);
+    expect(must(host).title).toEqual({ text: "example.org", host: true });
+    expect(must(host).hebrew).toBe(false);
   });
 });
 
@@ -140,8 +145,8 @@ describe("the copied citation names the place the card shows (Q42)", () => {
   const slots = { rules: {}, today: "2026-10-24" };
   it("writes the chosen place's locator, link and date under the document's shared names", () => {
     const [doc] = sourceView([src({ url: "https://x/a.pdf", page: 2, publisher_he: "רשות המסים", title_he: "חוזר", locator_he: "סעיף 1" }), src({ url: "https://x/a.pdf", page: 5, title_he: "חוזר", locator_he: "סעיף 4", checked: "2026-10-20" })]);
-    expect(citationFor(rule, doc!, slots, doc!.places[1])).toBe("מעבר מסלול אינו אירוע מס — רשות המסים, חוזר, סעיף 4. https://x/a.pdf#page=5 (נבדק 20.10.2026)");
-    expect(citationFor(rule, doc!, slots)).toContain("סעיף 1. https://x/a.pdf#page=2");
+    expect(citationFor(rule, must(doc), slots, must(doc).places[1])).toBe("מעבר מסלול אינו אירוע מס — רשות המסים, חוזר, סעיף 4. https://x/a.pdf#page=5 (נבדק 20.10.2026)");
+    expect(citationFor(rule, must(doc), slots)).toContain("סעיף 1. https://x/a.pdf#page=2");
   });
 });
 
@@ -168,10 +173,10 @@ describe("one source, named alike by every drawing (Q20)", () => {
   const publishers = { "boi.org.il": { publisher_he: "בנק ישראל" } };
   const [view] = sourceView([source], { "boi.org.il": "בנק ישראל" });
   it("the source block, the citation and the documents page give the same publisher and title", () => {
-    const card = groupDocuments({ "A-1": { id: "A-1", title: "A-1", title_he: "כלל", strength: "primary", sources: [source] } as never }, [], publishers)[0]!;
-    expect([view!.publisher, view!.title!.text]).toEqual(["בנק ישראל", "הוראת ניהול בנקאי תקין 425"]);
-    expect([card.publisher, card.title]).toEqual([view!.publisher, view!.title!.text]);
-    expect(citationFor({ title: "x", title_he: "כלל" }, view!, { rules: {}, today: "2026-10-24" })).toContain(`— ${view!.publisher}, ${view!.title!.text}, סעיף 3.`);
-    expect(publisherHe({ source } as never)).toBe(view!.publisher);
+    const card = must(groupDocuments({ "A-1": { id: "A-1", title: "A-1", title_he: "כלל", strength: "primary", sources: [source] } as never }, [], publishers)[0]);
+    expect([must(view).publisher, must(must(view).title).text]).toEqual(["בנק ישראל", "הוראת ניהול בנקאי תקין 425"]);
+    expect([card.publisher, card.title]).toEqual([must(view).publisher, must(must(view).title).text]);
+    expect(citationFor({ title: "x", title_he: "כלל" }, must(view), { rules: {}, today: "2026-10-24" })).toContain(`— ${must(view).publisher}, ${must(must(view).title).text}, סעיף 3.`);
+    expect(publisherHe({ source } as never)).toBe(must(view).publisher);
   });
 });

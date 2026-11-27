@@ -48,9 +48,9 @@ describe("the figures of the data records rest on documents too (Q21)", () => {
   const cards = groupDocuments({ "A-4": rule("A-4", [src("https://example.org/doc.pdf", "A guide", { kind: "other" })]) }, [], {}, undefined, values);
   it("counts every figure that cites a document, beside the rules", () => {
     expect(values).toHaveLength(3);
-    const shared = cards.find((c) => c.url === "https://example.org/doc.pdf")!;
-    expect(shared.rules.map((r) => r.id)).toEqual(["A-4"]);
-    expect(shared.values).toBe(1);
+    const shared = cards.find((c) => c.url === "https://example.org/doc.pdf");
+    expect(shared?.rules.map((r) => r.id)).toEqual(["A-4"]);
+    expect(shared?.values).toBe(1);
   });
   it("gives a document only figures cite no card: the page's data part shows the records it holds", () => {
     expect(cards.map((c) => c.url)).toEqual(["https://example.org/doc.pdf"]);

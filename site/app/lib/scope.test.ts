@@ -231,10 +231,11 @@ describe("a record's text on a company's page names no other company (Q64, a rat
   ]);
   const offenders = new Set<string>();
   for (const r of Object.values(all)) {
-    if (r.scope === "general" || !r.text_he) continue;
+    const text = r.text_he;
+    if (r.scope === "general" || !text) continue;
     for (const c of listedCompanies(r, own)) {
       const page = brandOfMember(c.id)?.members.map((m) => m.id) ?? [c.id];
-      if ((r.scope_institutions ?? []).some((o) => !page.includes(o.id) && r.text_he!.includes(o.name_he))) offenders.add(r.id);
+      if ((r.scope_institutions ?? []).some((o) => !page.includes(o.id) && text.includes(o.name_he))) offenders.add(r.id);
     }
   }
   it("no record outside the list names another company in its text", () => {

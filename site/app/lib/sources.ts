@@ -268,14 +268,14 @@ export interface SourceView {
   /** True when the shown title is Hebrew: a title read right to left. A host or an English name is not. */
   hebrew: boolean;
   pdf: boolean;
-  places: SourcePlace[];
+  places: [SourcePlace, ...SourcePlace[]];
   /** The dates its places were read, each once, in the order of the places. */
   checked: string[];
 }
 
 /** The names a document is shown by: a Hebrew title in the group before any other, and the publisher left out wherever the title holds it. */
-function documentNames(group: readonly RuleSource[], publishersHe: Readonly<Record<string, string>> | undefined): Pick<SourceView, "publisher" | "title" | "hebrew"> {
-  const head = group.find((s) => isHebrewTitle(s.title_he ?? s.title)) ?? group[0]!;
+function documentNames(group: readonly [RuleSource, ...RuleSource[]], publishersHe: Readonly<Record<string, string>> | undefined): Pick<SourceView, "publisher" | "title" | "hebrew"> {
+  const head = group.find((s) => isHebrewTitle(s.title_he ?? s.title)) ?? group[0];
   const title = shownTitle(head.title_he ?? head.title, head.url, head.kind ?? group.find((s) => s.kind)?.kind);
   // the head's own publisher first: a Hebrew name written beside the Hebrew title
   const publisher = [head, ...group].map((s) => publisherName(s, publishersHe)).find((p) => !!p) ?? null;
@@ -290,20 +290,23 @@ function documentNames(group: readonly RuleSource[], publishersHe: Readonly<Reco
  * appears, each named once (`documentNames`) with a head link to the document and a line for each place in it.
  */
 export function sourceView(sources: readonly RuleSource[], publishersHe?: Readonly<Record<string, string>>): SourceView[] {
-  const groups = new Map<string, RuleSource[]>();
+  const groups = new Map<string, [RuleSource, ...RuleSource[]]>();
   for (const s of sources) {
     const key = documentKey(s.url);
-    groups.set(key, [...(groups.get(key) ?? []), s]);
+    const group = groups.get(key);
+    if (group) group.push(s);
+    else groups.set(key, [s]);
   }
   return [...groups].map(([key, group]) => {
     const names = documentNames(group, publishersHe);
-    const places = group.map((s): SourcePlace => {
+    const placeOf = (s: RuleSource): SourcePlace => {
       // only a title of its own in Hebrew: a kind's word or a host stands in for a missing title, and names nothing more than the head
       const raw = s.title_he ?? s.title;
       const own = isHebrewTitle(raw) ? shownTitle(raw, s.url, s.kind).text : null;
       return { source: s, href: sourceHref(s), locator: sourceLabel2(s).locator, quote: s.quote ?? null, checked: s.checked, title: own && names.title && own !== names.title.text ? own : null };
-    });
-    return { key, href: key, ...names, pdf: isPdfUrl(group[0]!.url), places, checked: [...new Set(group.map((s) => s.checked))] };
+    };
+    const [first, ...rest] = group;
+    return { key, href: key, ...names, pdf: isPdfUrl(first.url), places: [placeOf(first), ...rest.map(placeOf)], checked: [...new Set(group.map((s) => s.checked))] };
   });
 }
 
@@ -311,7 +314,7 @@ export function sourceView(sources: readonly RuleSource[], publishersHe?: Readon
  * The line the copy button writes for one place of a document, named as the document's head names it:
  * `{claim} — {publisher}, {document}, {locator}. {link} (נבדק {date})`. `place` is the source the card shows; by default the document's first.
  */
-export function citationFor(rule: Pick<SourcedRule, "title" | "title_he" | "text_he">, view: SourceView, slots: SlotSource, place: SourcePlace = view.places[0]!): string {
+export function citationFor(rule: Pick<SourcedRule, "title" | "title_he" | "text_he">, view: SourceView, slots: SlotSource, place: SourcePlace = view.places[0]): string {
   const parts = [view.publisher, view.title?.text].filter((x): x is string => !!x);
   if (place.locator) parts.push(place.locator);
   const claim = ruleTitle(rule, slots).text;

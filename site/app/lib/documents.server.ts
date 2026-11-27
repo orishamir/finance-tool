@@ -177,7 +177,7 @@ function dataRecords(root: string): unknown[] {
       if (statSync(path).isDirectory()) {
         if (!(top && skip.has(name))) walk(path, false);
       } else if (name.endsWith(".json")) {
-        const id = join(dir, name.replace(/\.json$/, "").split("@")[0]!);
+        const id = join(dir, name.replace(/\.json$/, "").split("@")[0] ?? name);
         const seen = latest.get(id);
         if (!seen || path > seen) latest.set(id, path);
       }

@@ -31,7 +31,7 @@ interface SourceLike {
 }
 
 /** What is wrong with the title a source line shows, or null: a file name, a web address, or a host shown in place of a title. */
-export function shownTitleFlaw(source: SourceLike): string | null {
+function shownTitleFlaw(source: SourceLike): string | null {
   const title = typeof source.title_he === "string" ? source.title_he : typeof source.title === "string" ? source.title : "";
   if (FILE_NAME.test(title.trim())) return `its title "${title}" is a file's name`;
   if (WEB_ADDRESS.test(title.trim())) return `its title "${title}" is a web address`;
@@ -48,7 +48,7 @@ const sourcesOf = (card: RuleCard): SourceLike[] => {
 const figureValues = (figure: unknown) => objectsIn(figure).flatMap(({ node }) => (isValueObject(node) ? [node as { source: SourceLike; update_rule?: unknown }] : []));
 
 /** The document a source's link opens: its address without the place in it. */
-const documentOf = (source: SourceLike) => (typeof source.url === "string" ? source.url.split("#")[0]! : "");
+const documentOf = (source: SourceLike) => (typeof source.url === "string" ? (source.url.split("#")[0] ?? "") : "");
 
 function titleOffences(cards: ReadonlyMap<string, RuleCard>): Map<string, Offence> {
   const found = new Map<string, Offence>();
