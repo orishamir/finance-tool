@@ -106,7 +106,8 @@
     "mechanism_text": "'אפשרות לשבירת פיקדון: לא קיימת' (447 table column).",
     "rule_ids": [
       "BANK-06",
-      "BANK-14"
+      "BANK-14",
+      "BANK-56"
     ]
   },
   "exit_points": {

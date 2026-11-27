@@ -146,13 +146,15 @@ describe("figure-rules table", () => {
   it("keeps a bank's own break card only on the products the card is about", () => {
     const brk = (bank: string, wrapper_id: string, id: string) => deposit({ bank, wrapper_id, break: { allowed: true, penalty: "with_penalty", mechanism_text: "", rule_ids: ["BANK-06", id] } });
     const ids = (r: ReturnType<typeof deposit>) => figureRuleProblems("terms/deposits", r, noCards).map((p) => p.id);
-    // BANK-33: Discount's deposits and plans, Mercantile's standing-order plans only
+    // BANK-33: Discount's and Mercantile's deposits and plans, never a current account at Mercantile
     expect(ids(brk("discount", "bank-deposit", "BANK-33"))).toEqual([]);
     expect(ids(brk("mercantile", "savings-plan", "BANK-33"))).toEqual([]);
-    expect(ids(brk("mercantile", "bank-deposit", "BANK-33"))).toEqual(["BANK-33"]);
-    // BANK-56 and BPN-10: the bank's savings plans only
+    expect(ids(brk("mercantile", "bank-deposit", "BANK-33"))).toEqual([]);
+    expect(ids(brk("mercantile", "current-account", "BANK-33"))).toEqual(["BANK-33"]);
+    // BANK-56: Bank of Jerusalem's deposits and plans, never its current account; BPN-10: Hapoalim's savings plans only
     expect(ids(brk("jerusalem", "savings-plan", "BANK-56"))).toEqual([]);
-    expect(ids(brk("jerusalem", "bank-deposit", "BANK-56"))).toEqual(["BANK-56"]);
+    expect(ids(brk("jerusalem", "bank-deposit", "BANK-56"))).toEqual([]);
+    expect(ids(brk("jerusalem", "current-account", "BANK-56"))).toEqual(["BANK-56"]);
     expect(ids(brk("hapoalim", "savings-plan", "BPN-10"))).toEqual([]);
     expect(ids(brk("hapoalim", "bank-deposit", "BPN-10"))).toEqual(["BPN-10"]);
   });
