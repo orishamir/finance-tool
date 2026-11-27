@@ -92,7 +92,12 @@ function DocCard({ doc }: { doc: DocumentCard }) {
         <Latin text={doc.title} english={doc.titleEnglish} />
       </h3>
       <p className="text-sm text-muted-foreground">
-        <MixedName>{doc.publisher}</MixedName> · {copy.kinds[doc.kind] ?? copy.kinds.other}
+        {doc.publisher && (
+          <>
+            <MixedName>{doc.publisher}</MixedName> ·{" "}
+          </>
+        )}
+        {copy.kinds[doc.kind] ?? copy.kinds.other}
       </p>
       <p className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <DocLink source={doc}>
@@ -149,9 +154,11 @@ function DocRows({ rows }: { rows: DocumentCard[] }) {
           <DocLink source={doc}>
             <Latin text={doc.title} english={doc.titleEnglish} />
           </DocLink>
-          <span className="text-muted-foreground">
-            <MixedName>{doc.publisher}</MixedName>
-          </span>
+          {doc.publisher && (
+            <span className="text-muted-foreground">
+              <MixedName>{doc.publisher}</MixedName>
+            </span>
+          )}
           {doc.strength !== "primary" && <StrengthLabel strength={doc.strength} />}
           <ul className="basis-full flex flex-col">
             {doc.rules.map((r) => (
