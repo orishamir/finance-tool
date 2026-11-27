@@ -81,6 +81,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Conditions / exceptions: Institution example only, dated. Leumi says the bank may charge less than the tariff, except for price-controlled services. Other banks' part 5 was not read (open question 3). Population benefits (Annex A) give 50% off conversion for some groups, for example "לאומי צעיר 14-16".
 - Figures: as above, effective 01/10/2026. Bank tariff, changed by the bank with notice (BANK-12); values go to `data/` as a dated snapshot, not to the rule base.
 - Source: [Leumi, "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים", updated 01/10/2026](https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf), pp.1-2, 35-38 · checked 2026-10-22 · institution
+- Scope: institution: Bank Leumi
 - Dimensions: fee-fx, fee-exit, currency, liquidity-lockup
 - Likely to change: yes. Tariffs change several times a year.
 
@@ -153,6 +154,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Conditions / exceptions: This is a closed 2024 issue, kept as an example of the structure and of what a sheet discloses. The tax line is Discount's statement, not a rule; the rule belongs in `tax-tier2-other.md`. The sheet's own example shows the grant is all-or-nothing on one observation date.
 - Figures: as above, for the 2024 issue only.
 - Source: [Discount, "פיקדון פלוס" product sheet, May 2024](https://www.discountbank.co.il/media/ti4h15pw/deposit_plus_19524.pdf), pp.1-2 · checked 2026-10-22 · institution
+- Scope: institution: Discount Bank
 - Dimensions: currency, liquidity-lockup, minimum, protection, tax-during
 - Likely to change: n/a (closed issue)
 
@@ -195,7 +197,8 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
   - The bonds are "direct, unconditional and general obligations of the State of Israel". DCI is the sole underwriter in the United States, and "Israel may sell the bonds outside of the United States through additional underwriters or dealers, as will be described in the applicable prospectus supplement".
 - Conditions / exceptions: Who issues and sells them, and the open question of whether an Israeli resident may buy them, are in FXD-18 (open question 10). How an Israeli resident is taxed on them goes to `tax-tier2-other.md`. Cost, getting out and protection are in FXD-19 to FXD-21. Leumi's value-date table has rows for "הפקדת פדיון סופי של אגרת בונדס", so redemptions of these bonds are credited to Leumi accounts. That does not show residents may buy. Because transfer is restricted and early repurchase is limited to the listed events, the money is locked to maturity for a living holder.
 - Figures: as above, for the 2025 series; each series has its own supplement.
-- Source: [State of Israel, prospectus supplement of 1 August 2025 with prospectus of 29 July 2025, as filed with the SEC (424B2)](https://www.sec.gov/Archives/edgar/data/52749/000110465925072790/tm2522097-1_424b2.htm), cover, pp.S-1 to S-3, S-7 to S-12, prospectus pp.3-7 · checked 2026-11-07 · primary (the State's own prospectus, filed by the State; re-cited from Israel Bonds' copy on 2026-11-07). [Leumi tariff](https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf), p.38 · checked 2026-10-22 · institution
+- Source: [State of Israel, prospectus supplement of 1 August 2025 with prospectus of 29 July 2025, as filed with the SEC (424B2)](https://www.sec.gov/Archives/edgar/data/52749/000110465925072790/tm2522097-1_424b2.htm), cover, pp.S-1 to S-3, S-7 to S-12, prospectus pp.3-7 · checked 2026-11-07 · primary (the State's own prospectus, filed by the State). [Leumi tariff](https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf), p.38 · checked 2026-10-22 · institution
+- Scope: general
 - Dimensions: currency, liquidity-lockup, eligibility, minimum, distribution-policy, protection
 - Likely to change: yes (new series each year)
 

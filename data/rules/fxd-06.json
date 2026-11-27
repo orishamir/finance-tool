@@ -1,0 +1,39 @@
+{
+  "id": "FXD-06",
+  "title": "How one bank prices FX (Leumi tariff, 01/10/2026): conversion fee, cash spreads, value dates",
+  "title_he": "מטבע חוץ בבנק לאומי: עמלת חליפין, הפרשי שער במזומן וימי ערך",
+  "text_he": "בתעריפון המלא של בנק לאומי, המעודכן ל־1.10.2026, עמלת חליפין משקלים למטבע חוץ היא 0.2% מהסכום, לפחות 7.20 דולר ולכל היותר 3,000 דולר. בהמרה בין שני מטבעות חוץ העמלה היא 0.3%, לפחות 10 דולר ולכל היותר 3,000 דולר. המרה מ״פמ״ח פיצויים״ והמרה של קצבאות לנפגעי רדיפות הנאצים פטורות מעמלת החליפין. הפקדה או משיכה של מזומן בחשבון באותו מטבע לא עולה עמלה, אלא הפרש בין שער המזומן לשער ההעברות. העברת מטבע חוץ לחשבון של אותו לקוח בבנק אחר בארץ עולה 10 דולר, מחיר שנמצא בפיקוח. לפי טבלת ימי הערך, הפקדה לחשבון או לפיקדון במטבע חוץ, קנייה של מטבע חוץ ומשיכה או המרה לשקלים הן בלי ימי ערך, הפקדת שטרות 2 ימי עסקים, ושיק זר 6 עד 14 ימי עסקים לפי המטבע.",
+  "strength": "institution",
+  "dimensions": [
+    "fee-fx",
+    "fee-exit",
+    "currency",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-01-22",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+      "title": "Leumi, \"תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים\", updated 01/10/2026",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.1-2, 35-38",
+      "locator_he": "עמודים 1 עד 2, 35-38",
+      "page": 1,
+      "checked": "2026-10-22"
+    }
+  ]
+}

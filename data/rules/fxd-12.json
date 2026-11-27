@@ -1,0 +1,38 @@
+{
+  "id": "FXD-12",
+  "title": "A worked structured deposit: Discount \"פיקדון פלוס\" (May 2024 issue)",
+  "title_he": "״פיקדון פלוס״ של דיסקונט: פיקדון מובנה דולרי מ־2024",
+  "text_he": "״פיקדון פלוס״ של בנק דיסקונט, הנפקה ממאי 2024 שכבר נסגרה, הוא פיקדון דולרי לשנה שהקרן שלו מובטחת. הריבית המובטחת היא 4% מהקרן, ומענק של עוד 4% משולם רק אם השער היציג של הדולר ב־29.5.2025 שווה לשער היציג ב־30.5.2024 או גבוה ממנו. ההפקדה המינימלית היא 10,000 דולר, בכפולות של 1,000 דולר, ו״הפיקדון לא ניתן לשבירה״. בדף המוצר דיסקונט כותב שהפיקדון ״אינו מהווה נכס פיננסי״ לפי חוק הייעוץ, ושהבנק עשוי להעדיף אותו על פני נכסים דומים.",
+  "strength": "institution",
+  "dimensions": [
+    "currency",
+    "liquidity-lockup",
+    "minimum",
+    "protection",
+    "tax-during"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "discount",
+      "name_he": "בנק דיסקונט"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.discountbank.co.il/media/ti4h15pw/deposit_plus_19524.pdf",
+      "title": "Discount, \"פיקדון פלוס\" product sheet, May 2024",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "pp.1-2",
+      "locator_he": "עמודים 1 עד 2",
+      "page": 1,
+      "checked": "2026-10-22"
+    }
+  ]
+}

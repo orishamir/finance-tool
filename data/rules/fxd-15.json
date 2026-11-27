@@ -1,0 +1,45 @@
+{
+  "id": "FXD-15",
+  "title": "State of Israel Bonds (USD): terms that matter, and the open eligibility question",
+  "title_he": "אגרות בונדס בסדרות של 2025: סכומי מינימום, תקופות וריבית",
+  "text_he": "לפי תוספת התשקיף של מדינת ישראל מ־1.8.2025, אגרת חיסכון היא מ־2,500 דולר, מכבי מ־5,000 דולר, יובל מ־25,000 דולר ויובל פרימיום מ־1,000,000 דולר. לאגרות סברה, מזל טוב, eMazel Tov ושלום יש מינימום ותקרה משלהן, ואגרת שלום מיועדת רק למוסדות צדקה מורשים, לא ליחידים. התקופות הן 1, 2, 3, 5, 10 או 15 שנים, בריבית קבועה שמוכרזת לפני כל תקופת מכירה. באגרות החיסכון הריבית מצטברת פעם בשנה ומשולמת רק בפדיון, ובאגרות יובל היא משולמת בכל 1 במאי ו־1 בנובמבר. אחרי הפדיון לא נצברת ריבית, וכל התשלומים בדולרים.",
+  "strength": "primary",
+  "dimensions": [
+    "currency",
+    "liquidity-lockup",
+    "eligibility",
+    "minimum",
+    "distribution-policy",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-08-01",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/52749/000110465925072790/tm2522097-1_424b2.htm",
+      "title": "State of Israel, prospectus supplement of 1 August 2025 with prospectus of 29 July 2025, as filed with the SEC (424B2)",
+      "publisher": "U.S. SEC EDGAR (the issuer's own filing)",
+      "publisher_he": "מאגר EDGAR של רשות ניירות הערך האמריקאית (מסמך שהמנפיק הגיש)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "checked": "2026-11-07",
+      "qualifier": "(the State's own prospectus, filed by the State)"
+    },
+    {
+      "url": "https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf",
+      "title": "Leumi tariff",
+      "title_he": "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים (בנק לאומי, 1.10.2026)",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.38",
+      "locator_he": "עמוד 38",
+      "page": 38,
+      "checked": "2026-10-22"
+    }
+  ]
+}
