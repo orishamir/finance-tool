@@ -12,6 +12,8 @@
 //
 // Only the record the site reads (the latest snapshot of each record) is judged; the older dated snapshots stay as they were.
 
+import { objectsIn, ruleCards, type CheckData } from "./checks/lib/kit.ts";
+
 /** The collections the table covers. */
 export type FigureCollection = "terms/deposits" | "fees" | "funds" | "instruments" | "averages";
 
@@ -169,13 +171,16 @@ export const FIGURE_RULES: readonly FigureRow[] = [
   },
 ];
 
-/** A JSON pointer ("/balance_conditions/0/value") as the table's path ("balance_conditions[].value"). */
-export function pathOf(pointer: string): string {
-  return pointer
+/** The keys a JSON pointer ("/balance_conditions/0/value") walks, unescaped ("~1" is "/", "~0" is "~"). */
+export const pointerKeys = (pointer: string): string[] =>
+  pointer
     .split("/")
     .slice(1)
-    .map((k) => k.replace(/~1/g, "/").replace(/~0/g, "~"))
-    .reduce((path, k) => (/^\d+$/.test(k) ? `${path}[]` : path ? `${path}.${k}` : k), "");
+    .map((k) => k.replace(/~1/g, "/").replace(/~0/g, "~"));
+
+/** A JSON pointer ("/balance_conditions/0/value") as the table's path ("balance_conditions[].value"). */
+export function pathOf(pointer: string): string {
+  return pointerKeys(pointer).reduce((path, k) => (/^\d+$/.test(k) ? `${path}[]` : path ? `${path}.${k}` : k), "");
 }
 
 /** The row for a value at `pointer` of a `collection` record: the one with the longest path that is the value's path or holds it; null for none. */
@@ -193,6 +198,16 @@ const documentOf = (url: string): string => url.replace(/#.*$/, "");
 /** By rule id, the addresses of the sources its card under data/rules/ lists. */
 export type CardSources = ReadonlyMap<string, readonly string[]>;
 
+/** The addresses of the sources each rule card under the data folder lists, by rule id. */
+export function cardSources(data: CheckData): CardSources {
+  return new Map(
+    [...ruleCards(data).values()].map((c) => {
+      const sources = (c as { sources?: unknown }).sources;
+      return [c.id, Array.isArray(sources) ? sources.flatMap((s) => (s && typeof (s as { url?: unknown }).url === "string" ? [(s as { url: string }).url] : [])) : []];
+    }),
+  );
+}
+
 /** What the table says of one id on one value: admitted, known and disallowed in this state, or unknown to the row. */
 export type IdVerdict = "allowed" | "disallowed" | "unknown";
 
@@ -205,15 +220,8 @@ export function judgeId(collection: FigureCollection, record: Json, pointer: str
 }
 
 /** Each object inside `node` that names rule ids (a value object, a deposit's break), with its JSON pointer from `node`, in document order. */
-export function ruleHolders(node: unknown, pointer = ""): { pointer: string; value: Json; ids: string[] }[] {
-  if (Array.isArray(node)) return node.flatMap((n, i) => ruleHolders(n, `${pointer}/${i}`));
-  if (!node || typeof node !== "object") return [];
-  const o = node as Json;
-  const ids = Array.isArray(o.rule_ids) ? o.rule_ids.filter((x): x is string => typeof x === "string") : null;
-  return [
-    ...(ids ? [{ pointer, value: o, ids }] : []),
-    ...Object.entries(o).flatMap(([k, v]) => (k === "rule_ids" ? [] : ruleHolders(v, `${pointer}/${k.replace(/~/g, "~0").replace(/\//g, "~1")}`))),
-  ];
+export function ruleHolders(node: unknown): { pointer: string; value: Json; ids: string[] }[] {
+  return objectsIn(node).flatMap(({ pointer, node: o }) => (Array.isArray(o.rule_ids) ? [{ pointer, value: o, ids: o.rule_ids.filter((x): x is string => typeof x === "string") }] : []));
 }
 
 /** One id a value names that the table does not admit: disallowed in the value's state, or unknown to its row. */

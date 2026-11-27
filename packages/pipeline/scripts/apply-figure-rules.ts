@@ -4,8 +4,8 @@
 // Run: npx tsx packages/pipeline/scripts/apply-figure-rules.ts [collection ...] [--dry]   (default collection: terms/deposits)
 import { readFileSync, writeFileSync } from "node:fs";
 import { relative } from "node:path";
-import { latestRecords, listFiles, OWN_DATA, ruleCards } from "../src/checks/lib/kit.ts";
-import { judgeId, pathOf, ruleHolders, type CardSources, type FigureCollection } from "../src/figure-rules.ts";
+import { latestRecords, listFiles, OWN_DATA } from "../src/checks/lib/kit.ts";
+import { cardSources, judgeId, pathOf, pointerKeys, ruleHolders, type FigureCollection } from "../src/figure-rules.ts";
 
 const COLLECTIONS: readonly FigureCollection[] = ["terms/deposits", "fees", "funds", "instruments", "averages"];
 const args = process.argv.slice(2);
@@ -16,12 +16,7 @@ if (unknownCollection) throw new Error(`apply-figure-rules: "${unknownCollection
 const collections = (named.length ? named : ["terms/deposits"]) as FigureCollection[];
 
 const data = { dataDir: OWN_DATA, files: listFiles(OWN_DATA), whole: true };
-const cards: CardSources = new Map(
-  [...ruleCards(data).values()].map((c) => {
-    const sources = (c as { sources?: unknown }).sources;
-    return [c.id, Array.isArray(sources) ? sources.flatMap((s) => (s && typeof (s as { url?: unknown }).url === "string" ? [(s as { url: string }).url] : [])) : []];
-  }),
-);
+const cards = cardSources(data);
 
 /** The file's JSON with each number kept as written ("3.0", "1.50"), so a file written back changes only where its ids change. */
 function parseKeepingNumbers(text: string): unknown {
@@ -33,7 +28,7 @@ function parseKeepingNumbers(text: string): unknown {
 /** The object at a JSON pointer inside `node`. */
 function at(node: unknown, pointer: string): Record<string, unknown> {
   let here = node;
-  for (const k of pointer.split("/").slice(1)) here = (here as Record<string, unknown>)[k.replace(/~1/g, "/").replace(/~0/g, "~")];
+  for (const k of pointerKeys(pointer)) here = (here as Record<string, unknown>)[k];
   return here as Record<string, unknown>;
 }
 
