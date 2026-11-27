@@ -16,7 +16,7 @@ const formulas = readFormulaIds(`${root}docs/method.md`);
 const vo = {
   value: 25,
   unit: "pct",
-  source: { url: "https://main.knesset.gov.il/x", title: "s.125C", publisher: "Knesset", strength: "primary" },
+  source: { url: "https://main.knesset.gov.il/x", title: "סעיף 125ג", publisher: "Knesset", strength: "primary" },
   checked: "2026-10-22",
   effective_from: null,
   effective_to: null,
