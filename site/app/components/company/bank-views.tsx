@@ -8,7 +8,6 @@ import { guidePath } from "../../lib/site-paths";
 import { companyPage as w, r4catalogue as copy } from "../../copy";
 import { kindGroups, lineAt, rangeKey, saidByStart, sharedBands, sharedFacts, tableRows, taxPerLinkage, type AmountBand, type Shared, type TableRow } from "../../lib/bank-table";
 import { amountRangeText, breakText, depositLabels, exitsText, onlyAtExits, renewText, taxWord, termWords } from "../../lib/deposit-kind";
-import { fmt } from "../../lib/format";
 import { HELP_TERMS as DEPOSIT_TERMS } from "../../lib/deposit-browser";
 import { numberOf, type SiteValue } from "../../lib/value";
 import { IconAlert, IconFile } from "../icons";
@@ -165,7 +164,8 @@ function SharedBox({ products, shared, known, title, deposits }: { products: rea
   const p = products[0];
   if (!p) return null;
   const say = w.deposits.say;
-  const renew = p.autoRenew.value ? (p.autoRenew.maxRenewals !== null ? say.renew.upTo(fmt.number(p.autoRenew.maxRenewals)) : say.renew.yes) : say.renew.no;
+  // a set number of renewals is counted in words, as the card's renewal line counts it ("חידוש אוטומטי עד פעם אחת")
+  const renew = p.autoRenew.value ? (p.autoRenew.maxRenewals !== null ? `${copy.labels.autoRenew} ${renewText(true, p.autoRenew.maxRenewals)}` : say.renew.yes) : say.renew.no;
   const brk = breakText(p.breakTerms.penalty, products.every((x) => onlyAtExits(x.breakTerms.penalty, x.exitPoints.exists)));
   // what the rate figure is stands in the "?" of the rate's head from md (RateHead); a phone, with no heads, keeps it here. The break's
   // words open the rules every record shares (`Shared.breakRules`), stated only when they are shared
