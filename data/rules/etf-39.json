@@ -76,7 +76,7 @@
       "notes": "Float-factor changes are made at the quarterly review only if they are at least 5% of current shares outstanding and relate to a single corporate action (p.17). Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     }
   },
-  "text_he": "אין במדד עצמו תקרת משקל לחברה אחת. אין מועד קבוע להחלפת חברות: ועדת המדדים מכניסה ומוציאה חברות לפי הצורך, למשל אחרי מיזוג או רכישה. היא מודיעה על כך לפחות {ETF-39:announcement_notice_business_days} מראש. מספר המניות של כל חברה מתעדכן פעם ברבעון, במרץ, ביוני, בספטמבר ובדצמבר.",
+  "text_he": "משקל כל חברה במדד הוא שווי השוק של המניות שלה שבידי הציבור, ואין במדד עצמו תקרת משקל לחברה אחת. אין מועד קבוע להחלפת חברות: ועדת המדדים מכניסה ומוציאה חברות לפי הצורך, למשל אחרי מיזוג או רכישה. היא מודיעה על כך לפחות {ETF-39:announcement_notice_business_days} מראש. מספר המניות של כל חברה מתעדכן פעם ברבעון, במרץ, ביוני, בספטמבר ובדצמבר.",
   "figure_names_he": {
     "rebalances_per_year": "עדכונים בשנה",
     "announcement_notice_business_days": "הודעה מראש על שינוי, בימי עסקים",
