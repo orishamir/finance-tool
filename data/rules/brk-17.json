@@ -13,19 +13,22 @@
       "value": 0,
       "unit": "pct_of_balance_per_period",
       "source": {
-        "url": "https://www.boi.org.il/media/mi2driua/159a.pdf#page=16",
+        "url": "https://www.boi.org.il/media/mi2driua/159a.pdf#page=17",
         "title": "כללי הבנקאות (שירות ללקוח) (עמלות), התשס״ח-2008",
-        "publisher": "בנק ישראל",
+        "publisher": "Bank of Israel",
+        "publisher_he": "בנק ישראל",
         "strength": "primary",
-        "locator": "עמודים 16 עד 17, התוספת הראשונה חלק 4, פרט 4(א)(5), הערות (1) ו־(2)",
-        "locator_he": "עמודים 16 עד 17, התוספת הראשונה חלק 4, פרט 4(א)(5), הערות (1) ו־(2)"
+        "page": 17,
+        "locator": "p.17, first schedule part 4(א)(5), note (2)",
+        "locator_he": "עמוד 17, התוספת הראשונה חלק 4, פרט 4(א)(5), הערה (2)",
+        "quote": "לא ניתן לגבות דמי ניהול פיקדון ניירות ערך בעבור מלווה קצר מועד או בעבור קרן כספית"
       },
-      "checked": "2026-10-25",
+      "checked": "2026-11-06",
       "effective_from": null,
       "effective_to": null,
       "update_rule": "fixed in regulation",
       "state": "sourced",
-      "notes": "First Schedule item 4(a)(5), notes (1) and (2): a bank may not charge securities custody on a money-market fund or on makam."
+      "notes": "First Schedule item 4(a)(5), note (2): a bank may not charge securities custody on a money-market fund or on makam."
     }
   },
   "figure_names_he": {
