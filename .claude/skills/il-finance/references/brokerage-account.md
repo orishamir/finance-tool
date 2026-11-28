@@ -958,7 +958,7 @@ Domain open questions from `research/discovery/domain-landscape.md` section 8: *
 | [כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ"ב-1992, consolidated](https://www.boi.org.il/media/rvzi1ngd/151.pdf) | Bank of Israel | primary | 2026-10-22 |
 | [סיכום פעילות הפיקוח על הבנקים להגנת הצרכן הבנקאי בשנת 2008](https://www.boi.org.il/media/bccb1fj2/act08.pdf) | Bank of Israel | primary | 2026-10-22 |
 | [EDGE FEES_DASH](https://edge.boi.org.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.BankingSupervision/FEES_DASH/1.0/?format=csv&lastNObservations=1&labels=name) | Bank of Israel | primary | 2026-10-22 |
-| [What SIPC Protects](https://www.sipc.org/for-investors/what-sipc-protects) | SIPC | primary (foreign) | 2026-10-22 |
+| [What SIPC Protects](https://www.sipc.org/for-investors/what-sipc-protects) | SIPC | primary (foreign) | 2026-11-28 |
 | [חוברת תנאים כלליים לניהול חשבון 08.25](https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/generalpages/general%20terms/General_Terms_and_Conditions_acc.pdf) | Bank Leumi | institution | 2026-10-22 |
 | [Leumi fees and commissions](https://www.leumi.co.il/he/economic-info/commissions_and_fees) | Bank Leumi | institution | 2026-10-22 |
 | [Hapoalim fee list](https://www.bankhapoalim.co.il/forms/he/fee-list) | Bank Hapoalim | institution | 2026-10-22 |

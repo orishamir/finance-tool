@@ -639,7 +639,7 @@ Registers used and what each listed on 2026-10-22:
 | [CMA datasets on data.gov.il](https://data.gov.il/api/3/action/package_search?fq=organization:cma&rows=50) | CMA via data.gov.il | primary | 2026-10-22 |
 | [NII, חיסכון לכל ילד](https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx); [NII home](https://www.btl.gov.il/Pages/default.aspx); [NII complaints](https://www.btl.gov.il/About/contact_us/Pages/טלפונים%20וכתובות.aspx) | National Insurance Institute | primary | 2026-10-22 |
 | [State Comptroller](https://www.mevaker.gov.il/); [complaint form](https://complaint.mevaker.gov.il/) | State Comptroller and Ombudsman | primary | 2026-10-22 |
-| [SIPC, What SIPC Protects](https://www.sipc.org/for-investors/what-sipc-protects) | SIPC (US) | primary (foreign) | 2026-10-22 |
+| [SIPC, What SIPC Protects](https://www.sipc.org/for-investors/what-sipc-protects) | SIPC (US) | primary (foreign) | 2026-11-28 |
 | [Interactive Israel, about](https://lp3.inter-il.com/about-3) | Mexem Ltd | institution | 2026-10-22 |
 | [Meitav home](https://www.meitav.co.il/); [mutual funds](https://www.meitav.co.il/mutual_funds/); [Meitav Trade about](https://www.meitav.co.il/trade/about/); [Meitav Trade terms](https://www.meitav.co.il/trade/customer-service/meitav_terms/); [portfolio management](https://www.meitav.co.il/portfolio_management/); [funds complaints officer](https://www.meitav.co.il/the_public_affairs_representative/) | Meitav | institution | 2026-10-22 |
 | [חוק חדלות פירעון ושיקום כלכלי, התשע"ח-2018 (ספר החוקים 2708)](https://fs.knesset.gov.il/20/law/20_lsr_491934.pdf) | Knesset (gazette) | primary | 2026-11-06 |
