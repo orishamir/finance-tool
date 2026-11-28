@@ -2,6 +2,11 @@
   "id": "CAT-45",
   "title": "The \"עוקב מדד S&P 500\" track: the CMA list makes it follow the S&P 500 alone, up to 100% exposure, with only hedging and cash-like holdings outside the index",
   "title_he": "מסלול עוקב מדד S&P 500: רק המדד הזה, עד 100% מהנכסים",
+  "text_he": "לפי רשימת מסלולי ההשקעה של רשות שוק ההון, מסלול עוקב מדד S&P 500 עוקב רק אחרי המדד הזה, דרך מכשירים עוקבי מדד ונגזרים, בחשיפה של עד {CAT-45:exposure_max} מנכסי המסלול ובלי שיעור מינימלי. מחוץ למדד מותר להחזיק רק נגזרים לגידור, ולצורך הפקדות, משיכות, העברות וביטחונות גם מזומן, מק״מ, פיקדונות של עד {CAT-45:cash_like_months}, קרן כספית ואיגרות חוב של ממשלת ישראל או של מדינת חוץ מאושרת שנפדות בתוך {CAT-45:cash_like_months}. הרשימה לא קובעת כלל לגידור מטבע, ואומרת רק שהמסלול עשוי להיות חשוף לסיכוני מטבע. שיעורי החשיפה שהרשות מפרסמת למסלולים כאלה יכולים לעבור {CAT-45:exposure_max}, והאתר לא יודע איך זה מתיישב עם התקרה שברשימה.",
+  "figure_names_he": {
+    "exposure_max": "תקרת החשיפה למדד",
+    "cash_like_months": "התקופה המרבית של פיקדון או איגרת חוב מחוץ למדד"
+  },
   "strength": "primary",
   "dimensions": [
     "currency",
@@ -9,7 +14,56 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
-  "text_he": "לפי רשימת מסלולי ההשקעה של רשות שוק ההון, מסלול עוקב מדד S&P 500 עוקב אחרי המדד הזה בלבד, דרך מכשירים עוקבי מדד ונגזרים, בחשיפה של עד 100% מנכסי המסלול. מחוץ למדד מותר להחזיק רק נגזרים לגידור, ולצורך הפקדות, משיכות, העברות וביטחונות גם מזומן, מק״מ, פיקדונות של עד 12 חודשים, קרן כספית ואיגרות חוב של ממשלת ישראל או של מדינת חוץ מאושרת שנפדות בתוך 12 חודשים. הרשימה לא קובעת שיעור מינימלי למדד ולא כלל לגידור מטבע, והיא אומרת רק שהמסלול עשוי להיות חשוף לסיכוני מטבע. שיעורי החשיפה שהרשות מפרסמת למסלולים כאלה יכולים לעבור 100%, והאתר לא יודע איך זה מתיישב עם התקרה שברשימה.",
+  "figures": {
+    "exposure_max": {
+      "value": 100,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+        "strength": "primary",
+        "page": 14,
+        "locator": "p.14",
+        "locator_he": "עמוד 14",
+        "quote": "ובשיעור חשיפה שלא יעלה על 100% מנכסי המסלול, אחר מדד S&P 500"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-45"
+      ],
+      "state": "sourced",
+      "notes": "The S&P 500 tracker follows the index through index-tracking instruments and derivatives, with exposure of at most 100% of the track's assets."
+    },
+    "cash_like_months": {
+      "value": 12,
+      "unit": "months",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+        "strength": "primary",
+        "page": 14,
+        "locator": "p.14",
+        "locator_he": "עמוד 14",
+        "quote": "פיקדונות שהופקדו לתקופה שאינה עולה על 12 חודשים ממועד הפקדתם"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-45"
+      ],
+      "state": "sourced",
+      "notes": "Outside the index, for deposits, withdrawals, transfers and collateral: deposits of up to 12 months, and Israeli or approved foreign government bonds maturing within 12 months."
+    }
+  },
   "il_finance_file": "tracks-catalogue-and-decoder.md",
   "checked": "2026-11-06",
   "scope": "general",
