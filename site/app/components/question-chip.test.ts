@@ -3,7 +3,7 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { guide, provenance, rule } from "../copy";
+import { guide, notCovered, provenance, rule } from "../copy";
 import { IdRef, ProvenanceProvider, Ruled, Term } from "./provenance";
 import { SheetContent } from "./provenance-sheets";
 
@@ -80,8 +80,8 @@ describe("the words a rule states (Ruled)", () => {
 });
 
 describe("an open question's sheet", () => {
-  const sheet = (data: object, id: string) =>
-    renderToString(createElement(MemoryRouter, null, createElement(SheetContent, { item: { kind: "question", id }, data: { rules: {}, terms: {}, dimensions: {}, today: "2026-11-28", ...data } as never, headId: "h", descId: "d" })))
+  const sheet = (data: object, id: string, at = "/") =>
+    renderToString(createElement(MemoryRouter, { initialEntries: [at] }, createElement(SheetContent, { item: { kind: "question", id }, data: { rules: {}, terms: {}, dimensions: {}, today: "2026-11-28", ...data } as never, headId: "h", descId: "d" })))
       .replace(/<!-- -->/g, "")
       .replace(/<[^>]+>/g, " ");
   it("every question reaches the pages with its status, a question answered in part among them, Hebrew lines or not", async () => {
@@ -92,9 +92,15 @@ describe("an open question's sheet", () => {
     const bare = file.find((q) => q.status === "narrowed" && !q.title_he && !q.blocks_he);
     if (bare) expect(sheet({ openQuestions: shipped }, bare.id)).toContain(provenance.questionSheet.statuses.narrowed);
   });
-  it("says what the site does meanwhile, beside its status", () => {
+  it("says what the site does meanwhile as its own sentence, with no label repeating its first word", () => {
     const text = sheet({ openQuestions: { "TX OQ1": { status: "open", title_he: "שאלה לבדיקה", meanwhile_he: "בינתיים החישוב לוקח את השיעור הנמוך." } } }, "TX OQ1");
-    expect(text).toContain(provenance.questionSheet.meanwhile);
     expect(text).toContain("בינתיים החישוב לוקח את השיעור הנמוך.");
+    expect(text.match(/בינתיים/g)).toHaveLength(1);
+  });
+  const pointing = { openQuestions: { "TX2 OQ2": { status: "open", title_he: "שאלה לבדיקה", meanwhile_he: `בינתיים הנושא נמצא בעמוד ״${notCovered.title}״.` } } };
+  it("links the page it names, and leaves the line out on that page", () => {
+    const html = renderToString(createElement(MemoryRouter, null, createElement(SheetContent, { item: { kind: "question", id: "TX2 OQ2" }, data: { rules: {}, terms: {}, dimensions: {}, today: "2026-11-28", ...pointing } as never, headId: "h", descId: "d" })));
+    expect(html).toMatch(/<a[^>]*href="\/not-covered"[^>]*>״מה האתר עוד לא מכסה״<\/a>/);
+    expect(sheet(pointing, "TX2 OQ2", "/not-covered")).not.toContain("בינתיים");
   });
 });

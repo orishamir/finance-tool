@@ -6,7 +6,7 @@ import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link, useLocation } from "react-router";
 import { assertNever, type RuleRecord, type SourceStanding } from "@finance-tool/schema";
 import type { FundStatement } from "@finance-tool/engine";
-import { system, buttons, computedInputs, flags as flagCopy, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
+import { system, buttons, computedInputs, flags as flagCopy, notCovered as notCoveredCopy, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { spanWords } from "../lib/rule-row";
 import { figureRows, fillSlot, missingSlot, wordUnits, type FigureRow, type SlotSource } from "../lib/figure-slots";
@@ -370,6 +370,29 @@ function ProofsListSheet({ ids, headId }: { ids: readonly string[]; headId: stri
 }
 
 
+const notCoveredPath = "/not-covered";
+
+/**
+ * The line of what the site does meanwhile, which opens with its own "בינתיים". Where it points to the "not covered" page by its title, the
+ * title is a link to that page, and on that page the line is left out, since it only says the topic is there.
+ */
+function meanwhileLine(text: string | undefined, onNotCovered: boolean): ReactNode {
+  if (!text) return null;
+  const named = `״${notCoveredCopy.title}״`;
+  const at = text.indexOf(named);
+  if (at < 0) return text;
+  if (onNotCovered) return null;
+  return (
+    <>
+      {text.slice(0, at)}
+      <Link to={notCoveredPath} className="text-link hover:underline">
+        {named}
+      </Link>
+      {text.slice(at + named.length)}
+    </>
+  );
+}
+
 /**
  * An open question's sheet: its title, status, what it blocks and what the site does meanwhile, from data/open-questions.json, then what
  * an open question is. An answered question is deleted from the rule base once its answer is in a rule, so no sheet is closed.
@@ -378,19 +401,19 @@ function QuestionSheet({ id, data, headId }: { id: string; data: ProvenanceData;
   const q = questionOf(data, id);
   const status = q?.status_he ?? (q?.status ? copy.questionSheet.statuses[q.status] : undefined);
   const blocks = q?.blocks_he;
-  const meanwhile = q?.meanwhile_he;
+  const meanwhile = meanwhileLine(q?.meanwhile_he, pageOfHref(useLocation().pathname) === notCoveredPath);
   return (
     <div className="flex flex-col gap-3">
       <h2 id={headId} className="text-lg font-semibold">
         {q?.title_he ?? copy.idRef.question}
       </h2>
-      {(status || blocks || meanwhile) && (
+      {(status || blocks) && (
         <dl className="sheet-dl">
           {status && <Row label={copy.questionSheet.status}>{status}</Row>}
           {blocks && <Row label={copy.questionSheet.blocks}>{blocks}</Row>}
-          {meanwhile && <Row label={copy.questionSheet.meanwhile}>{meanwhile}</Row>}
         </dl>
       )}
+      {meanwhile && <p className="text-sm">{meanwhile}</p>}
       <p className="text-sm">{copy.questionSheet.what}</p>
     </div>
   );

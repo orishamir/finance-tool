@@ -492,8 +492,6 @@ export const provenance = {
     what: "עוד לא נמצא לזה מקור ברור, בחוק או אצל הרשות.",
     status: "מצב",
     blocks: "מה היא עוצרת",
-    /** What the site does until the question is answered (`meanwhile_he`). */
-    meanwhile: "בינתיים",
     // the status line, from data/open-questions.json (an answered question is deleted from the rule base)
     statuses: { open: "פתוחה", narrowed: "פתוחה בחלקה: חלק ממנה כבר נענה" } as Record<string, string>,
   },
