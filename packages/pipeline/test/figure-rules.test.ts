@@ -232,6 +232,42 @@ describe("figure-rules table: tariffs", () => {
   });
 });
 
+describe("figure-rules table: conversion lines and interactive brokers", () => {
+  const cards = (id: string, houses: string[]): Cards => ({ sources: new Map(), figures: new Map(), institutions: new Map([[id, houses]]) });
+
+  it("keeps a conversion card on its house's own tiers and flat amount, and on no other house's or line's", () => {
+    const hapoalim = tariff({ base: "fx", size_tiers: [{ flat: vo(5.5, ["BRK-84"]) }], flat_up_to: { amount: vo(3.3, ["BRK-84"]) }, rate: vo(0.5, ["BRK-84"]) }, { id: "hapoalim" });
+    const known = cards("BRK-84", ["hapoalim"]);
+    expect(ids("fees", hapoalim, known)).toEqual(["/lines/0/rate BRK-84 disallowed"]);
+    expect(ids("fees", { ...hapoalim, id: "discount" }, known).length).toBe(3);
+    const trade = tariff({ size_tiers: [{ flat: vo(5.5, ["BRK-84"]) }] }, { id: "hapoalim" });
+    expect(ids("fees", trade, known)).toEqual(["/lines/0/size_tiers/0/flat BRK-84 disallowed"]);
+  });
+
+  it("keeps BRK-86 and BRK-48 on their houses' conversion tiers", () => {
+    const discount = tariff({ base: "fx", size_tiers: [{ up_to: vo(10, ["BRK-86"]) }] }, { id: "discount" });
+    expect(ids("fees", discount, cards("BRK-86", ["discount", "mercantile"]))).toEqual([]);
+    const ibi = tariff({ base: "fx", size_tiers: [{ rate: vo(0.7, ["BRK-48"]) }] }, { id: "ibi" });
+    expect(ids("fees", ibi, cards("BRK-48", ["ibi"]))).toEqual([]);
+    expect(ids("fees", ibi, cards("BRK-48", []))).toEqual(["/lines/0/size_tiers/0/rate BRK-48 disallowed"]);
+  });
+
+  it("keeps Leumi's conversion card on a spread no figure bounds, never on its rate, minimum or maximum", () => {
+    const open = tariff({ base: "fx", rate: vo(null, ["BRK-23"]), min: vo(null, ["BRK-23"]), max: vo(null, ["BRK-23"]), spread: vo(null, ["BRK-23"]) });
+    expect(ids("fees", open)).toEqual(["/lines/0/rate BRK-23 disallowed", "/lines/0/min BRK-23 disallowed", "/lines/0/max BRK-23 disallowed"]);
+    expect(ids("fees", tariff({ base: "fx", spread: vo(0.5, ["BRK-23"]) }))).toEqual(["/lines/0/spread BRK-23 disallowed"]);
+  });
+
+  it("takes the cards on which account and entity off an Interactive house's prices, and its minimum", () => {
+    const israel = tariff({ rate: vo(0.1, ["BRK-40", "BRK-41"]), min: vo(1, ["BRK-41"]) }, { id: "interactive-israel", provider: { class: "broker" } });
+    expect(kept("fees", israel, "/lines/0/rate")).toEqual(["BRK-40"]);
+    expect(kept("fees", israel, "/lines/0/min")).toEqual([]);
+    const ib = tariff({ rate: vo(0.1, ["BRK-42", "BRK-43"]) }, { id: "interactive-brokers", provider: { class: "broker" }, minimums: { account_opening: vo(0, ["BRK-42", "BRK-43"]) } });
+    expect(kept("fees", ib, "/lines/0/rate")).toEqual(["BRK-42"]);
+    expect(kept("fees", ib, "/minimums/account_opening")).toEqual(["BRK-42"]);
+  });
+});
+
 describe("figure-rules table: funds and averages", () => {
   const fund = (over: Record<string, unknown>) => ({ id: "f", domicile: "IL", manager: "מיטב", fees: {}, ...over });
 
@@ -257,6 +293,30 @@ describe("figure-rules table: funds and averages", () => {
   it("gives a distribution yield no rule, and leaves a benchmark to its own check", () => {
     const f = fund({ distribution: { yield: vo(1.2, ["ETF-28", "TXF-08"]) }, tracking_record: { benchmark: vo("x", ["ETF-42"]) } });
     expect(ids("funds", f)).toEqual(["/distribution/yield ETF-28 disallowed", "/distribution/yield TXF-08 disallowed"]);
+  });
+
+  it("keeps the tracking rules on an Israeli fund's tracking difference, and takes them off a fund abroad's", () => {
+    const rules = ["ETF-07", "ETF-08", "ETF-09", "ETF-10", "MF-07"];
+    const difference = (domicile: string) => fund({ domicile, fees: { tracking_difference_12m: vo(0.1, rules) } });
+    expect(ids("funds", difference("IL"))).toEqual(["/fees/tracking_difference_12m ETF-10 disallowed", "/fees/tracking_difference_12m MF-07 disallowed"]);
+    expect(ids("funds", difference("IE")).map((x) => x.split(" ")[1])).toEqual(["ETF-07", "ETF-08", "ETF-09", "ETF-10", "MF-07"]);
+  });
+
+  it("keeps the directive's card on the median spread of an Israeli exchange-traded fund only", () => {
+    const spread = (legal_form: string) => fund({ legal_form, fees: { median_spread: vo(0.2, ["ETF-07", "ETF-06", "ETF-29", "ETF-04", "MF-21"]) } });
+    expect(ids("funds", spread("קרן סגורה, קרן סל (Israeli ETF)")).map((x) => x.split(" ")[1])).toEqual(["ETF-06", "ETF-29", "ETF-04", "MF-21"]);
+    expect(ids("funds", spread("קרן פתוחה, קרן מחקה")).map((x) => x.split(" ")[1])).toEqual(["ETF-07", "ETF-06", "ETF-29", "ETF-04", "MF-21"]);
+  });
+
+  it("keeps the treaty's card on an Irish fund's withholding drag, and no description of replication", () => {
+    const drag = (domicile: string) => fund({ domicile, fees: { fund_level_withholding_drag: vo(0.2, ["TXF-16", "ETF-11", "MF-43"]) } });
+    expect(ids("funds", drag("IE")).map((x) => x.split(" ")[1])).toEqual(["ETF-11", "MF-43"]);
+    expect(ids("funds", drag("IL")).map((x) => x.split(" ")[1])).toEqual(["TXF-16", "ETF-11", "MF-43"]);
+  });
+
+  it("takes a money-market fund's liquidity rules and the display duty off a fixed management fee", () => {
+    const f = fund({ fees: { fixed_management: vo(0.2, ["MF-16", "MF-34", "MF-35", "BANK-15", "TXS-24"]) } });
+    expect(ids("funds", f).map((x) => x.split(" ")[1])).toEqual(["MF-34", "MF-35", "BANK-15", "TXS-24"]);
   });
 
   it("keeps the exchange's calculator on an average, not the exchange's duty to publish", () => {
@@ -309,6 +369,28 @@ describe("figure-rules table: products", () => {
   it("keeps on a null cap only the rules that say there is none", () => {
     const account = product("brokerage-account", { fee_caps: { trade: vo(null, ["BRK-15", "BRK-16", "BRK-19", "BRK-21", "BRK-24", "BRK-33"]) } });
     expect(kept("instruments", account, "/fee_caps/trade")).toEqual(["BRK-16", "BRK-24"]);
+  });
+
+  it("names the body that supervises a product only by the card that sets it up, and leaves the lists of members to context", () => {
+    const regulator = (id: string, ...rules: string[]) => product(id, { regulator: vo("BoI", rules) });
+    expect(kept("instruments", regulator("child-savings-bank", "REG-23", "REG-01", "CS-22"), "/regulator")).toEqual(["REG-23", "REG-01"]);
+    expect(kept("instruments", regulator("bank-deposit", "REG-01", "REG-03"), "/regulator")).toEqual(["REG-01"]);
+    expect(kept("instruments", regulator("brokerage-account", "BRK-01", "REG-13", "BRK-32"), "/regulator")).toEqual(["BRK-01", "REG-13"]);
+    expect(kept("instruments", regulator("government-bond", "GOV-10", "REG-13"), "/regulator")).toEqual(["REG-13"]);
+    expect(kept("instruments", regulator("makam", "GOV-01", "GOV-05"), "/regulator")).toEqual(["GOV-01"]);
+    expect(kept("instruments", regulator("child-savings-provident", "REG-23", "REG-17", "CS-08", "CS-05"), "/regulator")).toEqual(["REG-23", "REG-17"]);
+    expect(kept("instruments", regulator("money-market-fund-daily", "REG-07", "MF-01", "MF-07"), "/regulator")).toEqual(["REG-07", "MF-01", "MF-07"]);
+    expect(kept("instruments", regulator("makam", "REG-01"), "/regulator")).toEqual([]);
+  });
+
+  it("keeps on a product's switch value the rules that say whether the move is taxed, and the rest go to context", () => {
+    const sw = (id: string, value: unknown, ...rules: string[]) => product(id, { switch_is_tax_event: vo(value, rules) });
+    expect(kept("instruments", sw("current-account", false, "TXI-08", "SW-26", "SW-29"), "/switch_is_tax_event")).toEqual(["TXI-08"]);
+    expect(kept("instruments", sw("ira-hishtalmut", false, "TXK-17", "TXH-17", "IRA-23"), "/switch_is_tax_event")).toEqual(["TXK-17", "TXH-17", "IRA-23"]);
+    expect(kept("instruments", sw("ira-provident", false, "TXK-17", "PF-23", "IRA-23"), "/switch_is_tax_event")).toEqual(["TXK-17", "IRA-23"]);
+    expect(kept("instruments", sw("child-savings-bank", null, "CS-12", "CS-10", "TXK-22", "TXK-29"), "/switch_is_tax_event")).toEqual(["CS-12", "TXK-29"]);
+    expect(kept("instruments", sw("child-savings-bank", true, "TXK-29"), "/switch_is_tax_event")).toEqual([]);
+    expect(kept("instruments", sw("pension-general", false, "PF-23", "PEN-17", "TXP-13"), "/switch_is_tax_event")).toEqual(["TXP-13"]);
   });
 
   it("judges no text a product cites rules in, only its values", () => {
