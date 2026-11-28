@@ -20,7 +20,7 @@ import { parseAnswer } from "../lib/answer-slots";
 import type { RuleCardFile } from "../lib/rule-card-file";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { Card, CompanyLinks, DocLink, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
+import { Card, CompanyLinks, DocLink, GroupHead, PrintedText, StatRow, TextLink, When, gershayim, keepTitleWhole } from "./kit";
 import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, sameCompanies, scopeCompanies, tagCompanies, pageScope, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
 import type { FigureKey, SheetPart } from "./provenance";
 import { CloseCtx, DataCtx, IdRef, pageCompaniesOf, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, headOf, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData, type Catch } from "./provenance";
@@ -379,9 +379,7 @@ function meanwhileLine(text: string | undefined, onNotCovered: boolean): ReactNo
   return (
     <>
       {text.slice(0, at)}
-      <Link to={notCoveredPath} className="text-link hover:underline">
-        {named}
-      </Link>
+      <TextLink to={notCoveredPath}>{named}</TextLink>
       {text.slice(at + named.length)}
     </>
   );
