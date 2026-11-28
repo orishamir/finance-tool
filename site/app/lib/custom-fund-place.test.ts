@@ -316,7 +316,7 @@ describe("wherever a typed fund may bear dividend tax inside it that the run doe
   });
 
   it("each label not counted is an open tax label that says so in words and states no rate", () => {
-    for (const id of ["tax-fund-dividend-swap", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"] as const) {
+    for (const id of ["tax-fund-dividend-swap", "tax-fund-dividend-us-keeps", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"] as const) {
       expect(labelDefs[id].tone).toBe("open");
       expect(copy.labels[id].text).toBe(copy.labels["tax-fund-dividend-left-out"].text);
       expect(copy.labels[id].explain).not.toMatch(/\d+(\.\d+)?%/);
