@@ -540,7 +540,7 @@
    "site/app/lib/custom-entries.test.ts": 49,
    "site/app/lib/custom-entries.ts": 2,
    "site/app/lib/data-as-of.ts": 2,
-   "site/app/lib/data.server.ts": 21,
+   "site/app/lib/data.server.ts": 19,
    "site/app/lib/deal-account/bundle.ts": 1,
    "site/app/lib/deal-account/move-bounds.deals.deep.test.ts": 5,
    "site/app/lib/deal-account/move-dollar.deals.deep.test.ts": 3,
