@@ -2,10 +2,11 @@
 // principal currency, a Tel Aviv line's currency and unit price, read from `data/funds/`, with the record's distribution (A-10) and the exposure's F-107 inputs. The provider workbench and
 // the site build each fund they run through it. No I/O: the records arrive as data.
 import { isoCurrency, isUnitPriceUnit, unitPriceUnits, type ExposureRecord, type FundRecord, type ValueObject } from "@finance-tool/schema";
-import { comparedYears, trackingBeyondFees, variableForward, type GapList } from "../formulas/fund-gap.ts";
+import { comparedYears, shortfallBeyondFees, trackingBeyondFees, variableForward, type GapList } from "../formulas/fund-gap.ts";
 import type { Fund } from "../ledgers/securities.ts";
 import { RecordInputError } from "../resolver.ts";
 import type { ForeignInvestmentFundStatement, TaxIndexStatement } from "../result.ts";
+import { collectedParts, insideTaxOf, type CollectedDividends, type IndexDividends, type InsideTaxCase } from "./inside-tax.ts";
 
 function fraction(vo: ValueObject | null | undefined, unit: ValueObject["unit"], what: string): number | undefined {
   if (!vo || vo.value === null) return undefined;
@@ -31,8 +32,8 @@ export function recordDistribution(rec: Pick<FundRecord, "id" | "distribution">)
 }
 
 /**
- * F-107's inputs from the fund's exposure (`us_dividends`), as fractions: the dividend yield of the index's US shares and their share of
- * the index (1 when the record gives no weight: an index of US companies). Undefined when the exposure has no yield.
+ * The fund's exposure's US part (`us_dividends`), as fractions: the dividend yield of the index's US shares and their share of the index
+ * (1 when the record gives no weight: an index of US companies). Undefined when the exposure has no yield.
  */
 export function usDividendsOf(exposure: Pick<ExposureRecord, "id" | "us_dividends"> | undefined): { yield: number; weight: number } | undefined {
   const u = exposure?.us_dividends;
@@ -81,8 +82,8 @@ export interface FundOfOptions {
   w8ben?: boolean;
   /** The list the fund is ranked on, for F-92 (d); without it a gross benchmark gives no A-07 from its years. */
   list?: GapList;
-  /** The exposure's F-107 inputs (`usDividendsOf`), read for an Irish fund that holds the shares. */
-  usDividends?: { yield: number; weight: number };
+  /** What the site holds of the index's dividends (`dividendsOf`, or an added index's region and yield): F-107's and F-133's inputs. */
+  dividends?: IndexDividends;
   /**
    * The exposure's currency where it is not the shekel, the candidate principal currency of an Israeli fund whose record says its status as
    * a foreign-investment fund is not known (F-04).
@@ -95,7 +96,7 @@ export interface FundOfOptions {
 }
 
 /** The fund the engine runs for a record, and the fee fields the record leaves empty. */
-export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist, w8ben, list, usDividends, foreignCurrency, exposureKind, typed }: FundOfOptions = {}) {
+export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist, w8ben, list, dividends, foreignCurrency, exposureKind, typed }: FundOfOptions = {}) {
   const notCollected: string[] = [];
   const f = rec.fees;
   const get = (key: keyof FundRecord["fees"], unit: ValueObject["unit"]) => {
@@ -118,11 +119,14 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   const tracking = published ?? fromReports ?? get("tracking_difference_12m", "pct_per_year");
   const spread = get("median_spread", "pct_of_trade");
   const withholding = get("fund_level_withholding_drag", "pct_per_year");
+  // A-11 and F-133: the case of the tax on what the fund receives from its index, which sets F-133 (b)'s A-07 in place of F-92 (b)'s
+  const inside = insideTaxCaseOf(rec, { dividends, list, typed: typed === true, withholding: withholding !== undefined, published: published !== undefined });
+  const fromNet = inside.kind === "counted" && inside.tax.years !== undefined;
   const drag: NonNullable<Fund["drag"]> = {};
   if (management !== undefined) drag.management = management;
   if (trustee !== undefined) drag.trustee = trustee;
   if (variable !== undefined) drag.variable = variable;
-  if (tracking !== undefined) drag.tracking = tracking;
+  if (tracking !== undefined && !fromNet) drag.tracking = tracking;
   if (withholding !== undefined) drag.foreignWithholding = withholding;
   // F-121: a fee lowered for a stated period, charged at the promotion's rate in the months it covers
   const promotions = (rec.promotions ?? []).flatMap((p) => {
@@ -130,11 +134,10 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
     return rate === undefined || !p.rate.effective_from || !p.rate.effective_to ? [] : [{ part: PROMOTED_PART[p.fee], rate, from: p.rate.effective_from, to: p.rate.effective_to }];
   });
   if (promotions.length) drag.promotions = promotions;
-  // A-11 by F-107: an Irish fund that holds the shares, with no figure of its own and no published 12-month gap (which could hold the tax
-  // already); an A-07 from its years stands against a net index (F-92 (d)), where its own withholding does not show as a shortfall
-  const usWithholding = withholding === undefined && published === undefined && rec.domicile === "IE" && rec.replication?.method === "physical" && usDividends !== undefined;
-  if (usWithholding) {
-    drag.usDividends = usDividends;
+  // A-11 by F-107 and F-133 where the method counts it: the run reads the rates from the rules; the record's own figure, where it holds
+  // one, is `foreignWithholding` above
+  if (inside.kind === "counted") {
+    drag.insideTax = inside.tax;
     notCollected.splice(notCollected.indexOf("fund_level_withholding_drag"), 1);
   }
   const fund: Fund = { kind, drag };
@@ -177,4 +180,35 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   // TXF-11: a Tel Aviv line whose own annex reports a ruling that taxes it at sale and on distributions only
   if (saleOnlyRulingOf(rec, kind)) fund.saleOnlyRuling = true;
   return { fund, notCollected, hasManagement: management !== undefined };
+}
+
+/** What `insideTaxCaseOf` reads beside the record. */
+export interface InsideTaxContext {
+  dividends: IndexDividends | undefined;
+  list: GapList | undefined;
+  typed: boolean;
+  /** The record holds a withholding figure of its own (`fees.fund_level_withholding_drag`). */
+  withholding: boolean;
+  /** The record holds a published 12-month gap (`fees.tracking_difference_12m`). */
+  published: boolean;
+}
+
+/**
+ * The case of a fund record's inside tax (method A-11, F-107, F-133, `insideTaxOf`), from the record, its index and its years as F-92 (d)
+ * compares them: against a net benchmark, F-92 (b)'s shortfall before its floor; against a gross one, counted in the gap. The run (`fundOf`)
+ * and every label read it here.
+ */
+export function insideTaxCaseOf(rec: FundRecord, { dividends, list, typed, withholding, published }: InsideTaxContext): InsideTaxCase {
+  const years = published ? null : comparedYears(rec.tracking_record, list);
+  const net = years && rec.tracking_record?.benchmark.dividends === "net" ? shortfallBeyondFees(years, sumFees(rec)) : null;
+  return insideTaxOf(
+    { domicile: rec.domicile, replication: rec.replication?.method ?? null, distribution: rec.distribution_policy, ownFigure: withholding || published, typed },
+    dividends,
+    { net: net === null ? null : { shortfall: net }, gross: years !== null && rec.tracking_record?.benchmark.dividends === "gross" },
+  );
+}
+
+/** What the site holds of a collected index's dividends (F-107, F-133): its US part and the rule of its net version's deduction. */
+export function dividendsOf(exposure: Pick<ExposureRecord, "id" | "us_dividends" | "net_deduction_rule"> | undefined): CollectedDividends {
+  return { source: "collected", parts: collectedParts(usDividendsOf(exposure)), netRule: exposure?.net_deduction_rule ?? null };
 }

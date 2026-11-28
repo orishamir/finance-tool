@@ -1,12 +1,23 @@
 import { describe, expect, expectTypeOf, it } from "vitest";
 import type { FundRecord } from "@finance-tool/schema";
-import { taxIndexStatementOf } from "@finance-tool/engine";
+import { comparedYears, gapListOf, taxIndexStatementOf } from "@finance-tool/engine";
 import { loadFunds } from "./instruments.server";
-import { knownIndices } from "./invest";
+import { knownIndices, type IndexRef } from "./invest";
 import { allLabels, dividendTaxLabel, fundLabels, label, labelDefs, statementExamples } from "./labels";
 import { invest as copy } from "../copy";
 import { labelDoc, labelRules } from "./label-rests";
 import { buildIndicesBundle } from "./providers.server";
+
+/**
+ * The years a collected fund's gap is measured over (F-92 (d)), by the dividends of the series it is measured against as its record says
+ * alone; null where it has none, or where a published 12-month gap stands in for them. F-133 (b) reaches a fund with net years on an index
+ * whose net deduction is known, and (c) one with gross years.
+ */
+const yearsOf = (f: FundRecord, i: IndexRef): "net" | "gross" | "unstated" | null => {
+  if (typeof f.fees.tracking_difference_12m?.value === "number" || !comparedYears(f.tracking_record, gapListOf(f, i.exposure ?? undefined, []))) return null;
+  return f.tracking_record?.benchmark.dividends ?? null;
+};
+const netYears = (f: FundRecord, i: IndexRef) => yearsOf(f, i) === "net" && !!i.exposure?.net_deduction_rule;
 
 describe("label icons (2026-11-05 sweep)", () => {
   // labels that say the same thing of a different case share an icon; any other two never do
@@ -15,7 +26,7 @@ describe("label icons (2026-11-05 sweep)", () => {
     ["hedged", "hedged-many"],
     ["held-tase-foreign", "held-tase-unknown"],
     ["tax-index-currency", "tax-index-cpi"],
-    ["tax-fund-dividend", "tax-fund-dividend-left-out", "tax-fund-dividend-part", "tax-fund-dividend-swap", "tax-fund-dividend-us-keeps", "tax-fund-dividend-need-yield", "tax-fund-dividend-not-us", "tax-fund-dividend-us-share", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"],
+    ["tax-fund-dividend", "tax-fund-dividend-left-out", "tax-fund-dividend-part", "tax-fund-dividend-swap", "tax-fund-dividend-us-keeps", "tax-fund-dividend-need-yield", "tax-fund-dividend-israel", "tax-fund-dividend-place", "tax-fund-dividend-years", "tax-fund-dividend-gap", "tax-fund-dividend-net", "tax-fund-dividend-net-reading", "tax-fund-dividend-range", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"],
   ];
   const kin = (a: string, b: string) => same.some((g) => g.includes(a) && g.includes(b));
 
@@ -58,8 +69,9 @@ describe("the tax inside an Irish fund that holds its index's shares (TXF-16, F-
     for (const i of knownIndices(bundle)) {
       for (const f of bundle.funds.filter((x) => x.exposure_id === i.id && x.domicile === "IE" && x.replication?.method === "physical")) {
         const own = typeof f.fees.fund_level_withholding_drag?.value === "number" || typeof f.fees.tracking_difference_12m?.value === "number";
-        // F-107 counts the US part of the index (its US share, MSCI's country weight where the record gives one); the rest is not counted
-        const expected = own ? "tax-fund-dividend" : !i.exposure?.us_dividends ? "tax-fund-dividend-left-out" : i.exposure.us_dividends.weight ? "tax-fund-dividend-part" : "tax-fund-dividend";
+        // F-107 counts the US part of the index (its US share, MSCI's country weight where the record gives one); the rest is not counted,
+        // unless the fund's years against a net index whose deduction is known carry it (F-133 (b))
+        const expected = own ? "tax-fund-dividend" : netYears(f, i) ? "tax-fund-dividend-years" : !i.exposure?.us_dividends ? "tax-fund-dividend-left-out" : i.exposure.us_dividends.weight ? "tax-fund-dividend-part" : "tax-fund-dividend";
         expect(`${f.id} ${ids(f, i).filter((id) => id.startsWith("tax-fund-dividend")).join()}`).toBe(`${f.id} ${expected}`);
       }
     }
@@ -69,11 +81,14 @@ describe("the tax inside an Irish fund that holds its index's shares (TXF-16, F-
 describe("wherever a collected fund may bear dividend tax inside it that the run does not count, its row says so (D56, F-107, A-11)", () => {
   const bundle = buildIndicesBundle();
   const indices = knownIndices(bundle);
-  const taxOf = (f: FundRecord) => {
+  const indexOf = (f: FundRecord) => {
     const i = indices.find((x) => x.id === f.exposure_id);
     if (!i) throw new Error(`the index of ${f.id}`);
-    return dividendTaxLabel(f, i);
+    return i;
   };
+  const taxOf = (f: FundRecord) => dividendTaxLabel(f, indexOf(f));
+  /** F-133 (b) first: a fund with years against a net index whose deduction is known is counted through them, whatever else it is. */
+  const orYears = (f: FundRecord, label: string | null) => (netYears(f, indexOf(f)) ? "tax-fund-dividend-years" : label);
   const funds = (pick: (f: FundRecord) => boolean) => {
     const out = bundle.funds.filter(pick);
     if (out.length === 0) throw new Error("no fund on the records is of this case");
@@ -81,29 +96,31 @@ describe("wherever a collected fund may bear dividend tax inside it that the run
   };
   const weighed = (f: FundRecord) => !!bundle.exposures.find((e) => e.id === f.exposure_id)?.us_dividends?.weight;
 
-  it("an Irish fund holding the shares of an index with companies outside the United States (MSCI World, MSCI ACWI): the US part counted, the rest not (TXF-54)", () => {
-    for (const f of funds((x) => x.domicile === "IE" && x.replication?.method === "physical" && weighed(x))) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-part`);
+  it("an Irish fund holding the shares of an index with companies outside the United States (MSCI World, MSCI ACWI): the US part counted, the rest not (TXF-54), unless its years carry it (F-133 (b))", () => {
+    for (const f of funds((x) => x.domicile === "IE" && x.replication?.method === "physical" && weighed(x))) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} ${orYears(f, "tax-fund-dividend-part")}`);
     expect(labelDefs["tax-fund-dividend-part"].rules).toEqual(expect.arrayContaining(["TXF-16", "TXF-53", "TXF-54"]));
   });
 
-  it("a fund on a swap or futures, Israeli or Irish, with no figure of its own: not counted, citing what a swap pays (TXS-41, TXF-58), stating no rate", () => {
-    for (const f of funds((x) => x.replication?.method === "swap" || x.replication?.method === "futures")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-swap`);
+  it("a fund on a swap or futures, Israeli or Irish, with no figure of its own: counted through its years against a net index (F-133 (b)), at the net index's deduction where its documents measure it against one (F-133 (a)), and otherwise not counted, citing what a swap pays (TXS-41, TXF-58), stating no rate", () => {
+    // every swap fund on an index with a net version whose deduction is known measures against that net index (F-107, TXF-58)
+    const swapLabel = (f: FundRecord) => (f.replication?.method === "swap" && indexOf(f).exposure?.net_deduction_rule ? "tax-fund-dividend-net" : "tax-fund-dividend-swap");
+    for (const f of funds((x) => x.replication?.method === "swap" || x.replication?.method === "futures")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} ${orYears(f, swapLabel(f))}`);
     expect(labelDefs["tax-fund-dividend-swap"].rules).toEqual(["TXS-41", "TXF-58"]);
     expect(copy.labels["tax-fund-dividend-swap"].explain).not.toMatch(/\d+(\.\d+)?%/);
   });
 
   it("a US fund that pays out its income bears none on an index of US companies, and may on one with companies elsewhere (TXF-56)", () => {
     for (const f of funds((x) => x.domicile === "US" && x.distribution_policy === "distributing" && x.exposure_id === "index-sp500")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} null`);
-    for (const f of funds((x) => x.domicile === "US" && x.distribution_policy === "distributing" && weighed(x))) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-us-fund`);
+    for (const f of funds((x) => x.domicile === "US" && x.distribution_policy === "distributing" && weighed(x))) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} ${orYears(f, "tax-fund-dividend-us-fund")}`);
   });
 
-  it("a US fund that keeps its income pays US tax on what it keeps inside it (TXF-50): not counted, whatever its index", () => {
-    for (const f of funds((x) => x.domicile === "US")) expect(taxOf({ ...f, distribution_policy: "accumulating" })).toBe("tax-fund-dividend-us-keeps");
+  it("a US fund that keeps its income pays US tax on what it keeps inside it (TXF-50): not counted, whatever its index, unless its years carry it (F-133 (b))", () => {
+    for (const f of funds((x) => x.domicile === "US")) expect(`${f.id} ${taxOf({ ...f, distribution_policy: "accumulating" })}`).toBe(`${f.id} ${orYears(f, "tax-fund-dividend-us-keeps")}`);
     expect(labelDefs["tax-fund-dividend-us-keeps"].rules).toContain("TXF-50");
   });
 
-  it("an Israeli fund holding shares on an index of Israeli companies may hold foreign ones too (ETF-44): not counted (TXF-57)", () => {
-    for (const f of funds((x) => x.domicile === "IL" && x.exposure_id === "index-ta35")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-il-fund`);
+  it("an Israeli fund holding shares on an index of Israeli companies may hold foreign ones too (ETF-44): counted in its gap against the gross index where it has years (F-133 (c)), not counted otherwise (TXF-57)", () => {
+    for (const f of funds((x) => x.domicile === "IL" && x.exposure_id === "index-ta35")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} ${yearsOf(f, indexOf(f)) === "gross" ? "tax-fund-dividend-gap" : "tax-fund-dividend-il-fund"}`);
     for (const f of funds((x) => x.domicile === "IL" && x.replication?.method !== "swap" && x.exposure_id === "index-sp500")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-il-fund`);
   });
 
@@ -117,7 +134,7 @@ describe("wherever a collected fund may bear dividend tax inside it that the run
   });
 
   it("each sentence that a tax is withheld where the countries are not known says it may be, never that it is", () => {
-    for (const id of ["tax-fund-dividend-part", "tax-fund-dividend-not-us", "tax-fund-dividend-us-share", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"] as const) {
+    for (const id of ["tax-fund-dividend-part", "tax-fund-dividend-israel", "tax-fund-dividend-place", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"] as const) {
       expect(copy.labels[id].explain).toContain("עשוי להיות מנוכה");
       expect(copy.labels[id].explain.replaceAll("עשוי להיות מנוכה", "")).not.toContain("מנוכה");
     }

@@ -5,7 +5,7 @@
 import { paysAtPlanEnd } from "./plan-end";
 import { computedInputs, invest as investCopy } from "../copy";
 import { exposurePath, guidePath } from "./site-paths";
-import { fundOf, gapListOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, saleOnlyRulingOf, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
+import { dividendsOf, fundOf, gapListOf, insideTaxCaseOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, saleOnlyRulingOf, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { feeAbsent, instrumentClassOf } from "./providers";
 import {
   catalogEntry,
@@ -392,7 +392,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
   if (kind !== "money-market-renewable") {
     const drag: NonNullable<Fund["drag"]> = {};
     const notCollected: string[] = [];
-    const take = (field: keyof FundRecord["fees"], key: Exclude<keyof typeof drag, "usDividends" | "promotions">, label: string) => {
+    const take = (field: keyof FundRecord["fees"], key: Exclude<keyof typeof drag, "insideTax" | "promotions">, label: string) => {
       const v = rec.fees[field];
       if (!v || v.value === null) {
         // a fee the record could not collect runs as 0; the terms block shows the manager's and the trustee's, which every fund charges,
@@ -412,10 +412,13 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     take("trustee", "trustee", "fundTrustee");
     take("tracking_difference_12m", "tracking", "fundTracking");
     take("fund_level_withholding_drag", "foreignWithholding", "fundWithholding");
-    // A-11 by F-107 is read where the exposure is (fundOf, the indices page): an Irish fund that holds the shares, with no figure of its own
-    // and no published 12-month gap, is not run here at A-11 = 0
-    if (rec.domicile.toUpperCase() === "IE" && rec.replication?.method === "physical" && drag.foreignWithholding === undefined && drag.tracking === undefined)
-      missing.push(`${wrapperId}: fund "${rec.id}" is Irish and holds its index's shares; the guides do not compute F-107 (A-11)`);
+    // A-11 by F-107 and F-133 is read where the exposure is (fundOf, the indices page): a fund the method counts it for is not run here
+    // at A-11 = 0, nor at F-92's A-07 where F-133 (b) raises it
+    const exposureId = (rec as { exposure_id?: string }).exposure_id;
+    const list = exposureId ? gapListOf(rec, { id: exposureId }, src.funds.filter((f) => (f as { exposure_id?: string }).exposure_id === exposureId)) : undefined;
+    const dividends = dividendsOf(loadExposures().find((e) => e.id === exposureId));
+    if (insideTaxCaseOf(rec, { dividends, list, typed: false, withholding: drag.foreignWithholding !== undefined, published: drag.tracking !== undefined }).kind === "counted")
+      missing.push(`${wrapperId}: fund "${rec.id}" bears a tax inside it the method counts; the guides do not compute F-107 or F-133 (A-11)`);
     // F-92 (b): the variable fee counted forward as the invest page's engine counts it (fundOf), the mean charged in the years at
     // today's rate where the reports give A-07, so the comparison prices a fund's way at the value the invest page gives it
     const exposure = (rec as { exposure_id?: string }).exposure_id;

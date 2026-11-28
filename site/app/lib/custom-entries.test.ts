@@ -26,8 +26,9 @@ import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { applyImport, buildStateFile, dropTypedAccounts, replaceState, ensureLoaded, exportCounts, flush, getSnapshot, isEmptyState, readImport, removeCustomFund, removeCustomIndex, resetStore, saveCustomFund, saveCustomIndex, STATE_KEY, stateFileText, type StateV3 } from "./state";
 import type { PlanBounds } from "./plan-bounds";
-import { entered, type SiteValue } from "./value";
+import { entered, ruleFigure, type SiteValue } from "./value";
 import { stretchOf } from "./stretch";
+import { fmt } from "./format";
 
 /** The plan numbers' bounds an import checks against, fixed here (P-05's as written on 2026-11-23: the horizon slider's 1 to 40 years, its
  *  `pct` and `age` ranges). */
@@ -103,6 +104,11 @@ const EXPECTED = EXPECTED_BY_MONTH[calendarMonthOf(t)]!;
 
 const ta125 = indexById(bundle, "index-ta125")!;
 const sp = indexById(bundle, "index-sp500")!;
+
+function must<T>(v: T | null | undefined, what: string): T {
+  if (v === null || v === undefined) throw new Error(`missing: ${what}`);
+  return v;
+}
 const priced = (x: unknown): x is WayPrice => !!x && typeof x === "object" && "valueN" in x;
 
 describe("an account typed from scratch, moved into a deal, leaves what the script says (the move, method §10.4)", () => {
@@ -337,20 +343,49 @@ describe("what the person says the fund does (2026-11-05): nothing is filled in 
     // the form bears only on what a US fund pays out: a fund that pays nothing out has no figure that assumes it
     expect(ids(f)).not.toContain("ask-w8");
     expect(ids(fundFromDraft({ ...abroadDraft, country: "US", payout: "distributing", yield: 1.2, perYear: 4 }, "custom-fund-us-dist", "index-sp500", t))).toContain("ask-w8");
-    // the tax inside an Irish fund is charged, and said, only where the fund holds the index's shares (F-107): not on a swap, and not
-    // where the person did not say how the fund follows its index
-    expect(ids(fundFromDraft({ ...abroadDraft, country: "IE", tracking: "physical" }, "custom-fund-ie", "index-sp500", t))).toContain("tax-fund-dividend");
+    // the tax inside an Irish fund on the S&P 500 is charged, and said, only where the fund holds the index's shares (F-107), at two ends
+    // since its documents were not read: not on a swap, and not where the person did not say how the fund follows its index
+    expect(ids(fundFromDraft({ ...abroadDraft, country: "IE", tracking: "physical" }, "custom-fund-ie", "index-sp500", t))).toContain("tax-fund-dividend-range");
     expect(ids(fundFromDraft({ ...abroadDraft, country: "IE", tracking: "swap" }, "custom-fund-ie-swap", "index-sp500", t))).not.toContain("tax-fund-dividend");
     expect(ids(fundFromDraft({ ...abroadDraft, country: "IE" }, "custom-fund-ie-silent", "index-sp500", t))).not.toContain("tax-fund-dividend");
+  });
+
+  it("a Luxembourg fund, abroad or in Tel Aviv: accumulating, priced with one figure of the tax inside it (TXF-55's US cell is the domestic rate); distributing, listed with no price and the reason that Luxembourg's tax on its payout is not known (G-44)", () => {
+    const usYield = must(sp.exposure?.us_dividends?.yield.value, "the S&P 500's dividend yield");
+    const usRate = must(ruleFigure(must(bundle.rules.find((r) => r.id === "TXF-53"), "TXF-53"), "us", t)?.value, "TXF-53's US rate");
+    for (const place of [{ buyAt: "europe-usd", country: "LU" }, { buyAt: "tase", country: "LU" }] as const) {
+      const draft = { ...fundDraftOf(null, place), buyAt: place.buyAt, hedged: false, name: "LU", fixed: 0.07, tracking: "physical" as const };
+      const acc = priceOf(fundFromDraft({ ...draft, payout: "accumulating" }, `custom-fund-lu-acc-${place.buyAt}`, "index-sp500", t));
+      expect(acc.reason, place.buyAt).toBeUndefined();
+      const tax = must((acc.best?.value.computed_from?.inputs as Record<string, SiteValue> | undefined)?.[invest.pair.fundInputs.insideTax], "the tax inside the fund");
+      expect(tax.value).toBeCloseTo(((usRate as number) / 100) * (usYield as number), 3);
+      expect(tax.doubt).toBeUndefined();
+      const dist = priceOf(fundFromDraft({ ...draft, payout: "distributing", yield: 1.2, perYear: 4 }, `custom-fund-lu-dist-${place.buyAt}`, "index-sp500", t));
+      expect(dist.reason, place.buyAt).toEqual({ code: "distribution-tax-unknown" });
+      expect(Object.values(dist.byHouse).some((w) => "valueN" in w)).toBe(false);
+    }
+    expect(reasonText({ code: "distribution-tax-unknown" }, "foreign_etf")).toBe(invest.reasons.distributionTaxUnknown);
+  });
+
+  it("an Irish fund holding the S&P 500's shares, typed, runs at its cautious end, and the figure's \"?\" says both ends a year and why (F-107)", () => {
+    const usYield = must(sp.exposure?.us_dividends?.yield.value, "the S&P 500's dividend yield") as number;
+    const rule = (id: string, figure: string) => must(ruleFigure(must(bundle.rules.find((r) => r.id === id), id), figure, t)?.value, `${id} ${figure}`) as number;
+    const low = (rule("TXF-16", "irish_fund_us_dividend_treaty_rate") / 100) * usYield;
+    const high = (rule("TXF-53", "us") / 100) * usYield;
+    const held = priceOf(fundFromDraft({ ...abroadDraft, country: "IE", tracking: "physical" }, "custom-fund-ie-ends", "index-sp500", t));
+    const tax = must((held.best?.value.computed_from?.inputs as Record<string, SiteValue> | undefined)?.[invest.pair.fundInputs.insideTax], "the tax inside the fund");
+    expect(tax.value).toBeCloseTo(high, 3);
+    expect(tax.doubt).toBe(numbers.insideTaxDoubt.claim(fmt.pctNonZero(low), fmt.pctNonZero(high)));
+    expect(held.best?.value.doubt).toContain(numbers.insideTaxDoubt.claim(fmt.pctNonZero(low), fmt.pctNonZero(high)));
   });
 
   it("an Irish fund said to hold the shares runs with the US tax on their dividends (F-107), and its figure's sheet lists it", () => {
     const words = invest.pair.fundInputs;
     const held = priceOf(fundFromDraft({ ...abroadDraft, payout: "accumulating", country: "IE", tracking: "physical" }, "custom-fund-held", "index-sp500", t));
     const swapped = priceOf(fundFromDraft({ ...abroadDraft, payout: "accumulating", country: "IE", tracking: "swap" }, "custom-fund-swapped", "index-sp500", t));
-    const tax = (held.best!.value.computed_from!.inputs as Record<string, SiteValue>)[words.usWithholding];
+    const tax = (held.best!.value.computed_from!.inputs as Record<string, SiteValue>)[words.insideTax];
     expect(tax?.computed_from?.formula).toBe("F-107");
-    expect((swapped.best!.value.computed_from!.inputs as Record<string, SiteValue>)[words.usWithholding]).toBeUndefined();
+    expect((swapped.best!.value.computed_from!.inputs as Record<string, SiteValue>)[words.insideTax]).toBeUndefined();
     // the same fees typed: the fund that holds the shares keeps less
     expect(held.best!.valueN).toBeLessThan(swapped.best!.valueN);
   });

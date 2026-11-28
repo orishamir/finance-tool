@@ -743,13 +743,14 @@ describe("what each figure's sheet lists", () => {
   });
 
   it("an Irish fund that holds the US shares lists the US tax on their dividends (F-107, A-11); a swap fund and an Israeli fund list none", () => {
-    const tax = inputs(irish.best!.value)[words.pair.fundInputs.usWithholding]!;
+    const tax = inputs(irish.best!.value)[words.pair.fundInputs.insideTax]!;
     expect(tax.computed_from!.formula).toBe("F-107");
     // whether the fund obtains the treaty rate is open (TXF OQ7): the figure and the value it costs both say so
     expect(tax.flags).toContain("TXF-OQ7");
     expect(irish.best!.value.flags).toContain("TXF-OQ7");
     const of = inputs(tax);
-    expect(of[words.pair.fundInputs.usRate]!.value).toBe(15);
+    const rateName = need(need(bundle.rules.find((r) => r.id === "TXF-16"), "TXF-16").figure_names_he?.irish_fund_us_dividend_treaty_rate, "TXF-16's rate by name");
+    expect(of[words.pair.fundInputs.rate(rateName)]!.value).toBe(15);
     expect(of[words.pair.fundInputs.usYield]!.value).toBe(bundle.exposures.find((e) => e.id === "index-sp500")!.us_dividends!.yield.value);
     // the S&P 500 is made of US companies: no weight to list
     expect(of[words.pair.fundInputs.usWeight]).toBeUndefined();
@@ -759,8 +760,8 @@ describe("what each figure's sheet lists", () => {
     const swapView = buildInvest({ bundle: { ...bundle, funds: [...bundle.funds, asSwap] }, index: sp, plan: plan({ currentAccounts: true }) });
     const swap = swapView.options.flatMap((o) => o.funds).find((f) => f.rec.id === "ie-swap-case");
     expect(swap?.best).toBeDefined();
-    expect(inputs(swap!.best!.value)[words.pair.fundInputs.usWithholding]).toBeUndefined();
-    expect(inputs(israeli.best!.value)[words.pair.fundInputs.usWithholding]).toBeUndefined();
+    expect(inputs(swap!.best!.value)[words.pair.fundInputs.insideTax]).toBeUndefined();
+    expect(inputs(israeli.best!.value)[words.pair.fundInputs.insideTax]).toBeUndefined();
   });
 
   it("A-07 from a report that prints no fees charged lists the fees listed today, which F-92 (b) measures those years against", () => {

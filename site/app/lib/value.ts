@@ -1,7 +1,7 @@
 // Value objects on the site: the schema's object plus what a page needs to show it (D7, D3, D10).
 import type { Flag, FundStatement, Label, P05Input } from "@finance-tool/engine";
 import type { ParameterRecord, RuleRecord, ValueObject, Working } from "@finance-tool/schema";
-import { amountShown, formatValue, numberShown, SHORT_IN_ROW } from "./format";
+import { amountShown, fmt, formatValue, numberShown, SHORT_IN_ROW } from "./format";
 import { invest, numbers } from "../copy";
 
 export type Strength = ValueObject["source"]["strength"];
@@ -209,7 +209,8 @@ export type SiteLabel = Label | ExchangeLabel;
 /**
  * The doubt a figure carries for the labels it rests on, each cautious reading's words in order, with each case's rule beside them: the
  * engine's `cautious` label (method §13, `SplitPolicy` "cautious"), the site's cautious reading of an open case for a fund it does not know,
- * in the words for what it does not know of the fund (`notKnown`); and the site's cautious reading of a fund's exchange (`ExchangeLabel`).
+ * in the words for what it does not know of the fund (`notKnown`), or, for the tax inside a fund at two ends, both ends and why (`ends`);
+ * and the site's cautious reading of a fund's exchange (`ExchangeLabel`).
  * None for any other label, the site's own `reading` of an open tax index among them (D119), which its sheet tags. A cautious case with no
  * words is a broken invariant (a test holds the words to the cases).
  */
@@ -218,6 +219,11 @@ function readingDoubtOf(labels: readonly SiteLabel[] | undefined): Pick<SiteValu
   for (const l of labels ?? []) {
     if (l.code === "unknown-exchange") doubts.push({ words: invest.customEntries.exchangeUnknownDoubt, ruleId: l.ruleId });
     if (l.code !== "cautious") continue;
+    // A-11 at two ends (method F-107): both ends and why there are two, with the rule of the case beside them
+    if (l.ends) {
+      doubts.push({ words: numbers.insideTaxDoubt[l.ends.why](fmt.pctNonZero(l.ends.low * 100), fmt.pctNonZero(l.ends.high * 100)), ruleId: l.ruleId });
+      continue;
+    }
     const words = numbers.readingDoubt[l.ruleId]?.[l.notKnown];
     if (!words) throw new Error(`the cautious reading of ${l.ruleId} has no doubt in words for ${l.notKnown} (copy.ts numbers.readingDoubt)`);
     doubts.push({ words, ruleId: l.ruleId });
