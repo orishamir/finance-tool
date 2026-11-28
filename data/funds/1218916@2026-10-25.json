@@ -182,7 +182,7 @@
     "distribution-policy": "covered",
     "currency": "covered:ETF-10",
     "fee-trade": "covered:ETF-06",
-    "protection": "covered:ETF-11"
+    "protection": "covered"
   },
   "prospectus": {
     "url": "https://mayafiles.tase.co.il/rpdf/1732001-1733000/P1732353-00.pdf",

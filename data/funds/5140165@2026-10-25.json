@@ -200,7 +200,7 @@
     "distribution-policy": "covered",
     "currency": "covered:TXS-14",
     "fee-trade": "covered:MF-21",
-    "protection": "covered:ETF-11"
+    "protection": "covered"
   },
   "prospectus": {
     "url": "https://mayafiles.tase.co.il/rpdf/1728001-1729000/P1728922-00.pdf",
