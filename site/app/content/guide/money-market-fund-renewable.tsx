@@ -12,6 +12,7 @@ export const content: GuideContent = {
     const maxInterval = figure("MF-08", "max_interval_months");
     const noticeAfter = figure("MF-38", "advance_notice_min_interval_years");
     const distCap = figure("MF-24", "distribution_fee_cap_money_market");
+    const noDeal = figure("MF-71", "distribution_fee_max_without_agreement");
     const foreign = figure("MF-74", "foreign_securities_line");
     return (
       <>
@@ -40,7 +41,7 @@ export const content: GuideContent = {
           דמי הניהול ושכר הנאמן <Ruled id="MF-37">כבר מופחתים מהתשואה הצפויה שמוצגת</Ruled>. <Ruled id="MF-18">רשות ניירות ערך מפרסמת ממוצע שנתי לקטגוריה</Ruled>. הממוצע מופיע בקישור שבכרטיס של המספר שלמטה.
         </p>
         <Sentence measure>
-          בבנק: <Ruled id="MF-24">מנהל הקרן משלם לבנק</Ruled> <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה. כשיש הסכם הפצה כזה, <Ruled id="MF-71">הבנק לא יכול לגבות מכם</Ruled> <Term id="עמלה">עמלה</Term> על קנייה, החזקה או פדיון של <Term id="קרן כספית">קרן כספית</Term>. בלי הסכם, הוא יכול לגבות מכם עד גובה עמלת ההפצה. <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term> על קרן כספית <Ruled id="BRK-17">בנק לא יכול לגבות בשום מקרה</Ruled>.
+          בבנק: <Ruled id="MF-24">מנהל הקרן משלם לבנק</Ruled> <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה. כשיש הסכם הפצה כזה, <Ruled id="MF-71">התקנות אוסרות על הבנק לגבות מכם</Ruled> <Term id="עמלה">עמלה</Term> על קנייה, החזקה או פדיון של <Term id="קרן כספית">קרן כספית</Term>. לפי קריאה של האתר, בלי הסכם הבנק רשאי לגבות מכם עד {noDeal ? <Num value={noDeal} /> : null} בשנה משווי היחידות. <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term> על קרן כספית <Ruled id="BRK-17">בנק לא יכול לגבות בשום מקרה</Ruled>.
         </Sentence>
         <p className="max-w-measure">
           לפי דוח משותף של הרגולטורים, <Ruled id="BRK-52">רוב בתי ההשקעות הם משווקי השקעות</Ruled>. אצלם אין כלל שמגביל את דמי ניהול פיקדון ניירות ערך ואת עמלות הקנייה, המכירה והפדיון על קרן כספית, והן לפי התעריפון. בית השקעות שהוא לא משווק השקעות <Ruled id="MF-26">כפוף לתקנות עמלת ההפצה</Ruled>. כשיש הסכם הפצה, הוא לא רשאי לגבות מכם עמלה על קנייה, החזקה או פדיון של קרן כספית. בלי הסכם, הוא רשאי לגבות עד גובה עמלת ההפצה.
