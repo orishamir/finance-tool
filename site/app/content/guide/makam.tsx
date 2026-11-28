@@ -34,7 +34,7 @@ export const content: GuideContent = {
           בבורסה, במסחר הרציף, פקודה היא של {minOrder ? <Num value={minOrder} display={fmt.nisWhole(Number(minOrder.value))} /> : null} שווי נקוב לפחות. בשלבים אחרים של יום המסחר, כמו לפני הפתיחה ולפני הנעילה, הכללים מאפשרים פקודה של יחידת מסחר אחת. אבל גודל היחידה של המק״מ לא כתוב במדריך המסחר. שאלה פתוחה <IdRef id="GOV OQ7" end="." /> הבנק או בית ההשקעות <Ruled id="GOV-24">יכולים לקבוע בתעריפון מינימום משלהם</Ruled>. יום המסחר האחרון בסדרה הוא {lastDays ? <Num value={lastDays} /> : null} ימי מסחר לפני הפדיון.
         </Sentence>
         <p className="max-w-measure">
-          <Term prefix="ה" id="מנפיק">מנפיק</Term> של המק״מ לציבור הוא <Term id="בנק ישראל">בנק ישראל</Term>, <Ruled id="GOV-01">שקונה אותו מהממשלה ומנהל אותו</Ruled>. במכרז עצמו <Ruled id="GOV-05">מציעים ישירות רק חברי</Ruled> <Term id="מסלקת הבורסה">מסלקת הבורסה</Term>. <Ruled id="GOV-22">בנק ישראל לא מציין</Ruled> מינימום או עמלה להזמנה של אדם פרטי במכרז. שאלה פתוחה <IdRef id="GOV OQ2" end="." />
+          <Term prefix="ה" id="מנפיק">מנפיק</Term> של המק״מ לציבור הוא <Term id="בנק ישראל">בנק ישראל</Term>, <Ruled id="GOV-01">שקונה אותו מהממשלה ומנהל אותו</Ruled>. במכרז עצמו <Ruled id="GOV-05">מציעים ישירות רק חברי</Ruled> <Term id="מסלקת הבורסה">מסלקת הבורסה</Term>. <Ruled id="GOV-22">בנק ישראל לא מציין</Ruled> להזמנה של אדם פרטי במכרז סכום מינימלי או עמלה. שאלה פתוחה <IdRef id="GOV OQ2" end="." />
         </p>
       </>
     );
