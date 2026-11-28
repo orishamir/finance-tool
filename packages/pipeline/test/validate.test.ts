@@ -570,6 +570,8 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // currency of a hedged class or another trading line bought abroad (TXF OQ34), and a non-Irish fund's own withholding (TXF OQ35)
     // and six from the foreign bond ETF domain pass: the iBoxx rules (ETF OQ44), iShares' undefined fact-sheet figures (ETF OQ45),
     // index-data licences (ETF OQ46), the PRIIPs KID's term (ETF OQ47) and the agencies' own rating definitions (ETF OQ48, CORP OQ22)
+    // and in its second round two answered and deleted (ETF OQ48, CORP OQ22: the agencies' own definitions read, CORP-33) and two more:
+    // Bloomberg's own rules for its dated indices (ETF OQ49) and what regulators say of a defined-term fund's last year (ETF OQ50)
     expect(items.length).toBe(468);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
