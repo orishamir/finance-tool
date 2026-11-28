@@ -462,4 +462,11 @@ describe("the unit price as the panel types it (F-109)", () => {
     expect(read?.unitPrice).toBeUndefined();
     expect(fundsAsRead(bundle, [f])[0]).toBe(f);
   });
+  it("is kept on a fund bought on the US exchange, whose currency the person said, on an index in euros: its price is in the dollar it is bought in", () => {
+    const f = typed("us", 100);
+    const exposures = bundle.exposures.map((e) => (e.id === SP ? { ...e, currency: "EUR" } : e));
+    const [read] = fundsAsRead({ exposures }, [f]);
+    expect(read).toBe(f);
+    expect(read?.unitPrice).toMatchObject({ value: 100, unit: "usd" });
+  });
 });
