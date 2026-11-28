@@ -21,7 +21,7 @@ export const content: GuideContent = {
         <Ruled id="TXK-03">על הרווחים בתוך הקופה לא משלמים מס</Ruled>. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, <Ruled id="TXK-05" prefix="ו">רק על הרווח</Ruled>: עד {rate ? <Num value={rate} /> : "השיעור המרבי"} <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>.
       </p>
       <p className="max-w-measure">
-        בחוק ובכללים <Ruled id="KGL-06">לא נמצא תנאי גיל או תושבות לפתיחה</Ruled>. זו קריאה של מה שהם לא אומרים, לא כלל כתוב. שאלה פתוחה <IdRef id="KGL OQ6" end="." /> <Term prefix="ה" id="חברה מנהלת">חברה המנהלת</Term> מחליטה אם לקבל בקשת הצטרפות.
+        <Ruled id="KGL-06">האתר לא מצא בחוק ובכללים תנאי גיל או תושבות לפתיחה</Ruled>. זו קריאה של מה שהם לא אומרים, לא כלל כתוב. שאלה פתוחה <IdRef id="KGL OQ6" end="." /> <Term prefix="ה" id="חברה מנהלת">חברה המנהלת</Term> מחליטה אם לקבל בקשת הצטרפות.
       </p>
       <p className="max-w-measure">
         בגרף שלמטה דמי הניהול הם אלה שכתובים במסמכים של החברה שבדוגמה: <Ruled id="PF-13" prefix="ה">שיעור המוזל</Ruled> <Term prefix="ב" id="תקופת ההנחה">תקופת ההנחה</Term>, ואחריה התקרה שבתקנות, שעד אליה <Ruled id="PF-02">מותר לחברה לגבות</Ruled>. כמה <Term prefix="ה" id="עמית">עמיתים</Term> שילמו בממוצע בכל מסלול כתוב בחלק על העלויות.
@@ -56,7 +56,7 @@ export const content: GuideContent = {
       <>
         {proposedCap ? (
           <Callout tone="caution" className="max-w-measure">
-            <span className="font-medium">המלצה, לא חוק.</span> צוות של משרד האוצר המליץ{reportDate ? <> <Num value={reportDate} prefix="ב" /></> : null} על <Ruled id="TXK-21">חשבון השקעות עם הטבת מס</Ruled>, עם תקרה אחת של <Num value={proposedCap} display={fmt.nisWhole(Number(proposedCap.value))} /> לאדם. מעל התקרה ההטבות של היום היו מסתיימות. זה יכול לשנות את הכדאיות של המוצר, אבל לא נמצאה הצעת חוק.
+            <span className="font-medium">המלצה, לא חוק.</span> צוות של משרד האוצר המליץ{reportDate ? <> <Num value={reportDate} prefix="ב" /></> : null} על <Ruled id="TXK-21">חשבון השקעות עם הטבת מס</Ruled>, עם תקרה אחת של <Num value={proposedCap} display={fmt.nisWhole(Number(proposedCap.value))} /> לאדם. מעל התקרה ההטבות של היום היו מסתיימות. זה יכול לשנות את הכדאיות של המוצר, אבל האתר לא מצא הצעת חוק שמיישמת את ההמלצה.
           </Callout>
         ) : null}
         <Callout tone="blocked" className="max-w-measure">

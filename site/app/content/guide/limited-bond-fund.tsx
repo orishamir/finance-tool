@@ -26,7 +26,7 @@ export function What() {
       <Callout tone="info" className="max-w-measure" title="שנה בשם הקרן לא אומרת שהקרן נגמרת">
         יש קרנות עם שנה בשם, ובסוף אותה שנה הן <Ruled id="MF-65">עוברות לשנה מאוחרת יותר</Ruled> וממשיכות להתקיים. אצל הראל, תכלית ו־MTF כתוב בשם הקרן ״מתגלגל״. קרן שמתפרקת <Ruled id="MF-59">מזהים לפי מה שכתוב עליה עצמה</Ruled> תחת ״<Term id="תקופת קיום הקרן">תקופת קיום הקרן</Term>״.
       </Callout>
-      <Sentence measure>איגרת חוב אחת שמחזירה את כל קרן החוב שלה בתשלום אחד בסוף היא דבר אחר. גם לה <Ruled id="CORP-26">לא נמצא שם רשמי</Ruled>.</Sentence>
+      <Sentence measure>איגרת חוב אחת שמחזירה את כל קרן החוב שלה בתשלום אחד בסוף היא דבר אחר. גם לה <Ruled id="CORP-26">האתר לא מצא שם רשמי</Ruled>.</Sentence>
     </>
   );
 }
@@ -144,7 +144,7 @@ export function Who({ figure }: ContentProps) {
       </Sentence>
       <Sentence measure>לפי ילין לפידות, הבנק או בית ההשקעות שדרכו קונים <Ruled id={["MF-63", "MF-27"]}>יכולים לגבות</Ruled> <Term id="עמלה">עמלה</Term> על קנייה ומכירה של יחידות, מעבר לדמי הניהול. לא נמצא אם נגבית עמלה גם על התשלום בפירוק.</Sentence>
       <Sentence measure>הטבלה בנויה מהתשקיפים של <bdi>9</bdi> מנהלי קרנות. קרן שנוספה אחרי התשקיף יכולה להיות חסרה בה.</Sentence>
-      <Sentence measure>בחוץ לארץ <Ruled id={["ETF-80", "ETF-81"]}>יש קרנות דומות</Ruled>, כמו iShares iBonds ו־Invesco BulletShares. <Ruled id="ETF-79">בבורסה בתל אביב לא נמצאה</Ruled> <Term id="קרן זרה">קרן זרה</Term> כזו, ולא נבדק אם חשבון ישראלי מציע אותן.</Sentence>
+      <Sentence measure>בחוץ לארץ <Ruled id={["ETF-80", "ETF-81"]}>יש קרנות דומות</Ruled>, כמו iShares iBonds ו־Invesco BulletShares. <Ruled id="ETF-79">בבורסה בתל אביב האתר לא מצא</Ruled> <Term id="קרן זרה">קרן זרה</Term> כזו, ולא נבדק אם חשבון ישראלי מציע אותן.</Sentence>
     </>
   );
 }
@@ -176,7 +176,7 @@ export function Tax({ figure }: ContentProps) {
     <>
       <Sentence measure>לפי מסקנת האתר, בקרן פטורה <Ruled id="TXS-33">הפירוק הוא פדיון של היחידות</Ruled>, ולכן הוא ממוסה כמו כל פדיון: עד {rate && <Num value={rate} />} מהרווח הריאלי, עם <Term id="ניכוי מס במקור">ניכוי במקור</Term> <Ruled id="TXS-34">בשעת התשלום</Ruled>. <Ruled id="TXS-35">הפסד בפירוק</Ruled> הוא <Term id="הפסד הון">הפסד הון</Term> רגיל.</Sentence>
       <Callout tone="caution" className="max-w-measure" title={<>מסקנה, ולא נוסח של <Term id="רשות המסים">רשות המסים</Term></>}>
-        שום טקסט של רשות המסים לא מזכיר תשלום בפירוק קרן. המסקנה של האתר באה מחוק הקרנות ומפקודת מס הכנסה. לא נמצא באיזו <Term id="שנת המס">שנת מס</Term> נרשמת התוצאה <Ruled id="TXS-35">כשהקרן מסתיימת בשנה אחת ומשלמת בשנה הבאה</Ruled>. בקרן דולרית <Ruled id="TXS-36">לא נמצא באיזה יום נקבע השער</Ruled>.
+        שום טקסט של רשות המסים לא מזכיר תשלום בפירוק קרן. המסקנה של האתר באה מחוק הקרנות ומפקודת מס הכנסה. האתר לא יודע באיזו <Term id="שנת המס">שנת מס</Term> נרשמת התוצאה <Ruled id="TXS-35">כשהקרן מסתיימת בשנה אחת ומשלמת בשנה הבאה</Ruled>. בקרן דולרית <Ruled id="TXS-36">האתר לא יודע באיזה יום נקבע השער</Ruled>.
       </Callout>
     </>
   );
