@@ -359,6 +359,7 @@
           "BRK-41"
         ],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents (D56). The tariff prints the conversion commission ('0.002 * Trade Value', minimum 10 ILS) but not the rate the conversion is done at. 'לפי שער רציף' is the commission page's advertising, not a binding term. The account is at Interactive Brokers, whose client agreement (form 3203, s.30D) converts 'at then-current rates on the IBKR platform', with no ceiling on a difference from the market rate."
       }
     },
@@ -425,6 +426,7 @@
           "BRK-41"
         ],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents (D56). The tariff waives the conversion commission inside the plan (p.6) but prints no rate; the plan page says 'יומרו אוטומטית לדולר ללא עלות' and the FAQ 'אין עמלת המרת שקלים או מט\"ח כלל', with no rate either. No plan terms are published. The conversion is done in the Interactive Brokers account, and that agreement (form 3203, s.30C) says an automatic conversion's rate 'may be adjusted from the rate that otherwise would apply'; Interactive Brokers' own price list adds 'typically ... (at its discretion) 0.03%' on automatic conversions of its direct clients. Whether the plan's conversion is such an automatic conversion is the company's to say."
       }
     }
@@ -447,11 +449,10 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BRK-40",
-        "BRK-41"
+        "BRK-40"
       ],
       "state": "sourced",
-      "notes": "'באינטראקטיב ישראל ניתן לפתוח חשבון השקעות ללא מינימום הפקדה'. The commission page: 'ללא מינימום הפקדה'."
+      "notes": "The commission page (inter-il.com/commission) says the same: 'ללא מינימום הפקדה'."
     }
   },
   "notice_rule_ids": [],
@@ -465,13 +466,13 @@
       ],
       "available": false,
       "source": {
-        "url": "https://www.inter-il.com/israeli-stock-market/",
-        "title": "אינטראקטיב ישראל: בורסה ישראלית",
-        "checked": "2026-11-12",
-        "quote": "באינטראקטיב ישראל נכון להיום, קנייה ומכירה של ניירות ערך ישראלים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד"
+        "url": "https://github.com/orishamir/finance-tool/blob/main/docs/company-answers.md#interactive-israel-2026-11-15",
+        "title": "אינטראקטיב ישראל: תשובה בכתב במייל, 15.11.2026",
+        "checked": "2026-11-15",
+        "quote": "מסחר בבורסה הישראלית דרך אינטראקטיב ברוקרז אפשרית רק לחשבונות חברה (חברה בע\"מ בלבד!)"
       },
-      "reason_he": "לפי החברה, מסחר בבורסה בתל אביב פתוח אצלה רק ללקוחות מוסדיים. בעמוד אחר שלה כתוב שהוא פתוח גם לחברות ולאנשים פרטיים עם פטור מתשלום מס במקור בניירות ערך.",
-      "note": "Read 2026-11-12. Three of the company's pages say it: the Israeli-market page (dateModified 2026-10-14) 'באינטראקטיב ישראל נכון להיום, קנייה ומכירה של ניירות ערך ישראלים הנסחרים בבורסת תל אביב ניתנת ללקוחות מוסדיים בלבד'; the company-account page (/company-account/, dateModified 2026-06-30) the same words under 'האם אפשר לסחור במניות ותעודות סל בישראל בחשבון חברה?'; and the world-markets page (/world-markets/, dateModified 2026-10-14), row 'בורסת תל אביב', 'מוצרים:מניות ותעודות סל', 'המסחר בישראל מתאפשר לחברות או לפרטים עם פטור מתשלום מס בניירות ערך במקור בלבד'. The pages differ on an individual who holds an exemption from withholding; for a private client without one both say no. Which individuals can hold such an exemption is not in the rule base. The tariff (p.1) prices Tel Aviv 'מניות ותעודות סל' only. The 2026-11-04 note said the tariff prints no mutual-fund line; it does (p.5, see the mutual_fund_units entry).",
+      "reason_he": "לפי תשובה בכתב של החברה מ־15.11.2026, מסחר בבורסה בתל אביב אפשרי אצלה רק בחשבון של חברה בע״מ, עם אישור פטור מניכוי מס במקור. לפי רשות המסים, ככלל אדם פרטי לא מקבל פטור כזה.",
+      "note": "The company's written answer of 15.11.2026 (BRK-65) settles which of its pages holds: Tel Aviv trading only for a limited company's account, which must hand in a withholding-exemption form. Before it, the pages read 2026-11-12 differed: the Israeli-market page (dateModified 2026-10-14) and the company-account page (/company-account/, dateModified 2026-06-30) said institutional clients only; the world-markets page (/world-markets/, dateModified 2026-10-14) said companies or individuals with a withholding exemption. Whom the Tax Authority gives such an exemption is BRK-65's, from the Tax Authority. The tariff (p.1) prices Tel Aviv 'מניות ותעודות סל' only; its mutual-fund table (p.5) is the mutual_fund_units entry.",
       "rule_ids": [
         "BRK-65"
       ]
