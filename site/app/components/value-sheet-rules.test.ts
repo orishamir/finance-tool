@@ -130,6 +130,15 @@ describe("a figure's head, as the figure was tapped", () => {
   });
 });
 
+describe("a figure's way out", () => {
+  it("leads to where its one rule is listed, at that rule; a figure of several rules to all of them", () => {
+    const html = wrap(createElement(ValueSheet, { value: sourced(15, { rule_ids: ["TXI-03"] }), exact: false, data, headId: "h", descId: "d" })).split("<dialog")[0] ?? "";
+    expect(html).toContain('href="/rules#TXI-03"');
+    const many = wrap(createElement(ValueSheet, { value: sourced(0.71, { rule_ids: ["CAT-36", "CAT-37"] }), exact: false, data, headId: "h", descId: "d" })).split("<dialog")[0] ?? "";
+    expect(many).toContain('href="/rules"');
+  });
+});
+
 describe("a deposit's tax bucket", () => {
   it("heads its sheet with the bucket's name alone, and opens the rule that holds its rate", () => {
     const bucket = sourced(null, { value: "unlinked_15", unit: "text", rule_ids: ["TXI-03"] });

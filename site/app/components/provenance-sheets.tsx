@@ -701,6 +701,16 @@ function AllRulesLink({ value, data }: { value?: SiteValue; data: ProvenanceData
 }
 
 /**
+ * A sourced or entered figure's way out: where its one rule is listed (`CardFoot`: the rules page at the rule, or the company's entry); a
+ * figure of several rules, or of none, to the rules of the page's product, or all rules.
+ */
+function FigureFoot({ value, data }: { value: SiteValue; data: ProvenanceData }) {
+  const ids = value.rule_ids ?? [];
+  const only = ids.length === 1 && !value.foreign ? headOf(data, ids[0]!) : undefined;
+  return only ? <CardFoot rule={only} data={data} /> : <AllRulesLink value={value} data={data} />;
+}
+
+/**
  * The sheet a calculated figure's caution "?" opens: the figure in plain ink and what it is, then only its catches (provenance `catchesOf`,
  * as the figure's place decided them), each as a sourced figure's sheet says it, the fund's own statements it rests on, and the way to the
  * rules. The weak inputs are named, each with its figure, which opens its own sheet with its source.
@@ -1007,7 +1017,7 @@ export function ValueSheet({ value, exact, display, shown = [], figure, data, he
       {weakOrOpen && <StrengthNote strength={weakOrOpen} question={blocked ? openQuestionOf(value) : null} />}
       {value.stale && <StaleLine stale={value.stale} />}
 
-      <AllRulesLink value={value} data={data} />
+      <FigureFoot value={value} data={data} />
     </div>
   );
 }
@@ -1601,7 +1611,7 @@ const pageOfHref = (href: string): string => (href.split("#")[0] ?? "").replace(
  * The card's foot: where the record is listed. A not-rule, general or not, is listed with what is not a rule; a general rule on the rules
  * page. A link to the page the card is open on is left out, and two links to one place are one.
  */
-function CardFoot({ rule, data }: { rule: RuleRecord; data: ProvenanceData }) {
+function CardFoot({ rule, data }: { rule: Pick<RuleRecord, "id" | "scope" | "scope_institutions">; data: ProvenanceData }) {
   const close = useContext(CloseCtx);
   const here = pageOfHref(useLocation().pathname);
   const elsewhere = (href: string) => pageOfHref(href) !== here;
