@@ -765,7 +765,7 @@ describe("what each figure's sheet lists", () => {
     const swapView = buildInvest({ bundle: { ...bundle, funds: [...bundle.funds, asSwap] }, index: sp, plan: plan({ currentAccounts: true }) });
     const swap = swapView.options.flatMap((o) => o.funds).find((f) => f.rec.id === "ie-swap-case");
     expect(swap?.best).toBeDefined();
-    expect(inputs(swap!.best!.value)[words.pair.fundInputs.insideTax]).toBeUndefined();
+    expect(inputs(need(swap?.best, "the swap fund's best pair").value)[words.pair.fundInputs.insideTax]).toBeUndefined();
     expect(inputs(israeli.best!.value)[words.pair.fundInputs.insideTax]).toBeUndefined();
   });
 
