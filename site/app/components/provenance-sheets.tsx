@@ -524,8 +524,8 @@ function FlagsCallout({ codes, data }: { codes: readonly string[]; data: Provena
 }
 
 /** Every sheet's way out: the rules of the page's product, or all rules; a fact of another country's product has no Israeli rules behind it. */
-function AllRulesLink({ value, data }: { value: SiteValue; data: ProvenanceData }) {
-  if (value.foreign) return null;
+function AllRulesLink({ value, data }: { value?: SiteValue; data: ProvenanceData }) {
+  if (value?.foreign) return null;
   return data.rulesOf ? (
     <LinkButton to={data.rulesOf.href}>
       {copy.allRulesOf} {data.rulesOf.name}
@@ -567,7 +567,7 @@ function ListCatchSheet({ name, scope, catches, data, headId, descId }: { name: 
       {catches.map((c) => (
         <CatchPart key={c.kind} c={c} data={data} />
       ))}
-      {data.rulesOf ? <LinkButton to={data.rulesOf.href}>{copy.allRulesOf} {data.rulesOf.name}</LinkButton> : <LinkButton to="/rules">{buttons.allRules}</LinkButton>}
+      <AllRulesLink data={data} />
     </div>
   );
 }
