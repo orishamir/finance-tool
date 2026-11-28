@@ -24,6 +24,15 @@ const Dot = ({ children }: { children: ReactNode }) => (
   </span>
 );
 
+/** The "?" drawn as a line, not a letter: a calculated figure's mark stands inside charts, where every letter is text a reader must read at
+ *  13 px (charts.md); a mark is read by its shape, as the caution and clock icons are, and keeps the look of the letter's "?". */
+const QuestionGlyph = () => (
+  <svg viewBox="0 0 24 24" width="8" height="8" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M8 8.5a4 4 0 1 1 5.6 3.7c-1 .5-1.6 1.4-1.6 2.5v.6" />
+    <path d="M12 20.2h.01" />
+  </svg>
+);
+
 /** A bare mark's look: the 44 px target around a small circle, in the muted or the caution role. */
 const markLook = (tone: "caution" | undefined) => cx("help-mark tap-wide inline-flex items-center justify-center align-middle shrink-0 rounded-full", tone === "caution" ? "text-caution hover:text-caution-foreground" : "text-muted-foreground hover:text-foreground");
 
@@ -57,7 +66,9 @@ export function CatchMark({ item, about, className }: { item: Item; /** What the
   const catches = item.kind === "catch" || item.kind === "list-catch" ? item.catches : [];
   return (
     <button type="button" aria-label={copy.catchLabel.replace("{about}", about)} data-catch={catches.length ? [...new Set(catches.map((c) => c.kind))].join(" ") : undefined} data-catch-list={item.kind === "list-catch" ? "" : undefined} onClick={(e) => open(item, e.currentTarget)} className={cx(markLook("caution"), className)}>
-      <Dot>?</Dot>
+      <Dot>
+        <QuestionGlyph />
+      </Dot>
     </button>
   );
 }

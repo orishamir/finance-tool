@@ -2,7 +2,7 @@
 // is the main chart: a bar a year, each the money at a withdrawal after that year, its net above it, the year picked and the one it is set
 // against at full strength. `PileBar` is the year picked as one bar from the left: what went in and what the return added, and cut from the
 // far end what the fees and the tax took, with what is left bracketed under it. Own SVG; the bar's figures are HTML, so they go through `Num`.
-import { useId, type ReactNode } from "react";
+import { useCallback, useId, useRef, useState, type ReactNode } from "react";
 import { useGlidingNumbers } from "./chart-glide";
 import { CHART_TEXT_PX, chartTextWidth } from "./chart-text";
 import { ChartLegend, Swatch } from "./chart-parts";
@@ -54,10 +54,28 @@ const FLAT = 7;
 const sliceAt = (v: readonly number[], i: number): PileSlice => ({ own: v[i]!, extra: v[i + 1]!, gain: v[i + 2]!, tax: v[i + 3]!, taxFromSalary: v[i + 4]!, net: v[i + 5]!, fees: v[i + 6]! });
 
 const LANE_H = 26;
-/** The note's room above the columns: two lines on a PC, three on a phone, where it may wrap. */
+/** The note's room above the columns: two lines on a PC, three on a phone, where it may wrap; more when it wraps to more lines (`useNoteHeight`). */
 const NOTE_H = 48;
 const NOTE_H_PHONE = 62;
+/** Below the note's last line, before the line down to `compare`'s column starts. */
+const NOTE_GAP = 8;
 const AMOUNT_H = 22;
+
+/** The note's height as laid out, 0 while there is none: a narrow phone wraps it to a fourth line, which would stand on the amounts. */
+function useNoteHeight(): [(el: HTMLDivElement | null) => void, number] {
+  const [height, setHeight] = useState(0);
+  const watch = useRef<ResizeObserver | null>(null);
+  const ref = useCallback((el: HTMLDivElement | null) => {
+    watch.current?.disconnect();
+    watch.current = null;
+    if (!el) return setHeight(0);
+    const measure = () => setHeight(Math.ceil(el.getBoundingClientRect().height));
+    measure();
+    watch.current = new ResizeObserver(measure);
+    watch.current.observe(el);
+  }, []);
+  return [ref, height];
+}
 
 /**
  * The years as the main chart: one column a year in the colours of the story, what the fees and tax take on top, the net written above it
@@ -101,8 +119,9 @@ export function PileYears({
   valueText: string;
 }) {
   const [ref, W] = useWidth(720);
+  const [noteRef, noteFit] = useNoteHeight();
   const phone = W < 520;
-  const noteH = phone ? NOTE_H_PHONE : NOTE_H;
+  const noteH = Math.max(phone ? NOTE_H_PHONE : NOTE_H, noteFit + 2 + NOTE_GAP);
   const shown = useGlidingNumbers(years.flatMap(flat));
   const n = years.length;
   // room at the left for the value axis' name, written upward
@@ -188,7 +207,7 @@ export function PileYears({
         {after}
       </LaneLabel>
       {note && compareSlice && (
-        <div className="absolute text-xs leading-snug text-center" dir="rtl" style={{ left: noteLeft, width: noteW, top: LANE_H + 2 }}>
+        <div ref={noteRef} className="absolute text-xs leading-snug text-center" dir="rtl" style={{ left: noteLeft, width: noteW, top: LANE_H + 2 }}>
           {note}
         </div>
       )}
