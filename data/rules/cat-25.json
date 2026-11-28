@@ -1,7 +1,7 @@
 {
   "id": "CAT-25",
   "title": "The Meitav kupat gemel lehashkaa: every public track in 202609",
-  "title_he": "מיטב גמל להשקעה: המסלולים בתקופת הדיווח 202609",
+  "title_he": "מיטב גמל להשקעה: המסלולים בספטמבר 2026",
   "strength": "primary",
   "dimensions": [
     "fee-management-balance",
@@ -10,7 +10,33 @@
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
-  "text_he": "מיטב גמל ופנסיה מנהלת קופת גמל להשקעה אחת, ״מיטב גמל להשקעה״ (מספר אישור מס הכנסה 7857), והחברה המתפעלת שלה היא בנק מזרחי טפחות. בתקופת הדיווח 202609 היו בה 16 מסלולים, כולם לכלל האוכלוסייה. רק מסלול אחד, 7978, נקרא ״כללי״ או מסווג כך, ומיטב מסמנת אותו באתר שלה כמסלול ברירת המחדל בהצטרפות. בנתוני רשות שוק ההון, תאריכי ההקמה של חלק מהמסלולים שונים מאלה שבאתר של מיטב.",
+  "text_he": "מיטב גמל ופנסיה מנהלת קופת גמל להשקעה אחת, ״מיטב גמל להשקעה״ (מספר אישור מס הכנסה 7857). החברה המתפעלת שלה היא בנק מזרחי טפחות. בנתוני ספטמבר 2026 היו בה {CAT-25:track_count} מסלולים, כולם לכלל האוכלוסייה. רק מסלול אחד, מסלול מספר 7978, נקרא ״כללי״ או מסווג כך. מיטב מסמנת אותו באתר שלה כמסלול ברירת המחדל בהצטרפות. בנתוני רשות שוק ההון, תאריכי ההקמה של חלק מהמסלולים שונים מאלה שבאתר של מיטב.",
+  "figure_names_he": {
+    "track_count": "מספר המסלולים בקופה"
+  },
+  "figures": {
+    "track_count": {
+      "value": 16,
+      "unit": "count",
+      "source": {
+        "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=100&filters={\"REPORT_PERIOD\":202609,\"FUND_CLASSIFICATION\":\"קופת%20גמל%20להשקעה\"}&q=מיטב",
+        "title": "גמל נט: מיטב גמל להשקעה, ספטמבר 2026",
+        "publisher": "Capital Market Authority",
+        "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+        "strength": "primary"
+      },
+      "checked": "2026-10-22",
+      "effective_from": "2026-09-01",
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "market",
+      "rule_ids": [
+        "CAT-25"
+      ],
+      "state": "sourced",
+      "notes": "Tracks of Meitav's one investment provident fund (income-tax number 7857) in the CMA's Gemel-Net for report period 202609, read 2026-10-22; the table of the rule's block keeps 15 of them."
+    }
+  },
   "il_finance_file": "tracks-catalogue-and-decoder.md",
   "checked": "2026-10-22",
   "scope": "institution",
