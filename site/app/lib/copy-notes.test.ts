@@ -85,7 +85,6 @@ const TALK_LEFTOVERS: string[] = [
   "kit.gallery.uses.TypedPlain",
   "notCovered.institution.after",
   "numbers.readingDoubt.TXS-14.status",
-  "provenance.sourced.notYetInForce",
   "rulesFront.claim.companiesNone",
   "signatureFacts.brokerCount",
   "sourceBlock.legendLine",

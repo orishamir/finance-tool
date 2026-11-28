@@ -453,7 +453,7 @@ export const provenance = {
       "not-applicable": "לנתון הזה אין משמעות במוצר הזה.",
       unknown: "הנתון הזה חסר במקור, ולא ידוע למה.",
     } satisfies Record<EmptyBecause, string | null>,
-    notYetInForce: "עד אז הנתון הזה עוד לא חל. האתר מציג אותו כפי שפורסם.",
+    notYetInForce: "עד אז הנתון הזה עוד לא חל. הוא מוצג כפי שפורסם.",
   },
   /** A glossary card's other names; each is drawn with its gershayim (copy 10.4). */
   termAlso: "נקרא גם:",
