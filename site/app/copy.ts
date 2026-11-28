@@ -1123,7 +1123,7 @@ export const flags: Record<string, string> = {
   "BRK-OQ25": "עמלת המינימום בקנייה ובמכירה כאן חושבה לפי 2.5 במטבע העסקה, כלשון התעריפון. אותו עמוד אומר גם שהעמלה נגבית במטבע הראשי של הבורסה. הוא לא אומר איך זה מתיישב עם מינימום בעסקה בדולרים, ולכן העמלה בפועל יכולה להיות שונה.",
   "TXF-OQ7": "המס האמריקני על הדיבידנדים בתוך הקרן חושב לפי השיעור שהאמנה בין ארצות הברית לאירלנד קובעת לקרן אירית. הקרן מקבלת את השיעור הזה רק אם היא עומדת בתנאי האמנה. האתר עוד לא בדק אם הקרן הזו עומדת בהם. אם לא, המס הזה יכול להיות גבוה יותר, ויישאר לכם פחות.",
   // F-04, method §13: a fund the site does not know, run under both readings of TXS OQ26 (TXS-14), beside a figure both readings give
-  "TXS-OQ26": "לא ידוע אם הרווח בקרן הזו נמדד מול שער המטבע העיקרי שלה או מול מדד המחירים לצרכן. כמטבע העיקרי האתר לוקח את המטבע שהמדד מחושב בו. בתוכנית הזו שתי הדרכים נותנות אותו מס רווחי הון.",
+  "TXS-OQ26": "לא ידוע אם הרווח בקרן הזו נמדד מול שער המטבע העיקרי שלה או מול מדד המחירים לצרכן. כמטבע העיקרי החישוב לוקח את המטבע שהמדד מחושב בו. בתוכנית הזו שתי הדרכים נותנות אותו מס רווחי הון.",
   // F-04, method §13: a TASE foreign fund whose annex states no index and whose documents the site did not read, run under both readings of
   // TXF OQ10 (TXF-04), beside a figure both give
   "TXF-OQ10": "לא ידוע אם הרווח בקרן הזו נמדד מול שער המטבע שלה או מול מדד המחירים לצרכן. בתוכנית הזו שתי הדרכים נותנות אותו מס רווחי הון.",
@@ -1131,7 +1131,7 @@ export const flags: Record<string, string> = {
   // F-119: an s.120ב amount read for a year after its freeze; TXG OQ16 (the rounding, the CPI readings, the unrounded 2024 amount) keeps it from being exact
   // the person's income stays as entered (A-12, A-13), and the figures linked to the average wage stay at 2026's (method G-36); a fall of the CPI is TXG OQ17,
   // run under each of its readings (method §13)
-  "G-36": "מ־2028 החישוב מעלה כל שנה את מדרגות המס, את הסף של המס הנוסף ואת הסכומים שהחוק הקפיא עד 2027 בהטבות על ההפקדות. הוא מעלה אותם לפי האינפלציה שבחישוב. ההכנסה שלכם נשארת בחישוב כפי שהזנתם, ולכן עם השנים חלק גדול יותר ממנה נופל במדרגות הנמוכות. סכומים שצמודים לשכר הממוצע נשארים כמו ב־2026, כי האתר לא מניח איך השכר הממוצע ישתנה. לא ידוע איך רשות המסים תעגל את הסכומים ולפי אילו מדדים, ולכן הסכומים המדויקים יכולים להיות שונים במעט. גם לא ידוע אם הסכומים יורדים כשהמדד יורד. באינפלציה שלילית החישוב נעשה בכל אחת מהאפשרויות, ואם התוצאות שונות, אין חישוב לשנים שאחרי 2027.",
+  "G-36": "מ־2028 החישוב מעלה כל שנה את מדרגות המס, את הסף של המס הנוסף ואת הסכומים שהחוק הקפיא עד 2027 בהטבות על ההפקדות. הוא מעלה אותם לפי האינפלציה שבחישוב. ההכנסה שלכם נשארת בחישוב כפי שהזנתם, ולכן עם השנים חלק גדול יותר ממנה נופל במדרגות הנמוכות. סכומים שצמודים לשכר הממוצע נשארים כמו ב־2026, כי אין בחישוב הנחה על השינוי בשכר הממוצע. לא ידוע איך רשות המסים תעגל את הסכומים ולפי אילו מדדים, ולכן הסכומים המדויקים יכולים להיות שונים במעט. גם לא ידוע אם הסכומים יורדים כשהמדד יורד. באינפלציה שלילית החישוב נעשה בכל אחת מהאפשרויות, ואם התוצאות שונות, אין חישוב לשנים שאחרי 2027.",
   // an open reading every reading of which gave the same run (method §13, `acrossReadings`): F-119 at a falling CPI (TXG OQ17)
   "TXG-OQ17": "הסכום כאן לא תלוי בשאלה שהחוק משאיר פתוחה. המדד יורד בחישוב הזה. החוק לא אומר מה ירידה כזו עושה מ־2028 למדרגות המס ולסכומים שהוקפאו עד 2027: אם הם יורדים, נשארים כמו שהיו, או שהירידה מתקזזת מעלייה מאוחרת יותר. החישוב נעשה בכל אחת מהדרכים, ובכולן יצא אותו סכום.",
   // the same for F-120 at a falling CPI: KGL-03's yearly ceiling (KGL OQ15)
@@ -1152,12 +1152,12 @@ export const flags: Record<string, string> = {
   "CS-18": "דמי הניהול אחרי גיל עשרים ואחת חושבו לפי התקרה שבתקנות, ולכן הם ״עד״: בקופה שלכם השיעור יכול להיות נמוך יותר.", // the child-savings fee after 21 runs on CS-18's cap unless the person enters a rate (F-54)
   "TXK-06": "בחישוב הזה לא מגישים דוח שנתי או בקשת החזר מס, ולכן המס הוא מה שהחברה המנהלת מנכה במקור: {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם על הרווח. מי שמגיש דוח או בקשת החזר יכול לקבל חלק מהמס בחזרה.", // F-44 applies the brackets (F-42); the flag marks only a run with the refund not claimed (A-14 off). The manager withholds 25% of the gains (TXK-26, Tax Authority file 856), so the flat rate is what is withheld, not an upper bound
   "TXK-26": "בחישוב הזה מגישים דוח שנתי או בקשת החזר מס. החברה המנהלת מנכה במקור {TXK-26:withholding_on_gains} מהרווח הריאלי. למי שמלאו לו {TXG-04:age} מדרגות המס המופחתות חלות קודם. על חלק הרווח שהמדרגה שלו נמוכה מזה, מקבלים את ההפרש בחזרה אחרי הדוח. המספר כאן הוא המס אחרי ההחזר.", // the kupat gemel lehashkaa exit from 60 settles against the manager's withholding (TXK-26), not G-21 (a bank's or TASE member's withholding). That withholding is 25% of the gains (Tax Authority file 856), the maximum rate of TXK-06, so no part is above it
-  "BANK-35": "מ{BANK-35:account_fee_up_to_2_actions.from} הסכום כאן יכול להיות גבוה מדי. צו של נגיד בנק ישראל קובע אז תקרה לדמי הניהול של חשבון עו״ש לפי מספר הפעולות בחודש. בחשבון עם עד שתי פעולות בחודש, התקרה נמוכה ממה שנספר כאן בחודש על ״חשבון עובר ושב בבנק״. תיקון לכללי העמלות מפרט אילו שירותים נספרים כפעולה. האתר לא מצא בכללים שקרא אם קנייה חודשית של ניירות ערך, או ההעברה שמשלמת עליה, היא אחת מהן. לכן האתר לא מחיל את התקרה.", // D64: F-102 keeps the prices for the whole plan; the indices page flags the first month from the cap's start charged above the cap for 0 to 2 actions, the fee page a year of holding in a period that reaches it, where the deal's current accounts together are above it; a cap with no start reads "מהיום" (`provenance.fromNoDate`)
+  "BANK-35": "מ{BANK-35:account_fee_up_to_2_actions.from} הסכום כאן יכול להיות גבוה מדי. צו של נגיד בנק ישראל קובע אז תקרה לדמי הניהול של חשבון עו״ש לפי מספר הפעולות בחודש. בחשבון עם עד שתי פעולות בחודש, התקרה נמוכה ממה שנספר כאן בחודש על ״חשבון עובר ושב בבנק״. תיקון לכללי העמלות מפרט אילו שירותים נספרים כפעולה. האתר לא מצא בכללים שקרא אם קנייה חודשית של ניירות ערך, או ההעברה שמשלמת עליה, היא אחת מהן. לכן החישוב לא מחיל את התקרה.", // D64: F-102 keeps the prices for the whole plan; the indices page flags the first month from the cap's start charged above the cap for 0 to 2 actions, the fee page a year of holding in a period that reaches it, where the deal's current accounts together are above it; a cap with no start reads "מהיום" (`provenance.fromNoDate`)
   "G-32": "על כל דיבידנד נגבה סכום בשביל הגוף ששומר את ניירות הערך בחו״ל. החישוב לא הפחית את הסכום הזה מהרווח במכירה. החוק מפחית מהרווח את דמי המשמרת של שנת המכירה. עוד לא ברור אם גם הסכום הזה נחשב דמי משמרת. אם כן, המס כאן מעט גבוה מדי.", // D67: F-103 stays out of the sale gain; the engine flags a charge in the exit tax year (method G-32)
   // F-49 (method G-03): the pension's exit is an annuity, whose part above the minimum annuity may be commuted (PEN-28, TXA-20); its value needs each fund's conversion factors (PEN OQ7) and its exemption needs them (TXP-14 to TXP-17)
   "G-03": "זה הסכום בקופה לפני הקצבה. בפועל מקבלים קצבה חודשית. את החלק שלה שמעל סכום הקצבה המזערי אפשר גם להוון לסכום חד־פעמי. האתר עוד לא מחשב את הקצבה: היא תלויה במקדמי ההמרה של כל קרן, והם עוד לא נאספו. גם הפטור ממס על הקצבה תלוי בהם.",
   // PEN OQ7: the funds' conversion and insurance tables are not collected as data
-  "PEN-OQ7": "טבלאות מקדמי ההמרה ועלות הביטוח של קרנות הפנסיה עוד לא נאספו, ולכן האתר לא מחשב קצבה ולא משווה את עלות הביטוח בין הקרנות.",
+  "PEN-OQ7": "טבלאות מקדמי ההמרה ועלות הביטוח של קרנות הפנסיה עוד לא נאספו, ולכן אין כאן חישוב של קצבה ולא השוואה של עלות הביטוח בין הקרנות.",
   // A-17 entered, the tables not collected (method G-12)
   "G-12": "עלות הביטוח בקרן הפנסיה היא האחוז שהזנתם, כי טבלאות הביטוח של הקרנות עוד לא נאספו.",
   // F-32 leaves out TXP-07's extra credit and TXP-08's enlarged deduction (method G-13); flagged for a self-employed person and from 50
@@ -1177,13 +1177,13 @@ export const flags: Record<string, string> = {
   "G-39": "החישוב לא הפחית את עמלות הקנייה והפדיון של המק״ם מדמי הניכיון שחויבו במס בפדיון. האתר עוד לא מצא במקורות אם עמלה מקטינה את דמי הניכיון החייבים במס.",
   // F-120 at a falling CPI: a figure linked to the CPI every 1 January, of a rule no open reading covers, has no reading (method G-38); the
   // timeline's band shows this beside the rule the run stopped on (CS-03 on the child savings guides)
-  "G-38": "הסכום של הכלל הזה מתעדכן בכל 1 בינואר לפי עליית המדד. האתר לא מצא במקורות מה קורה לו כשהמדד יורד, ואין לו הנחה משלו. לכן כשהאינפלציה בחישוב שלילית, האתר לא מחשב את השנים שאחרי השנה הראשונה.",
+  "G-38": "הסכום של הכלל הזה מתעדכן בכל 1 בינואר לפי עליית המדד. האתר לא מצא במקורות מה קורה לו כשהמדד יורד, ואין לו הנחה משלו. לכן כשהאינפלציה בחישוב שלילית, אין חישוב לשנים שאחרי השנה הראשונה.",
   // F-21, F-22, F-24, F-25, F-26 at a rate below zero: the rule base holds no rule for the tax on interest below zero (method G-41);
   // the timeline's band shows this beside the rule that would tax the interest, for a negative rate kept on the device or imported
   "G-41": "האתר לא מצא בכללים שקרא איך ממוסה ריבית מתחת לאפס, ולכן הוא לא מחשב אותה. אפשר להזין ריבית מ־0% ומעלה.",
   // F-22 for a savings plan whose terms are not read as paying out at the plan's end: the run locks each monthly deposit on its own, the
   // method's convention (method G-42, BANK OQ12); the sheet of a figure that rests on it says so
-  "G-42": "המספר מניח שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. זו הנחה של האתר, לא כלל: כל בנק קובע את זה בתנאי התוכניות שלו, ובחלק מהתוכניות שהאתר קרא את התנאים שלהן זה אחרת.",
+  "G-42": "המספר מניח שכל הפקדה חודשית נעולה לבדה, לתקופת התוכנית מהיום שהופקדה. זו הנחה של האתר, לא כלל: כל בנק קובע את זה בתנאי התוכניות שלו, ובתנאים של חלק מהתוכניות זה אחרת.",
   // F-20: a distribution at a foreign broker is not withheld in Israel; its advance is due by 30 April after the tax year (TXF-21), and the run charges it in the month
   "TXF-21": "בבית השקעות בחו״ל לא מנכים בישראל את המס על דיבידנד או ריבית שהקרן מחלקת. משלמים אותו בעצמכם במקדמה, עד 30 באפריל של השנה שאחרי. החישוב מחשיב אותו כאילו שולם כבר בחודש החלוקה.",
   // F-09: a sale at a foreign broker is not withheld in Israel; the gain is reported with an advance by 31 July and 31 January, and a return is due (TXF-22); the run charges it in the month of the sale
@@ -1203,7 +1203,7 @@ export const flags: Record<string, string> = {
   // compare and the indices page: the foreign funds traded abroad (G-29), a fee on distributions (F-18)
   "G-29": "לקרנות זרות הנסחרות בחו״ל אין רשימה מלאה: האתר משווה את אלה שאסף אחת־אחת, והשאר הן שורה אחת.",
   "F-18": "העמלה על חלוקת רווחים עוד לא מחושבת, ולכן התוצאה חלקית.",
-  "TXP-11": "הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שנבדקת כל חודש. החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה. האתר עוד לא מחשב את המס עליו.", // the monthly test is circular 4/2019 s.2.1.1 (TXP-11); the engine flag had been the open question
+  "TXP-11": "הפקדת המעסיק לפיצויים עוברת את תקרת הפיצויים, שחלה על כל חודש בנפרד. החלק שמעל התקרה הוא הכנסת עבודה כבר במועד ההפקדה. החישוב עוד לא כולל את המס עליו.", // the monthly test is circular 4/2019 s.2.1.1 (TXP-11); the engine flag had been the open question
 };
 
 /** Labels of the values a computation reads, shown in the number sheet (copy.md 3.8 "ערכים שנכנסו לחישוב"). */

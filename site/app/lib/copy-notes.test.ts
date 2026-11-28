@@ -28,15 +28,6 @@ const COPY_NOTES: Record<string, string> = {
 
 /** By flaw, the notes above still allowed it. */
 const NOTE_LEFTOVERS: Partial<Record<NoteFlaw, string[]>> = {
-  "research-talk": [
-    "flags.BANK-35",
-    "flags.G-36",
-    "flags.G-38",
-    "flags.G-42",
-    "flags.PEN-OQ7",
-    "flags.TXP-11",
-    "flags.TXS-OQ26",
-  ],
   "too-long": [
     "flags.BANK-35",
     "flags.G-03",
@@ -82,8 +73,6 @@ const TALK_LEFTOVERS: string[] = [
   "feeDeal.standing.caveatTag.distribution_agreement",
   "feeDeal.standing.notSourced",
   "feeDeal.standing.otherForm",
-  "flags.G-42",
-  "flags.TXS-OQ26",
   "groupPrices.states.no_mention",
   "guideBlocks.exit.onlyAt.after",
   "guideBlocks.terms.pick.accountCount",
