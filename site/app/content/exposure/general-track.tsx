@@ -23,7 +23,7 @@ export const content: ExposureContent = {
           בחוזר <Term id="רשות שוק ההון ביטוח וחיסכון">רשות שוק ההון</Term>, מסלול כללי הוא <Ruled id="CAT-17">מסלול שלא מתמחה</Ruled>, לא <Term id="מסלול ברירת מחדל">ברירת מחדל</Term> ולא מסלול למקבלי <Term id="קצבה">קצבה</Term>. <Ruled id={["CAT-15", "CAT-24"]}>השם מחייב רק את המדיניות התקנונית</Ruled>. התמהיל בפועל יכול להשתנות בלי שהשם ישתנה.
         </p>
         <Sentence measure>
-          <Term prefix="ב" id="קופת גמל להשקעה">קופת גמל להשקעה</Term> <Term prefix="וב" id="קרן השתלמות">קרן השתלמות</Term> החברה <Ruled id="CAT-18">רשאית לנהל מסלול כללי</Ruled> לצד המסלולים המתמחים. בקרן השתלמות הוא <Ruled id={["KH-19", "PF-24"]}>אחת משתי האפשרויות לברירת מחדל</Ruled>. מעבר ממנו למסלול אחר באותה קופה נעשה תוך {days ? <Num value={days} /> : null} ימי עסקים, בלי <Term id="עמלה">עמלה</Term> <Ruled prefix="ו" id={["TXK-04", "TXH-17"]}>בלי מס</Ruled>.
+          <Term prefix="ב" id="קופת גמל להשקעה">קופת גמל להשקעה</Term> <Term prefix="וב" id="קרן השתלמות">קרן השתלמות</Term> החברה <Ruled id="CAT-18">רשאית לנהל מסלול כללי</Ruled> לצד המסלולים המתמחים. בקרן השתלמות הוא <Ruled id={["KH-19", "PF-24"]}>אחת משתי האפשרויות לברירת מחדל</Ruled>. מעבר ממנו למסלול אחר באותה קופה נעשה תוך {days ? <Num value={days} /> : null} ימי עסקים, <Ruled id="PF-23">בלי</Ruled> <Term id="עמלה">עמלה</Term> <Ruled prefix="ו" id={["TXK-04", "TXH-17"]}>בלי מס</Ruled>.
         </Sentence>
       </>
     );
