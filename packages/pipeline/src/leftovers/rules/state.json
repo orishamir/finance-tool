@@ -79,9 +79,7 @@
     "REG-11#order_lift_days"
   ],
   "missing-record": [],
-  "silence": [
-    "CAT-44"
-  ],
+  "silence": [],
   "typed-data-figure": [
     "CAT-45",
     "CAT-47",
