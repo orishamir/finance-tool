@@ -381,4 +381,11 @@ describe("a term the page holds no explanation of", () => {
     expect(text).toContain("מונח שאין בעמוד");
     expect(text).toContain(provenance.termNotHere);
   });
+  it("heads a product's own card of a term with the term alone, without the product after the @", () => {
+    const data = dataOf({});
+    const text = words(createElement(TermCard, { id: "דמי ניהול@mutual-fund", data }), data);
+    expect(text).toContain("דמי ניהול");
+    expect(text).not.toContain("@");
+    expect(text).not.toContain("mutual-fund");
+  });
 });

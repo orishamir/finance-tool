@@ -1718,7 +1718,7 @@ export function TermCard({ id, data, headId, sub }: { id: string; data: Provenan
     return (
       <div className="flex flex-col gap-3">
         <Heading id={headId} className={sub ? "text-base font-semibold" : "text-lg font-semibold"}>
-          {gershayim(id)}
+          {gershayim(id.split("@")[0] ?? id)}
         </Heading>
         <p className="text-sm text-muted-foreground">{copy.termNotHere}</p>
       </div>
