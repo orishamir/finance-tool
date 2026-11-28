@@ -3,7 +3,8 @@ import type { FundRecord } from "@finance-tool/schema";
 import { taxIndexStatementOf } from "@finance-tool/engine";
 import { loadFunds } from "./instruments.server";
 import { knownIndices } from "./invest";
-import { allLabels, fundLabels, label, statementExamples } from "./labels";
+import { allLabels, dividendTaxLabel, fundLabels, label, labelDefs, statementExamples } from "./labels";
+import { invest as copy } from "../copy";
 import { labelDoc, labelRules } from "./label-rests";
 import { buildIndicesBundle } from "./providers.server";
 
@@ -13,7 +14,7 @@ describe("label icons (2026-11-05 sweep)", () => {
     ["currency", "currency-many", "currency-bought"],
     ["hedged", "hedged-many"],
     ["tax-index-currency", "tax-index-cpi"],
-    ["tax-fund-dividend", "tax-fund-dividend-left-out", "tax-fund-dividend-need-yield", "tax-fund-dividend-not-us", "tax-fund-dividend-us-share", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"],
+    ["tax-fund-dividend", "tax-fund-dividend-left-out", "tax-fund-dividend-part", "tax-fund-dividend-swap", "tax-fund-dividend-us-keeps", "tax-fund-dividend-need-yield", "tax-fund-dividend-not-us", "tax-fund-dividend-us-share", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"],
   ];
   const kin = (a: string, b: string) => same.some((g) => g.includes(a) && g.includes(b));
 
@@ -45,18 +46,77 @@ describe("the tax inside an Irish fund that holds its index's shares (TXF-16, F-
     const noYield = { ...index, exposure: bare };
     expect(ids(rec, noYield)).toContain("tax-fund-dividend-left-out");
     expect(ids(rec, noYield)).not.toContain("tax-fund-dividend");
-    // a fund on a swap holds none of the shares: neither label
+    // a fund on a swap holds none of the shares, but what its swap pays is set by its terms (TXS-41, TXF-58): not counted, never "none"
     const swap = { ...rec, replication: { ...replication, method: "swap" as const } };
-    expect(ids(swap, noYield).filter((id) => id.startsWith("tax-fund-dividend"))).toEqual([]);
+    expect(ids(swap, noYield).filter((id) => id.startsWith("tax-fund-dividend"))).toEqual(["tax-fund-dividend-swap"]);
+    expect(ids(swap, index).filter((id) => id.startsWith("tax-fund-dividend"))).toEqual(["tax-fund-dividend-swap"]);
   });
 
   it("every fund on the records carries the label its own run agrees with", () => {
     const bundle = buildIndicesBundle();
     for (const i of knownIndices(bundle)) {
       for (const f of bundle.funds.filter((x) => x.exposure_id === i.id && x.domicile === "IE" && x.replication?.method === "physical")) {
-        const worked = !!i.exposure?.us_dividends || typeof f.fees.fund_level_withholding_drag?.value === "number" || typeof f.fees.tracking_difference_12m?.value === "number";
-        expect(`${f.id} ${ids(f, i).filter((id) => id.startsWith("tax-fund-dividend")).join()}`).toBe(`${f.id} ${worked ? "tax-fund-dividend" : "tax-fund-dividend-left-out"}`);
+        const own = typeof f.fees.fund_level_withholding_drag?.value === "number" || typeof f.fees.tracking_difference_12m?.value === "number";
+        // F-107 counts the US part of the index (its US share, MSCI's country weight where the record gives one); the rest is not counted
+        const expected = own ? "tax-fund-dividend" : !i.exposure?.us_dividends ? "tax-fund-dividend-left-out" : i.exposure.us_dividends.weight ? "tax-fund-dividend-part" : "tax-fund-dividend";
+        expect(`${f.id} ${ids(f, i).filter((id) => id.startsWith("tax-fund-dividend")).join()}`).toBe(`${f.id} ${expected}`);
       }
+    }
+  });
+});
+
+describe("wherever a collected fund may bear dividend tax inside it that the run does not count, its row says so (D56, F-107, A-11)", () => {
+  const bundle = buildIndicesBundle();
+  const indices = knownIndices(bundle);
+  const taxOf = (f: FundRecord) => {
+    const i = indices.find((x) => x.id === f.exposure_id);
+    if (!i) throw new Error(`the index of ${f.id}`);
+    return dividendTaxLabel(f, i);
+  };
+  const funds = (pick: (f: FundRecord) => boolean) => {
+    const out = bundle.funds.filter(pick);
+    if (out.length === 0) throw new Error("no fund on the records is of this case");
+    return out;
+  };
+  const weighed = (f: FundRecord) => !!bundle.exposures.find((e) => e.id === f.exposure_id)?.us_dividends?.weight;
+
+  it("an Irish fund holding the shares of an index with companies outside the United States (MSCI World, MSCI ACWI): the US part counted, the rest not (TXF-54)", () => {
+    for (const f of funds((x) => x.domicile === "IE" && x.replication?.method === "physical" && weighed(x))) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-part`);
+    expect(labelDefs["tax-fund-dividend-part"].rules).toEqual(expect.arrayContaining(["TXF-16", "TXF-53", "TXF-54"]));
+  });
+
+  it("a fund on a swap or futures, Israeli or Irish, with no figure of its own: not counted, citing what a swap pays (TXS-41, TXF-58), stating no rate", () => {
+    for (const f of funds((x) => x.replication?.method === "swap" || x.replication?.method === "futures")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-swap`);
+    expect(labelDefs["tax-fund-dividend-swap"].rules).toEqual(["TXS-41", "TXF-58"]);
+    expect(copy.labels["tax-fund-dividend-swap"].explain).not.toMatch(/\d+(\.\d+)?%/);
+  });
+
+  it("a US fund that pays out its income bears none on an index of US companies, and may on one with companies elsewhere (TXF-56)", () => {
+    for (const f of funds((x) => x.domicile === "US" && x.distribution_policy === "distributing" && x.exposure_id === "index-sp500")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} null`);
+    for (const f of funds((x) => x.domicile === "US" && x.distribution_policy === "distributing" && weighed(x))) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-us-fund`);
+  });
+
+  it("a US fund that keeps its income pays US tax on what it keeps inside it (TXF-50): not counted, whatever its index", () => {
+    for (const f of funds((x) => x.domicile === "US")) expect(taxOf({ ...f, distribution_policy: "accumulating" })).toBe("tax-fund-dividend-us-keeps");
+    expect(labelDefs["tax-fund-dividend-us-keeps"].rules).toContain("TXF-50");
+  });
+
+  it("an Israeli fund holding shares on an index of Israeli companies may hold foreign ones too (ETF-44): not counted (TXF-57)", () => {
+    for (const f of funds((x) => x.domicile === "IL" && x.exposure_id === "index-ta35")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-il-fund`);
+    for (const f of funds((x) => x.domicile === "IL" && x.replication?.method !== "swap" && x.exposure_id === "index-sp500")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-il-fund`);
+  });
+
+  it("a figure of the fund's own, or a published 12-month gap, may hold the tax: counted", () => {
+    const [f] = funds((x) => x.domicile === "IE" && x.replication?.method === "physical" && weighed(x));
+    if (!f) throw new Error("an Irish fund on MSCI World or ACWI");
+    const gap = { ...f, fees: { ...f.fees, tracking_difference_12m: { ...f.fees.fixed_management!, value: 0.1 } } };
+    expect(taxOf(gap)).toBe("tax-fund-dividend");
+  });
+
+  it("each sentence that a tax is withheld where the countries are not known says it may be, never that it is", () => {
+    for (const id of ["tax-fund-dividend-part", "tax-fund-dividend-not-us", "tax-fund-dividend-us-share", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"] as const) {
+      expect(copy.labels[id].explain).toContain("עשוי להיות מנוכה");
+      expect(copy.labels[id].explain.replaceAll("עשוי להיות מנוכה", "")).not.toContain("מנוכה");
     }
   });
 });

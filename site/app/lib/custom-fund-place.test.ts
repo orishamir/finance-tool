@@ -205,10 +205,10 @@ describe("what the person says of an index they added feeds F-107, and the label
     }
   });
 
-  it("a fund that does not hold the shares carries none of these labels", () => {
+  it("a fund that does not hold the shares takes no F-107 figure, and its label says what its swap pays is not counted (TXS-41)", () => {
     const f = fundAt("europe-usd", "IE", { tracking: "swap" }, "custom-us", "custom-fund-swap");
     const index: CustomIndex = { id: "custom-us", name: "US", added: t, region: "us", dividendYield: yieldTyped };
-    expect(dividendTaxLabel(must(withCustomEntries(bundle, [f], [index]).funds.at(-1), "the record"), refOfCustom(index))).toBeNull();
+    expect(dividendTaxLabel(must(withCustomEntries(bundle, [f], [index]).funds.at(-1), "the record"), refOfCustom(index))).toBe("tax-fund-dividend-swap");
   });
 });
 
@@ -242,7 +242,7 @@ describe("wherever a typed fund may bear dividend tax inside it that the run doe
     const unsaid = tracked("europe-usd", "IE", null);
     const swap = tracked("europe-usd", "IE", "swap");
     expect(labelOn(unsaid)).toBe("tax-fund-dividend-tracking");
-    expect(labelOn(swap)).toBeNull();
+    expect(labelOn(swap)).toBe("tax-fund-dividend-swap");
     const b = withCustomEntries(bundle, [unsaid, swap]);
     const sp = ref(SP);
     const values = (f: CustomFund) => priced(must(fundWayAt({ bundle: b, index: sp, plan, fundId: f.id }), f.id)).map(([h, at]) => [h, at.valueN]);
@@ -252,26 +252,45 @@ describe("wherever a typed fund may bear dividend tax inside it that the run doe
 
   it("a fund bought abroad whose country is not said, holding the shares or maybe: not counted", () => {
     for (const tracking of ["physical", null] as const) expect(labelOn(tracked("abroad", "unsure", tracking))).toBe("tax-fund-dividend-domicile");
-    expect(labelOn(tracked("abroad", "unsure", "futures"))).toBeNull();
+    expect(labelOn(tracked("abroad", "unsure", "futures"))).toBe("tax-fund-dividend-swap");
   });
 
-  it("a US fund bears none on US companies, and may on any other's (TXF-56)", () => {
-    expect(labelOn(tracked("us-usd", "US", "physical"))).toBeNull();
-    expect(labelOn(tracked("us-usd", "US", "physical", "index-msci-world"), ref("index-msci-world"))).toBe("tax-fund-dividend-us-fund");
-    const europe: CustomIndex = { id: "custom-europe", name: "MSCI Europe", added: t, region: "europe" };
-    const f = tracked("us-usd", "US", null, europe.id);
-    expect(dividendTaxLabel(must(withCustomEntries(bundle, [f], [europe]).funds.at(-1), "the record"), refOfCustom(europe))).toBe("tax-fund-dividend-us-fund");
+  it("a US fund that pays out its income bears none on US companies, and may on any other's (TXF-56)", () => {
+    const paying = (indexId = SP, tracking: FundTracking | null = "physical") => fundAt("us-usd", "US", { tracking, payout: "distributing" }, indexId, `custom-fund-us-paying-${indexId}`);
+    expect(labelOn(paying())).toBeNull();
+    expect(labelOn(paying("index-msci-world"), ref("index-msci-world"))).toBe("tax-fund-dividend-us-fund");
+    for (const region of ["europe", "world", "other", undefined] as const) {
+      const added: CustomIndex = { id: `custom-${region ?? "none"}`, name: "x", added: t, ...(region ? { region } : {}) };
+      const f = paying(added.id, null);
+      expect(dividendTaxLabel(must(withCustomEntries(bundle, [f], [added]).funds.at(-1), "the record"), refOfCustom(added))).toBe("tax-fund-dividend-us-fund");
+    }
+    const us: CustomIndex = { id: "custom-us-only", name: "x", added: t, region: "us" };
+    expect(dividendTaxLabel(must(withCustomEntries(bundle, [paying(us.id)], [us]).funds.at(-1), "the record"), refOfCustom(us))).toBeNull();
   });
 
-  it("an Israeli fund that may hold foreign shares: not counted (TXF-57); on Israeli companies, or through a swap, no label", () => {
+  it("a US fund that keeps its income, or whose payout is not said, bears US tax inside on what it keeps (TXF-50): not counted", () => {
+    expect(labelOn(tracked("us-usd", "US", "physical"))).toBe("tax-fund-dividend-us-keeps");
+    expect(labelOn(fundAt("us-usd", "US", { tracking: "swap", payout: null }, SP, "custom-fund-us-unsaid"))).toBe("tax-fund-dividend-us-keeps");
+  });
+
+  it("an Irish fund holding the shares of MSCI World: F-107 counts the US part, and the label says the rest is not (TXF-54)", () => {
+    const world = ref("index-msci-world");
+    const f = tracked("europe-usd", "IE", "physical", world.id);
+    expect(labelOn(f, world)).toBe("tax-fund-dividend-part");
+    const b = withCustomEntries(bundle, [f]);
+    const [, at] = must(priced(must(fundWayAt({ bundle: b, index: world, plan, fundId: f.id }), f.id))[0], "a priced house");
+    expect((at.value.computed_from?.inputs as Record<string, SiteValue>)[copy.pair.fundInputs.usWithholding]?.computed_from?.formula).toBe("F-107");
+  });
+
+  it("an Israeli fund that may hold foreign shares: not counted (TXF-57), on an index of Israeli companies too, which may hold foreign shares (ETF-44); through a swap, the swap's label", () => {
     expect(labelOn(tracked("tase", "IL", null))).toBe("tax-fund-dividend-il-fund");
     expect(labelOn(tracked("manager", "IL", "physical"))).toBe("tax-fund-dividend-il-fund");
-    expect(labelOn(tracked("tase", "IL", "swap"))).toBeNull();
-    expect(labelOn(tracked("manager", "IL", "physical", "index-ta125"), ref("index-ta125"))).toBeNull();
+    expect(labelOn(tracked("tase", "IL", "swap"))).toBe("tax-fund-dividend-swap");
+    expect(labelOn(tracked("manager", "IL", "physical", "index-ta35"), ref("index-ta35"))).toBe("tax-fund-dividend-il-fund");
   });
 
   it("each label not counted is an open tax label that says so in words and states no rate", () => {
-    for (const id of ["tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"] as const) {
+    for (const id of ["tax-fund-dividend-swap", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"] as const) {
       expect(labelDefs[id].tone).toBe("open");
       expect(copy.labels[id].text).toBe(copy.labels["tax-fund-dividend-left-out"].text);
       expect(copy.labels[id].explain).not.toMatch(/\d+(\.\d+)?%/);
@@ -301,9 +320,17 @@ describe("the panel's checklist: an answer not given is never done (D56)", () =>
     expect(s.needs.find((x) => x.id === "country")).toMatchObject({ state: "stand-in", note: copy.customEntries.needs.standIn.countryTax });
   });
 
-  it("an Irish fund whose way of following the index is not said is priced without it too", () => {
-    expect(stateOf(draftOf("europe-usd", "IE")).status).toBe("left-out");
-    expect(stateOf(draftOf("europe-usd", "IE", { tracking: "swap" })).status).toBe("ok");
+  it("an Irish fund whose way of following the index is not said is priced without it too, and so is one on a swap (TXS-41)", () => {
+    const w = copy.customEntries.needs.dividendTax;
+    expect(itemOf(draftOf("europe-usd", "IE"), "dividendTax")).toMatchObject({ state: "left-out", note: w["tax-fund-dividend-tracking"] });
+    expect(itemOf(draftOf("europe-usd", "IE", { tracking: "swap" }), "dividendTax")).toMatchObject({ state: "left-out", note: w["tax-fund-dividend-swap"] });
+  });
+
+  it("a US fund that keeps its income, and an Irish one holding MSCI World's shares, are priced without what is not counted", () => {
+    const w = copy.customEntries.needs.dividendTax;
+    expect(itemOf(draftOf("us-usd", "US", { tracking: "physical" }), "dividendTax")).toMatchObject({ state: "left-out", note: w["tax-fund-dividend-us-keeps"] });
+    const world = must(indexById(bundle, "index-msci-world"), "MSCI World");
+    expect(stateOf(draftOf("europe-usd", "IE", { tracking: "physical" }), world).needs.find((x) => x.id === "dividendTax")).toMatchObject({ state: "left-out", note: w["tax-fund-dividend-part"] });
   });
 
   it("abroad, not sure where: the place says what stands in for the currency and the exchange", () => {
