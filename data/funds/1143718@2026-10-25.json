@@ -68,9 +68,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
-        "MF-16",
-        "MF-17"
+        "MF-16"
       ],
       "state": "sourced",
       "notes": "Fixed management fee (דמי ניהול קבועים). Report note 7: the manager committed to the ISA outline not to raise the fee (fixed or variable) or the load during a calendar year; it may raise it only on 01.01.2027. The same 0.25% is printed on TASE's fund page (market.tase.co.il, 'דמי ניהול (%)', read 2026-10-24) and in the manager's main prospectus of 07.07.2026, section 3.1 row 28. The report says the fee is computed on the assets of the parallel fund including those held against the swap. An institutional 'other people's money' manager gets a full refund (0.25%) under the tracking-fund regulations; that is not a retail saver's fee. Hebrew name as printed in the report; 'תכלית סל תא 125' is TASE's short name; the English names are TASE's ('Full Name' and page title on market.tase.co.il/en), not printed in the report or prospectus."
@@ -90,7 +88,6 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
         "MF-20"
       ],
       "state": "sourced",
@@ -111,8 +108,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-14",
-        "ETF-13"
+        "ETF-14"
       ],
       "state": "sourced",
       "notes": "Variable management fee rate (דמי ניהול משתנים), the published rate the mechanism applies in both directions (ETF-14: at most the creation/redemption category rate, here 0.10%). The amount actually paid depends on the tracking difference; the report's expense table (note 4: a balance of the variable fees collected or added from the start of each calendar year) shows 0.10% in 2023 and 2024, 0.04% in 2025 and 0.01% in the first half of 2026. The report's note 8 refers to the main prospectus for the mechanism. The same 0.1% is on TASE's fund page ('דמי ניהול משתנים (%)')."
@@ -136,6 +132,7 @@
         "ETF-09"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not printed as one number. For 01.07.2025-30.06.2026 the report prints the fund's shekel return 32.34% beside the tracking asset's change 32.70% (מדד ת\"א 125). Calendar periods printed side by side (fund price return vs TA-125): 2025 50.55% vs 50.96%; 2024 28.36% vs 28.61%; 2023 3.89% vs 4.07%; 01.01.2026-30.06.2026 9.33% vs 9.48%. The difference is not computed here (data-update rule). The report prints no explanation of the gap. The report points to https://fundscenter.co.il/funds.shtml?m=3 (a third-party page, not read) for the tracking difference and error. Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e); the figure is not collected."
     },
     "median_spread": {
@@ -157,6 +154,7 @@
         "ETF-07"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "No median bid-ask spread is printed in the annual report. The report prints the range of differences between unit value and exchange price over 01.07.2025-30.06.2026 (-0.73% to 0.60%) and their average (0.04%), which is a premium/discount measure in percent, not a spread (ETF-06). Spread data is published by the manager elsewhere (ETF-07; the report points to fundscenter.co.il, a third-party page, not read). Market maker: מיטב עשיית שוק בע\"מ (report p. 8)."
     },
     "fund_level_withholding_drag": {
@@ -177,6 +175,7 @@
         "ETF-11"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not collected: no computation is made here (data-update rule) and the report prints no withholding rate. The fund holds the index constituents plus synthetic contracts (options) on the index (ETF-11, local index). The report's expense table prints 'הוצאות מס' as a negligible share (*) in 2023, 2025 and the first half of 2026 and 0.01% in 2024; note 6 says the fund may owe tax on income from dual-listed securities and prints the amounts: ₪110,517.96 (2023), ₪129,133.24 (2024), ₪314,547.54 (2025), ₪104,465.39 (01.01.2026-30.06.2026)."
     }
   },

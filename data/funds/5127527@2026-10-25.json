@@ -64,9 +64,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
-        "MF-16",
-        "MF-17"
+        "MF-16"
       ],
       "state": "sourced",
       "notes": "Fixed management fee: p. 1 'דמי הניהול הקבועים בקרן: 0% מהשווי הנקי השנתי הממוצע של נכסי הקרן'. Load (שיעור ההוספה): 0% of the unit price. Expense table (chapter ה'): fixed management fee 0.00% in each of 2022 to 2025; total expenses 0.32% in each year. Prospectus published on Magna on 28.4.2025, reference 2025-03-029778 (not opened; Magna returns 403 to scripts). ISIN read on the fund's Maya page (https://maya.tase.co.il/he/funds/mutual-funds/5127527, field 'ISIN', read in Chrome on 2026-10-24); the page states its fund data is collected from the manager's filings and not audited by TASE. The annual report itself prints no ISIN."
@@ -86,7 +84,6 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
         "MF-20"
       ],
       "state": "sourced",
@@ -107,8 +104,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-14",
-        "ETF-13"
+        "ETF-14"
       ],
       "state": "sourced",
       "notes": "Variable management fee: p. 1 'דמי הניהול המשתנים בקרן (חיוביים או שליליים): 0.30% מהשווי הנקי של נכסי הקרן'. Expense table: variable management fee 0.30% in each of 2022 to 2025 (the mechanism works in both directions, ETF-14). The Maya fund page read on 2026-10-24 shows the same 0%, 0.3% and 0.02%."
@@ -133,6 +129,7 @@
         "ETF-10"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not printed as one number. Chapter ג' prints for 2025 the fund's redemption-price return 15.32% (standard deviation 18.35) against 'מדד S&P 500' 17.43% (standard deviation 18.63), the index in US dollars, which is the hedged fund's tracking asset; earlier years: 2024 21.86% against 24.16%; 2023 23.60% against 25.70%; 2022 -21.78% against -18.52%. The difference, which includes the cost of the currency hedge, is not computed here (data-update rule). Hedged variant: the shekel return is meant to follow the dollar index, so the 2025 gap to the unhedged tracking asset of the (4D) funds (2.61% in shekels) is not comparable. Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e); the figure is not collected."
     },
     "median_spread": {
@@ -154,6 +151,7 @@
         "MF-21"
       ],
       "state": "sourced",
+      "empty_because": "not-applicable",
       "notes": "Not applicable: an open tracking fund is bought and redeemed at the unit price computed from net asset value (MF-09), with no exchange spread; the load on purchase is 0% (p. 1). The distributor may charge its own buy and sell commission (p. 1 footnote; MF-26)."
     },
     "fund_level_withholding_drag": {
@@ -174,6 +172,7 @@
         "ETF-11"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not collected: no computation is made here and the report prints no withholding figure; any dividend-withholding drag and the hedge's carry sit inside the pricing of the instruments the fund uses and are not published as a rate."
     },
     "load": {

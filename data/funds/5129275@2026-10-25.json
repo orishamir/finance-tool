@@ -63,9 +63,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
-        "MF-16",
-        "MF-17"
+        "MF-16"
       ],
       "state": "sourced",
       "notes": "Fixed management fee: p. 1 'דמי הניהול הקבועים בקרן: 0% מהשווי הנקי השנתי הממוצע של נכסי הקרן. מנהל הקרן אינו מקבל שכר בקרן' (the manager committed to the ISA outline to raise its pay or the load only on 1 January). Load (שיעור ההוספה): 0% of the unit price. Expense table (chapter ה'): fixed management fee 0.00% in each of 2022 to 2025. Prospectus published on Magna on 28.4.2025, reference 2025-03-029778 (not opened; Magna returns 403 to scripts). ISIN read on the fund's Maya page (https://maya.tase.co.il/he/funds/mutual-funds/5129275, field 'ISIN', read in Chrome on 2026-10-24); the page states its fund data is collected from the manager's filings and not audited by TASE. The annual report itself prints no ISIN."
@@ -85,7 +83,6 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
         "MF-20"
       ],
       "state": "sourced",
@@ -106,8 +103,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-14",
-        "ETF-13"
+        "ETF-14"
       ],
       "state": "sourced",
       "notes": "Variable management fee: p. 1 'דמי הניהול המשתנים בקרן (חיוביים או שליליים): 0.1% מהשווי הנקי של נכסי הקרן'. Chapter ו': on 1.1.25 the variable fee changed from 0.00% to 0.10%. Expense table: variable management fee 0.10% in 2025, none before."
@@ -132,6 +128,7 @@
         "ETF-10"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not printed as one number. Chapter ג' prints for 2025 the fund's redemption-price return 3.04% (standard deviation 18.85) against 'מדד S&P500 שקלי' 2.61% (standard deviation 20.56); earlier years: 2024 25.48% against 24.96%; 2023 30.88% against 29.43%; 2022 -7.35% against -7.55%. The difference is not computed here (data-update rule). Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e); the figure is not collected."
     },
     "median_spread": {
@@ -153,6 +150,7 @@
         "MF-21"
       ],
       "state": "sourced",
+      "empty_because": "not-applicable",
       "notes": "Not applicable: an open tracking fund is bought and redeemed at the unit price computed from net asset value (MF-09), with no exchange spread; the load on purchase is 0% (p. 1). The distributor may charge its own buy and sell commission (p. 1 footnote; MF-26)."
     },
     "fund_level_withholding_drag": {
@@ -173,6 +171,7 @@
         "ETF-11"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not collected: no computation is made here and the report prints no withholding figure; any dividend-withholding drag sits inside the pricing of the instruments the fund uses and is not published as a rate."
     },
     "load": {
