@@ -234,15 +234,15 @@ function countryNeed(d: FundDraft, gaps: readonly string[], tax: DividendTaxLabe
 }
 
 /**
- * What the panel shows beside the questions, from the draft as it stands: the index as the fund would see it, the record it would save, the
- * checklist and where the calculation stands.
+ * What the panel shows beside the questions, from the draft as it stands, read off the index as the fund would see it and the record it
+ * would save: the fund's row's labels, the checklist and where the calculation stands.
  */
-export function panelStateOf(draft: FundDraft, index: IndexRef, facts: FactsDraft, today: string): { seen: IndexRef; rec: FundRecord | null; needs: NeedItem[]; status: PanelStatus; without: string[] } {
+export function panelStateOf(draft: FundDraft, index: IndexRef, facts: FactsDraft, today: string): { labels: Label[]; needs: NeedItem[]; status: PanelStatus; without: string[] } {
   const seen = seenBy(draft, index, facts, today);
   const rec = draftRecord(draft, index, today);
   const needs = needsOf(draft, rec, index, seen);
   const without = withoutOf(needs, rec ? dividendTaxLabel(rec, seen) : null);
-  return { seen, rec, needs, status: statusOf(needs), without };
+  return { labels: rowLabels(draft, rec, seen), needs, status: statusOf(needs), without };
 }
 
 /**
@@ -271,7 +271,7 @@ function FundPanel({ headId, index, fund, start, others, writable, onSave, onCan
   const [errors, setErrors] = useState<EntryError[]>([]);
   const form = useRef<HTMLDivElement>(null);
   const currencyOfIndex = index.exposure?.currency ?? null;
-  const { seen, rec, needs, status, without } = panelStateOf(draft, index, facts, today);
+  const { labels, needs, status, without } = panelStateOf(draft, index, facts, today);
   const words = statusWords(status, without, needs);
   const save = (again: boolean) => {
     const d = now.current;
@@ -294,7 +294,7 @@ function FundPanel({ headId, index, fund, start, others, writable, onSave, onCan
           <span className={draft.name.trim() ? "font-medium min-w-0 text-entered" : "font-medium min-w-0 text-muted-foreground"}>
             <MixedName>{draft.name.trim() || c.fields.fundName}</MixedName>
           </span>
-          <LabelRow labels={rowLabels(draft, rec, seen)} still />
+          <LabelRow labels={labels} still />
         </div>
       </div>
       <div className="flex flex-col gap-2">
