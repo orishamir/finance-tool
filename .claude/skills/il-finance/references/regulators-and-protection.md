@@ -191,7 +191,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
 - Likely to change: no
 
 ### REG-14 TASE members: counts and clearing-house members (partly closes domain OQ2)
-- Rule: TASE states it has 25 members: 14 banks, 8 non-bank members ("חש"בים") and 3 remote members (חברים רחוקים). The full member list could not be read. TASE's January 2026 membership guide lists the members of the TASE Clearing House and MAOF Clearing House:
+- Rule: TASE states it has 25 members: 14 banks, 8 non-bank members ("חש"בים") and 3 remote members (חברים רחוקים). TASE's full member list, by name, is BRK-32. TASE's January 2026 membership guide lists the members of the TASE Clearing House and MAOF Clearing House:
   - **Banks:** Citibank N.A. (TASE CH only); HSBC Bank PLC (TASE CH only); בנק דיסקונט לישראל; בנק הפועלים; בנק ירושלים; בנק לאומי לישראל; בנק מזרחי טפחות; בנק מרכנתיל דיסקונט; הבנק הבינלאומי הראשון לישראל; בנק יהב לעובדי המדינה; וואן זירו הבנק הדיגיטלי (TASE CH only).
   - **Non-banks:** אלטשולר שחם טרייד בע"מ (TASE CH only); אקסלנס ניהול השקעות וניירות ערך בע"מ (TASE CH only); מיטב טרייד בע"מ (TASE CH only); פסגות ניירות ערך בע"מ (TASE CH only); שרותי בורסה והשקעות בישראל אי.בי.אי בע"מ (both clearing houses); פייר פיננשיאל טכנולוג'יז בע"מ ("חבר משמורן במסלקת הבורסה בלבד", custodial member only).
 - Conditions / exceptions:
@@ -200,7 +200,7 @@ Scope: who regulates each tier-1 wrapper and institution, under which law; the o
   - Bank Massad, listed by the BoI as a bank (REG-03), is not in the clearing-member list. How it clears was not found.
   - Scope (2026-10-26, scope settling): the only sources are TASE's own membership guides, the exchange describing its own membership, not a TASE rule; so the record is TASE's. The member list is a dated list that belongs in data/, not in the rule set.
 - Figures: 25 members (January 2026). Non-bank member equity: the higher of a capital model or NIS 5.9 m in the first five years, and the higher of the model or NIS 17.9 m after that.
-- Source: [הבורסה לניירות ערך בתל אביב: מדריך לחברות בבורסה - חש"ב, ינואר 2026](https://content.tase.co.il/media/chilpz2c/1150_nbcm_372306_heb.pdf), pp.3, 12 · checked 2026-10-25 · institution (TASE's own guide). [TASE, How to become an NBCM, January 2026](https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf), pp.3, 7, 9, 12 · checked 2026-10-25 · institution (TASE's own guide).
+- Source: [הבורסה לניירות ערך בתל אביב: מדריך לחברות בבורסה - חש"ב, ינואר 2026](https://content.tase.co.il/media/chilpz2c/1150_nbcm_372306_heb.pdf), pp.3, 12 · checked 2026-10-25 · institution (TASE's own guide). [TASE, How to become an NBCM, January 2026](https://content.tase.co.il/media/3fdpe5za/1150_nbcm_399328_eng.pdf), pp.3, 7, 9, 12 · checked 2026-10-25 · institution (TASE's own guide). The full member list: BRK-32.
 - Scope: institution: Tel Aviv Stock Exchange
 - Dimensions: `regulator`
 - Likely to change: yes (membership changes)
