@@ -523,6 +523,16 @@ describe("the index page's saved state (D28)", () => {
     expect(getSnapshot().state.customIndices).toBeUndefined();
   });
 
+  it("saving an index already in the list keeps its place; a new one goes at the end", async () => {
+    const { saveCustomIndex } = await import("./state");
+    ensureLoaded();
+    const second = { id: "custom-b", name: "ב", added: day };
+    saveCustomIndex(nikkei);
+    saveCustomIndex(second);
+    saveCustomIndex({ ...nikkei, region: "world" });
+    expect(getSnapshot().state.customIndices?.map((c) => [c.id, c.region])).toEqual([["custom-nikkei", "world"], ["custom-b", undefined]]);
+  });
+
   it("leaves out a bank an earlier version 3 document marked as the person's own, and writes none back", () => {
     storage.data.set(STATE_KEY, JSON.stringify({ version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [], bank: "hapoalim" }));
     expect(ensureLoaded().status).toBe("ok");

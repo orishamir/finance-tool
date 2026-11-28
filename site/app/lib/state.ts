@@ -614,10 +614,11 @@ export function rememberName(name: string, context?: string): void {
 
 // ---------------------------------------------------------------- the index page's own state (D28)
 
+/** Saves a custom index: a new one goes at the end of the list, one already there is replaced where it stands, so its place is kept. */
 export function saveCustomIndex(c: CustomIndex): void {
   updateState((s) => {
     const have = s.customIndices ?? [];
-    return { ...s, customIndices: [...have.filter((x) => x.id !== c.id), c] };
+    return { ...s, customIndices: have.some((x) => x.id === c.id) ? have.map((x) => (x.id === c.id ? c : x)) : [...have, c] };
   });
 }
 
