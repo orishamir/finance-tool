@@ -40,9 +40,11 @@
           "value": 0.15,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, עד 25",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -50,7 +52,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -69,9 +70,11 @@
           "value": null,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, עד 25",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -79,10 +82,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -99,9 +102,11 @@
           "value": 0.21,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, עד 25",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -109,7 +114,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -128,9 +132,11 @@
           "value": 0.14,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, עד 25",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -138,7 +144,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -157,9 +162,11 @@
           "value": 0.23,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, עד 25",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -167,7 +174,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -186,9 +192,11 @@
           "value": 0.3,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 25 ועד 50",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -196,7 +204,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -215,9 +222,11 @@
           "value": 0.1,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 25 ועד 50",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -225,7 +234,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -244,9 +252,11 @@
           "value": 0.28,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 25 ועד 50",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -254,7 +264,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -273,9 +282,11 @@
           "value": 0.27,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 25 ועד 50",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -283,7 +294,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -302,9 +312,11 @@
           "value": 0.41,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 25 ועד 50",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -312,7 +324,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -331,9 +342,11 @@
           "value": 0.14,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 50 ועד 75",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -341,7 +354,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -360,9 +372,11 @@
           "value": 0.09,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 50 ועד 75",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -370,7 +384,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -389,9 +402,11 @@
           "value": 0.29,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 50 ועד 75",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -399,7 +414,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -418,9 +432,11 @@
           "value": 0.26,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 50 ועד 75",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -428,7 +444,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -447,9 +462,11 @@
           "value": 0.4,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 50 ועד 75",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -457,7 +474,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -476,9 +492,11 @@
           "value": 0.25,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 75 ועד 100",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -486,7 +504,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -505,9 +522,11 @@
           "value": 0.09,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 75 ועד 100",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -515,7 +534,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -534,9 +552,11 @@
           "value": 0.27,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 75 ועד 100",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -544,7 +564,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -563,9 +582,11 @@
           "value": 0.27,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 75 ועד 100",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -573,7 +594,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -592,9 +612,11 @@
           "value": 0.38,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 75 ועד 100",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -602,7 +624,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -621,9 +642,11 @@
           "value": 0.23,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 100 ועד 200",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -631,7 +654,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -650,9 +672,11 @@
           "value": 0.09,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 100 ועד 200",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -660,7 +684,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -679,9 +702,11 @@
           "value": 0.25,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 100 ועד 200",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -689,7 +714,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -708,9 +732,11 @@
           "value": 0.25,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 100 ועד 200",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -718,7 +744,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -737,9 +762,11 @@
           "value": 0.36,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 100 ועד 200",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -747,7 +774,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -766,9 +792,11 @@
           "value": 0.11,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 200 ועד 400",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -776,7 +804,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -795,9 +822,11 @@
           "value": 0.08,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 200 ועד 400",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -805,7 +834,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -824,9 +852,11 @@
           "value": 0.19,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 200 ועד 400",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -834,7 +864,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -853,9 +882,11 @@
           "value": 0.24,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 200 ועד 400",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -863,7 +894,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -882,9 +912,11 @@
           "value": 0.29,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 200 ועד 400",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -892,7 +924,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -911,9 +942,11 @@
           "value": 0.18,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 400 ועד 700",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -921,7 +954,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -940,9 +972,11 @@
           "value": 0.08,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 400 ועד 700",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -950,7 +984,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -969,9 +1002,11 @@
           "value": 0.19,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 400 ועד 700",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -979,7 +1014,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -998,9 +1032,11 @@
           "value": 0.21,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 400 ועד 700",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1008,7 +1044,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1027,9 +1062,11 @@
           "value": 0.24,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 400 ועד 700",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1037,7 +1074,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1056,9 +1092,11 @@
           "value": 0.15,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 700 ועד 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1066,7 +1104,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1085,9 +1122,11 @@
           "value": 0.05,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 700 ועד 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1095,7 +1134,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1114,9 +1152,11 @@
           "value": 0.17,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 700 ועד 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1124,7 +1164,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1143,9 +1182,11 @@
           "value": 0.18,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 700 ועד 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1153,7 +1194,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1172,9 +1212,11 @@
           "value": 0.2,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 700 ועד 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1182,7 +1224,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1201,9 +1242,11 @@
           "value": 0.1,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1211,7 +1254,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1230,9 +1272,11 @@
           "value": 0.04,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1240,7 +1284,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1259,9 +1302,11 @@
           "value": 0.13,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1269,7 +1314,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1288,9 +1332,11 @@
           "value": 0.06,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1298,7 +1344,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1317,9 +1362,11 @@
           "value": 0.09,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1327,7 +1374,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1352,9 +1398,11 @@
           "value": "0.4000%  משווי עסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מניות, אג\"ח",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1362,7 +1410,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1371,9 +1418,11 @@
           "value": "26.00 ₪ לעסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מניות, אג\"ח",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1381,7 +1430,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1390,9 +1438,11 @@
           "value": "6,300.00 ₪ לעסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מניות, אג\"ח",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1400,7 +1450,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1413,9 +1462,11 @@
           "value": "0.0950%  משווי עסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מק\"מ",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1423,7 +1474,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1432,9 +1482,11 @@
           "value": "18.00 ₪ לעסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מק\"מ",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1442,7 +1494,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1451,9 +1502,11 @@
           "value": "1,800.00 ₪ לעסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מק\"מ",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1461,7 +1514,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1474,9 +1526,11 @@
           "value": "0.3000%  משווי עסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע בחו\"ל  - מניות, אג\"ח, קרנות נאמנות - כללי",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1484,7 +1538,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1493,9 +1546,11 @@
           "value": "24.00 $ לעסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע בחו\"ל  - מניות, אג\"ח, קרנות נאמנות - כללי",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1503,7 +1558,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1512,9 +1566,11 @@
           "value": "6,750.00 $ לעסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע בחו\"ל  - מניות, אג\"ח, קרנות נאמנות - כללי",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1522,7 +1578,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1535,9 +1590,11 @@
           "value": "3.8000%  משווי עסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ כתיבה - אופציות הנסחרות בישראל",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1545,7 +1602,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1554,9 +1610,11 @@
           "value": "18.00 ₪ לאופציה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ כתיבה - אופציות הנסחרות בישראל",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1564,7 +1622,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1573,9 +1630,11 @@
           "value": "360.00 ₪ לאופציה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ כתיבה - אופציות הנסחרות בישראל",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1583,7 +1642,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1596,9 +1654,11 @@
           "value": "0.2500%  מערך חוזה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, קניה/ מכירה/ כתיבה - חוזים עתידיים הנסחרים בישראל",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1606,7 +1666,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1621,9 +1680,11 @@
           "value": "0.1500%  לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בישראל - לפקדון",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1631,7 +1692,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1641,9 +1701,11 @@
           "value": "11,500.00 ₪ לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בישראל - לפקדון",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1651,7 +1713,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1664,9 +1725,11 @@
           "value": "0.2000%  לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בחו\"ל - לפקדון",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1674,7 +1737,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1684,9 +1746,11 @@
           "value": "23,000.00 ₪ לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בחו\"ל - לפקדון",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1694,7 +1758,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1707,9 +1770,11 @@
           "value": "0.1500%  לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע שאינם נסחרים בבורסה - לפקדון",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1717,7 +1782,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1727,9 +1791,11 @@
           "value": "11,500.00 ₪ לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע שאינם נסחרים בבורסה - לפקדון",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1737,7 +1803,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1750,9 +1815,11 @@
           "value": "0.1500%  לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בישראל - לני\"ע",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1760,7 +1827,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1770,9 +1836,11 @@
           "value": "3,700.00 ₪ לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בישראל - לני\"ע",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1780,7 +1848,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1793,9 +1860,11 @@
           "value": "0.2000%  לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בחו\"ל - לני\"ע",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1803,7 +1872,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1813,9 +1881,11 @@
           "value": "7,400.00 ₪ לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע הנסחרים בחו\"ל - לני\"ע",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1823,7 +1893,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1836,9 +1905,11 @@
           "value": "0.1500%  לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע שאינם נסחרים בבורסה - לני\"ע",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1846,7 +1917,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1856,9 +1926,11 @@
           "value": "3,700.00 ₪ לרבעון",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע שאינם נסחרים בבורסה - לני\"ע",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1866,7 +1938,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1879,9 +1950,11 @@
           "value": "0.0900%  משווי הקצאה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, טיפול בהזמנה של ני''ע בהנפקה - אג\"ח ממשלתי",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1889,7 +1962,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1898,9 +1970,11 @@
           "value": "16.00 ₪ להקצאה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, טיפול בהזמנה של ני''ע בהנפקה - אג\"ח ממשלתי",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1908,7 +1982,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1922,9 +1995,11 @@
           "value": "0.0450%  משווי הזמנה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, טיפול בהזמנה של ני\"ע בהנפקה – יתר ני\"ע",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1932,7 +2007,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1941,9 +2015,11 @@
           "value": "16.00 ₪ להזמנה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=1107",
             "title": "מחשבון עמלות מסחר: בנק לאומי, עמלות תעריפון, טיפול בהזמנה של ני\"ע בהנפקה – יתר ני\"ע",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1951,7 +2027,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"

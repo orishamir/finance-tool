@@ -715,6 +715,7 @@
           "BRK-43"
         ],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents (D56, D65): 'For currency trades executed under the auto currency conversion service, IB will typically add or subtract (at its discretion) 0.03% to the exchange rate that would otherwise apply' (re-read 2026-11-10), and the client agreement (form 3203, s.30C) says the automatic conversion rate 'may be adjusted from the rate that otherwise would apply to compensate for differences between the agreed settlement cycle for the trade and the standard settlement cycle for that currency pair'. 0.03% is the figure printed as typical, not a ceiling, so it is not priced, as the conversion inside Interactive Israel's recurring plan is not (interactive-israel-fx-recurring-plan)."
       }
     }

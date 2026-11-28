@@ -48,8 +48,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
-          "BRK-19",
           "MF-27"
         ],
         "state": "sourced",
@@ -71,9 +69,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 35'."
       },
@@ -93,9 +89,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 7,300'."
       },
@@ -137,7 +131,6 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-16",
-          "BRK-19",
           "MF-27"
         ],
         "state": "sourced",
@@ -159,11 +152,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מינימום של 25 ש\"ח'."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "max": {
         "value": 7150,
@@ -181,11 +171,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מקסימום 7,150 ש\"ח לפעולה'."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "period": null,
       "channel": "direct",
@@ -225,10 +212,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.1% משווי העסקה', separate row for makam ('מילווה קצר מועד'), charged on execution. Note (5): also charged on the allotted part of a purchase in an issue."
       },
@@ -248,9 +232,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 25'."
       },
@@ -270,9 +252,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 7,300'."
       },
@@ -310,10 +290,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Note (3): 'עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת בשיעור 0.09% בכפוף למינימום של 22.5 ש\"ח, מקסימום 7,150 ש\"ח'. Also printed in appendix E under 'באינטרנט, בסלולר'. Unexecuted order in a direct channel: no fee."
       },
@@ -333,11 +310,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מינימום של 22.5 ש\"ח'."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "max": {
         "value": 7150,
@@ -355,11 +329,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מקסימום 7,150 ש\"ח'."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "period": null,
       "channel": "direct",
@@ -396,10 +367,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Section 4.1.2 names redemption. The reduced direct-channel price (note 3, 0.09%) names buying and selling only (\"עבור קניה ומכירה בערוץ ישיר\"), so a redemption, where no order is placed, stays at the section's price (inferred from the wording)."
       },
@@ -419,9 +387,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 25'."
       },
@@ -441,9 +407,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 7,300'."
       },
@@ -480,10 +444,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.79% משווי העסקה', charged on execution. Note (7): US TBILL/CD/CP trades pay a reduced 0.15%. Note (9): DR securities may carry third-party costs. Re-read 2026-11-04 and 2026-11-14 (edition 12/11/2026), unchanged. Added costs on top: the line's 'הוצאות נוספות' column prints 'הוצאות סוכן (ברוקר) בחוץ לארץ, Sec fee, מיסים והיטלים בהתאם לחוק כתלות במדינת המסחר, (לדוג': מס מלכה), הוצאות סוויפט' (p.13), and part 11 (p.31) prices them 'לפי הגביה בפועל' with ceilings: 11.3.1 the broker abroad, in the US 'עד 5 סנט למניה, מינימום 7.5$ לעסקה', elsewhere 'עד 0.15% משווי העסקה, מינימום 5-30$ בהתאם לשוק'; 11.3.3 the SEC fee 'ולא יעלה על תעריפון הרשות לני\"ע בארה\"ב'. They are left out of the price (left_out); until the edition of 12/11/2026 part 11 printed them with no ceiling. The young-investor page (advertising, not a tariff) states the agent fee 'בהתאם לתעריפון הבנק הוא 7.5$ או 0.5 סנט למניה מינימום 5.5 $'."
       },
@@ -503,9 +464,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'$ 25' per trade (US dollars)."
       },
@@ -525,9 +484,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'$ 10900' per trade (US dollars)."
       },
@@ -565,10 +522,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Note (8): 'עבור קניה ומכירה בערוץ ישיר ייגבה מחיר מופחת של 0.59% בכפוף למינימום של $ 23.5 מקסימום $ 10,680'. Appendix E prints the same under 'באינטרנט, בסלולר'. Re-read 2026-11-04 and 2026-11-14 (edition 12/11/2026), unchanged. Added costs on top: the line's 'הוצאות נוספות' column prints 'הוצאות סוכן (ברוקר) בחוץ לארץ, Sec fee, מיסים והיטלים בהתאם לחוק כתלות במדינת המסחר, (לדוג': מס מלכה), הוצאות סוויפט' (p.13), and part 11 (p.31) prices them 'לפי הגביה בפועל' with ceilings: 11.3.1 the broker abroad, in the US 'עד 5 סנט למניה, מינימום 7.5$ לעסקה', elsewhere 'עד 0.15% משווי העסקה, מינימום 5-30$ בהתאם לשוק'; 11.3.3 the SEC fee 'ולא יעלה על תעריפון הרשות לני\"ע בארה\"ב'. They are left out of the price (left_out); until the edition of 12/11/2026 part 11 printed them with no ceiling. The young-investor page (advertising, not a tariff) states the agent fee 'בהתאם לתעריפון הבנק הוא 7.5$ או 0.5 סנט למניה מינימום 5.5 $'."
       },
@@ -588,9 +542,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום של $ 23.5' per trade (US dollars)."
       },
@@ -610,9 +562,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מקסימום $ 10,680' per trade (US dollars)."
       },
@@ -662,7 +612,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
           "BRK-17"
         ],
         "state": "sourced",
@@ -684,10 +633,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "No minimum is printed for this line (column 'גובה העמלה מינימום' is empty)."
       },
       "max": {
@@ -706,9 +654,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 7,500 לני\"ע לרבעון': maximum per security per quarter. No per-deposit (whole account) maximum is printed."
       },
@@ -747,9 +693,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.25% לרבעון' for securities traded abroad (including metals, 'לרבות מתכות'); same collection mechanics as the Israeli line. Additional expenses column: 'הוצאות קסטודיאן בחו\"ל'; note (6): foreign custodian expenses are charged on top. Note (5): US CP/CD/TBILL pay a reduced 0.05% per security per quarter. Re-read 2026-11-04 and 2026-11-14 (edition 12/11/2026), unchanged: 0.25% a quarter, at most 7,500 NIS per security per quarter. On top: note (6) 'בנוסף, בגין ני\"ע נסחרים ושאינם נסחרים בחו\"ל, יגבו הוצאות הקסטודיאן בחו\"ל' (p.14), and part 11.3.7 (p.31) 'הוצאות קסטודיאן בחו\"ל' 'לפי הגביה בפועל': per action in the US 'עד 2.5$ לפעולה', elsewhere 'עד 30$ לפעולה', for funds '15 אירו ועד 250 אירו בהתאם לסוג הקרן'; for holding ('הוצאות בגין החזקה') in the US 'עד 0.01% שנתי', elsewhere (funds included) 'עד 0.12% שנתי'. Left out of the price (left_out); until the edition of 12/11/2026 part 11 printed them with no ceiling. The securities general terms (library 0db5c13ebcf91370, p.7) 'את כל עמלות הברוקר ו/או קסטודיאן כפי שידרשו'. Averages actually paid abroad: see discount-custody-israel."
       },
@@ -769,10 +713,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "No minimum is printed for this line."
       },
       "max": {
@@ -791,9 +734,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 7,500 לני\"ע לרבעון': maximum per security per quarter."
       },
@@ -1008,9 +949,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.19% מסכום העסקה', charged on execution. Footnote (*): FX transactions up to $10 are exempt; up to $100 get a 50% discount including on the minimum ('בעסקאות מט\"ח שסכומן עד 10$ פטור, בעסקאות מט\"ח שסכומן עד 100$ 50% הנחה, לרבות על המינימום'). Exemption for conversions from a Nazi-victims pension account."
       },
@@ -1030,9 +969,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'$ 6.8 לפעולה' (US dollars per transaction)."
       },
@@ -1052,9 +989,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'$ 1,075 לפעולה' (US dollars per transaction)."
       },
@@ -1074,10 +1009,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents. The tariff prints only the percentage fee (עמלת חליפין, 5.1.1, p.17); the general terms booklet (library 36453fb2c2b8e702, p.39) executes a purchase or sale of foreign currency 'בהתאם לשערי החליפין שיקבעו על ידי הבנק', and p.9 'לפי שער החליפין כפי שייקבע על ידי הבנק'; no document caps the gap from the representative rate (BRK-16). Not zero. Digital Premium (annex A p.41) waives the fee ('עמלת חליפין ... פטור'), not the rate."
       },
       "period": null,
@@ -1108,7 +1042,6 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16",
               "BRK-86"
             ],
             "state": "sourced",
@@ -1142,7 +1075,6 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16",
               "BRK-86"
             ],
             "state": "sourced",
@@ -1166,7 +1098,6 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16",
               "BRK-86"
             ],
             "state": "sourced",
@@ -1206,10 +1137,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Notes column: 'בערוץ ישיר 0.17% מסכום העסקה מינימום $ 6 לפעולה, מקסימום $ 1,055 לפעולה'. Appendix E prints the direct price under 'באינטרנט'. Same small-amount exemptions as the branch line (footnote *)."
       },
@@ -1229,9 +1157,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום $ 6 לפעולה' (US dollars)."
       },
@@ -1251,9 +1177,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מקסימום $ 1,055 לפעולה' (US dollars)."
       },
@@ -1273,10 +1197,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents. The tariff prints only the percentage fee (עמלת חליפין, 5.1.1, p.17); the general terms booklet (library 36453fb2c2b8e702, p.39) executes a purchase or sale of foreign currency 'בהתאם לשערי החליפין שיקבעו על ידי הבנק', and p.9 'לפי שער החליפין כפי שייקבע על ידי הבנק'; no document caps the gap from the representative rate (BRK-16). Not zero. Digital Premium (annex A p.41) waives the fee ('עמלת חליפין ... פטור'), not the rate."
       },
       "period": null,
@@ -1309,8 +1232,6 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16",
-              "BRK-19",
               "BRK-86"
             ],
             "state": "sourced",
@@ -1344,8 +1265,6 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16",
-              "BRK-19",
               "BRK-86"
             ],
             "state": "sourced",
@@ -1369,8 +1288,6 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16",
-              "BRK-19",
               "BRK-86"
             ],
             "state": "sourced",

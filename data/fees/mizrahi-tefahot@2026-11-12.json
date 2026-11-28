@@ -54,8 +54,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
-          "BRK-19",
           "MF-27"
         ],
         "state": "sourced",
@@ -77,9 +75,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 50.00'."
       },
@@ -99,9 +95,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 10,750.00'."
       },
@@ -121,9 +115,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the value. 4.1 note (6), for 4.1.1."
       },
@@ -165,7 +157,6 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-16",
-          "BRK-19",
           "MF-27"
         ],
         "state": "sourced",
@@ -187,11 +178,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מזערי ₪ 45.00'."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "max": {
         "value": 9675,
@@ -209,11 +197,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מירבי ₪ 9,675.00'."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "cap": {
         "value": 25,
@@ -231,9 +216,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the value. 4.1 note (6): 'בכל מקרה', so the internet price of annex E (a reduced price for the same service, p.47) keeps it."
       },
@@ -272,10 +255,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.11%', separate row for makam."
       },
@@ -295,9 +275,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 19.00'."
       },
@@ -317,9 +295,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 7,500.00'."
       },
@@ -339,9 +315,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the value. 4.1 note (6), for 4.1.2."
       },
@@ -379,10 +353,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Appendix E, 'שירות האינטרנט': '0.10%' against the clerk price 0.11%."
       },
@@ -402,11 +373,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מזערי ₪ 17.10'."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "max": {
         "value": 6750,
@@ -424,11 +392,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
-        "state": "sourced",
-        "notes": "'מירבי ₪ 6,750.00'."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "cap": {
         "value": 25,
@@ -446,9 +411,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the value. 4.1 note (6): 'בכל מקרה', so the internet price of annex E keeps it."
       },
@@ -487,10 +450,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Section 4.1 names redemption. The reduced price of annex ה (0.10%) reads \"קניה/מכירה\", without redemption, so a redemption stays at the section's price."
       },
@@ -510,9 +470,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 19.00'."
       },
@@ -532,9 +490,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 7,500.00'."
       },
@@ -554,9 +510,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the value. 4.1 note (6); section 4.1 names redemption."
       },
@@ -594,10 +548,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.89%'. Note (6): charged in the security's trading currency on the dollar value. Note (7): broker, custodian and other foreign expenses are charged on top. Note (5): the minimum never exceeds 25% of the value. Part 11 ('18/08/2026', pp.30-32) prints the third-party costs added on top: broker in the US '0.5 סנט למניה' (11.10.1), elsewhere up to 0.13% (11.10.2); correspondent bank 0.05%, min $2, max $500 (11.9.2); custodian $2.50 for US shares and ETFs, up to $32 elsewhere, up to 250 euro for funds (11.32); ADR/GDR up to 5 cents a share (11.33); and 'הוצאות שוק/מדינה' (11.34) by a JPMorgan charges guide, with no amount or ceiling in the price list. Not priced (left_out)."
       },
@@ -617,9 +568,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'$75.00' per trade (US dollars)."
       },
@@ -639,9 +588,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'$7,500.00' per trade (US dollars)."
       },
@@ -661,9 +608,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the value ('במניות, קרנות ואג\"ח'). 4.4 note (5), for 4.4.1."
       },
@@ -701,10 +646,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Appendix E, 'שירות האינטרנט': '0.30%' against the clerk price 0.89% (as printed). Annex E names 'מניות ,אגרות חוב וקרנות נאמנות', so a fund abroad pays this line; the exchange's sheet prints 0.30%, min $25, max $6,750 both for the US and outside it. Part 11 ('18/08/2026', pp.30-32) prints the third-party costs added on top: broker in the US '0.5 סנט למניה' (11.10.1), elsewhere up to 0.13% (11.10.2); correspondent bank 0.05%, min $2, max $500 (11.9.2); custodian $2.50 for US shares and ETFs, up to $32 elsewhere, up to 250 euro for funds (11.32); ADR/GDR up to 5 cents a share (11.33); and 'הוצאות שוק/מדינה' (11.34) by a JPMorgan charges guide, with no amount or ceiling in the price list. Not priced (left_out)."
       },
@@ -724,9 +666,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מזערי $ 25.00' per trade (US dollars)."
       },
@@ -746,9 +686,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מירבי $ 6,750.00' per trade (US dollars)."
       },
@@ -768,9 +706,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the value ('במניות, קרנות ואג\"ח'). 4.4 note (5): 'בכל מקרה', so the internet price of annex E (p.47) keeps it."
       },
@@ -820,7 +756,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
           "BRK-17"
         ],
         "state": "sourced",
@@ -842,10 +777,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "No minimum is printed for this line."
       },
       "max": {
@@ -864,9 +798,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 10,750.00' in the 'מירבי' column per quarter. The price list prints no unit for it; the exchange's sheet, filled by the bank ('עדכון אחרון: 30/06/26'), prints 10,750.00 ₪ a quarter both 'לפקדון' and 'לני\"ע', so the maximum holds per deposit and per security."
       },
@@ -913,9 +845,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.195% לרבעון'; same collection mechanics as the Israeli line (notes 3 and 4). Part 11 ('18/08/2026', p.31) also prints third-party 'הוצאות קסטודיאן': 11.32.1 'מניות ו ETF בארה\"ב' $2.50; 11.32.2 other markets up to $32.00; 11.32.3 'קרנות' up to 250 euro. What they are charged on (a trade, a holding, a period) is not printed; they are not priced (left_out). The securities terms (7.2025, s.7.3 and s.10, p.3) let a foreign custodian charge 'דמי השמירה על ניירות ערך חוץ' and let the bank pass on 'כל עמלה שתידרש על ידי קסטודיאן'."
       },
@@ -935,10 +865,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "No minimum is printed for this line."
       },
       "max": {
@@ -957,9 +886,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'₪ 10,750.00' per quarter. The exchange's sheet, filled by the bank ('עדכון אחרון: 30/06/26'), prints 10,750.00 ₪ a quarter both 'לפקדון' and 'לני\"ע'."
       },
@@ -1178,9 +1105,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.19%'. Note (1): charged on every transaction involving a conversion, in addition to the fee for the specific transaction. Note (6): small amounts: up to $10 exempt, up to $50 a flat $3.00. Note (4): a sale at the 'known' rate uses the last low uniform rate less 2.00%, a purchase the last high uniform rate plus 2.00% (a rate margin printed in the tariff, recorded under spread)."
       },
@@ -1200,9 +1125,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'$6.00' per transaction (US dollars)."
       },
@@ -1222,9 +1145,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'$2,500.00' per transaction (US dollars)."
       },
@@ -1244,10 +1165,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents. Part 5 ('11.7.2025', p.14) charges the conversion fee 'בשער ציטוט/אחיד/ידוע': the quoted rate is set during the day 'ע\"י חדר עסקות מט\"ח', the uniform rate once at midday by the same room (notes 2-3), and the general account terms (August 2025, library 75ad7686ca92ccd9, p.6) define 'שער אחיד' as the rate 'המתפרסם על ידי הבנק'. No document limits the distance of these rates from the representative rate (BRK-23). Note (4) adds a printed margin only for a deal at the 'known' rate: the last uniform rate 'בתוספת 2.00%' on a purchase and 'בהפחתה של 2.00%' on a sale, on top of the bank's own rate. Annex A gives the young, soldier, released-soldier and student groups '3 פרומיל הטבת שער ברכישה ובהמרת מט\"ח', a rate benefit that only a margin of at least that size could carry. The January 2026 terms (library 9c29d0681b4ab0e2) are page images and were not read."
       },
       "period": null,
@@ -1279,7 +1199,6 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16",
               "BRK-85"
             ],
             "state": "sourced",
@@ -1313,8 +1232,7 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-85",
-              "BRK-16"
+              "BRK-85"
             ],
             "state": "sourced",
             "notes": "Part 5 note (6), p.14: 'עד $50.00'."
@@ -1337,8 +1255,7 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-85",
-              "BRK-16"
+              "BRK-85"
             ],
             "state": "sourced",
             "notes": "Part 5 note (6), p.14: 'רכישה/מכירה בסכומים קטנים: עד $10.00 - פטור, עד $50.00 - $3.00'; annex E, p.48, prints the same 3.00 $ in its clerk column. The free band up to 10 dollars is the line's first size step. Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
@@ -1370,8 +1287,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-85",
-            "BRK-16"
+            "BRK-85"
           ],
           "state": "sourced",
           "notes": "Part 5 note (6), p.14: 'רכישה/מכירה בסכומים קטנים: עד $10.00 - פטור, עד $50.00 - $3.00'; annex E, p.48, prints the same 3.00 $ in its clerk column. The free band up to 10 dollars is the line's first size step. Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
@@ -1393,8 +1309,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-85",
-            "BRK-16"
+            "BRK-85"
           ],
           "state": "sourced",
           "notes": "Part 5 note (6), p.14: 'עד $50.00'."
@@ -1424,10 +1339,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Appendix E, 'שירות האינטרנט': '0.133%' against the clerk price 0.19%; the PC service ('שירות ה-PC') is 0.1425%. Small amounts up to $50 in the internet service: $2.85 (clerk $3.00)."
       },
@@ -1447,9 +1359,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מזערי $ 5.40' (US dollars)."
       },
@@ -1469,9 +1379,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מירבי $ 2,250.00' (US dollars)."
       },
@@ -1491,10 +1399,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents. Part 5 ('11.7.2025', p.14) charges the conversion fee 'בשער ציטוט/אחיד/ידוע': the quoted rate is set during the day 'ע\"י חדר עסקות מט\"ח', the uniform rate once at midday by the same room (notes 2-3), and the general account terms (August 2025, library 75ad7686ca92ccd9, p.6) define 'שער אחיד' as the rate 'המתפרסם על ידי הבנק'. No document limits the distance of these rates from the representative rate (BRK-23). Note (4) adds a printed margin only for a deal at the 'known' rate: the last uniform rate 'בתוספת 2.00%' on a purchase and 'בהפחתה של 2.00%' on a sale, on top of the bank's own rate. Annex A gives the young, soldier, released-soldier and student groups '3 פרומיל הטבת שער ברכישה ובהמרת מט\"ח', a rate benefit that only a margin of at least that size could carry. The January 2026 terms (library 9c29d0681b4ab0e2) are page images and were not read."
       },
       "period": null,
@@ -1526,8 +1433,6 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-16",
-              "BRK-19",
               "BRK-85"
             ],
             "state": "sourced",
@@ -1561,9 +1466,7 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-85",
-              "BRK-16",
-              "BRK-19"
+              "BRK-85"
             ],
             "state": "sourced",
             "notes": "Annex E, p.48: 'בסכום עד 50 $'."
@@ -1586,9 +1489,7 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-85",
-              "BRK-16",
-              "BRK-19"
+              "BRK-85"
             ],
             "state": "sourced",
             "notes": "Annex E, p.48, the internet service: 'רכישה/מכירה בסכום עד 50 $: 2.85 $' (clerk 3.00 $); above 50 dollars the line's 0.133%, minimum 5.40 $. Part 5 note (6), p.14, also exempts a conversion up to 10 dollars, the line's first size step. Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
@@ -1620,9 +1521,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-85",
-            "BRK-16",
-            "BRK-19"
+            "BRK-85"
           ],
           "state": "sourced",
           "notes": "Annex E, p.48, the internet service: 'רכישה/מכירה בסכום עד 50 $: 2.85 $' (clerk 3.00 $); above 50 dollars the line's 0.133%, minimum 5.40 $. Part 5 note (6), p.14, also exempts a conversion up to 10 dollars, the line's first size step. Read in the library's copy (8dedbb45235cd662), identical to the file fetched 2026-11-12."
@@ -1644,9 +1543,7 @@
           "tax_year": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-85",
-            "BRK-16",
-            "BRK-19"
+            "BRK-85"
           ],
           "state": "sourced",
           "notes": "Annex E, p.48: 'בסכום עד 50 $'."

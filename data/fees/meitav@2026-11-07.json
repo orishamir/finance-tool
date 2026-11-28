@@ -127,8 +127,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "KH-22",
-          "PF-06"
+          "KH-22"
         ],
         "state": "sourced",
         "notes": "Recorded as 0 because the page names no fee on deposits and the Management Fees Regulations authorise a study fund to charge only from the balance (reg. 4; KH-22, PF-06), so no deposit fee can be charged. The page (and the self-employed study-fund page, https://www.meitav.co.il/provident_pension/study_fund_for_self_employed/) names NO balance-fee rate either, so there is no balance line for keren-hishtalmut and the guide timeline cannot run on Meitav's list fee; the balance fee must come from the joining agreement or another page. The page: no management-fee rate is named at all; the only fee sentence is \"החברה רשאית להעלות את דמי ניהול בכפוף להוראות הדין\""
@@ -166,7 +165,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "PF-04",
           "PEN-23"
         ],
         "state": "sourced",
@@ -208,7 +206,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "PF-04",
           "PEN-23"
         ],
         "state": "sourced",

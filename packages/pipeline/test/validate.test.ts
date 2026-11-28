@@ -103,7 +103,7 @@ const fund = {
   id: "ie00b5bmr087",
   names: { en: ["iShares Core S&P 500"], he: [], tase: [] },
   identifiers: { isin: "IE00B5BMR087", tase_number: null, cusip: null, ticker: { LSE: "CSPX" } },
-  manager: "BlackRock",
+  manager: "BlackRock Asset Management Ireland Limited (fund: iShares VII plc)",
   domicile: "IE",
   legal_form: "UCITS",
   exposure_id: "index-sp500",
@@ -111,7 +111,7 @@ const fund = {
   trading_currency_on_tase: null,
   distribution_policy: "accumulating",
   tax_status: { il_fund_tax_track: null },
-  fees: { fixed_management: { ...vo, value: 0.07, unit: "pct_per_year" }, trustee: null },
+  fees: { fixed_management: { ...vo, value: 0.07, unit: "pct_per_year", rule_ids: ["ETF-27"] }, trustee: null },
   dimensions: { "foreign-withholding-domicile": "covered" },
   prospectus: { url: "https://example.org/p.pdf", date: null },
   snapshot: "2026-10-23",
@@ -179,7 +179,7 @@ describe("new collections", () => {
   it("fails a fund load above zero, because the page does not price one; a zero and a load left out pass", () => {
     const withLoad = (value: number | null) => ({
       ...fund,
-      fees: { ...fund.fees, load: { ...vo, value, unit: "pct_of_trade", rule_ids: ["MF-21"], ...(value === null ? { notes: "not read" } : {}) } },
+      fees: { ...fund.fees, load: { ...vo, value, unit: "pct_of_trade", rule_ids: ["MF-21"], ...(value === null ? { notes: "not read", notes_he: "לא נקרא", empty_because: "not-collected" } : {}) } },
     });
     expect(run({ "funds/a@2026-10-31.json": withLoad(0) })).toEqual([]);
     expect(run({ "funds/a@2026-10-31.json": withLoad(null) })).toEqual([]);
@@ -201,16 +201,18 @@ describe("new collections", () => {
   });
 
   it("rejects a deposit whose break column contradicts itself, and a tax bucket outside its values", () => {
-    const deposit = JSON.parse(readFileSync(`${root}data/terms/deposits/hapoalim-pikadon-leshana-kavua@2026-11-09.json`, "utf8"));
-    expect(run({ "terms/deposits/x.json": deposit })).toEqual([]);
-    const contradicts = run({ "terms/deposits/x.json": { ...deposit, break: { ...deposit.break, allowed: true, penalty: "not_allowed" } } });
+    // the live record under its own file name, so the value checks' leftovers for it hold as they do over data/
+    const at = "terms/deposits/hapoalim-pikadon-leshana-kavua@2026-11-09.json";
+    const deposit = JSON.parse(readFileSync(`${root}data/${at}`, "utf8"));
+    expect(run({ [at]: deposit })).toEqual([]);
+    const contradicts = run({ [at]: { ...deposit, break: { ...deposit.break, allowed: true, penalty: "not_allowed" } } });
     expect(contradicts[0]?.message).toMatch(/break\.allowed is false exactly when break\.penalty is "not_allowed"/);
-    expect(run({ "terms/deposits/x.json": { ...deposit, break: { ...deposit.break, allowed: false, penalty: "none" } } })).not.toEqual([]);
-    expect(run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: "linked_15" } } })).not.toEqual([]);
+    expect(run({ [at]: { ...deposit, break: { ...deposit.break, allowed: false, penalty: "none" } } })).not.toEqual([]);
+    expect(run({ [at]: { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: "linked_15" } } })).not.toEqual([]);
     // a null bucket comes only with an open source (code review, 2026-11-07)
-    const nullAtPrimary = run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null } } });
+    const nullAtPrimary = run({ [at]: { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null } } });
     expect(nullAtPrimary[0]?.message).toMatch(/tax_bucket\.value is null only when its source strength is "open"/);
-    expect(run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null, source: { ...deposit.tax_bucket.source, strength: "open" }, rule_ids: [] } } })).toEqual([]);
+    expect(run({ [at]: { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null, empty_because: "unknown", source: { ...deposit.tax_bucket.source, strength: "open" }, rule_ids: [] } } })).toEqual([]);
   });
 
   it("rejects a catalogue track that is not in the latest CMA period", () => {
@@ -248,12 +250,13 @@ describe("new collections", () => {
 
 describe("foreign-investment funds (data-schema §4 item 21)", () => {
   const run = (files: Record<string, unknown>) => validateData({ dataDir: dataDir(files), ruleBase, formulas });
-  const fif = (value: string | false | null) => ({ ...vo, value, unit: "text", tax_year: null, update_rule: "provider-set", rule_ids: ["TXS-14"], ...(value === null ? { notes: "Neither the report nor the prospectus names the status." } : {}) });
+  const fif = (value: string | false | null) => ({ ...vo, value, unit: "text", tax_year: null, update_rule: "provider-set", rule_ids: ["TXS-14"], ...(value === null ? { notes: "Neither the report nor the prospectus names the status.", empty_because: "not-reported" } : {}) });
   const israeli = (status?: string | false | null) => ({
     ...fund,
     id: "5129275",
     domicile: "IL",
     currency: "NIS",
+    fees: { ...fund.fees, fixed_management: { ...fund.fees.fixed_management, rule_ids: ["MF-16"] } },
     tax_status: { il_fund_tax_track: "exempt", ...(status === undefined ? {} : { foreign_investment_fund: fif(status) }) },
   });
   const files = (extra: Record<string, unknown>) => ({
@@ -562,8 +565,12 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // for annuity balances actuarially (PEN OQ34), a "not found" moved out of PEN-66 in the popup sweep
     // 455 with the IRS guidance being considered on a US fund that avoids paying out (TXF OQ28);
     // 2026-11-28 four more from the fund-level dividend tax pass: treaty claims of foreign funds beyond the US–Ireland case (TXF OQ29),
-    // an Israeli fund's treaty claims outside the US (TXF OQ30), S&P's net withholding rates (TXF OQ31) and what a swap deducts (TXF OQ32)
-    expect(items.length).toBe(459);
+    // an Israeli fund's treaty claims outside the US (TXF OQ30), S&P's net withholding rates (TXF OQ31) and what a swap deducts (TXF OQ32);
+    // later that day three more from the foreign bond ETF tax pass: withholding on a sale after a Tel Aviv delisting (TXF OQ33), the index
+    // currency of a hedged class or another trading line bought abroad (TXF OQ34), and a non-Irish fund's own withholding (TXF OQ35)
+    // and six from the foreign bond ETF domain pass: the iBoxx rules (ETF OQ44), iShares' undefined fact-sheet figures (ETF OQ45),
+    // index-data licences (ETF OQ46), the PRIIPs KID's term (ETF OQ47) and the agencies' own rating definitions (ETF OQ48, CORP OQ22)
+    expect(items.length).toBe(468);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);

@@ -54,13 +54,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-28",
-        "TXF-16",
-        "TXF-29",
-        "TXF-30",
-        "TXF-31"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "notes": "Ongoing charges figure as the factsheet prints it (at 30 September 2026; the factsheet says it is directed at professional investors, this was the edition readable). The key investor information (accurate at 17/02/2026) prints the same 0.07%, on its p. 2, with entry charge None and exit charge None and says it is based on the year ended 31 December 2025; that document is library 3ab0270f05a4be5d. The prospectus was not opened; no Tel Aviv line was seen and no TASE number was looked up."
     },
@@ -85,6 +79,7 @@
         "ETF-09"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not printed as one number. The key investor information (2 pages, the 2026-02-17 edition in the library, unchanged on 2026-11-07) prints the fund's return and its benchmark's for each calendar year 2020 to 2025 on p. 2; they are in tracking_record. Fund basis: 'Includes ongoing charges and the reinvestment of income ... Has been calculated in USD'; one decimal as printed; the share class was launched in 2019, so the chart starts in 2020. Benchmark as the document names it: 'Index'. The KIID names the index as the Standard and Poor's 500 Index and does not say net or gross; the same share class's factsheet (library be6b56d18242118d / 97b49e692be6c260, p. 2) names its benchmark 'S&P 500 Net Total Return' ('reinvested dividends less 30% withholding tax'). The difference is not computed here (data-update rule)."
     },
     "median_spread": null,

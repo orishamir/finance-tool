@@ -59,12 +59,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-27",
-        "ETF-28",
-        "TXF-16",
-        "TXF-29",
-        "TXF-30",
-        "TXF-31"
+        "ETF-27"
       ],
       "state": "sourced",
       "notes": "Total expense ratio of the share class as the factsheet prints it (marketing material for UK investors; performance and net assets at 30-Sep-2026, all other data at 05-Oct-2026). The prospectus and key information document were not opened. Listed on TASE: the factsheet's p. 3 says 'also listed on: Tel Aviv Stock Exchange'; the number and the NIS line come from BlackRock's Israel brochure (library 5fae6c1d0933c1bc, p. 1, 2026-10-01), which prints the same fee."
@@ -90,6 +85,7 @@
         "ETF-09"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not printed as one number. The factsheet 'October 2026' (marketing material; performance as at 31-Oct-2026) prints the fund's return and its benchmark's for each calendar year 2016 to 2025 on p. 2; they are in tracking_record. Fund basis: 'Performance is shown on a Net Asset Value (NAV) basis, with gross income reinvested where applicable', in US dollars. Benchmark as the document names it: 'NASDAQ 100 Index'; the iShares VII plc prospectus (p. 44) makes the objective its net total return, so the benchmark is recorded as net (tracking_record.benchmark). This Tel Aviv line trades units of the same share class, ISIN IE00B53SZB19, as its Israeli prospectus annex names it (library eea0884ef74ba9f9); the figures are that share class's NAV returns in US dollars, the same as record ie00b53szb19, not a return in shekels. The difference is not computed here (data-update rule)."
     },
     "median_spread": null,

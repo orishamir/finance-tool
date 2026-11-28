@@ -40,9 +40,11 @@
           "value": 0.0917,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, עד 25",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -50,7 +52,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -69,9 +70,11 @@
           "value": 0.1596,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, עד 25",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -79,7 +82,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -98,9 +100,11 @@
           "value": 0.31,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, עד 25",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -108,7 +112,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -127,9 +130,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, עד 25",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -137,10 +142,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -157,9 +162,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, עד 25",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -167,10 +174,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -187,9 +194,11 @@
           "value": 0.0879,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 25 ועד 50",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -197,7 +206,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -216,9 +224,11 @@
           "value": 0.0,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 25 ועד 50",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -226,7 +236,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -245,9 +254,11 @@
           "value": 0.3266,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 25 ועד 50",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -255,7 +266,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -274,9 +284,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 25 ועד 50",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -284,10 +296,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -304,9 +316,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 25 ועד 50",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -314,10 +328,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -334,9 +348,11 @@
           "value": 0.0754,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 50 ועד 75",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -344,7 +360,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -363,9 +378,11 @@
           "value": null,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 50 ועד 75",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -373,10 +390,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -393,9 +410,11 @@
           "value": 0.2517,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 50 ועד 75",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -403,7 +422,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -422,9 +440,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 50 ועד 75",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -432,10 +452,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -452,9 +472,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 50 ועד 75",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -462,10 +484,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -482,9 +504,11 @@
           "value": 0.0822,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 75 ועד 100",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -492,7 +516,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -511,9 +534,11 @@
           "value": 0.07,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 75 ועד 100",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -521,7 +546,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -540,9 +564,11 @@
           "value": 0.1566,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 75 ועד 100",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -550,7 +576,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -569,9 +594,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 75 ועד 100",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -579,10 +606,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -599,9 +626,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 75 ועד 100",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -609,10 +638,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -629,9 +658,11 @@
           "value": 0.073,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 100 ועד 200",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -639,7 +670,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -658,9 +688,11 @@
           "value": 0.064,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 100 ועד 200",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -668,7 +700,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -687,9 +718,11 @@
           "value": 0.1288,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 100 ועד 200",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -697,7 +730,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -716,9 +748,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 100 ועד 200",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -726,10 +760,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -746,9 +780,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 100 ועד 200",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -756,10 +792,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -776,9 +812,11 @@
           "value": 0.0666,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 200 ועד 400",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -786,7 +824,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -805,9 +842,11 @@
           "value": 0.07,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 200 ועד 400",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -815,7 +854,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -834,9 +872,11 @@
           "value": 0.0696,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 200 ועד 400",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -844,7 +884,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -863,9 +902,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 200 ועד 400",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -873,10 +914,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -893,9 +934,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 200 ועד 400",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -903,10 +946,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -923,9 +966,11 @@
           "value": 0.0632,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 400 ועד 700",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -933,7 +978,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -952,9 +996,11 @@
           "value": 0.0484,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 400 ועד 700",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -962,7 +1008,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -981,9 +1026,11 @@
           "value": 0.0975,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 400 ועד 700",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -991,7 +1038,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1010,9 +1056,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 400 ועד 700",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1020,10 +1068,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -1040,9 +1088,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 400 ועד 700",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1050,10 +1100,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -1070,9 +1120,11 @@
           "value": 0.0564,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 700 ועד 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1080,7 +1132,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1099,9 +1150,11 @@
           "value": 0.0698,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 700 ועד 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1109,7 +1162,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1128,9 +1180,11 @@
           "value": 0.0528,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 700 ועד 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1138,7 +1192,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1157,9 +1210,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 700 ועד 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1167,10 +1222,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -1187,9 +1242,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 700 ועד 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1197,10 +1254,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -1217,9 +1274,11 @@
           "value": 0.0561,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים - מניות ואג\"ח, מעל 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1227,7 +1286,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1246,9 +1304,11 @@
           "value": null,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע ישראלים – מק\"מ, מעל 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1256,10 +1316,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -1276,9 +1336,11 @@
           "value": 0.0469,
           "unit": "pct_of_trade",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, קניה, מכירה ופדיון - ני\"ע זרים, מעל 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1286,7 +1348,6 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1305,9 +1366,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע ישראלים, מעל 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1315,10 +1378,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       },
@@ -1335,9 +1398,11 @@
           "value": null,
           "unit": "pct_per_year",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות ממוצעות, דמי ניהול - ני\"ע זרים, מעל 1,000",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1345,10 +1410,10 @@
           "effective_to": "2026-06-30",
           "update_rule": "market",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced",
+          "empty_because": "unknown",
           "notes": "The sheet's data leave this cell empty (null): no average is printed for this band and column."
         }
       }
@@ -1371,9 +1436,11 @@
           "value": "0.1500%  משווי עסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מניות, אג\"ח",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1381,7 +1448,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1390,9 +1456,11 @@
           "value": "3.50 ₪ לעסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מניות, אג\"ח",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1400,7 +1468,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1414,9 +1481,11 @@
           "value": "0.1000%  משווי עסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מק\"מ",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1424,7 +1493,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1433,9 +1501,11 @@
           "value": "3.50 ₪ לעסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע ישראלים: מק\"מ",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1443,7 +1513,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1457,9 +1526,11 @@
           "value": "0.01 $ למניה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע בחו\"ל - מניות, אג\"ח, קרנות נאמנות - רק ארה\"ב",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1467,7 +1538,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1476,9 +1546,11 @@
           "value": "9.00 $ לעסקה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, קניה/ מכירה/ פדיון - ני\"ע בחו\"ל - מניות, אג\"ח, קרנות נאמנות - רק ארה\"ב",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1486,7 +1558,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1507,9 +1578,11 @@
           "value": "3.00 ₪ לאופציה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, קניה/ מכירה/ כתיבה - אופציות הנסחרות בישראל",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1517,7 +1590,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1532,9 +1604,11 @@
           "value": "10.00 ₪ לחוזה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, קניה/ מכירה/ כתיבה - חוזים עתידיים הנסחרים בישראל",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1542,7 +1616,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1557,9 +1630,11 @@
           "value": "0.1500%  לשנה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע  כללי - לפקדון",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1567,7 +1642,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1576,9 +1650,11 @@
           "value": "75.00 ₪ לחודש",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, דמי ניהול/טיפול פקדון ני\"ע  כללי - לפקדון",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1586,7 +1662,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1600,9 +1675,11 @@
           "value": "25.00 ₪ להזמנה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, טיפול בהזמנה של ני''ע בהנפקה - אג\"ח ממשלתי",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1610,7 +1687,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"
@@ -1625,9 +1701,11 @@
           "value": "25.00 ₪ להזמנה",
           "unit": "text",
           "source": {
-            "url": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
+            "url": "https://market.tase.co.il/he/market_data/trading_fees",
+            "fetched_from": "https://api.tase.co.il/api/commissions/loadmembercommissions?memberId=2618",
             "title": "מחשבון עמלות מסחר: אלטשולר, עמלות תעריפון, טיפול בהזמנה של ני\"ע בהנפקה – יתר ני\"ע",
             "publisher": "Tel Aviv Stock Exchange",
+            "publisher_he": "הבורסה לניירות ערך בתל אביב",
             "strength": "primary"
           },
           "checked": "2026-11-14",
@@ -1635,7 +1713,6 @@
           "effective_to": null,
           "update_rule": "provider-set",
           "rule_ids": [
-            "BRK-15",
             "BRK-33"
           ],
           "state": "sourced"

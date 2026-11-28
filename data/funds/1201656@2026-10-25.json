@@ -63,9 +63,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
-        "MF-16",
-        "MF-17"
+        "MF-16"
       ],
       "state": "sourced",
       "notes": "Fixed management fee (דמי ניהול קבועים): p. 1 'שכר מנהל הקרן: 0% מהשווי הנקי השנתי הממוצע של נכסי הקרן' (footnote 6: the manager committed to the ISA outline not to raise its pay during a calendar year; it may raise it on 01.01.2027). Expense table: fixed management fee 0.00% in 2025 and in 29.01.2024 to 31.12.2024. Main prospectus published on Magna on 14.12.2025, reference 2025-03-099273 (not opened; Magna returns 403 to scripts). ISIN IL0012016569 and the TASE symbol 'ילינ.ס1' were read on TASE's security page (https://market.tase.co.il/he/market_data/security/1201656/major_data, fields 'ISIN' and 'סימול', read in Chrome on 2026-10-24); the annual report prints neither. The Maya fund page shows no data for ETFs."
@@ -85,7 +83,6 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
         "MF-20"
       ],
       "state": "sourced",
@@ -106,8 +103,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-14",
-        "ETF-13"
+        "ETF-14"
       ],
       "state": "sourced",
       "notes": "Variable management fee rate (שיעור דמי ניהול משתנים): p. 1 '0.30%' (footnote 7: the manager may change the rate on 01.01.2027). Expense table: variable management fee 0.30% paid in 2025 and 0.06% in 29.01.2024 to 31.12.2024; total expenses 0.32% in 2025."
@@ -132,6 +128,7 @@
         "ETF-10"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not printed as one number. For 2025 the report prints the fund's price return 2.64% (standard deviation 18.96) against the tracking asset (S&P 500 100%, דולר ארה\"ב 100%) 2.61% (standard deviation 20.57); for 29.01.2024 to 31.12.2024: 19.86% against 19.88%. The difference is not computed here (data-update rule). Added 2026-10-25: the third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e); the figure is not collected."
     },
     "median_spread": {
@@ -153,6 +150,7 @@
         "ETF-07"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "No median bid-ask spread is printed. The report prints the differences between unit value and exchange price in 2025: range -5.46% to 9.42%, average -0.08% (in points: -302.61 to 504.48, average -5.094), a premium/discount measure (ETF-06). Spread data is published elsewhere (ETF-07; the report points to chart.bursagraph.co.il, a third-party page, not read). Creation fee 0.30% and redemption fee 0.30% on direct orders through a TASE member (p. 1)."
     },
     "fund_level_withholding_drag": {
@@ -173,12 +171,13 @@
         "ETF-11"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not collected: no computation is made here and the report prints no withholding figure; any dividend-withholding drag sits inside the pricing of the instruments the fund uses and is not published as a rate."
     }
   },
   "dimensions": {
     "fund-tax-track": "covered:TXS-07",
-    "fee-management-balance": "covered:ETF-13",
+    "fee-management-balance": "covered:MF-16",
     "distribution-policy": "covered:MF-49",
     "currency": "covered:ETF-10",
     "fee-trade": "covered:ETF-05",

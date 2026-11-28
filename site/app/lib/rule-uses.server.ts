@@ -130,9 +130,9 @@ function build(): Scan {
 
   // site files
   const sources = [
-    ...walk(join(appDir, "content"), /\.tsx?$/),
-    ...walk(join(appDir, "routes"), /\.tsx?$/),
-    ...walk(join(appDir, "components"), /\.tsx?$/),
+    ...walk(join(appDir, "content"), /\.tsx?$/).filter((f) => !/\.test\.tsx?$/.test(f)),
+    ...walk(join(appDir, "routes"), /\.tsx?$/).filter((f) => !/\.test\.tsx?$/.test(f)),
+    ...walk(join(appDir, "components"), /\.tsx?$/).filter((f) => !/\.test\.tsx?$/.test(f)),
     ...walk(join(appDir, "lib"), /\.ts$/).filter((f) => !/\.test\.ts$/.test(f) && !/rule-(uses|shelves)/.test(f)),
   ];
   for (const file of sources) {

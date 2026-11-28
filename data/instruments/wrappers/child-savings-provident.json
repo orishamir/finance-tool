@@ -137,9 +137,7 @@
       "update_rule": "fixed in law",
       "rule_ids": [
         "CS-14",
-        "CS-13",
-        "CS-15",
-        "CS-16"
+        "CS-15"
       ],
       "state": "sourced",
       "notes": "Redemption age: the child may withdraw from 18 (from the end of the month of the 18th birthday), whole or in part, with a parent's signature until 21 and alone from 21 (CS-14). Any withdrawal before 21 forfeits the NIS 582 (2026) age-21 grant (CS-13)."
@@ -275,5 +273,8 @@
         ]
       }
     ]
-  }
+  },
+  "context_rule_ids": [
+    "CS-13"
+  ]
 }

@@ -18,7 +18,7 @@ export const content: GuideContent = {
         תגמולים ואישית לפיצויים היא <Term id="קופת גמל">קופת גמל</Term> <Ruled id="PEN-34">לחיסכון לפרישה</Ruled>. <Ruled id="TXP-24">כללי המס בה הם כמו</Ruled> <Term prefix="ב" id="קרן פנסיה">קרן פנסיה</Term>, אבל <Ruled id="PEN-66">ביטוח למקרה מוות או נכות יש בה רק אם החברה שמנהלת אותה קנתה ביטוח כזה</Ruled>.
       </p>
       <p className="max-w-measure">
-        היא גם <Ruled id="PEN-34">לא משלמת בעצמה</Ruled> <Term id="קצבה">קצבה</Term>: בפרישה <Ruled id="PEN-34">מעבירים את הכסף לקרן פנסיה או לחברת ביטוח</Ruled>, והן משלמות אותה, <Ruled id="PEN-63">אם הן מקבלות אותו</Ruled>.
+        היא גם לא משלמת בעצמה <Term id="קצבה">קצבה</Term>: בפרישה <Ruled id="PEN-34">מעבירים את הכסף לקרן פנסיה או לחברת ביטוח</Ruled>, והן משלמות אותה, <Ruled id="PEN-63">אם הן מקבלות אותו</Ruled>.
       </p>
       <GuidePart title="מי מפקיד">
         <p className="max-w-measure">

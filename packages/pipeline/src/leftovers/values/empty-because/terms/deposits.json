@@ -1,0 +1,17 @@
+[
+  "terms/deposits/discount-current-account#/term_months",
+  "terms/deposits/fibi-current-account#/term_months",
+  "terms/deposits/hapoalim-current-account#/amount_range/min",
+  "terms/deposits/hapoalim-current-account#/term_months",
+  "terms/deposits/hapoalim-win-win-leshana#/tax_bucket",
+  "terms/deposits/leumi-current-account#/amount_range/min",
+  "terms/deposits/leumi-current-account#/term_months",
+  "terms/deposits/massad-current-account#/amount_range/min",
+  "terms/deposits/massad-current-account#/term_months",
+  "terms/deposits/mercantile-current-account#/term_months",
+  "terms/deposits/mizrahi-tefahot-current-account#/amount_range/min",
+  "terms/deposits/mizrahi-tefahot-current-account#/term_months",
+  "terms/deposits/mizrahi-tefahot-litchi-kvua-shana-189#/rate_offered",
+  "terms/deposits/yahav-current-account#/amount_range/min",
+  "terms/deposits/yahav-current-account#/term_months"
+]

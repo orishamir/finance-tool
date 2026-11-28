@@ -31,7 +31,7 @@ export const content: GuideContent = {
       </GuidePart>
       <GuidePart title="ביטוח לנכות ולמוות">
         <p className="max-w-measure">
-          במסלולי הביטוח <Ruled id="PEN-64">יש גם כיסוי לנכות ולמוות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Term prefix="ל" id="עמית פעיל">עמית פעיל</Term>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> ששווייה לא נמוך מהיתרה שצברתם. הקרן <Ruled id="PEN-64">רשאית להציע גם מסלול בלי הכיסוי הזה</Ruled>.
+          במסלולי הביטוח <Ruled id="PEN-64">יש גם כיסוי לנכות ולמוות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Term prefix="ל" id="עמית פעיל">עמית פעיל</Term>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> ששווייה לא נמוך מהיתרה שצברתם. הקרן רשאית להציע גם מסלול בלי הכיסוי הזה.
         </p>
       </GuidePart>
       <GuidePart title="מה עוד שונה מהמקיפה">

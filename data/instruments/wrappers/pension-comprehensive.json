@@ -103,9 +103,7 @@
       "tax_year": 2026,
       "update_rule": "average-wage-linked",
       "rule_ids": [
-        "PEN-08",
-        "PEN-10",
-        "PEN-04"
+        "PEN-08"
       ],
       "state": "sourced",
       "notes": "NIS per month, 2026: 20.5% of the monthly insured-salary ceiling, which is twice the NII average wage (13,769 from 1.1.2026), under reg. 1 and 19(ב1)(1) of the 1964 Income Tax Rules; computed under the regulation's formula from primary inputs (PEN-08). Monthly deposits above the lower of this ceiling and 22.83% of the reported salary components move automatically to the same manager's general pension fund (CMA standard pension bylaw s.1; PEN-10). Updated with the average wage."
@@ -197,7 +195,7 @@
         "PF-47"
       ],
       "state": "sourced",
-      "notes": "Rule 41יא(א) of the 1964 Income Tax Rules: a provident fund pays a withdrawal within 4 business days of the day the request reaches it; if that date falls in the month's first three business days it may defer to the 4th business day of the month. The law's timetable for every fund, not one company's (scope pass 2026-10-25). The CMA standard pension bylaw repeats it (s.108(ז)) and answers a withdrawal request within 2 days (s.108(ב)); the first pension payment is by the third of the month (s.46(א))."
+      "notes": "Rule 41יא(א) of the 1964 Income Tax Rules: a provident fund pays a withdrawal within 4 business days of the day the request reaches it; if that date falls in the month's first three business days it may defer to the 4th business day of the month. The law's timetable for every fund, not one company's (scope pass 2026-10-25). The CMA standard pension bylaw repeats it (s.108(ז)); the bylaw's other service times are PEN-33's."
     },
     "text": "the lawful exit is an old-age pension from the minimum eligibility age, 60 (early retirement age); before that only the severance component on leaving a job and the narrow cases in the law (small balances past mandatory retirement age, pre-2000 money, health and income conditions) can be taken as a lump sum; any other withdrawal is a non-compliant withdrawal taxed at the higher of 35% and the marginal rate, on the whole amount paid (the non-compliant withdrawal rule); F-48 is not in the engine yet, so early withdrawal is not computed; the annuity itself needs conversion factors that are not collected (PEN OQ7), so the exit value is blocked too (F-49, G-03) and the page shows the gross balance with the exemption rule as text"
   },

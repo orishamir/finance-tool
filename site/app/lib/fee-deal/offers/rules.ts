@@ -144,8 +144,8 @@ export const RULES: readonly RuleRow[] = [
 
   // ---- fees the law bans at a bank; a new bank, for five years from its licence, is outside these rules (BANK-51), which each ban says
   // a bank may not charge custody on makam or on money-market units
-  { id: "bank-custody-units", when: { products: is("brokerage-account"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank", values: ["makam", "moneyMarket"] }, cite: ["BRK-17", "BANK-18", "MF-71", "BANK-51"] },
-  { id: "bank-custody-makam", when: { products: is("makam"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["BRK-17", "BANK-18", "BANK-51"] },
+  { id: "bank-custody-units", when: { products: is("brokerage-account"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank", values: ["makam", "moneyMarket"] }, cite: ["BRK-17", "MF-71", "BANK-51"] },
+  { id: "bank-custody-makam", when: { products: is("makam"), fees: ["custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["BRK-17", "BANK-51"] },
   { id: "bank-custody-money-market-deal", when: { products: MONEY_MARKET, fees: ["custody"] }, verdict: { kind: "ban", provider: "bank" }, cite: ["BRK-17", "MF-71", "BANK-51"] },
   // nor buy, sell or redeem money-market units on a line of its tariff, in the site's reading of the fee rules with the distribution fee
   // regulations (MF-71): their only charge there is the distribution fee, up to MF-71's `distribution_fee_max_without_agreement` a year

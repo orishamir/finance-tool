@@ -1,0 +1,4 @@
+{
+  "about": "Rules that a guide or exposure page marks twice or more in one block (rule-marks.test.ts). Each is listed with why it is left; a new one fails, and so does one that is gone or changed, until its entry is removed. `blocks` is how many blocks of the page mark the rule twice.",
+  "leftovers": []
+}

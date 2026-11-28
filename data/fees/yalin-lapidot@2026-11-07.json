@@ -48,8 +48,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "PF-02",
-          "PF-03",
           "KGL-16",
           "KGL-30"
         ],
@@ -84,6 +82,7 @@
           "KGL-30"
         ],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not printed: the joining request prints the rate with no period. The bylaws (s.36.1) say at least two years from the day the lower fee starts; the CMA circular 2017-9-15 sets at least five, raised earlier only on a withdrawal or transfer, six months after deposits stop, or a balance mechanism in the agreement (PF-13, KGL-16; the bylaws' two years are the older wording, KGL-30). The run uses five years (A-19)."
       },
       "reverts_to": {
@@ -139,8 +138,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "PF-02",
-          "PF-03",
           "KGL-16",
           "KGL-30"
         ],
@@ -175,6 +172,7 @@
           "KGL-30"
         ],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not printed: the joining request prints the rate with no period. The bylaws (s.36.1) say at least two years from the day the lower fee starts; the CMA circular 2017-9-15 sets at least five, raised earlier only on a withdrawal or transfer, six months after deposits stop, or a balance mechanism in the agreement (PF-13, KGL-16; the bylaws' two years are the older wording, KGL-30). The run uses five years (A-19)."
       },
       "reverts_to": {

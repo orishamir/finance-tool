@@ -54,12 +54,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-28",
-        "TXF-16",
-        "TXF-29",
-        "TXF-30"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "notes": "Total expense ratio of the share class as the factsheet prints it (marketing material for UK investors; performance and net assets at 30-Sep-2026, all other data at 05-Oct-2026). The prospectus and key information document were not opened."
     },
@@ -84,6 +79,7 @@
         "ETF-09"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not printed as one number. The factsheet 'October 2026' (marketing material; performance as at 31-Oct-2026) prints the fund's return and its benchmark's for each calendar year 2016 to 2025 on p. 2; they are in tracking_record. Fund basis: 'Performance is shown on a Net Asset Value (NAV) basis, with gross income reinvested where applicable', in US dollars. Benchmark as the document names it: 'S&P 500 Index'. The document does not say whether the S&P 500 figures are net or gross of withholding tax on dividends. The difference is not computed here (data-update rule)."
     },
     "median_spread": null,
@@ -115,11 +111,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-28",
-        "TXF-08",
-        "TXF-28"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "notes": "As the manager's page prints it. Its own definition: income distributions over the past twelve months divided by the most recent net asset value. The page's distribution table agrees: 0.1646, 0.1654, 0.1679 and 0.1598 USD (ex-dates 17 Sep 2026, 18 Jun 2026, 19 Mar 2026, 11 Dec 2025), 0.6577 USD together. The factsheet (library 42f663b2cc0e8cc1, data at 05-Oct-2026) prints '12m Trailing Yield : 0.63%' without saying how it is computed; that does not fit those four payments at a net asset value near 76 USD, so the page's figure is the one used. Payments a year: 'Distribution Frequency Quarterly' on the same page."
     },

@@ -3,13 +3,13 @@
 // leftovers/figure-rules.json under the value's key, "<collection>/<record id>#<pointer>", so the next dated snapshot keeps the key; the
 // list only shrinks. scripts/apply-figure-rules.ts removes the disallowed ids; an unknown id waits for a finance reviewer and a row.
 import { z } from "zod";
-import { cardSources, figureRuleProblems, type FigureCollection } from "../figure-rules.ts";
+import { figureRuleProblems, readCards, type FigureCollection } from "../figure-rules.ts";
 import { latestRecords, readLeftovers, staleEntries, type CheckData, type CheckProblem } from "./lib/kit.ts";
 
 export const name = "figure-rules";
 
-/** The collections this check judges so far. */
-const COLLECTIONS: readonly FigureCollection[] = ["terms/deposits"];
+/** The collections the table covers. */
+const COLLECTIONS: readonly FigureCollection[] = ["terms/deposits", "fees", "funds", "instruments", "averages"];
 
 const LEFTOVERS = "figure-rules.json";
 /** By a value's key, the ids it may still name though the table does not admit them there. */
@@ -17,7 +17,7 @@ const leftoversFile = z.record(z.string(), z.array(z.string()));
 
 export function check(data: CheckData): CheckProblem[] {
   const listed = leftoversFile.parse(readLeftovers(LEFTOVERS) ?? {});
-  const cards = cardSources(data);
+  const cards = readCards(data);
   const out: CheckProblem[] = [];
   const found = new Set<string>();
   const records = new Set<string>();

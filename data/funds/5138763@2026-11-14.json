@@ -128,6 +128,7 @@
         "MF-07"
       ],
       "state": "sourced",
+      "empty_because": "not-applicable",
       "notes": "Not applicable: not a tracking fund (money-market fund, MF-07)."
     },
     "median_spread": {
@@ -148,6 +149,7 @@
         "MF-09"
       ],
       "state": "sourced",
+      "empty_because": "not-applicable",
       "notes": "Not applicable: open fund, units bought and redeemed at the manager's price, not traded on the exchange (MF-09, ETF-04)."
     },
     "fund_level_withholding_drag": {
@@ -169,6 +171,7 @@
         "MF-29"
       ],
       "state": "sourced",
+      "empty_because": "not-applicable",
       "notes": "Shekel money-market fund (exposure code 00: no equity, no FX exposure); no foreign withholding applies and no computation is made here."
     },
     "load": {

@@ -61,9 +61,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
-        "MF-16",
-        "MF-17"
+        "MF-16"
       ],
       "state": "sourced",
       "notes": "Fixed management fee (דמי ניהול קבועים). Note 6: the manager committed to the ISA outline not to raise the fee during a calendar year; it may raise it on 01.01.2027. Main prospectus: published on Magna on 20.07.2025, reference 2025-03-053595 (Magna returns 403 to scripts, so the prospectus itself was not opened; the prospectus block cites this annual report, which states the prospectus date). Name until 08.05.2024: 'פסגות S&P 500 (4D) ETF'. Hebrew name as printed; the English name is not printed in the report."
@@ -84,7 +82,6 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
         "MF-20"
       ],
       "state": "sourced",
@@ -105,8 +102,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-14",
-        "ETF-13"
+        "ETF-14"
       ],
       "state": "sourced",
       "notes": "Variable management fee rate (דמי ניהול משתנים), the published rate the mechanism applies in both directions (ETF-14: at most the creation/redemption category rate, here 0.30%); the manager may change it on 01.01.2027 (note 7). The amount actually paid depends on the tracking difference; the report's expense table shows 0.30% paid in each of 2022-2025."
@@ -130,6 +126,7 @@
         "ETF-09"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not printed as one number. The report prints for 2025 the fund's shekel return 1.85% and the tracking asset's change 2.61% (S&P 500 100%, USD 100%) side by side, and the manager attributes most of the gap to expenses paid from fund assets of about 0.8085% (management plus trustee fees). The difference is not computed here (data-update rule). Earlier years printed: 2024 fund 24.06% vs 24.96%; 2023 29.56% vs 29.43%; 2022 -8.15% vs -7.55%. The third-party page the report points to (chart.bursagraph.co.il / fundscenter.co.il, 'Funds Center' by Guideline) publishes the 12-month tracking difference under ETF-07(e) and states 'אין להפיץ בכל דרך כלשהי ... את הנתונים המוצגים באתר'; its figures are not collected."
     },
     "median_spread": {
@@ -151,6 +148,7 @@
         "ETF-07"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "No median bid-ask spread is printed in the annual report. The report prints the range of differences between unit value and exchange price in 2025 (1,814.15 to -1,079.70 agorot) and their average (-0.04 agorot), which is a premium/discount measure, not a spread (ETF-06). Spread data is published by the manager elsewhere (ETF-07; the report points to chart.bursagraph.co.il, a third-party page, not read)."
     },
     "fund_level_withholding_drag": {
@@ -171,12 +169,13 @@
         "ETF-11"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not collected: no computation is made here (data-update rule) and the report prints no withholding figure. The fund takes its S&P 500 exposure mainly through OTC derivatives (ETF-11), so any dividend-withholding drag sits inside the swap pricing and is not published as a rate."
     }
   },
   "dimensions": {
     "fund-tax-track": "covered:TXS-07",
-    "fee-management-balance": "covered:ETF-13",
+    "fee-management-balance": "covered:MF-16",
     "distribution-policy": "covered:ETF-19",
     "currency": "covered:ETF-10",
     "fee-trade": "covered:ETF-05",

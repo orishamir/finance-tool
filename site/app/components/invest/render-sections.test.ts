@@ -113,10 +113,10 @@ describe("the index page's sections render", () => {
     expect(row).not.toContain("<a ");
     expect(shown(row)).not.toContain("אין נתון");
     expect(shown(row)).not.toContain(invest.pair.notPossibleSource);
-    // its words open the company's rule
+    // its words open the company's rule and the Tax Authority's on whom it exempts
     const told = whyNoKindAt(planted, "interactive-israel", v.options.filter((o) => o.exists && o.id === "abroad").map((o) => ({ option: o.id, at: o.cells.find((x) => x.providerId === "interactive-israel") })));
     expect(told.state).toBe("notSold");
-    expect(told.rules).toEqual(["BRK-65"]);
+    expect(told.rules).toEqual(["BRK-65", "TXS-42"]);
   });
 });
 
@@ -135,16 +135,16 @@ describe("an account that prices no fund on an index says why, over every kind o
   const view = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan });
   const pick = pickOfHeadline(view)!;
   const out = lists(view, bundle, plan, pick);
-  it("Interactive Israel on TA-125: not possible there, the ETF in its own words about institutional clients and the mutual fund by its terms and Interactive Brokers' fund list (second pass, 2026-11-12)", () => {
+  it("Interactive Israel on TA-125: not possible there, the ETF by its written answer, a limited company's account only, and the mutual fund by its terms and Interactive Brokers' fund list (second pass, 2026-11-12)", () => {
     const w = whyNoFundAt(bundle, "interactive-israel", allFunds(view));
     expect(w.state).toBe("notSold");
-    expect(w.why).toContain("מוסדיים");
+    expect(w.why).toContain("חברה בע״מ");
     expect(w.why).toContain("תנאי השימוש");
     expect(w.why).toContain(invest.stairs.kinds["il-etf"]!);
     expect(fundRow(out, "interactive-israel")).toContain(invest.pair.noFund.notSold);
     expect(fundRow(out, "interactive-israel")).not.toContain(invest.pair.noFund.doubt);
-    // its words open the company's rule, and no document's title in the reasons carries a rule's code
-    expect(w.rules).toEqual(["BRK-82", "BRK-65"]);
+    // its words open the company's rule and the Tax Authority's on whom it exempts, and no document's title in the reasons carries a rule's code
+    expect(w.rules).toEqual(["BRK-82", "BRK-65", "TXS-42"]);
     expect(w.parts.map((p) => p.doc?.title ?? "").join(" ")).not.toMatch(/BRK-\d/);
   });
   it("Interactive Brokers on TA-125: not possible there, in its FAQ's words on Tel Aviv and its fund list for a resident of Israel (read 2026-11-12)", () => {

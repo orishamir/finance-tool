@@ -12,7 +12,7 @@ import { AbroadAmount, AbroadFigure, AbroadPeriod, AbroadSaid, AbroadYears } fro
 export const content: GuideContent = {
   what: ({ figure }) => {
     const ceiling = figure("KGL-03", "ceiling");
-    const rate = figure("TXK-06", "rate");
+    const rate = figure("TXK-07", "rate");
     return (
     <>
       <p className="max-w-measure">
@@ -23,17 +23,17 @@ export const content: GuideContent = {
       </p>
       <GuidePart title="כמה מפקידים, ואיפה הכסף">
         <p className="max-w-measure">
-          אתם מפקידים לקופה בעצמכם, <Ruled id="KGL-02">עד</Ruled> {ceiling ? <Num value={ceiling} /> : "התקרה"} <Ruled id="KGL-02">בשנה, בכל הקופות שלכם יחד</Ruled>. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ומי שלא בוחר <Ruled id="KGL-11">מצורף</Ruled> <Term prefix="ל" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term> של הקופה.
+          אתם מפקידים לקופה בעצמכם, עד {ceiling ? <Num value={ceiling} /> : "התקרה"} <Ruled id="KGL-02">בשנה, בכל הקופות שלכם יחד</Ruled>. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ומי שלא בוחר <Ruled id="KGL-11">מצורף</Ruled> <Term prefix="ל" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term> של הקופה.
         </p>
       </GuidePart>
       <GuidePart title="מתי משלמים מס">
         <p className="max-w-measure">
-          <Ruled id="TXK-03">על הרווחים בתוך הקופה לא משלמים מס</Ruled>. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, <Ruled id="TXK-05" prefix="ו">רק על הרווח</Ruled>: <Ruled id={["TXK-06", "TXK-07"]}>עד</Ruled> {rate ? <Num value={rate} /> : "השיעור המרבי"} <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>.
+          <Ruled id="TXK-03">על הרווחים בתוך הקופה לא משלמים מס</Ruled>. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, <Ruled id="TXK-05" prefix="ו">רק על הרווח</Ruled>: עד {rate ? <Num value={rate} /> : "השיעור המרבי"} <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>.
         </p>
       </GuidePart>
       <GuidePart title="מי יכול לפתוח">
         <p className="max-w-measure">
-          בחוק ובכללים <Ruled id="KGL-06">לא נמצא תנאי גיל או תושבות לפתיחה</Ruled>. זו קריאה של מה שהם לא אומרים, לא כלל כתוב. שאלה פתוחה <IdRef id="KGL OQ6" end="." /> <Term prefix="ה" id="חברה מנהלת">חברה המנהלת</Term> מחליטה אם לקבל בקשת הצטרפות.
+          <Ruled id="KGL-06">האתר לא מצא בחוק ובכללים תנאי גיל או תושבות לפתיחה</Ruled>. זו קריאה של מה שהם לא אומרים, לא כלל כתוב. שאלה פתוחה <IdRef id="KGL OQ6" end="." /> <Term prefix="ה" id="חברה מנהלת">חברה המנהלת</Term> מחליטה אם לקבל בקשת הצטרפות.
         </p>
       </GuidePart>
       <GuidePart title="מה הגרף מניח">
@@ -71,11 +71,11 @@ export const content: GuideContent = {
       <>
         {proposedCap ? (
           <Callout tone="caution" className="max-w-measure">
-            <span className="font-medium">המלצה, לא חוק.</span> צוות של משרד האוצר המליץ{reportDate ? <> <Num value={reportDate} prefix="ב" /></> : null} על <Ruled id="TXK-21">חשבון השקעות עם הטבת מס</Ruled>, עם תקרה אחת של <Num value={proposedCap} display={fmt.nisWhole(Number(proposedCap.value))} /> לאדם. מעל התקרה ההטבות של היום היו מסתיימות. זה יכול לשנות את הכדאיות של המוצר, אבל לא נמצאה הצעת חוק.
+            <span className="font-medium">המלצה, לא חוק.</span> צוות של משרד האוצר המליץ{reportDate ? <> <Num value={reportDate} prefix="ב" /></> : null} על <Ruled id="TXK-21">חשבון השקעות עם הטבת מס</Ruled>, עם תקרה אחת של <Num value={proposedCap} display={fmt.nisWhole(Number(proposedCap.value))} /> לאדם. מעל התקרה ההטבות של היום היו מסתיימות. זה יכול לשנות את הכדאיות של המוצר, אבל האתר לא מצא הצעת חוק שמיישמת את ההמלצה.
           </Callout>
         ) : null}
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} <Ruled id="KGL-09">אפשר להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> הכסף נכנס שם למסלול למקבלי <Term id="קצבה">קצבה</Term>, <Ruled id="KGL-09" prefix="ל">קבלת קצבה בלבד</Ruled>. לפי טיוטת הבהרה מ־<bdi>2020</bdi> של הממונה על שוק ההון, ביטוח וחיסכון, אחרי ההעברה <Ruled id="PEN-71">אי אפשר לבטל את הבחירה בקצבה</Ruled>, למשל במשיכה בסכום חד־פעמי. את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>. שאלה פתוחה <IdRef id="PEN OQ7" end="." />
+          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} <Ruled id="KGL-09">אפשר להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> הכסף נכנס שם למסלול למקבלי <Term id="קצבה">קצבה</Term>, לקבלת קצבה בלבד. לפי טיוטת הבהרה מ־<bdi>2020</bdi> של הממונה על שוק ההון, ביטוח וחיסכון, אחרי ההעברה <Ruled id="PEN-71">אי אפשר לבטל את הבחירה בקצבה</Ruled>, למשל במשיכה בסכום חד־פעמי. את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>. שאלה פתוחה <IdRef id="PEN OQ7" end="." />
         </Callout>
         <Callout tone="caution" className="max-w-measure">
           <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח יכול להיות נמוך יותר.</span> {rate ? <Num value={rate} /> : "השיעור על הרווח"} הוא <Ruled id="TXG-07">תקרה, לא שיעור קבוע</Ruled>. מגיל {sixty ? <Num value={sixty} /> : null} <Ruled id="TXG-04">חלות על ההכנסה מדרגות המס הנמוכות</Ruled>, ואם המדרגה נמוכה מהתקרה, משלמים לפיה. הרווח <Ruled id="TXK-06">נספר כחלק העליון של ההכנסה</Ruled>, ולכן זה עוזר רק כשהכנסות אחרות לא ממלאות את המדרגות הנמוכות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב.

@@ -49,10 +49,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex p.73, 'מסחר בישראל': 'מניות והמירים 0.08%', 'תעודות סל 0.08%', 'אג\"ח 0.08%', with no 'עד'. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). The price list of 1.7.2026 prints up to 0.15%, min NIS 3.5 (p.3). Off-exchange trades 0.1% / min NIS 50, purchase in an offering 0.1% (annex p.73). No channel split: the price list's fees apply to actions 'באמצעות החברה, לרבות באמצעות מוקד טלפוני מאויש'."
       },
@@ -72,10 +69,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'עמלת מינימום לעסקה ₪ 2.35' (annex p.73), the Tel Aviv lines' minimum."
       },
@@ -116,10 +110,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex p.73: 'מק\"מ 0.06%'. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). The price list prints up to 0.1%, min NIS 3.5 (p.3)."
       },
@@ -139,12 +130,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
-        "state": "sourced",
-        "notes": "'עמלת מינימום לעסקה ₪ 2.35' (annex p.73)."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "max": null,
       "period": null,
@@ -181,10 +168,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex p.74: redemption pays the same as buying and selling the same security, so makam's 0.06% (p.73). The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני')."
       },
@@ -204,10 +188,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The purchase's minimum, 'עמלת מינימום לעסקה ₪ 2.35' (annex p.73)."
       },
@@ -245,10 +226,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex p.73: 'קרנות נאמנות 0.08%, מינימום ₪ 5 לעסקה', the same figures as the price list (p.3), now without 'עד'. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). Hedge funds in trust: 0.15%, min NIS 50."
       },
@@ -268,12 +246,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
-        "state": "sourced",
-        "notes": "'מינימום ₪ 5 לעסקה' (annex p.73)."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "max": null,
       "period": null,
@@ -310,10 +284,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex p.73, 'מסחר בניירות ערך הנסחרים בארה\"ב', the first of two tracks, each with a box to tick: 'סנט למניה, מינימום 7.5$ לעסקה', with 'ללא עמלת מקסימום (באם ישנה כזאת)' (so no cap is recorded). One US cent a share, recorded as USD 0.01 in the schema's per-share unit (as Psagot's and Altshuler Trade's '1 סנט למניה'). IBI confirmed the annex in writing on 8.11.2026 as its current one for a new self-trading customer, and its first answer (item 4) says one can move between the US tracks, so an ordinary customer can be on this track. Added 2026-11-12 (pricing audit): the indices page reads this line and the fixed one (ibi-buy-sell-foreign-us-fixed) and takes the cheaper that computes (method F-63); a fund with no share price (the page's generic fund abroad) cannot be priced on this line and stays on the fixed one. Third-party charges (SEC, TAF, ECN, ORF, tax) are added (annex p.75, item ח)."
       },
@@ -333,12 +304,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
-        "state": "sourced",
-        "notes": "'מינימום 7.5$ לעסקה' (annex p.73)."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "max": null,
       "period": null,
@@ -375,10 +342,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex p.73, 'מסחר בניירות ערך הנסחרים בארה\"ב': two tracks, each with a box to tick, 'סנט למניה, מינימום 7.5$ לעסקה' and 'פיקס 12$ לעסקה', and 'ללא עמלת מקסימום (באם ישנה כזאת)'. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'), and its first answer (item 4) says one can move between the US tracks. This line is the fixed track (rate 0, minimum and maximum USD 12); since 2026-11-12 the per-share track is its own line (ibi-buy-sell-foreign-us-per-share), and the indices page reads each and takes the cheaper that computes, as for Interactive Brokers' Fixed and Tiered (method F-63). Before, only this track was priced, because the page had no share price for the per-share track: it costs USD 7.5 for any order up to 750 shares and less than USD 12 up to 1,200, so the fixed USD 12 overstated every ordinary US order. Third-party charges (SEC, TAF, ECN, ORF, tax) are added (annex p.75, item ח). The price list's five tracks (p.3) are superseded."
       },
@@ -398,10 +362,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'פיקס 12$ לעסקה' (annex p.73): the trade's fixed price."
       },
@@ -421,10 +382,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'פיקס 12$ לעסקה' (annex p.73): the trade's fixed price, so it is also the most a trade pays."
       },
@@ -462,10 +420,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex p.73, 'מסחר בשווקים נוספים (שאינם ישראל, ארה\"ב וקנדה)', 'ניירות ערך': '0.3%, מינימום 30 במטבע העסקה', with no warning that it may change (the annex's 'עשויה להשתנות' is item ז, p.75, about arbitrage only). The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). IBI's written answers of 8.11.2026 put the iShares Core S&P 500 UCITS ETF (IE00B5BMR087) on this line: 'העמלה באירופה היא 0.3% מינימום 30 ממטבע העסקה, קרנות נאמנות זרות זה משהו אחר' and 'העלות רכישה של נייר הערך שציינת היא 0.3% מינימום 30 במטבע דולר אמריקאי'. The site reads every fund bought outside the US on this line (inferred from the one fund IBI named). The price list prints the same figures for 'ני\"ע באסיה ובאירופה' with 'עשויה להשתנות ... באחריות הלקוח לפנות לחברה' (p.3), which greyed IBI until 2026-11-04. Foreign funds that do not trade continuously ('קרנות נאמנות זרות') have their own line, 0.275% + a foreign agent's cost (annex p.73), not priced. Bought by phone only, through the trading desk (availability.phone_only); the price list's fees apply to actions 'לרבות באמצעות מוקד טלפוני מאויש', so the price is the same."
       },
@@ -485,10 +440,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 30 במטבע העסקה' (annex p.73): 30 units of the currency the trade is in; IBI's second answer names dollars for the iShares fund ('30 במטבע דולר אמריקאי')."
       },
@@ -533,10 +485,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex p.74, 'עמלות כלליות': 'דמי משמרת: פטור'. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). IBI's first answer: 'לא קיים דמי משמרת אלא דמי ניהול חודשיים של 15 ₪ מתקזז עם פעולות.' The price list of 1.7.2026 prints 0.1% of the account a quarter (p.4), superseded here. A foreign security whose trading stopped or is 'חסר ערך': USD 11 a month (annex p.75, item טו); ADR holdings: a foreign bank's custody charge (item יא); neither applies to an ETF."
       },
@@ -576,8 +525,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-24",
-          "BRK-15",
           "BRK-25"
         ],
         "state": "sourced",
@@ -601,10 +548,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex p.75, item ד: 0.7% for a conversion under USD 15,000 and 0.5% above. The annex is the price, not the price list (the lead, 2026-11-08; docs/product.md D56, now): IBI confirmed in writing on 8.11.2026 that this annex is its current one for a new self-trading customer ('כן זה הנספח העדכני'). The spread is priced by the conversion's size, its `size_tiers` (F-13); this figure is the higher step, the most either document allows (the price list: 'עד 0.7%', p.6)."
       },
@@ -636,8 +580,7 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-48",
-              "BRK-24"
+              "BRK-48"
             ],
             "state": "sourced",
             "notes": "The step's top, in dollars, as the list prints it."
@@ -660,8 +603,7 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-48",
-              "BRK-24"
+              "BRK-48"
             ],
             "state": "sourced",
             "notes": "The spread in this step."
@@ -694,8 +636,7 @@
             "tax_year": null,
             "update_rule": "provider-set",
             "rule_ids": [
-              "BRK-48",
-              "BRK-24"
+              "BRK-48"
             ],
             "state": "sourced",
             "notes": "The spread in this step."
@@ -733,10 +674,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex p.72, 'דמי שימוש עבור מסלולי ציטוט': the basic Israeli track ('מסלול בסיסי, שכבת מחיר אחת') NIS 15 a month, the delayed US track NIS 0, 'העלות החודשית תהיה עלות המסלול הנבחר בישראל בתוספת עלות המסלול הנבחר בארה\"ב'; 'החיוב בגין דמי שימוש יתבצע ללא תלות בפעילות'. IBI's second answer: 'דמי ניהול חודשיים של 15 ₪ בחודש מתקזז עם פעולות.' The offset is not modelled: the schema and the engine have no fee that the month's trading fees reduce, so the NIS 15 is charged in full every month. That overstates IBI by the month's trading fees, at most NIS 15 a month (left_out). The price list prints 'דמי שימוש עד ₪ 50 אחת לחודש' (p.7), superseded here. The extended tracks (NIS 100 Israel, NIS 30 US) and the advanced systems are the customer's choice."
       },

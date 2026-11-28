@@ -62,9 +62,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
-        "MF-16",
-        "MF-17"
+        "MF-16"
       ],
       "state": "sourced",
       "notes": "Fixed management fee as printed in the report: 0% of average annual net assets. Maya's fund page (https://maya.tase.co.il/he/funds/mutual-funds/5129283, read 2026-10-25) shows the same 'דמי ניהול' 0%. The manager committed to the ISA outline to raise its fees only on 1 January (ETF-16). Main prospectus published on Magna on 2025-04-28, reference 2025-03-029778 (not opened; Magna returns 403 to scripts), as the report states; the prospectus block cites this report."
@@ -84,7 +82,6 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-13",
         "MF-20"
       ],
       "state": "sourced",
@@ -105,8 +102,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-14",
-        "ETF-13"
+        "ETF-14"
       ],
       "state": "sourced",
       "notes": "Variable management fee rate as printed: 0.1% a year of net assets. Maya's fund page shows 0.1%. The mechanism works in both directions (ETF-14): the amount actually charged or paid depends on the gap to the tracking asset."
@@ -132,6 +128,7 @@
         "ETF-10"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not printed as one number. The report's table 'תשואות, סטיות תקן ונתוני השוואה' (p. 8) prints the fund's return against its tracking asset: 2025 5.67% against 5.52% ('מדד NASDAQ 100 שקלי'); 2024 26.05% against 25.86%; 2023 61.29% against 59.81%; 2022 -23.98% against -23.91%. The difference is not computed here (data-update rule). The ISA directive (ETF-07(e)) makes the manager publish the 12-month tracking difference every pricing day; this report points to the third-party page https://chart.bursagraph.co.il/funds.shtml?m=8 for it. That page (Funds Center by Guideline, run for the managers) publishes it; the figure is not collected."
     },
     "median_spread": {
@@ -153,6 +150,7 @@
         "MF-21"
       ],
       "state": "sourced",
+      "empty_because": "not-applicable",
       "notes": "Not applicable: an open tracking fund is bought and redeemed at the unit price computed from net asset value, with no exchange spread. Load (שיעור הוספה): 0% on Maya's fund page and in the report (p. 1). The distributor may charge its own buy and sell commission (MF-26)."
     },
     "fund_level_withholding_drag": {
@@ -173,6 +171,7 @@
         "ETF-11"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not collected: the report prints no withholding figure and no computation is made here. The fund takes its exposure mainly through derivatives (see REPLICATION in legal_form), so any dividend-withholding drag sits inside the instrument pricing and is not published as a rate."
     },
     "load": {
@@ -198,7 +197,7 @@
   },
   "dimensions": {
     "fund-tax-track": "covered:TXS-07",
-    "fee-management-balance": "covered:ETF-13",
+    "fee-management-balance": "covered:MF-16",
     "distribution-policy": "covered:MF-49",
     "currency": "covered:ETF-10",
     "fee-trade": "covered:MF-21",
