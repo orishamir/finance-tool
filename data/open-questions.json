@@ -1966,7 +1966,8 @@
     "status": "narrowed",
     "title_he": "איזה מס אמריקני קרן אירית על מדד של כמה מדינות סופגת בפועל",
     "answered_by": [
-      "TXF-16"
+      "TXF-16",
+      "TXF-54"
     ]
   },
   {
@@ -1976,7 +1977,9 @@
       "TXS-41",
       "TXF-16",
       "TXF-04",
-      "TXF-11"
+      "TXF-11",
+      "TXF-57",
+      "TXS-15"
     ]
   },
   {
@@ -2078,6 +2081,22 @@
   },
   {
     "id": "TXF OQ28",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ29",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ30",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ31",
+    "status": "open"
+  },
+  {
+    "id": "TXF OQ32",
     "status": "open"
   },
   {
