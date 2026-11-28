@@ -7,6 +7,7 @@ import { YearOf } from "./year";
 import { fmt } from "../../lib/format";
 import { IdRef, Num, Ruled, Term } from "../../components/provenance";
 import { Callout, Sentence, MixedName } from "../../components/kit";
+import { GuideFold, GuidePart } from "../../components/guide/sections";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -14,12 +15,29 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          בחשבון בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term> אפשר להחזיק <Term id="נייר ערך">ניירות ערך</Term>. למשל: <Term id="קרן סל">קרנות סל</Term> <Term prefix="ו" id="קרן מחקה">קרנות מחקות</Term> ישראליות, <Term id="קרן חוץ">קרנות חוץ</Term> <Ruled id="ETF-26" prefix="ש">נסחרות בתל אביב</Ruled>, <Term id={'מק"מ'}>מק״מ</Term> <Term prefix="ו" id="איגרות חוב ממשלתיות">איגרות חוב ממשלתיות</Term>. דרך <Term id="ברוקר זר">ברוקר זר</Term> אפשר לקנות גם <Term id="קרן זרה">קרנות זרות</Term> בבורסות בחו״ל.
+          חשבון ניירות ערך הוא חשבון בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term>, שבו קונים <Term id="נייר ערך">ניירות ערך</Term>, מחזיקים אותם ומוכרים אותם.
         </p>
-        <p className="max-w-measure">אין נעילה: מוכרים בכל יום מסחר, <Term prefix="וה" id="בורסה">בורסה</Term> <Ruled id="BRK-29">פתוחה מיום שני עד יום שישי</Ruled>. האתר לא מצא בכללים שקרא <Term id="תקרת הפקדה">תקרת הפקדה</Term> לחשבון כזה.</p>
-        <Sentence measure>
-          <Ruled id="TXF-01">על רווח</Ruled> <Term prefix="מ" id="מכירה">מכירה</Term> משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>, <Ruled id={["TXS-13", "TXF-11"]} prefix="ו">רק כשמוכרים</Ruled>. על <Term id="דיבידנד">דיבידנד</Term> או חלוקה מקרן משלמים כשהם משולמים, <Ruled id="TXS-11">חוץ מחלוקה</Ruled> של <Term id="קרן נאמנות חייבת">קרן חייבת</Term>. בבנק או אצל חבר בורסה בישראל המס <Ruled id="TXS-05">מנוכה במקור במכירה</Ruled>: {rate ? <Num value={rate} /> : null} <Term prefix="מה" id="רווח הון ריאלי">רווח הריאלי</Term>, כלומר מהרווח שמעבר <Term prefix="ל" id="אינפלציה">אינפלציה</Term>. בנייר ערך שנסחר בישראל ונקוב <Term prefix="ב" id="מטבע חוץ">מטבע חוץ</Term> או צמוד אליו, <Ruled id="TXS-04">זה הרווח שמעבר לשינוי בשער של המטבע</Ruled>. גם מכירה של קרן אחת כדי לקנות אחרת <Ruled id="TXS-21">ממוסה, אף שהכסף נשאר בחשבון</Ruled>.
-        </Sentence>
+        <p className="max-w-measure">
+          הכסף לא נעול: <Ruled id="BRK-29">אפשר למכור בכל יום מסחר</Ruled>. כשמחיר של נייר עולה, משלמים מס על הרווח <Ruled id={["TXS-13", "TXF-11"]}>רק כשמוכרים אותו</Ruled>, <Ruled id="TXS-21">גם כשמוכרים קרן אחת כדי לקנות אחרת והכסף לא יצא מהחשבון</Ruled>.
+        </p>
+        <GuidePart title="מה מחזיקים בו">
+          <p className="max-w-measure">
+            בחשבון בבנק או בבית השקעות שהוא <Term id="חבר בורסה">חבר בורסה</Term> אפשר להחזיק, למשל, <Term id="קרן סל">קרנות סל</Term> <Term prefix="ו" id="קרן מחקה">קרנות מחקות</Term> ישראליות, <Term id="קרן חוץ">קרנות חוץ</Term> <Ruled id="ETF-26" prefix="ש">נסחרות בתל אביב</Ruled>, <Term id={'מק"מ'}>מק״מ</Term> <Term prefix="ו" id="איגרות חוב ממשלתיות">איגרות חוב ממשלתיות</Term>. דרך <Term id="ברוקר זר">ברוקר זר</Term> אפשר לקנות גם <Term id="קרן זרה">קרנות זרות</Term> בבורסות בחו״ל.
+          </p>
+        </GuidePart>
+        <GuidePart title="בלי נעילה ובלי תקרה">
+          <p className="max-w-measure"><Term prefix="ה" id="בורסה">בורסה</Term> <Ruled id="BRK-29">פתוחה מיום שני עד יום שישי</Ruled>. האתר לא מצא בכללים שקרא <Term id="תקרת הפקדה">תקרת הפקדה</Term> לחשבון כזה.</p>
+        </GuidePart>
+        <GuidePart title="המס כשמוכרים">
+          <Sentence measure>
+            <Ruled id="TXF-01">על רווח</Ruled> <Term prefix="מ" id="מכירה">מכירה</Term> משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>. על <Term id="דיבידנד">דיבידנד</Term> או חלוקה מקרן משלמים כשהם משולמים, <Ruled id="TXS-11">חוץ מחלוקה</Ruled> של <Term id="קרן נאמנות חייבת">קרן חייבת</Term>. בבנק או אצל חבר בורסה בישראל המס <Ruled id="TXS-05">מנוכה במקור במכירה</Ruled>: {rate ? <Num value={rate} /> : null} <Term prefix="מה" id="רווח הון ריאלי">רווח הריאלי</Term>, כלומר מהרווח שמעבר <Term prefix="ל" id="אינפלציה">אינפלציה</Term>.
+          </Sentence>
+          <GuideFold label="נייר שנקוב במטבע אחר">
+            <p className="max-w-measure">
+              בנייר ערך שנסחר בישראל ונקוב <Term prefix="ב" id="מטבע חוץ">מטבע חוץ</Term> או צמוד אליו, הרווח שממוסה <Ruled id="TXS-04">הוא הרווח שמעבר לשינוי בשער של המטבע</Ruled>.
+            </p>
+          </GuideFold>
+        </GuidePart>
       </>
     );
   },
