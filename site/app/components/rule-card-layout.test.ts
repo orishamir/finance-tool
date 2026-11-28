@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
 import { provenance, ruleCardMore, rule as ruleCopy, scopeWords, sourceBlock, strength, updateRules } from "../copy";
 import { fmt } from "../lib/format";
+import { figureRows } from "../lib/figure-slots";
 import { ruleTitle } from "../lib/rule-title";
 import { isNotRule, joinNames, ownDocCompanies } from "../lib/scope";
 import { ProvenanceProvider, RuleRef, RuleTitleRow, catchesOf, type ProvenanceData } from "./provenance";
@@ -230,6 +231,15 @@ describe("a rule card opened from one of its figures", () => {
     const data = dataOf({ [r.id]: r });
     const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(RuleCard, { id: r.id, data, inline: true, figure: key }))));
     expect(html).toContain("data-marked");
+    // each figure marks its own rows and no other: the count of marks is the count of that figure's rows, fewer than all the rule's rows
+    const rows = figureRows(r, data.today);
+    expect(keys.length).toBeGreaterThan(1);
+    for (const k of keys) {
+      const opened = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(RuleCard, { id: r.id, data, inline: true, figure: k }))));
+      const own = rows.filter((row) => row.key === k).length;
+      expect(own).toBeLessThan(rows.length);
+      expect(opened.match(/data-marked/g) ?? []).toHaveLength(own);
+    }
     const plain = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(RuleCard, { id: r.id, data, inline: true }))));
     expect(plain).not.toContain("data-marked");
   });
