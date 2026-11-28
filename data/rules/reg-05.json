@@ -2,7 +2,7 @@
   "id": "REG-05",
   "title": "Private deposit-insurance bill P/6522/25: content and status",
   "title_he": "הצעת חוק פרטית לביטוח פיקדונות: תוכן ומעמד",
-  "text_he": "הצעת חוק פרטית לביטוח פיקדונות בתאגיד בנקאי הייתה נותנת ערבות מדינה, עד סכום הערבות המוצע, ללקוח שהפקיד ״חיסכון״ בבנק או באגודת חיסכון ואשראי. זו הייתה הצעת חוק בלבד, והיא פקעה. לפי הנוסח של ההצעה, ״חיסכון״ הוא כל הפקדה מראש ליותר משבעה ימים שלא מיועדת לחשבון עובר ושב. הכיסוי היה רק בבנקים שנתח השוק שלהם לא עולה על הנתח המרבי. התשלום היה בתוך שלושה חודשים מהתביעה, בתנאי שמונה מנהל מורשה. תאגידים בנקאיים ומנהלי תיקים לא היו יכולים לתבוע. ההצעה הונחה על שולחן הכנסת לדיון מוקדם ולא התקדמה. ההצעה פקעה כשהכנסת החדשה התכנסה ב־10.11.2026, כי רק הצעה שעברה קריאה ראשונה יכולה להמשיך בכנסת הבאה. האתר לא מציג אותה כהגנה.",
+  "text_he": "הצעת חוק פרטית לביטוח פיקדונות הייתה נותנת ערבות מדינה של {REG-05:proposed_guarantee} ללקוח שהפקיד ״חיסכון״ בבנק או באגודת חיסכון ואשראי. ההצעה פקעה כשהכנסת החדשה התכנסה ב־10.11.2026, כי היא לא עברה קריאה ראשונה. לפי הנוסח של ההצעה, ״חיסכון״ הוא כל הפקדה מראש ליותר משבעה ימים שלא מיועדת לחשבון עובר ושב. הכיסוי היה רק בבנקים שנתח השוק שלהם לא עולה על {REG-05:small_bank_market_share_max}. התשלום היה בתוך שלושה חודשים מהתביעה, בתנאי שמונה מנהל מורשה. תאגידים בנקאיים ומנהלי תיקים לא היו יכולים לתבוע.",
   "figure_names_he": {
     "proposed_guarantee": "סכום הערבות המוצע ללקוח (הצעת חוק בלבד)",
     "small_bank_market_share_max": "נתח השוק המרבי של בנק מכוסה (הצעת חוק בלבד)",
@@ -31,7 +31,7 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in law",
+      "update_rule": "fixed in document",
       "rule_ids": [
         "REG-05"
       ],
@@ -55,7 +55,7 @@
       "effective_from": null,
       "effective_to": null,
       "tax_year": null,
-      "update_rule": "fixed in law",
+      "update_rule": "fixed in document",
       "rule_ids": [
         "REG-05"
       ],
@@ -88,6 +88,16 @@
   "scope": "general",
   "sources": [
     {
+      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill()?$filter=KnessetNum%20eq%2025%20and%20PrivateNumber%20eq%206522&$format=json",
+      "title": "Knesset OData KNS_Bill, PrivateNumber 6522",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "dataset",
+      "strength": "primary",
+      "locator": "StatusID 104",
+      "checked": "2026-11-28"
+    },
+    {
       "url": "https://fs.knesset.gov.il/13/law/13_lsr_210960.pdf",
       "title": "חוק רציפות הדיון בהצעות חוק, התשנ\"ג-1993",
       "title_he": "חוק רציפות הדיון בהצעות חוק, התשנ\"ג-1993",
@@ -95,10 +105,11 @@
       "publisher_he": "הכנסת",
       "kind": "law",
       "strength": "primary",
-      "locator": "p.1, ss.1-3",
-      "locator_he": "עמוד 1, סעיפים 1-3",
+      "locator": "p.1, s.2",
+      "locator_he": "עמוד 1, סעיף 2",
       "page": 1,
-      "checked": "2026-11-14"
+      "quote": "הצעת חוק שהציעה ועדה של הכנסת או שהציע חבר הכנסת, ושכנסת יוצאת העבירה לאחר קריאה ראשונה לאחת מועדותיה",
+      "checked": "2026-11-28"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_KnessetDates()?$filter=KnessetNum%20ge%2025&$format=json",
@@ -108,7 +119,7 @@
       "kind": "dataset",
       "strength": "primary",
       "locator": "the 26th Knesset's",
-      "checked": "2026-11-14"
+      "checked": "2026-11-28"
     },
     {
       "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf",
@@ -121,17 +132,9 @@
       "locator": "pp.2-3, ss.1 to 4",
       "locator_he": "עמודים 2 עד 3, סעיפים 1 עד 4",
       "page": 2,
-      "checked": "2026-10-25"
-    },
-    {
-      "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Bill()?$filter=KnessetNum%20eq%2025%20and%20PrivateNumber%20eq%206522&$format=json",
-      "title": "Knesset OData KNS_Bill, PrivateNumber 6522",
-      "publisher": "The Knesset",
-      "publisher_he": "הכנסת",
-      "kind": "dataset",
-      "strength": "primary",
-      "locator": "StatusID 104",
-      "checked": "2026-10-25"
+      "checked": "2026-10-25",
+      "qualifier": "(a lapsed bill)",
+      "standing": "bill"
     },
     {
       "url": "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Status(104)?$format=json",
@@ -140,7 +143,7 @@
       "publisher_he": "הכנסת",
       "kind": "dataset",
       "strength": "primary",
-      "checked": "2026-10-25"
+      "checked": "2026-11-28"
     }
   ]
 }
