@@ -2,13 +2,17 @@
   "id": "CAT-49",
   "title": "Index-tracking tracks (cluster 4) other than S&P 500: at least three indices, none above 50% of assets",
   "title_he": "מסלולים שעוקבים אחרי מדדים, חוץ מ־S&P 500: לפחות שלושה מדדים, ואף אחד מהם לא מעל חצי מהנכסים",
-  "text_he": "לפי רשימת מסלולי ההשקעה של רשות שוק ההון, מסלול עוקב מדדי מניות משקיע בין {CAT-49:tracking_min} ל־100% מהנכסים במדדי מניות, דרך מכשירים שעוקבים אחרי מדד. הוא עוקב לפחות אחרי {CAT-49:min_indices} מדדים שלא דומים זה לזה, וכל אחד משלושת המדדים הגדולים במסלול הוא בין {CAT-49:top_index_min} ל־{CAT-49:top_index_max} מהנכסים, ולכן אף מדד אחד לא מגיע ליותר מחצי. מדדים נחשבים דומים כשנכסי הבסיס שלהם חופפים ב־{CAT-49:similar_overlap} לפחות. הרשימה לא נותנת שם לאף מדד, ולא קובעת חלוקה בין ישראל לחו״ל או גידור מטבע. אותם כללים חלים על מסלול עוקב מדדים גמיש, שעוקב אחרי מדדי מניות, אג״ח קונצרני או אג״ח ממשלתי או שילוב שלהם, על מסלול עוקב מדדי אג״ח ועל מסלול עוקב מדדי אג״ח ממשלות. במסלול אג״ח ממשלות הרשימה לא דורשת שהמדדים לא יהיו דומים. במסלול עוקב מדדים של אג״ח עם מניות, לפחות {CAT-49:tracking_min} מהנכסים עוקבים אחרי מדדי אג״ח, בשלושה מדדים לפחות, והחשיפה למניות היא עד 25% מהנכסים. הכלל על החלק של כל אחד מהמדדים הגדולים לא נקבע בו.",
+  "text_he": "לפי רשימת מסלולי ההשקעה של רשות שוק ההון, מסלול עוקב מדדי מניות משקיע בין {CAT-49:tracking_min} ל־{CAT-49:tracking_max} מהנכסים במדדי מניות, דרך מכשירים שעוקבים אחרי מדד. הוא עוקב לפחות אחרי {CAT-49:min_indices} מדדים שלא דומים זה לזה. כל אחד משלושת המדדים הגדולים במסלול הוא בין {CAT-49:top_index_min} ל־{CAT-49:top_index_max} מהנכסים. לפי דברי ההסבר לרשימה, מדדים נחשבים דומים כשנכסי הבסיס שלהם חופפים ב־{CAT-49:similar_overlap} לפחות. הרשימה לא נותנת שם לאף מדד, ולא קובעת חלוקה בין ישראל לחו״ל או גידור מטבע. אותם כללים חלים על מסלול עוקב מדדים גמיש, שעוקב אחרי מדדי מניות, אג״ח קונצרני או אג״ח ממשלתי או שילוב שלהם, על מסלול עוקב מדדי אג״ח ועל מסלול עוקב מדדי אג״ח ממשלות. במסלול אג״ח ממשלות הרשימה לא דורשת שהמדדים לא יהיו דומים. במסלול עוקב מדדים של אג״ח עם מניות, לפחות {CAT-49:bonds_equities_tracking_min} מהנכסים עוקבים אחרי מדדי אג״ח קונצרני ואג״ח ממשלתי, בשלושה מדדים לפחות. החשיפה למניות במסלול הזה היא עד {CAT-49:bonds_equities_stock_max} מהנכסים. החשיפה הכוללת בו היא עד {CAT-49:bonds_equities_total_max} מהנכסים. הכלל על החלק של כל אחד מהמדדים הגדולים לא נקבע בו.",
   "figure_names_he": {
     "tracking_min": "החלק המזערי מהנכסים שעוקב אחרי מדדים",
     "min_indices": "המספר המזערי של מדדים",
     "top_index_min": "החלק המזערי של כל אחד משלושת המדדים הגדולים",
     "top_index_max": "החלק המרבי של כל אחד משלושת המדדים הגדולים",
-    "similar_overlap": "החפיפה שממנה מדדים נחשבים דומים"
+    "similar_overlap": "החפיפה שממנה מדדים נחשבים דומים",
+    "tracking_max": "החלק המרבי מהנכסים שעוקב אחרי מדדים",
+    "bonds_equities_tracking_min": "החלק המזערי שעוקב אחרי מדדי אג״ח במסלול אג״ח עם מניות",
+    "bonds_equities_stock_max": "תקרת החשיפה למניות במסלול אג״ח עם מניות",
+    "bonds_equities_total_max": "תקרת החשיפה הכוללת במסלול אג״ח עם מניות"
   },
   "strength": "primary",
   "dimensions": [
@@ -121,6 +125,102 @@
       ],
       "state": "sourced",
       "notes": "Indices count as similar when the value of the underlying assets of one overlaps 60% of another's in the track (explanatory notes)."
+    },
+    "tracking_max": {
+      "value": 100,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+        "strength": "primary",
+        "page": 13,
+        "locator": "p.13",
+        "locator_he": "עמוד 13",
+        "quote": "יעקבו באמצעות מכשירים עוקבי מדד ובשיעור שלא יפחת מ-75% ולא יעלה על 100%"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-49"
+      ],
+      "state": "sourced",
+      "notes": "In the equity, flexible, bond and government-bond tracker names, 75% to 100% of the assets follow the indices through index-tracking instruments."
+    },
+    "bonds_equities_tracking_min": {
+      "value": 75,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+        "strength": "primary",
+        "page": 12,
+        "locator": "p.12",
+        "locator_he": "עמוד 12",
+        "quote": "ובשיעור שלא יפחת מ-75%, אחר מדדי אג\"ח קונצרני ומדדי אג\"ח ממשלתי"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-49"
+      ],
+      "state": "sourced",
+      "notes": "The bonds-with-equities tracker (products קה, קש, פפ): at least 75% of the assets follow corporate and government bond indices, in at least three indices."
+    },
+    "bonds_equities_stock_max": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+        "strength": "primary",
+        "page": 12,
+        "locator": "p.12",
+        "locator_he": "עמוד 12",
+        "quote": "החשיפה למניות תהיה בשיעור שלא יעלה על 25% מנכסי המסלול"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-49"
+      ],
+      "state": "sourced",
+      "notes": "The bonds-with-equities tracker: exposure to equities of at most 25% of the assets."
+    },
+    "bonds_equities_total_max": {
+      "value": 100,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2023-069/he/List_of_investment_tracks_PDF.pdf",
+        "title": "רשות שוק ההון, ביטוח וחיסכון: רשימת מסלולי השקעה – תיקון (שה. 2024-1471, 17.4.2024)",
+        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+        "strength": "primary",
+        "page": 12,
+        "locator": "p.12",
+        "locator_he": "עמוד 12",
+        "quote": "שיעור החשיפה הכולל במסלול לא יעלה על 100% מנכסי המסלול"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-49"
+      ],
+      "state": "sourced",
+      "notes": "The bonds-with-equities tracker: total exposure of at most 100% of the assets."
     }
   },
   "il_finance_file": "tracks-catalogue-and-decoder.md",
