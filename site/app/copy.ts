@@ -3419,8 +3419,9 @@ export const scopeWords = {
     /** A company's term whose tag above already names the companies whose documents say it. */
     institutionTagged: "בחברות אחרות זה יכול להיות אחרת.",
     notTheirs: "המקורות כאן הם לא מסמכים של {names}.",
-    unsettledSeen: "נמצא במסמכים של {names}. אולי כך בכל החברות. האתר לא מצא לזה מקור רשמי.",
-    unsettled: "אולי כך בכל החברות. האתר לא מצא לזה מקור רשמי.",
+    /** Under the tag "לא הוכח שחל על כולם", which says it may hold everywhere: the companies whose documents say it, and that no official source was found. */
+    unsettledSeen: "נמצא במסמכים של {names}. האתר לא מצא לזה מקור רשמי.",
+    unsettled: "האתר לא מצא לזה מקור רשמי.",
   },
   /** The card's foot: where the company's terms are listed, one link per company. */
   allAt: "לכל מה שהאתר מצא אצל {name}",
@@ -3428,7 +3429,8 @@ export const scopeWords = {
   /** A record the rule base keeps that is not a rule (a list, a count, a site's terms, a company's tariff): its card's tag and, when it cites a company's document, its line. */
   notRule: {
     tag: "לא נכלל ככלל",
-    lineOwn: "נמצא במסמכים של {names}. האתר לא מציג את זה ככלל, ושומר אותו עם המקור בין מה שלא נכלל ככלל.",
+    /** The tag and the card's foot say it is not a rule and where it is kept: the line names only whose documents it was found in. */
+    lineOwn: "נמצא במסמכים של {names}.",
   },
   /** The card's foot of a general rule on a page about one product. */
   rulesOf: "לכל החוקים והכללים של {product}",
