@@ -502,6 +502,15 @@ export function figureYear(v: Pick<ValueObject, "effective_from" | "effective_to
 }
 
 /**
+ * The tax year of a figure set by year that `year` reads, whatever order the record lists them in: that year's own, else the latest
+ * before it, else the latest of all. The one pick a rule's figure by name (`ruleFigure`) and a row of a rule's card (`figureRows`) share.
+ */
+export function pickTaxYear(years: readonly string[], year: number): string | undefined {
+  const sorted = [...years].sort();
+  return sorted.includes(String(year)) ? String(year) : (sorted.filter((y) => Number(y) <= year).pop() ?? sorted.at(-1));
+}
+
+/**
  * A figure out of a rule record, carrying the rule's strength and re-check date, and what it is in the rule's own words
  * (`figure_names_he`), with its year for a figure set by tax year. "name@2027" is a figure set by tax year, for that year (null when the
  * record sets none for it): prose that says a rise the law already sets reads each later year's figure.
@@ -513,8 +522,7 @@ export function ruleFigure(rule: RuleRecord, name: string, today: string): SiteV
   if (year !== undefined && !("by_tax_year" in f)) return null;
   let taxYear: string | null = null;
   if ("by_tax_year" in f) {
-    const years = Object.keys(f.by_tax_year);
-    taxYear = year ?? (today.slice(0, 4) in f.by_tax_year ? today.slice(0, 4) : (years.at(-1) ?? null));
+    taxYear = year ?? pickTaxYear(Object.keys(f.by_tax_year), Number(today.slice(0, 4))) ?? null;
   }
   const v = "by_tax_year" in f ? (taxYear === null ? undefined : f.by_tax_year[taxYear]) : f;
   if (!v) return null;
@@ -524,11 +532,11 @@ export function ruleFigure(rule: RuleRecord, name: string, today: string): SiteV
 }
 
 /**
- * How often a rule's figure is set again, where its update rule says: a figure updated each 1 January by the CPI, or set anew each year, is
- * yearly. A figure a text fixes, a company sets, the market moves or the site chose states no cadence.
+ * How often a rule's figure is set again, where its update rule says: a figure updated each 1 January by the CPI, one that follows the
+ * average wage (TXP-11's ceiling is set again at the start of each year), or one set anew each year, is yearly. A figure a text fixes, a company sets, the market moves or the site chose states no cadence.
  */
 function figureCadence(updateRule: string): Staleness["cadence"] {
-  return updateRule === "cpi-linked 1 jan" || updateRule === "set yearly" ? "yearly" : undefined;
+  return updateRule === "cpi-linked 1 jan" || updateRule === "average-wage-linked" || updateRule === "set yearly" ? "yearly" : undefined;
 }
 
 /** A rule's figure is stale once the rule's re-check date has passed: since the day the rule was read, with the figure's cadence where it states one. */

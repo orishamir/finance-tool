@@ -5,38 +5,12 @@ import type { RuleRecord } from "@finance-tool/schema";
 import { provenance } from "../copy";
 import { fmt, formatValue } from "./format";
 import { pickSources, type SourcedRule } from "./sources";
-import { wordUnits } from "./figure-slots";
-
-type Figure = NonNullable<RuleRecord["figures"]>[string];
-type FigureValue = Exclude<Figure, unknown[] | { by_tax_year: unknown }>;
+import { figureRows, wordUnits } from "./figure-slots";
 
 // the units whose number carries no sign of its own live with the figure slots, which write their word too
 export { wordUnits } from "./figure-slots";
 /** Units whose number says nothing without its label (a count): left out of a row's pills, kept in the rule's detail. */
 const bareUnits = new Set(["count"]);
-
-/**
- * The figures a rule's own numbers are, in the record's order: a number (not a word, a yes or no, or empty) that belongs to this rule
- * (a figure the record keeps for another rule, `rule_ids` without this one, is left out: TXH-09 stores TXH-10's three years), one
- * value per figure (the tax year `year` when the figure is by year, else its latest). A bracket table is left out: its numbers need
- * their bounds.
- */
-export function ownFigures(rule: Pick<RuleRecord, "id" | "figures">, year: number): { key: string; value: FigureValue }[] {
-  const out: { key: string; value: FigureValue }[] = [];
-  for (const [key, f] of Object.entries(rule.figures ?? {})) {
-    if (Array.isArray(f)) continue;
-    let v: FigureValue | undefined;
-    if ("by_tax_year" in f) {
-      const years = Object.keys(f.by_tax_year).sort();
-      const pick = years.includes(String(year)) ? String(year) : (years.filter((y) => Number(y) <= year).pop() ?? years[years.length - 1]);
-      v = pick ? (f.by_tax_year[pick] as FigureValue) : undefined;
-    } else v = f as FigureValue;
-    if (!v || typeof v.value !== "number") continue;
-    if (v.rule_ids && v.rule_ids.length > 0 && !v.rule_ids.includes(rule.id)) continue;
-    out.push({ key, value: v });
-  }
-  return out;
-}
 
 /**
  * A span of one or two years or months in words, "שנה", "שנתיים", "חודש", "חודשיים" (copy.md §1: never "1 שנים"), or null: three and
@@ -68,10 +42,14 @@ export interface RowPill {
   word: string | null;
 }
 
-/** A row's number pills: the rule's own figures that read alone as a value and a unit. */
-export function rowPills(rule: Pick<RuleRecord, "id" | "figures">, year: number): RowPill[] {
-  return ownFigures(rule, year)
-    .filter(({ value }) => !bareUnits.has(value.unit))
+/**
+ * A row's number pills: the rule's own figures (`figureRows`: one value per figure, the tax year `today` falls in when it is set by year,
+ * and none that the record keeps for another rule) that read alone as a value and a unit. A bracket table is left out: its numbers need
+ * their bounds.
+ */
+export function rowPills(rule: RuleRecord, today: string): RowPill[] {
+  return figureRows(rule, today, Number(today.slice(0, 4)))
+    .filter(({ key, value }) => !Array.isArray(rule.figures?.[key]) && typeof value.value === "number" && !bareUnits.has(value.unit))
     .map(({ value }) => {
       const span = spanWords(value.value, value.unit);
       if (span) return { text: span, word: null };

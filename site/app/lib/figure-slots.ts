@@ -5,7 +5,7 @@ import { assertNever, type RuleRecord } from "@finance-tool/schema";
 import { provenance as copy } from "../copy";
 import { formatValue } from "./format";
 import { parseAnswer } from "./answer-slots";
-import { figureStale, isParameter, ruleFigure, type SiteValue } from "./value";
+import { figureStale, isParameter, pickTaxYear, ruleFigure, type SiteValue } from "./value";
 
 /** The records a slot may read and the day it is read on: a page's own rules and the records its cards point at (`ProvenanceData` fits). */
 export interface SlotSource {
@@ -114,11 +114,11 @@ export function figureRows(rule: RuleRecord, today: string, year?: number): Figu
       if (own(f)) out.push({ key, id: key, year: null, value: as(f, key, null) });
       continue;
     }
-    const years = Object.keys(f.by_tax_year).sort();
-    const pick = year === undefined ? years : [years.includes(String(year)) ? String(year) : (years.filter((y) => Number(y) <= year).pop() ?? years[years.length - 1])];
-    for (const y of pick) {
+    const years = Object.keys(f.by_tax_year);
+    const picked = year === undefined ? years.sort() : [pickTaxYear(years, year)];
+    for (const y of picked) {
       const v = y === undefined ? undefined : f.by_tax_year[y];
-      if (v && own(v)) out.push({ key, id: `${key}-${y}`, year: y ?? null, value: as(v, key, y ?? null) });
+      if (y !== undefined && v && own(v)) out.push({ key, id: `${key}-${y}`, year: y, value: as(v, key, y) });
     }
   }
   return out;

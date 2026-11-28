@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { firstSentence, openPart, ownFigures, rowPills, rowSource, spanWords } from "./rule-row";
+import { firstSentence, openPart, rowPills, rowSource, spanWords } from "./rule-row";
 import { loadRules } from "./data.server";
 
 const all = loadRules();
@@ -23,14 +23,13 @@ describe("firstSentence", () => {
 describe("rowPills", () => {
   it("leaves out a figure the record keeps for another rule (TXH-09 stores TXH-10's three years)", () => {
     const r = all["TXH-09"]!;
-    expect(ownFigures(r, 2026).map((f) => f.key)).toEqual(["lock_years"]);
-    expect(rowPills(r, 2026)).toEqual([{ text: "6", word: "שנים" }]);
+    expect(rowPills(r, "2026-11-28")).toEqual([{ text: "6", word: "שנים" }]);
   });
   it("never shows a word, a yes or no, or a count as a pill; one or two years or months are said in words", () => {
-    for (const r of Object.values(all)) for (const p of rowPills(r, 2026)) expect(p.text).toMatch(/\d|^(שנה|שנתיים|חודש|חודשיים)$/);
+    for (const r of Object.values(all)) for (const p of rowPills(r, "2026-11-28")) expect(p.text).toMatch(/\d|^(שנה|שנתיים|חודש|חודשיים)$/);
   });
   it("says a year as a year, never \"1 שנים\" (ETF-38's wait after removal)", () => {
-    expect(rowPills(all["ETF-38"]!, 2026)).toContainEqual({ text: "שנה", word: null });
+    expect(rowPills(all["ETF-38"]!, "2026-11-28")).toContainEqual({ text: "שנה", word: null });
     expect(spanWords(1, "years")).toBe("שנה");
     expect(spanWords(2, "months")).toBe("חודשיים");
     expect(spanWords(3, "years")).toBeNull();

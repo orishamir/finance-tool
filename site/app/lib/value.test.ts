@@ -2,7 +2,8 @@
 import { describe, expect, it } from "vitest";
 import { foreignInvestmentFundIndex, openReadings, type FundStatement, type Label } from "@finance-tool/engine";
 import { numbers } from "../copy";
-import { asParameter, compactFee, computed, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isParameter, isWeak, ownBy, ownEach, recheckStale, ruleFigure, sheetFlags, sheetReading, sheetRules, staleCma, staleCmaFee, strengthOf, templateRow, type SiteValue } from "./value";
+import { figureRows } from "./figure-slots";
+import { asParameter, compactFee, computed, figureStale, figureYear, depositFeeNoneByRule, differenceOf, entered, sumOf, expandFee, isParameter, isWeak, ownBy, ownEach, recheckStale, ruleFigure, sheetFlags, sheetReading, sheetRules, staleCma, staleCmaFee, strengthOf, templateRow, type SiteValue } from "./value";
 
 const fig = (strength: SiteValue["source"]["strength"], extra: Partial<SiteValue> = {}): SiteValue => ({
   value: 0.24,
@@ -422,6 +423,31 @@ describe("a rule's figure says what it is (ruleFigure)", () => {
     expect(ruleFigure(rule, "cap@2027", "2026-11-26")?.about).toBe("התקרה 2027");
     expect(ruleFigure(rule, "cap", "2030-01-01")?.value).toBe(110);
     expect(ruleFigure(rule, "cap", "2030-01-01")?.about).toBe("התקרה 2027");
+  });
+});
+
+describe("the tax year a rule's figure shows", () => {
+  const year = (value: number, y: number) => ({ value, unit: "nis", source: { url: "https://example.org", title: "t", publisher: "p", strength: "primary" }, checked: "2026-11-01", effective_from: null, effective_to: null, update_rule: "set yearly", state: "sourced", tax_year: y });
+  const ruleOf = (years: Record<string, ReturnType<typeof year>>) => ({ id: "TXX-02", strength: "primary", checked: "2026-11-01", figures: { cap: { by_tax_year: years } } }) as unknown as Parameters<typeof ruleFigure>[0];
+  const shown = (rule: Parameters<typeof ruleFigure>[0], today: string) => [ruleFigure(rule, "cap", today)?.value, figureRows(rule, today, Number(today.slice(0, 4)))[0]?.value.value];
+  it("is the same year for a figure read by name and a row of the rule's card, where the years straddle today's", () => {
+    const straddle = ruleOf({ "2025": year(1, 2025), "2027": year(3, 2027) });
+    expect(shown(straddle, "2026-06-01")).toEqual([1, 1]);
+  });
+  it("is today's year when the record has it, else the latest year before it, else the latest, in whatever order the record lists them", () => {
+    const listed = ruleOf({ "2027": year(3, 2027), "2025": year(1, 2025), "2026": year(2, 2026) });
+    expect(shown(listed, "2026-06-01")).toEqual([2, 2]);
+    expect(shown(listed, "2028-06-01")).toEqual([3, 3]);
+    expect(shown(ruleOf({ "2027": year(3, 2027), "2028": year(4, 2028) }), "2026-06-01")).toEqual([4, 4]);
+  });
+});
+
+describe("a figure that follows the average wage is set again each year", () => {
+  it("says so in its stale cadence, as one indexed each 1 January does", () => {
+    const rule = { checked: "2026-01-05", recheck_date: "2026-06-01" };
+    expect(figureStale(rule, "average-wage-linked", "2026-11-28")).toEqual({ since: "2026-01-05", cadence: "yearly" });
+    expect(figureStale(rule, "cpi-linked 1 jan", "2026-11-28")).toEqual({ since: "2026-01-05", cadence: "yearly" });
+    expect(figureStale(rule, "fixed in law", "2026-11-28")).toEqual({ since: "2026-01-05" });
   });
 });
 

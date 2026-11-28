@@ -46,7 +46,6 @@ export async function loader() {
   // D30: the list holds general rules only; a company's term is on that company's page, and a search finds it, named
   const all = Object.values(rules).filter((r) => r.scope === "general");
   const now = today();
-  const year = Number(now.slice(0, 4));
   const scores = ruleScores();
   const products = ruleProducts();
   const pinned = loadPinnedRules();
@@ -69,7 +68,7 @@ export async function loader() {
         products: products[r.id] ?? [],
         lead: firstSentence(r.text_he && slotsAsText(r.text_he, slots)),
         ...(openPart(r) ? { openPart: true } : {}),
-        pills: rowPills(r, year),
+        pills: rowPills(r, now),
         authority: src.authority,
         sources: src.count,
       };
