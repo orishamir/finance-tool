@@ -63,8 +63,7 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "MF-16",
-        "MF-35"
+        "MF-16"
       ],
       "state": "sourced",
       "notes": "Manager's fee as printed on p.1. Note 6: the manager committed to the ISA outline and may raise its fee or the load only on 01/01/2027. Maya's fund data show managementFee 0.19 (https://maya.tase.co.il/he/funds/mutual-funds/1223866). The report is the fund's first annual report, for the period from 09/07/2025 to 30/06/2026; the information is as of 30/06/2026 unless stated (note 1)."
@@ -127,9 +126,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-07"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-applicable",
       "notes": "Not applicable: not a tracking fund."
@@ -148,9 +145,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-35"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-applicable",
       "notes": "Not applicable: open fund with liquidity only on the fixed date (MF-35), not exchange-traded."
@@ -169,10 +164,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "MF-43",
-        "TXS-24"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-applicable",
       "notes": "Shekel money-market fund (exposure code 00); no foreign withholding; no computation made here. Tax track not printed on the pages read and this series' presence in the 2026-10-22 Maya export behind TXS-24 is not certain, so il_fund_tax_track is left null."

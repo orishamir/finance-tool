@@ -75,10 +75,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-08",
-        "ETF-09"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-collected",
       "notes": "Not printed as one number. The KIID prints the share class's return and the index's for each calendar year on p. 2 ('Past Performance', '% growth', rows 'Share Class' and 'Index', one decimal); they are in tracking_record. Basis: 'Past performance of the Share Class is calculated in USD'; 'Performance is calculated after deduction of ongoing charges'. Index as the KIID names it: 'MSCI World Index', whose net total return is the objective (p. 1); the chart's index row is not itself labelled net or gross; the fund's own Israeli prospectus annex says it seeks the index's net total return, so the benchmark is recorded as net (tracking_record.benchmark). The figures are the share class's returns in US dollars, not a return in shekels on the Tel Aviv line. The difference is not computed here (data-update rule)."

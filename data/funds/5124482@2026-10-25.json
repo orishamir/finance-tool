@@ -123,8 +123,7 @@
       "update_rule": "provider-set",
       "rule_ids": [
         "ETF-08",
-        "ETF-09",
-        "ETF-10"
+        "ETF-09"
       ],
       "state": "sourced",
       "empty_because": "not-collected",
@@ -144,10 +143,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-04",
-        "MF-21"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-applicable",
       "notes": "Not applicable: an open tracking fund is bought and redeemed at the unit price computed from net asset value (MF-09), with no exchange spread; the load on purchase is 0% (p. 1). The distributor may charge its own buy and sell commission (footnote 4; MF-26)."
@@ -166,9 +162,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-11"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-collected",
       "notes": "Not collected: no computation is made here and the report prints no withholding figure. The investment policy says the fund mainly uses futures abroad on the tracking asset, swaps and currency forwards (p. 2), so any dividend-withholding drag sits inside instrument pricing and is not published as a rate."

@@ -31,8 +31,7 @@
     "rule_ids": [
       "BRK-01",
       "BRK-04",
-      "REG-13",
-      "BRK-32"
+      "REG-13"
     ],
     "state": "sourced",
     "notes": "Trading on TASE goes only through TASE members: banks, non-bank members (חש\"בים) and remote members (BRK-01, BRK-32). TASE supervises members under its rules, which the ISA approves; for banks that supervision covers trading and conduct only, their stability being the Bank of Israel's (BRK-04). The ISA supervises TASE itself (REG-13). A foreign broker reached under a section 49A permit is not ISA-supervised (BRK-06); a pending broker-dealer bill would add an ISA licence (BRK-05, secondary)."
@@ -258,7 +257,6 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXS-21",
-      "TXS-05",
       "SW-36"
     ],
     "state": "sourced",

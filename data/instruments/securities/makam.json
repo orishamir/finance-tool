@@ -43,8 +43,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "GOV-01",
-      "GOV-05"
+      "GOV-01"
     ],
     "state": "sourced",
     "notes": "The state borrows; the Bank of Israel sells the bills to the public by auction, administers the loan and runs the register (Short-Term Loan Law ss.1(א), 4, 5, 6, 10). This is the issuer's side; the securities account that holds the paper has its own supervisor (brokerage-account)."

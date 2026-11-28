@@ -74,10 +74,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-08",
-        "ETF-09"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-collected",
       "notes": "Not printed as one number. The key investor information (2 pages, the 2026-02-17 edition in the library, unchanged on 2026-11-07) prints the fund's return and its benchmark's for each calendar year 2020 to 2025 on p. 2; they are in tracking_record. Fund basis: 'Includes ongoing charges and the reinvestment of income ... Has been calculated in USD'; one decimal as printed; the share class was launched in 2019, so the chart starts in 2020. Benchmark as the document names it: 'Index'. The KIID names the index as the Standard and Poor's 500 Index and does not say net or gross; the same share class's factsheet (library be6b56d18242118d / 97b49e692be6c260, p. 2) names its benchmark 'S&P 500 Net Total Return' ('reinvested dividends less 30% withholding tax'). The difference is not computed here (data-update rule)."

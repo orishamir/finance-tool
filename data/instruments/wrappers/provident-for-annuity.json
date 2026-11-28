@@ -193,7 +193,6 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "PF-23",
       "TXP-13",
       "TXP-32"
     ],
@@ -289,5 +288,8 @@
     "fee-change-over-time": [
       "PEN-47"
     ]
-  }
+  },
+  "context_rule_ids": [
+    "PF-23"
+  ]
 }

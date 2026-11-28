@@ -29,6 +29,20 @@
       "standing": "consolidated-not-binding"
     },
     {
+      "url": "https://www.ishares.com/gls-download/literature/prospectus/ishares-ii-plc-prospectus-en.pdf#page=123",
+      "title": "iShares II plc prospectus, 21 September 2026",
+      "publisher": "iShares",
+      "publisher_he": "iShares",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "locator": "p.123",
+      "locator_he": "עמוד 123",
+      "page": 123,
+      "quote": "will have their Shares redeemed without further notice or Shareholder approval on the Redemption Date",
+      "checked": "2026-11-18",
+      "qualifier": "(its own funds; example only; library 0d998f6cd08b3a48)"
+    },
+    {
       "url": "https://mayafiles.tase.co.il/rpdf/1775001-1776000/P1775855-00.pdf#page=155",
       "title": "iShares V plc, prospectus 3.9.2026",
       "publisher": "Maya (TASE filings)",

@@ -39,8 +39,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "REG-01",
-      "REG-03"
+      "REG-01"
     ],
     "state": "sourced",
     "notes": "Banks are supervised by the Supervisor of Banks at the Bank of Israel, who holds \"הפיקוח הכללי והביקורת על כל תאגיד בנקאי\" (Banking Ordinance s.5(א)); the banking corporations themselves are the 17 entries (11 ordinary banks) in the BoI's list on data.gov.il (REG-03, 2026-10-22)."
@@ -103,10 +102,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-07",
-      "TXI-08",
-      "BANK-06",
-      "SW-29",
-      "SW-32"
+      "TXI-08"
     ],
     "state": "sourced",
     "notes": "Moving a deposit to another bank means withdrawing it: no law lets a running deposit move on its terms (SW-32); under the account-switching service it stays at the old bank until maturity (SW-29). At maturity or an exit point the interest is paid and the bank withholds 15% or 25% as usual (TXI-07, TXI-08), so the move adds no tax beyond the ordinary maturity. Breaking before maturity needs the bank's consent where it was not agreed in advance and can cost the interest and part of the principal (BANK-06); how the tax treats a broken deposit is open (TXI OQ14). New money can go to another bank through a closed-system account (BANK-21)."
@@ -220,5 +216,11 @@
     "BANK-OQ8",
     "BANK-OQ17"
   ],
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "context_rule_ids": [
+    "REG-03",
+    "BANK-06",
+    "SW-29",
+    "SW-32"
+  ]
 }
