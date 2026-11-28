@@ -9,7 +9,7 @@ import type { RuleRecord } from "@finance-tool/schema";
 import { ruleCardMore, rule as ruleCopy, scopeWords, sourceBlock, strength } from "../copy";
 import { fmt } from "../lib/format";
 import { joinNames, ownDocCompanies } from "../lib/scope";
-import { ProvenanceProvider, catchesOf, type ProvenanceData } from "./provenance";
+import { ProvenanceProvider, RuleRef, RuleTitleRow, catchesOf, type ProvenanceData } from "./provenance";
 import { RuleCard, RuleDetail, TermCard, ValueSheet } from "./provenance-sheets";
 import type { SiteValue } from "../lib/value";
 
@@ -103,6 +103,42 @@ describe("the companies of a company's term", () => {
     const detail = words(createElement(RuleDetail, { id, data, products: [] }), data);
     expect(detail).toContain(scopeWords.line.institutionTagged);
     expect(detail).not.toContain(named(data, id));
+  });
+});
+
+describe("a company's term on a brand's page", () => {
+  it("is named by the brand's company it shows, not by the brand's first registry id", async () => {
+    const { loadRules } = await import("../lib/data.server");
+    const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
+    const rules = loadRules();
+    const ownDocs = ownDocuments(rules);
+    // a term two or more companies' own documents say: a brand of the first company's id and the second's names only the second
+    const r = must(
+      Object.values(rules).find((x) => x.scope === "institution" && ownDocCompanies(x, ownDocs).length >= 2),
+      "a company's term two companies' documents say",
+    );
+    const [, second] = ownDocCompanies(r, ownDocs);
+    const brand = ["000000000", must(second, "its second company").id];
+    const data = dataOf(rules, { ownDocs, companies: companyLinks(), company: brand[0], pageCompanies: brand });
+    // the chip, and the row of a list of rules with the companies under its title
+    for (const el of [createElement(RuleRef, { id: r.id }), createElement(RuleTitleRow, { id: r.id })]) {
+      const text = words(el, data);
+      expect(text).toContain(must(second, "its second company").name_he);
+      expect(text).not.toContain("ועוד");
+    }
+  });
+});
+
+describe("a rule card opened from one of its figures", () => {
+  it("marks that figure's rows, and only them", () => {
+    const r = record("TXA-30");
+    const keys = Object.keys(r.figures ?? {});
+    const key = must(keys[0], "TXA-30's first figure");
+    const data = dataOf({ [r.id]: r });
+    const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(RuleCard, { id: r.id, data, inline: true, figure: key }))));
+    expect(html).toContain("data-marked");
+    const plain = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(RuleCard, { id: r.id, data, inline: true }))));
+    expect(plain).not.toContain("data-marked");
   });
 });
 

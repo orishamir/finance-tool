@@ -7,7 +7,7 @@ import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 // @ts-expect-error a plain ES module script, without types
 import { PLANTED_CHIP, catchesPlanted, chipsIn, codesIn, ruleIds, shownText } from "../../scripts/rule-codes.mjs";
-import { ProvenanceProvider, RuleRef, RuleTitleRow } from "./provenance";
+import { IdText, ProvenanceProvider, RuleRef, RuleTitleRow } from "./provenance";
 import { RuleCard } from "./provenance-sheets";
 
 const rules: Set<string> = ruleIds();
@@ -53,5 +53,22 @@ describe("the chips and rows a page draws", () => {
     const card = draw(RuleCard, { id: "KH-19", data: { rules: { "KH-19": record }, terms: {}, dimensions: {}, today: "2026-11-11" } });
     expect(card).toContain("KH-19");
     expect(codes(card)).toEqual([]);
+  });
+});
+
+describe("a note's codes (IdText)", () => {
+  const record = { id: "KH-19", title: "Default track", title_he: "מסלול ברירת המחדל", scope: "general", strength: "primary", dimensions: [], figures: {}, sources: [], checked: "2026-11-01" };
+  const draw = (text: string) =>
+    renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: { "KH-19": record }, terms: {}, dimensions: {}, today: "2026-11-11" } } as never, createElement(IdText, { text }))));
+  /** What the text shows: its markup's words, the sheet the provider draws after it aside. */
+  const shown = (html: string) => (html.split("<dialog")[0] ?? "").replace(/<[^>]+>/g, "");
+  it("turns a rule's code into its chip, brackets and all, and prints no code", () => {
+    const html = draw("השיעור נקבע בחוק (KH-19). ראו גם KH-19.");
+    expect(codes(html)).toEqual([]);
+    expect(shown(html).split("מסלול ברירת המחדל").length - 1).toBe(2);
+    expect(shown(html)).not.toContain("(");
+  });
+  it("leaves an index's name as it is", () => {
+    expect(shown(draw("מדד TA-35 ו־TA-125"))).toBe("מדד TA-35 ו־TA-125");
   });
 });

@@ -17,13 +17,19 @@ import { IconAlert, IconClock, IconDrillIn, IconFile, IconLock, IconPencil } fro
 import { CatchesSaidCtx, OwnCompanyCtx, Sheet, StaleSaidCtx } from "./Sheet";
 import { cx, Disclosure, Tag } from "./ui";
 import { CatchMark, CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
-import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
+import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs, type PageCompanies } from "../lib/scope";
 import { decodedPart } from "../lib/address-hash";
 import { useHydrated } from "../lib/hooks";
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string; /** The rules the place the figure was opened from already opens (`opensAround`): its sheet leaves their chips out. */ shown?: readonly string[] } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string; /** After the line: the chip of the rules it rests on (a "?" with a sentence of its own and its rules). */ rules?: readonly string[]; /** After the lead: sentences of the sheet's own, each with what it is about and the document it rests on (why an account sells no fund on an index, a sentence and a source for each kind of fund). */ parts?: readonly SheetPart[] } | { kind: "catch"; value: SiteValue; /** What its "?" says, as the figure's place decided them (`catchesOf`). */ catches: readonly Catch[]; /** As a value's: the figure was shown with two decimals. */ exact?: boolean; /** As a value's: the word a value that is not a number was shown as. */ display?: string } | { kind: "list-catch"; /** What the figures are (a column's head): the sheet's title. */ name: string; scope: "column" | "list"; /** The catches every figure there carries (`sharedCatches`). */ catches: readonly Catch[] } | { kind: "obliged"; value: SiteValue; /** Its catches, as the figure's place decided them (`catchesOf`). */ catches: readonly Catch[]; exact?: boolean; display?: string } | { kind: "question"; id: string } | { kind: "proof"; id: string } | { kind: "proofs"; ids: readonly string[] };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string; /** The rules the place the figure was opened from already opens (`opensAround`): its sheet leaves their chips out. */ shown?: readonly string[]; /** The rule figure it is (`FigureKey`): that rule's card, opened from its sheet, marks the figure's row. */ figure?: FigureKey } | { kind: "rule"; id: string; /** The figure of the rule the card was opened from (a figure's sheet): its row is marked and scrolled to. */ figure?: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string; /** After the line: the chip of the rules it rests on (a "?" with a sentence of its own and its rules). */ rules?: readonly string[]; /** After the lead: sentences of the sheet's own, each with what it is about and the document it rests on (why an account sells no fund on an index, a sentence and a source for each kind of fund). */ parts?: readonly SheetPart[] } | { kind: "catch"; value: SiteValue; /** What its "?" says, as the figure's place decided them (`catchesOf`). */ catches: readonly Catch[]; /** As a value's: the figure was shown with two decimals. */ exact?: boolean; /** As a value's: the word a value that is not a number was shown as. */ display?: string } | { kind: "list-catch"; /** What the figures are (a column's head): the sheet's title. */ name: string; scope: "column" | "list"; /** The catches every figure there carries (`sharedCatches`). */ catches: readonly Catch[] } | { kind: "obliged"; value: SiteValue; /** Its catches, as the figure's place decided them (`catchesOf`). */ catches: readonly Catch[]; exact?: boolean; display?: string } | { kind: "question"; id: string } | { kind: "proof"; id: string } | { kind: "proofs"; ids: readonly string[] };
+
+/** A figure of a rule record, by the rule and the figure's key in its `figures`: the row its card marks when opened from the figure. */
+export interface FigureKey {
+  rule: string;
+  key: string;
+}
 
 /** One sentence of a sheet's own text (`Item` "terms", `parts`): what it is about, the sentence, and the document it rests on. */
 export interface SheetPart {
@@ -90,6 +96,9 @@ export interface RuleUses {
   pages: { href: string; label: string }[];
   engine: boolean;
 }
+
+/** The companies a page is about, for a chip's and a tag's names (`chipName`): every registry id its brand stands for, else its one company. */
+export const pageCompaniesOf = (data: ProvenanceData | null | undefined): readonly string[] => data?.pageCompanies ?? (data?.company ? [data.company] : []);
 
 /** A rule's record for a chip or a card: the page's own, else one of the records its cards point at (`pointed`). */
 export const ruleOf = (data: ProvenanceData | null | undefined, id: string): RuleRecord | undefined => data?.rules[id] ?? data?.pointed?.[id];
@@ -277,6 +286,8 @@ export interface NumProps {
   name?: string;
   /** Its text may take a second line: words in a narrow column ("אין נכסים" under a share's head) that would otherwise set the column's width. */
   wrap?: boolean;
+  /** The rule figure it is (a sentence's figure slot): the rule's card, opened from its sheet, marks it. */
+  figure?: FigureKey;
 }
 
 const stateWord = { sourced: numbers.legend.sourced, entered: numbers.legend.entered };
@@ -316,12 +327,16 @@ function ShortText({ text, className }: { text: string; className: string }) {
 }
 
 /**
- * What a figure's sheet opens with. A value that is not a number (a word, yes or no, or empty) heads its sheet with the word the figure was
- * shown as, so the sheet never prints the record's raw value: the linkage and tax sheets on every deposit card headed with "none" and
- * "unlinked_15". A number keeps its digits, exact or rounded as shown. `shown`: the rules the place it was opened from opens (`opensAround`).
+ * What a figure's sheet opens with: the figure as it was shown. A value that is not a number (a word, yes or no, or empty) heads its sheet
+ * with the word the figure was shown as, so the sheet never prints the record's raw value: the linkage and tax sheets on every deposit card
+ * headed with "none" and "unlinked_15". A number shown in words of its own ("שנתיים") heads it with those words, and any other number with
+ * its digits, exact or rounded as shown. `name`, what the figure is of where the words around it say it, is its sheet's line under the
+ * figure when the value has none of its own. `shown`: the rules the place it was opened from opens (`opensAround`).
  */
-export function valueItem(value: SiteValue, written: string | undefined, exact: boolean, shown: readonly string[] = []): Item {
-  return { kind: "value", value, ...(exact ? { exact: true } : {}), ...(typeof value.value !== "number" && written ? { display: written } : {}), ...(shown.length ? { shown } : {}) };
+export function valueItem(value: SiteValue, written: string | undefined, exact: boolean, shown: readonly string[] = [], name?: string, figure?: FigureKey): Item {
+  const number = typeof value.value === "number";
+  const asShown = { ...value, ...(number && written ? { written } : {}), ...(name && !value.about ? { about: name } : {}) };
+  return { kind: "value", value: asShown, ...(exact ? { exact: true } : {}), ...(!number && written ? { display: written } : {}), ...(shown.length ? { shown } : {}), ...(figure ? { figure } : {}) };
 }
 
 /** The ids an element's `data-opens` names, space-separated. */
@@ -550,7 +565,7 @@ export function ListCatchMark({ catches, name, scope, className }: { catches: re
  * digits, never between a number and the unit word that follows it; a tap opens where it comes from. A calculated figure is plain text, with
  * a caution "?" after it only where it carries a catch (`catchesOf`).
  */
-export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord, name, wrap }: NumProps) {
+export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord, name, wrap, figure: figureKey }: NumProps) {
   const ownPage = useContext(OwnCompanyCtx);
   const pageData = useContext(DataCtx);
   const value = onPage(given, ownPage, pageData);
@@ -654,7 +669,7 @@ export function Num({ value: given, size = "inline", display, animate, className
       type="button"
       className={cx("num", `num-${value.state}`, doubt && "num-doubt", size === "figure" && "num-figure", size === "cell" && "num-cell", value.value === null && "num-unknown", oneLine && "whitespace-nowrap", className)}
       aria-label={label}
-      onClick={(e) => open(valueItem(value, fullWord ?? written, keepDecimals, opensAround(e.currentTarget, inside)), e.currentTarget)}
+      onClick={(e) => open(valueItem(value, fullWord ?? written, keepDecimals, opensAround(e.currentTarget, inside), name, figureKey), e.currentTarget)}
     >
       {value.stale && !staleSaid && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {(fromDate || weak || doubt) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
@@ -813,11 +828,11 @@ function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
  * - `asLabel`: the chip as a label that does nothing (a parameter's own card, which a link would only point back at).
  * An empty id renders nothing; an id that is no kind, or a formula, renders as plain text; a parameter or an `A-nn` no card has, nothing.
  */
-export function IdRef(props: { id: string; className?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
+export function IdRef(props: { id: string; className?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string; /** A rule's figure the chip was reached from: its card marks the row (`RuleRef`). */ figure?: string }) {
   return <ChipEnd chip={<IdChip {...props} />} end={props.end} />;
 }
 
-function IdChip({ id, className, asLabel, titled }: { id: string; className?: string; asLabel?: boolean; titled?: boolean }) {
+function IdChip({ id, className, asLabel, titled, figure }: { id: string; className?: string; asLabel?: boolean; titled?: boolean; figure?: string }) {
   const open = useOpen();
   const close = useContext(CloseCtx);
   const data = useContext(DataCtx);
@@ -851,7 +866,7 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
     );
   }
   const aria = kind === "rule" ? (rule ? `${ruleCopy.title}: ${words}` : ruleCopy.title) : copy.idRef.question;
-  const item: Item = kind === "question" ? { kind: "question", id: shown } : { kind: "rule", id: shown };
+  const item: Item = kind === "question" ? { kind: "question", id: shown } : { kind: "rule", id: shown, ...(figure ? { figure } : {}) };
   return (
     <button type="button" className={cx("rule-chip", long && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria} data-opens={kind === "rule" ? shown : undefined}>
       {chip}
@@ -859,15 +874,21 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   );
 }
 
+/** A rule's code inside text: two to four capitals and maybe a digit, a hyphen and a number; an index's name (`TA-35`) is not one. */
+const RULE_CODE = "(?!TA-)[A-Z]{2,4}[0-9]?-\\d{1,3}";
+const QUESTION_CODE = "[A-Z0-9]+[ -]OQ\\d+";
+
 /**
- * Text that names open questions inside a sentence (a copy string that ends "... שאלה פתוחה SW OQ4"): each code in it becomes an `IdRef`.
- * `assumptions` also turns the method's assumption ids (`A-01`) into chips: printed as plain text, "(A-03)" broke at its hyphen on a phone
- * (the parameters page). A string with no code comes back unchanged.
+ * Text that names open questions or rules inside a sentence (a copy string that ends "... שאלה פתוחה SW OQ4", a note that cites
+ * "BANK-35"): each code in it becomes an `IdRef`, so no code is printed as text (D101). `assumptions` also turns the method's assumption
+ * ids (`A-01`) into chips: printed as plain text, "(A-03)" broke at its hyphen on a phone (the parameters page). A string with no code
+ * comes back unchanged.
  */
 export function IdText({ text, assumptions }: { text: string; assumptions?: boolean }) {
-  // the chip is its own frame: "(A-03)" and "(SW OQ4)" lose their brackets; the punctuation after a chip is held to it (ChipEnd)
-  const unbracketed = text.replace(assumptions ? /\(\s*([A-Z0-9]+[ -]OQ\d+|A-\d+)\s*\)/g : /\(\s*([A-Z0-9]+[ -]OQ\d+)\s*\)/g, "$1");
-  const parts = assumptions ? unbracketed.split(/\b([A-Z0-9]+[ -]OQ\d+|A-\d+)\b/) : unbracketed.split(/\b([A-Z0-9]+[ -]OQ\d+)\b/);
+  const code = [QUESTION_CODE, RULE_CODE, ...(assumptions ? ["A-\\d+"] : [])].join("|");
+  // the chip is its own frame: "(A-03)", "(SW OQ4)" and "(BANK-35)" lose their brackets; the punctuation after a chip is held to it (ChipEnd)
+  const unbracketed = text.replace(new RegExp(`\\(\\s*(${code})\\s*\\)`, "g"), "$1");
+  const parts = unbracketed.split(new RegExp(`(?<![A-Za-z0-9-])(${code})(?![A-Za-z0-9-])`));
   if (parts.length === 1) return <>{text}</>;
   const out: ReactNode[] = [];
   for (let i = 0; i < parts.length; i++) {
@@ -889,17 +910,17 @@ export function IdText({ text, assumptions }: { text: string; assumptions?: bool
  * (spec 2026-10-25-rules-scope §4): on that company's page its own name, elsewhere the first with "ועוד" and the count of the others.
  * The code stays in the card it opens and in the chip's spoken name.
  */
-export function RuleRef({ id, className, end }: { id: string; className?: string; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
+export function RuleRef({ id, className, end, figure }: { id: string; className?: string; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string; /** The figure of this rule the chip was reached from (a figure's sheet): the card marks its row. */ figure?: string }) {
   const open = useOpen();
   const data = useContext(DataCtx);
   const rule = headOf(data, id);
-  const name = rule && !isGeneral(rule) ? chipName(rule, data?.ownDocs, data?.company, chipMore) : null;
-  if (!name) return <IdRef id={id} className={className} end={end} />;
+  const name = rule && !isGeneral(rule) ? chipName(rule, data?.ownDocs, pageCompaniesOf(data), chipMore) : null;
+  if (!name) return <IdRef id={id} className={className} end={end} figure={figure} />;
   return (
     <ChipEnd
       end={end}
       chip={
-        <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`} data-opens={id}>
+        <button type="button" className={cx("rule-chip", className)} onClick={(e) => open({ kind: "rule", id, ...(figure ? { figure } : {}) }, e.currentTarget)} aria-label={`${ruleCopy.title} ${id}, ${scopeTag(rule!, data?.ownDocs)}`} data-opens={id}>
           <bdi className="whitespace-nowrap">{name}</bdi>
         </button>
       }
@@ -913,7 +934,7 @@ const chipMore = (n: number) => (n === 1 ? scopeWords.chipMore.one : n === 2 ? s
  * The card's scope label: "חל על כולם", "של הראל ואלטשולר שחם" (the companies whose own documents say it), "לא הוכח שחל על כולם";
  * "על סלייס וגלובלנט" for a record about companies that rests on none of their documents (a regulator's announcement about them).
  */
-export function scopeTag(rule: Pick<RuleRecord, "id" | "scope" | "scope_institutions">, ownDocs: OwnDocs | undefined, short?: { company: string | undefined }): string {
+export function scopeTag(rule: Pick<RuleRecord, "id" | "scope" | "scope_institutions">, ownDocs: OwnDocs | undefined, short?: { company: PageCompanies }): string {
   if (rule.scope === "general") return scopeWords.tag.general;
   if (rule.scope === "unsettled") return scopeWords.tag.unsettled;
   // the same companies the chip counts (`shownCompanies`): those whose own documents say it, else everyone it is about. `short` (the card's
@@ -984,7 +1005,7 @@ export function RuleTitleRow({ id, scope = true, className }: { id: string; /** 
   if (!rule || !data) return <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} opens={id} className={className}>{ruleCopy.title}</TitleRow>;
   const title = rule.title;
   return (
-    <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} opens={id} under={scope && !isGeneral(rule) ? scopeTag(rule, data.ownDocs, { company: data.company }) : undefined} className={className}>
+    <TitleRow onClick={(e) => open({ kind: "rule", id }, e.currentTarget)} opens={id} under={scope && !isGeneral(rule) ? scopeTag(rule, data.ownDocs, { company: pageCompaniesOf(data) }) : undefined} className={className}>
       {title.english ? <bdi dir="ltr">{title.text}</bdi> : gershayim(title.text)}
     </TitleRow>
   );

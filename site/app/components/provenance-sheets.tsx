@@ -1,7 +1,7 @@
 // What the provenance sheet shows (design-system 3.2, design-spec 1.3 and 3): a figure's source, a calculated figure's catches, a rule's
 // card, a term's card, an open question, a statement math proves, and the cards the rules page lays out. A script apart from the figures and chips
 // (provenance.tsx `loadSheets`), fetched while the page hydrates (entry.client.tsx), so a page shows itself without waiting for it.
-import { useContext, useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useContext, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link, useLocation } from "react-router";
 import { assertNever, type RuleRecord } from "@finance-tool/schema";
@@ -22,8 +22,8 @@ import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } fr
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { Card, CompanyLinks, DocLink, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
 import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, sameCompanies, scopeCompanies, tagCompanies, pageScope, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
-import type { SheetPart } from "./provenance";
-import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, headOf, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData, type Catch } from "./provenance";
+import type { FigureKey, SheetPart } from "./provenance";
+import { CloseCtx, DataCtx, IdRef, pageCompaniesOf, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, headOf, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData, type Catch } from "./provenance";
 import { proofOf } from "../content/proofs";
 
 /** What words that state several rules (`Ruled`) open: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
@@ -251,8 +251,8 @@ export function SheetContent({ item, data: page, headId, descId }: { item: Item;
   return (
     <DataCtx.Provider value={data}>
     <InsideSheetCtx.Provider value={true}>
-      {item.kind === "value" && <ValueSheet value={item.value} exact={!!item.exact} display={item.display} shown={item.shown} data={data} headId={headId} descId={descId} />}
-      {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} />}
+      {item.kind === "value" && <ValueSheet value={item.value} exact={!!item.exact} display={item.display} shown={item.shown} figure={item.figure} data={data} headId={headId} descId={descId} />}
+      {item.kind === "rule" && <RuleCard id={item.id} data={data} headId={headId} figure={item.figure} />}
       {item.kind === "rules" && <RulesListSheet ids={item.ids} name={item.name} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
       {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} rules={item.rules} parts={item.parts} data={data} headId={headId} />}
@@ -483,6 +483,9 @@ export function ParameterWhy({ value }: { value: SiteValue }) {
   );
 }
 
+/** A slot's figure by its key in the record's `figures`: "rate@2027" and "rate.from" are both the figure "rate". */
+const figureKeyOf = (slot: string): string => slot.replace(/\.from$/, "").split("@")[0] ?? slot;
+
 /** A sentence with {ID:figure} slots (the questions' answers, the "הידעת?" facts, the flags' words, a rule's text): each slot is that rule's figure, with its unit in words where the number carries none; "{ID:figure.from}" is the month it takes effect. */
 export function SlottedText({ text, source }: { text: string; source: SlotSource }) {
   return (
@@ -498,7 +501,7 @@ export function SlottedText({ text, source }: { text: string; source: SlotSource
           case "figure":
             return (
               <span key={k} className="whitespace-nowrap">
-                <Num value={{ ...fill.value, notes: "" }} />
+                <Num value={{ ...fill.value, notes: "" }} figure={{ rule: p.id, key: figureKeyOf(p.figure) }} />
                 {fill.unitWord && <> {fill.unitWord}</>}
               </span>
             );
@@ -539,7 +542,8 @@ function FigureHead({ value, text, ink, headId, descId, children }: { value: Sit
   // a long word (a deposit's tax: "ריבית לא צמודה. השיעור בעמוד המדריך.") wraps in a smaller size; kept on one line it ran past a phone's edge
   const longHead = text.length > 24;
   // the row's own words where they differ from the unit's (a one-year gap: "ב־2025"), so the head says what the row says (copy 10.4)
-  const unitWord = typeof value.value === "number" ? (value.unitText ?? unitWordOf(value.unit)) : null;
+  // a number shown in words ("שנתיים") says its unit in them
+  const unitWord = typeof value.value === "number" && !hasHebrew(text) ? (value.unitText ?? unitWordOf(value.unit)) : null;
   return (
     <header className="flex flex-col gap-1">
       <div className="flex items-center gap-2 flex-wrap">
@@ -823,7 +827,7 @@ function WeakInputs({ strength, inputs }: { strength: "institution" | "secondary
  * The sheet behind a sourced or entered figure (exported for the render tests). `shown`: the rules the place it was opened from already
  * opens, whose chips it leaves out, as it leaves out the doubt's rules, which the doubt's callout opens.
  */
-export function ValueSheet({ value, exact, display, shown = [], data, headId, descId }: { value: SiteValue; exact: boolean; display?: string; shown?: readonly string[]; data: ProvenanceData; headId: string; descId: string }) {
+export function ValueSheet({ value, exact, display, shown = [], figure, data, headId, descId }: { value: SiteValue; exact: boolean; display?: string; shown?: readonly string[]; /** The rule figure it is: that rule's chip opens its card at the figure's row. */ figure?: FigureKey; data: ProvenanceData; headId: string; descId: string }) {
   const strength = strengthOf(value);
   const param = isParameter(value);
   const today = useContext(TodayCtx);
@@ -841,7 +845,7 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
   const chipRow = chips.length > 0 && (
     <Row label={chips.length === 1 ? copy.sourced.rule : copy.sourced.rules}>
       <span className="flex flex-wrap gap-2">
-        {chips.map((id) => <RuleRef key={id} id={id} />)}
+        {chips.map((id) => <RuleRef key={id} id={id} {...(figure?.rule === id ? { figure: figure.key } : {})} />)}
       </span>
     </Row>
   );
@@ -996,10 +1000,25 @@ function FigureNote({ v, labelYear, className = "block text-xs text-muted-foregr
   return <span className={className}>{bits.flatMap((b, i) => (i ? [" · ", b] : [b]))}</span>;
 }
 
-/** The rule's "המספרים" block: every figure of the record, by tax year and by bracket, each a Num. */
-function RuleFigures({ rule, id, pageValue = (v) => v, head }: { rule: RuleRecord; id: string; pageValue?: (v: SiteValue) => SiteValue; /** In place of the plain muted "המספרים". */ head?: ReactNode }) {
+/**
+ * The rule's "המספרים" block: every figure of the record, by tax year and by bracket, each a Num. `marked`: the figure the card was opened
+ * from (a figure's sheet), whose rows are marked and scrolled into view.
+ */
+function RuleFigures({ rule, id, pageValue = (v) => v, head, marked }: { rule: RuleRecord; id: string; pageValue?: (v: SiteValue) => SiteValue; /** In place of the plain muted "המספרים". */ head?: ReactNode; marked?: string }) {
   const figures = Object.entries(rule.figures ?? {});
+  const markedRow = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    markedRow.current?.scrollIntoView({ block: "nearest" });
+  }, [marked]);
   if (figures.length === 0) return null;
+  // the figure the card was opened from: its first row holds the scroll, and every row of it is marked
+  let first = true;
+  const mark = (name: string) => {
+    if (name !== marked) return {};
+    const ref = first ? { ref: markedRow } : {};
+    first = false;
+    return { ...ref, "data-marked": "", className: "readout-row rounded-sm bg-secondary" };
+  };
   return (
     <div className="flex flex-col gap-1.5">
       {head ?? <span className="text-sm text-muted-foreground">{ruleCopy.figures}</span>}
@@ -1011,7 +1030,7 @@ function RuleFigures({ rule, id, pageValue = (v) => v, head }: { rule: RuleRecor
             return f.map((b, i) => {
               const edge = i === 0 && b.up_to.value !== null;
               return (
-                <div key={`${name}-${i}`} className="readout-row">
+                <div key={`${name}-${i}`} className="readout-row" {...mark(name)}>
                   <dt>
                     {figureLabel(rule, name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={pageValue({ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id], ...aboutOf(rule, name) })} />}
                     {i === 0 && <FigureNote v={edge ? b.up_to : b.rate} labelYear={null} />}
@@ -1026,7 +1045,7 @@ function RuleFigures({ rule, id, pageValue = (v) => v, head }: { rule: RuleRecor
             });
           const byYear = "by_tax_year" in f ? Object.entries(f.by_tax_year) : [[null, f] as const];
           return byYear.map(([year, v]) => (
-            <div key={`${name}-${year ?? ""}`} className="readout-row">
+            <div key={`${name}-${year ?? ""}`} className="readout-row" {...mark(name)}>
               <dt>
                 {figureLabel(rule, name)}
                 {year && (
@@ -1086,7 +1105,7 @@ function RuleCardHead({ id, rule, title, data, headId, waiting }: { id: string; 
       </h2>
       {/* who it applies to (D30): a neutral label, never a warning; the strength tag stays only for an open or second-hand source, or a general rule read from a company's document */}
       <div className="flex flex-wrap items-center gap-1.5">
-        <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs, { company: data.company })}</Tag>
+        <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs, { company: pageCompaniesOf(data) })}</Tag>
         {/* a record the rule base keeps that is not a rule says so, general or not: its foot leads to "לא נכלל ככלל" on /companies */}
         {isNotRule(id) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
         {/* an open record's heading already says it is an open question */}
@@ -1117,14 +1136,14 @@ function CardOnWay({ id, fetched }: { id: string; fetched: CardFetch | undefined
   );
 }
 
-export function RuleCard({ id, data, headId, inline }: { id: string; data: ProvenanceData; headId?: string; inline?: boolean }) {
+export function RuleCard({ id, data, headId, inline, figure }: { id: string; data: ProvenanceData; headId?: string; inline?: boolean; /** The figure the card was opened from (`Item` "rule"): its row is marked. */ figure?: string }) {
   const record = ruleOf(data, id);
   // a rule the page ships only the head of: its card comes from its own file, fetched as it opens; once the file is in, the sheet's data
   // holds the record (`withFetched`)
   const head = record ? undefined : data.heads?.[id];
   const fetched = useCardFile(head ? id : null);
   // on a company's page only that company's part of the record (D30): its name, its own documents, the law and the regulator, its figures
-  const page = data.pageCompanies ?? (data.company ? [data.company] : []);
+  const page = pageCompaniesOf(data);
   if (!record) {
     if (!head) return <NoRecordCard id={id} headId={headId} />;
     // the heading the card will have, from the rule's head, with the title its chip shows and the page's companies its record will name
@@ -1183,9 +1202,9 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
         // rule records without a source link are shown as such, not hidden
         <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>
       )}
-      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs, tagCompanies(rule, data.ownDocs, { company: data.company }))}</p>}
+      {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs, tagCompanies(rule, data.ownDocs, { company: page }))}</p>}
       <RulePointers rule={rule} />
-      <RuleFigures rule={rule} id={id} pageValue={pageValue} />
+      <RuleFigures rule={rule} id={id} pageValue={pageValue} marked={figure} />
       <dl className="sheet-dl">
         {/* each source line says the day the site read it; the record's own date stands only on a card with no source */}
         {sources.length === 0 && (

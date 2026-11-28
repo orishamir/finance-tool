@@ -12,7 +12,7 @@ import { loadRules } from "../lib/data.server";
 import { fmt } from "../lib/format";
 import { ruleTitle } from "../lib/rule-title";
 import type { SiteValue } from "../lib/value";
-import { ProvenanceProvider, type ProvenanceData } from "./provenance";
+import { ProvenanceProvider, valueItem, type ProvenanceData } from "./provenance";
 import { RuleDetail, ValueSheet } from "./provenance-sheets";
 
 const today = "2026-11-26";
@@ -109,6 +109,18 @@ describe("a figure's note", () => {
     const english = sheet(sourced(5, { notes: "Rate as of March; see TXI OQ19 for the cap." }));
     expect(english).not.toContain("Rate as of March");
     expect(english).toContain(provenance.idRef.questionChip);
+  });
+});
+
+describe("a figure's head, as the figure was tapped", () => {
+  it("is the words a number was shown in, with no unit word after them, and the figure's name under it", () => {
+    const span = sourced(2, { unit: "years" });
+    const item = valueItem(span, "שנתיים", false, [], "תקופת הפיקדון");
+    if (item.kind !== "value") throw new Error("a figure opens a value's sheet");
+    const out = sheet(item.value, item.display === undefined ? {} : { display: item.display });
+    expect(out).toContain("שנתיים");
+    expect(out).not.toContain(provenance.unit.years);
+    expect(out).toContain("תקופת הפיקדון");
   });
 });
 
