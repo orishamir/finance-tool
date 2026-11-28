@@ -16,8 +16,8 @@
     {
       "url": "https://data.gov.il/he/datasets/bank_israel/375",
       "title": "data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים בישראל - כתובות וקישורים",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-25"
@@ -25,8 +25,8 @@
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=ebb61778-e34c-4e67-8fcf-0e643d9cf8c2&limit=200",
       "title": "data.gov.il: רשימת תאגידים בנקאיים, משאב בעברית (datastore API)",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "publisher": "Bank of Israel",
+      "publisher_he": "בנק ישראל",
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-25"

@@ -92,6 +92,22 @@ export interface CautiousLabel {
   code: "cautious";
   ruleId: string;
   notKnown: NotKnown;
+  /** A-11's two ends where the case is the inside tax (method F-107), so the figure's doubt says both and why. */
+  ends?: InsideTaxEndsLabel;
+}
+
+/**
+ * What of the index A-11's parts are (method F-107): the whole index; the part of it the site holds a yield for, its US shares, where they
+ * are not the whole (`part`); or an index the person added whose companies' countries are known only by its region (`region`).
+ */
+export type InsideTaxParts = "whole" | "part" | "region";
+
+/** A-11 at its two ends, fractions of the fund a year, why there are two (the case's `InsideTaxWhy`), and what of the index they are on. */
+export interface InsideTaxEndsLabel {
+  low: number;
+  high: number;
+  why: "claim" | "futures" | "synthetic" | "way";
+  parts: InsideTaxParts;
 }
 
 /**
@@ -118,8 +134,8 @@ export const labelWeight: Record<Label["code"], number> = {
  */
 export const RUN_FLAG_CODES: readonly string[] = [
   "A-30", "BANK-35", "G-03", "G-07", "G-09", "G-10", "G-12", "G-13", "G-14", "G-16", "G-20", "G-21", "G-23", "G-27", "G-32",
-  "G-34", "G-36", "G-39", "KGL-OQ15", "PEN-08", "PEN-OQ7", "PF-13", "PF-OQ18", "TXF-21", "TXF-22", "TXF-27", "TXF-OQ10", "TXF-OQ7", "TXG-OQ17", "TXK-06", "TXK-26",
-  "TXP-03", "TXP-11", "TXP-OQ20", "TXS-18", "TXS-OQ26",
+  "G-34", "G-36", "G-39", "KGL-OQ15", "PEN-08", "PEN-OQ7", "PF-13", "PF-OQ18", "TXF-21", "TXF-22", "TXF-27", "TXF-OQ10", "TXF-OQ29", "TXF-OQ30", "TXF-OQ7", "TXG-OQ17", "TXK-06", "TXK-26",
+  "TXP-03", "TXP-11", "TXP-OQ20", "TXS-18", "TXS-OQ24", "TXS-OQ26",
 ];
 
 /**

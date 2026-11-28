@@ -93,5 +93,6 @@
       "notes": "The United States' share of MSCI World, from MSCI's country weights for 30.10.2026 (library f69623d967c6b7e4)."
     }
   },
+  "net_deduction_rule": "TXF-59",
   "checked": "2026-10-25"
 }

@@ -264,7 +264,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
   it("a fund bought abroad carries no reporting label; a bank none, Interactive Brokers reports, Interactive Israel offers its service", () => {
     const abroad = view.options.find((o) => o.id === "abroad")!;
     expect(optionLabels(abroad.id).map((l) => l.id)).not.toContain("ask-self-report");
-    for (const f of abroad.funds) expect(fundLabels(f.rec, view.index, f.option).map((l) => l.id)).not.toContain("ask-self-report");
+    for (const f of abroad.funds) expect(fundLabels(f.rec, view.index, f.option, gapListFor(bundle, f.rec)).map((l) => l.id)).not.toContain("ask-self-report");
     expect(ids("leumi")).toEqual([]);
     expect(ids("interactive-brokers")).toContain("ask-self-report");
     expect(ids("interactive-israel")).toContain("ask-tax-service");
@@ -487,13 +487,13 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(row).not.toMatch(new RegExp(`<button[^>]*aria-label="[^"]*${numbers.doubt}[^"]*"`));
     expect(at.value.doubt).toBeUndefined();
     // its labels carry no chip on its tax (the one a fund whose annex reports a ruling has, citing it)
-    expect(fundLabels(f.rec, sp.index, f.option).map((l) => l.id).filter((id) => id.startsWith("tax-on-sale"))).toEqual([]);
+    expect(fundLabels(f.rec, sp.index, f.option, gapListFor(bundle, f.rec)).map((l) => l.id).filter((id) => id.startsWith("tax-on-sale"))).toEqual([]);
     const ruled = allFunds(sp).find((x) => x.rec.id === "1159250");
-    expect(ruled && fundLabels(ruled.rec, sp.index, ruled.option).map((l) => l.id)).toContain("tax-on-sale-ruling");
+    expect(ruled && fundLabels(ruled.rec, sp.index, ruled.option, gapListFor(bundle, ruled.rec)).map((l) => l.id)).toContain("tax-on-sale-ruling");
     // the same units bought abroad carry the Tel Aviv annex's ruling on their record, and are run on the site's reading with no chip
     const abroad = allFunds(sp).find((x) => x.rec.id === "ie00b5bmr087");
     if (!abroad?.rec.tax_ruling || abroad.option !== "abroad") throw new Error("ie00b5bmr087 is bought abroad and its record carries the ruling");
-    expect(fundLabels(abroad.rec, sp.index, abroad.option).map((l) => l.id).filter((id) => id.startsWith("tax-on-sale"))).toEqual([]);
+    expect(fundLabels(abroad.rec, sp.index, abroad.option, gapListFor(bundle, abroad.rec)).map((l) => l.id).filter((id) => id.startsWith("tax-on-sale"))).toEqual([]);
     const abroadValues = Object.values(abroad.byHouse).flatMap((w) => ("valueN" in w ? [w] : []));
     expect(abroadValues.length).toBeGreaterThan(0);
     for (const w of abroadValues) expect(w.value.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
@@ -543,7 +543,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(at.value.doubt).toBeUndefined();
     expect(at.value.labels).toContainEqual({ code: "reading", ruleId: "TXF-08" });
     // no chip on its row says the reading: its labels are those of a distributing US fund
-    expect(fundLabels(f.rec, sp.index, f.option).map((l) => l.id)).toEqual(fundLabels(voo, sp.index, f.option).map((l) => l.id));
+    expect(fundLabels(f.rec, sp.index, f.option, gapListFor(bundle, f.rec)).map((l) => l.id)).toEqual(fundLabels(voo, sp.index, f.option, gapListFor(bundle, voo)).map((l) => l.id));
     // its sheet tags the site's reading and names TXF-08 by its title
     const rules = loadRules();
     const record = rules["TXF-08"];

@@ -5,7 +5,7 @@
 // also names the site's own reading of the law (`TaxIndexOpenReading.siteReading`, D119), which a fund whose documents the site read is run
 // under alone, so its run never meets the case.
 import type { ProfileInput, UsedRule } from "./resolver.ts";
-import { labelWeight, type CautiousLabel, type FieldRole, type Flag, type Label, type NotKnown, type Outcome, type ResultFields, type RunContext } from "./result.ts";
+import { labelWeight, type CautiousLabel, type FieldRole, type Flag, type InsideTaxEndsLabel, type Label, type NotKnown, type Outcome, type ResultFields, type RunContext } from "./result.ts";
 import type { YearlyMove } from "./formulas/indexation.ts";
 import { assertNever } from "@finance-tool/schema";
 
@@ -16,7 +16,9 @@ export type FallReadingId = "lower" | "hold" | "carry";
  * (`principal`), a TASE foreign fund's own currency's exchange rate (`fx`), or the CPI.
  */
 export type TaxIndexReadingId = "principal" | "fx" | "cpi";
-export type ReadingId = FallReadingId | TaxIndexReadingId;
+/** The two ends of A-11 for a fund the site does not know (method F-107, "One reading, or two ends"). */
+export type InsideTaxReadingId = "low" | "high";
+export type ReadingId = FallReadingId | TaxIndexReadingId | InsideTaxReadingId;
 
 export interface FallReading {
   id: FallReadingId;
@@ -87,7 +89,42 @@ export interface TaxIndexOpenReading extends OpenReadingBase {
   siteReading: TaxIndexReadingId;
 }
 
-export type OpenReading = FallOpenReading | TaxIndexOpenReading;
+/**
+ * A-11 at two ends (method F-107, F-133): met by a fund the site does not know (`NotKnown`) whose inside tax the rules bound but do not settle.
+ * Its readings are the two ends; a split takes the cautious one, and its label carries both ends and why there are two (`ends`), so the
+ * figure's doubt can say them.
+ */
+export interface InsideTaxOpenReading extends OpenReadingBase {
+  kind: "inside-tax";
+  readings: readonly { id: InsideTaxReadingId }[];
+  ends: InsideTaxEndsLabel;
+}
+
+export type OpenReading = FallOpenReading | TaxIndexOpenReading | InsideTaxOpenReading;
+
+/** The question key of A-11's two ends in a run's readings (`RunContext.readings`): one per run, since a fund has one inside tax. */
+const INSIDE_TAX_QUESTION = "A-11";
+
+/** The open reading of A-11 at two ends, on the rule of the row or case that leaves them open (method F-107). */
+export function insideTaxReading(ruleId: string, ends: InsideTaxEndsLabel): InsideTaxOpenReading {
+  return { kind: "inside-tax", ruleId, question: INSIDE_TAX_QUESTION, onSplit: "cautious", readings: [{ id: "low" }, { id: "high" }], ends };
+}
+
+/**
+ * The flag a result carries where every reading of a case gave it the same: the question's own (`readingFlag`). A-11's two ends agree only
+ * where the tax moves nothing, and a figure with one end has no doubt to say: none.
+ */
+function agreementFlag(open: OpenReading): string | null {
+  switch (open.kind) {
+    case "fall":
+    case "tax-index":
+      return readingFlag(open.question);
+    case "inside-tax":
+      return null;
+    default:
+      return assertNever(open);
+  }
+}
 
 /**
  * TXS OQ26: whether the 2003 regulations that measure a foreign-investment fund's inflationary amount by its principal currency still operate
@@ -290,7 +327,7 @@ export function acrossReadings<R extends { flags: Flag[]; labels?: Label[]; rule
         return (results, first) => (results.every((r) => sameResult(r, first, fields)) ? null : explore({ ...chosen, [q]: null }));
       case "cautious": {
         if (!e.notKnown) throw new Error(`${q} takes the cautious reading only for a fund the site does not know; it was met for one it knows (RuleBook.taxIndex)`);
-        const label: CautiousLabel = { code: "cautious", ruleId: e.open.ruleId, notKnown: e.notKnown };
+        const label: CautiousLabel = { code: "cautious", ruleId: e.open.ruleId, notKnown: e.notKnown, ...(e.open.kind === "inside-tax" ? { ends: e.open.ends } : {}) };
         return (results) => cautiousAcross(results, fields, label);
       }
       default:
@@ -310,8 +347,8 @@ export function acrossReadings<R extends { flags: Flag[]; labels?: Label[]; rule
       const stood = split(results, first);
       if (stood) return stood;
       // the readings agree; the caveats of every reading stand beside the result, with the question's own flag
-      const code = readingFlag(q);
-      const flags = mergedFlags([...results, { flags: [{ code }] }]);
+      const code = agreementFlag(e.open);
+      const flags = mergedFlags([...results, { flags: code ? [{ code }] : [] }]);
       // what any reading rested on of the person's age and income stands too
       const profileUsed = first.profileUsed ? { profileUsed: (["age", "income"] as const).filter((x) => results.some((r) => r.profileUsed?.includes(x))) } : {};
       return { ...first, flags, ...(first.labels ? { labels: mergedLabels(results) } : {}), ...(first.rules ? { rules: mergedRules(results) } : {}), ...profileUsed };

@@ -1,0 +1,392 @@
+{
+  "id": "TXF-53",
+  "title": "What each company's own country withholds from a dividend paid to a foreign fund, before any treaty",
+  "title_he": "המס שמדינת החברה מנכה מדיבידנד לקרן זרה, לפני אמנה",
+  "text_he": "כל מדינה קובעת בחוק שלה כמה מס לנכות מדיבידנד שחברה בורסאית שלה משלמת לחברה או לקרן זרה שלא מסתמכת על אמנת מס. זה הכי הרבה שקרן נושאת על הדיבידנדים מאותה מדינה, ואמנה או הקלה בחוק של המדינה יכולות רק להוריד אותו. לפי המדינה: ארצות הברית {TXF-53:us}, יפן {TXF-53:jp}, בריטניה {TXF-53:uk}, קנדה {TXF-53:ca}, שווייץ {TXF-53:ch}, צרפת {TXF-53:fr}, גרמניה {TXF-53:de} והולנד {TXF-53:nl}.",
+  "figure_names_he": {
+    "us": "מס ארצות הברית על דיבידנד לקרן זרה",
+    "jp": "מס יפן על דיבידנד ממניה בורסאית לקרן זרה",
+    "uk": "מס בריטניה על דיבידנד לקרן זרה",
+    "ca": "מס קנדה על דיבידנד לקרן זרה",
+    "ch": "מס שווייץ על דיבידנד לקרן זרה",
+    "fr": "מס צרפת על דיבידנד לחברה זרה",
+    "de": "מס גרמניה על דיבידנד, כולל היטל הסולידריות",
+    "nl": "מס הולנד על דיבידנד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-11-28",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-11-28",
+  "figures": {
+    "us": {
+      "value": 30,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.irs.gov/publications/p515",
+        "title": "IRS, Publication 515 (2026), Withholding of Tax on Nonresident Aliens and Foreign Entities",
+        "publisher": "US Internal Revenue Service",
+        "strength": "primary",
+        "locator": "Withholding of Tax",
+        "quote": "Most types of U.S. source income received by a foreign person are subject to U.S. tax of 30%"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-53"
+      ],
+      "state": "sourced",
+      "notes": "The company country's own rate on a dividend to a foreign company or fund claiming no treaty, the most a fund bears there (method F-107 (b), the high end)."
+    },
+    "jp": {
+      "value": 15.315,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.nta.go.jp/publication/pamph/gensen/shikata_r08/pdf/15.pdf",
+        "title": "National Tax Agency, Withholding Tax Guide (2026 edition, translation)",
+        "publisher": "National Tax Agency of Japan",
+        "strength": "primary",
+        "page": 42,
+        "locator": "p.42, Dividends from listed stocks, etc."
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-53"
+      ],
+      "state": "sourced",
+      "notes": "The company country's own rate on a dividend to a foreign company or fund claiming no treaty, the most a fund bears there (method F-107 (b), the high end). Listed shares; income tax with the special income tax for reconstruction."
+    },
+    "uk": {
+      "value": 0,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gov.uk/hmrc-internal-manuals/investment-funds/ifm05600",
+        "title": "HMRC, IFM05600, Investors in property authorised investment funds: non-resident investors",
+        "publisher": "HM Revenue & Customs",
+        "strength": "primary",
+        "quote": "These are treated in the same way as dividends paid by UK companies, and no tax is deducted"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-53"
+      ],
+      "state": "sourced",
+      "notes": "The company country's own rate on a dividend to a foreign company or fund claiming no treaty, the most a fund bears there (method F-107 (b), the high end). No tax is deducted."
+    },
+    "ca": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/ic76-12/ic76-12-8-22e.pdf",
+        "title": "CRA, IC76-12R8, Applicable rate of part XIII tax",
+        "publisher": "Canada Revenue Agency",
+        "strength": "primary",
+        "page": 1,
+        "locator": "p.1, para. 6",
+        "quote": "Although Part XIII generally specifies a withholding tax rate of 25%"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-53"
+      ],
+      "state": "sourced",
+      "notes": "The company country's own rate on a dividend to a foreign company or fund claiming no treaty, the most a fund bears there (method F-107 (b), the high end)."
+    },
+    "ch": {
+      "value": 35,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.estv.admin.ch/dam/de/sd-web/pecnSH8azAHM/dba-steuerentlastungen-2026-de.pdf",
+        "title": "ESTV, Steuerentlastungen für schweizerische Dividenden und Zinsen auf Grund von Doppelbesteuerungsabkommen, Stand 1.1.2026",
+        "publisher": "Swiss Federal Tax Administration",
+        "strength": "primary",
+        "page": 1,
+        "quote": "Eidg. Verrechnungssteuer von 35 %"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-53"
+      ],
+      "state": "sourced",
+      "notes": "The company country's own rate on a dividend to a foreign company or fund claiming no treaty, the most a fund bears there (method F-107 (b), the high end)."
+    },
+    "fr": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://bofip.impots.gouv.fr/bofip/2674-PGP.html/identifiant=BOI-RPPM-RCM-30-30-10-20-20220629",
+        "title": "BOFiP, BOI-RPPM-RCM-30-30-10-20, with BOI-IS-LIQ-10 for the 25% corporate rate",
+        "publisher": "Direction générale des Finances publiques",
+        "strength": "primary",
+        "locator": "§20"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-53"
+      ],
+      "state": "sourced",
+      "notes": "The company country's own rate on a dividend to a foreign company or fund claiming no treaty, the most a fund bears there (method F-107 (b), the high end). To a legal person, financial years from 2022."
+    },
+    "de": {
+      "value": 26.375,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gesetze-im-internet.de/estg/__43a.html",
+        "title": "Einkommensteuergesetz §43a(1), with Solidaritätszuschlaggesetz §§3, 4",
+        "publisher": "Bundesministerium der Justiz",
+        "strength": "primary",
+        "locator": "§43a(1)",
+        "quote": "25 Prozent des Kapitalertrags"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-53"
+      ],
+      "state": "sourced",
+      "notes": "The company country's own rate on a dividend to a foreign company or fund claiming no treaty, the most a fund bears there (method F-107 (b), the high end). 25% plus the 5.5% solidarity surcharge on it (25 × 1.055, the rule base's arithmetic)."
+    },
+    "nl": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/zakelijk/winst/dividendbelasting/als_u_dividend_uitkeert/als_u_dividend_uitkeert",
+        "title": "Belastingdienst, Dividendbelasting als u dividend uitkeert",
+        "publisher": "Belastingdienst",
+        "strength": "primary",
+        "quote": "Het tarief van de dividendbelasting is 15%"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-53"
+      ],
+      "state": "sourced",
+      "notes": "The company country's own rate on a dividend to a foreign company or fund claiming no treaty, the most a fund bears there (method F-107 (b), the high end)."
+    }
+  },
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.irs.gov/publications/p515#:~:text=Most%20types%20of%20U.S.%20source%20income%20received%20by%20a%20foreign%20person%20are%20subject%20to%20U.S.%20tax%20of%2030%25",
+      "title": "Publication 515 (2026), Withholding of Tax on Nonresident Aliens and Foreign Entities",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "Most types of U.S. source income received by a foreign person are subject to U.S. tax of 30%",
+      "checked": "2026-11-06",
+      "qualifier": "(library 60f3b61756cf9e9c)"
+    },
+    {
+      "url": "https://www.nta.go.jp/publication/pamph/gensen/shikata_r08/pdf/15.pdf#page=42",
+      "title": "Withholding Tax Guide (translation of the 2026 edition of Gensen Choushu no Shikata)",
+      "publisher": "nta.go.jp",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.42",
+      "locator_he": "עמוד 42",
+      "page": 42,
+      "checked": "2026-11-28",
+      "qualifier": "(library cd561ed4bd2f719f)"
+    },
+    {
+      "url": "https://www.nta.go.jp/publication/pamph/gensen/shikata_r08/pdf/15.pdf#page=41",
+      "title": "Withholding Tax Guide (translation of the 2026 edition of Gensen Choushu no Shikata)",
+      "publisher": "nta.go.jp",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.41, item (6)",
+      "locator_he": "עמוד 41, פרט (6)",
+      "page": 41,
+      "checked": "2026-11-28",
+      "qualifier": "(library cd561ed4bd2f719f)"
+    },
+    {
+      "url": "https://www.nta.go.jp/publication/pamph/gensen/shikata_r08/pdf/15.pdf#page=43",
+      "title": "Withholding Tax Guide (translation of the 2026 edition of Gensen Choushu no Shikata)",
+      "publisher": "nta.go.jp",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.43",
+      "locator_he": "עמוד 43",
+      "page": 43,
+      "quote": "it is not necessary to withhold special income tax for reconstruction together",
+      "checked": "2026-11-28",
+      "qualifier": "(library cd561ed4bd2f719f)"
+    },
+    {
+      "url": "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/ic76-12/ic76-12-8-22e.pdf#page=1",
+      "title": "IC76-12R8, Applicable rate of part XIII tax on amounts paid or credited to persons in countries with which Canada has a tax convention",
+      "publisher": "canada.ca",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-28",
+      "qualifier": "(library cf78301811fcd135)"
+    },
+    {
+      "url": "https://www.canada.ca/content/dam/cra-arc/formspubs/pub/ic76-12/ic76-12-8-22e.pdf#page=3",
+      "title": "IC76-12R8, Applicable rate of part XIII tax on amounts paid or credited to persons in countries with which Canada has a tax convention",
+      "publisher": "canada.ca",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "quote": "the payer must either withhold the full 25% tax",
+      "checked": "2026-11-28",
+      "qualifier": "(library cf78301811fcd135)"
+    },
+    {
+      "url": "https://www.estv.admin.ch/dam/de/sd-web/pecnSH8azAHM/dba-steuerentlastungen-2026-de.pdf#page=1",
+      "title": "Steuerentlastungen für schweizerische Dividenden und Zinsen auf Grund von Doppelbesteuerungsabkommen, Stand 1.1.2026",
+      "publisher": "estv.admin.ch",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "checked": "2026-11-28",
+      "qualifier": "(library b8ddbef10e7d8095)"
+    },
+    {
+      "url": "https://bofip.impots.gouv.fr/bofip/2674-PGP.html/identifiant=BOI-RPPM-RCM-30-30-10-20-20220629",
+      "title": "BOI-RPPM-RCM-30-30-10-20",
+      "publisher": "bofip.impots.gouv.fr",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "§20",
+      "locator_he": "§20",
+      "checked": "2026-11-28",
+      "qualifier": "(library 49c54c21a089386a)"
+    },
+    {
+      "url": "https://www.gesetze-im-internet.de/estg/__43a.html",
+      "title": "Einkommensteuergesetz § 43a",
+      "publisher": "gesetze-im-internet.de",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "§43a(1)",
+      "locator_he": "§43א(1)",
+      "checked": "2026-11-28",
+      "qualifier": "(library 25cdf208dc378a1c)"
+    },
+    {
+      "url": "https://www.gesetze-im-internet.de/solzg_1995/__3.html",
+      "title": "Solidaritätszuschlaggesetz 1995 § 3",
+      "publisher": "gesetze-im-internet.de",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "§3(1) no.5",
+      "checked": "2026-11-28",
+      "qualifier": "(library 259b2be21d91f243)"
+    },
+    {
+      "url": "https://www.gesetze-im-internet.de/invstg_2018/__11.html",
+      "title": "Investmentsteuergesetz § 11",
+      "publisher": "gesetze-im-internet.de",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "§11(1) no.2, (2)",
+      "checked": "2026-11-28",
+      "qualifier": "(library c5c837c0b4f1c4d1)"
+    },
+    {
+      "url": "https://www.msci.com/documents/10199/178e6643-6ae6-47b9-82be-e1fc565ededb#page=2",
+      "title": "MSCI World Index (USD) index factsheet",
+      "publisher": "MSCI",
+      "publisher_he": "MSCI",
+      "kind": "other",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "checked": "2026-11-28",
+      "qualifier": "(library f69623d967c6b7e4)"
+    },
+    {
+      "url": "https://www.msci.com/documents/10199/db217f4c-cc8c-4e21-9fac-60eb6a47faf0#page=2",
+      "title": "MSCI Europe Index (USD) index factsheet",
+      "publisher": "MSCI",
+      "publisher_he": "MSCI",
+      "kind": "other",
+      "strength": "institution",
+      "locator": "p.2",
+      "locator_he": "עמוד 2",
+      "checked": "2026-11-28",
+      "qualifier": "(library 41bd19e0f417f2d6)"
+    },
+    {
+      "url": "https://www.gov.uk/hmrc-internal-manuals/investment-funds/ifm05600",
+      "title": "IFM05600 - Investors in property authorised investment funds (PAIFs): non-resident investors",
+      "publisher": "gov.uk",
+      "kind": "other",
+      "strength": "primary",
+      "quote": "These are treated in the same way as dividends paid by UK companies, and no tax is deducted",
+      "checked": "2026-11-28",
+      "qualifier": "(library 74a4daa789883a23)"
+    },
+    {
+      "url": "https://bofip.impots.gouv.fr/bofip/2066-PGP.html/identifiant=BOI-IS-LIQ-10-20200610",
+      "title": "BOI-IS-LIQ-10",
+      "publisher": "bofip.impots.gouv.fr",
+      "kind": "other",
+      "strength": "primary",
+      "checked": "2026-11-28",
+      "qualifier": "(library 980d468764830d84)"
+    },
+    {
+      "url": "https://www.gesetze-im-internet.de/solzg_1995/__4.html",
+      "title": "Solidaritätszuschlaggesetz 1995 § 4",
+      "publisher": "gesetze-im-internet.de",
+      "kind": "other",
+      "strength": "primary",
+      "checked": "2026-11-28",
+      "qualifier": "(library dd28933ed36da19c)"
+    },
+    {
+      "url": "https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/zakelijk/winst/dividendbelasting/als_u_dividend_uitkeert/als_u_dividend_uitkeert",
+      "title": "Dividendbelasting als u dividend uitkeert",
+      "publisher": "belastingdienst.nl",
+      "kind": "other",
+      "strength": "primary",
+      "quote": "Het tarief van de dividendbelasting is 15%",
+      "checked": "2026-11-28",
+      "qualifier": "(library b50b70a8b2804ee2)"
+    }
+  ]
+}

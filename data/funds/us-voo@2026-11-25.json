@@ -72,10 +72,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-08",
-        "ETF-09"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-collected",
       "notes": "Not printed as one number. Vanguard's profile page prints the fund's total return by NAV, by market price and its benchmark's for each calendar year 2011 to 2025; they are in tracking_record. Fund basis: 'Total return by NAV' (the market-price column is not copied), in US dollars. Benchmark as the page names it: 'S&P 500 Index'. A total return on the S&P 500 with no word on withholding, like IVV. The page is a web page drawn by script, not a binding document; it was read from the rendered page by the lead, not from a file. The difference is not computed here (data-update rule)."
@@ -84,10 +81,10 @@
     "fund_level_withholding_drag": null
   },
   "dimensions": {
-    "foreign-withholding-domicile": "covered:TXF-12",
-    "distribution-policy": "covered:ETF-28",
-    "currency": "covered:ETF-28",
-    "fee-management-balance": "covered:ETF-28"
+    "foreign-withholding-domicile": "covered",
+    "distribution-policy": "covered",
+    "currency": "covered",
+    "fee-management-balance": "covered"
   },
   "prospectus": {
     "url": "https://fund-docs.vanguard.com/F0968.pdf",

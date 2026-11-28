@@ -6,6 +6,7 @@ import { buildIndicesBundle } from "./providers.server";
 import { fundDraftOf, fundFromDraft, withCustomEntries } from "./custom-entries";
 import type { WorkbenchInputs } from "./providers";
 import { differenceOf, entered, sheetRules, type SiteValue } from "./value";
+import { fmt } from "./format";
 import { ACCOUNT_LINES, FUND_LINES } from "./run-rules";
 import { feesData } from "./fees.server";
 import { houseDeal } from "./deal-account/house-deal";
@@ -299,7 +300,7 @@ describe("invest page computation", () => {
     expect(named).toBeGreaterThan(0);
   });
 
-  it("prices an Israeli fund the person typed on the cautious reading of TXS-14 where the readings split, its cost before tax with no doubt and no label (F-04, method §13, D119)", () => {
+  it("prices an Israeli fund the person typed on the cautious reading of TXS-14 where the readings split, its cost before tax with no doubt or label of TXS-14 (F-04, method §13, D119)", () => {
     // a typed Israeli tracking fund on the S&P 500, on a plan whose prices rise while the dollar stands still: the two readings split
     const typed = fundFromDraft({ ...fundDraftOf(null, { buyAt: "manager", country: "IL" }), buyAt: "manager" as const, payout: "accumulating" as const, hedged: false, name: "typed", fixed: 0.1, variable: 0, trustee: 0 }, "custom-fund-typed", "index-sp500", t);
     const b = withCustomEntries(bundle, [typed]);
@@ -309,12 +310,16 @@ describe("invest page computation", () => {
     const f = v.options.flatMap((o) => o.funds).find((x) => x.rec.id === "custom-fund-typed");
     const priced = f ? Object.values(f.byHouse).filter((x): x is Extract<typeof x, { value: SiteValue }> => "value" in x) : [];
     expect(priced.length).toBeGreaterThan(0);
+    const usYield = need(ix.exposure?.us_dividends?.yield.value, "the S&P 500's yield") as number;
+    const usRate = need(b.rules.find((r) => r.id === "TXF-53")?.figures?.us as { value: number } | undefined, "TXF-53's US rate").value;
+    const insideHigh = (usRate / 100) * usYield;
     for (const at of priced) {
       // what is left rests on the exit tax: the site's cautious reading, for a fund whose documents it did not read, with its doubt
       expect(at.value.labels).toContainEqual({ code: "cautious", ruleId: "TXS-14", notKnown: "documents" });
-      expect(at.value.doubt).toBe(numbers.readingDoubt["TXS-14"]?.documents);
-      // the account's cost before tax reads no tax index: no doubt, no label of TXS-14, no statement
-      expect(at.cost.doubt).toBeUndefined();
+      // beside it, the tax inside the fund, whose way of following is not said: 0 to TXF-53's 30% of the S&P 500's yield (F-107)
+      expect(at.value.doubt).toBe(`${numbers.insideTaxDoubt.way(fmt.pctNonZero(0), fmt.pctNonZero(insideHigh), "whole")} ${numbers.readingDoubt["TXS-14"]?.documents}`);
+      // the account's cost before tax reads no tax index: no doubt of TXS-14, no label of it, no statement; the tax inside the fund's stays
+      expect(at.cost.doubt).toBe(numbers.insideTaxDoubt.way(fmt.pctNonZero(0), fmt.pctNonZero(insideHigh), "whole"));
       expect(at.cost.labels?.some((l) => l.ruleId === "TXS-14") ?? false).toBe(false);
       expect(at.cost.statements).toBeUndefined();
     }
@@ -743,13 +748,14 @@ describe("what each figure's sheet lists", () => {
   });
 
   it("an Irish fund that holds the US shares lists the US tax on their dividends (F-107, A-11); a swap fund and an Israeli fund list none", () => {
-    const tax = inputs(irish.best!.value)[words.pair.fundInputs.usWithholding]!;
+    const tax = inputs(irish.best!.value)[words.pair.fundInputs.insideTax]!;
     expect(tax.computed_from!.formula).toBe("F-107");
     // whether the fund obtains the treaty rate is open (TXF OQ7): the figure and the value it costs both say so
     expect(tax.flags).toContain("TXF-OQ7");
     expect(irish.best!.value.flags).toContain("TXF-OQ7");
     const of = inputs(tax);
-    expect(of[words.pair.fundInputs.usRate]!.value).toBe(15);
+    const rateName = need(need(bundle.rules.find((r) => r.id === "TXF-16"), "TXF-16").figure_names_he?.irish_fund_us_dividend_treaty_rate, "TXF-16's rate by name");
+    expect(of[words.pair.fundInputs.rate(rateName)]!.value).toBe(15);
     expect(of[words.pair.fundInputs.usYield]!.value).toBe(bundle.exposures.find((e) => e.id === "index-sp500")!.us_dividends!.yield.value);
     // the S&P 500 is made of US companies: no weight to list
     expect(of[words.pair.fundInputs.usWeight]).toBeUndefined();
@@ -759,8 +765,8 @@ describe("what each figure's sheet lists", () => {
     const swapView = buildInvest({ bundle: { ...bundle, funds: [...bundle.funds, asSwap] }, index: sp, plan: plan({ currentAccounts: true }) });
     const swap = swapView.options.flatMap((o) => o.funds).find((f) => f.rec.id === "ie-swap-case");
     expect(swap?.best).toBeDefined();
-    expect(inputs(swap!.best!.value)[words.pair.fundInputs.usWithholding]).toBeUndefined();
-    expect(inputs(israeli.best!.value)[words.pair.fundInputs.usWithholding]).toBeUndefined();
+    expect(inputs(need(swap?.best, "the swap fund's best pair").value)[words.pair.fundInputs.insideTax]).toBeUndefined();
+    expect(inputs(israeli.best!.value)[words.pair.fundInputs.insideTax]).toBeUndefined();
   });
 
   it("A-07 from a report that prints no fees charged lists the fees listed today, which F-92 (b) measures those years against", () => {
@@ -1011,6 +1017,22 @@ describe("an Israeli fund that may be measured by a principal currency (F-04, TX
       expect(f.reason, id).toBeUndefined();
       expect(priced(f), id).toBe(true);
       expect(f.best?.valueN, id).toBeCloseTo(was ?? Number.NaN, 6);
+    }
+  });
+});
+
+describe("the sheet's F-133 (b) figure is the A-07 the run charged (F-133, F-92 (b))", () => {
+  it("on Kesem's ACWI swap fund, which fell short of the net index, and on SWDA, which led it", () => {
+    const acwi = need(indexById(bundle, "index-msci-acwi"), "the MSCI ACWI");
+    const world = need(indexById(bundle, "index-msci-world"), "MSCI World");
+    for (const [index, fundId] of [[acwi, "1147362"], [world, "ie00b4l5y983"]] as const) {
+      const v = buildInvest({ bundle, index, plan: plan() });
+      const providerId = need(v.houses.find((h) => v.options.some((o) => o.funds.some((f) => f.rec.id === fundId && f.byHouse[h.provider.id] && "valueN" in f.byHouse[h.provider.id]!)))?.provider.id, `a house that prices ${fundId}`);
+      const pc = need(pairCosts({ bundle, index, plan: plan(), fundId, providerId }), `${fundId}'s costs`);
+      const row = need(pairRow({ bundle, index, plan: plan(), fundId, providerId, fxChange: 0 }), `${fundId}'s run`);
+      const inputs = Object.values((pc.fund.computed_from?.inputs ?? {}) as Record<string, SiteValue>);
+      const raised = need(inputs.find((x) => x.computed_from?.formula === "F-133"), `${fundId}'s F-133 figure`);
+      expect(raised.value, fundId).toBeCloseTo(need(row.run.detail.trackingGap, "the run's A-07") * 100, 3);
     }
   });
 });

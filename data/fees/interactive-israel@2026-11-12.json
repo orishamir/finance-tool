@@ -53,8 +53,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "notes": "Printed per share: 'USD (Shares)' 0.01 dollar a share, minimum '2.5 USD' per trade (unit usd_per_share, 2026-10-25 schema S2). Same page: 'עמלת מקסימום במניות ארה\"ב הינה 2% משווי העסקה' (recorded in cap, not max); the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך'; for fractional shares in the US and Canada the commission and minimum are computed on the share count rounded up to a whole share. The commission page (inter-il.com/commission) prints the same '0.01$ למניה מינימום 2.5$' for 'חשבון אמריקאי / אירי / עסקי', and its FAQ adds that regulatory fees (SEC/TAF) apply on sales. The regulation page FAQ: the 2.5$ minimum buys up to 250 shares, above that 0.01$ a share. The PDF repeats on every page that the fees are a personal offer valid if the account is opened within 30 days, and also says 'תעריף זה חל על כל לקוח של החברה'. TASE lines (ILS 0.06% minimum 10 ILS, and a 0.08% custody fee on TASE shares and ETFs with no period printed) are not recorded as lines: the company's written answer of 15.11.2026 says TASE trading is possible only from a limited company's account with a withholding exemption (BRK-65)."
@@ -76,8 +75,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "notes": "'2.5 USD' per trade (unit usd_per_trade since 2026-10-25)."
@@ -100,8 +98,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "notes": "'עמלת מקסימום במניות ארה\"ב הינה 2% משווי העסקה'. The tariff does not say what applies when the cap is below the minimum (at IBKR the cap wins); at 400 NIS a trade the 2% cap is about USD 2.56, so it does not bite. Commission = min(cap x trade, max(minimum, rate x shares))."
@@ -142,8 +139,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "notes": "'עבור מניות/תעודות סל הנסחרות באירופה - התעריף הוא 0.15% משווי העסקה, מינימום 2.5 בהתאם למטבע העסקה'. The table rows agree for EUR, GBP and CHF (0.15, minimum 2.5 of each). This line covers a UCITS ETF on the LSE such as CSPX, which trades in USD there (ETF-27/28)."
@@ -165,8 +161,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "notes": "'מינימום 2.5 בהתאם למטבע העסקה' (p.1), read plainly: 2.5 in the trade's own currency (BRK-40). The share table prints it for each currency it lists, 'EUR (%) 0.15 2.5 EUR', 'GBP (%) 0.15 2.5 GBP', and its one USD row 'USD (Shares) 0.01 2.5 USD'; so a listing traded in USD on the LSE, such as CSPX, pays at least 2.5 USD, and one traded in EUR, GBP or CHF 2.5 in its own currency. The same page says the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך'; what that sentence means for a minimum set in the trade's currency is open (BRK OQ25, on the line's open_questions). The tariff of 17.09.2026 (library 716e0344c4fd7233) prints the same page 1."
@@ -210,8 +205,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "notes": "The tariff's only custody fee is 'עמלת אחזקה (Custody Fee) בשיעור של 0.08%' on shares and ETFs traded on TASE (p.1), which a private client cannot buy here (BRK-65); none of the 8 pages prints a custody, holding or management fee on securities abroad, and p.7 says the tariff applies to every customer. The company's pages say the same: 'אנו לא גובים דמי ניהול, בנוסף אין דמי שמירת ניירות ערך' (commission page FAQ), 'אין דמי החזקה כלל' (regulation page). Interactive Brokers' own pass-through custody table (other-fees page) names no US, UK or Irish market. Kept at 0 under the general change clause (p.8)."
@@ -253,8 +247,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "notes": "None of the tariff's 8 pages prints an account, system, management, inactivity, standing-order or dividend-handling fee, and p.7 says the tariff applies to every customer. The company's pages agree: 'דמי מערכת: 0 ש\"ח', 'דמי ניהול: 0 ₪ - דרכינו אין דמי ניהול!' (commission page), 'אין דמי אי פעילות כלל' (regulation and open-account pages). Costs outside the tariff (withdrawals after the first in a month, regulatory fees on US sales, optional market data, Interactive Brokers' inactivity rule for introduced accounts, interest on a positive balance) are in left_out. applies_to names foreign securities only, the classes a private client can trade here (TASE is for a limited company's account only, BRK-65), so that a zero account fee does not make the tariff look complete for a TASE fund."
@@ -297,8 +290,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "notes": "Printed '0.002 * Trade Value' in the column 'עמלת ביצוע' of the row 'ILS (%)'; the row's header says percent, so it is recorded as 0.002%. The commission page agrees with that reading: 'המרה משקל לדולר אמריקאי בעלות של ₪10 בלבד, ולפי שער רציף! בהמרה של עד חצי מליון שקלים' (10 NIS is 0.002% of 500,000 NIS). The PDF: 'עמלת מינימום להמרת שקלים היא 10 ש״ח ותגבה במטבע הבסיס של החשבון'. Other currencies: 0.005 * Trade Value with a minimum per currency (USD: 5 USD)."
@@ -320,8 +312,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "notes": "'10 ILS'; 'עמלת מינימום להמרת שקלים היא 10 ש״ח'."
@@ -354,8 +345,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "empty_because": "unknown",
@@ -386,8 +376,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "notes": "'בזמן ביצוע המרת מטבע במסגרת תכנית השקעה אוטומטית קבועה אין חיוב בגין עמלת המרת מט\"ח' (p.6), printed for every plan conversion; outside the plan 'תיגבה עמלת המרה בהתאם לתעריפון'. The plan is open to any customer from the account portal (Recurring Investments), at any frequency from daily to yearly, and buys US and European shares and ETFs at the regular commission ('עמלת המסחר בעת ביצוע פעולה בתוכנית החיסכון הינה עמלת מסחר רגילה', plan FAQ), in fractions where needed. p.7 also says the company may remove 'הטבה אשר ניתנה ללקוח' without notice; the tariff does not call the plan's waiver a benefit."
@@ -421,8 +410,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-40",
-          "BRK-41"
+          "BRK-40"
         ],
         "state": "sourced",
         "empty_because": "unknown",

@@ -6,7 +6,7 @@ import { dealCharges } from "./ledgers/deal-account.ts";
 import { balanceFee, corporateEventFee, currentAccountFee, custodyFee, depositFee, feeForMonth, fixedFee, navBought, tradeCommission } from "./formulas/fees.ts";
 import { earlySettlement, limitStanding, moneyStory } from "./formulas/study-story.ts";
 import { kindRecord, stretchRange, trackingBeyondFees } from "./formulas/fund-gap.ts";
-import { irishFundUsWithholding } from "./formulas/fund-withholding.ts";
+import { heldDividendTax, netDeduction } from "./formulas/inside-tax.ts";
 import { trailingDistributionYield } from "./formulas/distribution-yield.ts";
 import { averageRange, promotedDrag } from "./formulas/fund-promotion.ts";
 import {
@@ -50,7 +50,8 @@ export const formulas = {
   "F-04": fxPath,
   "F-05": contributions,
   "F-106": paidInAsEntered,
-  "F-107": irishFundUsWithholding,
+  "F-107": heldDividendTax,
+  "F-133": netDeduction,
   "F-132": trailingDistributionYield,
   "F-07": annualToMonthly,
   "F-08": runSecurities,

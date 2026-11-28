@@ -147,6 +147,22 @@ describe("extract-sources: fixture Source lines", () => {
     expect(cleanLocator(", file p.2 (gazette p.375)")).toBe("file p.2 (gazette p.375)");
   });
 
+  it("a source on data.gov.il names the authority that owns the dataset, not the portal (2026-11-28)", () => {
+    const publishers = { "data.gov.il": { publisher: "data.gov.il", publisher_he: "מאגר המידע הממשלתי (data.gov.il)", kind: "dataset" as const } };
+    const line =
+      "- Source: [גמל-נט](https://data.gov.il/api/3/action/package_show?id=gemelnet) · checked 2026-11-28 · primary; [Gemel-Net page](https://data.gov.il/he/datasets/cma/gemelnet) · checked 2026-11-28 · primary; [Dictionary](https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100) · checked 2026-11-28 · primary; [Banks list](https://data.gov.il/he/datasets/bank_israel/375) · checked 2026-11-28 · primary; [Latest period](https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20MAX(%22REPORT_PERIOD%22)%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22) · checked 2026-11-28 · primary; [Terms of use](https://data.gov.il/he/terms-of-use) · checked 2026-11-28 · primary; [Unlisted](https://data.gov.il/api/3/action/package_show?id=not-a-known-dataset) · checked 2026-11-28 · primary";
+    const { sources } = extractFromLine(line, ctx({ publishers }));
+    expect(sources.map((x) => [x.publisher, x.publisher_he])).toEqual([
+      ["Capital Market Authority", "רשות שוק ההון, ביטוח וחיסכון"],
+      ["Capital Market Authority", "רשות שוק ההון, ביטוח וחיסכון"],
+      ["Capital Market Authority", "רשות שוק ההון, ביטוח וחיסכון"],
+      ["Bank of Israel", "בנק ישראל"],
+      ["Capital Market Authority", "רשות שוק ההון, ביטוח וחיסכון"],
+      ["data.gov.il", "מאגר המידע הממשלתי (data.gov.il)"],
+      ["data.gov.il", "מאגר המידע הממשלתי (data.gov.il)"],
+    ]);
+  });
+
   it("a link titled by its page keeps that page before the place the text after it names (TXF-48, 2026-11-12)", () => {
     const line = '- Source: [Annual report 2025](https://example.org/r.pdf#page=104), p.104, note 5, "Dividend income"; [p.119](https://example.org/r.pdf#page=119), note 10, "Non-reclaimable overseas income withholding tax" · checked 2026-11-12 · institution';
     const { sources } = extractFromLine(line, ctx());

@@ -31,8 +31,8 @@
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=6d47d6b5-cb08-488b-b333-f1e717b1e1bd&limit=1000&filters={\"REPORT_PERIOD\":202609}",
       "title": "פנסיה-נט 202609 (רשות שוק ההון, data.gov.il)",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-11-07"

@@ -18,6 +18,7 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { SeeAlso, SourceStanding } from "@finance-tool/schema";
+import { dataGovOwner } from "../src/dataset-owners.ts";
 import { questionCodesIn, readFormulaIds, readRuleBaseIds, type RuleBlock } from "../src/references.ts";
 import { readRegistry, scopeFromLine, scopeLineOf } from "../src/scope.ts";
 import { isCopySource } from "../src/validate.ts";
@@ -474,7 +475,7 @@ export const QUALIFIER_STANDING: readonly { match: RegExp; standing: SourceStand
   // a company's or an index provider's own document, often a named example
   {
     match:
-      /^\(index provider's own document\b|^\((?:TASE|TASE Ltd)'s\b|^\((?:BlackRock|Invesco|Meitav)'s own\b|^\(the (?:fund|bank)'s own\b|^\(its own funds?\b|^\(each manager's own\b|^\(percent display, Meitav's own page\)$|^\(named example\)$/,
+      /^\(index provider's own document\b|^\((?:TASE|TASE Ltd)'s\b|^\((?:BlackRock|Invesco|Meitav)'s own\b|^\(the (?:fund|bank)'s own\b|^\(its own funds?\b|^\(each manager's own\b|^\(percent display, Meitav's own page\)$|^\((?:named )?example\)$/,
     standing: "none",
   },
   // an official body's statement, report, ruling or explanation, which its kind and strength already name
@@ -673,7 +674,8 @@ export function extractFromLine(rawLine: string, ctx: LineContext): LineResult {
     }
     const strength: SourceStrength = word0 === "primary" || word0 === "institution" || word0 === "secondary" ? word0 : "secondary";
 
-    const pub = ctx.publishers?.[host];
+    // a dataset on the government data portal is published by the authority that owns it, never by the portal
+    const pub = dataGovOwner(url) ?? ctx.publishers?.[host];
     const title = written || host;
     // the longest matching token wins across the table (tokens nest); a tie keeps the table's order. A link whose title names an
     // amendment is not the document a row names, unless the row's own token names the amendment: an amendment's title holds the name

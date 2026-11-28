@@ -7,7 +7,8 @@ import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { brandsTable, institutionsTable, type ExposureRecord, type FundRecord, type InstitutionRegistryRow } from "@finance-tool/schema";
 import { brands as brandsCopy } from "../copy";
-import { refOfExposure } from "./invest";
+import { gapListFor, refOfExposure } from "./invest";
+import type { GapList } from "@finance-tool/engine";
 import { feeAbsent } from "./providers";
 import { fundLabels, type Label } from "./labels";
 import { loadCma, root, today } from "./data.server";
@@ -121,15 +122,17 @@ const indexWordAtStart = new RegExp(`^${brandsCopy.funds.indexWord}\\s+`);
 
 export function brandFunds(brand: Brand): BrandFundGroup[] {
   if (brand.fundManagers.length === 0) return [];
-  const exposures = new Map(loadExposures().map((e) => [e.id, e]));
-  const recs = loadFunds().filter((f) => brand.fundManagers.includes(f.manager));
-  const rows = recs.map((rec) => ({ kind: fundKindOf(rec), row: fundRow(rec, exposures.get(rec.exposure_id ?? "") ?? null) }));
+  const all = { funds: loadFunds(), exposures: loadExposures() };
+  const exposures = new Map(all.exposures.map((e) => [e.id, e]));
+  const recs = all.funds.filter((f) => brand.fundManagers.includes(f.manager));
+  // each fund's years compared on its index's list, as the indices page compares them (F-92 (d)), so its labels read the run's case
+  const rows = recs.map((rec) => ({ kind: fundKindOf(rec), row: fundRow(rec, exposures.get(rec.exposure_id ?? "") ?? null, gapListFor(all, rec)) }));
   return kindOrder
     .map((kind) => ({ kind, funds: rows.filter((r) => r.kind === kind).map((r) => r.row).sort((a, b) => heCollator.compare(a.name, b.name)) }))
     .filter((g) => g.funds.length > 0);
 }
 
-function fundRow(rec: FundRecord, exposure: ExposureRecord | null): BrandFundRow {
+function fundRow(rec: FundRecord, exposure: ExposureRecord | null, list: GapList): BrandFundRow {
   // D31: the fund manager's own fee, shown on its own fund
   const fee = (key: "fixed_management" | "variable_management" | "trustee"): SiteValue | null => {
     const v = rec.fees[key];
@@ -147,6 +150,6 @@ function fundRow(rec: FundRecord, exposure: ExposureRecord | null): BrandFundRow
         ? { kind: "money-market", name: brandsCopy.funds.moneyMarketKinds.renewable, href: "/guide/money-market-fund-renewable" }
         : { kind: "money-market", name: brandsCopy.funds.moneyMarketKinds.daily, href: "/guide/money-market-fund-daily" }
       : null;
-  const labels = index ? fundLabels(rec, refOfExposure(index), kind === "etf" ? "il-etf" : "il-tracking") : [];
+  const labels = index ? fundLabels(rec, refOfExposure(index), kind === "etf" ? "il-etf" : "il-tracking", list) : [];
   return { id: rec.id, name: rec.names.he[0] ?? rec.names.en[0] ?? rec.id, number, follows, mayaHref, labels, fixed: fee("fixed_management"), variable: fee("variable_management"), trustee: fee("trustee"), noVariable: feeAbsent(rec, "variable_management"), noTrustee: feeAbsent(rec, "trustee"), promotions: fundPromotions(rec, today()) };
 }

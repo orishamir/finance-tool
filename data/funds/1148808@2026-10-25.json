@@ -147,7 +147,6 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-06",
         "ETF-07"
       ],
       "state": "sourced",
@@ -168,21 +167,19 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-11"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-collected",
       "notes": "Not collected: no computation is made here (data-update rule) and the report prints no withholding rate. The fund tracks a TASE index (ETF-11, local index), but a fund of that kind can hold dual-listed securities and owe tax on their income, as the report of the TA-125 fund 1143718 says (note 6); this report's expense table has a line 'הוצאות מס' (tax expenses)."
     }
   },
   "dimensions": {
-    "fund-tax-track": "covered:TXS-07",
+    "fund-tax-track": "covered",
     "fee-management-balance": "covered:MF-16",
-    "distribution-policy": "covered:MF-49",
-    "currency": "covered:MF-43",
-    "fee-trade": "covered:ETF-05",
-    "protection": "covered:MF-02"
+    "distribution-policy": "covered:ETF-42",
+    "currency": "covered:ETF-42",
+    "fee-trade": "covered",
+    "protection": "covered"
   },
   "prospectus": {
     "url": "https://mayafiles.tase.co.il/rpdf/1767001-1768000/P1767631-00.pdf",

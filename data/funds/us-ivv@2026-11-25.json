@@ -72,10 +72,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-08",
-        "ETF-09"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-collected",
       "notes": "Not printed as one number. The Fact Sheet as of June 30, 2026 prints the fund's return and its benchmark's for each calendar year 2021 to 2025 on p. 1; they are in tracking_record. Fund basis: the 'NAV' row (the sheet also prints a 'Market Price' row, not copied), in US dollars. Benchmark as the document names it: 'S&P 500 Index (USD)'. A total return on the S&P 500 with no word on withholding; set it apart from the Irish funds, whose MSCI benchmarks say (Net). The difference is not computed here (data-update rule)."
@@ -84,10 +81,10 @@
     "fund_level_withholding_drag": null
   },
   "dimensions": {
-    "foreign-withholding-domicile": "covered:TXF-12",
-    "distribution-policy": "covered:ETF-28",
-    "currency": "covered:ETF-28",
-    "fee-management-balance": "covered:ETF-28"
+    "foreign-withholding-domicile": "covered",
+    "distribution-policy": "covered",
+    "currency": "covered",
+    "fee-management-balance": "covered"
   },
   "prospectus": {
     "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",

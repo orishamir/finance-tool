@@ -3,12 +3,13 @@
 // brokerage account inside an IRA hishtalmut (F-51).
 import { isShekel, type ExposureRecord, type LegalStructure } from "@finance-tool/schema";
 import { buyWithCash, convertedAtMost, convertFor, corporateEventFee, currentAccountFee, custodyFee, fixedFee, navBought, orderByAmount, orderInUnits, saleCommission, saleConversion, sumRate, tradeCommission, type Commission, type ConversionPrice, type Custody, type Sum } from "../formulas/fees.ts";
-import { irishFundUsWithholding } from "../formulas/fund-withholding.ts";
+import { gapFromNet } from "../formulas/inside-tax.ts";
+import { insideTaxEnds, type InsideTax } from "../variants/inside-tax.ts";
 import { distributionTax } from "../formulas/holding-tax.ts";
 import { annualToMonthly, closesTaxYear, contributions, cpiPath, fxPath, monthOfDate, taxYearOf, type Goal } from "../formulas/time.ts";
 import { promotedDrag } from "../formulas/fund-promotion.ts";
 import { BlockedError, RecordInputError, ruleBook, type RuleBook } from "../resolver.ts";
-import { acrossReadings, foreignInvestmentFundIndex, OpenReadingError, taseForeignFundIndex } from "../open-readings.ts";
+import { acrossReadings, foreignInvestmentFundIndex, insideTaxReading, OpenReadingError, taseForeignFundIndex } from "../open-readings.ts";
 import { memoRun } from "../run-memo.ts";
 import { RUN_RESULT_FIELDS, readsStatedIndex, type NotKnown, type Outcome, type RunContext, type RunResult, type ForeignInvestmentFundStatement, type TaxIndexStatement } from "../result.ts";
 import { exitTax, Tally, unlessBlocked, yearlySurtax, type Profile } from "./common.ts";
@@ -35,10 +36,11 @@ export interface Fund {
     tracking?: number;
     foreignWithholding?: number;
     /**
-     * A-11 by F-107, for an Irish fund that holds the index's US shares: their dividend yield and their share of the index, as fractions.
-     * The run reads TXF-16's rate and adds the product to the drag; `foreignWithholding`, where the record holds one, replaces it.
+     * A-11 by F-107 and F-133 (`fundOf`, `insideTaxOf`): the case, the index parts it rests on, and F-133 (b)'s years. The run reads the
+     * rates from the rules; where the case has years, A-07 is F-133 (b)'s and `tracking` is not read. `foreignWithholding`, the record's
+     * own figure, stands where there is no case (F-107 (a)); with years against a net index the case carries it instead (`own`).
      */
-    usDividends?: { yield: number; weight: number };
+    insideTax?: InsideTax;
     /**
      * F-121: a fee lowered for a stated period (the fund record's `promotions`): the drag part it lowers, the rate charged during it as a
      * fraction a year, and its first and last days. The part's own value is the rate outside it; a promotion of a part the drag does not
@@ -417,6 +419,32 @@ export function securitiesStopOf(input: SecuritiesInput, ctx: RunContext): Secur
  * exit on the last fixed date, MF-35, MF-37).
  * F-51 IRA: an IRA hishtalmut holding securities pays the manager's balance fee and follows F-46 at exit.
  */
+/**
+ * A-11 and A-07 as the run charges them (method F-107, F-133): the fund's case at its ends, read from the rules (the record's own figure
+ * is the case `own` where its years against a net index are set against it); with no case, the record's own withholding, if any. A fund the site does not know whose case has two ends meets the open reading of A-11 (`insideTaxReading`):
+ * the run is made at each end and the one that leaves the holder less stands (`acrossReadings`). A-07 is F-133 (b)'s where the case has
+ * years against a net index, else the drag's own.
+ */
+function insideTaxDrag(d: NonNullable<Fund["drag"]>, fund: Fund, book: RuleBook, ctx: RunContext): { withheld: number; tracking: number; formulas: string[]; flags: string[] } {
+  const t = d.insideTax;
+  if (!t) return { withheld: d.foreignWithholding ?? 0, tracking: d.tracking ?? 0, formulas: [], flags: [] };
+  const ends = insideTaxEnds(t, (rule, figure) => book.rate(rule, figure));
+  for (const r of ends.cites) book.cite(r);
+  if (t.basis.kind === "net" && t.basis.statement === "reading" && t.netRule) book.label("reading", t.netRule);
+  let withheld = ends.low;
+  if (ends.low !== ends.high) {
+    if (!ends.open) throw new Error("A-11 has two ends and no rule that holds them open");
+    if (fund.notKnown !== "documents") throw new Error("A-11 has two ends for a fund whose documents the site read; such a fund runs on the accepted rate (method F-107)");
+    const open = insideTaxReading(ends.open.rule, { low: ends.low, high: ends.high, why: ends.open.why, parts: ends.open.parts });
+    const choice = ctx.readings?.[open.question];
+    if (choice === undefined) throw new OpenReadingError(open, fund.notKnown);
+    if (choice === null) throw new Error(`${open.question} has no reading that stops the run`);
+    withheld = choice === "high" ? ends.high : ends.low;
+  }
+  const tracking = t.years && ends.deduction !== undefined ? gapFromNet(t.years.shortfall, ends.deduction, withheld) : (d.tracking ?? 0);
+  return { withheld, tracking, formulas: ends.formulas, flags: ends.flags };
+}
+
 export function runSecurities(input: SecuritiesInput, ctx: RunContext): RunResult {
   return memoRun("securities", ctx, input, () => acrossReadings(ctx, (c) => securitiesLedger(input, c), RUN_RESULT_FIELDS));
 }
@@ -549,15 +577,13 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   const annual = market.returnIn === "instrument" ? (1 + market.grossReturn) * (1 + (market.fxChange ?? 0)) - 1 : market.grossReturn;
   const g = annualToMonthly(annual);
   const d = fund.drag ?? {};
-  // A-11: the record's figure, else F-107 for an Irish fund that holds US shares (TXF-16's rate on their dividends)
-  let withheld = d.foreignWithholding ?? 0;
-  if (d.foreignWithholding === undefined && d.usDividends) {
-    withheld = irishFundUsWithholding(book.on("fees", "fund").rate("TXF-16", "irish_fund_us_dividend_treaty_rate"), d.usDividends.yield, d.usDividends.weight);
-    formulas.push("F-107");
-    // whether the fund obtains the treaty rate (its limitation-on-benefits article) is TXF open question 7 (method G-33)
-    tally.flag("TXF-OQ7");
-  }
-  const delta = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + (d.tracking ?? 0) + withheld;
+  // A-11: the record's figure, else F-107 and F-133 by the fund's case; A-07 by F-133 (b) where the case has years against a net index
+  const inside = insideTaxDrag(d, fund, book.on("fees", "fund"), ctx);
+  formulas.push(...inside.formulas);
+  for (const f of inside.flags) tally.flag(f);
+  const withheld = inside.withheld;
+  const tracking = inside.tracking;
+  const delta = (d.management ?? 0) + (d.variable ?? 0) + (d.trustee ?? 0) + tracking + withheld;
   // F-121: in the months a promotion covers whole, its part is charged at the promotion's rate; a part already at or below that rate (a variable
   // fee priced at what the fund charged, F-92 (b)) stays as it is, so a promotion never raises the drag
   const promoted = promotedDrag(delta, (d.promotions ?? []).filter((p) => d[p.part] !== undefined).map((p) => ({ cut: Math.max(0, d[p.part]! - p.rate), from: p.from, to: p.to })), ctx.runDate);
@@ -1086,6 +1112,9 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
     detail: {
       realGain,
       nominalGain,
+      // A-11 and A-07 as the run charged them (F-107, F-133): a page shows them on the receipt's line for the fund's own costs
+      insideTax: withheld,
+      trackingGap: tracking,
       fallDisallowed: adjusted.fallDisallowed,
       lossOffset,
       lossUnused,

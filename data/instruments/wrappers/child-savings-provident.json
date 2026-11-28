@@ -34,9 +34,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "REG-23",
-      "REG-17",
-      "CS-08",
-      "CS-05"
+      "REG-17"
     ],
     "state": "sourced",
     "notes": "The National Insurance Institute runs the programme under the National Insurance Law and the Ministry of Finance (Accountant General) sets the approved list by tender. The money sits in a provident fund classified 'קופת גמל להשקעה - חסכון לילד', whose managing company is under the CMA Commissioner's supervision (Harel's bylaw refers to 'הממונה'); the CMA is the regulator of the fund that holds the money."
@@ -181,9 +179,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXK-04",
-      "TXK-23",
-      "CS-11",
-      "CS-16"
+      "TXK-23"
     ],
     "state": "sourced",
     "notes": "Not a withdrawal: the provident track is a kupat gemel lehashkaa to which every provision for that product applies (TXK-23, the regulator's circular), so a track switch or a move to another kupat gemel lehashkaa, a regular one too after 18 (CS-16), is not taxed (TXK-04). Replaces the 2026-10-22 'unknown', which predates TXK-23."
@@ -275,6 +271,7 @@
     ]
   },
   "context_rule_ids": [
-    "CS-13"
+    "CS-13",
+    "CS-16"
   ]
 }

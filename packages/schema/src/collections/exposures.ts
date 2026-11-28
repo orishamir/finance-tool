@@ -33,6 +33,11 @@ export const exposureRecord = z.strictObject({
    * companies only. Left out where the provider prints no dividend yield.
    */
   us_dividends: z.strictObject({ yield: valueObject, weight: valueObject.optional() }).optional(),
+  /**
+   * F-133: the rule whose figures give what the index's net version deducts from each company country's dividends (MSCI's, TXF-59).
+   * Left out where that deduction is not known (S&P's net rates, TXF OQ31) or the index has no net version on the records.
+   */
+  net_deduction_rule: z.string().regex(/^[A-Z0-9]+-[A-Z0-9]+$/, "a rule id").optional(),
   checked: isoDate,
 });
 

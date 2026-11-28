@@ -189,8 +189,6 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "PF-23",
-      "PEN-17",
       "TXP-13",
       "TXP-32"
     ],
@@ -275,5 +273,9 @@
     "eligibility": [
       "PEN-45"
     ]
-  }
+  },
+  "context_rule_ids": [
+    "PF-23",
+    "PEN-17"
+  ]
 }

@@ -7,9 +7,9 @@ import { Pencil } from "lucide-react";
 import { invest as root } from "../../copy";
 import { assertNever, type FundRecord, type ValueObject } from "@finance-tool/schema";
 import { addedIndexCurrency, asksCountry, boughtInAt, boughtInSaid, BUY_ABROAD, BUY_IN_ISRAEL, countryChoicesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, NAME_MAX, registeredOf, tradedOnExchange, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
-import { dividendTaxLabel, fundLabels, optionLabels, type DividendTaxLabelId, type Label } from "../../lib/labels";
-import { INDEX_REGIONS, type IndexFacts, type IndexRegion } from "../../lib/index-region";
-import { addedIndexAs, optionOfFund, optionsOf, type CustomIndex, type IndexRef } from "../../lib/invest";
+import { DIVIDEND_TAX_COUNTS, dividendTaxLabel, fundLabels, optionLabels, type DividendTaxLabelId, type Label } from "../../lib/labels";
+import { asksYield, INDEX_REGIONS, type IndexFacts, type IndexRegion } from "../../lib/index-region";
+import { addedIndexAs, optionOfFund, optionsOf, typedGapList, type CustomIndex, type IndexRef } from "../../lib/invest";
 import { isoToday } from "../../lib/state";
 import { entered } from "../../lib/value";
 import { Num, StateTag } from "../provenance";
@@ -178,7 +178,7 @@ function draftRecord(d: FundDraft, index: IndexRef, today: string): FundRecord |
 function rowLabels(d: FundDraft, rec: FundRecord | null, seen: IndexRef): Label[] {
   const kind = draftKind(d);
   if (!rec || !kind) return [];
-  const all = [...optionLabels(kind), ...fundLabels(rec, seen, optionOfFund(rec, seen.exposure ?? undefined))];
+  const all = [...optionLabels(kind), ...fundLabels(rec, seen, optionOfFund(rec, seen.exposure ?? undefined), typedGapList(rec, seen))];
   return d.hedged === null ? all.filter((l) => !HEDGE_LABELS.has(l.id)) : all;
 }
 const HEDGE_LABELS = new Set<string>(["currency", "currency-many", "currency-foreign", "currency-bought", "hedged", "hedged-many", "tax-currency"]);
@@ -196,7 +196,7 @@ function needsOf(d: FundDraft, rec: FundRecord | null, index: IndexRef, seen: In
   const w = c.needs;
   const gaps = rec ? customFundGaps(rec) : [];
   const item = (id: keyof typeof w.items, state: NeedState, note?: string): NeedItem => ({ id, text: w.items[id], state, ...(note ? { note } : {}) });
-  const tax = rec ? dividendTaxLabel(rec, seen) : null;
+  const tax = rec ? dividendTaxLabel(rec, seen, typedGapList(rec, seen)) : null;
   // no exchange named: the fund is priced on the exchange that leaves the least (F-65)
   const anyExchange = rec?.exchange === "unknown";
   const out: NeedItem[] = [!d.buyAt ? item("place", "missing") : boughtInSaid(d.buyAt) ? item("place", "done") : item("place", "stand-in", w.standIn.place(anyExchange))];
@@ -212,14 +212,15 @@ function needsOf(d: FundDraft, rec: FundRecord | null, index: IndexRef, seen: In
   // hedged fund's cost is mostly its gap, so without one it has no price (F-92 (c))
   out.push(d.hedged === true ? item("gap", "missing", w.gap) : item("gap", "left-out", w.notEntered));
   if (d.buyAt && tradedOnExchange(d.buyAt)) out.push(item("spread", "left-out", w.notEntered));
-  if (tax) out.push(item("dividendTax", tax === "tax-fund-dividend" ? "done" : "left-out", w.dividendTax[tax]));
+  // counted, also at two ends (the cautious one, said under the item), is done; part or none is left out
+  if (tax) out.push(item("dividendTax", DIVIDEND_TAX_COUNTS[tax] === "counted" || DIVIDEND_TAX_COUNTS[tax] === "range" ? "done" : "left-out", w.dividendTax[tax]));
   return out;
 }
 
 /** What a price without the items left out leaves out, in the checklist's order, for the status's words. */
 function withoutOf(needs: readonly NeedItem[], tax: DividendTaxLabelId | null): string[] {
   const w = c.needs.without;
-  const word = { gap: w.gap, spread: w.spread, dividendTax: tax === "tax-fund-dividend-part" ? w.dividendTaxPart : w.dividendTax } as Record<string, string>;
+  const word = { gap: w.gap, spread: w.spread, dividendTax: tax && DIVIDEND_TAX_COUNTS[tax] === "part" ? w.dividendTaxPart : w.dividendTax } as Record<string, string>;
   return needs.flatMap((x) => {
     const said = x.state === "left-out" ? word[x.id] : undefined;
     return said ? [said] : [];
@@ -231,6 +232,7 @@ function countryNeed(d: FundDraft, gaps: readonly string[], tax: DividendTaxLabe
   const w = c.needs;
   if (gaps.includes("tase-country-unknown")) return { state: "missing", note: w.taseCountry };
   if (gaps.includes("domicile-unknown")) return { state: "missing" };
+  if (gaps.includes("distribution-tax-unknown")) return { state: "missing", note: w.distributionTax };
   if (d.country !== "unsure") return { state: "done" };
   if (tax === "tax-fund-dividend-domicile") return { state: "stand-in", note: w.standIn.countryTax };
   return anyExchange ? { state: "stand-in", note: w.standIn.countryExchange } : null;
@@ -244,7 +246,7 @@ export function panelStateOf(draft: FundDraft, index: IndexRef, facts: FactsDraf
   const seen = seenBy(draft, index, facts, today);
   const rec = draftRecord(draft, index, today);
   const needs = needsOf(draft, rec, index, seen);
-  const without = withoutOf(needs, rec ? dividendTaxLabel(rec, seen) : null);
+  const without = withoutOf(needs, rec ? dividendTaxLabel(rec, seen, typedGapList(rec, seen)) : null);
   return { labels: rowLabels(draft, rec, seen), needs, status: statusOf(needs), without };
 }
 
@@ -462,8 +464,8 @@ function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, set
           <Question id={`${ids}-region`} text={c.ask.region}>
             <ChoiceChips ids={INDEX_REGIONS} labels={c.regionNames} value={facts.region} onChange={(region) => setFacts({ ...facts, region })} ariaLabel={c.ask.region} look={{ other: "unsure" }} wrap />
           </Question>
-          {/* the yield is read only where the index is of US companies (F-107); elsewhere it would change nothing */}
-          {facts.region === "us" && (
+          {/* the yield is read only in a region with a rule (F-107: the United States, Europe, the whole world); elsewhere it would change nothing */}
+          {asksYield(facts.region ?? undefined) && (
             <Disclosure label={<span className="flex flex-col"><span className="font-medium">{c.more.label}</span><span className="text-xs text-muted-foreground">{c.more.sub}</span></span>} defaultOpen={facts.yieldPct !== null}>
               <div className="pt-2">
                 <NumberField label={w.indexYield} unit="pct_per_year" value={facts.yieldPct} isEntered={facts.yieldPct !== null} validate={pctCheck} onCommit={(n) => setFacts({ ...facts, yieldPct: n })} onReset={() => setFacts({ ...facts, yieldPct: null })} optional />

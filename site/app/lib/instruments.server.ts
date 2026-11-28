@@ -5,7 +5,7 @@
 import { paysAtPlanEnd } from "./plan-end";
 import { computedInputs, invest as investCopy } from "../copy";
 import { exposurePath, guidePath } from "./site-paths";
-import { fundOf, gapListOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, saleOnlyRulingOf, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
+import { dividendsOf, fundOf, gapListOf, insideTaxCaseOf, interestCalcOf, variableForwardYears, memberKindOf, recordDistribution, saleOnlyRulingOf, REDEMPTION_BAND, STANDING_ORDER_BAND, type InstrumentTerms } from "@finance-tool/engine";
 import { feeAbsent, instrumentClassOf } from "./providers";
 import {
   catalogEntry,
@@ -202,7 +202,7 @@ export function buildInstrumentTerms(wrapperId: string, family: Family, spec: In
     const isMmf = wrapperId === "money-market-fund-daily" || wrapperId === "money-market-fund-renewable";
     const tariff = isMmf ? buildMoneyMarketTariff(wrapperId, src, missing, feeValues) : buildTariff(wrapperId, "securities", spec, src, missing, feeValues);
     if (tariff) terms.tariff = tariff;
-    // F-14: the member's kind decides custody on money-market units; the money-market funds are modelled at a bank (MF-26, BANK-18)
+    // F-14: the member's kind decides custody on money-market units; the money-market funds are modelled at a bank (MF-26, BRK-17)
     const member = isMmf ? undefined : memberOf(src, spec.tariff);
     if (tariff && member) terms.memberKind = member;
     if (wrapperId === "ira-hishtalmut") {
@@ -392,7 +392,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
   if (kind !== "money-market-renewable") {
     const drag: NonNullable<Fund["drag"]> = {};
     const notCollected: string[] = [];
-    const take = (field: keyof FundRecord["fees"], key: Exclude<keyof typeof drag, "usDividends" | "promotions">, label: string) => {
+    const take = (field: keyof FundRecord["fees"], key: Exclude<keyof typeof drag, "insideTax" | "promotions">, label: string) => {
       const v = rec.fees[field];
       if (!v || v.value === null) {
         // a fee the record could not collect runs as 0; the terms block shows the manager's and the trustee's, which every fund charges,
@@ -412,10 +412,13 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     take("trustee", "trustee", "fundTrustee");
     take("tracking_difference_12m", "tracking", "fundTracking");
     take("fund_level_withholding_drag", "foreignWithholding", "fundWithholding");
-    // A-11 by F-107 is read where the exposure is (fundOf, the indices page): an Irish fund that holds the shares, with no figure of its own
-    // and no published 12-month gap, is not run here at A-11 = 0
-    if (rec.domicile.toUpperCase() === "IE" && rec.replication?.method === "physical" && drag.foreignWithholding === undefined && drag.tracking === undefined)
-      missing.push(`${wrapperId}: fund "${rec.id}" is Irish and holds its index's shares; the guides do not compute F-107 (A-11)`);
+    // A-11 by F-107 and F-133 is read where the exposure is (fundOf, the indices page): a fund the method counts it for is not run here
+    // at A-11 = 0, nor at F-92's A-07 where F-133 (b) raises it
+    const exposureId = (rec as { exposure_id?: string }).exposure_id;
+    const list = exposureId ? gapListOf(rec, { id: exposureId }, src.funds.filter((f) => (f as { exposure_id?: string }).exposure_id === exposureId)) : undefined;
+    const dividends = dividendsOf(loadExposures().find((e) => e.id === exposureId));
+    if (insideTaxCaseOf(rec, { dividends, list, typed: false, published: drag.tracking !== undefined }).kind === "counted")
+      missing.push(`${wrapperId}: fund "${rec.id}" bears a tax inside it the method counts; the guides do not compute F-107 or F-133 (A-11)`);
     // F-92 (b): the variable fee counted forward as the invest page's engine counts it (fundOf), the mean charged in the years at
     // today's rate where the reports give A-07, so the comparison prices a fund's way at the value the invest page gives it
     const exposure = (rec as { exposure_id?: string }).exposure_id;
@@ -461,15 +464,14 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
  * the holder for buying, holding or redeeming units (MF-26), and a bank may not charge securities custody on one
  * (BRK-17 owns that ban). So the trade and custody lines are each a zero figure, which carries its own source: the 2016 amendment in
  * the official gazette (Kovetz HaTakanot 7653, page 1098, regulations 2(b) to 2(d)) for MF-26, the First Schedule's custody item for
- * the ban, which BRK-17's block states without a figure and BANK-18's card keeps one for. The assumption that the bank has a
- * distribution agreement for the fund (the common case) is written on the value. The tariff's own `mutual_fund_units` lines are not
- * read: they price tracking funds.
+ * the ban, BRK-17's figure. The assumption that the bank has a distribution agreement for the fund (the common case) is written on
+ * the value. The tariff's own `mutual_fund_units` lines are not read: they price tracking funds.
  */
 function buildMoneyMarketTariff(wrapperId: string, src: InstrumentSources, missing: string[], feeValues: Record<string, SiteValue>): NonNullable<InstrumentTerms["tariff"]> | null {
   const trade = figure(src, "MF-26", "mmf_unit_fee_under_distribution_agreement");
-  const custody = figure(src, "BANK-18", "custody_on_money_market_fund");
+  const custody = figure(src, "BRK-17", "custody_on_money_market_fund");
   if (!trade || trade.value !== 0) missing.push(`${wrapperId}: MF-26 has no zero figure "mmf_unit_fee_under_distribution_agreement" (tariff trade lines)`);
-  if (!custody || custody.value !== 0) missing.push(`${wrapperId}: BANK-18 has no zero figure "custody_on_money_market_fund" (tariff custody lines)`);
+  if (!custody || custody.value !== 0) missing.push(`${wrapperId}: BRK-17 has no zero figure "custody_on_money_market_fund" (tariff custody lines)`);
   if (!trade || trade.value !== 0 || !custody || custody.value !== 0) return null;
   feeValues.tradeRate = { ...trade, notes: investCopy.bankMoneyMarketZero.trade };
   feeValues.custodyRate = { ...custody, notes: investCopy.bankMoneyMarketZero.custody };

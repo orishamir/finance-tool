@@ -1,0 +1,160 @@
+{
+  "id": "TXF-57",
+  "title": "An Israeli fund (a mutual fund or ETF) that holds foreign shares itself: what each company's country withholds from it, and no credit in Israel",
+  "title_he": "קרן ישראלית שמחזיקה מניות זרות: כמה מס מנכה ממנה מדינת החברה",
+  "text_he": "לכל מדינה של חברה יש שיעור נמוך, אם היא מקבלת את הבקשה של הקרן הישראלית להקלה, ושיעור גבוה, השיעור שלה בלי אמנה. אם הבקשה של קרן ישראלית מתקבלת לא מוכרע לאף מדינה שגובה מס על דיבידנד. בארצות הברית {TXF-57:us_accepted} לפי האמנה, בשווייץ {TXF-57:ch_accepted}, בצרפת {TXF-57:fr_accepted} ובגרמניה {TXF-57:de_accepted}. המס הזה הוא עלות של הקרן: הקרן פטורה ממס בישראל, ולכן אין לה מס לזקוף אותו כנגדו.",
+  "figure_names_he": {
+    "us_accepted": "מס ארצות הברית על דיבידנד לתושב ישראל, לפי האמנה",
+    "ch_accepted": "מס שווייץ על דיבידנד לתושב ישראל, לפי האמנה",
+    "fr_accepted": "מס צרפת על דיבידנד לקרן שדומה לקרן צרפתית",
+    "de_accepted": "מס גרמניה על דיבידנד לקרן השקעות זרה עם אישור מעמד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile",
+    "tax-during"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-11-28",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-11-28",
+  "figures": {
+    "us_accepted": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.irs.gov/pub/irs-trty/israel.pdf",
+        "title": "אמנת המס בין ישראל לארצות הברית (נוסח ה־IRS)",
+        "publisher": "US Internal Revenue Service",
+        "strength": "primary",
+        "page": 16,
+        "locator": "Art. 12(2)"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-57"
+      ],
+      "state": "sourced",
+      "notes": "The rate where the fund's claim is accepted, the low end of its cell in method F-107 (b); the high end is the company country's own rate (TXF-53). How an exempt fund meets the treaty's resident test is TXS open question 24 (TXS-41)."
+    },
+    "ch_accepted": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.estv.admin.ch/dam/de/sd-web/pecnSH8azAHM/dba-steuerentlastungen-2026-de.pdf",
+        "title": "ESTV, Steuerentlastungen für schweizerische Dividenden und Zinsen auf Grund von Doppelbesteuerungsabkommen, Stand 1.1.2026",
+        "publisher": "Swiss Federal Tax Administration",
+        "strength": "primary",
+        "page": 4,
+        "locator": "p.4, row Israel"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-57"
+      ],
+      "state": "sourced",
+      "notes": "The rate where the fund's claim is accepted, the low end of its cell in method F-107 (b); the high end is the company country's own rate (TXF-53). Nothing Swiss that was read speaks of an Israeli fund."
+    },
+    "fr_accepted": {
+      "value": 0,
+      "unit": "pct",
+      "source": {
+        "url": "https://bofip.impots.gouv.fr/bofip/7780-PGP.html/identifiant=BOI-RPPM-RCM-30-30-20-70-20211006",
+        "title": "הנחיות רשות המסים הצרפתית (BOFiP), BOI-RPPM-RCM-30-30-20-70",
+        "publisher": "Direction générale des Finances publiques",
+        "strength": "primary",
+        "locator": "§30, §40"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-57"
+      ],
+      "state": "sourced",
+      "notes": "The rate where the fund's claim is accepted, the low end of its cell in method F-107 (b); the high end is the company country's own rate (TXF-53). Not read for Israel (§45)."
+    },
+    "de_accepted": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gesetze-im-internet.de/invstg_2018/__7.html",
+        "title": "חוק מס קרנות ההשקעה הגרמני (Investmentsteuergesetz), סעיף 7",
+        "publisher": "Bundesministerium der Justiz",
+        "strength": "primary",
+        "locator": "§7(1)",
+        "quote": "beträgt die Kapitalertragsteuer 15 Prozent des Kapitalertrags"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-57"
+      ],
+      "state": "sourced",
+      "notes": "The rate where the fund's claim is accepted, the low end of its cell in method F-107 (b); the high end is the company country's own rate (TXF-53). Whether an Israeli fund obtains a status certificate was not read."
+    }
+  },
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.estv.admin.ch/dam/de/sd-web/pecnSH8azAHM/dba-steuerentlastungen-2026-de.pdf#page=4",
+      "title": "Steuerentlastungen für schweizerische Dividenden und Zinsen auf Grund von Doppelbesteuerungsabkommen, Stand 1.1.2026",
+      "publisher": "estv.admin.ch",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.4, row Israel",
+      "page": 4,
+      "checked": "2026-11-28",
+      "qualifier": "(library b8ddbef10e7d8095)"
+    },
+    {
+      "url": "https://bofip.impots.gouv.fr/bofip/7780-PGP.html/identifiant=BOI-RPPM-RCM-30-30-20-70-20211006",
+      "title": "BOI-RPPM-RCM-30-30-20-70",
+      "publisher": "bofip.impots.gouv.fr",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "§30; §40; §45",
+      "locator_he": "§30; §40; §45",
+      "checked": "2026-11-28",
+      "qualifier": "(library 72701fffbd800895)"
+    },
+    {
+      "url": "https://www.gesetze-im-internet.de/invstg_2018/__7.html",
+      "title": "Investmentsteuergesetz § 7",
+      "publisher": "gesetze-im-internet.de",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "§7(1), (3)",
+      "locator_he": "§7(1), (3)",
+      "checked": "2026-11-28",
+      "qualifier": "(library 5a051e1a6825d0b5)"
+    },
+    {
+      "url": "https://www.estv.admin.ch/en/israel-en",
+      "title": "Double taxation agreement Switzerland - Israel",
+      "publisher": "estv.admin.ch",
+      "kind": "other",
+      "strength": "primary",
+      "checked": "2026-11-28",
+      "qualifier": "(library fa2f3bf8932d8cf6)"
+    }
+  ],
+  "derived_from": [
+    "TXS-41",
+    "TXS-15",
+    "TXF-53"
+  ]
+}

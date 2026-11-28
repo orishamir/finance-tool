@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import { RUN_FLAG_CODES } from "../src/result.ts";
 import { blockedWrapperExit } from "../src/formulas/blocked-exit.ts";
 import { openReadings, readingFlag } from "../src/open-readings.ts";
+import { INSIDE_TAX_FLAGS } from "../src/variants/inside-tax.ts";
 
 const src = fileURLToPath(new URL("../src/", import.meta.url));
 const walk = (dir: string): string[] => readdirSync(dir).flatMap((n) => (statSync(join(dir, n)).isDirectory() ? walk(join(dir, n)) : [join(dir, n)]));
@@ -29,8 +30,9 @@ describe("RUN_FLAG_CODES", () => {
         else throughValue.push(args.split(",")[0]!.trim());
       }
     }
-    // the values a ledger flags: a relief's open readings, a blocked exit's gap and open questions
-    expect(throughValue.sort()).toEqual(["code", "exit.gap", "exit.gap", "q", "q"]);
+    // the values a ledger flags: a relief's open readings, a blocked exit's gap and open questions, the inside tax's (F-107)
+    expect(throughValue.sort()).toEqual(["code", "exit.gap", "exit.gap", "f", "q", "q"]);
+    for (const code of INSIDE_TAX_FLAGS) raised.add(code);
     for (const formula of ["F-45", "F-48", "F-49"] as const) {
       const exit = blockedWrapperExit(formula, 0);
       if (exit.gap) raised.add(exit.gap);

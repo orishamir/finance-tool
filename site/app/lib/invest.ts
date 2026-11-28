@@ -4,7 +4,7 @@
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { rankByValue } from "./rank";
 import { gershayim } from "./format";
-import { BlockedError, listingChangesRun, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, listingChangesRun, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, paidInAsEntered, dividendsOf, gapFromNet, insideTaxCaseOf, insideTaxEnds, shortfallBeyondFees, type InsideTax, type RateOf, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
 import { assertNever, exchangeOfTicker, fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { addedIndexCurrency, customFundGaps, isCustomFund, kindNotKnown, type AddedIndexCurrency, type FundKind } from "./custom-entries";
@@ -187,6 +187,8 @@ export type Reason =
   | { code: "payout-unknown" }
   | { code: "fee-unknown" }
   | { code: "domicile-unknown" }
+  /** A distributing fund registered in a country whose tax on its distribution to an Israeli resident is not in the rule base (G-44: Luxembourg). */
+  | { code: "distribution-tax-unknown" }
   /** A fund the person buys in Tel Aviv whose country they did not say: an Israeli ETF or a foreign fund, which are worked out apart. */
   | { code: "tase-country-unknown" }
   /** The house sells this kind of fund fund by fund (its distribution agreements, BRK-38), and the run names no fund a report can name: the generic fund of the kind, or a fund the person typed. */
@@ -1041,8 +1043,8 @@ const inputsOfRun = (ctx: Ctx, r: RunReads): Record<string, SiteValue> => {
   const fundId = r.costsOff ? undefined : r.fund;
   const fund = fundId ? ctx.bundle.funds.find((f) => f.id === fundId) : undefined;
   const typed = [r.house, fundId].flatMap((id) => (id ? [ctx.bundle.entered?.inputs[id] ?? {}] : []));
-  // a typed fund's costs are what was typed (below); F-107 comes from what was said of it (Ireland, holds the shares) and the index
-  const own = fund ? { ...(isCustomFund(fund) ? {} : fundInputsOf(ctx.bundle, fund)), ...usWithholdingInput(ctx, r, fund) } : {};
+  // a typed fund's costs are what was typed (below); its inside tax comes from what was said of it and of the index (F-107)
+  const own = fund ? { ...(isCustomFund(fund) ? {} : fundInputsOf(ctx.bundle, fund)), ...insideTaxInput(ctx, r, fund) } : {};
   // the income and the age the run's tax reads (`profile.annualIncome` and `ageAtStart` in `runSlot`), on the figures that read that tax
   // (`RunReads.tax`), each only where it changed the result (`RunReads.profileUsed`): an age that never reaches 60 by the sale, an income
   // whose surtax test the gain never passes, changes nothing
@@ -1061,29 +1063,106 @@ const keptFundInputs = new WeakMap<FundRecord, { funds: readonly FundRecord[]; e
 function fundInputsOf(bundle: IndicesBundle, rec: FundRecord): Record<string, SiteValue> {
   const kept = keptFundInputs.get(rec);
   if (kept && kept.funds === bundle.funds && kept.exposures === bundle.exposures && kept.today === bundle.today) return kept.inputs;
-  const inputs = fundInputs(rec, gapListFor(bundle, rec), bundle.today);
+  const inputs = fundInputs(bundle, rec, gapListFor(bundle, rec));
   keptFundInputs.set(rec, { funds: bundle.funds, exposures: bundle.exposures, today: bundle.today, inputs });
   return inputs;
 }
 
 /**
- * A-11 by F-107 where the fund's run takes it (`fundOf` puts the inputs in the drag: an Irish fund that holds the index's US shares): TXF-16's
- * rate on the dividends of those shares, with the index provider's yield and weight it multiplies, so the sheet shows the cost in the fund.
+ * The rule figures a case reads (F-107, F-133), each as the bundle holds it, keyed by its Hebrew name for a figure's sheet: a `RateOf` that
+ * records what it read, so the sheet lists exactly the rates the run multiplied, and `cite` for a rule the case rests on beside them.
  */
-function usWithholdingInput(ctx: Ctx, r: RunReads, rec: FundRecord): Record<string, SiteValue> {
-  const u = r.spec?.fund.drag?.usDividends;
-  const us = u ? exposureOf(ctx, rec)?.us_dividends : undefined;
-  const rule = us ? ctx.bundle.rules.find((x) => x.id === "TXF-16") : undefined;
-  const rate = rule ? ruleFigure(rule, "irish_fund_us_dividend_treaty_rate", ctx.bundle.today) : null;
-  if (!u || !us || !rule || !rate || typeof rate.value !== "number") return {};
+function ruleRates(bundle: Pick<IndicesBundle, "rules" | "today">): { rate: RateOf; cite: (id: string) => void; read: Record<string, SiteValue>; rules: { id: string; strength: Strength }[] } {
+  const read: Record<string, SiteValue> = {};
+  const rules = new Map<string, Strength>();
+  const ruleOf = (id: string) => {
+    const rule = bundle.rules.find((x) => x.id === id);
+    if (!rule) throw new Error(`F-107: no rule ${id}`);
+    rules.set(rule.id, rule.strength as Strength);
+    return rule;
+  };
+  const rate: RateOf = (id, figure) => {
+    const rule = ruleOf(id);
+    const v = ruleFigure(rule, figure, bundle.today);
+    if (!v || typeof v.value !== "number") throw new Error(`F-107: rule ${id} has no figure ${figure}`);
+    read[copy.pair.fundInputs.rate(rule.figure_names_he?.[figure] ?? figure)] = v;
+    return v.value / 100;
+  };
+  return { rate, cite: (id) => void ruleOf(id), read, get rules() { return [...rules].map(([id, strength]) => ({ id, strength })); } };
+}
+
+/** The yield and share a case's parts rest on, as sourced or entered values: a collected index's US part, or the yield typed for an added index. */
+function partInputs(exposure: ReturnType<typeof exposureOf>, t: InsideTax): Record<string, SiteValue> {
   const w = copy.pair.fundInputs;
-  const inputs: Record<string, SiteValue> = { [w.usRate]: rate, [w.usYield]: us.yield as SiteValue };
-  if (us.weight) inputs[w.usWeight] = us.weight as SiteValue;
-  const value = irishFundUsWithholding(rate.value / 100, u.yield, u.weight) * 100;
-  // `w = ρ × y_US × s_US`; an index of US companies alone has no weight among the inputs (its 1 is the method's), so its line is drawn with
-  // the key and no values
-  const working = { kind: "formula", entry: "F-107", line: 0, symbols: { [w.usRate]: String.raw`\rho`, [w.usYield]: "y_{US}", ...(us.weight ? { [w.usWeight]: "s_{US}" } : {}) } } as const;
-  return { [w.usWithholding]: computed(Math.round(value * 1000) / 1000, "pct_per_year", "F-107", inputs, { today: ctx.bundle.today, rules: [{ id: rule.id, strength: rule.strength as Strength }], flags: ["TXF-OQ7"], about: w.usWithholdingAbout, working }) };
+  if (exposure && "dividendYield" in exposure && exposure.dividendYield) return { [w.indexYield]: exposure.dividendYield as SiteValue };
+  const us = exposure && "us_dividends" in exposure ? exposure.us_dividends : undefined;
+  if (!us || t.parts.length === 0) return {};
+  return { [w.usYield]: us.yield as SiteValue, ...(us.weight ? { [w.usWeight]: us.weight as SiteValue } : {}) };
+}
+
+/**
+ * A-11 where the fund's run counts it by F-107 or F-133 (`fundOf` puts the case in the drag), with the rates and the index's yield and share
+ * it multiplies. At two ends it is the cautious end, with a doubt that says both and why (method F-107, "One reading, or two ends"); a case
+ * with nothing of the fund's own (its years carry it, F-133 (b)) has no line here.
+ */
+function insideTaxInput(ctx: Ctx, r: RunReads, rec: FundRecord): Record<string, SiteValue> {
+  const d = r.spec?.fund.drag;
+  const t = d?.insideTax;
+  // the record's own figure is its fee line's (F-107 (a)); a case whose years carry it all has nothing of the fund's own here
+  if (!t || t.basis.kind === "none" || t.basis.kind === "own") return {};
+  const reads = ruleRates(ctx.bundle);
+  const ends = insideTaxEnds(t, reads.rate);
+  for (const id of ends.cites) reads.cite(id);
+  if (ends.high === 0) return {};
+  const w = copy.pair.fundInputs;
+  const two = ends.low !== ends.high;
+  const parts = partInputs(exposureOf(ctx, rec), t);
+  const formula = ends.formulas.includes("F-107") ? "F-107" : "F-133";
+  // one rate on one part: `w = ρ × y × s` (or `D = τ × y × s`), each input its symbol; an index of US companies alone has no share among the
+  // inputs (its 1 is the method's)
+  const [rateName, ...moreRates] = Object.keys(reads.read);
+  const single = !two && rateName !== undefined && moreRates.length === 0 && t.parts.length === 1;
+  const sym = formula === "F-107" ? String.raw`\rho_p` : String.raw`\tau_p`;
+  const working = single ? ({ kind: "formula", entry: formula, line: 0, symbols: { [rateName]: sym, ...Object.fromEntries(Object.keys(parts).map((k) => [k, k === w.usWeight ? "s_p" : "y_p"])) } } as const) : undefined;
+  // the cautious label the run gives the two ends (method F-107), with what the run says the site does not know of the fund
+  const notKnown = r.spec?.fund.notKnown;
+  const doubt = { labels: two && ends.open && notKnown ? [{ code: "cautious" as const, ruleId: ends.open.rule, notKnown, ends: { low: ends.low, high: ends.high, why: ends.open.why, parts: ends.open.parts } }] : [] };
+  const value = (two ? ends.high : ends.low) * 100;
+  return {
+    [w.insideTax]: computed(Math.round(value * 1000) / 1000, "pct_per_year", formula, { ...reads.read, ...parts }, { today: ctx.bundle.today, rules: reads.rules, flags: ends.flags, labels: doubt.labels, about: w.insideTaxAbout, ...(working ? { working } : {}) }),
+  };
+}
+
+/**
+ * F-133 (b): A-07 from a collected fund's years against a net index whose deduction is known, raised by that deduction less the fund's own
+ * counted tax, with the two as figures of their own; null where the fund's case has no such years. The run charges the same (`fundOf`).
+ */
+function raisedGap(bundle: IndicesBundle, rec: FundRecord, list: GapList, years: readonly NonNullable<FundRecord["tracking_record"]>["years"][number][]): { value: number; inputs: Record<string, SiteValue>; rules: { id: string; strength: Strength }[] } | null {
+  const exposure = bundle.exposures.find((e) => e.id === rec.exposure_id);
+  const c = insideTaxCaseOf(rec, { dividends: dividendsOf(exposure), list, typed: false, published: false });
+  if (c.kind !== "counted" || !c.tax.years) return null;
+  const w = copy.pair.fundInputs;
+  const netRule = c.tax.netRule;
+  const s = shortfallBeyondFees(years, sumFees(rec));
+  if (s === null || !netRule) return null;
+  // D on the index's parts at its provider's rates (the case's own deduction, read with nothing of the fund's), and the fund's own counted
+  // tax on them, each read apart so each sheet lists its own
+  const net = ruleRates(bundle);
+  const deduction = insideTaxEnds({ basis: { kind: "none" }, parts: c.tax.parts, netRule, years: c.tax.years }, net.rate).deduction;
+  if (deduction === undefined) throw new Error(`F-133: ${rec.id} has years against a net index and no deduction was read`);
+  const own = ruleRates(bundle);
+  const ownEnds = insideTaxEnds({ basis: c.tax.basis, parts: c.tax.parts }, own.rate);
+  for (const id of ownEnds.cites) own.cite(id);
+  const counted = ownEnds.low;
+  const parts = partInputs(exposure, c.tax);
+  const inputs: Record<string, SiteValue> = {
+    [w.netDeduction]: computed(Math.round(deduction * 100 * 1e6) / 1e6, "pct_per_year", "F-133", { ...net.read, ...parts }, { today: bundle.today, rules: net.rules, about: w.netDeductionAbout }),
+  };
+  // the record's own figure stands as w where it holds one (F-107 (a)); else F-107 (b)'s, where it counts any
+  const ownFigure = rec.fees.fund_level_withholding_drag;
+  if (c.tax.basis.kind === "own" && ownFigure) inputs[w.insideTax] = ownFigure as SiteValue;
+  else if (counted > 0) inputs[w.insideTax] = computed(Math.round(counted * 100 * 1e6) / 1e6, "pct_per_year", "F-107", { ...own.read, ...parts }, { today: bundle.today, rules: own.rules, about: w.insideTaxAbout });
+  return { value: gapFromNet(s, deduction, counted), inputs, rules: [...net.rules, ...own.rules] };
 }
 
 /** A figure of a fund's annual report (a year's return, its index's, a fee it charged), from the report at its page: the fund's own document (D31). */
@@ -1098,7 +1177,8 @@ export function reportFigure(rec: FundRecord, value: number, page: number | null
  * years it rests on; and, for a fund that pays out, its payout yield (A-10). Among the inputs of a figure that runs the fund, so two funds'
  * sheets show why one costs less.
  */
-function fundInputs(rec: FundRecord, list: GapList, today: string): Record<string, SiteValue> {
+function fundInputs(bundle: IndicesBundle, rec: FundRecord, list: GapList): Record<string, SiteValue> {
+  const today = bundle.today;
   const w = copy.pair.fundInputs;
   const out: Record<string, SiteValue> = {};
   const own = (v: unknown) => (v && typeof (v as SiteValue).value === "number" ? ownBy(v as SiteValue, rec.manager) : null);
@@ -1135,7 +1215,10 @@ function fundInputs(rec: FundRecord, list: GapList, today: string): Record<strin
       }
     }
     const ys = years.map((y) => y.year);
-    out[w.beyond(ys)] = computed(Math.round(a07 * 100 * 1000) / 1000, ys.length === 1 ? "pct" : "pct_per_year", "F-92", inputs, { today, about: w.beyondAbout(ys) });
+    const raised = raisedGap(bundle, rec, list, years);
+    out[w.beyond(ys)] = raised
+      ? computed(Math.round(raised.value * 100 * 1000) / 1000, ys.length === 1 ? "pct" : "pct_per_year", "F-133", { ...inputs, ...raised.inputs }, { today, rules: raised.rules, about: w.beyondNetAbout(ys) })
+      : computed(Math.round(a07 * 100 * 1000) / 1000, ys.length === 1 ? "pct" : "pct_per_year", "F-92", inputs, { today, about: w.beyondAbout(ys) });
   }
   return out;
 }
@@ -1808,6 +1891,9 @@ export function gapListFor(bundle: Pick<IndicesBundle, "funds" | "exposures">, r
   return gapListOf(rec, index, bundle.funds.filter((f) => f.exposure_id === rec.exposure_id));
 }
 
+/** F-92 (d) for a fund the person is still typing, before it is in any bundle: it has no years, so no list compares them; it names its index. */
+export const typedGapList = (rec: FundRecord, index: IndexRef): GapList => gapListOf(rec, index.exposure ?? undefined, []);
+
 /** F-92 (a): a fund's gap to its index in percent a year, with how many full years it rests on; null with none, and with years F-92 (d) does not compare. */
 export function gapOf(rec: FundRecord, list: GapList): { pct: number; years: number } | null {
   const years = comparedYears(rec.tracking_record, list) ?? [];
@@ -1842,8 +1928,11 @@ function pairRun(a: PairValueArgs) {
   if (!pair) return null;
   let spec = pair.fs.spec;
   if (a.tracking !== undefined) {
-    const fund = spec.fund as { drag?: Record<string, number> };
-    spec = { ...spec, fund: { ...fund, drag: { ...fund.drag, tracking: a.tracking } } } as Spec;
+    // A-07 replaced whole: F-133 (b)'s years, which would set it, are dropped with it
+    const fund = spec.fund as { drag?: { insideTax?: InsideTax } & Record<string, unknown> };
+    const inside = fund.drag?.insideTax;
+    const kept = inside ? { insideTax: { basis: inside.basis, parts: inside.parts, ...(inside.netRule ? { netRule: inside.netRule } : {}) } } : {};
+    spec = { ...spec, fund: { ...fund, drag: { ...fund.drag, ...kept, tracking: a.tracking } } } as Spec;
   }
   const row = pair.price(spec);
   return row ? { ctx, rec: pair.rec, spec, row } : null;
@@ -1968,7 +2057,8 @@ export function kindMoney(a: InvestArgs & { unhedged: { fundId: string; provider
   const steps = [u0 - uDown, uUp - u0];
   const rec = a.bundle.funds.find((f) => f.id === a.hedged.fundId);
   const reported = rec ? comparedYears(rec.tracking_record, gapListFor(a.bundle, rec)) : null;
-  const used = rec && reported && typeof rec.fees.tracking_difference_12m?.value !== "number" ? trackingBeyondFees(reported, sumFees(rec)) : null;
+  // the A-07 the hedged pair's run charged (F-92 (b), or F-133 (b) against a net index whose deduction is known)
+  const used = rec && reported && typeof rec.fees.tracking_difference_12m?.value !== "number" ? (pairRow({ ...a, ...a.hedged, fxChange: 0 })?.run.detail.trackingGap ?? null) : null;
   if (used !== null) {
     const more = pairValue({ ...a, ...a.hedged, fxChange: 0, tracking: used + 0.01 });
     const less = used >= 0.01 ? pairValue({ ...a, ...a.hedged, fxChange: 0, tracking: used - 0.01 }) : null;

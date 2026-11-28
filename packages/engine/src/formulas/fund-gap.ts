@@ -104,8 +104,14 @@ export function gapToIndex(years: readonly GapYear[]): number | null {
  * and a negative fund cost would break F-91's bars). Null with no full year.
  */
 export function trackingBeyondFees(years: readonly GapYear[], fees: number): number | null {
+  const s = shortfallBeyondFees(years, fees);
+  return s === null ? null : Math.max(0, s);
+}
+
+/** F-92 (b)'s mean shortfall beyond the fees charged, before its floor: `mean_y(−(u_y − t_y)/100 − c_y)`, which F-133 (b) raises. Null with no full year. */
+export function shortfallBeyondFees(years: readonly GapYear[], fees: number): number | null {
   if (years.length === 0) return null;
-  return Math.max(0, years.reduce((a, y) => a + beyondInYear(y, fees), 0) / years.length);
+  return years.reduce((a, y) => a + beyondInYear(y, fees), 0) / years.length;
 }
 
 /** The first calendar year wholly at a rate in force from `since` (YYYY-MM-DD): its own year when it starts on 1 January, else the next. */

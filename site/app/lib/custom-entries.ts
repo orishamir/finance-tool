@@ -5,10 +5,10 @@
 //
 // No runtime import of invest.ts or the engine: state.ts reads this file on every page.
 import { fundExchange, groupPrice, isShekel, isUnitPriceUnit, unitPriceUnits, valueObject, type ExposureRecord, type FundExchange, type FundRecord, type UnitPriceUnit, type ValueObject } from "@finance-tool/schema";
-import type { ProviderInput } from "@finance-tool/engine";
+import type { AddedDividends, ProviderInput } from "@finance-tool/engine";
 import { invest as copy } from "../copy";
 import type { CustomIndex, OptionId } from "./invest";
-import { usDividendsOfTyped } from "./index-region";
+import { dividendsOfTyped } from "./index-region";
 import type { BrokerBase, GroupCopy } from "./own-account";
 import type { IndicesBundle } from "./providers";
 import { entered, numberOf, type SiteValue } from "./value";
@@ -103,9 +103,9 @@ export const registeredOf = (k: FundKind | null): Registered => (k ? REGISTERED[
  * foreign fund and "not sure" leaves its kind not known (an Israeli ETF or a foreign fund, F-04); abroad the two lead to the same fund, and
  * one answer, "unsure", stands for both.
  */
-export type CountryAnswer = "IL" | "IE" | "US" | "other" | "unsure";
+export type CountryAnswer = "IL" | "IE" | "LU" | "US" | "other" | "unsure";
 /** Every answer, in the panel's order. */
-export const COUNTRIES: readonly CountryAnswer[] = ["IL", "IE", "US", "other", "unsure"];
+export const COUNTRIES: readonly CountryAnswer[] = ["IL", "IE", "LU", "US", "other", "unsure"];
 /** The currency a fund is bought in. */
 type TradingCurrency = "ILS" | "USD" | "EUR";
 /** How a fund follows its index, as the panel asks it. */
@@ -136,7 +136,7 @@ export interface CountryChoices {
   closed: readonly CountryAnswer[];
   unsureIsOther: boolean;
 }
-const ABROAD_COUNTRIES: CountryChoices = { open: ["IE", "US", "unsure"], closed: ["IL"], unsureIsOther: true };
+const ABROAD_COUNTRIES: CountryChoices = { open: ["IE", "LU", "US", "unsure"], closed: ["IL"], unsureIsOther: true };
 const BUY_AT: Record<BuyAt, { kinds: { israeli: FundKind | null; foreign: FundKind | null; unsure: FundKind | null }; countries: CountryChoices; exchange: FundExchange | null; tradesIn: TradingCurrency | null }> = {
   manager: { kinds: { israeli: "il-tracking", foreign: null, unsure: null }, countries: { open: ["IL"], closed: [], unsureIsOther: false }, exchange: null, tradesIn: "ILS" },
   tase: { kinds: { israeli: "il-etf", foreign: "tase-foreign", unsure: "tase-unknown" }, countries: { open: COUNTRIES, closed: [], unsureIsOther: false }, exchange: null, tradesIn: "ILS" },
@@ -161,7 +161,14 @@ export const countryChoicesAt = (at: BuyAt | null): CountryChoices => (at ? BUY_
  */
 const OTHER_COUNTRY = "other";
 const COUNTRY_NOT_SAID = "unknown";
-const DOMICILE_OF = { IL: "IL", IE: "IE", US: "US", other: OTHER_COUNTRY, unsure: COUNTRY_NOT_SAID } as const satisfies Record<CountryAnswer, string>;
+const DOMICILE_OF = { IL: "IL", IE: "IE", LU: "LU", US: "US", other: OTHER_COUNTRY, unsure: COUNTRY_NOT_SAID } as const satisfies Record<CountryAnswer, string>;
+
+/**
+ * F-20, by the country a typed fund is registered in, of those the panel names: whether the site knows the tax on its distribution to an
+ * Israeli resident. Luxembourg's is not in the rule base (G-44), so a distributing Luxembourg fund has no price.
+ */
+const DISTRIBUTION_TAX_KNOWN: ReadonlyMap<string, boolean> = new Map(Object.entries({ IL: true, IE: true, LU: false, US: true } as const satisfies Record<Exclude<CountryAnswer, "other" | "unsure">, boolean>));
+const distributionTaxKnown = (domicile: string): boolean | undefined => DISTRIBUTION_TAX_KNOWN.get(domicile);
 
 /**
  * The kind of fund the two answers make; an answer that leaves Israel as the only country is Israeli whatever the second says, and "not
@@ -578,10 +585,10 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
  * Why a fund the person typed has no price, every reason, from what they said of it, in the order the page names the first (its row says
  * one); none: nothing they left out stops it. The page and the panel's checklist both read it.
  */
-export type CustomFundGap = "fee-unknown" | "tase-country-unknown" | "payout-unknown" | "need-yield" | "domicile-unknown" | "no-hedge-entered";
+export type CustomFundGap = "fee-unknown" | "tase-country-unknown" | "payout-unknown" | "need-yield" | "domicile-unknown" | "distribution-tax-unknown" | "no-hedge-entered";
 export function customFundGaps(rec: FundRecord): CustomFundGap[] {
   const out: CustomFundGap[] = [];
-  const known = rec.domicile === "IL" || rec.domicile === "IE" || rec.domicile === "US";
+  const known = distributionTaxKnown(rec.domicile);
   // a fee left empty is not known (D56): a foreign fund has its one yearly charge, an Israeli one its three fees
   const fees = rec.domicile === "IL" ? [rec.fees.fixed_management, rec.fees.variable_management, rec.fees.trustee] : [rec.fees.fixed_management];
   if (fees.some((v) => !v)) out.push("fee-unknown");
@@ -590,8 +597,10 @@ export function customFundGaps(rec: FundRecord): CustomFundGap[] {
   if (rec.distribution_policy === null) out.push("payout-unknown");
   if (rec.hedged === true) out.push("no-hedge-entered");
   if (rec.distribution_policy === "distributing") {
-    // the foreign tax withheld on a distribution is known for a fund registered in Ireland or the United States only (F-20)
-    if (!known && !out.includes("tase-country-unknown")) out.push("domicile-unknown");
+    // the foreign tax withheld on a distribution is known for a fund registered in a country the panel names but Luxembourg (F-20,
+    // `DISTRIBUTION_TAX_KNOWN`); Luxembourg's, not in the rule base, says so (G-44), and a country not named or not said has no price
+    if (known === undefined && !out.includes("tase-country-unknown")) out.push("domicile-unknown");
+    if (known === false) out.push("distribution-tax-unknown");
     if (!rec.distribution) out.push("need-yield");
   }
   return out;
@@ -618,9 +627,9 @@ export interface EnteredInBundle {
   /**
    * What a fund on a custom index needs of its index: no exposure record exists for one (F-65). Its currency is not known: a foreign one
    * stands in, which a fund bought in a foreign currency replaces with its own (invest.ts `exposureOf`). F-107's inputs where the person
-   * said the index is of US companies and typed its yield (`usDividendsOfTyped`).
+   * named a region with a rule and typed its yield (`dividendsOfTyped`).
    */
-  exposures: Record<string, Pick<ExposureRecord, "id" | "cash_like" | "currency"> & Partial<Pick<ExposureRecord, "us_dividends">>>;
+  exposures: Record<string, Pick<ExposureRecord, "id" | "cash_like" | "currency"> & { dividends?: AddedDividends; dividendYield?: ValueObject }>;
   /** The person's funds whose index they said is in shekels: each runs on a shekel index and carries no currency label. */
   shekelFunds: string[];
   /**
@@ -635,8 +644,9 @@ export interface EnteredInBundle {
 const customExposures = (indices: readonly CustomIndex[]): EnteredInBundle["exposures"] =>
   Object.fromEntries(
     indices.map((i) => {
-      const us = usDividendsOfTyped(i);
-      return [i.id, { id: i.id, cash_like: false, currency: "USD", ...(us ? { us_dividends: us } : {}) }];
+      const dividends = dividendsOfTyped(i);
+      // the yield as typed, an entered value, which the figure of the tax inside a fund on the index lists among its inputs
+      return [i.id, { id: i.id, cash_like: false, currency: "USD", ...(dividends && i.dividendYield ? { dividends, dividendYield: i.dividendYield } : {}) }];
     }),
   );
 

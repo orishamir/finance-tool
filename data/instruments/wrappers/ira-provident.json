@@ -228,7 +228,6 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXK-17",
-      "PF-23",
       "IRA-23"
     ],
     "state": "sourced",
@@ -340,6 +339,7 @@
   },
   "context_rule_ids": [
     "IRA-17",
-    "IRA-25"
+    "IRA-25",
+    "PF-23"
   ]
 }

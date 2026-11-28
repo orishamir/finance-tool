@@ -1189,9 +1189,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-23"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.200% מהשווי', charged on execution; exemptions printed for compensation FX deposits and for pensions from the former USSR."
       },
@@ -1211,9 +1209,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-23"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Printed as 'מינימום 7.20 דולר' (US dollars). Footnote: a fee charged in a currency other than the tariff's is computed at the representative rate."
       },
@@ -1233,9 +1229,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-23"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Printed as 'מכסימום 3000 דולר' (US dollars)."
       },
@@ -1296,9 +1290,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-23"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Direct channels ('עמדות דיגיטל, אינטרנט וסלולר, גישה ישירה TRADE ON'): '0.16% מהשווי'."
       },
@@ -1318,9 +1310,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-23"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Printed as 'מינימום 5.76 דולר' (US dollars) under 0.16%, in the column 'מחיר לפי סוגי ערוצים ישירים' (עמדות דיגיטל, אינטרנט וסלולר, גישה ישירה TRADE ON); the column 'מחיר באמצעות פקיד' prints 0.200%, 7.20 and 3000 dollars."
       },
@@ -1340,9 +1330,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-23"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Printed as 'מכסימום 2400 דולר' (US dollars)."
       },

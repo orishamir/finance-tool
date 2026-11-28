@@ -75,7 +75,9 @@ const houses = bundle.snapshots.map((s) => s.id);
 
 describe("a fund typed abroad on a named exchange is read there, as a collected fund on that exchange (F-65, F-109)", () => {
   it.each(["us", "europe"] as const)("on %s, with a unit price: every house leaves what it leaves on the collected twin, in whole units", (exchange) => {
-    const f = typed(exchange, 100);
+    // a US fund that keeps its income: the tax inside it is not counted, typed or collected (F-107), so the twins differ by nothing else;
+    // an Irish one whose way is not said runs at the widest two ends typed and on one reading collected
+    const f = typed(exchange, 100, "US");
     const b0 = withCustomEntries(bundle, [f]);
     const b = { ...b0, funds: [...b0.funds, twinOf(f, exchange)] };
     const mine = wayOf(b, f.id);
