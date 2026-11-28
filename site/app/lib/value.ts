@@ -470,7 +470,7 @@ export function restated(v: SiteValue, value: number): SiteValue {
  * A fund statement's identity on a page: the term it states, its document and the page there (a stated index's own page; the address of a
  * document naming the fund a foreign-investment fund carries its page), so one statement is carried and listed once.
  */
-function statementKey(st: FundStatement): string {
+export function statementKey(st: FundStatement): string {
   return `${st.term}|${st.source.url}|${st.term === "tax-index" ? st.page : ""}`;
 }
 

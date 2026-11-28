@@ -10,7 +10,8 @@ import { formulaNames, numbers, parametersPage, provenance as copy, rule as rule
 import type { RuleHead } from "../lib/rule-card-file";
 import { ruleHeadOf } from "../lib/rule-head";
 import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
-import { isOpenValue, isParameter, isWeak, ownBy, sheetFlags, sheetReadings, strengthOf, type SiteValue, type Staleness, type Strength } from "../lib/value";
+import type { FundStatement } from "@finance-tool/engine";
+import { isOpenValue, isParameter, isWeak, ownBy, sheetFlags, sheetReadings, statementKey, strengthOf, type SiteValue, type Staleness, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconClock, IconDrillIn, IconFile, IconLock, IconPencil } from "./icons";
 import { CatchesSaidCtx, OwnCompanyCtx, Sheet, StaleSaidCtx } from "./Sheet";
@@ -394,7 +395,9 @@ export type Catch =
   | { kind: "open" }
   | { kind: "stale"; stale: Staleness }
   | { kind: "flags"; codes: readonly string[] }
-  | { kind: "reading"; rules: readonly string[] };
+  | { kind: "reading"; rules: readonly string[] }
+  /** The fund's own statements the figure rests on (D84's tax index, D119's foreign-investment fund): no other place shows them. */
+  | { kind: "statements"; statements: readonly FundStatement[] };
 
 /**
  * The parts of a catch that can be said once for many figures, each by a key: a flag and a rule read are each a part of their own, so a list
@@ -418,6 +421,8 @@ function partsOf(c: Catch): string[] {
       return c.codes.map((code) => `flag ${code}`);
     case "reading":
       return c.rules.map((r) => `reading ${r}`);
+    case "statements":
+      return c.statements.map((st) => `statement ${statementKey(st)}`);
     default:
       return assertNever(c);
   }
@@ -433,6 +438,10 @@ function catchParts(catches: readonly Catch[], keep: (part: string) => boolean):
     if (c.kind === "reading") {
       const rules = c.rules.filter((r) => keep(`reading ${r}`));
       return rules.length ? [{ ...c, rules }] : [];
+    }
+    if (c.kind === "statements") {
+      const statements = c.statements.filter((st) => keep(`statement ${statementKey(st)}`));
+      return statements.length ? [{ ...c, statements }] : [];
     }
     return partsOf(c).every(keep) ? [c] : [];
   });
@@ -518,6 +527,10 @@ export function catchesOf(v: SiteValue, place: CatchPlace): Catch[] {
   if (flags.length > 0) out.push({ kind: "flags", codes: flags });
   const rules = [...new Set(sheetReadings(v).map((l) => l.ruleId))];
   if (rules.length > 0) out.push({ kind: "reading", rules });
+  // a plain difference or sum leaves out a statement one of its inputs carries: that input's own "?" names it
+  const carriedStatement = (st: FundStatement) => !!v.plain && inputs.some(([, x]) => (x.statements ?? []).some((y) => statementKey(y) === statementKey(st)));
+  const statements = (v.statements ?? []).filter((st) => !carriedStatement(st));
+  if (statements.length > 0) out.push({ kind: "statements", statements });
   const said = place.said;
   return said && said.size > 0 ? catchParts(out, (part) => !said.has(part)) : out;
 }

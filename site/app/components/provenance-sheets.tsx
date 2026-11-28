@@ -643,7 +643,6 @@ export function CatchSheet({ value, catches, exact, display, data, headId, descI
       {catches.map((c) => (
         <CatchPart key={c.kind} c={c} data={data} />
       ))}
-      <Statements statements={value.statements ?? []} />
       <AllRulesLink value={value} data={data} />
     </div>
   );
@@ -776,6 +775,8 @@ function CatchPart({ c, data }: { c: Catch; data: ProvenanceData }) {
           <RuleTitleList ids={c.rules} className="self-stretch" />
         </div>
       );
+    case "statements":
+      return <Statements statements={c.statements} />;
     default:
       return assertNever(c);
   }

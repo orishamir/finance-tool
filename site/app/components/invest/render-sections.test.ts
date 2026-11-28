@@ -4,7 +4,8 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { invest, numbers } from "../../copy";
+import { taxIndexStatementOf } from "@finance-tool/engine";
+import { invest, numbers, provenance } from "../../copy";
 import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
@@ -907,5 +908,39 @@ describe("a fund no account prices says its own reason on its row (founder, 2026
       }
     }
     expect(seen).toBeGreaterThan(0);
+  });
+});
+
+describe("the fund's own statement a figure rests on", () => {
+  it("what a Tel Aviv line whose annex states its index leaves carries a \"?\" that names the statement as the fund's, its annex opened at the page (F-04, D84)", () => {
+    const sheetOf = (v: SiteValue) => html(createElement(CatchSheet, { value: v, catches: catchesHere(v), exact: false, data, headId: "h", descId: "d" }));
+    // the fund's figure where it is priced: a test whose fund is missing or unpriced fails on its own line
+    const priced = (index: string, id: string) => {
+      const ref = indexById(bundle, index);
+      const f = ref ? allFunds(buildInvest({ bundle, index: ref, plan })).find((x) => x.rec.id === id) : undefined;
+      if (!f?.best) throw new Error(`${id} is priced on ${index}`);
+      return { rec: f.rec, value: f.best.value };
+    };
+    for (const [index, id, page, basis] of [
+      ["index-sp500", "1159250", 17, "מס רווחי הון מחושב לפי שער הדולר"],
+      ["index-msci-acwi", "1159235", 16, "מס רווחי הון מחושב לפי מדד המחירים לצרכן"],
+    ] as const) {
+      const f = priced(index, id);
+      // the statement is a catch of its own: with no flag or reading beside it, the figure still has its "?"
+      expect(catchesHere(f.value).map((c) => c.kind), id).toContain("statements");
+      const sheet = sheetOf(f.value);
+      const stated = taxIndexStatementOf(f.rec);
+      if (!stated) throw new Error(`${id}'s record states its tax index`);
+      expect(shown(sheet), id).toContain(provenance.computed.statements);
+      expect(shown(sheet), id).toContain(provenance.computed.statement["tax-index"](stated));
+      expect(shown(sheet), id).toContain(basis);
+      // the date the annex's words were read, as every source on a sheet shows its own
+      expect(shown(sheet), id).toContain(fmt.date(stated.checked));
+      expect(sheet, id).toContain(`href="${f.rec.tax_ruling?.source.url ?? "(no ruling)"}#page=${page}"`);
+    }
+    // a fund bought abroad, the same units, is taxed on TXF-03: it names no statement
+    const abroad = priced("index-sp500", "ie00b5bmr087").value;
+    expect(catchesHere(abroad).map((c) => c.kind)).not.toContain("statements");
+    expect(shown(sheetOf(abroad))).not.toContain(provenance.computed.statements);
   });
 });
