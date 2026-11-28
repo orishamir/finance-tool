@@ -120,3 +120,7 @@ FlareSolverr was used for pages that refused scripts. For PDFs behind a check, t
 
 The iShares V plc prospectus (p.157, library 4380001efa9706cd) says a holder's tax treatment "may differ depending on whether they hold their Shares in the Fund until such Shares are redeemed on the Redemption Date or they sell their Shares". For an Israeli holder, the question is how a redemption at the fund's end is taxed against a sale on the exchange. The earlier note on Invesco's "redeemed" against the US "distribution" stands (ETF-81).
 
+
+## Third pass: iBoxx in the founder's Chrome (2026-11-28)
+
+The four S&P DJI documents that refused scripts and FlareSolverr opened in the founder's Chrome and were read in the page with pdf.js; no copy was kept, so the library has none. Recorded as ETF-123 (how iBoxx rates, sizes, matures and weights bonds, three indices as examples) and ETF-124 (a dated iBoxx high-yield index that rolls into the next window instead of ending). Open question 44 is answered and deleted; 49 is narrowed.
