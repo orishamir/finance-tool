@@ -43,6 +43,7 @@ type LabelId =
   | "hedged-many"
   | "currency-many"
   | "currency-foreign"
+  | "currency-bought"
   | "tax-currency"
   | "tax-currency-unknown"
   | "tax-fund-dividend"
@@ -90,6 +91,7 @@ export const labelDefs: Record<RuleLabelId, LabelDef> = {
   "hedged-many": { icon: "shield", tone: "neutral", rules: ["ETF-12", "ETF-10", "ETF-75"] },
   "currency-many": { icon: "sign", tone: "neutral", rules: ["ETF-12"] },
   "currency-foreign": { icon: "currency", tone: "neutral", rules: ["ETF-12"] },
+  "currency-bought": { icon: "sign", tone: "neutral", rules: ["ETF-28", "TXF-03"] },
   "tax-currency": { icon: "trendUpDown", tone: "neutral", rules: ["TXS-09", "TXS-14"] },
   "tax-currency-unknown": { icon: "scale", tone: "open", rules: ["TXS-14"] },
   "tax-fund-dividend": { icon: "badgePercent", tone: "neutral", rules: ["TXF-16"] },
@@ -161,6 +163,7 @@ const familyOf: Record<RuleLabelId, Label["family"]> = {
   "hedged-many": "currency",
   "currency-many": "currency",
   "currency-foreign": "currency",
+  "currency-bought": "currency",
   "tax-currency": "tax",
   "tax-currency-unknown": "tax",
   "tax-fund-dividend": "tax",
@@ -231,12 +234,11 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   const many = index.exposure?.other_currencies === true;
   if (rec.hedged === true) out.push(label(many ? "hedged-many" : "hedged", indexCurrency && !isShekel(indexCurrency) ? indexCurrency : index.custom ? c.indexCurrency : undefined));
   else if (indexCurrency && !isShekel(indexCurrency)) out.push(label(many ? "currency-many" : "currency", indexCurrency));
-  // an index the person added: the site does not know its currency, so the label names the one the fund is bought in where the person said
-  // it (the run moves the fund with it, invest.ts `exposureOf`), and none otherwise
-  else if (!index.exposure && !index.israeli) {
-    const said = index.custom ? (index.boughtIn ?? null) : rec.currency;
-    out.push(said ? label("currency", said) : label("currency-foreign"));
-  }
+  // an index the person added: the site does not know its currency. The run moves the fund with the foreign currency the person said it
+  // is bought in (invest.ts `exposureOf`), on the site's reading, and the label says that is the currency it is bought in, not the index's;
+  // where they said none, the label names none
+  else if (index.custom && !index.israeli) out.push(index.boughtIn ? label("currency-bought", index.boughtIn) : label("currency-foreign"));
+  else if (!index.exposure && !index.israeli) out.push(label("currency", rec.currency));
   // tax: an Israeli fund on a foreign index that is not a foreign-investment fund is taxed on the currency move too (TXS-09, TXS-14); one
   // whose documents name a principal currency is run on it, the site's reading of TXS OQ26, which its figures' sheets say and no chip does
   // (D119); one whose status is not known (a fund the person typed among them, whose documents the site did not read) is run on both

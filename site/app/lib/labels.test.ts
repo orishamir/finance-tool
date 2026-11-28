@@ -10,7 +10,7 @@ import { buildIndicesBundle } from "./providers.server";
 describe("label icons (2026-11-05 sweep)", () => {
   // labels that say the same thing of a different case share an icon; any other two never do
   const same = [
-    ["currency", "currency-many"],
+    ["currency", "currency-many", "currency-bought"],
     ["hedged", "hedged-many"],
     ["tax-index-currency", "tax-index-cpi"],
     ["tax-fund-dividend", "tax-fund-dividend-left-out", "tax-fund-dividend-need-yield", "tax-fund-dividend-not-us", "tax-fund-dividend-us-share", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"],

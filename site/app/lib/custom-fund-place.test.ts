@@ -135,8 +135,11 @@ describe("a fund bought in euros runs in euros (F-65, F-84, F-109)", () => {
     expect(priced(w).length).toBeGreaterThan(0);
     const rec = must(bc.funds.at(-1), "the record");
     const currency = fundLabels(rec, indexSeenBy(index, rec, bc), "abroad").find((l) => l.family === "currency");
-    expect(currency?.id).toBe("currency");
+    // what the person said is the currency they buy in, not the index's (ETF-28): the label says so, never that the index is in it
+    expect(currency?.id).toBe("currency-bought");
     expect(currency?.text).toContain(copy.currencies.EUR);
+    expect(currency?.explain).not.toContain("כי המדד מחושב בו");
+    expect(currency?.explain).toContain("זו קריאה של האתר");
     // abroad not sure where, the currency is not known, and the label names none
     const unsure = fundAt("abroad", "IE", {}, custom.id, "custom-fund-unsure");
     const bu = withCustomEntries(bundle, [unsure], [custom]);
