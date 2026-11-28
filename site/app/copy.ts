@@ -3376,7 +3376,7 @@ export const sourceBlock = {
     "consolidated-not-binding": "נוסח משולב, לא הנוסח המחייב",
     translation: "תרגום",
     "foreign-view": "מקור מחו״ל",
-    "does-not-answer": "לא קובע את זה בעצמו",
+    "does-not-answer": "לא קובע את הכלל בעצמו",
   } satisfies Record<SourceStanding, string>,
   /** The one-line citation the copy button writes: "{claim} — {publisher}, {document}, {locator}. {url} (נבדק {date})" */
   citation: { checked: "נבדק", copied: "הועתק" }, // was "ההפניה הועתקה."; the box's own label turns into it
@@ -4066,7 +4066,7 @@ export const searchMore = {
   parameterLine: "פרמטר של האתר",
   documentLine: "מסמך",
   /** A figure that matched a search, where its rule's record gives it no name: the row says the figure has none yet. */
-  figureLine: "מספר של הכלל, שעוד אין לו שם",
+  figureLine: "מספר מתוך הכלל",
   maybe: "אולי התכוונתם:",
   empty: {
     questionTitle: "אין תשובה על זה בניסוח הזה",
