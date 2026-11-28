@@ -28,7 +28,7 @@ export function What() {
       </p>
       <GuidePart title="איך היא נגמרת">
         <Sentence measure><Ruled id="MF-59">בסוף התקופה</Ruled> <Term id="מנהל קרן">מנהל הקרן</Term> <Ruled id="MF-60">פודה</Ruled> את <Term prefix="ה" id="יחידה">יחידות</Term>. בקרנות שנמצאו, הקרן <Ruled id="MF-62">עוקבת אחרי מדד</Ruled> של איגרות כאלה. לפי <Term prefix="ה" id="בורסה">בורסה</Term>, <Ruled id="MF-61">למדדים האלה יש מועד סיום</Ruled>: הם מפסיקים להתקיים כשהאיגרת האחרונה נפדית.</Sentence>
-        <Sentence measure>בקרן 5137492 של ילין לפידות, ככל שהאיגרות נפרעות הכסף עובר <Term prefix="ל" id={'מק"מ'}>מק״מ</Term>, <Ruled id="MF-75" prefix="ו">אחרי סוף השנה למזומן</Ruled>. ילין לפידות כותבת <Ruled id="MF-75" prefix="ש">אין בכך התחייבות</Ruled> להשיג את מטרת הקרן.</Sentence>
+        <Sentence measure>בקרן 5137492 של ילין לפידות, ככל שהאיגרות נפרעות הכסף עובר <Term prefix="ל" id={'מק"מ'}>מק״מ</Term>, <Ruled id="MF-75" prefix="ו">אחרי סוף השנה למזומן</Ruled>. ילין לפידות כותבת שאין בכך התחייבות להשיג את מטרת הקרן.</Sentence>
       </GuidePart>
       <GuidePart title="המחיר לקראת הסוף">
         <Sentence measure>ככל שהסוף מתקרב, נשאר פחות זמן עד שהאיגרות בקרן נפרעות, ולכן שינוי <Term prefix="ב" id="ריבית">ריבית</Term> מזיז את <Term id="מחיר קנייה">מחיר היחידה</Term> <Ruled id="BND-04">פחות ופחות</Ruled>. בקרן אג״ח בלי מועד סיום אין רגע כזה: כמה מחיר היחידה זז <Ruled id={["BND-13", "BND-15"]}>תלוי באיגרות שהיא מחזיקה</Ruled> באותו זמן. <ProofsChip ids={["M-03"]} /></Sentence>

@@ -26,7 +26,7 @@ export const content: GuideContent = {
           <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term> הוא כסף ש<Term id="הביטוח הלאומי">הביטוח הלאומי</Term> חוסך בשביל הילד: <Ruled id="CS-02">בכל חודש הוא מפקיד סכום לכל ילד שמקבלים בעדו קצבת ילדים</Ruled>. ההורה <Ruled id="CS-04">יכול להכפיל את ההפקדה מתוך קצבת הילדים</Ruled>.
         </p>
         <p className="max-w-measure">
-          <Ruled id="CS-06">ההורה בוחר אם הכסף ינוהל</Ruled> <Term prefix="ב" id="קופת גמל">קופת גמל</Term> או בבנק. בעמוד הזה הוא בקופת גמל: הכסף מושקע, והשווי שלו <Ruled id="CS-05">עולה ויורד</Ruled>. הוא <Ruled id="CS-05">שייך לילד</Ruled>, ו<Ruled id="CS-14">אפשר למשוך אותו כשהילד מגיע לגיל</Ruled> {until ? <Num value={until} /> : null}.
+          <Ruled id="CS-06">ההורה בוחר אם הכסף ינוהל</Ruled> <Term prefix="ב" id="קופת גמל">קופת גמל</Term> או בבנק. בעמוד הזה הוא בקופת גמל: הכסף מושקע, והשווי שלו עולה ויורד. הוא <Ruled id="CS-05">שייך לילד</Ruled>, ו<Ruled id="CS-14">אפשר למשוך אותו כשהילד מגיע לגיל</Ruled> {until ? <Num value={until} /> : null}.
         </p>
         <GuidePart title="כמה מופקד">
           <Sentence measure>

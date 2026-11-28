@@ -19,7 +19,7 @@ export const content: GuideContent = {
           <Term id="איגרת חוב">איגרת חוב</Term> ממשלתית היא הלוואה שאתם נותנים למדינה. המדינה מחזירה את הכסף בתאריך שנקבע מראש, ובדרך כלל <Ruled id={["GOV-11", "GOV-13", "GOV-14"]}>משלמת בינתיים גם</Ruled> <Term id="ריבית">ריבית</Term>.
         </p>
         <p className="max-w-measure">
-          מי שמחזיק אותה עד התאריך הזה <Ruled id="BND-02">מקבל את מה שנקבע מראש</Ruled>. אפשר גם <Ruled id="GOV-17">למכור אותה קודם</Ruled>, אבל אז <Ruled id="BND-02">המחיר יכול להיות נמוך ממה ששילמתם</Ruled>, או גבוה ממנו.
+          מי שמחזיק אותה עד התאריך הזה מקבל את מה שנקבע מראש. אפשר גם <Ruled id="GOV-17">למכור אותה קודם</Ruled>, אבל אז <Ruled id="BND-02">המחיר יכול להיות נמוך ממה ששילמתם</Ruled>, או גבוה ממנו.
         </p>
         <GuidePart title="מה מקבלים ומתי">
           <p className="max-w-measure">
@@ -34,7 +34,7 @@ export const content: GuideContent = {
             באיגרת הצמודה הקרן גדלה או קטנה עם המדד מאז <Term id="מדד הבסיס">מדד הבסיס</Term>, והקופון מחושב על הקרן אחרי <Term prefix="ה" id="הצמדה">הצמדה</Term>. לכן הקופון שלה הוא ריבית מעל עליית המחירים, ולא ריבית בשקלים.
           </p>
           <p className="max-w-measure">
-            יש גם <Term id={'אג"ח ממשלתית קצרה'}>אג״ח ממשלתית קצרה</Term>, {shortMax ? <>עד <Num value={shortMax} /> חודשים, </> : null}בלי ריבית, <Ruled id="GOV-15" prefix="ש">נמכרת מתחת לסכום הפדיון</Ruled> כמו מק״מ. <Ruled id={["GOV-11", "GOV-13", "GOV-15"]}>בשם של כל סדרה כתובים</Ruled> חודש ושנת הפדיון שלה.
+            יש גם <Term id={'אג"ח ממשלתית קצרה'}>אג״ח ממשלתית קצרה</Term>, {shortMax ? <>עד <Num value={shortMax} /> חודשים, </> : null}בלי ריבית, <Ruled id="GOV-15" prefix="ש">נמכרת מתחת לסכום הפדיון</Ruled> כמו מק״מ. <Ruled id={["GOV-11", "GOV-13"]}>בשם של כל סדרה כתובים</Ruled> חודש ושנת הפדיון שלה.
           </p>
           <GuideFold label="שמות אחרים של האיגרות">
             <p className="max-w-measure">

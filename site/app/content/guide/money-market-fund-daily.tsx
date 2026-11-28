@@ -21,7 +21,7 @@ export const content: GuideContent = {
         </p>
         <GuidePart title="כמה היא מרוויחה">
           <p className="max-w-measure">
-            לפי <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>, <Term prefix="ה" id="תשואה">תשואה</Term> <Ruled id="MF-34">נעה בעקבות</Ruled> ריבית בנק ישראל, פחות העלויות של הקרן. אין בה תשואה מובטחת ואין <Term id="תשואה צפויה">תשואה צפויה</Term>: <Ruled id="MF-34">שינוי בריבית בנק ישראל יכול לשנות אותה</Ruled>.
+            לפי <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>, <Term prefix="ה" id="תשואה">תשואה</Term> <Ruled id="MF-34">נעה בעקבות</Ruled> ריבית בנק ישראל, פחות העלויות של הקרן. אין בה תשואה מובטחת ואין <Term id="תשואה צפויה">תשואה צפויה</Term>: שינוי בריבית בנק ישראל יכול לשנות אותה.
           </p>
         </GuidePart>
         <GuidePart title="במה היא משקיעה">

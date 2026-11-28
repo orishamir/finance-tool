@@ -32,7 +32,7 @@ export const content: GuideContent = {
       </GuidePart>
       <GuidePart title="מתי אפשר למשוך">
         <p className="max-w-measure">
-          <Term id="תחנת יציאה">תחנת יציאה</Term> היא מועד באמצע התקופה <Ruled id="BANK-27">שבו אפשר למשוך בלי לשבור את התוכנית</Ruled>. אם יש תחנות, ממתי הן נספרות ומה מושכים בהן <Ruled id="BANK-27">נקבע בהסכם של כל תוכנית</Ruled>.
+          <Term id="תחנת יציאה">תחנת יציאה</Term> היא מועד באמצע התקופה <Ruled id="BANK-27">שבו אפשר למשוך בלי לשבור את התוכנית</Ruled>. אם יש תחנות, ממתי הן נספרות ומה מושכים בהן נקבע בהסכם של כל תוכנית.
         </p>
         {/* D30: the exit points (BPN-10) are each bank's own terms */}
         <div className="max-w-measure">
