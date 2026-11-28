@@ -2,7 +2,7 @@
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
 import { countPhrase } from "./lib/count";
 import type { EmptyBecause, FeeCap, SourceStanding } from "@finance-tool/schema";
-import type { ChangeKind, ForeignInvestmentFundStatement, FundStatement, HeldKind, NotKnown, TaxIndexStatement } from "@finance-tool/engine";
+import type { ChangeKind, ForeignInvestmentFundStatement, FundStatement, HeldKind, InsideTaxParts, NotKnown, TaxIndexStatement } from "@finance-tool/engine";
 import type { FeeKindId } from "./lib/fee-deal/core";
 
 /**
