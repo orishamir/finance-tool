@@ -7,6 +7,7 @@ import { YearOf } from "./year";
 import { fmt } from "../../lib/format";
 import { IdRef, Num, ProofsChip, Ruled, Term } from "../../components/provenance";
 import { Callout, Sentence, TextLink } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -14,11 +15,26 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          המק״מ לא משלם <Term id="ריבית">ריבית</Term> ולא <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>: קונים אותו במחיר נמוך <Term prefix="מה" id="שווי נקוב">שווי הנקוב</Term>. במועד <Term prefix="ה" id="פדיון">פדיון</Term> <Ruled id={["GOV-03", "GOV-02"]}>המדינה משלמת את השווי הנקוב במלואו</Ruled>. ההפרש הוא הרווח שלכם. במס הוא נחשב <Term id="דמי ניכיון">דמי ניכיון</Term>, <Ruled id="TXI-01">כלומר ריבית</Ruled>.
+          מק״מ הוא הלוואה קצרה שאתם נותנים למדינה, <Ruled id="GOV-23">לכשנה או פחות</Ruled>. <Ruled id={["GOV-03", "GOV-26"]}>קונים אותו בפחות ממה שהמדינה מחזירה בסוף, וההפרש הוא הרווח שלכם</Ruled>.
         </p>
-        <Sentence measure>
-          <Ruled id="GOV-23">בכל חודש מונפקת סדרה חדשה לכשנה</Ruled>, ולכן בכל רגע יש {series ? <Num value={series} /> : null} סדרות בשוק, עם מועדי פדיון שונים. מי שמחזיק עד הסוף <Ruled id="GOV-26">יודע כבר ביום הקנייה</Ruled> מה <Term prefix="ה" id="תשואה לפדיון">תשואה לפדיון</Term> שלו. אין קופונים שצריך להשקיע מחדש בדרך. לכן התשואה לפדיון <Ruled id="GOV-06">היא בדיוק הרווח לשנה עד הפדיון</Ruled>, לפני עמלות ומס הכנסה. <ProofsChip ids={["M-02"]} />
-        </Sentence>
+        <p className="max-w-measure">
+          מי שמחזיק אותו עד הסוף <Ruled id="GOV-03">יודע מראש כמה שקלים יקבל</Ruled>, אבל <Ruled id="BND-09">לא כמה הם יהיו שווים</Ruled>. אפשר גם <Ruled id="GOV-17">למכור אותו קודם, בכל יום מסחר</Ruled>, <Ruled id="BND-02">במחיר של אותו יום</Ruled>.
+        </p>
+        <GuidePart title="מה מקבלים בסוף">
+          <p className="max-w-measure">
+            המק״מ לא משלם <Term id="ריבית">ריבית</Term> ולא <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term>: קונים אותו במחיר נמוך <Term prefix="מה" id="שווי נקוב">שווי הנקוב</Term>. במועד <Term prefix="ה" id="פדיון">פדיון</Term> <Ruled id={["GOV-03", "GOV-02"]}>המדינה משלמת את השווי הנקוב במלואו</Ruled>. במס ההפרש נחשב <Term id="דמי ניכיון">דמי ניכיון</Term>, <Ruled id="TXI-01">כלומר ריבית</Ruled>.
+          </p>
+        </GuidePart>
+        <GuidePart title="סדרה חדשה בכל חודש">
+          <Sentence measure>
+            <Ruled id="GOV-23">בכל חודש מונפקת סדרה חדשה לכשנה</Ruled>, ולכן בכל רגע יש {series ? <Num value={series} /> : null} סדרות בשוק, עם מועדי פדיון שונים.
+          </Sentence>
+        </GuidePart>
+        <GuidePart title="כמה מרוויחים בשנה">
+          <p className="max-w-measure">
+            מי שמחזיק עד הסוף <Ruled id="GOV-26">יודע כבר ביום הקנייה</Ruled> מה <Term prefix="ה" id="תשואה לפדיון">תשואה לפדיון</Term> שלו. אין קופונים שצריך להשקיע מחדש בדרך. לכן התשואה לפדיון <Ruled id="GOV-06">היא בדיוק הרווח לשנה עד הפדיון</Ruled>, לפני עמלות ומס הכנסה. <ProofsChip ids={["M-02"]} />
+          </p>
+        </GuidePart>
       </>
     );
   },

@@ -61,6 +61,8 @@ export interface GuideContent {
   lumpNote?: ReactNode;
   /** A line under the chart's example where the run does something the product's own terms may not allow (makam: a purchase with every monthly deposit, below the exchange's minimum order). */
   chartNote?: (p: ContentProps) => ReactNode;
+  /** Prose under the fee table: how the costs are charged and what limits them. */
+  cost?: (p: ContentProps) => ReactNode;
   /** Anything after the tax steps (a blocked route, a note). */
   afterTax?: (p: ContentProps) => ReactNode;
   risks: (p: ContentProps) => ReactNode;

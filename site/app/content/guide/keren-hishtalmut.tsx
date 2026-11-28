@@ -6,6 +6,7 @@ import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { Num, Ruled, Term } from "../../components/provenance";
 import { Callout, ProseList } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 import { sectionTitle } from "../../lib/guide-nav";
 import { fmt } from "../../lib/format";
 import { AbroadAmount, AbroadCount, AbroadFigure, AbroadPeriod, AbroadSaid, AbroadYears } from "./abroad-parts";
@@ -17,20 +18,32 @@ export const content: GuideContent = {
   what: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        <Ruled id="KH-01">קרן השתלמות היא</Ruled> <Term id="קופת גמל">קופת גמל</Term> שבה הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> לבחירתכם.
+        קרן השתלמות היא חיסכון דרך מקום העבודה: <Ruled id="KH-03">אם הסכם העבודה כולל אותה</Ruled>, <Term id="הפקדות המעסיק">המעסיק</Term> מפקיד אליה כסף כל חודש, ואתם מפקידים חלק מהשכר שלכם. <Term id="עמית-עצמאי">עצמאים</Term> <Ruled id="KH-02">מפקידים בעצמם</Ruled>.
       </p>
       <p className="max-w-measure">
-        <Ruled id="KH-03">אם הסכם העבודה כולל קרן השתלמות</Ruled>, <Term id="הפקדות המעסיק">המעסיק</Term> מפקיד לקרן כל חודש כסף, ואתם מפקידים חלק מהשכר שלכם. האחוז שכל צד מעביר לקרן <Ruled id="KH-04">כתוב בהסכם העבודה</Ruled>. <Term id="עמית-עצמאי">עצמאים</Term> <Ruled id="KH-02">מפקידים בעצמם</Ruled>.
+        אחרי כמה שנים שקבע החוק <Ruled id="TXH-09">מושכים את הכסף בלי מס</Ruled>, גם על הרווח, כל עוד ההפקדות לא עברו גבול שהחוק קבע. הכסף לא נעול: <Ruled id="KH-10">אפשר למשוך גם קודם, אבל אז משלמים מס</Ruled>.
       </p>
-      <p className="max-w-measure">
-        אחרי <N v={figure("TXH-09", "lock_years")} /> שנים <Term prefix="מ" id="מועד התשלום הראשון">ההפקדה הראשונה</Term> אפשר <Term id="משיכה">למשוך</Term> את הכסף <Ruled id="TXH-09">בלי מס הכנסה</Ruled> ובלי <Term id="מס רווחי הון">מס רווחי הון</Term>. למי שהגיע <Term prefix="ל" id="גיל הפרישה">גיל הפרישה</Term> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים. גם על כסף שמושכים <Ruled id="TXH-10">כדי לשלם על לימודים</Ruled> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים: בחוק זה נקרא ״השתלמות״. אילו אישורים הקרן דורשת על הלימודים כתוב <Term prefix="ב" id="תקנון">תקנון</Term> של כל קרן. החישוב בעמוד לא מחשב משיכה להשתלמות אחרי <N v={figure("TXH-10", "lock_years")} /> שנים.
-      </p>
-      <p className="max-w-measure">
-        הפטור לא חל על כל סכום. לשכירים הוא חל על הפקדות של עד <N v={figure("KH-04", "employer_pct")} /> מהשכר מהמעסיק (<Ruled id="TXH-01">לעובדי הוראה בקרנות מסוימות השיעור גבוה יותר</Ruled>) ועד <N v={figure("KH-04", "employee_pct")} /> מהשכר שלכם. הוא חל רק על שכר של עד <Whole v={figure("TXH-02", "determining_salary_cap")} /> בחודש: גם מי שמרוויח יותר מחשב את האחוזים לפי <Whole v={figure("TXH-02", "determining_salary_cap")} />. לעצמאים הוא חל על הפקדות של עד <Whole v={figure("TXH-08", "self_employed_benefited")} /> בשנה.
-      </p>
-      <p className="max-w-measure">
-        <Ruled id="TXH-03">אפשר להפקיד גם יותר</Ruled>, אבל על הרווח מהכסף שמעל הגבול הפטור לא חל. הפקדת המעסיק שמעל הגבול ממוסה כמו שכר כבר כשהיא מופקדת. אפשר למשוך גם לפני שעברו <N v={figure("TXH-09", "lock_years")} /> השנים, <Ruled id="KH-10">אבל אז משלמים מס הכנסה</Ruled>. כמה משלמים בכל מקרה כתוב ב״{sectionTitle("keren-hishtalmut", "tax")}״.
-      </p>
+      <GuidePart title="מי מפקיד, ואיפה הכסף">
+        <p className="max-w-measure">
+          האחוז שכל צד מעביר לקרן <Ruled id="KH-04">כתוב בהסכם העבודה</Ruled>. בחוק <Ruled id="KH-01">קרן השתלמות היא</Ruled> <Term id="קופת גמל">קופת גמל</Term>, והכסף בה מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> לבחירתכם.
+        </p>
+      </GuidePart>
+      <GuidePart title="מתי מושכים בלי מס">
+        <p className="max-w-measure">
+          אחרי <N v={figure("TXH-09", "lock_years")} /> שנים <Term prefix="מ" id="מועד התשלום הראשון">ההפקדה הראשונה</Term> אפשר <Term id="משיכה">למשוך</Term> את הכסף <Ruled id="TXH-09">בלי מס הכנסה</Ruled> ובלי <Term id="מס רווחי הון">מס רווחי הון</Term>. למי שהגיע <Term prefix="ל" id="גיל הפרישה">גיל הפרישה</Term> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים. גם על כסף שמושכים <Ruled id="TXH-10">כדי לשלם על לימודים</Ruled> מספיקות <N v={figure("TXH-10", "lock_years")} /> שנים: בחוק זה נקרא ״השתלמות״. אילו אישורים הקרן דורשת על הלימודים כתוב <Term prefix="ב" id="תקנון">תקנון</Term> של כל קרן. החישוב בעמוד לא מחשב משיכה להשתלמות אחרי <N v={figure("TXH-10", "lock_years")} /> שנים.
+        </p>
+        <p className="max-w-measure">
+          מי שמושך לפני שעברו <N v={figure("TXH-09", "lock_years")} /> השנים <Ruled id="KH-10">משלם מס הכנסה</Ruled>. כמה משלמים בכל מקרה כתוב ב״{sectionTitle("keren-hishtalmut", "tax")}״.
+        </p>
+      </GuidePart>
+      <GuidePart title="על איזה סכום הפטור חל">
+        <p className="max-w-measure">
+          לשכירים הפטור חל על הפקדות של עד <N v={figure("KH-04", "employer_pct")} /> מהשכר מהמעסיק (<Ruled id="TXH-01">לעובדי הוראה בקרנות מסוימות השיעור גבוה יותר</Ruled>) ועד <N v={figure("KH-04", "employee_pct")} /> מהשכר שלכם. הוא חל רק על שכר של עד <Whole v={figure("TXH-02", "determining_salary_cap")} /> בחודש: גם מי שמרוויח יותר מחשב את האחוזים לפי <Whole v={figure("TXH-02", "determining_salary_cap")} />. לעצמאים הוא חל על הפקדות של עד <Whole v={figure("TXH-08", "self_employed_benefited")} /> בשנה.
+        </p>
+        <p className="max-w-measure">
+          <Ruled id="TXH-03">אפשר להפקיד גם יותר</Ruled>, אבל על הרווח מהכסף שמעל הגבול הפטור לא חל. הפקדת המעסיק שמעל הגבול ממוסה כמו שכר כבר כשהיא מופקדת.
+        </p>
+      </GuidePart>
     </>
   ),
   who: () => (

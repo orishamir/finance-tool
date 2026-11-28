@@ -5,6 +5,7 @@ import type { GuideContent } from "./types";
 import { fmt } from "../../lib/format";
 import { IdRef, Num, Ruled, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 import { OpenLossOffset } from "./open-tax";
 import { AbroadAmount, AbroadFigure, AbroadPeriod, AbroadSaid, AbroadYears } from "./abroad-parts";
 
@@ -15,17 +16,31 @@ export const content: GuideContent = {
     return (
     <>
       <p className="max-w-measure">
-        אתם מפקידים לקופה בעצמכם, עד {ceiling ? <Num value={ceiling} /> : "התקרה"} <Ruled id="KGL-02">בשנה, בכל הקופות שלכם יחד</Ruled>. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ומי שלא בוחר <Ruled id="KGL-11">מצורף</Ruled> <Term prefix="ל" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term> של הקופה.
+        קופת גמל להשקעה היא חיסכון שאתם מפקידים אליו בעצמכם, <Ruled id="KGL-02">עד סכום מסוים בשנה</Ruled>. הכסף לא נעול: <Ruled id="KGL-08">אפשר למשוך אותו מתי שרוצים</Ruled>, <Ruled id="TXK-05" prefix="ו">ומס הכנסה משלמים רק על הרווח</Ruled>, כשמושכים.
       </p>
       <p className="max-w-measure">
-        <Ruled id="TXK-03">על הרווחים בתוך הקופה לא משלמים מס</Ruled>. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, <Ruled id="TXK-05" prefix="ו">רק על הרווח</Ruled>: עד {rate ? <Num value={rate} /> : "השיעור המרבי"} <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>.
+        מה שמיוחד בה: <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> לא ממוסה, <Ruled id="TXK-04">לפי הקריאה של האתר</Ruled>, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס הכנסה על הרווח. ומי שמעביר את הכסף <Term prefix="ל" id="קצבה">קצבה</Term>, מהגיל שהחוק קבע לכך, <Ruled id={["KGL-09", "TXK-09"]}>מקבל אותה בלי מס</Ruled>.
       </p>
-      <p className="max-w-measure">
-        <Ruled id="KGL-06">האתר לא מצא בחוק ובכללים תנאי גיל או תושבות לפתיחה</Ruled>. זו קריאה של מה שהם לא אומרים, לא כלל כתוב. שאלה פתוחה <IdRef id="KGL OQ6" end="." /> <Term prefix="ה" id="חברה מנהלת">חברה המנהלת</Term> מחליטה אם לקבל בקשת הצטרפות.
-      </p>
-      <p className="max-w-measure">
-        בגרף שלמטה דמי הניהול הם אלה שכתובים במסמכים של החברה שבדוגמה: <Ruled id="PF-13" prefix="ה">שיעור המוזל</Ruled> <Term prefix="ב" id="תקופת ההנחה">תקופת ההנחה</Term>, ואחריה התקרה שבתקנות, שעד אליה <Ruled id="PF-02">מותר לחברה לגבות</Ruled>. כמה <Term prefix="ה" id="עמית">עמיתים</Term> שילמו בממוצע בכל מסלול כתוב בחלק על העלויות.
-      </p>
+      <GuidePart title="כמה מפקידים, ואיפה הכסף">
+        <p className="max-w-measure">
+          אתם מפקידים לקופה בעצמכם, עד {ceiling ? <Num value={ceiling} /> : "התקרה"} <Ruled id="KGL-02">בשנה, בכל הקופות שלכם יחד</Ruled>. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ומי שלא בוחר <Ruled id="KGL-11">מצורף</Ruled> <Term prefix="ל" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term> של הקופה.
+        </p>
+      </GuidePart>
+      <GuidePart title="מתי משלמים מס">
+        <p className="max-w-measure">
+          <Ruled id="TXK-03">על הרווחים בתוך הקופה לא משלמים מס</Ruled>. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, <Ruled id="TXK-05" prefix="ו">רק על הרווח</Ruled>: עד {rate ? <Num value={rate} /> : "השיעור המרבי"} <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>.
+        </p>
+      </GuidePart>
+      <GuidePart title="מי יכול לפתוח">
+        <p className="max-w-measure">
+          <Ruled id="KGL-06">האתר לא מצא בחוק ובכללים תנאי גיל או תושבות לפתיחה</Ruled>. זו קריאה של מה שהם לא אומרים, לא כלל כתוב. שאלה פתוחה <IdRef id="KGL OQ6" end="." /> <Term prefix="ה" id="חברה מנהלת">חברה המנהלת</Term> מחליטה אם לקבל בקשת הצטרפות.
+        </p>
+      </GuidePart>
+      <GuidePart title="מה הגרף מניח">
+        <p className="max-w-measure">
+          בגרף שלמטה דמי הניהול הם אלה שכתובים במסמכים של החברה שבדוגמה: <Ruled id="PF-13" prefix="ה">שיעור המוזל</Ruled> <Term prefix="ב" id="תקופת ההנחה">תקופת ההנחה</Term>, ואחריה התקרה שבתקנות, שעד אליה <Ruled id="PF-02">מותר לחברה לגבות</Ruled>. כמה <Term prefix="ה" id="עמית">עמיתים</Term> שילמו בממוצע בכל מסלול כתוב בחלק על העלויות.
+        </p>
+      </GuidePart>
     </>
     );
   },
@@ -127,7 +142,7 @@ export const content: GuideContent = {
     return (
       <>
         <Sentence measure>
-          חיסכון שצריך להישאר זמין: אין נעילה, <Ruled id="KGL-08" prefix="ו">מושכים בכל עת</Ruled>. <Term id="העברת כספים בין מסלולי השקעה">מעבר בין מסלולים</Term> לא ממוסה, <Ruled id="TXK-04">לפי הקריאה של האתר</Ruled>, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס הכנסה על הרווח. מגיל {age ? <Num value={age} /> : null} <Ruled id="KGL-09">אפשר גם להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.
+          חיסכון שצריך להישאר זמין: אין נעילה, <Ruled id="KGL-08" prefix="ו">מושכים בכל עת</Ruled>. מעבר בין מסלולים לא ממוסה, <Ruled id="TXK-04">לפי הקריאה של האתר</Ruled>, ולכן אפשר לשנות את ההשקעה בדרך בלי לשלם מס הכנסה על הרווח. מגיל {age ? <Num value={age} /> : null} <Ruled id="KGL-09">אפשר גם להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.
         </Sentence>
       </>
     );

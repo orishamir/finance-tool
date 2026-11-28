@@ -4,43 +4,66 @@
 import type { GuideContent } from "./types";
 import { IdRef, Num, ProofsChip, Ruled, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
+import { GuideFold, GuidePart } from "../../components/guide/sections";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
     const life = figure("MF-30", "max_average_life_days");
     const bondTerm = figure("MF-29", "max_bond_term_months");
-    const distCap = figure("MF-24", "distribution_fee_cap_money_market");
-    const noDeal = figure("MF-71", "distribution_fee_max_without_agreement");
     const foreign = figure("MF-74", "foreign_securities_line");
     return (
       <>
+        <p className="max-w-measure">
+          <Term id="קרנות כספיות יומיות">קרן כספית יומית</Term> היא מקום לכסף שאולי תצטרכו בקרוב. <Ruled id="MF-34">אפשר להוציא ממנה כסף בכל יום מסחר</Ruled>, ובינתיים הוא מרוויח.
+        </p>
+        <p className="max-w-measure">
+          הקרן מלווה את הכסף <Ruled id="MF-29">רק לזמן קצר, למדינה, לבנקים ולחברות בדירוג גבוה</Ruled>. <Ruled id="MF-34">הרווח עולה ויורד עם</Ruled> <Term id="ריבית בנק ישראל">ריבית בנק ישראל</Term>, והוא לא מובטח.
+        </p>
+        <GuidePart title="כמה היא מרוויחה">
+          <p className="max-w-measure">
+            לפי <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>, <Term prefix="ה" id="תשואה">תשואה</Term> <Ruled id="MF-34">נעה בעקבות</Ruled> ריבית בנק ישראל, פחות העלויות של הקרן. אין בה תשואה מובטחת ואין <Term id="תשואה צפויה">תשואה צפויה</Term>: <Ruled id="MF-34">שינוי בריבית בנק ישראל יכול לשנות אותה</Ruled>.
+          </p>
+        </GuidePart>
+        <GuidePart title="במה היא משקיעה">
+          <Sentence measure>
+            <Ruled id="MF-29">רק בנכסים מרשימה סגורה</Ruled>: <Term id={'מק"מ'}>מק״מ</Term>, <Term id="איגרת חוב">איגרות חוב</Term> שנפרעות בתוך {bondTerm ? <Num value={bondTerm} /> : null} חודשים, בדירוג גבוה אם לא המדינה הנפיקה אותן, <Term id="פיקדון">פיקדונות</Term> בבנקים ומזומן. <Ruled id="MF-30">משך החיים הממוצע של הנכסים הוא עד</Ruled> {life ? <Num value={life} /> : null} ימים.
+          </Sentence>
+          <p className="max-w-measure">
+            היא <Term id="קרן נאמנות">קרן נאמנות</Term>: <Term id="מנהל קרן">מנהל הקרן</Term> משקיע את הכסף, ו<Ruled id="MF-01">את הנכסים מחזיק</Ruled> <Term id="נאמן">נאמן</Term>, גוף נפרד ממנו.
+          </p>
+        </GuidePart>
+        <GuidePart title="איך קונים ומוכרים">
+          <p className="max-w-measure">
+            קונים ופודים <Term id="יחידה">יחידות</Term> דרך <Term id="חשבון ניירות ערך">חשבון ניירות ערך</Term> בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term>, ובדרך כלל <Ruled id="MF-15">בלי סכום מינימלי</Ruled>. מחפשים לפי שם הקרן או המספר שלה <Term prefix="ב" id="בורסה">בורסה</Term>.
+          </p>
+          <p className="max-w-measure">
+            מנהל הקרן <Ruled id="MF-09">מחשב את המחיר של יחידה פעם ביום, לפי שווי הנכסים</Ruled>. הוראה שמגיעה לפני <Term id="השעה היעודה">השעה היעודה</Term> של הקרן <Ruled id="MF-10">מקבלת את המחיר של אותו יום</Ruled>, והוראה מאוחרת יותר את המחיר של יום החישוב הבא.
+          </p>
+          <Sentence measure>
+            הכסף <Term prefix="מה" id="פדיון">פדיון</Term> מגיע לחשבון באותו יום, בקרן שמגבילה <Term id="נייר ערך">ניירות ערך</Term> זרים ל־{foreign ? <Num value={foreign} /> : null} מהנכסים. בקרן שיכולה להחזיק יותר, הוא <Ruled id="MF-74">מגיע ביום המסחר הבא</Ruled>.
+          </Sentence>
+          <GuideFold label="ימי המסחר, ומה החוק קורא לבנק">
+            <p className="max-w-measure">
+              <Ruled id="BRK-29">הבורסה עברה למסחר מיום שני עד יום שישי</Ruled>. בקרן שמגבילה ניירות ערך זרים <Ruled id={["MF-68", "MF-69"]}>אפשר לתת הוראה גם ביום שישי</Ruled>. ההוראה מבוצעת ביום ראשון לפי מחיר הסגירה של יום שישי, והכסף מגיע בדרך כלל ביום שני. בקרן שיכולה להחזיק יותר, הוראות מתקבלות רק מיום שני עד יום חמישי.
+            </p>
+            <p className="max-w-measure">
+              החוק קורא לבנק או לבית ההשקעות שדרכו קונים <Term id="מפיץ">מפיץ</Term>.
+            </p>
+          </GuideFold>
+        </GuidePart>
+      </>
+    );
+  },
+  cost: ({ figure }) => {
+    const distCap = figure("MF-24", "distribution_fee_cap_money_market");
+    return (
+      <>
+        <p className="max-w-measure">
+          העלות העיקרית היא <Term id="דמי ניהול">דמי הניהול</Term> ושכר הנאמן: <Ruled id={["MF-16", "MF-20"]}>אחוז שנתי מהנכסים שיורד מהמחיר כל יום</Ruled>, ולכן לא רואים אותו כחיוב נפרד. רשות ניירות ערך <Ruled id="MF-18">מפרסמת ממוצע שנתי לקטגוריה</Ruled>.
+        </p>
         <Sentence measure>
-          <Ruled id="MF-29">היא מחזיקה רק נכסים מרשימה סגורה</Ruled>, כמו <Term id={'מק"מ'}>מק״מ</Term>, <Term id="איגרת חוב">איגרות חוב</Term> שנפרעות בתוך {bondTerm ? <Num value={bondTerm} /> : null} חודשים, בדירוג גבוה אם לא המדינה הנפיקה אותן, <Term id="פיקדון">פיקדונות</Term> בבנקים ומזומן. <Ruled id="MF-30">משך החיים הממוצע של הנכסים הוא עד</Ruled> {life ? <Num value={life} /> : null} ימים.
+          בבנק, <Ruled id="MF-24">מנהל הקרן משלם לבנק</Ruled> <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה. <Ruled id="MF-71">בלי הסכם הפצה, הבנק יכול לגבות מכם עד גובה עמלת ההפצה</Ruled>.
         </Sentence>
-        <p className="max-w-measure">
-          <Term prefix="ב" id="קרנות כספיות יומיות">קרן כספית יומית</Term> אין <Term id="תשואה">תשואה</Term> מובטחת ואין <Term id="תשואה צפויה">תשואה צפויה</Term>. לפי <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>, <Ruled id="MF-34">התשואה נעה בעקבות</Ruled> <Term id="ריבית בנק ישראל">ריבית בנק ישראל</Term>, פחות העלויות של הקרן. <Ruled id="MF-01">את הנכסים מחזיק</Ruled> <Term id="נאמן">נאמן</Term>, גוף נפרד <Term prefix="מ" id="מנהל קרן">מנהל הקרן</Term> שמשקיע אותם.
-        </p>
-        <p className="max-w-measure">
-          קונים ופודים <Term id="יחידה">יחידות</Term> <Ruled id="MF-34">בכל יום מסחר</Ruled>, ובדרך כלל <Ruled id="MF-15">בלי סכום מינימלי</Ruled>. עושים זאת דרך <Term id="חשבון ניירות ערך">חשבון ניירות ערך</Term> בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term>, לפי שם הקרן או המספר שלה <Term prefix="ב" id="בורסה">בורסה</Term>. החוק קורא לבנק או לבית ההשקעות <Term id="מפיץ">מפיץ</Term>.
-        </p>
-        <p className="max-w-measure">
-          קונים בסכום בשקלים ומקבלים יחידות לפי מחיר שמנהל הקרן <Ruled id="MF-09">מחשב פעם ביום, לפי שווי הנכסים</Ruled>. הוראה שמגיעה לפני <Term id="השעה היעודה">השעה היעודה</Term> של הקרן <Ruled id="MF-10">מקבלת את המחיר של אותו יום</Ruled>. הוראה מאוחרת יותר מקבלת את המחיר של יום החישוב הבא. לכן המחיר המדויק לא ידוע ברגע ההוראה.
-        </p>
-        <Sentence measure>
-          מתי הכסף <Term prefix="מה" id="פדיון">פדיון</Term> מגיע לחשבון תלוי בקרן. בקרן שמדיניות ההשקעות שלה מגבילה <Term id="נייר ערך">ניירות ערך</Term> זרים ל־{foreign ? <Num value={foreign} /> : null} מהנכסים, הוא מגיע באותו יום, אם ההוראה ניתנה לפני השעה היעודה. בקרן שיכולה להחזיק יותר, הוא <Ruled id="MF-74">מגיע ביום המסחר הבא</Ruled>.
-        </Sentence>
-        <p className="max-w-measure">
-          <Ruled id="BRK-29">הבורסה עברה למסחר מיום שני עד יום שישי</Ruled>. בקרן שמגבילה ניירות ערך זרים <Ruled id={["MF-68", "MF-69"]}>אפשר לתת הוראה גם ביום שישי</Ruled>. ההוראה מבוצעת ביום ראשון לפי מחיר הסגירה של יום שישי. הכסף מגיע בדרך כלל ביום שני. בקרן שיכולה להחזיק יותר, הוראות מתקבלות רק מיום שני עד יום חמישי.
-        </p>
-        <p className="max-w-measure">
-          העלות העיקרית היא <Term id="דמי ניהול">דמי הניהול</Term> ושכר הנאמן: <Ruled id={["MF-16", "MF-20"]}>אחוז שנתי מהנכסים שיורד מהמחיר כל יום</Ruled>, ולכן לא רואים אותו כחיוב נפרד. רשות ניירות ערך <Ruled id="MF-18">מפרסמת ממוצע שנתי לקטגוריה</Ruled>. הממוצע מופיע בקישור שבכרטיס של המספר שלמטה.
-        </p>
-        <Sentence measure>
-          בבנק: <Ruled id="MF-24">מנהל הקרן משלם לבנק</Ruled> <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה. כשיש הסכם הפצה כזה, <Ruled id="MF-71">התקנות אוסרות על הבנק לגבות מכם</Ruled> <Term id="עמלה">עמלה</Term> על קנייה, החזקה או פדיון של קרן כספית. לפי קריאה של האתר, בלי הסכם הבנק רשאי לגבות מכם עד {noDeal ? <Num value={noDeal} /> : null} בשנה משווי היחידות. <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term> על קרן כספית <Ruled id="BRK-17">בנק לא יכול לגבות בשום מקרה</Ruled>.
-        </Sentence>
-        <p className="max-w-measure">
-          לפי דוח משותף של הרגולטורים, <Ruled id="BRK-52">רוב בתי ההשקעות הם משווקי השקעות</Ruled>. אצלם אין כלל שמגביל את דמי ניהול פיקדון ניירות ערך ואת עמלות הקנייה, המכירה והפדיון על קרן כספית, והן לפי התעריפון. בית השקעות שהוא לא משווק השקעות <Ruled id="MF-26">כפוף לתקנות עמלת ההפצה</Ruled>. כשיש הסכם הפצה, הוא לא רשאי לגבות מכם עמלה על קנייה, החזקה או פדיון של קרן כספית. בלי הסכם, הוא רשאי לגבות עד גובה עמלת ההפצה.
-        </p>
         <p className="max-w-measure">תוספת בקנייה או <Term id="ניכוי בפדיון">ניכוי בפדיון</Term> <Ruled id={["MF-21", "MF-22"]}>אפשריים רק אם הסכם הקרן קובע אותם</Ruled>, ורוב הקרנות לא גובות תוספת.</p>
       </>
     );

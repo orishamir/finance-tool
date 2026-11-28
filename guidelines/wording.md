@@ -28,6 +28,13 @@ professional. Not a bank, not a blog, not a TV financial adviser.
 - **A guide is for reading.** Its prose explains in full, but every
   section has one point, says it first, and leaves out what doesn't serve
   it.
+- **"מה זה" opens simply, and the detail comes under it.** Its first
+  sentence says what the thing is, in everyday words, even though the line
+  under the page title says it in short. The next sentence or two give its
+  gist: what it is for, and its catch. No figures and as few terms as
+  possible there. Everything else goes in short parts under small headings,
+  one point each; what only a specialist needs goes behind a "more" line.
+  A long section elsewhere on a guide is split the same way.
 
 1. **Conclusion first, then the reason.** "שווה להתמקח: הורדת העמלה לממוצע
    שווה כ־1,200 ₪ ב־10 שנים." Not the reason first and the verdict at the

@@ -7,6 +7,7 @@ import { Num, ProofsChip, Ruled, Term } from "../../components/provenance";
 import { ownBy } from "../../lib/value";
 import { Callout, FixedTable, Sentence, SortNote } from "../../components/kit";
 import type { ContentProps } from "./types";
+import { GuideFold, GuidePart } from "../../components/guide/sections";
 
 const NoBreak = ({ v }: { v: ReactNode }) => <bdi className="whitespace-nowrap">{v}</bdi>;
 
@@ -19,14 +20,28 @@ const ownFigure = (figure: ContentProps["figure"], company: string) => (id: stri
 export function What() {
   return (
     <>
-      <Sentence measure><Ruled id="MF-59">בסוף התקופה</Ruled> <Term id="מנהל קרן">מנהל הקרן</Term> <Ruled id="MF-60">פודה</Ruled> את <Term prefix="ה" id="יחידה">יחידות</Term>, והכסף חוזר למי שעדיין מחזיק בהן.</Sentence>
-      <Sentence measure>בקרנות שנמצאו, הקרן <Ruled id="MF-62">עוקבת אחרי מדד</Ruled> של <Term id="איגרת חוב">איגרות חוב</Term> <Ruled id="MF-61">שנפרעות בערך באותה שנה</Ruled>. בקרן 5137492 של ילין לפידות, ככל שהן נפרעות הכסף עובר <Term prefix="ל" id={'מק"מ'}>מק״מ</Term>, <Ruled id="MF-75" prefix="ו">אחרי סוף השנה למזומן</Ruled>.</Sentence>
-      <Sentence measure>לפי <Term prefix="ה" id="בורסה">בורסה</Term>, <Ruled id="MF-61">למדדים האלה יש מועד סיום</Ruled>: הם מפסיקים להתקיים כשהאיגרת האחרונה נפדית. ילין לפידות כותבת <Ruled id="MF-75" prefix="ש">אין בכך התחייבות</Ruled> להשיג את מטרת הקרן. ככל שהסוף מתקרב, נשאר פחות זמן עד שהאיגרות בקרן נפרעות, ולכן שינוי <Term prefix="ב" id="ריבית">ריבית</Term> מזיז את <Term id="מחיר קנייה">מחיר היחידה</Term> <Ruled id="BND-04">פחות ופחות</Ruled>. בקרן אג״ח בלי מועד סיום אין רגע כזה: כמה מחיר היחידה זז <Ruled id={["BND-13", "BND-15"]}>תלוי באיגרות שהיא מחזיקה</Ruled> באותו זמן. מי שיודע מתי יצטרך את הכסף יכול לבחור קרן ששנת הסיום שלה <Ruled id="BND-14">קרובה למועד הזה</Ruled>. כך בוחרים גם איגרת חוב: לפי המועד שבו היא נגמרת. <ProofsChip ids={["M-03"]} /></Sentence>
-      <Sentence measure><Ruled id="MF-59">האתר לא מצא שם לסוג הקרן הזה</Ruled> בחוק, בתקנות ובמסמכים של <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>. האתר משתמש במילים של החוק. המילה ״בולט״ היא מילה של הבורסה <Ruled id="MF-61" prefix="ל">סוג מדד</Ruled>, והיא <Ruled id="MF-62">מופיעה גם בשמות של קרנות</Ruled>. ילין לפידות <Ruled id="MF-63">כותבת במקומה</Ruled> ״אג״ח <Term prefix="ל" id="פדיון">פדיון</Term>״.</Sentence>
-      <Callout tone="info" className="max-w-measure" title="שנה בשם הקרן לא אומרת שהקרן נגמרת">
-        יש קרנות עם שנה בשם, ובסוף אותה שנה הן <Ruled id="MF-65">עוברות לשנה מאוחרת יותר</Ruled> וממשיכות להתקיים. אצל הראל, תכלית ו־MTF כתוב בשם הקרן ״מתגלגל״. קרן שמתפרקת <Ruled id="MF-59">מזהים לפי מה שכתוב עליה עצמה</Ruled> תחת ״<Term id="תקופת קיום הקרן">תקופת קיום הקרן</Term>״.
-      </Callout>
-      <Sentence measure>איגרת חוב אחת שמחזירה את כל קרן החוב שלה בתשלום אחד בסוף היא דבר אחר. גם לה <Ruled id="CORP-26">האתר לא מצא שם רשמי</Ruled>.</Sentence>
+      <p className="max-w-measure">
+        קרן <Term id="איגרת חוב">אג״ח</Term> שתקופת קיומה מוגבלת היא קרן <Ruled id="MF-59">שנגמרת בתאריך שנקבע מראש</Ruled>. בקרנות שנמצאו, היא מחזיקה איגרות חוב <Ruled id={["MF-62", "MF-61"]}>שנגמרות בערך באותה שנה</Ruled>.
+      </p>
+      <p className="max-w-measure">
+        בסוף <Ruled id="MF-60">הכסף חוזר למי שעדיין מחזיק בה</Ruled>. מי שיודע מתי יצטרך את הכסף <Ruled id="BND-14">יכול לבחור קרן שנגמרת בערך באותו זמן</Ruled>, כמו שבוחרים איגרת חוב לפי המועד שבו היא נגמרת. אבל <Ruled id="REG-10">הסכום שיחזור לא מובטח</Ruled>.
+      </p>
+      <GuidePart title="איך היא נגמרת">
+        <Sentence measure><Ruled id="MF-59">בסוף התקופה</Ruled> <Term id="מנהל קרן">מנהל הקרן</Term> <Ruled id="MF-60">פודה</Ruled> את <Term prefix="ה" id="יחידה">יחידות</Term>. בקרנות שנמצאו, הקרן <Ruled id="MF-62">עוקבת אחרי מדד</Ruled> של איגרות כאלה. לפי <Term prefix="ה" id="בורסה">בורסה</Term>, <Ruled id="MF-61">למדדים האלה יש מועד סיום</Ruled>: הם מפסיקים להתקיים כשהאיגרת האחרונה נפדית.</Sentence>
+        <Sentence measure>בקרן 5137492 של ילין לפידות, ככל שהאיגרות נפרעות הכסף עובר <Term prefix="ל" id={'מק"מ'}>מק״מ</Term>, <Ruled id="MF-75" prefix="ו">אחרי סוף השנה למזומן</Ruled>. ילין לפידות כותבת <Ruled id="MF-75" prefix="ש">אין בכך התחייבות</Ruled> להשיג את מטרת הקרן.</Sentence>
+      </GuidePart>
+      <GuidePart title="המחיר לקראת הסוף">
+        <Sentence measure>ככל שהסוף מתקרב, נשאר פחות זמן עד שהאיגרות בקרן נפרעות, ולכן שינוי <Term prefix="ב" id="ריבית">ריבית</Term> מזיז את <Term id="מחיר קנייה">מחיר היחידה</Term> <Ruled id="BND-04">פחות ופחות</Ruled>. בקרן אג״ח בלי מועד סיום אין רגע כזה: כמה מחיר היחידה זז <Ruled id={["BND-13", "BND-15"]}>תלוי באיגרות שהיא מחזיקה</Ruled> באותו זמן. <ProofsChip ids={["M-03"]} /></Sentence>
+      </GuidePart>
+      <GuidePart title="שנה בשם לא אומרת שהקרן נגמרת">
+        <p className="max-w-measure">
+          יש קרנות עם שנה בשם, ובסוף אותה שנה הן <Ruled id="MF-65">עוברות לשנה מאוחרת יותר</Ruled> וממשיכות להתקיים. אצל הראל, תכלית ו־MTF כתוב בשם הקרן ״מתגלגל״. קרן שמתפרקת <Ruled id="MF-59">מזהים לפי מה שכתוב עליה עצמה</Ruled> תחת ״<Term id="תקופת קיום הקרן">תקופת קיום הקרן</Term>״.
+        </p>
+        <GuideFold label="איך קוראים לקרן כזו">
+          <Sentence measure><Ruled id="MF-59">האתר לא מצא שם לסוג הקרן הזה</Ruled> בחוק, בתקנות ובמסמכים של <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>. האתר משתמש במילים של החוק. המילה ״בולט״ היא מילה של הבורסה <Ruled id="MF-61" prefix="ל">סוג מדד</Ruled>, והיא <Ruled id="MF-62">מופיעה גם בשמות של קרנות</Ruled>. ילין לפידות <Ruled id="MF-63">כותבת במקומה</Ruled> ״אג״ח <Term prefix="ל" id="פדיון">פדיון</Term>״.</Sentence>
+          <Sentence measure>איגרת חוב אחת שמחזירה את כל קרן החוב שלה בתשלום אחד בסוף היא דבר אחר. גם לה <Ruled id="CORP-26">האתר לא מצא שם רשמי</Ruled>.</Sentence>
+        </GuideFold>
+      </GuidePart>
     </>
   );
 }

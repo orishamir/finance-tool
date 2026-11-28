@@ -5,6 +5,7 @@
 import type { GuideContent } from "./types";
 import { Num, Ruled, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -14,14 +15,26 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          <Ruled id="IRA-01">בחוק היא</Ruled> <Term id="קופת גמל בניהול אישי">קופת גמל בניהול אישי</Term>. <Ruled id="IRA-11">מותר להחזיק</Ruled> <Term id="נייר ערך">ניירות ערך</Term> סחירים, קרנות, <Term id="פיקדון">פיקדונות</Term> <Term prefix="ו" id="מטבע חוץ">מטבע חוץ</Term>, בישראל ובמדינות מאושרות. הכסף מושקע <Ruled id="IRA-05">לפי ההוראות שלכם</Ruled>, בלי ועדת השקעות של החברה.
+          קרן השתלמות בניהול אישי היא <Term id="קרן השתלמות">קרן השתלמות</Term> שבה אתם, או <Term id="מנהל תיקים">מנהל תיקים</Term> שבחרתם, <Ruled id="IRA-05">בוחרים במה להשקיע</Ruled>: ניירות וקרנות מסוימים, במקום מסלול שמנהלים בשבילכם.
         </p>
-        <Sentence measure>
-          כללי מס ההכנסה והנזילות הם של <Term id="קרן השתלמות">קרן השתלמות</Term> רגילה. אחרי {years ? <Num value={years} /> : null} שנים מהתשלום הראשון <Ruled id="TXH-09">מושכים בפטור ממס הכנסה</Ruled> על הרווחים מההפקדות המוטבות. אחרי {short ? <Num value={short} /> : null} שנים מושכים כך <Term prefix="ב" id="גיל פרישה">גיל פרישה</Term> או <Ruled id="TXH-10" prefix="ל">צורך השתלמות</Ruled>. <Term prefix="ה" id="ותק">וותק</Term> <Ruled id="IRA-23">של קרן שמעבירים נשמר</Ruled>. <Ruled id="TXK-17">בתוך הקופה קונים ומוכרים</Ruled> בלי <Term id="מס רווחי הון">מס רווחי הון</Term>.
-        </Sentence>
         <p className="max-w-measure">
-          הכסף שאפשר להכניס מוגבל: עד פי {multiple ? <Num value={multiple} /> : null} <Term prefix="מ" id="הסכום הקובע">הסכום הקובע</Term>, <Ruled id="IRA-07">על כל חשבונות ההשתלמות יחד</Ruled>.
+          <Ruled id="TXK-17">כללי המס הם של קרן השתלמות רגילה</Ruled>: <Ruled id="TXH-09">אחרי כמה שנים שקבע החוק מושכים את הכסף בלי מס</Ruled>, אם ההפקדות לא עברו את הגבול שבחוק. ההבדל: <Ruled id="IRA-26">אין ועדת השקעות</Ruled>, וכל ההחלטות שלכם.
         </p>
+        <GuidePart title="מה מותר לקנות">
+          <p className="max-w-measure">
+            <Ruled id="IRA-01">בחוק היא</Ruled> <Term id="קופת גמל בניהול אישי">קופת גמל בניהול אישי</Term>. <Ruled id="IRA-11">מותר להחזיק</Ruled> <Term id="נייר ערך">ניירות ערך</Term> סחירים, קרנות, <Term id="פיקדון">פיקדונות</Term> <Term prefix="ו" id="מטבע חוץ">מטבע חוץ</Term>, בישראל ובמדינות מאושרות.
+          </p>
+        </GuidePart>
+        <GuidePart title="מתי מושכים בלי מס">
+          <Sentence measure>
+            אחרי {years ? <Num value={years} /> : null} שנים מהתשלום הראשון <Ruled id="TXH-09">מושכים בפטור ממס הכנסה</Ruled> על הרווחים מההפקדות המוטבות. אחרי {short ? <Num value={short} /> : null} שנים מושכים כך <Term prefix="ב" id="גיל פרישה">גיל פרישה</Term> או <Ruled id="TXH-10" prefix="ל">צורך השתלמות</Ruled>. <Term prefix="ה" id="ותק">וותק</Term> <Ruled id="IRA-23">של קרן שמעבירים נשמר</Ruled>. <Ruled id="TXK-17">בתוך הקופה קונים ומוכרים</Ruled> בלי <Term id="מס רווחי הון">מס רווחי הון</Term>.
+          </Sentence>
+        </GuidePart>
+        <GuidePart title="כמה כסף אפשר להכניס">
+          <p className="max-w-measure">
+            הכסף שאפשר להכניס מוגבל: עד פי {multiple ? <Num value={multiple} /> : null} <Term prefix="מ" id="הסכום הקובע">הסכום הקובע</Term>, <Ruled id="IRA-07">על כל חשבונות ההשתלמות יחד</Ruled>.
+          </p>
+        </GuidePart>
       </>
     );
   },
@@ -69,7 +82,7 @@ export const content: GuideContent = {
   use: () => (
     <>
       <p className="max-w-measure">
-        למי שכבר יש קרן השתלמות בסכום משמעותי, שיודע לבנות תיק בעצמו או עם <Term id="מנהל תיקים">מנהל תיקים</Term>, ורוצה לבחור ניירות ספציפיים, כמו <Term id="קרן סל">קרנות סל</Term> זרות, בלי לוותר על הפטור של קרן ההשתלמות. למי שמסתפק במסלול מנוהל, קרן רגילה פשוטה יותר. שם לא משלמים <Term id="עמלת קנייה ומכירה">עמלות מסחר</Term> על כל קנייה ומכירה: עלויות המסחר יורדות מהכסף שבקרן <Term prefix="כ" id="הוצאות ישירות">הוצאות ישירות</Term>. <Ruled id="PF-10">לא נמצאה</Ruled> להן תקרה כוללת, חוץ מתקרה <Term prefix="ל" id="עמלת ניהול חיצוני">עמלת ניהול חיצוני</Term>, שכל חברה <Ruled id="PF-11">קובעת לעצמה</Ruled>.
+        למי שכבר יש קרן השתלמות בסכום משמעותי, שיודע לבנות תיק בעצמו או עם מנהל תיקים, ורוצה לבחור ניירות ספציפיים, כמו <Term id="קרן סל">קרנות סל</Term> זרות, בלי לוותר על הפטור של קרן ההשתלמות. למי שמסתפק במסלול מנוהל, קרן רגילה פשוטה יותר. שם לא משלמים <Term id="עמלת קנייה ומכירה">עמלות מסחר</Term> על כל קנייה ומכירה: עלויות המסחר יורדות מהכסף שבקרן <Term prefix="כ" id="הוצאות ישירות">הוצאות ישירות</Term>. <Ruled id="PF-10">לא נמצאה</Ruled> להן תקרה כוללת, חוץ מתקרה <Term prefix="ל" id="עמלת ניהול חיצוני">עמלת ניהול חיצוני</Term>, שכל חברה <Ruled id="PF-11">קובעת לעצמה</Ruled>.
       </p>
       <p className="max-w-measure">
         בתקנות <Ruled id="IRA-10">אין סכום מינימום לפתיחה</Ruled>. חברה יכולה לומר מאיזה סכום המוצר מתאים לדעתה, אבל זו המלצה שלה, לא כלל.

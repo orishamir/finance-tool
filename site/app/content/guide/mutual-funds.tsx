@@ -8,6 +8,7 @@ import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router";
 import { Num, Ruled, Term } from "../../components/provenance";
 import { Callout, FixedTable, ProseList, Sentence } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 import { INDICES_PATH } from "../../lib/site-paths";
 import { fmt } from "../../lib/format";
 import type { SiteValue } from "../../lib/value";
@@ -19,15 +20,27 @@ const linkClass = "text-link hover:underline";
 export function What() {
   return (
     <>
-      <Sentence measure>
-        <Term id="קרן נאמנות">קרן נאמנות</Term> היא כסף של משקיעים רבים שמושקע יחד. היא <Ruled id="MF-01">קמה בהסכם</Ruled> בין <Term id="מנהל קרן">מנהל הקרן</Term> <Term prefix="ל" id="נאמן">נאמן</Term>, שני גופים <Term prefix="ש" id="רשות ניירות ערך">רשות ניירות ערך</Term> אישרה.
-      </Sentence>
-      <Sentence measure>
-        הקרן מחולקת ל<Term id="יחידה">יחידות</Term>, וכל יחידה נותנת זכות שווה בקרן. <Ruled id="MF-04">יחידות מוצעות לציבור רק לפי</Ruled> <Term id="תשקיף">תשקיף</Term> שהרשות התירה לפרסם.
-      </Sentence>
-      <Callout tone="info" className="max-w-measure" title={<><Term id="קרן סל">קרן סל</Term> <Term prefix="ו" id="קרן מחקה פתוחה">קרן מחקה פתוחה</Term> הן קרנות נאמנות</>}>
-        המילים ״קרן נאמנות״ לא אומרות איך הקרן נסחרת ובמה היא משקיעה. את זה <Ruled id="MF-01">קובע הסכם הקרן</Ruled>: אם היא פתוחה או סגורה, ומה מדיניות ההשקעה שלה, למשל אם הקרן מחקה מדד.
-      </Callout>
+      <p className="max-w-measure">
+        <Term id="קרן נאמנות">קרן נאמנות</Term> היא כסף של משקיעים רבים שמושקע יחד. <Ruled id={["MF-01", "MF-02"]}>גוף אחד משקיע את הכסף, וגוף אחר מחזיק את הנכסים בשביל המשקיעים</Ruled>.
+      </p>
+      <p className="max-w-measure">
+        יש כמה סוגים של קרנות נאמנות. <Ruled id="MF-01">ההסכם של כל קרן קובע</Ruled> איך קונים ומוכרים אותה, ובמה היא משקיעה.
+      </p>
+      <GuidePart title="מי מנהל ומי מחזיק">
+        <Sentence measure>
+          הקרן <Ruled id="MF-01">קמה בהסכם</Ruled> בין <Term id="מנהל קרן">מנהל הקרן</Term> <Term prefix="ל" id="נאמן">נאמן</Term>, שני גופים <Term prefix="ש" id="רשות ניירות ערך">רשות ניירות ערך</Term> אישרה.
+        </Sentence>
+      </GuidePart>
+      <GuidePart title="מה קונים">
+        <Sentence measure>
+          הקרן מחולקת ל<Term id="יחידה">יחידות</Term>, וכל יחידה נותנת זכות שווה בקרן. <Ruled id="MF-04">יחידות מוצעות לציבור רק לפי</Ruled> <Term id="תשקיף">תשקיף</Term> שהרשות התירה לפרסם.
+        </Sentence>
+      </GuidePart>
+      <GuidePart title="מה קובע את סוג הקרן">
+        <p className="max-w-measure">
+          גם <Term id="קרן סל">קרן סל</Term> וגם <Term id="קרן מחקה פתוחה">קרן מחקה פתוחה</Term> הן קרנות נאמנות. <Ruled id="MF-01">הסכם הקרן קובע</Ruled> אם היא פתוחה או סגורה, ומה מדיניות ההשקעה שלה, למשל אם הקרן מחקה מדד.
+        </p>
+      </GuidePart>
     </>
   );
 }
