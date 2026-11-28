@@ -22,6 +22,7 @@ import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } fr
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
 import { Card, CompanyLinks, DocLink, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
 import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, sameCompanies, scopeCompanies, tagCompanies, pageScope, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
+import type { SheetPart } from "./provenance";
 import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, headOf, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData, type Catch } from "./provenance";
 import { proofOf } from "../content/proofs";
 
