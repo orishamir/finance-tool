@@ -172,8 +172,8 @@
         "ETF-11"
       ],
       "state": "sourced",
-      "empty_because": "not-applicable",
-      "notes": "Not applicable as a foreign-withholding figure: the fund tracks a TASE index and holds its shares (ETF-11, local index); no computation is made here."
+      "empty_because": "not-collected",
+      "notes": "Not collected: no computation is made here (data-update rule) and the report prints no withholding rate. The fund tracks a TASE index (ETF-11, local index), but a fund of that kind can hold dual-listed securities and owe tax on their income, as the report of the TA-125 fund 1143718 says (note 6); this report's expense table has a line 'הוצאות מס' (tax expenses)."
     }
   },
   "dimensions": {
