@@ -7,14 +7,16 @@ import type { FeeKindId } from "./lib/fee-deal/core";
 
 /**
  * F-04, D84: the tax index a Tel Aviv foreign fund's own annex states under its ruling, said as the fund's statement and not a rule: the
- * main currency's exchange rate (its Hebrew name) or the CPI. The figure's sheet and the fund's chip both say it from the statement here.
+ * main currency's exchange rate (its Hebrew name) or the CPI. The catch sheet of a figure that rests on it and the fund's chip both say it
+ * from the statement here.
  */
 function taxIndexStated(st: TaxIndexStatement): string {
   return `${st.index === "fx" ? `מס רווחי הון מחושב לפי שער ה${currencyWord(st.currency)}` : "מס רווחי הון מחושב לפי מדד המחירים לצרכן"}: כך כתוב בנספח לתשקיף הישראלי של הקרן, לפי החלטת המיסוי שהקרן קיבלה מרשות המסים. זו הצהרה של הקרן, ואין נוסח רשמי של רשות המסים שמאשר אותה.`;
 }
 /**
  * TXS-14, D119: a fund's own document naming it a foreign-investment fund with its principal currency, said as the fund's statement, and the
- * site's reading of TXS OQ26 that runs it on that currency, as TXS-14's own text says it (`readingDoubt` says the same law). The figure's sheet says it from the statement here.
+ * site's reading of TXS OQ26 that runs it on that currency, as TXS-14's own text says it (`readingDoubt` says the same law). The catch sheet
+ * of a figure that rests on it says it from the statement here.
  */
 function foreignInvestmentFundStated(st: ForeignInvestmentFundStatement): string {
   const c = currencyWord(st.currency);
@@ -66,7 +68,6 @@ export const site = {
 export const numbers = {
   legend: {
     sourced: "ממקור",
-    computed: "מחושב",
     entered: "הזנתם",
   },
   /** the tag on a figure or rate that rests on the site's own reading of official texts (the engine's "reading" label, a rate whose reach no official text states); not a secondary source, which is a press article or a forum post. */
@@ -434,10 +435,12 @@ export const provenance = {
   /** A glossary card's other names; each is drawn with its gershayim (copy 10.4). */
   termAlso: "נקרא גם:",
   computed: {
-    formula: "נוסחה",
-    inputs: "ערכים שנכנסו לחישוב",
-    rules: "חוקים וכללים שנכנסו לחישוב",
-    /** D84: a fund's own statement the figure rests on in place of a rule, each said with its document's page linked under it. */
+    /** In a calculated figure's catch sheet, over the inputs its weak strength comes from, by their strength. */
+    weakInputs: { institution: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:", secondary: "בין הערכים שנכנסו לחישוב, אלה ממקור משני:" },
+    doubtedInputs: "בין הערכים שנכנסו לחישוב, על אלה יש ספק:",
+    /** Over a difference's or a sum's lines (the kit's FormulaBlock receipt). */
+    working: "החישוב",
+    /** D84, D119: in a calculated figure's catch sheet, over the fund's own statements it rests on, each said with its document linked under it. */
     statements: "הצהרות של הקרן שנכנסו לחישוב",
     /** Each statement's sentence, by the term it states. */
     statement: {
@@ -448,27 +451,18 @@ export const provenance = {
     } satisfies { [T in FundStatement["term"]]: (st: Extract<FundStatement, { term: T }>) => string },
     /** A stated tax index's annex, linked at its page; a document naming the fund a foreign-investment fund is linked by its own title, which names the page. */
     statementDoc: (title: string, page: number) => `${title}, עמוד ${page}`,
-    /** Over a difference's or a sum's lines in the figure's sheet. */
-    working: "החישוב",
-    /** The quiet line at the end of a figure's line of math: its formula's own sheet, with every line the entry draws and its parameters. */
-    toFormula: "לנוסחה הכללית",
-    weakInputs: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:",
-    doubtedInputs: "בין הערכים שנכנסו לחישוב, על אלה יש ספק:",
-    /** A computed figure with no number and no note of its own, when one of the values it reads has none. */
-    inputMissing: "חסר אחד הערכים שנכנסו לחישוב, ולכן האתר לא מציג מספר.",
+    /** Under the title of the sheet a list's caution "?" opens: the catches it says hold for every calculated figure there. */
+    listCatch: { column: "נכון לכל המספרים שהאתר חישב בעמודה הזו.", list: "נכון לכל המספרים שהאתר חישב כאן." } as Record<"column" | "list", string>,
+    /** In the sheet of a calculated figure whose sources' terms require a line beside it (the ECB's rates): over its sources, and the date of the figures it was calculated from. */
+    obliged: { sources: "מחושב מהנתונים של", dated: "הנתונים מיום" },
   },
   // a flag with no sentence of its own
   flagOther: "הערה על החישוב:",
-  // one chip for every id (IdRef); the formula sheet and the open-question sheet
-  idRef: { formula: "נוסחה", parameter: "פרמטר", question: "שאלה פתוחה", questionChip: "פרטים", howComputed: "איך זה מחושב" }, // questionChip: an open question's chip says a word, not its code
-  formulaSheet: {
-    usesLabel: "פרמטרים של האתר שהנוסחה משתמשת בהם",
-    full: "ההגדרה המלאה במסמך שיטת החישוב (באנגלית)",
-    /** Over the key to a formula's symbols (`formulaKeys`). */
-    where: "כאשר:",
-    /** In a figure's worked line, the key row of the symbol the line works out: the figure its sheet heads with, which the head's line names. */
-    resultRow: "המספר שבראש הגיליון",
-  },
+  /** The word over the key to a formula's symbols (`formulaKeys`, the kit's FormulaBlock), kept for the step-by-step explanation of a
+   *  page's main result. */
+  formulaSheet: { where: "כאשר:" },
+  // one chip for every id (IdRef) and the open-question sheet
+  idRef: { parameter: "פרמטר", question: "שאלה פתוחה", questionChip: "פרטים" }, // questionChip: an open question's chip says a word, not its code
   questionSheet: {
     what: "זו שאלה פתוחה בבסיס החוקים: משהו שעוד לא נמצא לו מקור ברור, בחוק או אצל הרשות.",
     onSite: "כל עוד היא פתוחה, האתר לא מציג תשובה כאילו היא ודאית: הוא לא מחשב את מה שתלוי בה, מציג אותו עם הערה, או מחשב לפי קריאה שלו ואומר זאת בגיליון.",
@@ -1579,6 +1573,8 @@ export const help = {
   markLabel: "מה זה {about}",
   /** The "!" variant: a fact added to a figure, not what its label means. */
   noteLabel: "עוד על {about}",
+  /** The caution "?" after a calculated figure that carries a catch (kit CatchMark). */
+  catchLabel: "מה צריך לדעת על {about}",
 };
 
 export const trackBrowser = {
@@ -4661,8 +4657,8 @@ export const invest = {
   pair: {
     paidIn: "הפקדתם",
     paidInAbout: "סך ההפקדות",
-    /** At the head of the deposits' sheet: A-04 "constant real" (F-05), which the deposits' sum in today's money rests on. */
-    paidInLead: "בהנחה שההפקדה החודשית עולה עם האינפלציה, כך שבהתחשב בה היא אותו סכום בכל חודש.",
+    /** The deposits' caveat, which their caution "?" opens: A-04 "constant real" (F-05), which their sum rests on where there is a monthly deposit. */
+    paidInCaveat: "בהנחה שההפקדה החודשית עולה עם האינפלציה, כך שבהתחשב בה היא אותו סכום בכל חודש.",
     /** What was paid in, each deposit in the shekels of its own month (F-05): the receipt's first line. */
     paidInNominalAbout: "סך ההפקדות, כל אחת בשקלים של החודש שבו היא מופקדת",
     /** I_T (F-03), among the inputs of the receipt's figures in the shekels of the horizon. */
@@ -4879,7 +4875,7 @@ export const invest = {
           : kind === "gross"
             ? "המדד כאן הוא מדד ברוטו, שסופר את הדיבידנדים לפני המס על דיבידנדים."
             : kind === "mixed"
-              ? "חלק מהקרנות נמדדות מול מדד נטו וחלק מול מדד ברוטו. הסוג כתוב בפירוט שנפתח מהמספר."
+              ? "חלק מהקרנות נמדדות מול מדד נטו וחלק מול מדד ברוטו."
               : null,
         unstated > 0
           ? kind
@@ -4956,10 +4952,11 @@ export const invest = {
      * Israeli fund (F-92 (d)); why a fund beats a net index
      * is a tax question the page does not answer.
      */
-    /** `positiveOnly`: the report prints only the variable fees the fund paid its manager, not what the manager paid it (Mor's footnote), and A-07 is floored at 0, the only case where it can lower the cost. */
-    gapLead: (kind: "net" | "gross", currency: string, israeli: boolean, years = 2, positiveOnly = false) =>
+    gapLead: (kind: "net" | "gross", currency: string, israeli: boolean, years = 2) =>
       // the mean's clause only where there is a mean: a one-year sheet ("ב־2025") read "the mean includes years ..."
-      `${kind === "net" ? "מדד נטו סופר את הדיבידנדים של החברות אחרי המס על דיבידנדים שמנוכה מהם במדינה של החברה." : "מדד ברוטו סופר את הדיבידנדים של החברות לפני המס על דיבידנדים."} ${israeli ? `התשואות ${currency}, מהדוחות השנתיים של הקרן.` : `התשואות ${currency}, ממסמכים של מנהל הקרן.`} תשואת הקרן היא אחרי כל העלויות שלה${years > 1 ? ", והממוצע כולל גם שנים שבהן הקרן הקדימה את המדד" : ""}. בחישוב העלות בשקלים, פיגור מעבר לדמי הניהול נוסף לעלות, והקדמה על המדד לא נספרת כרווח.${positiveOnly ? " בדוח של הקרן מופיעים רק דמי הניהול המשתנים שהיא שילמה למנהל, לא מה שהמנהל שילם לה כשפיגרה אחרי המדד. לכן העלות שלה בפועל יכולה להיות נמוכה מזו שהאתר חישב." : ""}`,
+      `${kind === "net" ? "מדד נטו סופר את הדיבידנדים של החברות אחרי המס על דיבידנדים שמנוכה מהם במדינה של החברה." : "מדד ברוטו סופר את הדיבידנדים של החברות לפני המס על דיבידנדים."} ${israeli ? `התשואות ${currency}, מהדוחות השנתיים של הקרן.` : `התשואות ${currency}, ממסמכים של מנהל הקרן.`} תשואת הקרן היא אחרי כל העלויות שלה${years > 1 ? ", והממוצע כולל גם שנים שבהן הקרן הקדימה את המדד" : ""}. בחישוב העלות בשקלים, פיגור מעבר לדמי הניהול נוסף לעלות, והקדמה על המדד לא נספרת כרווח.`,
+    /** The gap's caveat where the report prints only the variable fees the fund paid its manager, not what the manager paid it (Mor's footnote), and A-07 is floored at 0, the only case where it can lower the cost. */
+    gapPositiveOnly: "בדוח של הקרן מופיעים רק דמי הניהול המשתנים שהיא שילמה למנהל, לא מה שהמנהל שילם לה כשפיגרה אחרי המדד. לכן העלות שלה בפועל יכולה להיות נמוכה מזו שהאתר חישב.",
     gapInputFund: (year: number) => `תשואת הקרן ב־${year}`,
     /** the benchmark by the name the fund's document prints */
     gapInputBenchmark: (name: string, year: number) => `תשואת \u2066${name}\u2069 ב־${year}`,
@@ -5468,6 +5465,7 @@ export const kit = {
       HouseAverageLine: "שורה שקטה מתחת למחיר מהמחירון: מה שבית ההשקעות או הבנק גבה בפועל בממוצע על סוג העמלה, מהנמוך לגבוה לפי גודל התיק, התקופה וקישור למחשבון העמלות של הבורסה. לידיעה בלבד: שום חישוב לא קורא אותה.",
       SourcedTag: "תגית קצרה על חברה שמקור עומד מאחוריה, כמו ״בטלפון בלבד״ ליד בית השקעות שמוכר סוג קרן רק בטלפון. הקשה פותחת את המקור, כמו בכל מספר. התגית לא משנה אף מספר, ושטח המגע שלה בגובה 44 פיקסלים בלי להגדיל את השורה.",
       Formula: "נוסחה בכתב מתמטי, עם מקרא שאומר מה כל סימן בה: בכרטיס של נוסחה שמסמך שיטת החישוב כותב כך, במקום קישור למסמך. בכרטיס של מספר מחושב: השורה של המספר עם הערכים שלו, או השורות של הפרש או של סכום.",
+      CatchMark: "סימן שאלה בצבע זהירות אחרי מספר שהאתר חישב, רק כשיש בו משהו שצריך לדעת: ספק, הנחה שהחישוב נשען עליה, ערך לפי מסמך של חברה או ממקור משני, נתון ישן, הערה של החישוב או קריאה של האתר. מספר מחושב בלי סימן כזה הוא טקסט רגיל, ולא נפתח. הסימן צמוד לספרה האחרונה ולא יורד לשורה לבד, ונפתח בהקשה לגיליון שאומר רק מה ההסתייגות. מה שנכון לכל המספרים בעמודה או ברשימה נאמר פעם אחת, בסימן אחד בכותרת שלה. מספר שהמקור שלו מחייב שורה לידו נראה כמו מספר ממקור, ונפתח לגיליון עם המקור והשורה.",
       HelpMark: "סימן שאלה ליד כותרת או תווית, שפותח בהקשה את כרטיס המונח ממילון המונחים, עם המקור, או הסבר קצר משלו: רק במקום שהוא מוסיף משהו שהכותרת לא אומרת.",
       TabCards: "שאלות בכרטיסים בשורה, ולוח אחד פתוח מתחתיהן: בכל כרטיס השאלה, התשובה בכמה מילים ושורה מתחתיה, והכרטיס כולו הוא הלשונית. התשובה מילים פשוטות, והמספר שבה נפתח מתוך הלוח. הכרטיס הפתוח במסגרת בצבע הפעולה, עם חץ קטן אל הלוח, ובמסך צר עם מילה שאומרת שהוא פתוח. החצים במקלדת עוברים בין הכרטיסים. כל לוח נפתח בשורה קטנה בצבע הפעולה ובמסקנה שלו (PanelHead).",
       TabStrip: "לשוניות בתוך עמוד שמחליפות חלק אחד שלו לתצוגה משלה, עם תוכן מסוג אחר, בלי לעזוב אותו (בחיפוש בעמוד החוקים והכללים: מה כתוב בחוק, ומה כתבו החברות): כל לשונית היא כפתור עם מספר השורות שבה, והחצים במקלדת עוברים ביניהן. בחירה שרק מצמצמת רשימה אחת היא ChoiceChips עם counts.",
@@ -5532,6 +5530,10 @@ export const kit = {
       ClaimCheck: "טענה מהפרסום של חברה מול המסמך שמחייב אותה: העמלה והמסקנה במילים, ואז שני הצדדים במילים שלהם, כל אחד עם קישור למקום שבו הוא כתוב. ClaimList: כמה טענות זו אחר זו.",
     },
     sample: {
+      /** CatchMark's states: a made-up caveat, a made-up line a source's terms require, and the head of a column of figures. */
+      caveat: "החישוב לפי הריבית של היום, והיא יכולה להשתנות.",
+      obligation: "מקור לדוגמה. האתר חישב מהנתונים שלו.",
+      column: "דמי ניהול",
       /** The region map: three made-up options, its axes and its point. */
       regions: { a: "אפשרות א", b: "אפשרות ב", c: "אפשרות ג", x: "סכום היום (₪)", y: "הפקדה חודשית (₪)", mark: "הנקודה שלכם", edge: (name: string) => `בלי הפקדה חודשית: ${name}`, edgeSame: "בלי הפקדה חודשית: בערך אותו דבר", same: "בערך אותו דבר", samePair: (a: string, b: string) => `${andList([a, b])}: בערך אותו דבר`, point: (x: string, y: string) => `${x} היום, ${y} בחודש`, between: (lo: string, hi: string) => `בין ${lo} ל־${hi}`, home: "לחזור להתחלה" },
       /** The cases and parts (ConditionBand, PartChip, SlimFee, Toolbox, AskValues, the value menus, ReadForBand): a deal's words, made up. */

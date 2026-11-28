@@ -5,6 +5,7 @@ import type { GuideContent } from "./types";
 import { YearOf } from "./year";
 import { IdRef, Num, Ruled, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 
 export const content: GuideContent = {
   what: () => (
@@ -13,16 +14,31 @@ export const content: GuideContent = {
         <Term id="תוכנית חיסכון">תוכנית חיסכון</Term> היא <Term id="פיקדון">פיקדון</Term> לתקופה מוסכמת <Ruled id="BANK-28">שמפקידים אליו מדי פעם</Ruled>, למשל <Term prefix="ב" id="פיקדון בהוראת קבע">הוראת קבע</Term>.
       </p>
       <p className="max-w-measure">
-        ההסכם <Ruled id={["BANK-28", "BANK-25"]}>חייב לקבוע</Ruled> את לוח ההפקדות, את הגבולות על הסכומים והמועדים ואת <Term prefix="ה" id="ריבית">ריבית</Term>. <Term prefix="ה" id="ריבית קבועה">ריבית קבועה</Term> או <Term id="ריבית משתנה">משתנה</Term>. ריבית משתנה היא <Term id="ריבית עוגן">ריבית עוגן</Term> ועוד או פחות <Term id="מרווח">מרווח</Term> ידוע מראש. הריבית <Ruled id="BANK-26">לא צמודה</Ruled> או <Term id="צמוד למדד המחירים לצרכן">צמודה למדד</Term>.
+        היא מתאימה לחיסכון למטרה עם תאריך, שבונים כל חודש מהמשכורת. <Term prefix="ה" id="ריבית">ריבית</Term> <Ruled id="BANK-25">ידועה מראש, או זזה לאורך התקופה</Ruled>. את הכסף מקבלים בסוף התקופה, ו<Ruled id="BANK-28">אם אפשר לקבל אותו קודם, ובאיזה מחיר, נקבע בהסכם של כל תוכנית</Ruled>.
       </p>
-      <p className="max-w-measure">
-        כל בנק בונה תוכניות חיסכון אחרת. גם <Term id="תחנת יציאה">תחנות היציאה</Term>, ממתי הן נספרות ומה מושכים בהן, <Ruled id="BANK-27">נקבעות בהסכם של כל תוכנית</Ruled>.
-      </p>
-      {/* D30: the anchor (BANK-34) and the exit points (BPN-10) are each bank's own terms; the guide names no bank's as the product's */}
-      <div className="max-w-measure flex flex-col gap-1">
-        <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, ולכל בנק <Ruled id="BANK-46">פריים משלו</Ruled></>} end="." />
-        <VariesByCompany ids={["BPN-10"]} lead="תחנות היציאה תלויות בבנק" />
-      </div>
+      <GuidePart title="מה ההסכם קובע">
+        <p className="max-w-measure">
+          ההסכם <Ruled id={["BANK-28", "BANK-25"]}>חייב לקבוע</Ruled> את לוח ההפקדות, את הגבולות על הסכומים והמועדים ואת הריבית. כל בנק בונה תוכניות חיסכון אחרת.
+        </p>
+      </GuidePart>
+      <GuidePart title="איך הריבית נקבעת">
+        <p className="max-w-measure">
+          הריבית יכולה להיות <Term id="ריבית קבועה">קבועה</Term> או <Term id="ריבית משתנה">משתנה</Term>. ריבית משתנה היא <Term id="ריבית עוגן">ריבית עוגן</Term> ועוד או פחות <Term id="מרווח">מרווח</Term> ידוע מראש. הריבית <Ruled id="BANK-26">לא צמודה</Ruled> או <Term id="צמוד למדד המחירים לצרכן">צמודה למדד</Term>.
+        </p>
+        {/* D30: the anchor (BANK-34) is each bank's own term; the guide names no bank's as the product's */}
+        <p className="max-w-measure">
+          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, ולכל בנק <Ruled id="BANK-46">פריים משלו</Ruled></>} end="." />
+        </p>
+      </GuidePart>
+      <GuidePart title="מתי אפשר למשוך">
+        <p className="max-w-measure">
+          <Term id="תחנת יציאה">תחנת יציאה</Term> היא מועד באמצע התקופה <Ruled id="BANK-27">שבו אפשר למשוך בלי לשבור את התוכנית</Ruled>. אם יש תחנות, ממתי הן נספרות ומה מושכים בהן <Ruled id="BANK-27">נקבע בהסכם של כל תוכנית</Ruled>.
+        </p>
+        {/* D30: the exit points (BPN-10) are each bank's own terms */}
+        <div className="max-w-measure">
+          <VariesByCompany ids={["BPN-10"]} lead="תחנות היציאה תלויות בבנק" />
+        </div>
+      </GuidePart>
     </>
   ),
   who: () => (

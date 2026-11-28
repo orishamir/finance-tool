@@ -134,6 +134,18 @@ export function GuideSection({ id, title, children, className }: { id: string; t
 }
 
 /**
+ * A part of a guide section under a small heading of its own, so a long section reads in short pieces (guidelines/wording.md): the
+ * section's opening paragraphs come before the first part, and each part says one thing.
+ */
+export function GuidePart({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <Section as="div" level="card" heading="h3" gap="snug" title={title}>
+      {children}
+    </Section>
+  );
+}
+
+/**
  * Detail inside a guide section that only a specialist needs (an index maker's entry conditions, a fund's tracking asset): one
  * closed line in the link colour that names what it holds, and the detail under it once opened. It sits after the text it adds
  * to, so a glossary term it names for the first time on the page is still the page's first use.

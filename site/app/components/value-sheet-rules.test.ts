@@ -11,7 +11,7 @@ import { numbers, provenance } from "../copy";
 import { loadRules } from "../lib/data.server";
 import { fmt } from "../lib/format";
 import { ruleTitle } from "../lib/rule-title";
-import { computed, type SiteValue } from "../lib/value";
+import type { SiteValue } from "../lib/value";
 import { ProvenanceProvider, type ProvenanceData } from "./provenance";
 import { RuleDetail, ValueSheet } from "./provenance-sheets";
 
@@ -72,34 +72,12 @@ describe("the rules a figure's sheet names", () => {
     expect(count(out, title("CAT-37"))).toBe(1);
     expect(count(out, title("CAT-36"))).toBe(1);
   });
-
-  it("leaves out of a computed figure's rules what the place opens", () => {
-    const share = computed(97.43, "pct", "F-87", { a: sourced(1) }, { today, rules: [{ id: "CAT-44", strength: "primary" }] });
-    expect(sheet(share)).toContain(title("CAT-44"));
-    expect(sheet(share, { shown: ["CAT-44"] })).not.toContain(title("CAT-44"));
-  });
 });
 
 describe("a missing figure's sheet", () => {
-  const inputs = (a: number | null) => ({ "סך נכסי המסלול": sourced(a), "החשיפה לשוק המניות": sourced(5) });
-  it("prints a computed figure's note once, and never the source's 'not found'", () => {
-    const out = sheet(computed(null, "pct", "F-87", inputs(null), { today, notes: "המסלול לא דיווח לרשות את סך הנכסים." }), { display: "לא דווח" });
-    expect(count(out, "המסלול לא דיווח לרשות את סך הנכסים.")).toBe(1);
-    expect(out).not.toContain(provenance.sourced.noValue);
-  });
-
-  it("says an input is missing only where one is", () => {
-    expect(sheet(computed(null, "pct", "F-87", inputs(null), { today }), { display: "לא דווח" })).toContain(provenance.computed.inputMissing);
-    const none = sheet(computed(null, "pct", "F-87", inputs(0), { today }), { display: "לא דווח" });
-    expect(none).not.toContain(provenance.computed.inputMissing);
-    expect(none).not.toContain(provenance.sourced.noValue);
-    expect(none).toContain(provenance.computed.inputs);
-  });
-
-  it("carries no state tag, sourced or computed", () => {
+  it("carries no state tag", () => {
     expect(sheet(sourced(5))).toContain(numbers.legend.sourced);
     expect(sheet(sourced(null), { display: "לא דווח" })).not.toContain(numbers.legend.sourced);
-    expect(sheet(computed(null, "pct", "F-87", inputs(null), { today }), { display: "לא דווח" })).not.toContain(numbers.legend.computed);
   });
 
   it("a sourced one says the source does not hold it, once, with the source where it was looked for", () => {

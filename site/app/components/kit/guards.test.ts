@@ -26,8 +26,8 @@
 // 18. a fee cap the site names is the fee regulations' ("התקרה שבתקנות"), never "שבחוק" (copy.md 3; a repeat).
 // 19. a figure's, a term's and rule words' tap area is at least 44 px, and its own box sits above every other figure's area.
 //     No rule at any depth (inside @layer, @media, @supports or a nested rule) turns the area off (content, display or pointer-events
-//     none, visibility hidden or collapse) or shrinks, moves or re-stacks it, but on .num-static and .num-sample, figures that are not
-//     buttons (the scan read top-level rules only and never looked for an area turned off).
+//     none, visibility hidden or collapse) or shrinks, moves or re-stacks it, but on .num-static, a figure that is not a button
+//     (the scan read top-level rules only and never looked for an area turned off).
 // 20. a sentence that ends on a chip holds its full stop, comma, colon or semicolon in the chip's `end`, drawn close to the frame, and a
 //     chip in text takes no brackets: "פרטים ." and "( פרטים )." read as stray marks.
 //     The scan reads the mark after the chip across spaces and lines and in a string ({"."}), and props with any braces; a chip in JS
@@ -57,12 +57,12 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { numbers, provenance, strength as strengthCopy } from "../../copy";
+import { numbers } from "../../copy";
 import { formatValue, joinLead } from "../../lib/format";
 import { buildInstitution, institutionIds } from "../../lib/institutions.server";
 import { computed, differenceOf, type SiteValue } from "../../lib/value";
-import { LeadTail, Num, ProvenanceProvider, valueItem } from "../provenance";
-import { ValueSheet } from "../provenance-sheets";
+import { LeadTail, Num, ProvenanceProvider, catchesOf, valueItem } from "../provenance";
+import { CatchSheet, ValueSheet } from "../provenance-sheets";
 import { When } from "./when";
 import { classTokens, directChildren, findElements, isLayoutToken } from "../../lib/jsx-scan";
 
@@ -354,8 +354,8 @@ function lastCompound(part: string): string {
   }
   return compound;
 }
-/** Figures that are deliberately not buttons: a list head's computed mark (a `num-sample`) and a sheet's head figure (provenance.tsx). Their area is off on purpose. */
-const AREA_OFF_ALLOWED = [".num-static", ".num-sample"];
+/** Figures that are deliberately not buttons: a sheet's head figure (provenance.tsx). Its area is off on purpose. */
+const AREA_OFF_ALLOWED = [".num-static"];
 /** Whether a selector part reaches a figure's, a term's or rule words' tap area (::after) or own box (::before): its last compound carries the
  *  pseudo-element and a `.num…`, `.term…` or `.ruled…` class, or nothing but the pseudo-element (which reaches every element). `allowed` when it is one of the
  *  named figures that are not buttons. */
@@ -442,8 +442,8 @@ describe("the shared stylesheet", () => {
       expect(flaws(broken), broken).toHaveLength(1);
     expect(flaws(`@media (max-width: 400px) { .num::after { pointer-events: none } }`)[0]).toBe("@media (max-width: 400px) { .num::after turns the tap area off (pointer-events: none)");
     for (const fine of [
-      `.num-static::after, .num-sample::after, .num-static::before, .num-sample::before { content: none; }`,
-      `@media (max-width: 400px) { .num-sample::after { display: none } }`,
+      `.num-static::after, .num-static::before { content: none; }`,
+      `@media (max-width: 400px) { .num-static::after { display: none } }`,
       `.num-static.num-sourced::before { pointer-events: none }`,
       `.number::after, .rule-chip::after, .num > svg::after { content: none }`,
       `.num::after { content: ""; position: absolute }`,
@@ -666,34 +666,26 @@ describe("a reading is the site's reading, not a secondary source", () => {
   });
   // the guide visuals and the holdings page put the run's reading label on a figure and nothing showed it.
   // The figure's sheet shows ReadingTag for any value that carries the label, so a label carried is a label seen.
-  it("a figure's sheet shows the reading tag when the value carries the reading label", () => {
+  it("a figure's catch sheet shows the reading tag when the value carries the reading label", () => {
     const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-07" };
     const v = { value: 1200, unit: "nis", state: "computed", source: { url: "", title: "" }, checked: "2026-11-07", effective_from: null, effective_to: null, update_rule: "computed", formula: "F-44", inputs: {}, labels: [{ code: "reading", ruleId: "TXK-07" }] } as unknown as SiteValue;
-    const sheet = (value: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(ValueSheet, { value, exact: false, data, headId: "h", descId: "d" }))));
+    const sheet = (value: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(CatchSheet, { value, catches: catchesOf(value, { today: data.today, figure: false, staleSaid: false, aheadSaid: false, onPage: (x) => x }), exact: false, data, headId: "h", descId: "d" }))));
     expect(sheet(v)).toContain(numbers.reading);
     expect(sheet({ ...v, labels: [] } as SiteValue)).not.toContain(numbers.reading);
   });
-  // A difference of two funds carries one fund's doubt; said in its words on the difference's sheet ("the fund's documents say…") it left
-  // the reader to guess which fund, and with the strength note under the inputs both no longer fit a small phone's sheet.
-  it("a difference's sheet names the figure its doubt comes from, and a computed figure's warnings stand above its formula", () => {
+  // A difference of two funds is its two figures and nothing else: the doubt one of them carries is that figure's, which shows its own "?"
+  // where it stands, so the difference shows none for it; the doubted figure's catch sheet says the doubt in words.
+  it("a difference carries no catch for its input's doubt; the doubted figure's catch sheet says it in words", () => {
     const data = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-07" };
     const today = data.today;
+    const place = { today, figure: false, staleSaid: false, aheadSaid: false, onPage: (x: SiteValue) => x };
     const doubted = computed(900, "nis", "F-65", {}, { today, labels: [{ code: "cautious", ruleId: "TXS-14", notKnown: "status" }] });
     const company = { value: 800, unit: "nis", state: "sourced", source: { url: "https://example.org/a.pdf", title: "תעריפון", strength: "institution" }, checked: today, effective_from: null, effective_to: null, update_rule: "provider-set" } as SiteValue;
     const gap = differenceOf(["קרן א", doubted], ["קרן ב", company], "F-65", { today });
-    const sheet = (value: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(ValueSheet, { value, exact: false, data, headId: "h", descId: "d" })))).replace(/<!-- -->/g, "").replace(/<[^>]+>/g, "");
-    const html = sheet(gap);
-    expect(html).toContain(`${provenance.computed.doubtedInputs} קרן א`);
-    expect(html).not.toContain(numbers.readingDoubt["TXS-14"]?.status ?? "the words");
-    // the figure the doubt is about says it in words
+    expect(gap.doubt).toBeTruthy();
+    expect(catchesOf(gap, place).map((c) => c.kind)).not.toContain("doubt");
+    const sheet = (value: SiteValue) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(CatchSheet, { value, catches: catchesOf(value, place), exact: false, data, headId: "h", descId: "d" })))).replace(/<!-- -->/g, "").replace(/<[^>]+>/g, "");
     expect(sheet(doubted)).toContain(numbers.readingDoubt["TXS-14"]?.status ?? "the words");
-    // the doubt, then the working (a difference's lines); a computed figure's sheet carries no company-document note, which stands in the
-    // sheet of the input that came from the company's document
-    const at = (words: string) => html.indexOf(words);
-    expect(at(provenance.computed.doubtedInputs)).toBeGreaterThan(-1);
-    expect(html).not.toContain(strengthCopy.institution.line);
-    expect(sheet(company as SiteValue)).toContain(strengthCopy.institution.line);
-    expect(at(provenance.computed.working)).toBeGreaterThan(at(provenance.computed.doubtedInputs));
   });
   // A file that carries a run's flags into a figure carries its labels too, or the reading never reaches the sheet. Leftovers by name;
   // the list only shrinks. The timeline gathers flags over every year's run into one set; its labels would need the same per year.

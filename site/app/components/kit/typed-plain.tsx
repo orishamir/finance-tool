@@ -6,8 +6,8 @@ import { cx } from "./cx";
 
 /**
  * Inside it an entered figure (`Num` in the `entered` state) is plain words: no blue ink or highlight, no sheet and no stop of the Tab key,
- * since its sheet would only say the person typed it, in the box beside the block. A computed figure keeps its dotted line and a sourced
- * one its solid line, each still opening its sheet. `as`: a `div` (the default) or a `span` inside a line.
+ * since its sheet would only say the person typed it, in the box beside the block. A sourced figure keeps its solid line and its sheet,
+ * and a calculated one stays plain text, as everywhere. `as`: a `div` (the default) or a `span` inside a line.
  */
 export function TypedPlain({ children, as = "div", className }: { children: ReactNode; as?: "div" | "span"; className?: string }) {
   const As = as;

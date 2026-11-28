@@ -9,6 +9,7 @@ import { IdRef, Num, Ruled, Term, VariesByCompany } from "../../components/prove
 import { Link } from "react-router";
 import { depositBrowser } from "../../copy";
 import { Callout, MixedName, Sentence, TextLink } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -16,18 +17,35 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          <Ruled id="BANK-14">התקופה יכולה להיות מיום אחד ועד כמה שנים</Ruled>. <Term prefix="ה" id="ריבית">ריבית</Term> <Term id="ריבית קבועה">קבועה</Term> <Ruled id="BANK-25" prefix="ו">ידועה מראש</Ruled>, או <Term id="ריבית משתנה">משתנה</Term>. ריבית משתנה היא <Term id="ריבית עוגן">ריבית עוגן</Term> ועוד או פחות <Term id="מרווח">מרווח</Term> <Ruled id="BANK-47">ידוע מראש</Ruled>. בסוף התקופה הכסף חוזר <Term prefix="ל" id="חשבון עובר ושב">עו״ש</Term> או <Term id="חידוש אוטומטי">מתחדש אוטומטית</Term>, <Ruled id="BANK-05">לפי מה שבחרתם</Ruled>.
-        </p>
-        {/* D30: "usually prime" is the Bank of Israel's word (BANK-47); each bank's definition of prime is its own term (BANK-34, ten banks) */}
-        <p className="max-w-measure">
-          <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem", "one-zero"] }]} lead={<>העוגן הוא בדרך כלל <Term id="ריבית הפריים">ריבית הפריים</Term>, וכל בנק <Ruled id="BANK-46">מגדיר אותה בתנאים שלו</Ruled></>} end="." />
+          פיקדון הוא כסף שמפקידים בבנק <Ruled id="BANK-02">לתקופה מוסכמת</Ruled>, ובתמורה הבנק משלם עליו <Term id="ריבית">ריבית</Term>. הוא מתאים לכסף שיודעים מתי יצטרכו אותו.
         </p>
         <p className="max-w-measure">
-          פיקדון <Term id="לא צמוד">לא צמוד</Term> מחזיר את הקרן ועוד ריבית, גם אם המחירים עלו. פיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> מעדכן את הקרן לפי <Term prefix="ה" id="מדד">מדד</Term>, והריבית באה בנוסף. אם המדד יורד, <Ruled id="BANK-26">מה שקורה לקרן תלוי בתנאי המוצר</Ruled> (<Term id="הבטחת קרן">הבטחת קרן</Term>). ההסכם של המוצר חייב לציין זאת.
+          <Ruled id="BANK-25">הריבית ידועה מראש, או זזה לאורך התקופה</Ruled>, <Ruled id="BANK-47">בדרך כלל עם</Ruled> <Term id="ריבית הפריים">ריבית הפריים</Term>. את הכסף מקבלים בסוף התקופה. <Ruled id="BANK-06">אם אפשר לקבל אותו קודם, ובאיזה מחיר, תלוי בתנאי הפיקדון</Ruled>: <Ruled id="BANK-14">יש פיקדונות שאי אפשר לשבור, ויש שאפשר, עם קנס או בלי</Ruled>.
         </p>
-        <Sentence measure>
-          כדי שאפשר יהיה להשוות, <Ruled id="BANK-13">כל בנק חייב לפרסם טבלה אחידה</Ruled> של {types ? <Num value={types} /> : null} <Term id="סוגי הפיקדונות השקליים המקובלים">סוגי פיקדון מקובלים</Term>. לכל סוג מופיעים <Term id="שיעור הריבית המוצעת">הריבית המוצעת</Term>, לשנה ולפני מס, אפשרות <Term prefix="ה" id="שבירת פיקדון">שבירה</Term>, ובסוגים של שנה ומעלה גם <Term id="תחנת יציאה">תחנות היציאה</Term>.
-        </Sentence>
+        <GuidePart title="כמה זמן, ומה קורה בסוף">
+          <p className="max-w-measure">
+            <Ruled id="BANK-14">התקופה יכולה להיות מיום אחד ועד כמה שנים</Ruled>. בסוף התקופה הכסף חוזר <Term prefix="ל" id="חשבון עובר ושב">עו״ש</Term> או <Term id="חידוש אוטומטי">מתחדש אוטומטית</Term>, <Ruled id="BANK-05">לפי מה שבחרתם</Ruled>.
+          </p>
+        </GuidePart>
+        <GuidePart title="איך הריבית נקבעת">
+          <p className="max-w-measure">
+            <Ruled id="BANK-25">ריבית שידועה מראש</Ruled> היא <Term id="ריבית קבועה">ריבית קבועה</Term>. <Term id="ריבית משתנה">ריבית משתנה</Term> היא <Term id="ריבית עוגן">ריבית עוגן</Term> ועוד או פחות <Term id="מרווח">מרווח</Term> <Ruled id="BANK-47">ידוע מראש</Ruled>.
+          </p>
+          {/* D30: "usually prime" is the Bank of Israel's word (BANK-47); each bank's definition of prime is its own term (BANK-34, ten banks) */}
+          <p className="max-w-measure">
+            <VariesByCompany ids={[{ rule: "BANK-34", companies: ["leumi", "hapoalim", "discount", "mercantile", "mizrahi-tefahot", "fibi", "massad", "yahav", "jerusalem", "one-zero"] }]} lead={<>העוגן הוא בדרך כלל ריבית הפריים, וכל בנק <Ruled id="BANK-46">מגדיר אותה בתנאים שלו</Ruled></>} end="." />
+          </p>
+        </GuidePart>
+        <GuidePart title="מה קורה כשהמחירים עולים">
+          <p className="max-w-measure">
+            פיקדון <Term id="לא צמוד">לא צמוד</Term> מחזיר את הקרן ועוד ריבית, גם אם המחירים עלו. פיקדון <Term id="צמוד למדד המחירים לצרכן">צמוד למדד</Term> מעדכן את הקרן לפי <Term prefix="ה" id="מדד">מדד</Term>, והריבית באה בנוסף. אם המדד יורד, <Ruled id="BANK-26">מה שקורה לקרן תלוי בתנאי המוצר</Ruled> (<Term id="הבטחת קרן">הבטחת קרן</Term>). ההסכם של המוצר חייב לציין זאת.
+          </p>
+        </GuidePart>
+        <GuidePart title="איך משווים בין הבנקים">
+          <Sentence measure>
+            כדי שאפשר יהיה להשוות, <Ruled id="BANK-13">כל בנק חייב לפרסם טבלה אחידה</Ruled> של {types ? <Num value={types} /> : null} <Term id="סוגי הפיקדונות השקליים המקובלים">סוגי פיקדון מקובלים</Term>. לכל סוג מופיעים <Term id="שיעור הריבית המוצעת">הריבית המוצעת</Term>, לשנה ולפני מס, אפשרות <Term prefix="ה" id="שבירת פיקדון">שבירה</Term>, ובסוגים של שנה ומעלה גם <Term id="תחנת יציאה">תחנות היציאה</Term>.
+          </Sentence>
+        </GuidePart>
       </>
     );
   },

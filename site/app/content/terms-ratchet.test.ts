@@ -405,7 +405,7 @@ const blankOut = (m: string) => m.replace(/[^\n]/g, " ");
 /** Comments blanked in place, so every offset is the source's. */
 const codeInPlace = (s: string) => s.replace(/\/\*[\s\S]*?\*\//g, blankOut).replace(/^\s*\/\/.*$/gm, blankOut);
 // an exposure page's card (`glance`) stands beside its title, before every section
-const SECTION_ORDER = ["glance", "what", "use", "holdNote", "who", "switchLine", "inoutRows", "afterTax", "risks"];
+const SECTION_ORDER = ["glance", "what", "use", "holdNote", "who", "switchLine", "inoutRows", "cost", "afterTax", "risks"];
 interface Use {
   at: number;
   row: string;

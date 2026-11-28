@@ -6,6 +6,7 @@ import type { GuideContent } from "./types";
 import { YearOf } from "./year";
 import { IdRef, Num, Ruled, Term } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -19,21 +20,35 @@ export const content: GuideContent = {
     const station = figure("CS-10", "exit_station_years");
     return (
       <>
-        <Sentence measure>
-          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> <Ruled id="CS-02">מפקיד</Ruled> {monthly ? <Num value={monthly} /> : null} בחודש<YearOf v={monthly} /> עד גיל {depositsUntil ? <Num value={depositsUntil} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>). ההורה שמקבל את קצבת הילדים <Ruled id="CS-04">יכול להכפיל את הסכום מתוכה</Ruled> (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). בגילים קבועים מתווספים <Term id="מענק">מענקים</Term>, כולל {grantLast ? <Num value={grantLast} /> : null}<YearOf v={grantLast} /> בגיל {ageLast ? <Num value={ageLast} /> : null} <Ruled id="CS-13">למי שלא משך כלום קודם</Ruled>.
-        </Sentence>
-        <Sentence measure>
-          הכסף פנוי כשהילד מגיע לגיל {until ? <Num value={until} /> : null}. לפני כן <Ruled id="CS-15">מושכים רק למימון צרכים רפואיים של הילד</Ruled>. זה אפשרי רק כשמצב רפואי מסכן את חייו, גופו או נפשו, ורופא מטעם הביטוח הלאומי אישר. עד גיל {parentUntil ? <Num value={parentUntil} /> : null} ההורה חותם על <Term prefix="ה" id="משיכה">משיכה</Term>, ואחר כך הילד <Ruled id="CS-14">מושך לבד</Ruled>. כסף שלא נמשך נשאר בבנק, <Ruled id="CS-16" prefix="ו">אי אפשר להוסיף</Ruled> אליו כסף חדש. העלות של שבירת תקופה נקבעת בהסכם של כל בנק.
-        </Sentence>
-        <Sentence measure>
-          בבנק הכסף נכנס <Term prefix="ל" id="תוכנית חיסכון">תוכנית חיסכון</Term> <Ruled id="CS-10" prefix="ב">אחד משלושה מסלולים</Ruled>: <Term id="ריבית קבועה לא צמודה">ריבית קבועה לא צמודה</Term>, <Term id="ריבית משתנה (פריים)">ריבית משתנה (פריים)</Term> או <Term id="ריבית קבועה צמודה">ריבית קבועה צמודה</Term> <Term prefix="ל" id="מדד">מדד</Term>. כל אחד מהם בא בלי <Term id="תחנת יציאה">תחנות יציאה</Term> עד <Term id="גיל הפדיון">גיל הפדיון</Term>, או עם תחנת יציאה כל {station ? <Num value={station} /> : null} שנים.
-        </Sentence>
         <p className="max-w-measure">
-          <Term prefix="ה" id="ריבית">ריבית</Term> <Ruled id="CS-10">ידועה מראש לפי המסלול שנבחר</Ruled>. איך כל בנק קובע אותה כתוב בהסכם שלו.
+          <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term> הוא כסף ש<Term id="הביטוח הלאומי">הביטוח הלאומי</Term> <Ruled id="CS-02">מפקיד כל חודש עבור כל ילד</Ruled> שמקבלים עליו קצבת ילדים. ההורה <Ruled id="CS-04">יכול להכפיל את הסכום מתוך קצבת הילדים</Ruled>.
         </p>
         <Sentence measure>
-          את הבנק צריך לבחור בפועל בתוך {months ? <Num value={months} /> : null} חודשים מהלידה. <Ruled id="CS-07">בלי בחירה הכסף הולך</Ruled> <Term prefix="ל" id="קופת גמל">קופת גמל</Term>.
+          ההורה גם <Ruled id="CS-06">בוחר איפה הכסף נשמר</Ruled>, והעמוד הזה הוא על בחירה בבנק. שם הכסף נשמר <Term prefix="ב" id="תוכנית חיסכון">תוכנית חיסכון</Term>: <Term prefix="ה" id="ריבית">ריבית</Term> <Ruled id="CS-10">ידועה מראש, ובסוף התקופה הילד מקבל לפחות את מה שהופקד</Ruled>. הכסף <Ruled id="CS-14">פנוי כשהילד מגיע לגיל</Ruled> {until ? <Num value={until} /> : null}, ולפני כן <Ruled id="CS-15">מושכים ממנו רק לטיפול רפואי, כשמצב רפואי מסכן את הילד</Ruled>.
         </Sentence>
+        <GuidePart title="כמה כסף נכנס">
+          <Sentence measure>
+            הביטוח הלאומי <Ruled id="CS-02">מפקיד</Ruled> {monthly ? <Num value={monthly} /> : null} בחודש<YearOf v={monthly} /> עד גיל {depositsUntil ? <Num value={depositsUntil} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>). ההורה שמקבל את קצבת הילדים <Ruled id="CS-04">יכול להכפיל את הסכום מתוכה</Ruled> (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). בגילים קבועים מתווספים <Term id="מענק">מענקים</Term>, כולל {grantLast ? <Num value={grantLast} /> : null}<YearOf v={grantLast} /> בגיל {ageLast ? <Num value={ageLast} /> : null} <Ruled id="CS-13">למי שלא משך כלום קודם</Ruled>.
+          </Sentence>
+        </GuidePart>
+        <GuidePart title="שלושה מסלולים בבנק">
+          <Sentence measure>
+            בבנק הכסף נכנס לתוכנית חיסכון <Ruled id="CS-10" prefix="ב">אחד משלושה מסלולים</Ruled>: <Term id="ריבית קבועה לא צמודה">ריבית קבועה לא צמודה</Term>, <Term id="ריבית משתנה (פריים)">ריבית משתנה (פריים)</Term> או <Term id="ריבית קבועה צמודה">ריבית קבועה צמודה</Term> <Term prefix="ל" id="מדד">מדד</Term>. כל אחד מהם בא בלי <Term id="תחנת יציאה">תחנות יציאה</Term> עד <Term id="גיל הפדיון">גיל הפדיון</Term>, או עם תחנת יציאה כל {station ? <Num value={station} /> : null} שנים.
+          </Sentence>
+          <p className="max-w-measure">
+            הריבית <Ruled id="CS-10">ידועה מראש לפי המסלול שנבחר</Ruled>. איך כל בנק קובע אותה כתוב בהסכם שלו.
+          </p>
+        </GuidePart>
+        <GuidePart title="מתי הכסף פנוי">
+          <Sentence measure>
+            לפני גיל {until ? <Num value={until} /> : null} <Ruled id="CS-15">מושכים רק למימון צרכים רפואיים של הילד</Ruled>. זה אפשרי רק כשמצב רפואי מסכן את חייו, גופו או נפשו, ורופא מטעם הביטוח הלאומי אישר. עד גיל {parentUntil ? <Num value={parentUntil} /> : null} ההורה חותם על <Term prefix="ה" id="משיכה">משיכה</Term>, ואחר כך הילד <Ruled id="CS-14">מושך לבד</Ruled>. כסף שלא נמשך נשאר בבנק, <Ruled id="CS-16" prefix="ו">אי אפשר להוסיף</Ruled> אליו כסף חדש. העלות של שבירת תקופה נקבעת בהסכם של כל בנק.
+          </Sentence>
+        </GuidePart>
+        <GuidePart title="בוחרים בנק בזמן">
+          <Sentence measure>
+            את הבנק צריך לבחור בפועל בתוך {months ? <Num value={months} /> : null} חודשים מהלידה. <Ruled id="CS-07">בלי בחירה הכסף הולך</Ruled> <Term prefix="ל" id="קופת גמל">קופת גמל</Term>.
+          </Sentence>
+        </GuidePart>
       </>
     );
   },
