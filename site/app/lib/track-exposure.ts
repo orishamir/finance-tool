@@ -64,10 +64,15 @@ export function compactHoldings(h: Holdings | undefined, template: HoldingsTempl
 /** The rule a share rests on: CAT-44 defines the exposure the share divides, what is held plus exposure through derivatives on it. */
 const EXPOSURE_RULE = "CAT-44";
 
-/** A share's note, by its value: above 100% why exposure can pass the assets (CAT-44); at or below, none; no share, why not. */
+/** A share's note: with no share, why not; a share has none. */
 function shareNote(value: number | null, reported: boolean): string | undefined {
   if (value === null) return reported ? copy.stock.noteNoAssets : copy.stock.noteMissing;
-  return value > 100 ? copy.stock.above100 : undefined;
+  return undefined;
+}
+
+/** A share above 100% says why exposure can pass the assets (CAT-44), as a caveat, so its "?" shows it; at or below, nothing. */
+function shareCaveat(value: number | null): string | undefined {
+  return value !== null && value > 100 ? copy.stock.above100 : undefined;
 }
 
 /**
@@ -85,7 +90,8 @@ function share(formula: "F-87" | "F-88", amount: SiteValue, assets: SiteValue, p
   const inputs: Record<string, SiteValue> = { [amountKey]: amount, total_assets: assets };
   // the share is the one line method.md draws for each, `s = E / A × 100` and `c = X / A × 100`
   const working = { kind: "formula", entry: formula, line: 0, symbols: { [amountKey]: formula === "F-87" ? "E" : "X", total_assets: "A" } } as const;
-  return computed(value, "pct", formula, inputs, { today, rules: [{ id: EXPOSURE_RULE, strength: "primary" }], about, notes, working });
+  const caveat = shareCaveat(value);
+  return computed(value, "pct", formula, inputs, { today, rules: [{ id: EXPOSURE_RULE, strength: "primary" }], about, notes, ...(caveat ? { caveat } : {}), working });
 }
 
 /** F-87 and F-88 for one track; null only when the track's data file has no amounts at all. */
