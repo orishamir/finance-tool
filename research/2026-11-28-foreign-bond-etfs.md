@@ -124,3 +124,7 @@ The iShares V plc prospectus (p.157, library 4380001efa9706cd) says a holder's t
 ## Third pass: iBoxx in the founder's Chrome (2026-11-28)
 
 The four S&P DJI documents that refused scripts and FlareSolverr opened in the founder's Chrome and were read in the page with pdf.js; no copy was kept, so the library has none. Recorded as ETF-123 (how iBoxx rates, sizes, matures and weights bonds, three indices as examples) and ETF-124 (a dated iBoxx high-yield index that rolls into the next window instead of ending). Open question 44 is answered and deleted; 49 is narrowed.
+
+## Fourth pass: Bloomberg's dated indices (2026-11-28)
+
+Bloomberg's documentation page opened in the founder's Chrome with no captcha; its search for "Maturity" listed the dated-index documents, which then downloaded from the asset host with plain curl. Four methodologies and one announcement were filed in the library and recorded as ETF-125. Open question 49 is answered and deleted.
