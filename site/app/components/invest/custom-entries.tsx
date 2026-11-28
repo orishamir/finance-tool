@@ -301,8 +301,6 @@ function Question({ id, text, aside, children, after }: { id: string; text: Reac
   );
 }
 
-const Muted = ({ children }: { children: ReactNode }) => <p className="text-xs text-muted-foreground">{children}</p>;
-
 function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, setFacts, errors }: { draft: FundDraft; set: SetDraft; setMany: (p: Partial<FundDraft>) => void; index: IndexRef; currencyOfIndex: string | null; facts: FactsDraft; setFacts: (f: FactsDraft) => void; errors: EntryError[] }) {
   const ids = useId();
   const w = c.fields;
@@ -339,10 +337,10 @@ function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, set
         </Question>
         {onlyIsrael ? (
           <Question id={`${ids}-country`} text={c.ask.country}>
-            <Muted>{index.israeli ? c.countryWhy.israeliIndex : c.countryWhy.manager}</Muted>
+            <p className="text-xs text-muted-foreground">{index.israeli ? c.countryWhy.israeliIndex : c.countryWhy.manager}</p>
           </Question>
         ) : (
-          <Question id={`${ids}-country`} text={c.ask.country} aside={c.ask.countryWhere} after={!open.includes("IL") && <Muted>{c.countryWhy.abroad}</Muted>}>
+          <Question id={`${ids}-country`} text={c.ask.country} aside={c.ask.countryWhere} after={!open.includes("IL") && <p className="text-xs text-muted-foreground">{c.countryWhy.abroad}</p>}>
             <ChoiceChips ids={countryIds} labels={c.countryNames} value={draft.country ?? OTHER} onChange={(v) => (draft.buyAt ? setPlace(draft.buyAt, v === OTHER ? null : v) : set("country", v === OTHER ? null : v))} ariaLabel={c.ask.country} look={countryLook} wrap />
           </Question>
         )}
