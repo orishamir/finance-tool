@@ -507,7 +507,10 @@ export const rule = {
   all: "לכל החוקים והכללים",
   open: { title: "שאלה פתוחה:", unknown: "מה עוד לא ידוע", waiting: "מה מחכה לתשובה", last: "בינתיים האתר לא מחשב את זה." },
   dimensions: "נוגע ל",
-  noText: "הנוסח במילים פשוטות עוד לא נכתב. הכותרת מופיעה כפי שהיא במאגר החוקים והכללים.",
+  /** A code whose record the page holds neither in full nor by its head: its card has only the code. */
+  noText: "העמוד הזה לא כולל את הפרטים של הכלל הזה.",
+  /** A record whose plain-words text is not written yet: its card heads with the rule base's own title. */
+  noPlainText: "הנוסח במילים פשוטות עוד לא נכתב. הכותרת מופיעה כפי שהיא במאגר החוקים והכללים.",
   // the "מקור" row of a rule with no link yet
   sourceMissing: "הקישור למקור עוד לא צורף.",
   /** A card whose rule the page does not ship, when its fetch failed (components/provenance-sheets.tsx, `CardOnWay`), and its retry. */

@@ -1154,7 +1154,7 @@ export function RuleCard({ id, data, headId, inline }: { id: string; data: Prove
           <SlottedText text={rule.text_he} source={slots} />
         </p>
       ) : (
-        <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
+        <p className="text-sm text-muted-foreground">{ruleCopy.noPlainText}</p>
       )}
       {/* the text's sources right under it, then who it applies to and the rules it points to */}
       {sources.length > 0 ? (
@@ -1390,7 +1390,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
           <SlottedText text={rule.text_he} source={data} />
         </p>
       ) : (
-        <p className="text-sm text-muted-foreground">{ruleCopy.noText}</p>
+        <p className="text-sm text-muted-foreground">{ruleCopy.noPlainText}</p>
       )}
       {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs, tagCompanies(rule, data.ownDocs))}</p>}
       <RulePointers rule={rule} />
