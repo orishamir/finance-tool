@@ -165,7 +165,7 @@ describe("Part E: follow-ups of 2026-10-26", () => {
     expect(ruleIds(r)).not.toContain("BANK-18");
   });
 
-  it("S55's fund at a bank pays no custody, whatever the tariff says (BRK-17)", () => {
+  it("S55's fund at a bank pays no custody, whatever the tariff says (BRK-17, BANK-18)", () => {
     const r = runSecurities(
       {
         goal: { amountNow: 50_000, monthly: 1_000, months: 24 },
@@ -177,8 +177,7 @@ describe("Part E: follow-ups of 2026-10-26", () => {
       ctx,
     );
     expect(r.fees.custody).toBe(0);
-    expect(ruleIds(r)).toContain("BRK-17");
-    expect(ruleIds(r)).not.toContain("BANK-18");
+    expect(ruleIds(r)).toContain("BANK-18");
   });
 
   it("only a bank is a bank for the custody ban: a broker and a foreign broker are non-bank (F-14, 2026-10-26 review)", () => {

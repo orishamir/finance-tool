@@ -1,5 +1,5 @@
 // D6 as amended 2026-10-26: makam is a security held in a securities account, not a wrapper, so the account's member decides its custody (F-14).
-// A bank may not charge custody on makam (BRK-17); a non-bank member's tariff line applies as published (BRK-52).
+// A bank may not charge custody on makam (BRK-17, BANK-18); a non-bank member's tariff line applies as published (BRK-52).
 import { describe, expect, it } from "vitest";
 import { runMakam, type MakamInput } from "../src/ledgers/makam.ts";
 import { context } from "./golden/harness.ts";

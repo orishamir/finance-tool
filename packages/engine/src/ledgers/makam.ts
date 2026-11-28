@@ -20,7 +20,7 @@ export interface MakamInput {
    */
   tariff: { buy?: Commission; sell?: Commission; redeem?: Commission; custody?: Custody; monthlyFee?: number };
   /**
-   * F-14: a bank may not charge custody on makam (BRK-17); no rule limits a non-bank member's custody fee on
+   * F-14: a bank may not charge custody on makam (BRK-17, BANK-18); no rule limits a non-bank member's custody fee on
    * it (BRK-52), so there the tariff's custody line applies. Default `bank`, the case P-05's tariff (a bank's) is.
    */
   memberKind?: "bank" | "non-bank";

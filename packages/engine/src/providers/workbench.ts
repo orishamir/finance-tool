@@ -1019,7 +1019,7 @@ function prepareProvider(input: WorkbenchInput, given: ProviderInput): ReadyProv
     return notComparable({ code: "no-average", detail: `the snapshot holds no ${p.level} for any line that applies to ${input.instrumentClass}` });
   }
 
-  // F-14: a money-market unit pays custody at a non-bank member's or a foreign broker's tariff, never at a bank's (BRK-17).
+  // F-14: a money-market unit pays custody at a non-bank member's or a foreign broker's tariff, never at a bank's (BRK-17, BANK-18).
   const memberKind = memberKindOf(s.provider.class);
   // F-109: whole units; a house that sells the fund's listing by amount is priced on the way that leaves more
   try {

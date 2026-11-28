@@ -498,7 +498,7 @@ export interface Custody {
 
 /**
  * F-14 Custody fee. Per period, `max(min, min(pct × B, max))` on the market value; never on makam or
- * money-market funds at a bank (BRK-17).
+ * money-market funds at a bank (BRK-17, BANK-18).
  */
 export function custodyFee(c: Custody | undefined, month: number, marketValue: number): number {
   if (!c || month % c.everyMonths !== 0 || marketValue <= 0) return 0;
