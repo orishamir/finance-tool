@@ -4553,8 +4553,8 @@ export const invest = {
     /** Why a country is closed, or the only one, for where the fund is bought: what the site works out, not a rule. */
     countryWhy: {
       abroad: "קרן שקונים בחו״ל מחושבת כאן כקרן חוץ, ולכן ״ישראל״ סגורה.",
-      manager: "קרן שקונים ישירות ממנהל הקרן מחושבת כאן כקרן מחקה ישראלית, ולכן היא רשומה בישראל.",
-      israeliIndex: "על מדד של חברות ישראליות מחושבות כאן רק קרנות ישראליות, ולכן הקרן רשומה בישראל.",
+      manager: "קרן שקונים ישירות ממנהל הקרן מחושבת כאן כקרן מחקה ישראלית, כלומר כקרן הרשומה בישראל.",
+      israeliIndex: "על מדד של חברות ישראליות מחושבות כאן רק קרנות ישראליות, כלומר קרנות הרשומות בישראל.",
     },
     payoutNames: { accumulating: "צוברת אותם (Acc)", distributing: "מחלקת דיבידנד (Dist)" } as Record<string, string>,
     trackingNames: { physical: "מחזיקה את המניות", swap: "עסקת החלף", futures: "חוזים עתידיים" } as Record<string, string>,
@@ -4681,14 +4681,10 @@ export const invest = {
     funds: (n: number) => (n === 0 ? "אין קרנות שנאספו" : n === 1 ? "קרן אחת שנאספה" : `${n} קרנות שנאספו`),
     bestBroker: "חשבון ניירות הערך הזול",
     bestFund: "הקרן הטובה",
-    brokerCost: "עלות חשבון ניירות הערך",
     left: "נשאר",
     noBroker: "אין חשבון ניירות ערך שאפשר לחשב לו",
     notYet: "עוד לא חושב",
     noRate: "אין שער דולר בשערי הייחוס.",
-    noFundsFor: "לא נאספו קרנות על המדד הזה",
-    on: (exchange: string) => `בבורסה ב${exchange}`,
-    exchange: { us: "ארצות הברית", europe: "לונדון" } as Record<string, string>,
   },
 
   matters: {
