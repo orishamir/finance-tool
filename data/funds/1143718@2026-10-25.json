@@ -181,7 +181,7 @@
     "fee-management-balance": "covered:MF-16",
     "distribution-policy": "covered:ETF-42",
     "currency": "covered:ETF-42",
-    "fee-trade": "covered:ETF-06",
+    "fee-trade": "covered",
     "protection": "covered"
   },
   "prospectus": {

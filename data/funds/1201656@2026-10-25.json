@@ -175,8 +175,8 @@
     "fund-tax-track": "covered",
     "fee-management-balance": "covered:MF-16",
     "distribution-policy": "covered",
-    "currency": "covered:ETF-10",
-    "fee-trade": "covered:ETF-06",
+    "currency": "covered",
+    "fee-trade": "covered",
     "protection": "covered"
   },
   "prospectus": {

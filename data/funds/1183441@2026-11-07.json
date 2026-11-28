@@ -87,7 +87,7 @@
     "foreign-withholding-domicile": "covered",
     "distribution-policy": "covered",
     "currency": "covered",
-    "fee-management-balance": "covered:ETF-09",
+    "fee-management-balance": "covered",
     "fee-trade": "covered"
   },
   "prospectus": {

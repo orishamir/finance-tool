@@ -193,11 +193,11 @@
     }
   },
   "dimensions": {
-    "liquidity-lockup": "covered:MF-35",
+    "liquidity-lockup": "covered",
     "fee-custody": "covered",
     "fee-management-balance": "covered:MF-16",
-    "protection": "covered:MF-43",
-    "currency": "covered:MF-43"
+    "protection": "covered",
+    "currency": "covered"
   },
   "prospectus": {
     "url": "https://mayafiles.tase.co.il/rpdf/1772001-1773000/P1772119-00.pdf",

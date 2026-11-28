@@ -130,7 +130,7 @@
     "distribution-policy": "covered:ETF-27",
     "currency": "covered:ETF-27",
     "fee-management-balance": "covered:ETF-27",
-    "fee-trade": "covered:ETF-29"
+    "fee-trade": "covered"
   },
   "prospectus": {
     "url": "https://www.ishares.com/uk/individual/en/products/253743/ishares-sp-500-b-ucits-etf-acc-fund",

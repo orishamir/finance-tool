@@ -186,12 +186,12 @@
     }
   },
   "dimensions": {
-    "fund-tax-track": "covered:TXS-24",
-    "liquidity-lockup": "covered:MF-34",
+    "fund-tax-track": "covered",
+    "liquidity-lockup": "covered",
     "fee-custody": "covered",
     "fee-management-balance": "covered:MF-16",
-    "protection": "covered:MF-29",
-    "currency": "covered:MF-43"
+    "protection": "covered",
+    "currency": "covered"
   },
   "prospectus": {
     "url": "https://mayafiles.tase.co.il/rpdf/1760001-1761000/P1760213-00.pdf",
