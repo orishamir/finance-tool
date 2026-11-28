@@ -6,10 +6,10 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "rea
 import { Pencil } from "lucide-react";
 import { invest as root } from "../../copy";
 import type { FundRecord, ValueObject } from "@finance-tool/schema";
-import { asksCountry, boughtInAt, boughtInSaid, BUY_ABROAD, BUY_IN_ISRAEL, countriesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
-import { dividendTaxLabel, fundLabels, optionLabels, type Label } from "../../lib/labels";
+import { addedIndexCurrency, asksCountry, boughtInAt, boughtInSaid, BUY_ABROAD, BUY_IN_ISRAEL, countryChoicesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
+import { dividendTaxLabel, fundLabels, optionLabels, type DividendTaxLabelId, type Label } from "../../lib/labels";
 import { INDEX_REGIONS, type IndexFacts, type IndexRegion } from "../../lib/index-region";
-import { optionsOf, type CustomIndex, type IndexRef } from "../../lib/invest";
+import { addedIndexAs, optionsOf, type CustomIndex, type IndexRef } from "../../lib/invest";
 import { isoToday } from "../../lib/state";
 import { entered } from "../../lib/value";
 import { Num, StateTag } from "../provenance";
@@ -156,9 +156,7 @@ export interface FactsDraft {
 function seenBy(d: FundDraft, index: IndexRef, facts: FactsDraft, today: string): IndexRef {
   if (!index.custom) return index;
   const custom = { ...index.custom, ...factsOf(index.custom, facts, today) };
-  if (d.shekelIndex) return { ...index, custom, israeli: true };
-  const boughtIn = d.buyAt ? boughtInAt(d.buyAt) : null;
-  return { ...index, custom, ...(boughtIn ? { boughtIn } : {}) };
+  return addedIndexAs({ ...index, custom }, addedIndexCurrency({ shekelIndex: d.shekelIndex, boughtIn: d.buyAt ? boughtInAt(d.buyAt) : null }));
 }
 
 /** The index's facts as they would be saved: a yield whose value is unchanged keeps its date (it is dated the day it was typed). */
@@ -215,7 +213,7 @@ function needsOf(d: FundDraft, rec: FundRecord | null, index: IndexRef, seen: In
 }
 
 /** The country item: missing where the fund has no price without it; "not sure" with what stands in, or none where it changes nothing. */
-function countryNeed(d: FundDraft, gaps: readonly string[], tax: string | null, anyExchange: boolean): { state: NeedState; note?: string } | null {
+function countryNeed(d: FundDraft, gaps: readonly string[], tax: DividendTaxLabelId | null, anyExchange: boolean): { state: NeedState; note?: string } | null {
   const w = c.needs;
   if (gaps.includes("tase-country-unknown")) return { state: "missing", note: w.taseCountry };
   if (gaps.includes("domicile-unknown")) return { state: "missing" };
@@ -337,12 +335,11 @@ function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, set
   const setPlace = (buyAt: BuyAt, country: CountryAnswer) => setMany(draftWithPlace(draft, { buyAt, country }, currencyOfIndex));
   // no "0" in an empty field: an empty fee is not known, not a fee of zero
   const percent = (k: "fixed" | "variable" | "trustee", label: string, hint?: string) => <NumberField label={label} unit="pct_per_year" value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} hint={hint} optional />;
-  const open = draft.buyAt ? countriesAt(draft.buyAt) : COUNTRIES;
+  const choices = countryChoicesAt(draft.buyAt);
   const onlyIsrael = index.israeli || !asksCountry(draft.buyAt);
-  // Israel stays in sight, closed, where the answer closes it; abroad "another country" and "not sure" lead to the same fund, and one chip says both
-  const countryIds = COUNTRIES.filter((x) => x === "IL" || open.includes(x));
-  const countryLook: Partial<Record<string, ChipLook>> = { unsure: "unsure", ...(open.includes("IL") ? {} : { IL: "closed" }) };
-  const countryLabels = open.includes("other") ? c.countryNames : { ...c.countryNames, unsure: c.countryOtherOrUnsure };
+  const countryIds = COUNTRIES.filter((x) => choices.open.includes(x) || choices.closed.includes(x));
+  const countryLook: Partial<Record<string, ChipLook>> = { unsure: "unsure", ...Object.fromEntries(choices.closed.map((x) => [x, "closed" as const])) };
+  const countryLabels = choices.unsureIsOther ? { ...c.countryNames, unsure: c.countryOtherOrUnsure } : c.countryNames;
   const step1 = !!draft.buyAt;
   const step2 = !!draft.name.trim() && (yearly ? draft.fixed !== null : draft.fixed !== null && draft.variable !== null && draft.trustee !== null);
   const step3 = draft.payout !== null && (!asksHedge(index) || draft.hedged !== null);
@@ -368,7 +365,7 @@ function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, set
             <p className="text-xs text-muted-foreground">{index.israeli ? c.countryWhy.israeliIndex : c.countryWhy.manager}</p>
           </Question>
         ) : (
-          <Question id={`${ids}-country`} text={c.ask.country} aside={c.ask.countryWhere} after={!open.includes("IL") && <p className="text-xs text-muted-foreground">{c.countryWhy.abroad}</p>}>
+          <Question id={`${ids}-country`} text={c.ask.country} aside={c.ask.countryWhere} after={choices.closed.includes("IL") && <p className="text-xs text-muted-foreground">{c.countryWhy.abroad}</p>}>
             <ChoiceChips ids={countryIds} labels={countryLabels} value={draft.country} onChange={(v) => (draft.buyAt ? setPlace(draft.buyAt, v) : set("country", v))} ariaLabel={c.ask.country} look={countryLook} wrap />
           </Question>
         )}

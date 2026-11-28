@@ -114,10 +114,20 @@ const BUY_AT_IDS: readonly BuyAt[] = [...BUY_IN_ISRAEL, ...BUY_ABROAD];
  * in), the country answers it leaves open, the exchange abroad and the currency it is bought in. "abroad" is "abroad, not sure where": no
  * exchange, no currency. The site works out a fund from its manager as an Israeli tracking fund, and one bought abroad as a foreign fund.
  */
-const ABROAD_COUNTRIES: readonly CountryAnswer[] = ["IE", "US", "unsure"];
-const BUY_AT: Record<BuyAt, { kinds: { israeli: OptionId | null; foreign: OptionId | null }; countries: readonly CountryAnswer[]; exchange: FundExchange | null; tradesIn: TradingCurrency | null }> = {
-  manager: { kinds: { israeli: "il-tracking", foreign: null }, countries: ["IL"], exchange: null, tradesIn: "ILS" },
-  tase: { kinds: { israeli: "il-etf", foreign: "tase-foreign" }, countries: COUNTRIES, exchange: null, tradesIn: "ILS" },
+/**
+ * The country question as an answer to where the fund is bought leaves it: the answers open; those shown closed, in sight so the reader
+ * sees why they are not offered (Israel abroad, where the site works the fund out as foreign); and whether "not sure" stands for "another
+ * country" too, where the two make the same fund (abroad).
+ */
+export interface CountryChoices {
+  open: readonly CountryAnswer[];
+  closed: readonly CountryAnswer[];
+  unsureIsOther: boolean;
+}
+const ABROAD_COUNTRIES: CountryChoices = { open: ["IE", "US", "unsure"], closed: ["IL"], unsureIsOther: true };
+const BUY_AT: Record<BuyAt, { kinds: { israeli: OptionId | null; foreign: OptionId | null }; countries: CountryChoices; exchange: FundExchange | null; tradesIn: TradingCurrency | null }> = {
+  manager: { kinds: { israeli: "il-tracking", foreign: null }, countries: { open: ["IL"], closed: [], unsureIsOther: false }, exchange: null, tradesIn: "ILS" },
+  tase: { kinds: { israeli: "il-etf", foreign: "tase-foreign" }, countries: { open: COUNTRIES, closed: [], unsureIsOther: false }, exchange: null, tradesIn: "ILS" },
   "us-usd": { kinds: { israeli: null, foreign: "abroad" }, countries: ABROAD_COUNTRIES, exchange: "us", tradesIn: "USD" },
   "europe-eur": { kinds: { israeli: null, foreign: "abroad" }, countries: ABROAD_COUNTRIES, exchange: "europe", tradesIn: "EUR" },
   "europe-usd": { kinds: { israeli: null, foreign: "abroad" }, countries: ABROAD_COUNTRIES, exchange: "europe", tradesIn: "USD" },
@@ -125,7 +135,10 @@ const BUY_AT: Record<BuyAt, { kinds: { israeli: OptionId | null; foreign: Option
 };
 
 /** The country answers an answer to where the fund is bought leaves open (`BUY_AT`). */
-export const countriesAt = (at: BuyAt): readonly CountryAnswer[] => BUY_AT[at].countries;
+export const countriesAt = (at: BuyAt): readonly CountryAnswer[] => BUY_AT[at].countries.open;
+
+/** The country question's answers as it shows them after this answer to where the fund is bought (`BUY_AT`); before one, every answer open. */
+export const countryChoicesAt = (at: BuyAt | null): CountryChoices => (at ? BUY_AT[at].countries : { open: COUNTRIES, closed: [], unsureIsOther: false });
 
 /**
  * Where a typed fund's record says it is registered: the country named, or one of two values that are not a country, kept apart: another
@@ -191,9 +204,6 @@ function fundCurrencyOf(kind: OptionId, tradesIn: TradingCurrency | null, curren
 
 /** The foreign currency a fund is bought in, where the answer to where it is bought names one (`BUY_AT`); null for the shekel, or none said. */
 const foreignOf = (tradesIn: TradingCurrency | null): TradingCurrency | null => (tradesIn && !isShekel(tradesIn) ? tradesIn : null);
-
-/** The foreign currency a saved fund is bought in, as the person said it (`tradesIn`); null where it is bought in shekels, or none was said. */
-const boughtInOf = (f: Pick<CustomFund, "tradesIn">): string | null => foreignOf(f.tradesIn);
 
 /** The foreign currency an answer to where the fund is bought names; null for the shekel, or none named. */
 export const boughtInAt = (at: BuyAt): string | null => foreignOf(BUY_AT[at].tradesIn);
@@ -588,7 +598,7 @@ export interface EnteredInBundle {
   /** The person's funds whose index they said is in shekels: each runs on a shekel index and carries no currency label. */
   shekelFunds: string[];
   /**
-   * By fund id: the foreign currency the person said a fund is bought in (`boughtInOf`). On an index they added, whose currency the site
+   * By fund id: the foreign currency the person said a fund is bought in (`foreignOf` its `tradesIn`). On an index they added, whose currency the site
    * does not know, the fund's run moves with it and its label names it (invest.ts `exposureOf`, `indexSeenBy`).
    */
   boughtIn: Record<string, string>;
@@ -603,6 +613,17 @@ const customExposures = (indices: readonly CustomIndex[]): EnteredInBundle["expo
       return [i.id, { id: i.id, cash_like: false, currency: "USD", ...(us ? { us_dividends: us } : {}) }];
     }),
   );
+
+/**
+ * The currency a typed fund on an index the person added moves with, since the site does not know the index's own (F-65): none where they
+ * said the index is in shekels; else the foreign currency they said the fund is bought in; else the stand-in of `customExposures`. The page's
+ * run (invest.ts `exposureOf`), its labels (`indexSeenBy`) and the panel's preview each read it here.
+ */
+export type AddedIndexCurrency = { kind: "shekel" } | { kind: "bought-in"; currency: string } | { kind: "stand-in" };
+export function addedIndexCurrency(fund: { shekelIndex: boolean; boughtIn: string | null }): AddedIndexCurrency {
+  if (fund.shekelIndex) return { kind: "shekel" };
+  return fund.boughtIn ? { kind: "bought-in", currency: fund.boughtIn } : { kind: "stand-in" };
+}
 
 /** The currency of the index a typed fund is on: a collected index's, else a custom one's (`customExposures`); null where neither holds it. */
 const indexCurrencyOf = (bundle: Pick<IndicesBundle, "exposures">, exposures: EnteredInBundle["exposures"], f: CustomFund): string | null =>
@@ -641,7 +662,7 @@ export function withCustomEntries(bundle: IndicesBundle, typedFunds: readonly Cu
       inputs: { ...held?.inputs, ...Object.fromEntries(funds.map((f) => [f.id, inputsOf(fundTerms(f), f.name)] as const)) },
       exposures: { ...held?.exposures, ...exposures },
       shekelFunds: [...(held?.shekelFunds ?? []), ...funds.filter((f) => f.shekelIndex).map((f) => f.id)],
-      boughtIn: { ...held?.boughtIn, ...Object.fromEntries(funds.flatMap((f) => { const ccy = boughtInOf(f); return ccy ? [[f.id, ccy] as const] : []; })) },
+      boughtIn: { ...held?.boughtIn, ...Object.fromEntries(funds.flatMap((f) => { const ccy = foreignOf(f.tradesIn); return ccy ? [[f.id, ccy] as const] : []; })) },
     },
   };
 }

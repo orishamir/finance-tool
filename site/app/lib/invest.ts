@@ -5,9 +5,9 @@
 import { rankByValue } from "./rank";
 import { gershayim } from "./format";
 import { BlockedError, listingChangesRun, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
-import { exchangeOfTicker, fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
+import { assertNever, exchangeOfTicker, fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
-import { customFundGaps, isCustomFund } from "./custom-entries";
+import { addedIndexCurrency, customFundGaps, isCustomFund, type AddedIndexCurrency } from "./custom-entries";
 import { dealProviderOf, houseSnap, isDealProviderId } from "./deal-account/bundle";
 import { feeIdsOf, missingOf } from "./deal-account/plan";
 import { feeNameOf } from "./fee-deal/part-words";
@@ -115,9 +115,21 @@ export const refOfCustom = (c: CustomIndex): IndexRef => ({ id: c.id, name: c.na
 export function indexSeenBy(index: IndexRef, rec: Pick<FundRecord, "id">, bundle: Pick<IndicesBundle, "entered">): IndexRef {
   const entered = bundle.entered;
   if (!index.custom || !entered) return index;
-  if (entered.shekelFunds.includes(rec.id)) return { ...index, israeli: true };
-  const boughtIn = entered.boughtIn[rec.id];
-  return boughtIn ? { ...index, boughtIn } : index;
+  return addedIndexAs(index, addedIndexCurrency({ shekelIndex: entered.shekelFunds.includes(rec.id), boughtIn: entered.boughtIn[rec.id] ?? null }));
+}
+
+/** An index the person added as a fund that moves with `seen` reads it (`addedIndexCurrency`); the page's rows and the panel's preview alike. */
+export function addedIndexAs(index: IndexRef, seen: AddedIndexCurrency): IndexRef {
+  switch (seen.kind) {
+    case "shekel":
+      return { ...index, israeli: true };
+    case "bought-in":
+      return { ...index, boughtIn: seen.currency };
+    case "stand-in":
+      return index;
+    default:
+      return assertNever(seen);
+  }
 }
 
 export function indexById(bundle: Pick<IndicesBundle, "exposures">, id: string, customs: readonly CustomIndex[] = []): IndexRef | null {
@@ -1203,9 +1215,17 @@ function exposureOf(ctx: Ctx, rec: FundRecord) {
   const entered = typed?.exposures[rec.exposure_id];
   const collected = ctx.bundle.exposures.find((e) => e.id === rec.exposure_id);
   if (collected || !typed || !entered) return collected ?? entered;
-  if (typed.shekelFunds.includes(rec.id)) return { ...entered, currency: "ILS" };
-  const boughtIn = typed.boughtIn[rec.id];
-  return boughtIn ? { ...entered, currency: boughtIn } : entered;
+  const seen = addedIndexCurrency({ shekelIndex: typed.shekelFunds.includes(rec.id), boughtIn: typed.boughtIn[rec.id] ?? null });
+  switch (seen.kind) {
+    case "shekel":
+      return { ...entered, currency: "ILS" };
+    case "bought-in":
+      return { ...entered, currency: seen.currency };
+    case "stand-in":
+      return entered;
+    default:
+      return assertNever(seen);
+  }
 }
 
 function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } | { reason: Reason } {
