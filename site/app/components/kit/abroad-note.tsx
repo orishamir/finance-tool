@@ -80,7 +80,7 @@ export function AbroadNote({ places, start, heads }: { places: AbroadPlace[]; st
   return (
     <Card as="aside" pad="snug" edge="info" aria-label={copy.tag} className="@container flex min-w-0 flex-col gap-3">
       <Tag tone="info">{copy.tag}</Tag>
-      <ChoiceChips ids={places.map((p) => p.id)} labels={labels} value={shown.id} onChange={setAt} ariaLabel={copy.chipsLabel} missing={Object.fromEntries(places.map((p) => [p.id, !p.product]))} wrap />
+      <ChoiceChips ids={places.map((p) => p.id)} labels={labels} value={shown.id} onChange={setAt} ariaLabel={copy.chipsLabel} look={Object.fromEntries(places.flatMap((p) => (p.product ? [] : [[p.id, "missing" as const]])))} wrap />
       <LongestCase cases={places.map((p) => <PlaceNote key={p.id} place={p} heads={heads} />)}>
         <div ref={fade}>
           <PlaceNote place={shown} heads={heads} />

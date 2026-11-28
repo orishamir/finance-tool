@@ -504,7 +504,7 @@ describe("side stores in the export file (A32)", () => {
 });
 
 describe("the index page's saved state (D28)", () => {
-  const nikkei = { id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: day };
+  const nikkei = { id: "custom-nikkei", name: "ניקיי 225", added: day };
 
   it("keeps a custom index and the current broker through the store and the export file", async () => {
     const { saveCustomIndex, setCurrentBroker, removeCustomIndex } = await import("./state");
@@ -523,6 +523,16 @@ describe("the index page's saved state (D28)", () => {
     expect(getSnapshot().state.customIndices).toBeUndefined();
   });
 
+  it("saving an index already in the list keeps its place; a new one goes at the end", async () => {
+    const { saveCustomIndex } = await import("./state");
+    ensureLoaded();
+    const second = { id: "custom-b", name: "ב", added: day };
+    saveCustomIndex(nikkei);
+    saveCustomIndex(second);
+    saveCustomIndex({ ...nikkei, region: "world" });
+    expect(getSnapshot().state.customIndices?.map((c) => [c.id, c.region])).toEqual([["custom-nikkei", "world"], ["custom-b", undefined]]);
+  });
+
   it("leaves out a bank an earlier version 3 document marked as the person's own, and writes none back", () => {
     storage.data.set(STATE_KEY, JSON.stringify({ version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [], bank: "hapoalim" }));
     expect(ensureLoaded().status).toBe("ok");
@@ -530,6 +540,18 @@ describe("the index page's saved state (D28)", () => {
     updateState((s) => ({ ...s, broker: "x" }));
     flush(true);
     expect(JSON.parse(storage.data.get(STATE_KEY)!)).not.toHaveProperty("bank");
+  });
+
+  it("leaves out a typed fund saved before the panel asked where it is bought, and loads the rest of the document", () => {
+    // the shape the panel saved before it asked where a fund is bought: a domicile, no country and no currency it is bought in
+    const before = { id: "custom-fund-old", name: "ישנה", number: null, indexId: nikkei.id, kind: "abroad", fixed: entered(0.07, "pct_per_year", day), variable: null, trustee: null, hedged: false, payout: "accumulating", yield: null, perYear: null, domicile: "IE", tracking: "physical", exchange: "europe", added: day };
+    const today = { id: "custom-fund-new", name: "חדשה", number: null, indexId: nikkei.id, kind: "abroad", fixed: entered(0.07, "pct_per_year", day), variable: null, trustee: null, hedged: false, payout: "accumulating", yield: null, perYear: null, country: "IE", tracking: "physical", exchange: "europe", tradesIn: "EUR", added: day };
+    storage.data.set(STATE_KEY, JSON.stringify({ version: 3, goals: [], inputs: {}, holdings: [holding("h1")], uncatalogued: [], imports: [], savedComparisons: [], customIndices: [nikkei], customFunds: [before, today] }));
+    expect(ensureLoaded().status).toBe("ok");
+    const state = getSnapshot().state;
+    expect(state.customFunds?.map((f) => f.id)).toEqual(["custom-fund-new"]);
+    expect(state.holdings.map((h) => h.id)).toEqual(["h1"]);
+    expect(state.customIndices).toEqual([nikkei]);
   });
 
   it("loads a version 3 document, and leaves out a custom index that fails its shape", () => {
@@ -545,26 +567,13 @@ describe("the index page's saved state (D28)", () => {
 
   it("import add keeps the device's indices and adds the file's others", () => {
     const base = emptyOf();
-    const merged = applyImport({ ...base, customIndices: [nikkei] }, { ...base, customIndices: [nikkei, { id: "custom-b", name: "ב", israeli: true, added: day }] }, "add", day);
+    const merged = applyImport({ ...base, customIndices: [nikkei] }, { ...base, customIndices: [nikkei, { id: "custom-b", name: "ב", added: day }] }, "add", day);
     expect(merged.state.customIndices!.map((c) => c.id)).toEqual(["custom-nikkei", "custom-b"]);
   });
 });
 
-describe("an index's old answer moves to its funds (2026-11-05)", () => {
-  it("a fund on an index answered Israeli says \"המדד בשקלים\"; a hedged one, or one on a foreign index, does not", async () => {
-    const { shekelFromIndex } = await import("./state");
-    const day = "2026-11-01";
-    const fund = (id: string, indexId: string, hedged = false) => ({ id, name: id, number: null, indexId, kind: "il-tracking" as const, fixed: null, variable: null, trustee: null, hedged, payout: null, yield: null, perYear: null, domicile: null, tracking: null, added: day });
-    const out = shekelFromIndex([fund("custom-fund-a", "custom-il"), fund("custom-fund-b", "custom-il", true), fund("custom-fund-c", "custom-zar")], [
-      { id: "custom-il", name: "ישראלי", israeli: true, added: day },
-      { id: "custom-zar", name: "זר", israeli: false, added: day },
-    ]);
-    expect(out.map((f) => f.shekelIndex === true)).toEqual([true, false, false]);
-  });
-});
-
 describe("what an import brings of the index page's own and of the plan (the transfer page)", () => {
-  const fund = (id: string, indexId: string) => ({ id, name: id, number: null, indexId, kind: "il-tracking" as const, fixed: null, variable: null, trustee: null, hedged: false, payout: null, yield: null, perYear: null, domicile: null, tracking: null, added: day });
+  const fund = (id: string, indexId: string) => ({ id, name: id, number: null, indexId, kind: "il-tracking" as const, fixed: null, variable: null, trustee: null, hedged: false, payout: null, yield: null, perYear: null, country: "IL" as const, tracking: null, tradesIn: "ILS" as const, added: day });
   const theirs = (): StateV3 => ({
     ...emptyOf(),
     inputs: { horizon_years: entered(20, "years", day), "A-01": entered(5, "pct_per_year", day) },

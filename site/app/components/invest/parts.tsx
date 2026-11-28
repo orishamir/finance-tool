@@ -49,6 +49,8 @@ export function reasonText(r: Reason, cls: string): string {
       return w.feeUnknown;
     case "domicile-unknown":
       return w.domicileUnknown;
+    case "tase-country-unknown":
+      return w.taseCountryUnknown;
     case "sold-fund-by-fund":
       return c.reasons.soldFundByFund;
     case "no-agreement-found":

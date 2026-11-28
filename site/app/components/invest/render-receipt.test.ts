@@ -80,7 +80,7 @@ describe("the receipt", () => {
     const leftMark = `aria-label="${help.noteLabel.replace("{about}", w.receipt.left)}"`;
     const sp = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }));
     expect(sp).toContain(leftMark);
-    expect(steadyOf(view, bundle, pick.fund)).toBe(w.pair.steadyDollar);
+    expect(steadyOf(view, bundle, pick.fund)).toBe(w.pair.steadyIn(invest.currencies.USD ?? ""));
     const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan });
     const p = pickOfHeadline(ta)!;
     const out = html(createElement(PairReceipt, { view: ta, bundle, plan, pick: p, chosen: false }));
@@ -263,7 +263,7 @@ describe("the receipt's fund part marks a fund the person typed (D44, D7)", () =
   const headline = need(pickOfHeadline(buildInvest({ bundle, index, plan })), "the page's own pair");
   const house = headline.house;
   const name = "קרן משלי";
-  const typed = fundFromDraft({ ...fundDraftOf(null, "il-tracking"), payout: "accumulating" as const, hedged: false, name, fixed: 0.1, variable: 0, trustee: 0 }, "custom-fund-mine", "index-ta125", t);
+  const typed = fundFromDraft({ ...fundDraftOf(null, { buyAt: "manager", country: "IL" }), buyAt: "manager" as const, payout: "accumulating" as const, hedged: false, name, fixed: 0.1, variable: 0, trustee: 0 }, "custom-fund-mine", "index-ta125", t);
   const b = withCustomEntries(bundle, [typed]);
   const view = buildInvest({ bundle: b, index, plan });
   /** The ticket's fund part: what follows its label, the ticket's last part. */

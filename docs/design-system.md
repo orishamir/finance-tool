@@ -932,13 +932,12 @@ in the kit fits is added to the kit.
 - `SegmentedControl`: two to four short answers, one always chosen, that change how the same content is shown or answer a question the
   calculation needs.
 - `ChoiceChips`: one of many values that narrows a list (with `counts`), or preset answers to a question (without); "אחר" is `other`,
-  never an ordinary chip (guard 6).
+  never an ordinary chip (guard 6). An answer "not sure" is `look` `unsure`; one that cannot hold here is `closed`, its reason beside the
+  row.
 - `ChoicePair`: two levels of one choice, so choosing at either level moves nothing below.
 - `ChoiceTray`: the one-line tray of one height under a row of choices.
 - `OtherChip`: the chip that opens the person's own value, after a `ChoiceChips` row and closing a `ChipList`.
 - `PickCard`: an option shown as a card whose whole surface is one button, with links, figures and boxes inside that keep their own tap.
-- `TileChoice`: two to five answers where each brings something the reader should see before choosing; not for short equal options
-  (`SegmentedControl`) or a value from a list (`ChoiceChips`).
 - `FilterChip`: a filter that is on or off, independent of the others; one of several values is `ChoiceChips` with `counts` (guard 25).
 - `InlineSelect`: a choice in a line of other controls, or a menu chip beside a figure; a choice on its own is `SelectField`.
 - `SelectField`: one item out of a list of names in a native `select`; stands in for a row of chips where a phone has no room.
@@ -949,6 +948,8 @@ in the kit fits is added to the kit.
   what its words name, the same way in every place.
 - `Step`, `StepStrip`: the steps of a page that builds something in order; once made and seldom changed, they fold into one `StepStrip`
   line.
+- `NeedList`, `NeedBar`: what a calculation needs while a form fills it, each item done, missing, left out or not known with what that leaves or what stands in; on a
+  narrow box the form's foot holds the status, the list it opens and the save.
 - `AddLine`: what can be added to a list the person builds, as one quiet line under it; the one place a page speaks of what the list
   lacks.
 
@@ -1130,8 +1131,8 @@ address changes.
 2. **It changes how the same content is shown:** grouping, order, units (today's money or nominal), a chart or a table.
    `SegmentedControl`.
 3. **It answers a question the calculation needs:** the reader's situation or an assumption (years, a kind of rate, an amount, "do you
-   hold X"). `SegmentedControl` for two to four answers short enough to sit side by side on a phone; `TileChoice` when each answer needs a
-   line of what it brings; `ChoiceChips` without counts for many preset values, with `other` for the reader's own.
+   hold X"). `SegmentedControl` for two to four answers short enough to sit side by side on a phone; `ChoiceChips` without counts for many preset
+   values or answers too long to stand side by side, with `other` for the reader's own.
 4. **It goes somewhere else:** another page, or a view of its own inside the page that shows another kind of content. `PageTabs` for
    pages, `TabStrip` for views inside a page, or links (`ChipList` for a row of them).
 

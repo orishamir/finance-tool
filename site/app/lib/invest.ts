@@ -5,13 +5,14 @@
 import { rankByValue } from "./rank";
 import { gershayim } from "./format";
 import { BlockedError, listingChangesRun, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
-import { exchangeOfTicker, fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
+import { assertNever, exchangeOfTicker, fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
-import { customFundGap, isCustomFund } from "./custom-entries";
+import { addedIndexCurrency, customFundGaps, isCustomFund, kindNotKnown, type AddedIndexCurrency, type FundKind } from "./custom-entries";
 import { dealProviderOf, houseSnap, isDealProviderId } from "./deal-account/bundle";
 import { feeIdsOf, missingOf } from "./deal-account/plan";
 import { feeNameOf } from "./fee-deal/part-words";
 import { aliasRows } from "./search-aliases";
+import type { IndexFacts } from "./index-region";
 import { fxRunInput, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
 import { computed, ownBy, ruleFigure, sumOf, type ExchangeLabel, type FlagIn, type SiteLabel, type SiteValue, type Strength } from "./value";
@@ -46,6 +47,12 @@ export function optionOfFund(rec: FundRecord, exposure: ExposureRecord | undefin
   return rec.trading_currency_on_tase ? "tase-foreign" : "abroad";
 }
 
+/**
+ * The kind a fund's row names: its option's, except a typed fund in Tel Aviv whose country is not known, which is listed among the foreign
+ * funds there (`optionOfFund`) but is not known to be one (F-04).
+ */
+const kindOfFund = (rec: FundRecord, option: OptionId): FundKind => (kindNotKnown(rec) ? "tase-unknown" : option);
+
 export type Venue = FundExchange;
 const EXCHANGES = fundExchange.options;
 /** F-109 (D94): where a fund is bought, TASE or the exchange abroad it trades on. */
@@ -73,15 +80,12 @@ export function venueOfFund(rec: FundRecord): Venue | null {
 
 // ---------------------------------------------------------------- the index
 
-/** An index the person added (state.ts keeps it on the device). One question decides the options: are the companies Israeli? */
-export interface CustomIndex {
+/** An index the person added (state.ts keeps it on the device), with what they said of it in a fund's panel (`IndexFacts`: its region and dividend yield, F-107). */
+export interface CustomIndex extends IndexFacts {
   id: string;
   name: string;
-  /** Asked before 2026-11-05 ("החברות במדד ישראליות?") and read only to carry the answer to the index's funds (state.ts, shekelFromIndex). */
-  israeli?: boolean;
   /** "לידיעתכם בלבד": shown in the header, never used (spec §1, 10.8). */
   currency?: string;
-  region?: string;
   added: string;
 }
 
@@ -92,6 +96,11 @@ export interface IndexRef {
   exposure: ExposureRecord | null;
   custom: CustomIndex | null;
   oneLine: string | null;
+  /**
+   * An index the person added as one fund sees it (`indexSeenBy`): the foreign currency they said the fund is bought in, which its run
+   * moves with, since the site does not know the index's own; absent where they said none.
+   */
+  boughtIn?: string;
 }
 
 /** Every exposure record that is an equity index, in file order. */
@@ -105,9 +114,29 @@ export const refOfExposure = (e: ExposureRecord): IndexRef => ({ id: e.id, name:
 /** An index the person added asks nothing of its currency: every kind of fund is offered on it, and each fund says. */
 export const refOfCustom = (c: CustomIndex): IndexRef => ({ id: c.id, name: c.name, israeli: false, exposure: null, custom: c, oneLine: null });
 
-/** The index as one fund sees it: a fund the person said is on a shekel index reads it as Israeli (no currency, no hedge, no currency tax). */
-export const indexSeenBy = (index: IndexRef, rec: Pick<FundRecord, "id">, bundle: Pick<IndicesBundle, "entered">): IndexRef =>
-  index.custom && bundle.entered?.shekelFunds.includes(rec.id) ? { ...index, israeli: true } : index;
+/**
+ * The index as one fund sees it: on an index the person added, a fund they said is on a shekel index reads it as Israeli (no currency, no
+ * hedge, no currency tax), and one they said is bought in a foreign currency reads it in that currency (`IndexRef.boughtIn`).
+ */
+export function indexSeenBy(index: IndexRef, rec: Pick<FundRecord, "id">, bundle: Pick<IndicesBundle, "entered">): IndexRef {
+  const entered = bundle.entered;
+  if (!index.custom || !entered) return index;
+  return addedIndexAs(index, addedIndexCurrency({ shekelIndex: entered.shekelFunds.includes(rec.id), boughtIn: entered.boughtIn[rec.id] ?? null }));
+}
+
+/** An index the person added as a fund that moves with `seen` reads it (`addedIndexCurrency`); the page's rows and the panel's preview alike. */
+export function addedIndexAs(index: IndexRef, seen: AddedIndexCurrency): IndexRef {
+  switch (seen.kind) {
+    case "shekel":
+      return { ...index, israeli: true };
+    case "bought-in":
+      return { ...index, boughtIn: seen.currency };
+    case "stand-in":
+      return index;
+    default:
+      return assertNever(seen);
+  }
+}
 
 export function indexById(bundle: Pick<IndicesBundle, "exposures">, id: string, customs: readonly CustomIndex[] = []): IndexRef | null {
   const known = knownIndices(bundle).find((i) => i.id === id);
@@ -158,6 +187,8 @@ export type Reason =
   | { code: "payout-unknown" }
   | { code: "fee-unknown" }
   | { code: "domicile-unknown" }
+  /** A fund the person buys in Tel Aviv whose country they did not say: an Israeli ETF or a foreign fund, which are worked out apart. */
+  | { code: "tase-country-unknown" }
   /** The house sells this kind of fund fund by fund (its distribution agreements, BRK-38), and the run names no fund a report can name: the generic fund of the kind, or a fund the person typed. */
   | { code: "sold-fund-by-fund" }
   /** The house sells this kind fund by fund, and no report of an agreement found names this fund: whether it sells it stays open (`FundDoubt`). */
@@ -258,6 +289,8 @@ export interface FundWay {
   name: string;
   number: string;
   option: OptionId;
+  /** The kind its row names (`kindOfFund`): its option's, or, for a typed fund in Tel Aviv whose country is not known, that it is not known. */
+  kind: FundKind;
   /** The broker the figure is at: the option's cheapest for this fund. */
   best?: WayPrice;
   /** The fund's run at every house of the option (a price, or why it has none); `best` is the highest of the ranked ones. */
@@ -1039,7 +1072,7 @@ function fundInputsOf(bundle: IndicesBundle, rec: FundRecord): Record<string, Si
  */
 function usWithholdingInput(ctx: Ctx, r: RunReads, rec: FundRecord): Record<string, SiteValue> {
   const u = r.spec?.fund.drag?.usDividends;
-  const us = u ? ctx.bundle.exposures.find((e) => e.id === rec.exposure_id)?.us_dividends : undefined;
+  const us = u ? exposureOf(ctx, rec)?.us_dividends : undefined;
   const rule = us ? ctx.bundle.rules.find((x) => x.id === "TXF-16") : undefined;
   const rate = rule ? ruleFigure(rule, "irish_fund_us_dividend_treaty_rate", ctx.bundle.today) : null;
   if (!u || !us || !rule || !rate || typeof rate.value !== "number") return {};
@@ -1180,10 +1213,27 @@ function pricedLines(ctx: Ctx, s: FeesSnapshot, row: ComparedProvider): PairCost
 // ---------------------------------------------------------------- funds
 
 
-/** The index a fund is on, as its run reads it: a collected one, or the one the person typed (in shekels where they said the fund is). */
+/**
+ * The index a fund is on, as its run reads it: a collected one, or the one the person added, whose currency is not known: in shekels where
+ * they said the fund's index is, else in the foreign currency the fund is bought in, so a fund in euros on it moves with the euro (F-65),
+ * else the stand-in of `customExposures`.
+ */
 function exposureOf(ctx: Ctx, rec: FundRecord) {
-  const entered = ctx.bundle.entered?.exposures[rec.exposure_id];
-  return ctx.bundle.exposures.find((e) => e.id === rec.exposure_id) ?? (entered && ctx.bundle.entered!.shekelFunds.includes(rec.id) ? { ...entered, currency: "ILS" } : entered);
+  const typed = ctx.bundle.entered;
+  const entered = typed?.exposures[rec.exposure_id];
+  const collected = ctx.bundle.exposures.find((e) => e.id === rec.exposure_id);
+  if (collected || !typed || !entered) return collected ?? entered;
+  const seen = addedIndexCurrency({ shekelIndex: typed.shekelFunds.includes(rec.id), boughtIn: typed.boughtIn[rec.id] ?? null });
+  switch (seen.kind) {
+    case "shekel":
+      return { ...entered, currency: "ILS" };
+    case "bought-in":
+      return { ...entered, currency: seen.currency };
+    case "stand-in":
+      return entered;
+    default:
+      return assertNever(seen);
+  }
 }
 
 function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } | { reason: Reason } {
@@ -1191,7 +1241,7 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   const subject = subjectOf(ctx.bundle, rec.id);
   if (!subject) return { reason: { code: "fund-type" } };
   // a fund the person typed: what they left unsaid is named, never filled in
-  const gap = isCustomFund(rec) ? customFundGap(rec) : null;
+  const gap = isCustomFund(rec) ? (customFundGaps(rec)[0] ?? null) : null;
   if (gap) return { reason: { code: gap } };
   // a hedged fund's cost is mostly beyond its fees (F-92 (c)): with no compared year in its report (none, or none F-92 (d) compares) and
   // no published figure it is not priced, never priced at A-07 = 0
@@ -1248,7 +1298,7 @@ const numberOf = (rec: FundRecord) => rec.identifiers.tase_number ?? rec.identif
 
 /** One fund of an option at every house (F-63, F-65): its price at each house that sells it, or why it has none, and its cheapest ranked house. */
 function fundWayOf(ctx: Ctx, rec: FundRecord, option: OptionId): FundWay {
-  const base = { rec, name: nameOf(rec), number: numberOf(rec), option, currencyMismatch: false, noUnitPrice: unitPriceMissing(rec, option), byHouse: {} as FundWay["byHouse"] };
+  const base = { rec, name: nameOf(rec), number: numberOf(rec), option, kind: kindOfFund(rec, option), currencyMismatch: false, noUnitPrice: unitPriceMissing(rec, option), byHouse: {} as FundWay["byHouse"] };
   const fs = fundSpec(ctx, rec);
   const venue = option === "abroad" ? venueOfFund(rec) : null;
   // the houses that sell this fund: the kind, and where a house sells it fund by fund, the fund itself (BRK-38)

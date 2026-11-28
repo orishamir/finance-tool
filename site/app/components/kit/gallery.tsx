@@ -22,7 +22,7 @@ import { MonthPicker } from "./month-picker";
 import { AbroadNote, type AbroadPlace } from "./abroad-note";
 import { BinIcon } from "./remove-button";
 import { Sheet } from "../Sheet";
-import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, OnOffSwitch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, amountCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, PartFacts, StretchBar, StretchChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutFold, LeftOutLine, ReadOnly, RangeField, Section, SegmentedControl, SelectField, Sentence, TileChoice, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, type Landing, DateSpanText } from "./index";
+import { ActionMenu, ConfirmAsk, DropBin, EditInPlace, Grip, KnobButton, SpanKnob, DropZone, RemoveButton, AskValues, AddSlot, CaseGrid, CaseGroup, ChangeDivider, WhenRule, CaseRow, CaseSlot, CaseTable, ConditionBand, EveryCaseParts, FeePalette, OpenCase, SharedLine, type CaseWord, FeeBlock, SlimFee, KindDot, PartChip, PartEdit, type PartKind, type PartMark, ReadForBand, Toolbox, type ToolGroup, RangeMenu, Switch, OnOffSwitch, ThingMenu, TickMenu, TrackMenu, ValueMenuSheet, FormulaBlock, ClampedText, HoldTallest, useSwapGlide, AskField, DidYouKnow, FilterChip, LongestCase, YearLabels, tickFade, useFadingTicks, useFlip, useGlidingNumbers, useGlidingSeries, valueOn, useChartPick, pickDim, AxisLabels, yearTicksIn, Button, Callout, EmptyState, Card, ChartLegend, CostStack, FeeFigure, FeeWordsNote, FundFeesHead, FundFeesPhoneHelp, PanelHead, TabCards, PickList, FixedTable, EmptyFigure, PairBars, YearBars, CompanyLinks, ChartReadout, ChartTable, ChipList, ChoiceChips, ChoicePair, ChooseRow, OpenRow, GoRow, GoLink, TextLink, PageHead, SearchField, aboveZeroCheck, ageCheck, amountCheck, nonNegativeCheck, percentCheck, yearsCheck, SideNav, SidePage, SharedFacts, FigureLines, CompareTable, TableCols, PHONE_GONE, LabelIcon, LabelRow, LabelSheetHost, ProductFigures, ProductIdLink, ProductPhoneRow, ProductTable, RowArrow, PageTabs, TabStrip, GroupHead, ListRow, RowGroup, RowList, InlineSelect, SortHead, SortNote, ExposureCell, FeeNum, HelpMark, SourcedTag, ShareNum, TrackFeeLines, TrackLabels, type SortState, Disclosure, FoldGroup, PhoneFold, GainBars, GapNote, DotLine, DoubtNote, PrintedQuotes, PrintedText, InputSlot, KeyValue, KeyValueList, LaneLabel, LinkButton, Marker, MarkerMark, NoteList, ProseList, CheckField, FieldGroup, TextField, NumberField, PercentField, KnobStrip, ChangeChart, MenuPicker, ShareBar, ReceiptPaper, ReceiptLine, ReceiptRule, ReceiptStub, ReceiptTicket, TicketPart, PartFacts, StretchBar, StretchChart, StairsChart, StairsTable, StairsSteps, DiffRow, DiffHead, DiffFigure, GreyLine, LeftOutFold, LeftOutLine, ReadOnly, RangeField, Section, SegmentedControl, SelectField, Sentence, PickCard, SourceLine, Stat, StatRow, StatTile, StepTag, Swatch, Tag, ValueBar, Tpl, cx, useWidth, keepTitleWhole, ClaimList, DocLink, TariffDate, When, gershayim, GroupPriceFold, GroupPriceRows, AmountRange, AnchorSpread, PeriodBars, MeterBar, FigureField, MonthField, Step, StepStrip, NeedBar, NeedList, AddLine, ShareChart, ShareStack, AmountLanes, RangeFields, PeriodTrack, PERIOD_WIDE, TypedPlain, type CostPart, type GroupEntry, ProductPhoneFold, HouseAverageLine, HouseAverageTerm, type Landing, DateSpanText } from "./index";
 import type { AdvertisingEntry } from "@finance-tool/schema";
 import { linearScale, steppedScale } from "./slider-scale";
 import { RegionMap, regionSwatch, regionTones, regionWash, type RegionArea, type RegionGuide, type RegionPoint } from "./region-map";
@@ -646,7 +646,6 @@ function Choices() {
   const [seg, setSeg] = useState<"a" | "b" | "c">("a");
   const [chip, setChip] = useState<string | null>("0");
   const [own, setOwn] = useState<string | null>(null);
-  const [tile, setTile] = useState<"a" | "b" | "c">("a");
   const [pick, setPick] = useState(0);
   const labels = Object.fromEntries(g.sample.chip.map((c, i) => [String(i), c]));
   return (
@@ -688,32 +687,6 @@ function Choices() {
           </PickCard>
         </State>
       </Demo>
-      <Demo name="TileChoice" use={g.uses.TileChoice}>
-        <State label={`labels as the body, ${g.states.interactive}`} wide>
-          <TileChoice
-            label={g.sample.title}
-            value={tile}
-            onChange={setTile}
-            columns={3}
-            tiles={[
-              { value: "a", body: <LabelRow labels={[label("follow-physical")]} still /> },
-              { value: "b", body: <LabelRow labels={[label("follow-swap")]} still /> },
-              { value: "c", title: g.sample.option[2], body: <span className="text-xs text-muted-foreground">{g.sample.otherField}</span> },
-            ]}
-          />
-        </State>
-        <State label="titled, nothing chosen yet">
-          <TileChoice
-            label={g.sample.title}
-            value={null}
-            onChange={() => {}}
-            tiles={[
-              { value: "a", title: g.sample.option[0], body: <LabelRow labels={[label("tax-fund-dividend")]} still /> },
-              { value: "b", title: g.sample.option[1], body: <LabelRow labels={[label("ask-estate"), label("ask-w8")]} still /> },
-            ]}
-          />
-        </State>
-      </Demo>
       <Demo name="ChoiceChips" use={g.uses.ChoiceChips}>
         <State label={`wrap, ${g.states.interactive}`}>
           <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} wrap />
@@ -722,7 +695,10 @@ function Choices() {
           <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} line counts={{ "0": 32, "1": 15, "2": 12, "3": 1 }} bleed="" />
         </State>
         <State label="missing: a choice that found nothing, a dashed outline and muted words, still chosen like any other">
-          <ChoiceChips ids={["0", "1", "2"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} wrap missing={{ "2": true }} />
+          <ChoiceChips ids={["0", "1", "2"]} labels={labels} value={chip} onChange={setChip} ariaLabel={g.sample.title} wrap look={{ "2": "missing" }} />
+        </State>
+        <State label="unsure and closed: the answer &quot;not sure&quot; dashed; one that cannot hold here struck through, not chosen, its reason beside the row">
+          <ChoiceChips ids={["0", "1", "2", "3"]} labels={labels} value={chip === "0" ? "1" : chip} onChange={setChip} ariaLabel={g.sample.title} wrap look={{ "0": "closed", "3": "unsure" }} />
         </State>
         <State label="counts, one that would show nothing: dimmed in place">
           <ChoiceChips ids={["0", "1", "2"]} labels={labels} value="0" onChange={() => {}} ariaLabel={g.sample.title} wrap counts={{ "0": 32, "1": 15, "2": 0 }} />
@@ -2685,7 +2661,7 @@ function Lists({ today, statements }: { today: string; statements: readonly TaxI
         <State label="a row of three labels; a tap opens the page's one sheet" wide>
           <LabelRow labels={labels} />
         </State>
-        <State label="still: drawn only, inside a control of its own (a TileChoice tile)" wide>
+        <State label="still: drawn only, not a button: a preview of a row that is not on the page yet" wide>
           <LabelRow labels={labels} still />
         </State>
         <State label="a bank deposit's kinds (lib/deposit-kind.ts): grey, with no family colour; a tap opens the meaning and the bank's table" wide>
@@ -3077,6 +3053,18 @@ function DealDemos({ today }: { today: string }) {
             <p className="text-sm text-muted-foreground">{g.sample.body}</p>
           </Step>
         </div>
+      </Demo>
+      <Demo name="NeedList" use={g.uses.NeedList}>
+        <div className="flex max-w-sm flex-col gap-4">
+          <NeedList items={[{ id: "a", text: g.sample.chip[0], state: "done" }, { id: "b", text: g.sample.chip[1], state: "missing" }, { id: "c", text: g.sample.chip[2], state: "left-out", note: g.sample.body }, { id: "d", text: g.sample.chip[3], state: "stand-in", note: g.sample.body }]} />
+        </div>
+      </Demo>
+      <Demo name="NeedBar" use={g.uses.NeedBar}>
+        <State label="the foot of a form on a phone; its button opens the list over the line" wide>
+          <div className="max-w-sm">
+            <NeedBar status={g.sample.title} listLabel={g.sample.other} list={<NeedList items={[{ id: "a", text: g.sample.chip[0], state: "done" }, { id: "b", text: g.sample.chip[1], state: "missing" }]} />} action={<Button variant="primary">{g.sample.title}</Button>} />
+          </div>
+        </State>
       </Demo>
       <Demo name="StepStrip" use={g.uses.StepStrip}>
         <State label='three steps made, and a line about what was chosen under it, in a low card (pad="strip")' wide>
