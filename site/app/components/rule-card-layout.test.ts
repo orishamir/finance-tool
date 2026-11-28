@@ -6,7 +6,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { ruleCardMore, rule as ruleCopy, scopeWords, sourceBlock, strength, updateRules } from "../copy";
+import { provenance, ruleCardMore, rule as ruleCopy, scopeWords, sourceBlock, strength, updateRules } from "../copy";
 import { fmt } from "../lib/format";
 import { ruleTitle } from "../lib/rule-title";
 import { isNotRule, joinNames, ownDocCompanies } from "../lib/scope";
@@ -371,5 +371,14 @@ describe("a calculated figure's catches", () => {
     for (const figure of [false, true]) expect(catchesOf(diff, { today: "2026-11-26", figure, staleSaid: false, aheadSaid: false, onPage: (v) => v })).toEqual([]);
     const data = dataOf({});
     expect(words(createElement(ValueSheet, { value: fee("institution"), exact: false, data, headId: "h", descId: "d" }), data)).toContain(strength.institution.line);
+  });
+});
+
+describe("a term the page holds no explanation of", () => {
+  it("heads its card with the term and says the page does not include its explanation", () => {
+    const data = dataOf({});
+    const text = words(createElement(TermCard, { id: "מונח שאין בעמוד", data }), data);
+    expect(text).toContain("מונח שאין בעמוד");
+    expect(text).toContain(provenance.termNotHere);
   });
 });

@@ -457,6 +457,8 @@ export const provenance = {
   },
   /** A glossary card's other names; each is drawn with its gershayim (copy 10.4). */
   termAlso: "נקרא גם:",
+  /** A term the page holds no explanation of: its card has only the term's name. */
+  termNotHere: "העמוד הזה לא כולל את ההסבר של המונח הזה.",
   computed: {
     /** In a calculated figure's catch sheet, over the inputs its weak strength comes from, by their strength. */
     weakInputs: { institution: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:", secondary: "בין הערכים שנכנסו לחישוב, אלה ממקור משני:" },

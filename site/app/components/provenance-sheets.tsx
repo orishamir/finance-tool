@@ -1669,8 +1669,16 @@ function CitationBox({ text }: { text: string }) {
 
 export function TermCard({ id, data, headId, sub }: { id: string; data: ProvenanceData; headId?: string; /** One of several on a sheet (`TermsSheet`): a smaller heading under the sheet's own. */ sub?: boolean }) {
   const term = data.terms[id];
-  if (!term) return <p id={headId}>{id}</p>;
   const Heading = sub ? "h3" : "h2";
+  if (!term)
+    return (
+      <div className="flex flex-col gap-3">
+        <Heading id={headId} className={sub ? "text-base font-semibold" : "text-lg font-semibold"}>
+          {gershayim(id)}
+        </Heading>
+        <p className="text-sm text-muted-foreground">{copy.termNotHere}</p>
+      </div>
+    );
   return (
     <div className="flex flex-col gap-3">
       <Heading id={headId} className={sub ? "text-base font-semibold" : "text-lg font-semibold"}>
