@@ -6,7 +6,7 @@ import { createContext, useCallback, useContext, useEffect, useId, useMemo, useS
 import { createPortal } from "react-dom";
 import { Link } from "react-router";
 import { assertNever, companyTermRule, isOwnDocument, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
-import { formulaNames, numbers, parametersPage, provenance as copy, rule as ruleCopy, scopeWords, strength as strengthCopy } from "../copy";
+import { numbers, parametersPage, provenance as copy, rule as ruleCopy, scopeWords, strength as strengthCopy } from "../copy";
 import type { RuleHead } from "../lib/rule-card-file";
 import { ruleHeadOf } from "../lib/rule-head";
 import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
@@ -776,14 +776,14 @@ export const openQuestionOf = (v: SiteValue): string | null => {
 };
 /**
  * What an id is, from its shape: `TX2 OQ6` a question; `M-01` a statement math proves (docs/method.md section 14), which has the
- * shape of a rule's code and is told apart first; `F-80`, and any id `formulaNames` names (`A-06`, which is a method
- * assumption that has a formula of its own), a formula; `P-01` a site parameter; any other `A-nn` an assumption of the
- * method (a parameter card links to it only when the card has it as an input); `ABC-12` a rule. Anything else is null: no chip.
+ * shape of a rule's code and is told apart first; `F-80` a formula; `P-01` a site parameter; `A-nn` an assumption of the method (a
+ * parameter card links to it only when the card has it as an input), a formula of its own or not; `ABC-12` a rule. Anything else is
+ * null: no chip.
  */
 export function idKind(id: string): IdKind | null {
   if (QUESTION_ID.test(id)) return "question";
   if (/^M-\d+$/.test(id)) return "proof";
-  if (/^F-\d+$/.test(id) || (id !== "_other" && Object.hasOwn(formulaNames, id))) return "formula";
+  if (/^F-\d+$/.test(id)) return "formula";
   if (/^P-\d+$/.test(id)) return "parameter";
   if (/^A-\d+$/.test(id)) return "assumption";
   if (/^[A-Z][A-Z0-9]*-\d+$/.test(id)) return "rule";
