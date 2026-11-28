@@ -8,7 +8,7 @@ How to read it:
 
 - `A-nn` is an assumption: a visible input with a default and a source. Every assumption is listed in section 2. No formula uses a constant that is not an `A-nn`, a rule figure read from `data/rules/`, or a site parameter read from `data/parameters/` (`P-nn`).
 - `F-nn` is a formula. The engine implements formulas by number; the finance-reviewer checks the engine against them. "Not built" marks a formula no page uses: its code is removed and the formula stays here so it can come back.
-- A formula written as math (GitHub's $`…`$) is what the formula's sheet on the site shows, each in the entry's order; the Hebrew key to its symbols is `formulaKeys` in `site/app/copy.ts`, and `site/app/lib/formula-tex.test.ts` keeps the two in step. The rest of the formulas keep a link to this document until they are written so.
+- A formula written as math (GitHub's $`…`$) is kept for the step-by-step explanation of a page's main result, each in the entry's order; the Hebrew key to its symbols is `formulaKeys` in `site/app/copy.ts`, and `site/app/lib/formula-tex.test.ts` keeps the two in step. The rest of the formulas are not written so yet.
 - `G-nn` is a gap: something the method cannot compute yet, with the open question that blocks it (section 12).
 - `M-nn` is a statement math proves, with its assumptions and its proof (section 14). The site may state it as true wherever its assumptions hold, and says them; the engine computes none of them, and a page that shows a number from one first gets an `F-nn` formula for it.
 - Rule IDs (`TXS-09`, `PF-02`, ...) point into `il-finance`. The strength shown is the rule's strength as recorded there; `institution` strength is flagged, not treated as primary (coverage.md F1).

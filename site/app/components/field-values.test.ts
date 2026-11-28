@@ -1,14 +1,13 @@
 // A chart field's value is a plain number (guidelines/charts.md): its default and what the reader types look alike,
-// with no site-parameter tag, no "you entered" mark and nothing that opens; a calculation sheet lists it plainly; the site's real
+// with no site-parameter tag, no "you entered" mark and nothing that opens; the site's real
 // parameters keep their tag; each field carries its reset on its label line ("↺ חזרה ל־{start}", a slider's "↺ איפוס"), kept in place while hidden.
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { numbers, strength } from "../copy";
-import { asField, computed, entered, type SiteValue } from "../lib/value";
+import { asField, entered, type SiteValue } from "../lib/value";
 import { Num, ProvenanceProvider } from "./provenance";
-import { ValueSheet } from "./provenance-sheets";
 import { InputSlot, NumberField, RangeField, linearScale } from "./kit";
 
 const today = "2026-11-08";
@@ -41,19 +40,6 @@ describe("a field's value in a sentence", () => {
     const out = html(createElement(Num, { value: parameter(0.5, "pct") }));
     expect(out).toContain("<button");
     expect(out).toContain(numbers.parameter);
-  });
-});
-
-describe("a calculation sheet", () => {
-  it("lists a field's value plainly and keeps a real parameter's tag", () => {
-    const result = computed(9844, "nis", "F-67", { "סכום היום": asField(parameter(12000, "nis")), "סף התיקו": parameter(0.5, "pct") }, { today });
-    const out = html(createElement(ValueSheet, { value: result, exact: false, data, headId: "h", descId: "d" }));
-    const row = (name: string) => out.split("readout-row").find((r) => r.includes(name)) ?? "";
-    expect(row("סכום היום")).toContain("12,000");
-    expect(row("סכום היום")).not.toContain(numbers.parameter);
-    expect(row("סכום היום")).not.toContain("<button");
-    expect(row("סף התיקו")).toContain(numbers.parameter);
-    expect(out).not.toContain(strength.entered.label);
   });
 });
 

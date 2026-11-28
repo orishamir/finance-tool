@@ -2,7 +2,7 @@
 import type { ReactNode } from "react";
 import { cx } from "./cx";
 
-type TagTone = "neutral" | "computed" | "entered" | "caution" | "blocked" | "positive" | "parameter" | "outline" | "primary" | "info";
+type TagTone = "neutral" | "entered" | "caution" | "blocked" | "positive" | "parameter" | "outline" | "primary" | "info";
 
 /**
  * A short label with a tone: a state, a kind, a flag. One to three words; the tone never carries the meaning alone, so give it an icon or a word.
@@ -16,7 +16,6 @@ export function Tag({ tone = "neutral", shape, size = "xs", icon, children, clas
   const styles = {
     neutral: "bg-muted text-foreground",
     parameter: "bg-secondary text-foreground",
-    computed: "bg-computed-subtle text-computed",
     entered: "bg-entered-subtle text-entered",
     caution: "bg-caution-subtle text-caution-foreground",
     blocked: "bg-blocked-subtle text-blocked-foreground",

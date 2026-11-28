@@ -54,8 +54,8 @@ describe("F-87 and F-88 on the site", () => {
   it("above 100% the share says why exposure can pass the assets", () => {
     const s = shares(h(100, 104, 104));
     expect(ruleIds(s?.stock)).toEqual(["CAT-44"]);
-    expect(s?.stock?.notes).toBe(copy.stock.above100);
-    expect(s?.currency?.notes).toBe(copy.stock.above100);
+    expect(s?.stock?.caveat).toBe(copy.stock.above100);
+    expect(s?.currency?.caveat).toBe(copy.stock.above100);
     expect(stock(100, 100)?.notes).toBeUndefined();
   });
 

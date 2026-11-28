@@ -21,7 +21,6 @@
     "layout-check": "node site/scripts/layout-check.mjs",
     "csp-check": "node site/scripts/csp-check.mjs",
     "response-check": "node site/scripts/response-check.mjs",
-    "weight": "node tools/weight.mjs --check",
     "rank-scan": "bash tools/rank-scan.sh",
     "dev": "npm run dev -w site",
     "check": "node tools/check.mjs",

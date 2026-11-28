@@ -4,7 +4,7 @@
 // the editable popup on the same deal offers to add that case. Under each fee's name, the terms keep the one average of what the plan buys.
 import { createElement, type ReactElement } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { houseAverage, invest, numbers, provenance as provenanceWords, site } from "../../copy";
+import { help, houseAverage, invest, numbers, provenance as provenanceWords, site } from "../../copy";
 import { feesData } from "../../lib/fees.server";
 import { buildInvest, dealOnFunds, hasKinds, knownIndices, type IndexRef } from "../../lib/invest";
 import { dealProviderId, withDeals } from "../../lib/deal-account/bundle";
@@ -78,7 +78,7 @@ describe("a house's terms (TermsPopup, read-only)", () => {
   it("the data has an index with a fund bought abroad at a house that trades it, on a list with no case for it", () => {
     expect(found).not.toBeNull();
   });
-  it("say what the house's list lacks for the funds bought abroad, and offer nothing that changes the deal: the only buttons are the figures' sources, the fold and the way to enter terms of one's own", () => {
+  it("say what the house's list lacks for the funds bought abroad, and offer nothing that changes the deal: the only buttons are the figures' sources and catches, the fold and the way to enter terms of one's own", () => {
     if (!found) throw new Error("no index has a fund bought abroad at a house whose list lacks its case");
     const { world, house, on: list } = found;
     const writes = [vi.spyOn(dealStore, "update"), vi.spyOn(dealStore, "set")];
@@ -86,7 +86,9 @@ describe("a house's terms (TermsPopup, read-only)", () => {
     expect(shown(out)).toContain(LACKS);
     expect(shown(out)).not.toContain(w.abroad.add);
     const short = world.view.providers.find((p) => p.id === house)?.short ?? house;
-    const other = buttons(out).filter((b) => !b.endsWith(`, ${numbers.details}`) && b !== provenanceWords.idRef.question && b !== site.close && b !== w.fromHouse(short));
+    // a calculated figure opens nothing; the caution "?" after one with a catch opens what the catch is
+    const catchMark = new RegExp(`^${help.catchLabel.replace("{about}", ".+")}$`);
+    const other = buttons(out).filter((b) => !b.endsWith(`, ${numbers.details}`) && !catchMark.test(b) && b !== provenanceWords.idRef.question && b !== site.close && b !== w.fromHouse(short));
     expect(other).toEqual([]);
     // nothing was written to the device's deals while the terms were drawn
     for (const write of writes) expect(write).not.toHaveBeenCalled();

@@ -30,16 +30,16 @@ export interface SiteValue extends ValueObject {
   own?: string;
   /**
    * A doubt about this very figure, in Hebrew: the record's own (a bank's `doubt_he`), or the site's cautious readings the figure rests on
-   * (`readingDoubtOf`). The figure shows on an amber tint with the caution icon, and its sheet says the doubt. It is the
+   * (`readingDoubtOf`). A sourced figure shows on an amber tint with the caution icon, a computed one with its caution "?", and its sheet says the doubt. It is the
    * value's own, so every place that shows the figure warns.
    */
   doubt?: string;
   /** The rules the doubt rests on, whose cards its sheet opens beside it: the rule of each case a cautious reading reads (TXF-04, ETF-95). */
   doubtRules?: string[];
   /**
-   * The inputs, by their key in `computed_from.inputs`, whose doubt a figure worked out from them carries (`differenceOf`): its sheet names
-   * them, as it names the weak inputs, and each opens its own sheet with the doubt in words. A difference of two funds that said one fund's
-   * doubt ("the fund's documents say…") left the reader to guess which fund it was about.
+   * The inputs, by their key in `computed_from.inputs`, whose doubt a figure worked out from them carries (`differenceOf`): a doubt so
+   * carried is theirs, so the figure shows no catch for it, each input showing its own where it stands; a sheet that says the doubt names
+   * them, as it names the weak inputs ("the fund's documents say…" left the reader to guess which fund it was about).
    */
   doubtFrom?: string[];
   /** For a site parameter: its rationale (copy 3.8). */
@@ -48,7 +48,8 @@ export interface SiteValue extends ValueObject {
   rulesUsed?: { id: string; strength: Strength }[];
   /**
    * A fund's own statements a computed value rests on (`FundStatement`: the tax index its annex states, D84; the document naming it a
-   * foreign-investment fund, D119): its sheet names each as the fund's.
+   * foreign-investment fund, D119): they count in its strength, and the sheet its caution "?" opens names each as the fund's, with its
+   * document (provenance-sheets `Statements`).
    */
   statements?: readonly FundStatement[];
   /**
@@ -68,12 +69,19 @@ export interface SiteValue extends ValueObject {
   plain?: boolean;
   /**
    * A line its sheet must always show beside the source, which the source's terms of use require (the ECB's attribution of its exchange
-   * rates): never left out as a note can be.
+   * rates): never left out as a note can be. A calculated figure that carries one is no plain text: it draws as a sourced figure and opens
+   * a sheet with its sources and this line (provenance `Num`, provenance-sheets `ObligedSheet`).
    */
   obligation?: string;
+  /**
+   * An assumption the figure's value rests on, in one Hebrew sentence, that the reader should know before trusting it (a variable rate taken
+   * as it stands today): a catch of its own, which a calculated figure's caution "?" opens (provenance `catchesOf`). It is the figure's
+   * own, never carried to a figure worked out from it. Not `notes`, which also holds working notes in English and a source's attribution.
+   */
+  caveat?: string;
   /** What the value is, in one line, for the sheet header. */
   about?: string;
-  /** What the figure means, said first in its sheet, under the header (a definition at the sheet's end sat below the popover's edge). */
+  /** What the figure means, said first in a sourced figure's sheet, under the header (a definition at the sheet's end sat below the popover's edge); a computed figure's catch sheet says only its catches. */
   lead?: string;
   /** The figure was shown with its sign ("+0.37%"): the sheet's head shows it the same way. */
   signed?: boolean;
@@ -94,7 +102,7 @@ export interface SiteValue extends ValueObject {
   resetKey?: string;
   /**
    * A field's value: the default a chart's field starts at, or what the reader typed in it (charts.md). It shows as
-   * a plain number wherever it appears (the sentence that repeats it, a calculation sheet's input row): no site-parameter tag, no "you
+   * a plain number wherever it appears (the sentence that repeats it, a catch sheet's list of weak inputs): no site-parameter tag, no "you
    * entered" mark, nothing that opens. The field beside it is where it changes. Its record still traces to data/parameters.
    */
   field?: boolean;
@@ -224,11 +232,16 @@ function readingDoubtOf(labels: readonly SiteLabel[] | undefined): Pick<SiteValu
  * row of the receipt opens, with the rule that is read. A reading of its own, which no input carries, keeps the tag.
  */
 export function sheetReading(v: Pick<SiteValue, "labels" | "plain" | "computed_from">): boolean {
+  return sheetReadings(v).length > 0;
+}
+
+/** The readings (`reading` and `cautious` labels) a figure's sheet tags, by the rule each reads: as `sheetReading`, a plain difference or sum keeps only those no input carries. */
+export function sheetReadings(v: Pick<SiteValue, "labels" | "plain" | "computed_from">): SiteLabel[] {
   const readings = (v.labels ?? []).filter((l) => l.code === "reading" || l.code === "cautious");
-  if (!v.plain) return readings.length > 0;
+  if (!v.plain) return readings;
   const key = (l: SiteLabel) => `${l.code} ${l.ruleId}`;
   const carried = new Set(Object.values((v.computed_from?.inputs ?? {}) as Record<string, SiteValue>).flatMap((x) => (x.labels ?? []).map(key)));
-  return readings.some((l) => !carried.has(key(l)));
+  return readings.filter((l) => !carried.has(key(l)));
 }
 
 /**
@@ -244,9 +257,9 @@ export function sheetFlags(v: Pick<SiteValue, "flags" | "plain" | "computed_from
 }
 
 /**
- * The rules a computed figure's sheet names: those its runs read, with the strength they recorded, then each rule it carries the site's own
+ * The rules a computed figure rests on, for the step-by-step explanation of a page's main result: those its runs read, with the strength they recorded, then each rule it carries the site's own
  * `reading` of and did not read (no strength): an open rule whose open tax index the site reads for the fund (TXF-04, D119), which gives
- * the run nothing to read, so its card is where the sheet says why. A plain difference or sum names none (`SiteValue.plain`).
+ * the run nothing to read, so its card is where it is said why. A plain difference or sum names none (`SiteValue.plain`).
  */
 export function sheetRules(v: Pick<SiteValue, "rulesUsed" | "labels" | "plain">): { id: string; strength: Strength | null }[] {
   // a plain difference or sum names none: each of its rows opens its input's own rules
@@ -323,6 +336,8 @@ export interface ComputedOptions {
   blockedBy?: string;
   about?: string;
   notes?: string;
+  /** An assumption the value rests on (`SiteValue.caveat`). */
+  caveat?: string;
   lead?: string;
   signed?: boolean;
   unitText?: string;
@@ -335,8 +350,8 @@ export interface ComputedOptions {
  * (the reading rules it carries stay, with their labels). A value that is null lists no rule but the one that left it empty (`blockedBy`). A
  * label of a cautious reading among its own, the engine's or the site's (`SiteLabel`), makes its doubt (`readingDoubtOf`); an input's doubt
  * stays on that input, where its row opens it (a tally over the banks' rates is not tinted for one bank's doubt), except on a plain
- * difference or sum, which is its inputs and nothing else (`plain`). `working` says how its sheet shows the calculation (`Working`), where
- * the value is exactly that.
+ * difference or sum, which is its inputs and nothing else (`plain`). `working` says how the calculation is written out step by step
+ * (`Working`, lib/working.ts), where the value is exactly that.
  */
 export function computed(value: number | null, unit: ValueObject["unit"], formula: string, inputs: Record<string, SiteValue>, options: ComputedOptions): SiteValue {
   const held = new Set(Object.values(inputs).flatMap((input) => (input.state === "computed" ? (input.rulesUsed ?? []).map((r) => r.id) : [])));
@@ -377,6 +392,7 @@ export function computed(value: number | null, unit: ValueObject["unit"], formul
     ...(carried.stale ? { stale: carried.stale } : {}),
     about: options.about,
     notes: options.notes,
+    ...(options.caveat ? { caveat: options.caveat } : {}),
     ...(options.lead ? { lead: options.lead } : {}),
     ...(options.signed ? { signed: true } : {}),
     ...(options.unitText ? { unitText: options.unitText } : {}),
@@ -387,10 +403,10 @@ export function computed(value: number | null, unit: ValueObject["unit"], formul
 export type PlainOptions = Omit<ComputedOptions, "rules" | "statements"> & { unit?: ValueObject["unit"]; round?: (n: number) => number };
 
 /**
- * A plain difference or sum as its sheet shows it: no rule and no statement of its own, even one an input carries on a reading, since each
- * row of its receipt is that input's own figure and opens it. Its labels, staleness and flags stay, and where its own options give it no
+ * A plain difference or sum: no rule and no statement of its own, even one an input carries on a reading, since each of its lines is that
+ * input's own figure. Its labels, staleness and flags stay, and where its own options give it no
  * doubt, every input's doubt is its doubt (each one's words once, the rules of each, and which inputs carry it, `doubtFrom`), since it rests
- * on them alone: so it keeps its tint and tags.
+ * on them alone; its catches leave out whatever an input carries (provenance `catchesOf`).
  */
 function plain(v: SiteValue, inputs: Record<string, SiteValue>): SiteValue {
   const { rulesUsed: _rules, statements: _statements, ...rest } = v;
@@ -401,8 +417,8 @@ function plain(v: SiteValue, inputs: Record<string, SiteValue>): SiteValue {
 }
 
 /**
- * Whether the lines of a difference or a sum, each with its sign, come to the figure as the page writes each of them: only then does its
- * sheet show them as a receipt (`Working`), whose lines a reader adds up. Its sheet lists its inputs instead where:
+ * Whether the lines of a difference or a sum, each with its sign, come to the figure as the page writes each of them: only then is its
+ * working a receipt (`Working`), whose lines a reader adds up. It has none where:
  * - a sum of figures with agorot, written in whole shekels each, misses its total by a shekel;
  * - a line or the total is a shekel figure a phone's row may write short ("0.76 מיליארד ₪", `SHORT_IN_ROW`), which no longer adds up as read;
  * - a line or the total is written in a form that does not read back as a number (`readsBack`: agorot per dollar, an amount in billions).
@@ -424,9 +440,9 @@ function readsBack(v: number, unit: string, state: SiteValue["state"], parameter
 /**
  * A figure worked out from two others on the page, `a − b` (a gap between two ways, what a change adds): the value is computed here from
  * the two as the page writes them (`amountShown`: 10,768 ₪ less 8,203 ₪ is 2,565 ₪, whatever agorot each holds), and its inputs are the
- * two, each opening its own sheet, so the sheet cannot list what the value does not rest on. Null when either is not a number. `round`
+ * two, so it cannot rest on what the page does not show. Null when either is not a number. `round`
  * shapes the result (its size alone). It is plain (`plain`): it carries the two's labels, doubt, staleness and flags as every computed
- * figure does (`computed`), and lists no rule. Its sheet shows it as the difference it is (`Working` "difference"), where the two as written
+ * figure does (`computed`), and lists no rule. Its working is the difference it is (`Working` "difference"), where the two as written
  * come to it as written (`addsUp`), unless the options name a line of math it is (`working`). Two figures under one name (a list's row against
  * itself) are both kept, the second told apart by its order, and it shows no working, which would name one key for two lines.
  */
@@ -444,7 +460,7 @@ export function differenceOf(a: readonly [name: string, value: SiteValue], b: re
 
 /**
  * A figure with another number in its place (a line's whole shekels as a receipt writes them, which may differ from the figure's own rounding
- * by a shekel): its working, which comes to the figure's own number, is left off, so its sheet shows its formula and its inputs.
+ * by a shekel): its working, which comes to the figure's own number, is left off, and its formula and inputs stay.
  */
 export function restated(v: SiteValue, value: number): SiteValue {
   return v.computed_from ? { ...v, value, computed_from: { formula: v.computed_from.formula, inputs: v.computed_from.inputs } } : { ...v, value };
@@ -459,8 +475,8 @@ export function statementKey(st: FundStatement): string {
 }
 
 /**
- * A figure that adds up others on the page (a cost of several lines, a total of parts): the same as `differenceOf`, for a sum, which its
- * sheet shows as one (`Working` "sum") where its parts as written come to it as written (`addsUp`). Null when any part is not a number.
+ * A figure that adds up others on the page (a cost of several lines, a total of parts): the same as `differenceOf`, for a sum, whose
+ * working is one (`Working` "sum") where its parts as written come to it as written (`addsUp`). Null when any part is not a number.
  */
 export function sumOf(parts: Record<string, SiteValue>, formula: string, options: PlainOptions): SiteValue {
   const list = Object.values(parts);

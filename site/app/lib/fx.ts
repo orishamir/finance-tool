@@ -50,7 +50,8 @@ export function fxLabel(fx: FxSnapshot): string {
 /**
  * NIS per one unit of the currency `code` (ISO 4217), as the site's computed value (state "computed", method F-84),
  * or null when the ECB has no rate for it. `today` is the run date (it decides the stale clock, D3).
- * The value's `about` is the short Hebrew label; `obligation` holds the ECB attribution its terms require, which `notes` repeats.
+ * The value's `about` is the short Hebrew label; `obligation` holds the ECB attribution its terms require, which the figure's sheet always
+ * shows beside the ECB's file (provenance `Num`), and `notes` repeats.
  */
 export function nisPer(fx: FxSnapshot, code: string, today: string): SiteValue | null {
   const n = nisPerNumber(fx, code);
@@ -103,7 +104,7 @@ export function monthEndRate(history: FxHistory, point: FxHistory["points"][numb
     update_rule: "market",
     state: "sourced",
   });
-  // the ECB's terms of use require its attribution beside its rates (`obligation`); the note keeps it where the sheet shows it now
+  // the ECB's terms of use require its attribution beside its rates (`obligation`), which the figure's sheet always shows
   const v = computed(point.rate, "nis", "F-84", { [signatureFacts.perEur("ILS")]: ecb(point.ils), [signatureFacts.perEur("USD")]: ecb(point.usd) }, { today, about, notes: history.attribution, working: crossRateWorking("USD") });
   return { ...v, obligation: history.attribution };
 }
