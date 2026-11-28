@@ -222,6 +222,10 @@ describe("a saved entry that is not the shape the panel saves never breaks the p
     expect(back.map((f) => f.id)).toEqual(["custom-fund-kept"]);
   });
 
+  it("a fund saved as following its index in a mix of ways, which the panel does not ask, is left out", () => {
+    expect(validCustomFunds([{ ...json, id: "custom-fund-mixed", tracking: "mixed" }, { ...json, id: "custom-fund-kept", tracking: "swap" }]).map((f) => f.id)).toEqual(["custom-fund-kept"]);
+  });
+
   it("a region that is not an answer, or a yield that is not one, reads as not said, and the index is kept", () => {
     const [junk, kept] = validCustomIndices([
       { id: "custom-b", name: "ב", region: "גרמניה", dividendYield: { value: 3 }, added: t },

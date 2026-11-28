@@ -6,7 +6,7 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "rea
 import { Pencil } from "lucide-react";
 import { invest as root } from "../../copy";
 import type { FundRecord, ValueObject } from "@finance-tool/schema";
-import { addedIndexCurrency, asksCountry, boughtInAt, boughtInSaid, BUY_ABROAD, BUY_IN_ISRAEL, countryChoicesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
+import { addedIndexCurrency, asksCountry, boughtInAt, boughtInSaid, BUY_ABROAD, BUY_IN_ISRAEL, countryChoicesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { dividendTaxLabel, fundLabels, optionLabels, type DividendTaxLabelId, type Label } from "../../lib/labels";
 import { INDEX_REGIONS, type IndexFacts, type IndexRegion } from "../../lib/index-region";
 import { addedIndexAs, optionsOf, type CustomIndex, type IndexRef } from "../../lib/invest";
@@ -407,7 +407,7 @@ function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, set
           <ChoiceChips ids={[...PAYOUTS, UNSURE]} labels={{ ...c.payoutNames, [UNSURE]: c.unsure }} value={draft.payout ?? UNSURE} onChange={(v) => set("payout", v === UNSURE ? null : (v as FundPayout))} ariaLabel={c.ask.payout} look={{ [UNSURE]: "unsure" }} wrap />
         </Question>
         <Question id={`${ids}-tracking`} text={c.ask.tracking}>
-          <ChoiceChips ids={[...ASKED_TRACKINGS, UNSURE]} labels={{ ...c.trackingNames, [UNSURE]: c.unsure }} value={draft.tracking ?? UNSURE} onChange={(v) => set("tracking", v === UNSURE ? null : (v as FundTracking))} ariaLabel={c.ask.tracking} look={{ [UNSURE]: "unsure" }} wrap />
+          <ChoiceChips ids={[...TRACKINGS, UNSURE]} labels={{ ...c.trackingNames, [UNSURE]: c.unsure }} value={draft.tracking ?? UNSURE} onChange={(v) => set("tracking", v === UNSURE ? null : (v as FundTracking))} ariaLabel={c.ask.tracking} look={{ [UNSURE]: "unsure" }} wrap />
         </Question>
         {asksHedge(index) && (
           <Question id={`${ids}-hedge`} text={c.ask.hedged} after={errors.includes("hedged-none") && <p className="text-xs text-destructive">{c.errors["hedged-none"]}</p>}>
@@ -441,8 +441,6 @@ function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, set
   );
 }
 
-/** The ways of following an index the panel offers; a fund saved as "mixed" keeps it until another answer is chosen. */
-const ASKED_TRACKINGS: readonly FundTracking[] = ["physical", "swap", "futures"];
 const HEDGE = ["no", "yes"] as const;
 /** On an index the person added, a third answer: the index is in shekels, so the fund moves with no foreign currency. */
 const HEDGE_ON_CUSTOM = ["no", "yes", "shekel"] as const;

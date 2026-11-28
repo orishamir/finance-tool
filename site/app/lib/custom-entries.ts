@@ -97,10 +97,11 @@ export type CountryAnswer = "IL" | "IE" | "US" | "other" | "unsure";
 export const COUNTRIES: readonly CountryAnswer[] = ["IL", "IE", "US", "other", "unsure"];
 /** The currency a fund is bought in. */
 type TradingCurrency = "ILS" | "USD" | "EUR";
-export type FundTracking = "physical" | "swap" | "futures" | "mixed";
+/** How a fund follows its index, as the panel asks it. */
+export type FundTracking = "physical" | "swap" | "futures";
 export type PerYear = 1 | 2 | 4 | 12;
 export const PAYOUTS: readonly FundPayout[] = ["accumulating", "distributing"];
-const TRACKINGS: readonly FundTracking[] = ["physical", "swap", "futures", "mixed"];
+export const TRACKINGS: readonly FundTracking[] = ["physical", "swap", "futures"];
 export const PER_YEAR: readonly PerYear[] = [1, 2, 4, 12];
 
 /** Where the person buys the fund, the panel's first question: from its manager, on the Tel Aviv exchange, or abroad on an exchange in a currency. */
