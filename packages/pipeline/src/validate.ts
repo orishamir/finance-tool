@@ -263,8 +263,8 @@ export function validateData(ctx: ValidationContext): Problem[] {
     }
     if (collection === "funds" && result.success) {
       // only a fund's latest snapshot is held to its marks; an older one stands as it was read
-      const fundFile = rel.split(/[\\/]/).pop()!;
-      const latestFund = !files.some((f) => { const n = f.split(/[\\/]/).pop()!; return n.startsWith(`${fundFile.split("@")[0]}@`) && n > fundFile; });
+      const fundFile = rel.split(/[\\/]/).pop() ?? "";
+      const latestFund = !files.some((f) => { const n = f.split(/[\\/]/).pop() ?? ""; return n.startsWith(`${fundFile.split("@")[0]}@`) && n > fundFile; });
       if (latestFund) for (const message of checkDimensionMarks(parsed.value as Record<string, unknown>, ruleDimensions, ctx.ruleBase, "fund")) report(file, message);
       for (const message of checkFundLoad(parsed.value as Pick<FundRecord, "fees">)) report(file, message);
       for (const message of checkFundDistribution(parsed.value as Pick<FundRecord, "distribution_policy" | "distribution">)) report(file, message);
