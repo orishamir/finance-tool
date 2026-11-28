@@ -18,7 +18,7 @@ export const content: GuideContent = {
           חשבון ניירות ערך הוא חשבון בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term>, שבו קונים <Term id="נייר ערך">ניירות ערך</Term>, מחזיקים אותם ומוכרים אותם.
         </p>
         <p className="max-w-measure">
-          הכסף לא נעול: <Ruled id="BRK-29">אפשר למכור בכל יום מסחר</Ruled>. כשמחיר של נייר עולה, משלמים מס על הרווח <Ruled id={["TXS-13", "TXF-11"]}>רק כשמוכרים אותו</Ruled>, <Ruled id="TXS-21">גם כשמוכרים קרן אחת כדי לקנות אחרת והכסף לא יצא מהחשבון</Ruled>.
+          הכסף לא נעול: <Ruled id="BRK-29">אפשר למכור בכל יום מסחר</Ruled>. כשמחיר של נייר עולה, משלמים <Term id="מס רווחי הון">מס רווחי הון</Term> על הרווח <Ruled id={["TXS-13", "TXF-11"]}>רק כשמוכרים אותו</Ruled>, <Ruled id="TXS-21">גם כשמוכרים קרן אחת כדי לקנות אחרת והכסף לא יצא מהחשבון</Ruled>.
         </p>
         <GuidePart title="מה מחזיקים בו">
           <p className="max-w-measure">
@@ -30,7 +30,7 @@ export const content: GuideContent = {
         </GuidePart>
         <GuidePart title="המס כשמוכרים">
           <Sentence measure>
-            <Ruled id="TXF-01">על רווח</Ruled> <Term prefix="מ" id="מכירה">מכירה</Term> משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>. על <Term id="דיבידנד">דיבידנד</Term> או חלוקה מקרן משלמים כשהם משולמים, <Ruled id="TXS-11">חוץ מחלוקה</Ruled> של <Term id="קרן נאמנות חייבת">קרן חייבת</Term>. בבנק או אצל חבר בורסה בישראל המס <Ruled id="TXS-05">מנוכה במקור במכירה</Ruled>: {rate ? <Num value={rate} /> : null} <Term prefix="מה" id="רווח הון ריאלי">רווח הריאלי</Term>, כלומר מהרווח שמעבר <Term prefix="ל" id="אינפלציה">אינפלציה</Term>.
+            <Ruled id="TXF-01">על רווח</Ruled> <Term prefix="מ" id="מכירה">מכירה</Term> משלמים מס רווחי הון. על <Term id="דיבידנד">דיבידנד</Term> או חלוקה מקרן משלמים כשהם משולמים, <Ruled id="TXS-11">חוץ מחלוקה</Ruled> של <Term id="קרן נאמנות חייבת">קרן חייבת</Term>. בבנק או אצל חבר בורסה בישראל המס <Ruled id="TXS-05">מנוכה במקור במכירה</Ruled>: {rate ? <Num value={rate} /> : null} <Term prefix="מה" id="רווח הון ריאלי">רווח הריאלי</Term>, כלומר מהרווח שמעבר <Term prefix="ל" id="אינפלציה">אינפלציה</Term>.
           </Sentence>
           <GuideFold label="נייר שנקוב במטבע אחר">
             <p className="max-w-measure">
