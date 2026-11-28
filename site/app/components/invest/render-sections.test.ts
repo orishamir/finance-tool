@@ -853,8 +853,8 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     // the list with One Zero picked: the unnamed fund under the grey line of a doubt, the named one priced
     const out = lists(sp, b, plan, { house: "one-zero", fund: twin.id });
     // the unnamed fund's row says the doubt's words, not "not sold" (One Zero's ETFs say that one)
-    expect(shown(fundRow(out, unnamed.rec.id)!)).toContain(invest.lists.funds.why.doubt);
-    expect(shown(fundRow(out, unnamed.rec.id)!)).not.toContain(invest.lists.funds.why.notSold);
+    expect(fundRow(out, unnamed.rec.id)).toContain(invest.lists.funds.why.doubt);
+    expect(fundRow(out, unnamed.rec.id)).not.toContain(invest.lists.funds.why.notSold);
     // the named fund, beside the pick, shows its figure against it
     expect(fundRow(out, named.rec.id)).toMatch(/₪/);
   });
@@ -937,12 +937,12 @@ describe("a fund no account prices says its own reason on its row (founder, 2026
       const view = buildInvest({ bundle, index, plan });
       const pick = pickOfHeadline(view);
       if (!pick) continue;
-      const own = allFunds(view).filter((f) => f.reason && !f.byHouse[pick.house]);
+      const own = allFunds(view).flatMap((f) => (f.reason && !f.byHouse[pick.house] ? [{ f, reason: f.reason }] : []));
       const out = lists(view, bundle, plan, pick);
-      for (const f of own) {
+      for (const { f, reason } of own) {
         const row = fundRow(out, f.rec.id);
         expect(row, `${index.id}: ${f.rec.id}`).toBeTruthy();
-        expect(shown(row!), `${index.id}: ${f.rec.id}`).toContain(invest.lists.funds.whyCode[f.reason!.code] ?? invest.lists.funds.why.other);
+        expect(row, `${index.id}: ${f.rec.id}`).toContain(invest.lists.funds.whyCode[reason.code] ?? invest.lists.funds.why.other);
         seen++;
       }
     }
