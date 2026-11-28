@@ -322,6 +322,18 @@ describe("wherever a typed fund may bear dividend tax inside it that the run doe
     }
   });
 
+  it("on an index the person said is in shekels, with no region said, no label says its companies are outside Israel or the United States", () => {
+    const added: CustomIndex = { id: "custom-shekel", name: "במדד בשקלים", added: t };
+    for (const [buyAt, country, id] of [["manager", "IL", "tax-fund-dividend-il-fund"], ["us-usd", "US", "tax-fund-dividend-us-fund"]] as const) {
+      const f = fundAt(buyAt, country, { tracking: "physical", payout: "distributing", shekelIndex: true }, added.id, `custom-fund-shekel-${buyAt}`);
+      const b = withCustomEntries(bundle, [f], [added]);
+      const rec = must(b.funds.at(-1), "the record");
+      expect(dividendTaxLabel(rec, indexSeenBy(refOfCustom(added), rec, b))).toBe(id);
+      expect(copy.labels[id].explain.startsWith("אם הקרן מחזיקה")).toBe(true);
+      expect(copy.customEntries.needs.dividendTax[id]).toContain("אם הקרן מחזיקה");
+    }
+  });
+
   it("on an index of Israeli companies the label of what is not counted says nothing of tax withheld abroad", () => {
     const israel: CustomIndex = { id: "custom-israel", name: "ת״א", added: t, region: "israel" };
     const f = tracked("europe-usd", "IE", "physical", israel.id);
