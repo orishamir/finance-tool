@@ -52,7 +52,7 @@ interface Source {
 }
 
 /** The note a value's sheet shows: its Hebrew note, or its note when that is written in Hebrew; null for none. */
-export function shownNote(v: Record<string, unknown>): string | null {
+function shownNote(v: Record<string, unknown>): string | null {
   if (typeof v.notes_he === "string" && v.notes_he.trim() !== "") return v.notes_he;
   return typeof v.notes === "string" && mostlyHebrew(v.notes) ? v.notes : null;
 }
