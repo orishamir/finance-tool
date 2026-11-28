@@ -2,7 +2,7 @@
   "id": "REG-27",
   "title": "SIPC covers the custody function of a failed US broker-dealer up to a limit, not a fall in value; no US residence needed",
   "title_he": "SIPC מגן על המשמורת אצל ברוקר אמריקאי, עד תקרה",
-  "text_he": "כשברוקר אמריקאי שחבר ב־SIPC קורס, SIPC פועל להחזיר ללקוחות את ניירות הערך והמזומן שהיו בחשבון שלהם, עד {REG-27:cap}, ומתוכם עד {REG-27:cash_cap} במזומן. הוא מגן רק על השמירה של הנכסים: לא מפני ירידה בערך ההשקעות, ולא מפני הפסד בגלל ייעוץ גרוע. לא צריך לגור בארצות הברית או להיות אזרח שלה. ההגנה חלה רק על חשבון אצל ברוקר שחבר ב־SIPC, ולא על חברות לא אמריקאיות של אותה קבוצה.",
+  "text_he": "כשברוקר אמריקאי שחבר ב־SIPC קורס, SIPC פועל להחזיר ללקוחות את ניירות הערך והמזומן שהיו בחשבון שלהם, עד {REG-27:cap}, ומתוכם עד {REG-27:cash_cap} במזומן. הוא מגן רק על השמירה של הנכסים: לא מפני ירידה בערך ההשקעות, ולא מפני הפסד בגלל ייעוץ גרוע או בגלל המלצה על השקעות לא מתאימות. לא צריך לגור בארצות הברית או להיות אזרח שלה. ההגנה חלה רק על חשבון אצל ברוקר שחבר ב־SIPC, ולא על חברות לא אמריקאיות של אותה קבוצה.",
   "figure_names_he": {
     "cap": "תקרת ההגנה של SIPC",
     "cash_cap": "תקרת ההגנה של SIPC למזומן"
@@ -34,7 +34,7 @@
         "REG-27"
       ],
       "state": "sourced",
-      "notes": "SIPC's limit for one customer, cash and securities together. Set by SIPC; its page shows no date and does not say how or when the limit changes."
+      "notes": "SIPC's limit, cash and securities together. Set by SIPC; its page shows no date and does not say how or when the limit changes."
     },
     "cash_cap": {
       "value": 250000,
