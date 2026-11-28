@@ -3101,7 +3101,8 @@ export const r4catalogue = {
   term: { months: "חודשים", none: "ללא תקופה", day: "יום אחד", twoDays: "יומיים", days: "ימים", year: "שנה", twoYears: "שנתיים", years: "שנים" },
   rateType: { fixed: "ריבית קבועה", variable: "ריבית משתנה:", prime: "פריים", less: "פחות", more: "ועוד" },
   linkage: { none: "לא צמוד", cpi: "צמוד למדד", fx: "צמוד למט״ח" },
-  tax: { unlinked: "ריבית לא צמודה. השיעור בעמוד המדריך.", linked: "ריבית צמודה. השיעור בעמוד המדריך." },
+  /** A deposit's tax bucket, by its kind of interest; the rate is its rule's figure, which the sheet's rule opens. */
+  tax: { unlinked: "ריבית לא צמודה", linked: "ריבית צמודה" },
   /** A deposit's amounts on every page (lib/deposit-kind.ts `amountRangeForm`): "מ־1,000 ₪", "1,000 עד 50,000 ₪", "עד 50,000 ₪", "ללא מינימום". */
   amount: { from: "מ־", fromWord: "מ", fromDay: "מיום", to: "עד", noMin: "ללא מינימום", above: "מעל", notIncluded: "(לא כולל)" },
   breakWord: { not_allowed: "אין אפשרות שבירה", with_penalty: "שבירה בקנס", none: "שבירה בלי קנס" },

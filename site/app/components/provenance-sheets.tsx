@@ -595,7 +595,7 @@ const questionsIn = (notes: string | undefined): string[] => [...new Set([...(no
  * its `about` line under it. `ink`: the figure in its state's ink (a sourced or entered figure's sheet), or plain (a catch's sheet).
  */
 function FigureHead({ value, text, ink, headId, descId, children }: { value: SiteValue; text: string; ink: boolean; headId: string; descId: string; children?: ReactNode }) {
-  // a long word (a deposit's tax: "ריבית לא צמודה. השיעור בעמוד המדריך.") wraps in a smaller size; kept on one line it ran past a phone's edge
+  // a long word (a fund's full name) wraps in a smaller size; kept on one line it ran past a phone's edge
   const longHead = text.length > 24;
   // the row's own words where they differ from the unit's (a one-year gap: "ב־2025"), so the head says what the row says (copy 10.4)
   // a number shown in words ("שנתיים") says its unit in them

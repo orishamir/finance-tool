@@ -7,7 +7,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { numbers, provenance } from "../copy";
+import { numbers, provenance, r4catalogue } from "../copy";
+import { taxWord } from "../lib/deposit-kind";
 import { loadRules } from "../lib/data.server";
 import { fmt } from "../lib/format";
 import { ruleTitle } from "../lib/rule-title";
@@ -36,6 +37,11 @@ const words = (html: string) =>
     .replace(/\s+/g, " ");
 const sheet = (value: SiteValue, more: { shown?: readonly string[]; display?: string } = {}) => words(wrap(createElement(ValueSheet, { value, exact: false, data, headId: "h", descId: "d", ...more })));
 const count = (text: string, part: string) => text.split(part).length - 1;
+/** A value the test needs, or a failure that names it. */
+function must<T>(v: T | undefined | null, what: string): T {
+  if (v === undefined || v === null) throw new Error(`missing: ${what}`);
+  return v;
+}
 
 const sourced = (value: number | null, more: Partial<SiteValue> = {}): SiteValue => ({
   value,
@@ -121,6 +127,16 @@ describe("a figure's head, as the figure was tapped", () => {
     expect(out).toContain("שנתיים");
     expect(out).not.toContain(provenance.unit.years);
     expect(out).toContain("תקופת הפיקדון");
+  });
+});
+
+describe("a deposit's tax bucket", () => {
+  it("heads its sheet with the bucket's name alone, and opens the rule that holds its rate", () => {
+    const bucket = sourced(null, { value: "unlinked_15", unit: "text", rule_ids: ["TXI-03"] });
+    const out = sheet(bucket, { display: must(taxWord("unlinked_15"), "the unlinked bucket's word") });
+    expect(out).toContain(r4catalogue.tax.unlinked);
+    expect(out).not.toMatch(/בעמוד המדריך/);
+    expect(out).toContain(title("TXI-03"));
   });
 });
 
