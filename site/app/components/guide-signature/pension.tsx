@@ -184,7 +184,7 @@ function Inner({ data, today, bundle }: VisualProps & { bundle: Bundle }) {
         <div className="flex flex-col">
           <div className="h-3 border-x-2 border-b-2 border-foreground/60 rounded-b-sm transition-[width] duration-(--duration-chart)" style={{ width: share(model.you) }} />
           <span className="block text-sm text-muted-foreground mt-0.5">
-            {copy.pension.returns.before} <Num value={v.relief} /> {copy.pension.returns.after} {copy.pension.returns.when.before} <Ruled id="TXP-34">{copy.pension.returns.when.stated}</Ruled>{copy.pension.returns.when.after} {copy.pension.returns.notice} <IdRef id="TXP OQ6" end="." /> {copy.pension.returns.otherwise.before} {copy.pension.returns.otherwise.stated}.
+            {copy.pension.returns.before} <Num value={v.relief} /> {copy.pension.returns.after} {copy.pension.returns.when.before} <Ruled id="TXP-34">{copy.pension.returns.when.stated}</Ruled>{copy.pension.returns.when.after} {copy.pension.returns.notice} <IdRef id="TXP OQ6" end="." /> {copy.pension.returns.otherwise.before} <Ruled id="TXP-02">{copy.pension.returns.otherwise.stated}</Ruled>.
           </span>
         </div>
       </div>
