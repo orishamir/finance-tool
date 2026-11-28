@@ -180,25 +180,41 @@ describe("a sourced figure's source", () => {
     sources: [{ url: "https://example.org/law.pdf", title: "The law", title_he: "חוק לבדיקה", publisher: "x", kind: "law", strength: "primary", page: 5, locator_he: "סעיף 9", checked: today }],
   } as unknown as RuleRecord;
   const data = { rules: { "TXA-30": rule }, terms: {}, dimensions: {}, today };
-  const value = (page?: number): SiteValue => ({
+  const value = (page?: number, extra: Partial<SiteValue> = {}, hash = ""): SiteValue => ({
     value: 3,
     unit: "pct",
-    source: { url: "https://example.org/law.pdf", title: "law.pdf", publisher: "x", strength: "primary", ...(page ? { page } : {}) } as SiteValue["source"],
+    source: { url: `https://example.org/law.pdf${hash}`, title: "law.pdf", publisher: "x", strength: "primary", ...(page ? { page } : {}) } as SiteValue["source"],
     checked: today,
     effective_from: null,
     effective_to: null,
     update_rule: "fixed in law",
     state: "sourced",
     rule_ids: ["TXA-30"],
+    ...extra,
   });
   const sheet = (v: SiteValue) => render(createElement(ValueSheet, { value: v, exact: false, data, headId: "h", descId: "d" }), data);
-  it("borrows a rule's names only from the same place, and never its locator", () => {
+  it("a figure on the page of its rule's one place takes the place; on another page it takes the names and never the place", () => {
     const same = sheet(value(5));
     expect(same).toContain("חוק לבדיקה");
-    expect(same).not.toContain("סעיף 9");
+    expect(same).toContain("סעיף 9");
     const other = sheet(value(8));
-    expect(other).not.toContain("חוק לבדיקה");
+    expect(other).toContain("חוק לבדיקה");
     expect(other).not.toContain("סעיף 9");
+  });
+  it("the page its address opens at is its page", () => {
+    expect(sheet(value(undefined, {}, "#page=5"))).toContain("סעיף 9");
+    const other = sheet(value(undefined, {}, "#page=8"));
+    expect(other).toContain("חוק לבדיקה");
+    expect(other).not.toContain("סעיף 9");
+  });
+  it("a place is borrowed from the figure's own rule alone, never from the places of several rules", () => {
+    const elsewhere = { ...rule, id: "TXA-31", sources: [{ ...(rule.sources ?? [])[0], url: "https://example.org/other.pdf", locator_he: "סעיף 77" }] } as unknown as RuleRecord;
+    const both = { ...data, rules: { ...data.rules, "TXA-31": elsewhere } };
+    const own = render(createElement(ValueSheet, { value: value(), exact: false, data: both, headId: "h", descId: "d" }), both);
+    expect(own).toContain("סעיף 9");
+    const pooled = render(createElement(ValueSheet, { value: value(undefined, { rule_ids: ["TXA-30", "TXA-31"] }), exact: false, data: both, headId: "h", descId: "d" }), both);
+    expect(pooled).toContain("חוק לבדיקה");
+    expect(pooled).not.toContain("סעיף 9");
   });
   it("a figure that names no place takes the rule's place when the rule cites its document at one place, and only its names at several", () => {
     const one = sheet(value());

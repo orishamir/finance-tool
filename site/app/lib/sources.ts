@@ -141,6 +141,12 @@ export function sourceHref(source: CitedPlace): string {
   return words ? `${url}#${words}` : url;
 }
 
+/** The page a PDF address opens at (`…pdf#page=12`), or undefined where it names none. */
+export function pageOfUrl(url: string): number | undefined {
+  const n = /#page=(\d+)(?:&|$)/.exec(url)?.[1];
+  return n ? Number(n) : undefined;
+}
+
 /**
  * A company's written answer is cited at a file of the repository, `docs/company-answers.md#<company>-<date>`, and
  * opens at that file's public page; any other address stays as it is (a parameter's rationale keeps its plain label).

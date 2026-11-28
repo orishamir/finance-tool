@@ -13,7 +13,7 @@ import { figureRows, fillSlot, missingSlot, wordUnits, type FigureRow, type Slot
 import { fmt } from "../lib/format";
 import { headText } from "../lib/working";
 import { hasHebrew, mostlyHebrew } from "../lib/source-label";
-import { citationFor, documentKey, moreSourcesLabel, pickSources, publicUrl, sourceChange, sourceHref, sourceView, type CitedPlace, type RuleSource, type SourcedRule, type SourcePlace, type SourceView } from "../lib/sources";
+import { citationFor, documentKey, moreSourcesLabel, pageOfUrl, pickSources, publicUrl, sourceChange, sourceHref, sourceView, type CitedPlace, type RuleSource, type SourcedRule, type SourcePlace, type SourceView } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
 import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetReading, strengthOf, type SiteValue, type Staleness } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
@@ -498,9 +498,9 @@ function unitWordOf(unit: string): string | null {
 }
 
 /**
- * The sourced figure's one source block: the figure's own source, place and date. Of a rule that cites the same place (the same document,
- * page and quoted words) it borrows only the names (the Hebrew publisher and title, the document's kind), never a place; the figure's own
- * names come first. Whether it may have changed reads the rule behind it that is soonest to be read again. `strengthSaid`: the sheet's
+ * The sourced figure's one source block: the figure's own source, place and date. Of its rules it borrows the document's names (the Hebrew
+ * publisher and title, the document's kind), and a place only from its own rule, when that rule cites the document at one place and the
+ * figure names none or the same page; the figure's own names come first. Whether it may have changed reads the rule behind it that is soonest to be read again. `strengthSaid`: the sheet's
  * strength callout already names the source's strength.
  */
 function FigureSource({ value, data, strengthSaid }: { value: SiteValue; data: ProvenanceData; strengthSaid: boolean }) {
@@ -515,22 +515,26 @@ function FigureSource({ value, data, strengthSaid }: { value: SiteValue; data: P
     const r = ruleOf(data, id);
     return r ? [asSourced(r)] : [];
   });
-  // the rules' places in the figure's document, each once
-  const inDocument = [...new Map(loaded.flatMap((r) => pickSources(r)).filter((x) => documentKey(x.url) === documentKey(value.source.url)).map((x) => [`${x.page ?? ""}|${x.quote ?? ""}|${x.locator_he ?? ""}`, x])).values()];
-  const samePlace = (x: RuleSource) => (x.page ?? null) === (at.page ?? null) && (x.quote ?? null) === (quote ?? null);
-  // a figure that names no place of its own is at the rules' place when they cite its document at one place only, and takes that place
-  // whole (TXH-02's cap: the booklet's page and row); cited at several places, it takes only the names they all give the document
-  const placeless = !at.page && !quote && !at.fragment;
-  const whole = placeless && inDocument.length === 1 ? inDocument[0] : undefined;
-  const oneTitle = new Set(inDocument.map((x) => x.title_he ?? x.title)).size === 1;
-  const known = whole ?? inDocument.find(samePlace) ?? (placeless && oneTitle ? inDocument[0] : undefined);
+  // the figure's own page: the one it names, or the one its address opens at (`#page=12`)
+  const ownPage = at.page ?? pageOfUrl(value.source.url);
+  const inDocument = (r: SourcedRule) => [...new Map(pickSources(r).filter((x) => documentKey(x.url) === documentKey(value.source.url)).map((x) => [`${x.page ?? ""}|${x.quote ?? ""}|${x.locator_he ?? ""}`, x])).values()];
+  // a place is borrowed only from the figure's own rule, never from several rules together: when that rule cites the figure's document at
+  // one place and the figure names no place of its own, or the page it names is that place's (TXH-02's cap: the booklet's page and row);
+  // any other figure takes only the document's names
+  const ownRule = (value.rule_ids ?? []).length === 1 ? loaded[0] : undefined;
+  const ownPlaces = ownRule ? inDocument(ownRule) : [];
+  const place = ownPlaces.length === 1 ? ownPlaces[0] : undefined;
+  const whole = place && !at.fragment && (!quote || quote === place.quote) && (ownPage === undefined || ownPage === place.page) ? place : undefined;
+  const places = loaded.flatMap(inDocument);
+  const oneTitle = new Set(places.map((x) => x.title_he ?? x.title)).size === 1;
+  const known = whole ?? places.find((x) => (x.page ?? null) === (ownPage ?? null) && (x.quote ?? null) === (quote ?? null)) ?? (oneTitle ? places[0] : undefined);
   const owner = [...loaded].sort((x, y) => (x.recheck_date ?? "9999").localeCompare(y.recheck_date ?? "9999"))[0];
   const publisherHe = at.publisher_he ?? known?.publisher_he;
   const titleHe = at.title_he ?? known?.title_he;
   const kind = at.kind ?? known?.kind;
   const locatorHe = at.locator_he ?? whole?.locator_he;
   const shownQuote = quote ?? whole?.quote;
-  const page = at.page ?? whole?.page;
+  const page = ownPage ?? whole?.page;
   const source: RuleSource = {
     title: value.source.title,
     publisher: value.source.publisher,
