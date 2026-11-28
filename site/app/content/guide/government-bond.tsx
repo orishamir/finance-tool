@@ -16,11 +16,16 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          <Term id="איגרת חוב">איגרת חוב</Term> ממשלתית היא הלוואה שאתם נותנים למדינה. המדינה מחזירה את <Term prefix="ה" id="שווי נקוב">שווי הנקוב</Term> במועד <Term prefix="ה" id="פדיון">פדיון</Term>. בסוגים שמשלמים <Term id="ריבית">ריבית</Term> <Ruled id={["GOV-11", "GOV-13", "GOV-14"]}>היא משלמת בדרך</Ruled> <Term id="קופון">קופון</Term>: ריבית במועדים קבועים.
+          <Term id="איגרת חוב">איגרת חוב</Term> ממשלתית היא הלוואה שאתם נותנים למדינה. המדינה מחזירה את הכסף בתאריך שנקבע מראש, ובדרך כלל <Ruled id={["GOV-11", "GOV-13", "GOV-14"]}>משלמת בינתיים גם</Ruled> <Term id="ריבית">ריבית</Term>.
         </p>
         <p className="max-w-measure">
-          מי שמחזיק את האיגרת עד הסוף מקבל את מה שנקבע בתנאים שלה: <Ruled id="BND-02">מה שקורה למחיר בדרך לא משנה את מה שתקבלו בפדיון</Ruled>. מי שצריך את הכסף קודם <Ruled id="GOV-17">יכול למכור בכל יום מסחר</Ruled>, אבל במחיר של אותו יום, <Ruled id="BND-01">ובדרך כלל הוא יורד כשהריבית במשק עולה</Ruled>.
+          מי שמחזיק אותה עד התאריך הזה <Ruled id="BND-02">מקבל את מה שנקבע מראש</Ruled>. אפשר גם <Ruled id="GOV-17">למכור אותה קודם</Ruled>, אבל אז <Ruled id="BND-02">המחיר יכול להיות נמוך ממה ששילמתם</Ruled>, או גבוה ממנו.
         </p>
+        <GuidePart title="מה מקבלים ומתי">
+          <p className="max-w-measure">
+            המדינה מחזירה את <Term prefix="ה" id="שווי נקוב">שווי הנקוב</Term> במועד <Term prefix="ה" id="פדיון">פדיון</Term>. בסוגים שמשלמים ריבית <Ruled id={["GOV-11", "GOV-13", "GOV-14"]}>היא משלמת בדרך</Ruled> <Term id="קופון">קופון</Term>: ריבית במועדים קבועים. <Ruled id="BND-02">מה שקורה למחיר בדרך לא משנה את מה שתקבלו בפדיון</Ruled>.
+          </p>
+        </GuidePart>
         <GuidePart title="שלושה סוגים">
           <Sentence measure>
             <Ruled id="GOV-08">יש שלושה סוגים עיקריים</Ruled>. <Term id={'אג"ח בריבית קבועה'}>בריבית קבועה</Term>: <Term id="לא צמוד">לא צמודה</Term> <Term prefix="ל" id="מדד">מדד</Term>, עם <Ruled id="GOV-13">קופון קבוע</Ruled> שמשולם כל {fixedEvery ? <Num value={fixedEvery} /> : null} חודשים. <Term id={'אג"ח ממשלתית צמודה'}>צמודה למדד</Term>: <Ruled id="GOV-11">הקרן והריבית עולות ויורדות</Ruled> עם <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term>. <Term id={'אג"ח בריבית משתנה'}>בריבית משתנה</Term>: לא צמודה, <Ruled id="GOV-14" prefix="ו">הריבית מתעדכנת</Ruled> כל {floatingEvery ? <Num value={floatingEvery} /> : null} חודשים לפי תשואת <Term prefix="ה" id={'מק"מ'}>מק״מ</Term>. <Ruled id="GOV-14">בנוסח התקנות אין</Ruled> <Term id="מרווח">מרווח</Term> ואין רצפה.

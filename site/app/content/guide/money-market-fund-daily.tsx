@@ -14,17 +14,22 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          <Term id="קרנות כספיות יומיות">קרן כספית יומית</Term> היא <Term id="קרן נאמנות">קרן נאמנות</Term> למזומן: <Ruled id="MF-34">קונים ופודים אותה בכל יום מסחר</Ruled>, ו<Term prefix="ה" id="תשואה">תשואה</Term> שלה, לפי <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>, <Ruled id="MF-34">נעה בעקבות</Ruled> <Term id="ריבית בנק ישראל">ריבית בנק ישראל</Term>, פחות העלויות של הקרן.
+          <Term id="קרנות כספיות יומיות">קרן כספית יומית</Term> היא מקום לכסף שאולי תצטרכו בקרוב. <Ruled id="MF-34">אפשר להוציא ממנה כסף בכל יום מסחר</Ruled>, ובינתיים הוא מרוויח.
         </p>
         <p className="max-w-measure">
-          אין בה תשואה מובטחת ואין <Term id="תשואה צפויה">תשואה צפויה</Term>: <Ruled id="MF-34">שינוי בריבית בנק ישראל יכול לשנות אותה</Ruled>.
+          הקרן מלווה את הכסף <Ruled id="MF-29">רק לזמן קצר, למדינה, לבנקים ולחברות בדירוג גבוה</Ruled>. <Ruled id="MF-34">הרווח עולה ויורד עם</Ruled> <Term id="ריבית בנק ישראל">ריבית בנק ישראל</Term>, והוא לא מובטח.
         </p>
+        <GuidePart title="כמה היא מרוויחה">
+          <p className="max-w-measure">
+            לפי <Term id="רשות ניירות ערך">רשות ניירות ערך</Term>, <Term prefix="ה" id="תשואה">תשואה</Term> <Ruled id="MF-34">נעה בעקבות</Ruled> ריבית בנק ישראל, פחות העלויות של הקרן. אין בה תשואה מובטחת ואין <Term id="תשואה צפויה">תשואה צפויה</Term>: <Ruled id="MF-34">שינוי בריבית בנק ישראל יכול לשנות אותה</Ruled>.
+          </p>
+        </GuidePart>
         <GuidePart title="במה היא משקיעה">
           <Sentence measure>
             <Ruled id="MF-29">רק בנכסים מרשימה סגורה</Ruled>: <Term id={'מק"מ'}>מק״מ</Term>, <Term id="איגרת חוב">איגרות חוב</Term> שנפרעות בתוך {bondTerm ? <Num value={bondTerm} /> : null} חודשים, בדירוג גבוה אם לא המדינה הנפיקה אותן, <Term id="פיקדון">פיקדונות</Term> בבנקים ומזומן. <Ruled id="MF-30">משך החיים הממוצע של הנכסים הוא עד</Ruled> {life ? <Num value={life} /> : null} ימים.
           </Sentence>
           <p className="max-w-measure">
-            <Term id="מנהל קרן">מנהל הקרן</Term> משקיע את הכסף, ו<Ruled id="MF-01">את הנכסים מחזיק</Ruled> <Term id="נאמן">נאמן</Term>, גוף נפרד ממנו.
+            היא <Term id="קרן נאמנות">קרן נאמנות</Term>: <Term id="מנהל קרן">מנהל הקרן</Term> משקיע את הכסף, ו<Ruled id="MF-01">את הנכסים מחזיק</Ruled> <Term id="נאמן">נאמן</Term>, גוף נפרד ממנו.
           </p>
         </GuidePart>
         <GuidePart title="איך קונים ומוכרים">
