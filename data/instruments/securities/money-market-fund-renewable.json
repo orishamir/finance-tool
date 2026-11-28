@@ -74,11 +74,7 @@
       "tax_year": null,
       "update_rule": "fixed in law",
       "rule_ids": [
-        "MF-16",
-        "MF-20",
-        "MF-18",
-        "MF-17",
-        "MF-24"
+        "MF-16"
       ],
       "state": "sourced",
       "notes": "No regulated cap on the management fee (שכר מנהל הקרן) or the trustee fee (שכר נאמן): both are set in the fund agreement and prospectus, computed daily as an annual % of assets and deducted inside the unit price (MF-16, MF-20). The ISA's end-2025 average for money-market funds is in MF-18. Increases only on 1 January, by each manager's own undertaking in its prospectus, not by law (MF-17). The distribution fee the manager pays the bank is capped at 0.1% a year for money-market funds and comes out of the manager's fee (MF-24)."
@@ -159,12 +155,11 @@
       "update_rule": "fixed in law",
       "rule_ids": [
         "MF-26",
-        "MF-27",
-        "BRK-72",
-        "BANK-18"
+        "MF-71",
+        "BRK-72"
       ],
       "state": "sourced",
-      "notes": "Under a distribution agreement a distributor may not charge the holder of money-market (type 4) units any fee for buying, holding or redeeming (reg. 2(ד)); without an agreement it may charge up to the distribution fee it could have charged the manager (reg. 2(ב)). A bank's part-4 buy/sell commission excludes mutual funds other than tracking and listed funds (BRK-72, MF-27 Leumi). A non-bank member's commission is per its tariff (MF-27: IBI up to 0.08%, minimum NIS 5, 1.7.2026).",
+      "notes": "Under a distribution agreement a distributor may not charge the holder of money-market (type 4) units any fee for buying, holding or redeeming (reg. 2(ד)); without an agreement it may charge up to the distribution fee it could have charged the manager (reg. 2(ב)). A bank's part-4 buy/sell commission excludes mutual funds other than tracking and listed funds (BRK-72), so a bank charges nothing to buy, sell or redeem money-market units (MF-71). A non-bank member's commission is per its tariff (IBI: up to 0.08%, minimum NIS 5, 1.7.2026).",
       "caveat": "distribution_agreement"
     },
     "custody": {
@@ -182,11 +177,8 @@
       "tax_year": null,
       "update_rule": "fixed in law",
       "rule_ids": [
-        "BANK-18",
         "BRK-17",
-        "BRK-16",
         "MF-26",
-        "MF-27",
         "BRK-52"
       ],
       "state": "sourced",
@@ -328,5 +320,13 @@
     "MF-OQ11",
     "MF-OQ12"
   ],
-  "checked": "2026-10-26"
+  "checked": "2026-10-26",
+  "context_rule_ids": [
+    "MF-18",
+    "MF-17",
+    "MF-24",
+    "MF-27",
+    "BANK-18",
+    "BRK-16"
+  ]
 }

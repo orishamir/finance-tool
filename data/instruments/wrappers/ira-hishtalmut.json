@@ -61,7 +61,6 @@
       "update_rule": "fixed in regulation",
       "rule_ids": [
         "PF-06",
-        "IRA-17",
         "IRA-16"
       ],
       "state": "sourced",
@@ -102,7 +101,6 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "IRA-16",
         "IRA-18"
       ],
       "state": "sourced",
@@ -206,7 +204,6 @@
       "update_rule": "fixed in law",
       "rule_ids": [
         "TXH-09",
-        "IRA-25",
         "KH-10"
       ],
       "state": "sourced",
@@ -339,5 +336,9 @@
       "IRA-21",
       "IRA-22"
     ]
-  }
+  },
+  "context_rule_ids": [
+    "IRA-17",
+    "IRA-25"
+  ]
 }

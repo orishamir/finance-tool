@@ -178,8 +178,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXH-17",
-      "PF-23",
-      "KH-18"
+      "PF-23"
     ],
     "state": "sourced",
     "notes": "A track switch inside the fund is not a tax event and is completed within 3 business days. A whole-balance transfer to another study fund carries the account's history (TXH-19); no primary text says in so many words that it is not a withdrawal (TXH OQ11)."
@@ -297,5 +296,8 @@
         ]
       }
     ]
-  }
+  },
+  "context_rule_ids": [
+    "KH-18"
+  ]
 }

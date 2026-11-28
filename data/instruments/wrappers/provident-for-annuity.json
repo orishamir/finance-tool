@@ -56,8 +56,7 @@
       "tax_year": null,
       "update_rule": "fixed in regulation",
       "rule_ids": [
-        "PF-02",
-        "PEN-22"
+        "PF-02"
       ],
       "state": "sourced",
       "notes": "Maximum fee on payments transferred for each member to a provident fund under regulation 2 (tagmulim and personal severance funds among them). The 2024 average charged in provident funds was 0.09% of deposits (PEN-24)."
@@ -77,8 +76,7 @@
       "tax_year": null,
       "update_rule": "fixed in regulation",
       "rule_ids": [
-        "PF-02",
-        "PEN-22"
+        "PF-02"
       ],
       "state": "sourced",
       "notes": "Maximum fee per year of each member's balance. Money deposited before tax year 2008: the higher of this or up to NIS 6 a month, indexed (reg. 2(א)(2א)); pensioners 0.6%, 0.3% for old-age pensions in insurance-based funds from 1 February 2022. The 2024 average charged was 0.54% of assets (PEN-24)."
@@ -245,7 +243,7 @@
       "PEN-07",
       "PEN-06"
     ],
-    "text": "employees, through an employer, and the self-employed; the bylaws take up to 7.5% employer tagmulim, 7% employee tagmulim and 8.33% severance of the wage; it satisfies mandatory pension only if death and disability cover is held elsewhere, and a self-employed person may meet the deposit duty in it; no pooled insurance, no guaranteed-return share, no actuarial balancing"
+    "text": "employees, through an employer, and the self-employed; the bylaws take up to 7.5% employer tagmulim, 7% employee tagmulim and 8.33% severance of the wage; it satisfies mandatory pension only if death and disability cover is held elsewhere, and a self-employed person may meet the deposit duty in it; no pooled insurance, no guaranteed-return share; whether it balances actuarially is open (PEN OQ34)"
   },
   "protection": {
     "rule_ids": [
@@ -253,7 +251,7 @@
       "REG-19",
       "PEN-69"
     ],
-    "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value; the fund is not an eligible fund for the state guaranteed-return mechanism and has no actuarial balancing, so the balance moves only with the track's investments"
+    "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value; the fund is not an eligible fund for the state guaranteed-return mechanism; whether it balances actuarially is open (PEN OQ34)"
   },
   "tier": 1,
   "open_questions": [
@@ -288,5 +286,8 @@
     "fee-change-over-time": [
       "PEN-47"
     ]
-  }
+  },
+  "context_rule_ids": [
+    "PEN-22"
+  ]
 }
