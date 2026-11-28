@@ -19,7 +19,7 @@ export const content: GuideContent = {
         בקרן הכללית הכסף נצבר בחשבון על שמכם ומושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term>. בפרישה היתרה הופכת <Term prefix="ל" id="קצבה">קצבה</Term> חודשית, <Ruled id="PEN-70">לפי</Ruled> <Term id="מקדם המרה">מקדם המרה</Term> של הקרן. <Term prefix="ב" id="מסלול ביטוח">מסלולי הביטוח</Term> של הקרן, הגיל שממנו היא משולמת <Ruled id="PEN-64">הוא לפחות</Ruled> <N v={figure("PEN-64", "min_retirement_age")} />.
       </p>
       <p className="max-w-measure">
-        במסלולי הביטוח <Ruled id="PEN-64">יש גם כיסוי לנכות ולמוות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Term prefix="ל" id="עמית פעיל">עמית פעיל</Term>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> ששווייה לא נמוך מהיתרה שצברתם. הקרן <Ruled id="PEN-64">רשאית להציע גם מסלול בלי הכיסוי הזה</Ruled>.
+        במסלולי הביטוח <Ruled id="PEN-64">יש גם כיסוי לנכות ולמוות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Term prefix="ל" id="עמית פעיל">עמית פעיל</Term>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> ששווייה לא נמוך מהיתרה שצברתם. הקרן רשאית להציע גם מסלול בלי הכיסוי הזה.
       </p>
       <p className="max-w-measure">
         כללי המס <Ruled id="TXP-24">הם כמו במקיפה</Ruled>. <Ruled id="PEN-69">אין</Ruled> <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה. תקרת דמי הניהול מהחיסכון גבוהה יותר, <N v={figure("PF-05", "balance_cap")} /> מול <N v={figure("PF-04", "balance_cap")} />, ותקרת דמי הניהול מההפקדה נמוכה יותר, <N v={figure("PF-05", "deposit_cap")} /> מול <N v={figure("PF-04", "deposit_cap")} />.
