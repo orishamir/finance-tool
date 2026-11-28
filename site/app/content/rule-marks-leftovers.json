@@ -44,30 +44,6 @@
       "why": "On the page when the check came in (2026-11-28)."
     },
     {
-      "page": "/guide/money-market-fund-daily",
-      "rule": "MF-02",
-      "blocks": 1,
-      "why": "On the page when the check came in (2026-11-28)."
-    },
-    {
-      "page": "/guide/money-market-fund-daily",
-      "rule": "MF-41",
-      "blocks": 1,
-      "why": "On the page when the check came in (2026-11-28)."
-    },
-    {
-      "page": "/guide/money-market-fund-renewable",
-      "rule": "MF-35",
-      "blocks": 1,
-      "why": "On the page when the check came in (2026-11-28)."
-    },
-    {
-      "page": "/guide/money-market-fund-renewable",
-      "rule": "MF-02",
-      "blocks": 1,
-      "why": "On the page when the check came in (2026-11-28)."
-    },
-    {
       "page": "/exposure/index-sp500",
       "rule": "TXF-17",
       "blocks": 1,
