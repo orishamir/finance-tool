@@ -2,10 +2,12 @@
   "id": "CAT-58",
   "title": "The age-dependent model: a new member who did not choose a track joins the default track for their age",
   "title_he": "מודל ההשקעות תלוי הגיל: מי שלא בחר מסלול מצטרף למסלול לפי גילו",
-  "text_he": "בקופת גמל שאינה קרן השתלמות או קופת גמל להשקעה, עמית חדש שלא בחר מסלול מצטרף למסלול ברירת המחדל שמתאים לגילו. המודל הוא 3 מסלולים לפי גיל, עם מדרגות גיל של {CAT-58:age_band_1} ושל {CAT-58:age_band_2}: מסלול עד המדרגה הראשונה, מסלול בין שתי המדרגות ומסלול מהמדרגה השנייה ומעלה. עמית שמגיע לגיל של מסלול אחר במודל עובר אליו, ובכל מסלול ועדת ההשקעות מחליטה על ההשקעות בהתחשב גם בגיל העמיתים. המודל יכול להיות גם מסלולים לפי שנתוני לידה, שכל אחד מהם מכסה בין 5 ל־10 שנים.",
+  "text_he": "בקופת גמל שאינה קרן השתלמות או קופת גמל להשקעה, עמית חדש שלא בחר מסלול מצטרף למסלול ברירת המחדל שמתאים לגילו. המודל הוא 3 מסלולים לפי גיל, עם מדרגות גיל של {CAT-58:age_band_1} ושל {CAT-58:age_band_2}, או מסלולים לפי שנתוני לידה, שכל אחד מהם מכסה בין {CAT-58:cohort_width_min} ל־{CAT-58:cohort_width_max}. עמית שמגיע לגיל של מסלול אחר במודל עובר אליו, ורשימת המסלולים של רשות שוק ההון משאירה לתקנון של כל קופה את יום המעבר ואת השאלה אם עמית רשאי לעבור למסלול שלא מתאים לגילו או להישאר בו. בכל מסלול ועדת ההשקעות מחליטה על ההשקעות בהתחשב גם בגיל העמיתים.",
   "figure_names_he": {
     "age_band_1": "גיל המדרגה הראשונה",
-    "age_band_2": "גיל המדרגה השנייה"
+    "age_band_2": "גיל המדרגה השנייה",
+    "cohort_width_min": "הרוחב המזערי של שנתון לידה",
+    "cohort_width_max": "הרוחב המרבי של שנתון לידה"
   },
   "strength": "primary",
   "dimensions": [
@@ -59,6 +61,54 @@
         "CAT-58"
       ],
       "state": "sourced"
+    },
+    "cohort_width_min": {
+      "value": 5,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+        "title": "חוזר גופים מוסדיים 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\"",
+        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+        "strength": "primary",
+        "page": 4,
+        "locator": "p.4, s.4(א)(2)",
+        "locator_he": "עמוד 4, סעיף 4(א)(2)",
+        "quote": "שתאריך לידתם מצוי בטווח של 5 שנים לפחות, אך לא יותר מעשר שנים"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-58"
+      ],
+      "state": "sourced",
+      "notes": "Birth-cohort tracks: each for members whose birth dates fall within at least 5 and at most 10 years."
+    },
+    "cohort_width_max": {
+      "value": 10,
+      "unit": "years",
+      "source": {
+        "url": "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/notice-2022-9-30/he/management-of-investment-tracks-in-a-provident-fund_pdf.pdf",
+        "title": "חוזר גופים מוסדיים 2022-9-30 \"מסלולי השקעה בקופות גמל - תיקון\"",
+        "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+        "strength": "primary",
+        "page": 4,
+        "locator": "p.4, s.4(א)(2)",
+        "locator_he": "עמוד 4, סעיף 4(א)(2)",
+        "quote": "שתאריך לידתם מצוי בטווח של 5 שנים לפחות, אך לא יותר מעשר שנים"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "CAT-58"
+      ],
+      "state": "sourced",
+      "notes": "Birth-cohort tracks: each for members whose birth dates fall within at least 5 and at most 10 years."
     }
   },
   "il_finance_file": "tracks-catalogue-and-decoder.md",
