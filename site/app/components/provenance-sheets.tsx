@@ -122,7 +122,7 @@ function DocumentSource({ view, rules, today, english, own, strengthSaid, boxed,
       <li key={`${i}:${place.href}`} className={cx("flex flex-col gap-0.5", !single && "border-s-2 border-border ps-2.5")}>
         {link && (
           <a href={place.href} target="_blank" rel="noopener noreferrer" className="text-link text-sm hover:underline w-fit [overflow-wrap:anywhere]">
-            <Iso>{link}</Iso>
+            <Iso>{keepTitleWhole(link)}</Iso>
           </a>
         )}
         {place.quote && <p className={cx("text-sm text-muted-foreground", !boxed && "line-clamp-3")}>״{place.quote}״</p>}

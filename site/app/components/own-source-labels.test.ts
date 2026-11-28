@@ -132,6 +132,11 @@ describe("one drawing for every source (sourceView)", () => {
     expect(html).toContain(sourceBlock.page.replace("{n}", "7"));
     expect(html).toContain('href="https://example.org/law.pdf#page=7"');
   });
+  it("writes a place's own title with the gershayim, as a document's title is written", () => {
+    const html = render(createElement(SourceBlock, { source: [law, { ...law, page: 9, title_he: 'תקנות לבדיקה, התשע"ב-2012' }], today, inline: true }));
+    expect(words(html)).toContain("התשע״ב-2012");
+    expect(words(html)).not.toContain('התשע"ב');
+  });
   it("prints the word of a source that is not the binding text in force", () => {
     // a record's source carries its standing (the schema's `standing`), which the sources layer's own shape does not name
     const html = render(createElement(SourceBlock, { source: [{ ...law, standing: "draft" } as typeof law], today, inline: true }));
