@@ -2,10 +2,12 @@
 // runs, grouped by the regulator's product type, same-name tracks grouped, the fee-pending note, the paste card.
 // What the company offers is the tracks page's list over
 // this company alone (components/tracks/company-browser.tsx): its products, funds and securities account are chips, "כל המוצרים" first.
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useHash } from "../lib/address";
+import { hashId } from "../lib/address-hash";
+import { inBackground } from "../lib/background";
 import { companyPath } from "../lib/site-paths";
-import { useLoaderData, useLocation, type ShouldRevalidateFunctionArgs } from "react-router";
+import { useLoaderData, useLocation, useNavigate, type ShouldRevalidateFunctionArgs } from "react-router";
 import type { Route } from "./+types/company";
 import { brands as brandsCopy, catalogue, companies as companiesCopy, company as copy, companyPage as w, pagePreview, r4catalogue } from "../copy";
 import { pageMeta } from "../lib/page-meta";
@@ -25,7 +27,7 @@ import { Overview, OverviewTable, type OverviewHeads, type OverviewTableRow } fr
 import { MoreDocs, ProductDocs, docCount } from "../components/company/docs";
 import { accountSections } from "../components/decoder/institutions/sections";
 import { accountOf, hasFees, type TariffCardData } from "../components/decoder/institutions/types";
-import { CAPS_FROM_AGE, addressId, entryIds, splitDocGroups } from "../lib/company-page";
+import { CAPS_FROM_AGE, addressId, currentEntry, entryIds, splitDocGroups } from "../lib/company-page";
 import { companyTermsAnchor } from "../lib/scope";
 import { labelRules } from "../lib/label-rests";
 import type { SiteValue } from "../lib/value";
@@ -180,8 +182,21 @@ export function meta({ loaderData: data, location }: Route.MetaArgs) {
 
 export default function Company() {
   const data = useLoaderData<typeof loader>();
+  useMovedEntry(data.kind === "institution" ? null : data.pageId);
   // a page about one company: its own figures carry no "לפי החברה"
   return <OwnCompanyPage>{data.kind === "institution" ? <InstitutionPage data={data.institution} fees={data.fees} notes={data.notes} /> : <ManagerCompany data={data} />}</OwnCompanyPage>;
+}
+
+/** An old address of an entry this page now lists under another record (`currentEntry`) is replaced by the entry's address now. */
+function useMovedEntry(pageId: string | null): void {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const asked = hashId(location.hash);
+  const now = pageId ? currentEntry(pageId, asked) : asked;
+  const search = location.search;
+  useEffect(() => {
+    if (now !== asked) inBackground(navigate({ search, hash: `#${now}` }, { replace: true, preventScrollReset: true }));
+  }, [asked, now, search, navigate]);
 }
 
 type CompanyData = Extract<ReturnType<typeof useLoaderData<typeof loader>>, { kind: "company" }>;

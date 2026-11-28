@@ -77,3 +77,24 @@ const ADDRESS: Record<string, string> = { "מרכזית לפיצויים": "cent
 export const addressId = (id: string): string => ADDRESS[id] ?? id;
 /** An address's product as the page names it now: an old Hebrew address becomes its Latin word. */
 export const currentAddress = (asked: string): string => ADDRESS[asked] ?? asked;
+
+/**
+ * Entries a company page once listed under a record that now holds another company's term only, by page: the record split in two, and
+ * this company's part is the new record. An old address (`/companies/altshuler-shaham#KH-09`) lands on the part it named.
+ */
+const MOVED_ENTRY: Readonly<Record<string, Readonly<Record<string, string>>>> = {
+  "altshuler-shaham": { "KH-09": "KH-34", "KH-25": "KH-36" },
+  harel: { "KH-13": "KH-35" },
+  meitav: { "KH-33": "KH-37" },
+};
+
+/** The entry an address's `#id` names on a company page now: a moved entry's new record, else the id as it is. */
+export const currentEntry = (page: string, id: string): string => MOVED_ENTRY[page]?.[id] ?? id;
+
+/**
+ * Where a company link to one of its entries leads: the entry's anchor on the company's own page (the page opens the part that holds it),
+ * or the company's group on /companies when it has no page here.
+ */
+export function companyEntryHref(company: { href: string; hasPage: boolean }, entry: string): string {
+  return company.hasPage ? `${company.href}#${entry}` : company.href;
+}

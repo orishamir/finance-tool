@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CAPS_FROM_AGE, addressId, currentAddress, splitDocGroups } from "./company-page";
+import { CAPS_FROM_AGE, addressId, companyEntryHref, currentAddress, currentEntry, splitDocGroups } from "./company-page";
 import { loadRules, loadWrappers } from "./data.server";
 
 const bank = { key: "bank-current-account-deposits.md", title: "עובר ושב ופיקדונות", ids: ["BANK-33", "BANK-38"], about: { "BANK-38": ["savings-plan"] } };
@@ -49,5 +49,24 @@ describe("a company page's products and their caps", () => {
       expect(figure?.unit).toBe("years");
     }
     expect((rules["CS-18"]?.figures?.nii_pays_until_age as { value?: unknown } | undefined)?.value).toBe(21);
+  });
+});
+
+describe("an entry's address on a company page", () => {
+  it("an entry moved to a new record when its record split lands on the new one, which the page lists, on that page only", async () => {
+    const { companyTermGroups, registryIdsOfPage } = await import("./institutions.server");
+    const rules = loadRules();
+    for (const [page, old, now] of [["altshuler-shaham", "KH-09", "KH-34"], ["harel", "KH-13", "KH-35"], ["altshuler-shaham", "KH-25", "KH-36"], ["meitav", "KH-33", "KH-37"]] as const) {
+      expect(currentEntry(page, old)).toBe(now);
+      const listed = companyTermGroups(registryIdsOfPage(page), rules, (f) => f).flatMap((g) => g.ids);
+      expect(listed).toContain(now);
+      expect(listed).not.toContain(old);
+    }
+    expect(currentEntry("harel", "KH-09")).toBe("KH-09");
+    expect(currentEntry("altshuler-shaham", "KH-13")).toBe("KH-13");
+  });
+  it("a company link leads to the entry on the company's own page, or to its group when it has none", () => {
+    expect(companyEntryHref({ href: "/companies/harel", hasPage: true }, "KH-09")).toBe("/companies/harel#KH-09");
+    expect(companyEntryHref({ href: "/companies#terms-x", hasPage: false }, "KH-09")).toBe("/companies#terms-x");
   });
 });

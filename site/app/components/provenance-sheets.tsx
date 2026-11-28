@@ -25,6 +25,7 @@ import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinN
 import type { FigureKey, SheetPart } from "./provenance";
 import { CloseCtx, DataCtx, IdRef, pageCompaniesOf, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, headOf, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData, type Catch } from "./provenance";
 import { proofOf } from "../content/proofs";
+import { companyEntryHref } from "../lib/company-page";
 
 /** What words that state several rules (`Ruled`) open: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
 function RulesListSheet({ ids, name, headId }: { ids: readonly string[]; name?: string; headId: string }) {
@@ -1581,7 +1582,7 @@ function CardFoot({ rule, data }: { rule: RuleRecord; data: ProvenanceData }) {
     if (!elsewhere(to)) return null;
     return data.rulesOf ? <LinkButton to={to} onClick={close}>{scopeWords.rulesOf.replace("{product}", data.rulesOf.name)}</LinkButton> : <LinkButton to={to} onClick={close}>{ruleCopy.all}</LinkButton>;
   }
-  const listed = companyLinksOf(listedCompanies(rule, data.ownDocs), data.companies).map((c) => ({ name: c.name, href: c.hasPage ? `${c.href}#${rule.id}` : c.href }));
+  const listed = companyLinksOf(listedCompanies(rule, data.ownDocs), data.companies).map((c) => ({ name: c.name, href: companyEntryHref(c, rule.id) }));
   const links = listed.filter((l, i) => elsewhere(l.href) && listed.findIndex((x) => x.href === l.href) === i);
   if (listed.length > 0 && links.length === 0) return null;
   if (links.length === 0) return elsewhere(noCompany) ? <LinkButton to={noCompany} onClick={close}>{scopeWords.allNoCompany}</LinkButton> : null;
