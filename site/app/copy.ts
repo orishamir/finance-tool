@@ -1301,7 +1301,6 @@ export const computedInputs = {
   paidIn: "סך ההפקדות",
   realGain: "רווח ריאלי",
   taxRate: "שיעור המס",
-  taxAtExit: "מס במשיכה",
   /** The timeline's tax as an input of what is left: the whole of it, along the way and at the exit, as the figure it opens is named. */
   taxTotal: "כל המס",
   fees: "דמי ניהול",
