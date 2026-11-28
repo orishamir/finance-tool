@@ -44,7 +44,6 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "GOV-10",
       "REG-13"
     ],
     "state": "sourced",

@@ -214,8 +214,6 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "PF-23",
-      "PEN-17",
       "TXP-13",
       "TXP-32"
     ],
@@ -306,5 +304,9 @@
     "tax-at-exit": "blocked:PEN-OQ7",
     "tax-during": "covered",
     "transfer-switch-process": "covered"
-  }
+  },
+  "context_rule_ids": [
+    "PF-23",
+    "PEN-17"
+  ]
 }
