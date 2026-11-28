@@ -198,6 +198,9 @@ export const boughtInOf = (f: Pick<CustomFund, "tradesIn">): string | null => fo
 /** The foreign currency an answer to where the fund is bought names; null for the shekel, or none named. */
 export const boughtInAt = (at: BuyAt): string | null => foreignOf(BUY_AT[at].tradesIn);
 
+/** Whether an answer to where the fund is bought says the currency it is bought in; "abroad, not sure where" says none, and the index's stands in. */
+export const boughtInSaid = (at: BuyAt): boolean => BUY_AT[at].tradesIn !== null;
+
 /** Whether the country question is asked after this answer to where the fund is bought: where it leaves more than one country open. */
 export const asksCountry = (at: BuyAt | null): boolean => at === null || countriesAt(at).length > 1;
 

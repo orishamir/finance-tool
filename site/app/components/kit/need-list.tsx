@@ -2,18 +2,18 @@
 // narrow box the form's foot, which says where the calculation stands in one line, opens the list over it, and holds the save (`NeedBar`).
 import { useState, type ReactNode } from "react";
 import { kit as copy } from "../../copy";
-import { IconAlert, IconCheck, IconChevronUp, IconMinus } from "../icons";
+import { IconAlert, IconCheck, IconChevronUp, IconInfo, IconMinus } from "../icons";
 import { Button } from "./button";
 import { cx } from "./cx";
 
-/** Done; missing, so there is no result; or left out, so the result stands without it. */
-export type NeedState = "done" | "missing" | "left-out";
+/** Done; missing, so there is no result; left out, so the result stands without it; or not known, so something stands in for it. */
+export type NeedState = "done" | "missing" | "left-out" | "stand-in";
 
 export interface NeedItem {
   id: string;
   text: ReactNode;
   state: NeedState;
-  /** What the state leaves, after its word: why it is missing, or what is not counted. */
+  /** What the state leaves, after its word: why it is missing, what is not counted, or what stands in. */
   note?: ReactNode;
 }
 
@@ -21,6 +21,7 @@ const MARK: Record<NeedState, { icon: ReactNode; tone: string }> = {
   done: { icon: <IconCheck size={14} />, tone: "text-primary" },
   missing: { icon: <IconAlert size={14} />, tone: "text-destructive" },
   "left-out": { icon: <IconMinus size={14} />, tone: "text-caution-foreground" },
+  "stand-in": { icon: <IconInfo size={14} />, tone: "text-caution-foreground" },
 };
 
 /**

@@ -6,7 +6,7 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "rea
 import { Pencil } from "lucide-react";
 import { invest as root } from "../../copy";
 import type { FundRecord, ValueObject } from "@finance-tool/schema";
-import { asksCountry, boughtInAt, BUY_ABROAD, BUY_IN_ISRAEL, countriesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
+import { asksCountry, boughtInAt, boughtInSaid, BUY_ABROAD, BUY_IN_ISRAEL, countriesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { dividendTaxLabel, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { INDEX_REGIONS, type IndexFacts, type IndexRegion } from "../../lib/index-region";
 import { optionsOf, type CustomIndex, type IndexRef } from "../../lib/invest";
@@ -144,7 +144,7 @@ const pctCheck = percentCheck();
 const UNSURE = "unsure";
 
 /** What the panel says of the index: what was saved on it, as the person changes it here (the region, and the yield as typed). */
-interface FactsDraft {
+export interface FactsDraft {
   region: IndexRegion | null;
   yieldPct: number | null;
 }
@@ -191,24 +191,48 @@ const asksHedge = (index: IndexRef) => !index.israeli;
 /**
  * What the calculation needs, each item with its state, from the record the draft saves (`customFundGaps`, the reasons the page gives a
  * fund no price) and from the label of the tax inside the fund (`dividendTaxLabel`): what that label says is not counted, the checklist
- * says too.
+ * says too. A question answered "not sure" is never done: where the fund is still priced it says what stands in, and where the answer
+ * changes nothing the item is left out.
  */
 function needsOf(d: FundDraft, rec: FundRecord | null, index: IndexRef, seen: IndexRef): NeedItem[] {
   const w = c.needs;
   const gaps = rec ? customFundGaps(rec) : [];
   const item = (id: keyof typeof w.items, state: NeedState, note?: string): NeedItem => ({ id, text: w.items[id], state, ...(note ? { note } : {}) });
-  const out: NeedItem[] = [item("place", d.buyAt ? "done" : "missing")];
+  const tax = rec ? dividendTaxLabel(rec, seen) : null;
+  // no exchange named: the fund is priced on the exchange that leaves the least (F-65)
+  const anyExchange = rec?.exchange === "unknown";
+  const out: NeedItem[] = [!d.buyAt ? item("place", "missing") : boughtInSaid(d.buyAt) ? item("place", "done") : item("place", "stand-in", w.standIn.place(anyExchange))];
   out.push(item("fee", (rec ? gaps.includes("fee-unknown") : d.fixed === null) ? "missing" : "done"));
   out.push(item("payout", d.payout ? "done" : "missing"));
   if (d.payout === "distributing") out.push(item("yield", gaps.includes("need-yield") ? "missing" : "done"));
   if (!index.israeli && asksCountry(d.buyAt)) {
-    const tase = gaps.includes("tase-country-unknown");
-    out.push(item("country", tase || gaps.includes("domicile-unknown") ? "missing" : "done", tase ? w.taseCountry : undefined));
+    const country = countryNeed(d, gaps, tax, anyExchange);
+    if (country) out.push(item("country", country.state, country.note));
   }
   if (asksHedge(index)) out.push(d.hedged === true ? item("gap", "missing", w.gap) : item("hedge", d.hedged === null ? "missing" : "done"));
-  const tax = rec ? dividendTaxLabel(rec, seen) : null;
   if (tax) out.push(item("dividendTax", tax === "tax-fund-dividend" ? "done" : "left-out", w.dividendTax[tax]));
   return out;
+}
+
+/** The country item: missing where the fund has no price without it; "not sure" with what stands in, or none where it changes nothing. */
+function countryNeed(d: FundDraft, gaps: readonly string[], tax: string | null, anyExchange: boolean): { state: NeedState; note?: string } | null {
+  const w = c.needs;
+  if (gaps.includes("tase-country-unknown")) return { state: "missing", note: w.taseCountry };
+  if (gaps.includes("domicile-unknown")) return { state: "missing" };
+  if (d.country !== "unsure") return { state: "done" };
+  if (tax === "tax-fund-dividend-domicile") return { state: "stand-in", note: w.standIn.countryTax };
+  return anyExchange ? { state: "stand-in", note: w.standIn.countryExchange } : null;
+}
+
+/**
+ * What the panel shows beside the questions, from the draft as it stands: the index as the fund would see it, the record it would save, the
+ * checklist and where the calculation stands.
+ */
+export function panelStateOf(draft: FundDraft, index: IndexRef, facts: FactsDraft, today: string): { seen: IndexRef; rec: FundRecord | null; needs: NeedItem[]; status: keyof typeof c.status } {
+  const seen = seenBy(draft, index, facts, today);
+  const rec = draftRecord(draft, index, today);
+  const needs = needsOf(draft, rec, index, seen);
+  return { seen, rec, needs, status: statusOf(needs) };
 }
 
 /** Where the calculation stands: a missing item leaves the fund with no price; an item left out leaves a price without it. */
@@ -221,10 +245,7 @@ function FundPanel({ headId, index, fund, start, others, writable, onSave, onCan
   const [errors, setErrors] = useState<EntryError[]>([]);
   const form = useRef<HTMLDivElement>(null);
   const currencyOfIndex = index.exposure?.currency ?? null;
-  const seen = seenBy(draft, index, facts, today);
-  const rec = draftRecord(draft, index, today);
-  const needs = needsOf(draft, rec, index, seen);
-  const status = statusOf(needs);
+  const { seen, rec, needs, status } = panelStateOf(draft, index, facts, today);
   const save = (again: boolean) => {
     const d = now.current;
     const e = fundErrors(d, others, fund?.id ?? null);

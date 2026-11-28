@@ -934,7 +934,7 @@ in the kit fits is added to the kit.
   what its words name, the same way in every place.
 - `Step`, `StepStrip`: the steps of a page that builds something in order; once made and seldom changed, they fold into one `StepStrip`
   line.
-- `NeedList`, `NeedBar`: what a calculation needs while a form fills it, each item done, missing or left out with what that leaves; on a
+- `NeedList`, `NeedBar`: what a calculation needs while a form fills it, each item done, missing, left out or not known with what that leaves or what stands in; on a
   narrow box the form's foot holds the status, the list it opens and the save.
 - `AddLine`: what can be added to a list the person builds, as one quiet line under it; the one place a page speaks of what the list
   lacks.

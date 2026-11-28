@@ -3004,7 +3004,7 @@ function DealDemos({ today }: { today: string }) {
       </Demo>
       <Demo name="NeedList" use={g.uses.NeedList}>
         <div className="flex max-w-sm flex-col gap-4">
-          <NeedList items={[{ id: "a", text: g.sample.chip[0], state: "done" }, { id: "b", text: g.sample.chip[1], state: "missing" }, { id: "c", text: g.sample.chip[2], state: "left-out", note: g.sample.body }]} />
+          <NeedList items={[{ id: "a", text: g.sample.chip[0], state: "done" }, { id: "b", text: g.sample.chip[1], state: "missing" }, { id: "c", text: g.sample.chip[2], state: "left-out", note: g.sample.body }, { id: "d", text: g.sample.chip[3], state: "stand-in", note: g.sample.body }]} />
         </div>
       </Demo>
       <Demo name="NeedBar" use={g.uses.NeedBar}>

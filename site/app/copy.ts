@@ -4573,9 +4573,19 @@ export const invest = {
       dividendTax: {
         "tax-fund-dividend-left-out": "לאתר אין את תשואת הדיבידנד של המדד.",
         "tax-fund-dividend-need-yield": "חסרה תשואת הדיבידנד של המדד. אפשר להזין אותה בפרטים הנוספים.",
-        "tax-fund-dividend-not-us": "מס שמנוכה בחו״ל מהדיבידנדים של המניות.",
+        "tax-fund-dividend-not-us": "מס שמנוכה מהדיבידנדים של המניות במדד.",
         "tax-fund-dividend-us-share": "לא ידוע כמה מהמדד חברות אמריקניות.",
+        "tax-fund-dividend-tracking": "לא ידוע אם הקרן מחזיקה את המניות.",
+        "tax-fund-dividend-us-fund": "מס שמנוכה מהדיבידנדים של חברות מחוץ לארה״ב.",
+        "tax-fund-dividend-il-fund": "מס שמנוכה מהדיבידנדים של חברות מחוץ לישראל.",
+        "tax-fund-dividend-domicile": "המס תלוי גם במדינה שבה הקרן רשומה.",
       } as Record<string, string>,
+      /** Under an item answered "not sure" where the fund is still priced: what stands in for the answer. */
+      standIn: {
+        place: (anyExchange: boolean) => (anyExchange ? "החישוב במטבע של המדד, ובבורסה שמשאירה לכם פחות." : "החישוב במטבע של המדד."),
+        countryTax: "החישוב בלי מס הדיבידנד שבתוך הקרן.",
+        countryExchange: "החישוב בבורסה שמשאירה לכם פחות.",
+      },
       /** Under the country in Tel Aviv, not said. */
       taseCountry: "בבורסה בתל אביב המדינה קובעת אם זו קרן ישראלית או קרן חוץ.",
       /** Under the hedge when the fund is hedged: the field that would give it is not asked yet. */
@@ -5228,10 +5238,18 @@ export const invest = {
     "tax-fund-dividend-left-out": { text: "מס דיבידנד בקרן: לא נכלל", explain: "קרן אירית שמחזיקה את מניות המדד משלמת מס אמריקני על דיבידנדים מחברות אמריקניות, והמס הזה הוא עלות של הקרן. בקרן הזו האתר לא כולל אותו בחישוב: כדי לחשב אותו צריך את תשואת הדיבידנד של המדד, ולאתר אין נתון כזה למדד הזה. לכן העלות של הקרן גבוהה ממה שמוצג כאן." },
     /** On an index the person added, of US companies, with no yield typed (F-107 needs it). */
     "tax-fund-dividend-need-yield": { text: "מס דיבידנד בקרן: לא נכלל", explain: "קרן אירית שמחזיקה את מניות המדד משלמת מס אמריקני על דיבידנדים מחברות אמריקניות, והמס הזה הוא עלות של הקרן. האתר לא כולל אותו בחישוב, כי כדי לחשב אותו צריך את תשואת הדיבידנד של המדד. אפשר להזין אותה בעריכת הקרן, תחת ״עוד פרטים שמדייקים את החישוב״. בינתיים העלות של הקרן גבוהה ממה שמוצג כאן." },
-    /** On an index the person added whose companies are not in the United States: no rate of what their countries withhold is in the rule base. */
-    "tax-fund-dividend-not-us": { text: "מס דיבידנד בקרן: לא נכלל", explain: "מס שמנוכה בחו״ל מהדיבידנדים של המניות שהקרן מחזיקה הוא עלות של הקרן, ולא מזוכה בישראל. האתר לא כולל אותו בחישוב, כי לא מצא בכללים שקרא כמה מס מנוכה מהדיבידנדים של החברות במדד הזה. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
+    /** On an index the person added whose companies are not in the United States: the share of each country, and some rates, are not known. */
+    "tax-fund-dividend-not-us": { text: "מס דיבידנד בקרן: לא נכלל", explain: "מהדיבידנדים של המניות שהקרן מחזיקה מנוכה מס, בשיעור שתלוי במדינה של כל חברה. המס הזה הוא עלות של הקרן, ולא מזוכה בישראל: זו קריאה של האתר. האתר לא כולל אותו בחישוב, כי הוא לא יודע מה החלק של כל מדינה במדד, ולא לכל מדינה יש שיעור סגור. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
     /** On an index the person added whose share of US companies is not known (the whole world, or another place or not sure). */
-    "tax-fund-dividend-us-share": { text: "מס דיבידנד בקרן: לא נכלל", explain: "קרן אירית שמחזיקה את מניות המדד משלמת מס אמריקני על דיבידנדים מחברות אמריקניות, והמס הזה הוא עלות של הקרן. האתר לא כולל אותו בחישוב, כי לא ידוע כמה מהמדד הן חברות אמריקניות. גם מס שמנוכה במדינות אחרות לא נכלל, כי האתר לא מצא בכללים שקרא כמה הוא. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
+    "tax-fund-dividend-us-share": { text: "מס דיבידנד בקרן: לא נכלל", explain: "קרן אירית שמחזיקה את מניות המדד משלמת מס אמריקני על דיבידנדים מחברות אמריקניות, והמס הזה הוא עלות של הקרן. האתר לא כולל אותו בחישוב, כי לא ידוע כמה מהמדד הן חברות אמריקניות. גם מס שמנוכה מדיבידנדים של חברות ממדינות אחרות לא נכלל: האתר לא יודע מה החלק של כל מדינה במדד, ולא לכל מדינה יש שיעור סגור. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
+    /** A typed Irish fund whose way of following its index was not said: it may hold the shares. */
+    "tax-fund-dividend-tracking": { text: "מס דיבידנד בקרן: לא נכלל", explain: "לא בחרתם איך הקרן עוקבת אחרי המדד. אם היא מחזיקה את המניות, מנוכה מס מהדיבידנדים שלהן, בשיעור שתלוי במדינה של כל חברה. המס הזה הוא עלות של הקרן, ולא מזוכה בישראל: זו קריאה של האתר. האתר לא כולל אותו בחישוב. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
+    /** A typed US fund that may hold shares of companies outside the United States. */
+    "tax-fund-dividend-us-fund": { text: "מס דיבידנד בקרן: לא נכלל", explain: "מהדיבידנדים של חברות מחוץ לארה״ב שהקרן מחזיקה מנוכה מס, בשיעור שתלוי במדינה של כל חברה. המס הזה הוא עלות של הקרן, ולא מזוכה בישראל: זו קריאה של האתר. האתר לא כולל אותו בחישוב, כי הוא לא יודע מה החלק של כל מדינה במדד, ולא לכל מדינה יש שיעור סגור. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
+    /** A typed Israeli fund that may hold shares of companies outside Israel. */
+    "tax-fund-dividend-il-fund": { text: "מס דיבידנד בקרן: לא נכלל", explain: "קרן ישראלית שמחזיקה מניות של חברות מחוץ לישראל משלמת מס על הדיבידנדים שלהן, בשיעור שתלוי במדינה של כל חברה. המס הזה הוא עלות של הקרן, ולא מזוכה בישראל: זו קריאה של האתר. האתר לא כולל אותו בחישוב: לא סגור אם קרן ישראלית מקבלת את השיעור המופחת של אמנה, ולא בכל מדד ידוע לאתר מה החלק של כל מדינה. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
+    /** A typed foreign fund of another country, or of a country not said, that may hold the shares. */
+    "tax-fund-dividend-domicile": { text: "מס דיבידנד בקרן: לא נכלל", explain: "קרן שמחזיקה מניות משלמת מס על הדיבידנדים שלהן, בשיעור שתלוי במדינה של כל חברה ובמדינה שבה הקרן רשומה. המס הזה הוא עלות של הקרן, ולא מזוכה בישראל: זו קריאה של האתר. האתר לא כולל אותו בחישוב: החישוב כולל רק את המס האמריקני בתוך קרן אירית, והקרן הזו לא רשומה באירלנד או בארה״ב, או שלא בחרתם איפה היא רשומה. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
     "tax-distribution": { text: "מס על כל חלוקה", explain: "קרן שמחלקת משלמת לכם דיבידנד, וממנו משלמים מס בכל חלוקה, לפני המכירה." },
     "pays-accumulating": { text: "צוברת", explain: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש." },
     "pays-distributing": { text: "מחלקת דיבידנד", explain: "הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל." },
@@ -5374,7 +5392,7 @@ export const kit = {
   /** Said with a step's check (kit Step), so a done step is not told by its colour alone. */
   stepDone: "הושלם",
   /** A checklist's item, by its state (kit NeedList), so a state is never its mark alone. */
-  needStates: { done: "יש", missing: "חסר", "left-out": "לא נכלל" },
+  needStates: { done: "יש", missing: "חסר", "left-out": "לא נכלל", "stand-in": "לא ידוע" },
   /**
    * A price list's date line (kit TariffDate): what the document prints, never only that something is missing (copy.md 3,
    * "Say what the source gives"). `checked` follows a line whose document prints no usable date, where the page shows no other day: the day the site collected the

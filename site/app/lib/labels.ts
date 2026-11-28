@@ -8,7 +8,8 @@ import { currencyWord, invest as c } from "../copy";
 import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
 import { assertNever, isShekel } from "@finance-tool/schema";
-import { typedDividendTax, type TypedDividendTax } from "./index-region";
+import { isCustomFund } from "./custom-entries";
+import { typedDividendTax, type IndexRegion, type TypedDividendTax } from "./index-region";
 
 /** The engine's fund kind for an option's funds (F-04). */
 const OPTION_KIND = { "il-tracking": "israeli-fund", "il-etf": "israeli-fund", "tase-foreign": "tase-foreign-fund", abroad: "foreign-fund" } as const satisfies Record<OptionId, string>;
@@ -49,6 +50,10 @@ type LabelId =
   | "tax-fund-dividend-need-yield"
   | "tax-fund-dividend-not-us"
   | "tax-fund-dividend-us-share"
+  | "tax-fund-dividend-tracking"
+  | "tax-fund-dividend-us-fund"
+  | "tax-fund-dividend-il-fund"
+  | "tax-fund-dividend-domicile"
   | "tax-distribution"
   | "tax-on-sale-ruling"
   | "tax-index-currency"
@@ -92,6 +97,10 @@ export const labelDefs: Record<RuleLabelId, LabelDef> = {
   "tax-fund-dividend-need-yield": { icon: "badgePercent", tone: "open", rules: ["TXF-16"] },
   "tax-fund-dividend-not-us": { icon: "badgePercent", tone: "open", rules: ["TXF-16"] },
   "tax-fund-dividend-us-share": { icon: "badgePercent", tone: "open", rules: ["TXF-16"] },
+  "tax-fund-dividend-tracking": { icon: "badgePercent", tone: "open", rules: ["TXF-54", "TXF-16"] },
+  "tax-fund-dividend-us-fund": { icon: "badgePercent", tone: "open", rules: ["TXF-56", "TXF-16"] },
+  "tax-fund-dividend-il-fund": { icon: "badgePercent", tone: "open", rules: ["TXF-57"] },
+  "tax-fund-dividend-domicile": { icon: "badgePercent", tone: "open", rules: ["TXF-53", "TXF-16"] },
   "tax-distribution": { icon: "percent", tone: "neutral", rules: ["TXF-08", "TXS-10"] },
   "tax-on-sale-ruling": { icon: "gavel", tone: "neutral", rules: ["TXF-11"] },
   "pays-accumulating": { icon: "piggy", tone: "neutral", rules: ["MF-49"] },
@@ -159,6 +168,10 @@ const familyOf: Record<RuleLabelId, Label["family"]> = {
   "tax-fund-dividend-need-yield": "tax",
   "tax-fund-dividend-not-us": "tax",
   "tax-fund-dividend-us-share": "tax",
+  "tax-fund-dividend-tracking": "tax",
+  "tax-fund-dividend-us-fund": "tax",
+  "tax-fund-dividend-il-fund": "tax",
+  "tax-fund-dividend-domicile": "tax",
   "tax-distribution": "tax",
   "tax-on-sale-ruling": "tax",
   "pays-accumulating": "payout",
@@ -260,20 +273,62 @@ export type DividendTaxLabelId = Extract<RuleLabelId, `tax-fund-dividend${string
 const TYPED_DIVIDEND_TAX = { counted: "tax-fund-dividend", "need-yield": "tax-fund-dividend-need-yield", "not-us": "tax-fund-dividend-not-us", "us-share-unknown": "tax-fund-dividend-us-share" } as const satisfies Record<TypedDividendTax, DividendTaxLabelId>;
 
 /**
- * The label of the tax inside an Irish fund that holds its index's shares (TXF-16, F-107), or that gives its own figure for it; null for any
- * other fund. F-107 works the US tax out from the dividend yield of the index's US shares. A figure of the fund's own, or a published
- * 12-month gap, which may hold the tax already, stands in for it. On a collected index whose record holds no yield (its provider prints
- * none) the fund's figure holds none of this tax. On an index the person added it is counted where they said its companies are in the
- * United States and typed its yield; elsewhere the label says what is not counted: the yield, the tax the countries of a non-US index
- * withhold (no rate of it is in the rule base), or the US tax on an index whose US share is not known. The panel's checklist says the same
- * from the same label.
+ * The label of the tax inside a fund on its shares' dividends (TXF-16, F-107): counted, or what is not counted; null where the fund bears
+ * none. A collected fund carries one where it is Irish and holds its index's shares, or gives its own figure for the tax. A fund the person
+ * typed carries one wherever it may bear such a tax (`typedDividendTaxLabel`). The panel's checklist says the same from the same label.
  */
 export function dividendTaxLabel(rec: FundRecord, index: IndexRef): DividendTaxLabelId | null {
+  if (isCustomFund(rec)) return typedDividendTaxLabel(rec, index);
   const own = typeof rec.fees.fund_level_withholding_drag?.value === "number";
-  if (rec.domicile !== "IE" || (rec.replication?.method !== "physical" && !own)) return null;
-  if (own || typeof rec.fees.tracking_difference_12m?.value === "number") return "tax-fund-dividend";
+  return rec.domicile === "IE" && (rec.replication?.method === "physical" || own) ? irishDividendTaxLabel(rec, index) : null;
+}
+
+/**
+ * An Irish fund that holds its index's shares. F-107 works the US tax out from the dividend yield of the index's US shares. A figure of the
+ * fund's own, or a published 12-month gap, which may hold the tax already, stands in for it. On a collected index whose record holds no
+ * yield (its provider prints none) the fund's figure holds none of this tax. On an index the person added it is counted where they said its
+ * companies are in the United States and typed its yield; elsewhere the label says what is not counted: the yield, the tax withheld from
+ * the dividends of an index of no US companies, or the US tax on an index whose US share is not known.
+ */
+function irishDividendTaxLabel(rec: FundRecord, index: IndexRef): DividendTaxLabelId {
+  if (typeof rec.fees.fund_level_withholding_drag?.value === "number" || typeof rec.fees.tracking_difference_12m?.value === "number") return "tax-fund-dividend";
   if (index.custom) return TYPED_DIVIDEND_TAX[typedDividendTax(index.custom)];
   return index.exposure && usDividendsOf(index.exposure) !== undefined ? "tax-fund-dividend" : "tax-fund-dividend-left-out";
+}
+
+/**
+ * A fund the person typed bears tax on the dividends of the shares it holds, withheld by each company's country at a rate that turns on the
+ * fund's own country (TXF-53 to TXF-57). The run counts only F-107's, the US tax inside an Irish fund that holds the shares. Wherever else
+ * the fund may bear such a tax its label says it is not counted, never zero (D56): a fund that follows its index through a swap or futures
+ * holds no shares and bears none; one whose way is not said may hold them. A US fund bears none on US companies (TXF-56), and an Israeli
+ * one is not labelled on Israeli companies; a fund whose country is another, or not said, may bear it on any.
+ */
+function typedDividendTaxLabel(rec: FundRecord, index: IndexRef): DividendTaxLabelId | null {
+  const method = rec.replication?.method;
+  if (method === "swap" || method === "futures") return null;
+  const where = companiesOf(index);
+  switch (rec.domicile) {
+    case "IE":
+      return method === "physical" ? irishDividendTaxLabel(rec, index) : "tax-fund-dividend-tracking";
+    case "US":
+      return where === "us" ? null : "tax-fund-dividend-us-fund";
+    case "IL":
+      return where === "israel" ? null : "tax-fund-dividend-il-fund";
+    default:
+      return "tax-fund-dividend-domicile";
+  }
+}
+
+/**
+ * Where an index's companies are, as far as the site knows: on an index the person added, where they said (`IndexFacts.region`); on a
+ * collected one, Israel where its record says so, the United States where it gives the yield of US shares that are the whole index (F-107's
+ * `us_dividends` with no weight), else not known.
+ */
+function companiesOf(index: IndexRef): IndexRegion {
+  if (index.custom) return index.custom.region ?? "other";
+  if (index.exposure?.constituents_israeli === true || (!index.exposure && index.israeli)) return "israel";
+  const us = index.exposure?.us_dividends;
+  return us && !us.weight ? "us" : "other";
 }
 
 /**

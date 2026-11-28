@@ -5,11 +5,12 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { countriesAt, customFundGaps, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, recordOfFund, validCustomFunds, withCustomEntries, type BuyAt, type CustomFund, type CountryAnswer } from "./custom-entries";
+import { countriesAt, customFundGaps, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, recordOfFund, validCustomFunds, withCustomEntries, type BuyAt, type CustomFund, type CountryAnswer, type FundDraft, type FundTracking } from "./custom-entries";
 import type { CustomIndex } from "./invest";
 import { fundWayAt, indexById, indexSeenBy, pairCosts, refOfCustom, type FundWay, type WayPrice } from "./invest";
-import { dividendTaxLabel, fundLabels } from "./labels";
+import { dividendTaxLabel, fundLabels, labelDefs } from "./labels";
 import { invest as copy } from "../copy";
+import { panelStateOf } from "../components/invest/custom-entries";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { validCustomIndices } from "./state";
@@ -219,5 +220,92 @@ describe("a saved entry that is not the shape the panel saves never breaks the p
     expect(junk).toEqual({ id: "custom-b", name: "ב", added: t });
     expect(kept?.region).toBe("europe");
     expect(kept?.dividendYield?.value).toBe(2.5);
+  });
+});
+
+describe("wherever a typed fund may bear dividend tax inside it that the run does not count, its label and checklist say so (D56, F-107, TXF-53 to TXF-57)", () => {
+  const ref = (id: string) => must(indexById(bundle, id), id);
+  const labelOn = (f: CustomFund, index = ref(SP)) => dividendTaxLabel(must(withCustomEntries(bundle, [f]).funds.at(-1), "the record"), index);
+  const tracked = (buyAt: BuyAt, country: CountryAnswer, tracking: FundTracking | null, indexId = SP) => fundAt(buyAt, country, { tracking }, indexId, `custom-fund-${buyAt}-${country}-${tracking ?? "unsaid"}`.toLowerCase());
+
+  it("an Irish fund whose way of following its index is not said may hold the shares: not counted, and its run counts no tax a swap fund's does not", () => {
+    const unsaid = tracked("europe-usd", "IE", null);
+    const swap = tracked("europe-usd", "IE", "swap");
+    expect(labelOn(unsaid)).toBe("tax-fund-dividend-tracking");
+    expect(labelOn(swap)).toBeNull();
+    const b = withCustomEntries(bundle, [unsaid, swap]);
+    const sp = ref(SP);
+    const values = (f: CustomFund) => priced(must(fundWayAt({ bundle: b, index: sp, plan, fundId: f.id }), f.id)).map(([h, at]) => [h, at.valueN]);
+    expect(values(unsaid).length).toBeGreaterThan(0);
+    expect(values(unsaid)).toEqual(values(swap));
+  });
+
+  it("a fund bought abroad whose country is not said, holding the shares or maybe: not counted", () => {
+    for (const tracking of ["physical", null] as const) expect(labelOn(tracked("abroad", "unsure", tracking))).toBe("tax-fund-dividend-domicile");
+    expect(labelOn(tracked("abroad", "unsure", "futures"))).toBeNull();
+  });
+
+  it("a US fund bears none on US companies, and may on any other's (TXF-56)", () => {
+    expect(labelOn(tracked("us-usd", "US", "physical"))).toBeNull();
+    expect(labelOn(tracked("us-usd", "US", "physical", "index-msci-world"), ref("index-msci-world"))).toBe("tax-fund-dividend-us-fund");
+    const europe: CustomIndex = { id: "custom-europe", name: "MSCI Europe", added: t, region: "europe" };
+    const f = tracked("us-usd", "US", null, europe.id);
+    expect(dividendTaxLabel(must(withCustomEntries(bundle, [f], [europe]).funds.at(-1), "the record"), refOfCustom(europe))).toBe("tax-fund-dividend-us-fund");
+  });
+
+  it("an Israeli fund that may hold foreign shares: not counted (TXF-57); on Israeli companies, or through a swap, no label", () => {
+    expect(labelOn(tracked("tase", "IL", null))).toBe("tax-fund-dividend-il-fund");
+    expect(labelOn(tracked("manager", "IL", "physical"))).toBe("tax-fund-dividend-il-fund");
+    expect(labelOn(tracked("tase", "IL", "swap"))).toBeNull();
+    expect(labelOn(tracked("manager", "IL", "physical", "index-ta125"), ref("index-ta125"))).toBeNull();
+  });
+
+  it("each label not counted is an open tax label that says so in words and states no rate", () => {
+    for (const id of ["tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"] as const) {
+      expect(labelDefs[id].tone).toBe("open");
+      expect(copy.labels[id].text).toBe(copy.labels["tax-fund-dividend-left-out"].text);
+      expect(copy.labels[id].explain).not.toMatch(/\d+(\.\d+)?%/);
+    }
+  });
+
+  it("on an index of Israeli companies the label of what is not counted says nothing of tax withheld abroad", () => {
+    const israel: CustomIndex = { id: "custom-israel", name: "ת״א", added: t, region: "israel" };
+    const f = tracked("europe-usd", "IE", "physical", israel.id);
+    const rec = must(withCustomEntries(bundle, [f], [israel]).funds.at(-1), "the record");
+    const l = must(fundLabels(rec, refOfCustom(israel), "abroad").find((x) => x.id === "tax-fund-dividend-not-us"), "the label");
+    expect(l.explain).not.toContain("בחו״ל");
+    expect(copy.customEntries.needs.dividendTax["tax-fund-dividend-not-us"]).not.toContain("בחו״ל");
+  });
+});
+
+describe("the panel's checklist: an answer not given is never done (D56)", () => {
+  const facts = { region: null, yieldPct: null };
+  const draftOf = (buyAt: BuyAt, country: CountryAnswer, more: Partial<FundDraft> = {}): FundDraft => ({ ...fundDraftOf(null, { buyAt, country }), name: "קרן", fixed: 0.07, payout: "accumulating", hedged: false, ...more });
+  const stateOf = (d: FundDraft, index = must(indexById(bundle, SP), "S&P 500")) => panelStateOf(d, index, facts, t);
+  const itemOf = (d: FundDraft, id: string) => stateOf(d).needs.find((x) => x.id === id);
+
+  it("a fund bought abroad with its country not said, that may hold the shares, is priced without the dividend tax inside it", () => {
+    const s = stateOf(draftOf("us-usd", "unsure", { tracking: "physical" }));
+    expect(s.status).toBe("left-out");
+    expect(s.needs.find((x) => x.id === "dividendTax")?.state).toBe("left-out");
+    expect(s.needs.find((x) => x.id === "country")).toMatchObject({ state: "stand-in", note: copy.customEntries.needs.standIn.countryTax });
+  });
+
+  it("an Irish fund whose way of following the index is not said is priced without it too", () => {
+    expect(stateOf(draftOf("europe-usd", "IE")).status).toBe("left-out");
+    expect(stateOf(draftOf("europe-usd", "IE", { tracking: "swap" })).status).toBe("ok");
+  });
+
+  it("abroad, not sure where: the place says what stands in for the currency and the exchange", () => {
+    expect(itemOf(draftOf("abroad", "IE", { tracking: "swap" }), "place")).toMatchObject({ state: "stand-in", note: copy.customEntries.needs.standIn.place(true) });
+    expect(itemOf(draftOf("abroad", "US", { tracking: "swap" }), "place")).toMatchObject({ state: "stand-in", note: copy.customEntries.needs.standIn.place(false) });
+    expect(itemOf(draftOf("us-usd", "IE", { tracking: "swap" }), "place")?.state).toBe("done");
+  });
+
+  it("a country not said is missing in Tel Aviv, and left out where it changes nothing", () => {
+    expect(itemOf(draftOf("tase", "unsure"), "country")?.state).toBe("missing");
+    expect(itemOf(draftOf("tase", "other", { tracking: "swap" }), "country")?.state).toBe("done");
+    expect(itemOf(draftOf("us-usd", "unsure", { tracking: "swap" }), "country")).toBeUndefined();
+    expect(itemOf(draftOf("abroad", "unsure", { tracking: "swap" }), "country")).toMatchObject({ state: "stand-in", note: copy.customEntries.needs.standIn.countryExchange });
   });
 });

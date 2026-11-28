@@ -1,6 +1,7 @@
 // What the person says of an index they added (D44): where its companies are, and its dividend yield. One answer per index, shown to every
-// fund on it. They feed the one rule the rule base has that turns on them, F-107 (the US tax inside an Irish fund that holds the index's
-// shares): no other country's withholding is in the rule base, so no other region carries a rate.
+// fund on it. They feed the one tax inside a fund the run counts, F-107 (the US tax inside an Irish fund that holds the index's shares).
+// Other countries' withholding is in the rule base (TXF-53 to TXF-57), but no region carries a rate: the site does not know which countries
+// an index's companies are in or in what share, and several of those rates are not settled.
 //
 // No runtime import of invest.ts: state.ts reads this file on every page.
 import type { ExposureRecord, ValueObject } from "@finance-tool/schema";
@@ -25,8 +26,8 @@ export interface IndexFacts {
 
 /**
  * How F-107 stands for an Irish fund that holds the shares of an index the person added: counted (US companies and a yield typed), or why
- * not: the yield is missing, the index has no US companies (the tax its countries withhold is not in the rule base), or their share is not
- * known.
+ * not: the yield is missing, the index has no US companies (what its countries withhold is not counted: their shares are not known, and
+ * several rates are not settled), or their share is not known.
  */
 export type TypedDividendTax = "counted" | "need-yield" | "not-us" | "us-share-unknown";
 
