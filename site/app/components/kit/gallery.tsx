@@ -865,7 +865,8 @@ function WorkedStates({ today }: { today: string }) {
 
 /**
  * CatchMark's states: calculated figures, plain in the ink around them, with the caution "?" only where they carry a catch (a doubt, a weak
- * input, a flag), held to the figure's last digit in a narrow column; a difference whose catch is its input's carries none.
+ * input, a flag, a caveat), held to the figure's last digit in a narrow column; a difference whose catch is its input's carries none; a
+ * figure whose source's terms require a line beside it, drawn as a sourced one; and a column whose figures share a flag, said in its head.
  */
 function CatchStates({ today }: { today: string }) {
   const s = samples(today);
@@ -874,6 +875,9 @@ function CatchStates({ today }: { today: string }) {
   const weak = computed(1900, "nis", "F-08", { [g.sampleAbout]: weakInput }, { today, about: g.sampleAbout });
   const flagged = computed(2100, "nis", "F-08", { [g.sampleAbout]: s.sourced }, { today, about: g.sampleAbout, flags: ["G-14"] });
   const carried = differenceOf([g.sample.barA, flagged], [g.sample.barB, s.sourced], "F-08", { today, about: g.sample.diff });
+  const caveated = computed(1700, "nis", "F-21", { [g.sampleAbout]: s.sourced }, { today, about: g.sampleAbout, caveat: g.sample.caveat });
+  const obliged: SiteValue = { ...computed(3.62, "nis", "F-84", { [g.sampleAbout]: s.sourced }, { today, about: g.sampleAbout }), obligation: g.sample.obligation };
+  const column = [1, 2, 3].map((i) => computed(100 * i, "nis", "F-08", { [g.sampleAbout]: s.sourced }, { today, about: g.sampleAbout, flags: i === 3 ? ["G-14", "G-23"] : ["G-14"] }));
   return (
     <Grid>
       <State label="no catch: plain digits in the ink around them, nothing to tap">
@@ -892,6 +896,19 @@ function CatchStates({ today }: { today: string }) {
       </State>
       <State label="a difference whose only catch is its input's flag: no '?', since the input shows it where it stands">
         <p className="text-sm"><Num value={carried} /></p>
+      </State>
+      <State label="a caveat, an assumption the value rests on: a catch of its own, its sentence in the sheet">
+        <p className="text-sm"><Num value={caveated} /></p>
+      </State>
+      <State label="a line the source's terms require (obligation): drawn as a sourced figure, its sheet shows its sources and that line">
+        <p className="text-sm"><Num value={obliged} /></p>
+      </State>
+      <State label="a column whose every figure carries one flag: the '?' once in its head, the cells keep only what is theirs" wide>
+        <ChartTable
+          rowHead={g.sample.yearWord}
+          columns={[{ id: "f", head: g.sample.column, figures: { name: g.sample.column, values: column } }]}
+          rows={column.map((v, i) => ({ key: i, head: i + 1, cells: [<Num key="f" size="cell" value={v} />] }))}
+        />
       </State>
     </Grid>
   );

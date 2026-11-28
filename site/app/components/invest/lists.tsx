@@ -26,7 +26,7 @@ import { dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWa
 import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
 import { priced, scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
-import { Num } from "../provenance";
+import { CatchesSaid, ListCatchMark, Num, useSharedCatches, type Catch } from "../provenance";
 import { AlsoChanged, Button, Disclosure, HelpMark, MixedName, PickList, StretchBar, StretchChart, Tag, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot, type StretchTone } from "../kit";
 import { AddEntryButton, FundEditMark } from "./custom-entries";
 import { AddDealButton, DealEditMark, DealMissing, DeletedLine, NotMovedLines, TermsMark, useDealAccounts } from "./deal-account";
@@ -60,13 +60,24 @@ export interface ListsProps {
   above?: RefObject<HTMLElement | null>;
 }
 
-/** A list's figure column named at its end; the items' column has no name, since the side's title above already says what they are. */
-function Head({ figure, lead }: { figure: string; lead?: ReactNode }) {
+/**
+ * A list's figure column named at its end; the items' column has no name, since the side's title above already says what they are. A catch
+ * every row's figure carries is said once, by a caution "?" after the name (`catches`, `ListCatchMark`).
+ */
+function Head({ figure, lead, catches = [] }: { figure: string; lead?: ReactNode; catches?: readonly Catch[] }) {
   // `lead`: a heading on the head's own row, at its start, level with the figure's name
   return (
     <span className={cx("col-span-full flex gap-3", lead ? "items-center justify-between" : "items-end justify-end")}>
       {lead}
-      <span className="text-end whitespace-nowrap">{figure}</span>
+      <span className="text-end whitespace-nowrap">
+        {figure}
+        {catches.length > 0 && (
+          <>
+            {" "}
+            <ListCatchMark catches={catches} name={figure} scope="column" />
+          </>
+        )}
+      </span>
     </span>
   );
 }
@@ -113,6 +124,7 @@ function backAndFocus(button: HTMLElement, back: () => void) {
 export function PairLists(props: ListsProps) {
   const { view, bundle, plan, livePlan, today, pick, chosen, onPick, moved, ruler = false, above } = props;
   const dealApi = useDealAccounts();
+  const shared = useSharedCatches();
   const sp = c.shownPair(chosen);
   const funds = allFunds(view);
   const [unpricedOpen, setUnpricedOpen] = useState(false);
@@ -256,6 +268,14 @@ export function PairLists(props: ListsProps) {
       };
     }),
   ];
+  // the figure each ranked account's row shows (the chosen one shows a word): a catch all of them carry is said once, in the list's head
+  const accountCatches = shared(
+    pricedHouses.map((p) => {
+      const s = stretches.get(p.id);
+      const best = s && p.id !== pick.house ? funds.find((f) => f.rec.id === s.bestFund)?.byHouse[p.id] : undefined;
+      return priced(best) ? best.value : null;
+    }),
+  );
   // a deal just deleted from the popup is said where its row stood (G): over the row now at its place, or after the ranked rows
   const deleted = dealApi?.deleted;
   if (deleted) {
@@ -493,15 +513,17 @@ export function PairLists(props: ListsProps) {
   );
   const accountsList = (
     <div>
-      <PickList
-        look="line"
-        tone="account"
-        label={c.pair.listLabelAccounts}
-        anchor={ANCHOR.accounts}
-        columns={columnsAcc}
-        head={<Head figure={c.lists.colLeft} />}
-        rows={accountRows}
-      />
+      <CatchesSaid catches={accountCatches}>
+        <PickList
+          look="line"
+          tone="account"
+          label={c.pair.listLabelAccounts}
+          anchor={ANCHOR.accounts}
+          columns={columnsAcc}
+          head={<Head figure={c.lists.colLeft} catches={accountCatches} />}
+          rows={accountRows}
+        />
+      </CatchesSaid>
     </div>
   );
   const accountsFoot = (

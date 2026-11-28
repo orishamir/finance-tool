@@ -5,6 +5,7 @@ import { useContext, useState, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link, useLocation } from "react-router";
 import { assertNever, type RuleRecord } from "@finance-tool/schema";
+import type { FundStatement } from "@finance-tool/engine";
 import { buttons, computedInputs, flags as flagCopy, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { ownFigures, spanWords } from "../lib/rule-row";
@@ -161,6 +162,8 @@ export function SheetContent({ item, data, headId, descId }: { item: Item; data:
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
       {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} rules={item.rules} parts={item.parts} data={data} headId={headId} />}
       {item.kind === "catch" && <CatchSheet value={item.value} catches={item.catches} exact={!!item.exact} display={item.display} data={data} headId={headId} descId={descId} />}
+      {item.kind === "list-catch" && <ListCatchSheet name={item.name} scope={item.scope} catches={item.catches} data={data} headId={headId} descId={descId} />}
+      {item.kind === "obliged" && <ObligedSheet value={item.value} catches={item.catches} exact={!!item.exact} display={item.display} data={data} headId={headId} descId={descId} />}
       {item.kind === "question" && <QuestionSheet id={item.id} data={data} headId={headId} />}
       {item.kind === "proof" && <ProofSheet id={item.id} headId={headId} />}
       {item.kind === "proofs" && <ProofsListSheet ids={item.ids} headId={headId} />}
@@ -464,21 +467,19 @@ function AheadLine({ from }: { from: string }) {
 
 /**
  * The doubt about a figure (SiteValue.doubt), the record's own or the site's reading of an open rule, with the rules it rests on: a doubt
- * carried from the inputs names them, as the weak inputs are named, and each input's own sheet says the doubt in words.
+ * carried from the inputs names them (`from`, by their keys), as the weak inputs are named, and each input's own sheet says the doubt in words.
  */
-function DoubtCallout({ value }: { value: SiteValue }) {
-  if (!value.doubt) return null;
+function DoubtCallout({ doubt, rules, from }: { doubt: string; rules: readonly string[]; from?: readonly string[] | undefined }) {
   return (
     <Callout tone="caution" title={numbers.doubt}>
-      {value.doubtFrom ? `${copy.computed.doubtedInputs} ${value.doubtFrom.map(inputName).join(" · ")}` : <PrintedText text={value.doubt} />}
-      {value.doubtRules && <RuleTitleList ids={value.doubtRules} className="mt-1.5" />}
+      {from ? `${copy.computed.doubtedInputs} ${from.map(inputName).join(" · ")}` : <PrintedText text={doubt} />}
+      {rules.length > 0 && <RuleTitleList ids={rules} className="mt-1.5" />}
     </Callout>
   );
 }
 
-/** A weak or open strength, said once: what it means, and for an open value the question it waits on, named in its source or notes ("TXI OQ19"). */
-function StrengthNote({ value, strength }: { value: SiteValue; strength: "institution" | "secondary" | "open" }) {
-  const question = isOpenValue(value) ? openQuestionOf(value) : null;
+/** A weak or open strength, said once: what it means, and for an open value the question it waits on (`openQuestionOf`, "TXI OQ19"). */
+function StrengthNote({ strength, question = null }: { strength: "institution" | "secondary" | "open"; question?: string | null }) {
   return (
     <Callout tone={strength === "open" ? "blocked" : "caution"} title={strengthCopy[strength].label}>
       {strengthCopy[strength].line}
@@ -536,32 +537,138 @@ function AllRulesLink({ value, data }: { value: SiteValue; data: ProvenanceData 
 
 /**
  * The sheet a calculated figure's caution "?" opens: the figure in plain ink and what it is, then only its catches (provenance `catchesOf`,
- * as the figure's place decided them), each as a sourced figure's sheet says it, and the way to the rules. The weak inputs are named, each
- * with its figure, which opens its own sheet with its source.
+ * as the figure's place decided them), each as a sourced figure's sheet says it, the fund's own statements it rests on, and the way to the
+ * rules. The weak inputs are named, each with its figure, which opens its own sheet with its source.
  */
 export function CatchSheet({ value, catches, exact, display, data, headId, descId }: { value: SiteValue; catches: readonly Catch[]; exact: boolean; display?: string; data: ProvenanceData; headId: string; descId: string }) {
   return (
     <div className="flex flex-col gap-3.5">
       <FigureHead value={value} text={headText(value, exact, display)} ink={false} headId={headId} descId={descId} />
       {catches.map((c) => (
-        <CatchPart key={c.kind} c={c} value={value} data={data} />
+        <CatchPart key={c.kind} c={c} data={data} />
       ))}
+      <Statements statements={value.statements ?? []} />
       <AllRulesLink value={value} data={data} />
     </div>
   );
 }
 
+/**
+ * The sheet of the caution "?" that says once what every calculated figure of a list carries (provenance `ListCatchMark`): what the figures
+ * are, that it holds for each of them, then the catches as a figure's own sheet says them, and the way to the rules.
+ */
+function ListCatchSheet({ name, scope, catches, data, headId, descId }: { name: string; scope: "column" | "list"; catches: readonly Catch[]; data: ProvenanceData; headId: string; descId: string }) {
+  return (
+    <div className="flex flex-col gap-3.5">
+      <header className="flex flex-col gap-1">
+        <h2 id={headId} className="text-lg font-semibold">{name}</h2>
+        <p id={descId} className="text-sm text-muted-foreground">{copy.computed.listCatch[scope]}</p>
+      </header>
+      {catches.map((c) => (
+        <CatchPart key={c.kind} c={c} data={data} />
+      ))}
+      {data.rulesOf ? <LinkButton to={data.rulesOf.href}>{copy.allRulesOf} {data.rulesOf.name}</LinkButton> : <LinkButton to="/rules">{buttons.allRules}</LinkButton>}
+    </div>
+  );
+}
+
+/**
+ * The sheet of a calculated figure whose sources' terms require a line beside them (`SiteValue.obligation`, the ECB's attribution): the
+ * figure in the sourced ink and what it is, its catches, each source its figures come from with their date, then that line, which no
+ * place may leave out.
+ */
+function ObligedSheet({ value, catches, exact, display, data, headId, descId }: { value: SiteValue; catches: readonly Catch[]; exact: boolean; display?: string; data: ProvenanceData; headId: string; descId: string }) {
+  // each source once, with the first input's figure that cites it: the ECB's two rates come from one file of one day
+  const bySource = new Map<string, SiteValue>();
+  for (const input of Object.values((value.computed_from?.inputs ?? {}) as Record<string, SiteValue>)) if (input.state === "sourced" && !bySource.has(input.source.url)) bySource.set(input.source.url, input);
+  return (
+    <div className="flex flex-col gap-3.5">
+      <FigureHead value={{ ...value, state: "sourced" }} text={headText(value, exact, display)} ink headId={headId} descId={descId} />
+      {value.lead && <p className="text-sm">{value.lead}</p>}
+      {catches.map((c) => (
+        <CatchPart key={c.kind} c={c} data={data} />
+      ))}
+      {bySource.size > 0 && (
+        <div className="flex flex-col gap-1.5">
+          <span className="text-sm text-muted-foreground">{copy.computed.obliged.sources}</span>
+          {[...bySource.values()].map((input) => (
+            <div key={input.source.url} className="flex flex-col gap-1">
+              <FigureSource value={input} data={data} strengthSaid={false} />
+              {input.effective_from && (
+                <dl className="sheet-dl">
+                  <Row label={copy.computed.obliged.dated}>
+                    <When iso={input.effective_from} />
+                  </Row>
+                </dl>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      <p className="text-sm text-muted-foreground" data-obligation="">{value.obligation}</p>
+      <AllRulesLink value={value} data={data} />
+    </div>
+  );
+}
+
+/**
+ * A fund's own statements a figure rests on (D84, D119), each said as the fund's, with its document linked at the page and the day the site
+ * read it; nothing where there are none.
+ */
+function Statements({ statements }: { statements: readonly FundStatement[] }) {
+  if (statements.length === 0) return null;
+  return (
+    <div className="flex flex-col gap-1.5">
+      <span className="text-sm text-muted-foreground">{copy.computed.statements}</span>
+      {statements.map((st) => {
+        const shown = statementShown(st);
+        return (
+          <div key={`${st.term}|${shown.href}`} className="flex flex-col">
+            <p className="text-sm">{shown.sentence}</p>
+            <DocLink href={shown.href}>{shown.doc}</DocLink>
+            <p className="text-xs text-muted-foreground">
+              {sourceCopy.checked} <Iso ltr>{fmt.date(st.checked)}</Iso>
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * A fund statement by the term it states: its sentence, and its document linked at the page: a stated tax index's annex at the page the
+ * statement names (D84); a document naming the fund a foreign-investment fund by the record's own source, whose address opens at the page and
+ * whose title names it (D119, data-schema §3.5).
+ */
+function statementShown(st: FundStatement): { sentence: string; href: string; doc: string } {
+  switch (st.term) {
+    case "tax-index":
+      return { sentence: copy.computed.statement["tax-index"](st), href: sourceHref({ url: st.source.url, page: st.page }), doc: copy.computed.statementDoc(st.source.title, st.page) };
+    case "foreign-investment-fund":
+      return { sentence: copy.computed.statement["foreign-investment-fund"](st), href: sourceHref({ url: st.source.url }), doc: st.source.title };
+    default:
+      return assertNever(st);
+  }
+}
+
 /** One catch as a catch's sheet says it. */
-function CatchPart({ c, value, data }: { c: Catch; value: SiteValue; data: ProvenanceData }) {
+function CatchPart({ c, data }: { c: Catch; data: ProvenanceData }) {
   switch (c.kind) {
     case "ahead":
       return <AheadLine from={c.from} />;
     case "doubt":
-      return <DoubtCallout value={value} />;
+      return <DoubtCallout doubt={c.doubt} rules={c.rules} from={c.from} />;
+    case "caveat":
+      return (
+        <Callout tone="caution">
+          <PrintedText text={c.text} />
+        </Callout>
+      );
     case "weak":
-      return <WeakInputs strength={c.strength} inputs={c.inputs} value={value} />;
+      return <WeakInputs strength={c.strength} inputs={c.inputs} />;
     case "open":
-      return <StrengthNote value={value} strength="open" />;
+      return <StrengthNote strength="open" />;
     case "stale":
       return <StaleLine stale={c.stale} />;
     case "flags":
@@ -582,11 +689,11 @@ function CatchPart({ c, value, data }: { c: Catch; value: SiteValue; data: Prove
  * The inputs a calculated figure's weak strength comes from, each named with its figure, under a line by its strength; a secondary strength,
  * and one no input carries (a rule or a fund's statement the calculation read), is said as a sourced figure's is (`StrengthNote`).
  */
-function WeakInputs({ strength, inputs, value }: { strength: "institution" | "secondary"; inputs: Extract<Catch, { kind: "weak" }>["inputs"]; value: SiteValue }) {
+function WeakInputs({ strength, inputs }: { strength: "institution" | "secondary"; inputs: Extract<Catch, { kind: "weak" }>["inputs"] }) {
   const groups = (["institution", "secondary"] as const).map((st) => [st, inputs.filter(([, x]) => strengthOf(x) === st)] as const).filter(([, list]) => list.length > 0);
   return (
     <>
-      {(strength === "secondary" || groups.length === 0) && <StrengthNote value={value} strength={strength} />}
+      {(strength === "secondary" || groups.length === 0) && <StrengthNote strength={strength} />}
       {groups.map(([st, list]) => (
         <div key={st} className="flex flex-col gap-1.5">
           <span className="text-sm text-muted-foreground">{copy.computed.weakInputs[st]}</span>
@@ -650,7 +757,7 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
       {fromDate && <AheadLine from={fromDate} />}
 
       {/* the doubt, near the top of the figure's sheet, wherever the figure shows; at the end it sat below a phone's fold */}
-      <DoubtCallout value={value} />
+      {value.doubt && <DoubtCallout doubt={value.doubt} rules={value.doubtRules ?? []} from={value.doubtFrom} />}
 
       {/* why a figure is missing, once (`missingReason`); the working notes are English, and only a note written in Hebrew is shown */}
       {reason && <p className="text-sm">{reason}</p>}
@@ -721,7 +828,7 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
         </div>
       )}
 
-      {weakOrOpen && <StrengthNote value={value} strength={weakOrOpen} />}
+      {weakOrOpen && <StrengthNote strength={weakOrOpen} question={blocked ? openQuestionOf(value) : null} />}
       {value.stale && <StaleLine stale={value.stale} />}
 
       <AllRulesLink value={value} data={data} />

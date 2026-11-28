@@ -12,13 +12,15 @@ const phrases = JSON.parse(readFileSync(join(import.meta.dirname, "../../../pack
 };
 const talk = phrases.research_talk;
 
-/** Each note a builder passes to a figure (`notes:` in lib/ and components/), by where it is in copy.ts; a function's note at a sample argument. */
+/** Each note or caveat a builder passes to a figure (`notes:` and `caveat:` in lib/ and components/), by where it is in copy.ts; a function's note at a sample argument. */
 const COPY_NOTES: Record<string, string> = {
   "invest.bankMoneyMarketZero.trade": copy.invest.bankMoneyMarketZero.trade,
   "invest.bankMoneyMarketZero.custody": copy.invest.bankMoneyMarketZero.custody,
   "invest.depositFeeNoneByRule": copy.invest.depositFeeNoneByRule(1234),
   "r3workbench.missingNote": copy.r3workbench.missingNote,
   "depositBrowser.interest.variableNote": copy.depositBrowser.interest.variableNote,
+  "invest.kinds.gapPositiveOnly": copy.invest.kinds.gapPositiveOnly,
+  "invest.pair.paidInCaveat": copy.invest.pair.paidInCaveat,
   "trackBrowser.yield.emptyNote": `${copy.trackBrowser.yield.emptyNote.before}5${copy.trackBrowser.yield.emptyNote.after}`,
   "trackBrowser.assets.emptyNote": copy.trackBrowser.assets.emptyNote,
   ...Object.fromEntries(Object.entries(copy.flags).map(([code, text]) => [`flags.${code}`, text])),

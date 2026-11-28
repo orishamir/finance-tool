@@ -48,13 +48,15 @@ export function HelpMark({ term, about, lead, text, rules, words, tone, note, cl
 
 /**
  * The caution "?" after a calculated figure that carries a catch: it opens the catch's sheet (`item`, a provenance "catch" item), which says
- * only what the catch is. The figure holds it on its line, so it never stands alone (provenance `Num`). `data-catch` names the kinds of
- * catch it opens, for the scripts that count them over the built pages.
+ * only what the catch is. The figure holds it on its line, so it never stands alone (provenance `Num`). The same mark says once the catches
+ * every figure of a list carries, in their column's head or above the list (a "list-catch" item, provenance `ListCatchMark`).
+ * `data-catch` names the kinds of catch it opens, and `data-catch-list` marks a list's, for the scripts that count them over the built pages.
  */
-export function CatchMark({ item, about, className }: { item: Item; /** What the figure is (its `about`, else its text): the button's spoken name. */ about: string; className?: string }) {
+export function CatchMark({ item, about, className }: { item: Item; /** What the figure is (its `about`, else its text), or what the list's figures are: the button's spoken name. */ about: string; className?: string }) {
   const open = useOpen();
+  const catches = item.kind === "catch" || item.kind === "list-catch" ? item.catches : [];
   return (
-    <button type="button" aria-label={copy.catchLabel.replace("{about}", about)} data-catch={item.kind === "catch" ? [...new Set(item.catches.map((c) => c.kind))].join(" ") : undefined} onClick={(e) => open(item, e.currentTarget)} className={cx(markLook("caution"), className)}>
+    <button type="button" aria-label={copy.catchLabel.replace("{about}", about)} data-catch={catches.length ? [...new Set(catches.map((c) => c.kind))].join(" ") : undefined} data-catch-list={item.kind === "list-catch" ? "" : undefined} onClick={(e) => open(item, e.currentTarget)} className={cx(markLook("caution"), className)}>
       <Dot>?</Dot>
     </button>
   );

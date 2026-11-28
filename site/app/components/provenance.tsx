@@ -5,14 +5,14 @@
 import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, type MouseEvent, type ReactElement, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router";
-import { companyTermRule, isOwnDocument, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
+import { assertNever, companyTermRule, isOwnDocument, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { formulaNames, numbers, parametersPage, provenance as copy, rule as ruleCopy, scopeWords, strength as strengthCopy } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
 import { isOpenValue, isParameter, isWeak, ownBy, sheetFlags, sheetReadings, strengthOf, type SiteValue, type Staleness, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
 import { IconAlert, IconClock, IconDrillIn, IconFile, IconLock, IconPencil } from "./icons";
-import { OwnCompanyCtx, Sheet, StaleSaidCtx } from "./Sheet";
+import { CatchesSaidCtx, OwnCompanyCtx, Sheet, StaleSaidCtx } from "./Sheet";
 import { cx, Disclosure, Tag } from "./ui";
 import { CatchMark, CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
@@ -21,7 +21,7 @@ import { useHydrated } from "../lib/hooks";
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string; /** The rules the place the figure was opened from already opens (`opensAround`): its sheet leaves their chips out. */ shown?: readonly string[] } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string; /** After the line: the chip of the rules it rests on (a "?" with a sentence of its own and its rules). */ rules?: readonly string[]; /** After the lead: sentences of the sheet's own, each with what it is about and the document it rests on (why an account sells no fund on an index, a sentence and a source for each kind of fund). */ parts?: readonly SheetPart[] } | { kind: "catch"; value: SiteValue; /** What its "?" says, as the figure's place decided them (`catchesOf`). */ catches: readonly Catch[]; /** As a value's: the figure was shown with two decimals. */ exact?: boolean; /** As a value's: the word a value that is not a number was shown as. */ display?: string } | { kind: "question"; id: string } | { kind: "proof"; id: string } | { kind: "proofs"; ids: readonly string[] };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string; /** The rules the place the figure was opened from already opens (`opensAround`): its sheet leaves their chips out. */ shown?: readonly string[] } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string; /** After the line: the chip of the rules it rests on (a "?" with a sentence of its own and its rules). */ rules?: readonly string[]; /** After the lead: sentences of the sheet's own, each with what it is about and the document it rests on (why an account sells no fund on an index, a sentence and a source for each kind of fund). */ parts?: readonly SheetPart[] } | { kind: "catch"; value: SiteValue; /** What its "?" says, as the figure's place decided them (`catchesOf`). */ catches: readonly Catch[]; /** As a value's: the figure was shown with two decimals. */ exact?: boolean; /** As a value's: the word a value that is not a number was shown as. */ display?: string } | { kind: "list-catch"; /** What the figures are (a column's head): the sheet's title. */ name: string; scope: "column" | "list"; /** The catches every figure there carries (`sharedCatches`). */ catches: readonly Catch[] } | { kind: "obliged"; value: SiteValue; /** Its catches, as the figure's place decided them (`catchesOf`). */ catches: readonly Catch[]; exact?: boolean; display?: string } | { kind: "question"; id: string } | { kind: "proof"; id: string } | { kind: "proofs"; ids: readonly string[] };
 
 /** One sentence of a sheet's own text (`Item` "terms", `parts`): what it is about, the sentence, and the document it rests on. */
 export interface SheetPart {
@@ -361,9 +361,10 @@ function onPage(v: SiteValue, ownPage: boolean, data: ProvenanceData | null): Si
 
 /**
  * A catch a calculated figure carries: what to know before trusting it, which its caution "?" opens (`catchesOf`). A calculated figure shows
- * nothing else of where it came from.
+ * nothing else of where it came from. Each catch holds what its sheet says, so a sheet can say catches that several figures share.
  * - `ahead`: it takes effect after the page's date;
- * - `doubt`: its own doubt (`SiteValue.doubt`);
+ * - `doubt`: its own doubt (`SiteValue.doubt`), with the rules it rests on and the inputs it is carried from;
+ * - `caveat`: an assumption its value rests on (`SiteValue.caveat`);
  * - `weak`: it rests on a secondary source, or, at figure size, on a company's document out of its own context, with the inputs that do,
  *   by their key (in a line or a cell each such input says its own source where it stands);
  * - `open`: it rests on an open rule;
@@ -373,12 +374,76 @@ function onPage(v: SiteValue, ownPage: boolean, data: ProvenanceData | null): Si
  */
 export type Catch =
   | { kind: "ahead"; from: string }
-  | { kind: "doubt" }
+  | { kind: "doubt"; doubt: string; rules: readonly string[]; from?: readonly string[] }
+  | { kind: "caveat"; text: string }
   | { kind: "weak"; strength: "institution" | "secondary"; inputs: readonly (readonly [key: string, input: SiteValue])[] }
   | { kind: "open" }
   | { kind: "stale"; stale: Staleness }
   | { kind: "flags"; codes: readonly string[] }
   | { kind: "reading"; rules: readonly string[] };
+
+/**
+ * The parts of a catch that can be said once for many figures, each by a key: a flag and a rule read are each a part of their own, so a list
+ * whose every figure carries one flag says that flag once while a flag some figures carry stays on them; any other catch is one part.
+ */
+function partsOf(c: Catch): string[] {
+  switch (c.kind) {
+    case "ahead":
+      return [`ahead ${c.from}`];
+    case "doubt":
+      return [["doubt", c.doubt, c.rules.join(" "), (c.from ?? []).join(" ")].join("|")];
+    case "caveat":
+      return [`caveat ${c.text}`];
+    case "weak":
+      return [`weak ${c.strength}|${c.inputs.map(([k, x]) => `${k}=${String(x.value)}@${x.source.url}`).join(" ")}`];
+    case "open":
+      return ["open"];
+    case "stale":
+      return [`stale ${c.stale.since} ${c.stale.cadence}`];
+    case "flags":
+      return c.codes.map((code) => `flag ${code}`);
+    case "reading":
+      return c.rules.map((r) => `reading ${r}`);
+    default:
+      return assertNever(c);
+  }
+}
+
+/** The catches with only the parts `keep` accepts: a flag or a rule read goes alone, any other catch goes whole; one left with no part goes. */
+function catchParts(catches: readonly Catch[], keep: (part: string) => boolean): Catch[] {
+  return catches.flatMap((c): Catch[] => {
+    if (c.kind === "flags") {
+      const codes = c.codes.filter((code) => keep(`flag ${code}`));
+      return codes.length ? [{ ...c, codes }] : [];
+    }
+    if (c.kind === "reading") {
+      const rules = c.rules.filter((r) => keep(`reading ${r}`));
+      return rules.length ? [{ ...c, rules }] : [];
+    }
+    return partsOf(c).every(keep) ? [c] : [];
+  });
+}
+
+/**
+ * The catches every one of several figures carries (each figure's `catchesOf`), to say once for them all: a list, a table's column or a set
+ * of rows (`CatchesSaid`, `ListCatchMark`). None for fewer than two figures, whose own "?" says as much.
+ */
+export function sharedCatches(each: readonly (readonly Catch[])[]): Catch[] {
+  const [first, ...rest] = each;
+  if (!first || rest.length === 0) return [];
+  const sets = rest.map((cs) => new Set(cs.flatMap(partsOf)));
+  return catchParts(first, (part) => sets.every((set) => set.has(part)));
+}
+
+/**
+ * The figures inside leave out of their own "?" the catches said once around them, in the head of their column or above their list
+ * (`ListCatchMark`); a figure left with no catch has no "?". Nested, the outer ones stay said. No sheet inherits it (Sheet.tsx).
+ */
+export function CatchesSaid({ catches, children }: { catches: readonly Catch[]; children?: ReactNode }) {
+  const outer = useContext(CatchesSaidCtx);
+  const said = useMemo(() => (catches.length === 0 ? outer : new Set([...outer, ...catches.flatMap(partsOf)])), [outer, catches]);
+  return <CatchesSaidCtx.Provider value={said}>{children}</CatchesSaidCtx.Provider>;
+}
 
 /** What decides a figure's catches beyond the figure: the page's date, its size, the notices around it that already say a catch, and how the page shows a figure (`onPage`). */
 export interface CatchPlace {
@@ -389,6 +454,8 @@ export interface CatchPlace {
   staleSaid: boolean;
   /** A callout around it already says these rules start later (`useAheadSaid`). */
   aheadSaid: boolean;
+  /** The parts of catches said once around it (`CatchesSaid`), which it leaves out. */
+  said?: ReadonlySet<string>;
   onPage: (v: SiteValue) => SiteValue;
 }
 
@@ -397,15 +464,29 @@ export function useCatchPlace(): (figure: boolean) => CatchPlace {
   const today = useContext(TodayCtx);
   const staleSaid = useContext(StaleSaidCtx);
   const aheadSaid = useAheadSaid();
+  const said = useContext(CatchesSaidCtx);
   const ownPage = useContext(OwnCompanyCtx);
   const data = useContext(DataCtx);
-  return (figure) => ({ today, figure, staleSaid, aheadSaid, onPage: (v) => onPage(v, ownPage, data) });
+  return (figure) => ({ today, figure, staleSaid, aheadSaid, said, onPage: (v) => onPage(v, ownPage, data) });
 }
 
 /**
- * The catches a figure carries (`Catch`), in the order its sheet says them. A plain difference or sum (`SiteValue.plain`) is its inputs and
- * nothing else: it carries only a catch none of its inputs carries, since each input shows its own where it stands (`sheetFlags`,
- * `sheetReadings`, and the same for its doubt, weakness, open rule and staleness).
+ * The catches several figures share where they stand (`sharedCatches` over each one's `catchesOf`): for a list to say once, in its column's
+ * head or above it (`ListCatchMark`), and to leave out of each figure's own "?" (`CatchesSaid`). Only calculated figures count; a list of
+ * fewer than two has none to share.
+ */
+export function useSharedCatches(): (values: readonly (SiteValue | null | undefined | false)[], figure?: boolean) => Catch[] {
+  const placeAt = useCatchPlace();
+  return (values, figure = false) => {
+    const place = placeAt(figure);
+    return sharedCatches(values.filter((v): v is SiteValue => !!v && v.state === "computed").map((v) => catchesOf(place.onPage(v), place)));
+  };
+}
+
+/**
+ * The catches a figure carries (`Catch`), in the order its sheet says them, less those said once around it (`CatchPlace.said`). A plain
+ * difference or sum (`SiteValue.plain`) is its inputs and nothing else: it carries only a catch none of its inputs carries, since each input
+ * shows its own where it stands (`sheetFlags`, `sheetReadings`, and the same for its doubt, weakness, open rule and staleness).
  */
 export function catchesOf(v: SiteValue, place: CatchPlace): Catch[] {
   const inputs = Object.entries((v.computed_from?.inputs ?? {}) as Record<string, SiteValue>).map(([k, x]) => [k, place.onPage(x)] as const);
@@ -413,7 +494,8 @@ export function catchesOf(v: SiteValue, place: CatchPlace): Catch[] {
   const out: Catch[] = [];
   const from = place.aheadSaid ? null : startsAfter(v, place.today);
   if (from) out.push({ kind: "ahead", from });
-  if (v.doubt && !(v.plain && v.doubtFrom?.length)) out.push({ kind: "doubt" });
+  if (v.doubt && !(v.plain && v.doubtFrom?.length)) out.push({ kind: "doubt", doubt: v.doubt, rules: v.doubtRules ?? [], ...(v.doubtFrom ? { from: v.doubtFrom } : {}) });
+  if (v.caveat) out.push({ kind: "caveat", text: v.caveat });
   const strength = strengthOf(v);
   if (isWeak(v) && (strength === "secondary" || (strength === "institution" && place.figure)) && !carried(isWeak)) out.push({ kind: "weak", strength, inputs: inputs.filter(([, x]) => isWeak(x)) });
   if ((strength === "open" || isOpenValue(v)) && !carried((x) => strengthOf(x) === "open")) out.push({ kind: "open" });
@@ -422,7 +504,18 @@ export function catchesOf(v: SiteValue, place: CatchPlace): Catch[] {
   if (flags.length > 0) out.push({ kind: "flags", codes: flags });
   const rules = [...new Set(sheetReadings(v).map((l) => l.ruleId))];
   if (rules.length > 0) out.push({ kind: "reading", rules });
-  return out;
+  const said = place.said;
+  return said && said.size > 0 ? catchParts(out, (part) => !said.has(part)) : out;
+}
+
+/**
+ * The caution "?" that says once the catches every figure of a list carries (`useSharedCatches`): in the head of their column, as a column's
+ * shared mark stands in its head (D60), or after the words above a list that has no head. It opens their sheet, under `name`, what the
+ * figures are; nothing where they share none. The figures inside its `CatchesSaid` leave them out of their own "?".
+ */
+export function ListCatchMark({ catches, name, scope, className }: { catches: readonly Catch[]; name: string; /** Where the figures stand: a table's column, or a list or a set of lines. */ scope: "column" | "list"; className?: string }) {
+  if (catches.length === 0) return null;
+  return <CatchMark about={name} item={{ kind: "list-catch", name, scope, catches }} className={className} />;
 }
 
 /**
@@ -497,12 +590,30 @@ export function Num({ value: given, size = "inline", display, animate, className
   // its last digit, which opens what the catch is (`catchesOf`)
   if (value.state === "computed") {
     const catches = catchesOf(value, catchPlace(size === "figure"));
+    const shownAs = typeof value.value !== "number" && (fullWord ?? written) ? { display: fullWord ?? written } : {};
+    // a figure whose source's terms require a line beside it (the ECB's attribution, `obligation`) keeps a way to that source: it draws as a
+    // sourced figure does and opens its sources, that line and its catches; a catch shows as a sourced figure's does, by an icon before it
+    if (value.obligation) {
+      const others = catches.some((c) => c.kind !== "stale");
+      return led(
+        <button
+          type="button"
+          className={cx("num num-sourced", size === "figure" && "num-figure", size === "cell" && "num-cell", oneLine && "whitespace-nowrap", className)}
+          aria-label={[name, fullWord ?? text, numbers.legend.sourced, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ")}
+          onClick={(e) => open({ kind: "obliged", value, catches, ...(keepDecimals ? { exact: true } : {}), ...shownAs }, e.currentTarget)}
+        >
+          {catches.some((c) => c.kind === "stale") && <IconClock size={14} className="text-caution me-1 inline-block align-[-2px] select-none" aria-hidden="true" />}
+          {others && <IconAlert size={14} className="text-caution me-1 inline-block align-[-2px] select-none" aria-hidden="true" />}
+          {digits}
+        </button>,
+      );
+    }
     const figure = <span className={cx("num-plain", size === "figure" && "num-figure", value.value === null && "num-unknown", oneLine && "whitespace-nowrap", className)}>{digits}</span>;
     if (catches.length === 0) return led(figure);
     return led(
       <span className="whitespace-nowrap">
         {figure}
-        <CatchMark about={value.about ?? text} item={{ kind: "catch", value, catches, ...(keepDecimals ? { exact: true } : {}), ...(typeof value.value !== "number" && (fullWord ?? written) ? { display: fullWord ?? written } : {}) }} className="ms-1" />
+        <CatchMark about={value.about ?? text} item={{ kind: "catch", value, catches, ...(keepDecimals ? { exact: true } : {}), ...shownAs }} className="ms-1" />
       </span>,
     );
   }

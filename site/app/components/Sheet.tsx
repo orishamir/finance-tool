@@ -17,10 +17,13 @@ import { closeUnder, coversOther, dropSheet, isCovered, pushSheet, watchSheets, 
 /**
  * What a page says around its figures (provenance.tsx): that the page is about one company, whose own figures carry no "לפי החברה"
  * (`OwnCompanyPage`), which holds in every sheet opened on it, since each figure is judged by the document it rests on; and that a notice
- * above already says the figures are old (`StaleSaid`), which no sheet inherits, since a sheet's figures stand without that notice.
+ * above already says the figures are old (`StaleSaid`), and the catches said once in a column's head or above a list (`CatchesSaid`, by
+ * their parts), which no sheet inherits, since a sheet's figures stand without that notice or head.
  */
 export const OwnCompanyCtx = createContext(false);
 export const StaleSaidCtx = createContext(false);
+const NONE_SAID: ReadonlySet<string> = new Set();
+export const CatchesSaidCtx = createContext<ReadonlySet<string>>(NONE_SAID);
 
 export interface SheetProps {
   open: boolean;
@@ -318,7 +321,9 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labe
             <IconClose size={20} />
           </Button>
         </div>
-        <StaleSaidCtx.Provider value={false}>{open || !ref.current?.open ? children : kept.current}</StaleSaidCtx.Provider>
+        <StaleSaidCtx.Provider value={false}>
+          <CatchesSaidCtx.Provider value={NONE_SAID}>{open || !ref.current?.open ? children : kept.current}</CatchesSaidCtx.Provider>
+        </StaleSaidCtx.Provider>
       </div>
       {open && !covered && <FailureNotice where="sheet" />}
       {/* a strip of its own under the scrolling body, always there at one height: never covers a line, never moves one, empty at the end */}

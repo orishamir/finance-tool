@@ -629,14 +629,15 @@ describe("a gap's catch sheet says its unit as its row does, in full (recheck 3 
     return /<header[\s\S]*?<\/bdi><\/span>(?:<span class="text-sm text-muted-foreground">([^<]*)<\/span>)?/.exec(out)?.[1] ?? "";
   };
   const rowOf = (cell: string) => /<span class="text-xs text-muted-foreground whitespace-nowrap">([^<]*)<\/span>/.exec(cell.replace(/<!-- -->/g, ""))?.[1] ?? "";
-  it("a report that prints only the positive variable fees says so on its sheet where A-07 is floored at 0 or its years and the mean's differ (pass 6: Mor's footnote; pass 7: false above the floor)", () => {
+  it("a report that prints only the positive variable fees says so, as a caveat its caution \"?\" opens, where A-07 is floored at 0 or its years and the mean's differ (pass 6: Mor's footnote; pass 7: false above the floor)", () => {
     const words = "מופיעים רק דמי הניהול המשתנים שהיא שילמה למנהל";
+    const sheetOf = (v: SiteValue) => html(createElement(CatchSheet, { value: v, catches: catchesHere(v), exact: false, data, headId: "h", descId: "d" })).replace(/<!-- -->/g, "");
     const said: Record<string, boolean> = {};
     for (const f of bundle.funds.filter((x) => x.tracking_record)) {
       const list = gapListFor(bundle, f);
       const v = gapValue(f, list, t);
       if (!v) continue;
-      said[f.id] = v.lead?.includes(words) ?? false;
+      said[f.id] = sheetOf(v).includes(words);
       expect(said[f.id], f.id).toBe(!!f.tracking_record!.variable_positive_only && paybackMayLower(f, list));
     }
     expect(bundle.funds.filter((f) => f.tracking_record?.variable_positive_only).map((f) => f.id).sort()).toEqual(["1165810", "1165844"]);

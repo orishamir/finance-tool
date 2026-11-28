@@ -48,8 +48,8 @@ export interface SiteValue extends ValueObject {
   rulesUsed?: { id: string; strength: Strength }[];
   /**
    * A fund's own statements a computed value rests on (`FundStatement`: the tax index its annex states, D84; the document naming it a
-   * foreign-investment fund, D119): they count in its strength, and are kept with it for the step-by-step explanation of a page's main
-   * result; no sheet names them today.
+   * foreign-investment fund, D119): they count in its strength, and the sheet its caution "?" opens names each as the fund's, with its
+   * document (provenance-sheets `Statements`).
    */
   statements?: readonly FundStatement[];
   /**
@@ -69,9 +69,16 @@ export interface SiteValue extends ValueObject {
   plain?: boolean;
   /**
    * A line its sheet must always show beside the source, which the source's terms of use require (the ECB's attribution of its exchange
-   * rates): never left out as a note can be.
+   * rates): never left out as a note can be. A calculated figure that carries one is no plain text: it draws as a sourced figure and opens
+   * a sheet with its sources and this line (provenance `Num`, provenance-sheets `ObligedSheet`).
    */
   obligation?: string;
+  /**
+   * An assumption the figure's value rests on, in one Hebrew sentence, that the reader should know before trusting it (a variable rate taken
+   * as it stands today): a catch of its own, which a calculated figure's caution "?" opens (provenance `catchesOf`). It is the figure's
+   * own, never carried to a figure worked out from it. Not `notes`, which also holds working notes in English and a source's attribution.
+   */
+  caveat?: string;
   /** What the value is, in one line, for the sheet header. */
   about?: string;
   /** What the figure means, said first in a sourced figure's sheet, under the header (a definition at the sheet's end sat below the popover's edge); a computed figure's catch sheet says only its catches. */
@@ -329,6 +336,8 @@ export interface ComputedOptions {
   blockedBy?: string;
   about?: string;
   notes?: string;
+  /** An assumption the value rests on (`SiteValue.caveat`). */
+  caveat?: string;
   lead?: string;
   signed?: boolean;
   unitText?: string;
@@ -383,6 +392,7 @@ export function computed(value: number | null, unit: ValueObject["unit"], formul
     ...(carried.stale ? { stale: carried.stale } : {}),
     about: options.about,
     notes: options.notes,
+    ...(options.caveat ? { caveat: options.caveat } : {}),
     ...(options.lead ? { lead: options.lead } : {}),
     ...(options.signed ? { signed: true } : {}),
     ...(options.unitText ? { unitText: options.unitText } : {}),

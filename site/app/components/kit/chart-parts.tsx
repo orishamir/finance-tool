@@ -11,6 +11,9 @@ import type { GlideTick } from "./chart-glide-math";
 import { cx } from "./cx";
 import { Disclosure } from "./disclosure";
 import { PHONE_GONE, TableCols } from "./table-cols";
+import { HeldMark } from "./help-mark";
+import { CatchesSaid, ListCatchMark, useSharedCatches, type Catch } from "../provenance";
+import type { SiteValue } from "../../lib/value";
 
 /** A sideways-scrolling table wrapper's cue without script: a card-colour fade at each end that is still hidden content, and a soft edge shadow. */
 export const scrollCueStyle: CSSProperties = {
@@ -167,6 +170,18 @@ export function ChartReadout({ title, rows }: { title: ReactNode; rows: ReadoutR
 export interface TableColumn {
   id: string;
   head: ReactNode;
+  /**
+   * The column's figures, one a row, and what they are in words (its head as a sheet's title): a catch every calculated one carries is said
+   * once, by a caution "?" in the head (`ListCatchMark`), and each cell's own "?" leaves it out (`CatchesSaid`).
+   */
+  figures?: { name: string; values: readonly (SiteValue | null | undefined)[] };
+}
+
+/** A column's head with the caution "?" that says its figures' shared catches, held to the head's last word. */
+function headWithCatches(head: ReactNode, name: string, catches: readonly Catch[]): ReactNode {
+  if (catches.length === 0) return head;
+  const mark = <ListCatchMark catches={catches} name={name} scope="column" />;
+  return typeof head === "string" ? <HeldMark words={head} mark={mark} /> : <>{head} {mark}</>;
 }
 export interface TableRowData {
   key: string | number;
@@ -220,6 +235,8 @@ const CHART_FIGURE_REM = 8;
  * and every figure's column have a fixed width, wide enough for "1,047,017.40 ₪"; the table scrolls inside its region when they do not fit.
  */
 export function ChartTable({ rowHead, columns, rows, scroll = "cue", compact, regionLabel }: { rowHead: ReactNode; columns: TableColumn[]; rows: TableRowData[]; scroll?: "cue" | "bleed"; compact?: boolean; regionLabel?: string }) {
+  const shared = useSharedCatches();
+  const said = columns.map((c) => (c.figures ? shared(c.figures.values) : []));
   return (
     <CountingFigures on={false}>
     <Disclosure label={buttons.showTable} openLabel={buttons.hideTable} summaryClassName="text-sm">
@@ -229,9 +246,9 @@ export function ChartTable({ rowHead, columns, rows, scroll = "cue", compact, re
           <thead>
             <tr>
               <th scope="col">{rowHead}</th>
-              {columns.map((c) => (
+              {columns.map((c, i) => (
                 <th key={c.id} scope="col">
-                  {c.head}
+                  {headWithCatches(c.head, c.figures?.name ?? "", said[i] ?? [])}
                 </th>
               ))}
             </tr>
@@ -243,7 +260,7 @@ export function ChartTable({ rowHead, columns, rows, scroll = "cue", compact, re
                   <bdi dir="ltr">{r.head}</bdi>
                 </th>
                 {r.cells.map((cell, i) => (
-                  <td key={columns[i]?.id ?? i}>{cell}</td>
+                  <td key={columns[i]?.id ?? i}>{said[i]?.length ? <CatchesSaid catches={said[i]}>{cell}</CatchesSaid> : cell}</td>
                 ))}
               </tr>
             ))}
