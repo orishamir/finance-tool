@@ -573,7 +573,8 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // then one more from the second foreign bond ETF tax pass: whether s.3(ג) on redeemable shares reaches a foreign fund's redemption (TXF OQ36);
     // and in the second domain round two answered and deleted (ETF OQ48, CORP OQ22: the agencies' own definitions read, CORP-33) and two more:
     // Bloomberg's own rules for its dated indices (ETF OQ49) and what regulators say of a defined-term fund's last year (ETF OQ50)
-    expect(items.length).toBe(469);
+    // and the iBoxx rules, read in the founder's Chrome, answered and deleted ETF OQ44 (ETF-123)
+    expect(items.length).toBe(468);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
