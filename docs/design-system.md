@@ -448,6 +448,13 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   else the link's host with the English title behind "שם המקור באנגלית"; English working notes are never shown; a rule without a source
   link says so. An entered figure's sheet shows the value it replaced. A source line wraps at every width
   and is never cut, so a figure's source, its name and date, stay in view.
+- **One drawing of a source.** Every place that draws a source (a rule card's and a figure's source block, the rules page's documents,
+  a term's source, the search's closest match, the citation) reads one view of its document (`sourceView`, `lib/sources.ts`). The
+  document is named once, by the record's own publisher, never by the keeper of a shared portal (`SHARED_PORTAL_HOSTS`); each place in
+  it is a line of its own with its own link, and a quoted page with no locator still names its page. A source that is not the binding
+  text in force says what it is in a word on its line (its `standing`: a draft, a bill, a superseded or consolidated text, a
+  translation, a foreign authority's view, or a text that does not answer). A rule card heads its sources "מקורות". A figure takes a
+  rule's names for its source only from that same place in the same document.
 - **The rules a figure names.** A figure lists the rules that set it, under "חוק או כלל" for one and "חוקים וכללים" for more. It leaves
   out a rule the place it was opened from already opens, and a row left empty goes: on a rule's card that rule (its root is marked
   `data-opens-scope` with the rule's id), on a /rules fact row its rule, in a paragraph or list item a rule its words state, in a part of
@@ -458,8 +465,13 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   the page, and a builder sets it by value: a stock exposure share above 100% says why exposure can pass the assets, and one at or below
   says nothing. A sheet says what the figure is once, in its head's line: a line of math keeps its own name only where the figure has
   no head's line, and the key row of the symbol it works out points at the head ("המספר שבראש הגיליון").
-- **A missing figure** (`value: null`) heads its sheet with the word it was shown as and no state tag. Its reason is said once: its note;
-  else, for a sourced figure, that the source does not hold it. A sourced one shows its source line, where the figure was looked for, without dates, and the chips of the rules that explain
+- **One word per empty state.** A figure with no number says it in one word, the same in every cell, row and sheet head (`emptyWords`
+  in `copy.ts`): "לא נאסף" for one the site has not collected, "לא דווח" for one its source did not report, "אין" for one there is none
+  of. The word says what is missing and never stands beside a value; the two cells that still differ are listed in `docs/copy.md` 3.
+- **A missing figure** (`value: null`) heads its sheet with the word it was shown as and no state tag. Its reason is said once: its
+  Hebrew note; else the reason its record gives (`empty_because`, worded in `provenance.sourced.emptyBecause`; a figure none of by rule
+  leaves it to the rule's chips); else, for a sourced figure, that the source does not hold it. Of an English note it shows only the open
+  questions the note names, as chips. A sourced one shows its source line, where the figure was looked for, without dates, and the chips of the rules that explain
   the absence. An open value is unchanged. A figure not in force yet says its first day once, in the
   caution line, with no "from" row beside it.
 - **A computed figure's catch sheet** (the "catch" item) is a card. It heads with the figure in plain ink and its `about` line, then says
@@ -621,6 +633,12 @@ Called for by 3.8 of the product (rules page, parameters page) and D25, D47.
   from `/rules-data/<shelf>.json`, fetched for the rule that is open and the search's closest match.
 - **Rule card.** An open rule (an open question) uses the blocked style on its edge and label. Each card is an anchor target for rule
   references.
+  - A card opened from one of its figures marks that figure's rows (`data-marked`) and scrolls them into view. Its figures come from one
+    helper (`figureRows`), as the search's closest match does: a figure kept for another rule is left out, the top bracket reads "מעל"
+    the edge before it, and a figure's way of updating and its last day in force are said once.
+  - A record that is not a rule carries the not-rule tag on its card wherever it shows, general or a company's, and its card's foot leads
+    to the "לא נכלל ככלל" section of the rules page, where every such record is listed. A rule's foot leads to where it is listed: the
+    rules page at the rule, or the company's entry (`companyEntryHref`, which takes an old entry's address to the record it became).
 - **Parameter card.** A parameter without a value shows "עוד לא נקבע" (N1).
 
 ### 3.8a Knowledge-layer pieces
