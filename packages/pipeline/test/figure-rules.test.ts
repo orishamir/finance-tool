@@ -7,6 +7,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import * as deposits from "../src/checks/deposits.ts";
 import * as figureRulesCheck from "../src/checks/figure-rules.ts";
+import * as valueChecks from "../src/checks/values.ts";
 import { testData } from "../src/checks/lib/kit.ts";
 import { annexAType, cardsWithSources, FIGURE_RULES, figureRuleProblems, judgeId, pathOf, rowFor, trimIds, type Cards } from "../src/figure-rules.ts";
 
@@ -334,5 +335,34 @@ describe("deposits checks", () => {
       expect.stringMatching(/^terms\/deposits\/a# \(current-account\): a current account holds a term, exit points, a break "with_penalty"/),
     ]);
     expect(runDeposits({ a: { ...plainDeposit, exit_points: { exists: true } } })).toEqual([]);
+  });
+});
+
+// ---------------------------------------------------------------- the value checks the table's collections share (src/checks/values.ts)
+
+describe("value checks on a tariff's values", () => {
+  const card = "חברה מנהלת של קופת גמל רשאית לגבות מהיתרה הצבורה של כל עמית עד תקרת דמי הניהול השנתיים מהיתרה, ומהתשלומים שמועברים בעדו עד תקרת דמי הניהול מההפקדה.";
+  it("tells a note that repeats a card from one that adds to it", () => {
+    expect(valueChecks.copiesText("חברה מנהלת של קופת גמל רשאית לגבות מהיתרה הצבורה של כל עמית עד התקרה.", card)).toBe(true);
+    expect(valueChecks.copiesText("המחיר בתוקף עד סוף השנה, ואחריו חוזר למחיר המלא שבתקנון.", card)).toBe(false);
+    expect(valueChecks.copiesText("חברה מנהלת של קופת גמל", card)).toBe(false);
+  });
+
+  function run(value: Record<string, unknown>): string[] {
+    const dir = mkdtempSync(join(tmpdir(), "data-"));
+    mkdirSync(join(dir, "fees"), { recursive: true });
+    mkdirSync(join(dir, "rules"), { recursive: true });
+    writeFileSync(join(dir, "rules", "pf-02.json"), JSON.stringify({ id: "PF-02", title_he: "תקרת דמי הניהול לקופות גמל", text_he: card }));
+    writeFileSync(join(dir, "fees", "planted@2026-11-01.json"), JSON.stringify({ id: "planted", lines: [{ id: "l", rate: { ...vo(1.05, ["PF-02"], "https://house.example/tariff.pdf"), update_rule: "provider-set", state: "sourced", ...value } }] }));
+    return valueChecks.check(testData(dir)).map((p) => p.message.replace(/: .*/, ""));
+  }
+
+  it("fails a shown note that repeats the card the sheet chips, and a second quote beside the source's", () => {
+    expect(run({ notes_he: "המחיר בתוקף עד סוף השנה." })).toEqual([]);
+    expect(run({ notes_he: "חברה מנהלת של קופת גמל רשאית לגבות מהיתרה הצבורה של כל עמית עד התקרה." })).toEqual(["fees/planted#/lines/0/rate (copies-card)"]);
+    expect(run({ notes: "חברה מנהלת של קופת גמל רשאית לגבות מהיתרה הצבורה של כל עמית עד התקרה.", rule_ids: [] })).toEqual([]);
+    const quoted = { quote: "1.05% מהיתרה", source: { ...src("https://house.example/tariff.pdf"), quote: "דמי ניהול 1.05%" } };
+    expect(run(quoted)).toEqual(["fees/planted#/lines/0/rate (quote-differs)"]);
+    expect(run({ ...quoted, quote: "דמי ניהול 1.05%" })).toEqual([]);
   });
 });

@@ -1,1 +1,917 @@
-{}
+{
+  "fees/discount#/lines/13/size_tiers/0/up_to": [
+    "BRK-86"
+  ],
+  "fees/discount#/lines/13/size_tiers/1/discount_pct": [
+    "BRK-86"
+  ],
+  "fees/discount#/lines/13/size_tiers/1/up_to": [
+    "BRK-86"
+  ],
+  "fees/discount#/lines/14/size_tiers/0/up_to": [
+    "BRK-86"
+  ],
+  "fees/discount#/lines/14/size_tiers/1/discount_pct": [
+    "BRK-86"
+  ],
+  "fees/discount#/lines/14/size_tiers/1/up_to": [
+    "BRK-86"
+  ],
+  "fees/hapoalim#/lines/11/flat_up_to/amount": [
+    "BRK-84"
+  ],
+  "fees/hapoalim#/lines/11/flat_up_to/up_to": [
+    "BRK-84"
+  ],
+  "fees/hapoalim#/lines/11/size_tiers/0/flat": [
+    "BRK-84"
+  ],
+  "fees/hapoalim#/lines/11/size_tiers/0/up_to": [
+    "BRK-84"
+  ],
+  "fees/hapoalim#/lines/12/flat_up_to/amount": [
+    "BRK-84"
+  ],
+  "fees/hapoalim#/lines/12/flat_up_to/up_to": [
+    "BRK-84"
+  ],
+  "fees/hapoalim#/lines/12/size_tiers/0/flat": [
+    "BRK-84"
+  ],
+  "fees/hapoalim#/lines/12/size_tiers/0/up_to": [
+    "BRK-84"
+  ],
+  "fees/ibi#/lines/8/size_tiers/0/rate": [
+    "BRK-48"
+  ],
+  "fees/ibi#/lines/8/size_tiers/0/up_to": [
+    "BRK-48"
+  ],
+  "fees/ibi#/lines/8/size_tiers/1/rate": [
+    "BRK-48"
+  ],
+  "fees/interactive-brokers#/lines/7/rate": [
+    "BRK-43"
+  ],
+  "fees/interactive-brokers#/lines/8/min": [
+    "BRK-43"
+  ],
+  "fees/interactive-brokers#/lines/8/rate": [
+    "BRK-43"
+  ],
+  "fees/interactive-brokers#/lines/9/rate": [
+    "BRK-43"
+  ],
+  "fees/interactive-brokers#/lines/9/spread": [
+    "BRK-43"
+  ],
+  "fees/interactive-brokers#/minimums/account_opening": [
+    "BRK-43"
+  ],
+  "fees/interactive-israel#/lines/0/cap": [
+    "BRK-41"
+  ],
+  "fees/interactive-israel#/lines/0/min": [
+    "BRK-41"
+  ],
+  "fees/interactive-israel#/lines/0/rate": [
+    "BRK-41"
+  ],
+  "fees/interactive-israel#/lines/1/min": [
+    "BRK-41"
+  ],
+  "fees/interactive-israel#/lines/1/rate": [
+    "BRK-41"
+  ],
+  "fees/interactive-israel#/lines/2/rate": [
+    "BRK-41"
+  ],
+  "fees/interactive-israel#/lines/3/rate": [
+    "BRK-41"
+  ],
+  "fees/interactive-israel#/lines/4/min": [
+    "BRK-41"
+  ],
+  "fees/interactive-israel#/lines/4/rate": [
+    "BRK-41"
+  ],
+  "fees/interactive-israel#/lines/4/spread": [
+    "BRK-41"
+  ],
+  "fees/interactive-israel#/lines/5/rate": [
+    "BRK-41"
+  ],
+  "fees/interactive-israel#/lines/5/spread": [
+    "BRK-41"
+  ],
+  "fees/leumi#/lines/13/max": [
+    "BRK-23"
+  ],
+  "fees/leumi#/lines/13/min": [
+    "BRK-23"
+  ],
+  "fees/leumi#/lines/13/rate": [
+    "BRK-23"
+  ],
+  "fees/leumi#/lines/13/spread": [
+    "BRK-23"
+  ],
+  "fees/leumi#/lines/14/max": [
+    "BRK-23"
+  ],
+  "fees/leumi#/lines/14/min": [
+    "BRK-23"
+  ],
+  "fees/leumi#/lines/14/rate": [
+    "BRK-23"
+  ],
+  "fees/leumi#/lines/14/spread": [
+    "BRK-23"
+  ],
+  "funds/1143700#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1143700#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1143700#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1143718#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1143718#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1143718#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1143734#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1143734#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1143734#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1143783#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1143783#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1143783#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1144237#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1144237#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1144237#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1144336#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1144336#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1144336#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1144385#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1144385#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1144385#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1145804#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1145804#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1145804#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1146331#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1146331#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1146331#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1146356#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1146356#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1146356#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1146471#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1146471#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1146471#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1146505#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1146505#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1146505#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1146570#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1146570#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1146570#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1147362#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1147362#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1147362#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1148162#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1148162#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1148162#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1148808#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1148808#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1148808#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1148899#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1148899#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1148899#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1148907#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1148907#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1148907#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1148931#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1148931#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1148931#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1149020#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1149020#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1149020#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1149772#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1149772#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1149772#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1150184#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1150184#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1150184#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1150259#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1150259#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1150259#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1150283#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1150283#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1150283#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1150333#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1150333#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1150333#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1159235#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1159243#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1159250#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1165810#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1165810#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1165810#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1165844#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1165844#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1165844#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1183441#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1185164#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1186063#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1201003#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1201003#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1201003#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1201656#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1201656#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1201656#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1209444#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1209444#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1209444#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/1218916#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/1218916#/fees/median_spread": [
+    "ETF-06",
+    "ETF-07"
+  ],
+  "funds/1218916#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/1223866#/fees/fixed_management": [
+    "MF-35"
+  ],
+  "funds/1223866#/fees/fund_level_withholding_drag": [
+    "MF-43",
+    "TXS-24"
+  ],
+  "funds/1223866#/fees/load": [
+    "MF-21"
+  ],
+  "funds/1223866#/fees/median_spread": [
+    "MF-35"
+  ],
+  "funds/1223866#/fees/tracking_difference_12m": [
+    "MF-07"
+  ],
+  "funds/5112628#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5112628#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5112628#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5112628#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/5122569#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5122569#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5122569#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5122569#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/5124482#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5124482#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5124482#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5124482#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/5124573#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5124573#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5124573#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5124573#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/5127527#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5127527#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5127527#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5127527#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/5128905#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5128905#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5128905#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5128905#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/5129275#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5129275#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5129275#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5129275#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/5129283#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5129283#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5129283#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5129283#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/5130638#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5130638#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5130638#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5130638#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/5130661#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5130661#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5130661#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5130661#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/5138763#/fees/fixed_management": [
+    "BANK-15",
+    "MF-34",
+    "TXS-24"
+  ],
+  "funds/5138763#/fees/fund_level_withholding_drag": [
+    "MF-43",
+    "MF-29"
+  ],
+  "funds/5138763#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5138763#/fees/median_spread": [
+    "MF-09"
+  ],
+  "funds/5138763#/fees/tracking_difference_12m": [
+    "MF-07"
+  ],
+  "funds/5139100#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5139100#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5139100#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5139100#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/5139282#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5139282#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5139282#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5139282#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09",
+    "ETF-10"
+  ],
+  "funds/5139696#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5139696#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5139696#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5139696#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/5140165#/fees/fund_level_withholding_drag": [
+    "ETF-11"
+  ],
+  "funds/5140165#/fees/load": [
+    "MF-21"
+  ],
+  "funds/5140165#/fees/median_spread": [
+    "ETF-04",
+    "MF-21"
+  ],
+  "funds/5140165#/fees/tracking_difference_12m": [
+    "ETF-07",
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/ie0031442068#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/ie00b3xxrp09#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/ie00b4l5y983#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/ie00b53szb19#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/ie00b5bmr087#/fees/fund_level_withholding_drag": [
+    "TXF-16",
+    "ETF-11"
+  ],
+  "funds/ie00b5bmr087#/fees/median_spread": [
+    "ETF-29",
+    "ETF-06"
+  ],
+  "funds/ie00b5bmr087#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/ie00b6r52259#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/ie00bfmxxd54#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/us-acwi#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/us-ivv#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "funds/us-voo#/fees/tracking_difference_12m": [
+    "ETF-08",
+    "ETF-09"
+  ],
+  "instruments/securities/government-bond#/regulator": [
+    "GOV-10",
+    "REG-13"
+  ],
+  "instruments/securities/makam#/regulator": [
+    "GOV-05"
+  ],
+  "instruments/securities/money-market-fund-daily#/regulator": [
+    "REG-07",
+    "MF-07"
+  ],
+  "instruments/securities/money-market-fund-renewable#/regulator": [
+    "REG-07",
+    "MF-07"
+  ],
+  "instruments/wrappers/bank-deposit#/regulator": [
+    "REG-03"
+  ],
+  "instruments/wrappers/bank-deposit#/switch_is_tax_event": [
+    "BANK-06",
+    "SW-29",
+    "SW-32"
+  ],
+  "instruments/wrappers/brokerage-account#/regulator": [
+    "REG-13",
+    "BRK-32"
+  ],
+  "instruments/wrappers/brokerage-account#/switch_is_tax_event": [
+    "TXS-05"
+  ],
+  "instruments/wrappers/child-savings-bank#/regulator": [
+    "REG-01",
+    "CS-22"
+  ],
+  "instruments/wrappers/child-savings-bank#/switch_is_tax_event": [
+    "CS-10",
+    "TXK-22",
+    "TXK-29"
+  ],
+  "instruments/wrappers/child-savings-provident#/regulator": [
+    "REG-17",
+    "CS-08",
+    "CS-05"
+  ],
+  "instruments/wrappers/child-savings-provident#/switch_is_tax_event": [
+    "CS-11",
+    "CS-16"
+  ],
+  "instruments/wrappers/current-account#/regulator": [
+    "REG-03"
+  ],
+  "instruments/wrappers/current-account#/switch_is_tax_event": [
+    "TXI-08",
+    "SW-26",
+    "SW-29"
+  ],
+  "instruments/wrappers/ira-hishtalmut#/switch_is_tax_event": [
+    "TXH-17",
+    "IRA-23"
+  ],
+  "instruments/wrappers/ira-provident#/switch_is_tax_event": [
+    "PF-23",
+    "IRA-23"
+  ],
+  "instruments/wrappers/keren-hishtalmut#/switch_is_tax_event": [
+    "PF-23"
+  ],
+  "instruments/wrappers/pension-comprehensive#/switch_is_tax_event": [
+    "PF-23",
+    "PEN-17"
+  ],
+  "instruments/wrappers/pension-general#/switch_is_tax_event": [
+    "PF-23",
+    "PEN-17"
+  ],
+  "instruments/wrappers/provident-for-annuity#/switch_is_tax_event": [
+    "PF-23"
+  ],
+  "instruments/wrappers/savings-plan#/regulator": [
+    "REG-03"
+  ],
+  "instruments/wrappers/savings-plan#/switch_is_tax_event": [
+    "BANK-06",
+    "SW-29",
+    "SW-32"
+  ]
+}

@@ -1,0 +1,11 @@
+[
+  "instruments/wrappers/child-savings-provident#/lawful_exit/payout_business_days",
+  "instruments/wrappers/current-account#/switch_is_tax_event",
+  "instruments/wrappers/keren-hishtalmut#/lawful_exit/payout_business_days",
+  "instruments/wrappers/kupat-gemel-lehashkaa#/ceiling/amount",
+  "instruments/wrappers/kupat-gemel-lehashkaa#/lawful_exit/payout_business_days",
+  "instruments/wrappers/pension-comprehensive#/ceiling/amount",
+  "instruments/wrappers/pension-comprehensive#/lawful_exit/payout_business_days",
+  "instruments/wrappers/pension-general#/lawful_exit/payout_business_days",
+  "instruments/wrappers/provident-for-annuity#/lawful_exit/payout_business_days"
+]

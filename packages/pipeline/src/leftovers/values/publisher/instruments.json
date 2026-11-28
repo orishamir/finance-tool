@@ -1,0 +1,22 @@
+[
+  "instruments/securities/government-bond#/switch_is_tax_event",
+  "instruments/securities/makam#/switch_is_tax_event",
+  "instruments/securities/money-market-fund-daily#/switch_is_tax_event",
+  "instruments/securities/money-market-fund-renewable#/switch_is_tax_event",
+  "instruments/wrappers/bank-deposit#/switch_is_tax_event",
+  "instruments/wrappers/brokerage-account#/switch_is_tax_event",
+  "instruments/wrappers/child-savings-provident#/switch_is_tax_event",
+  "instruments/wrappers/ira-hishtalmut#/fee_caps/deposit",
+  "instruments/wrappers/ira-hishtalmut#/lawful_exit/years",
+  "instruments/wrappers/ira-hishtalmut#/switch_is_tax_event",
+  "instruments/wrappers/ira-provident#/fee_caps/deposit",
+  "instruments/wrappers/ira-provident#/switch_is_tax_event",
+  "instruments/wrappers/keren-hishtalmut#/fee_caps/deposit",
+  "instruments/wrappers/keren-hishtalmut#/lawful_exit/years",
+  "instruments/wrappers/keren-hishtalmut#/switch_is_tax_event",
+  "instruments/wrappers/kupat-gemel-lehashkaa#/switch_is_tax_event",
+  "instruments/wrappers/pension-comprehensive#/switch_is_tax_event",
+  "instruments/wrappers/pension-general#/switch_is_tax_event",
+  "instruments/wrappers/provident-for-annuity#/switch_is_tax_event",
+  "instruments/wrappers/savings-plan#/switch_is_tax_event"
+]
