@@ -1,0 +1,68 @@
+{
+  "id": "TXP-25",
+  "title": "Payslip: what the law requires it to show",
+  "title_he": "תלוש השכר: מה החוק מחייב להראות בו על פנסיה ומס",
+  "text_he": "תלוש השכר חייב להראות, בין השאר, את סך השכר והתשלומים שמובאים בחשבון לזכויות פנסיוניות או לזכויות סוציאליות אחרות. הוא חייב להראות את ניכוי מס ההכנסה, ואת הניכוי לקופת גמל לפי הקופה ולפי הסכום. הוא חייב להראות גם את תשלומי המעסיק לתנאים סוציאליים שלא שולמו לעובד, כולל הפרשות המעסיק לקופת גמל. החוק לא קובע שורה לנקודות זיכוי, ולא משתמש במונח ״שכר מבוטח״.",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-pension-gemel-lekitzba.md",
+  "checked": "2026-11-12",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://fs.knesset.gov.il/17/law/17_lsr_300652.pdf#page=6",
+      "title": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008, ספר החוקים 2162 (6.7.2008)",
+      "title_he": "חוק הגנת השכר (תיקון מס' 24), התשס\"ח-2008",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.6 (gazette p.616), s.5",
+      "locator_he": "עמוד הקובץ 6 (עמוד ספר החוקים 616), סעיף 5",
+      "page": 6,
+      "quote": "סך כל השכר והתשלומים האחרים המובאים בחשבון לעניין זכויות פנסיוניות או זכויות סוציאליות אחרות",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/19/law/19_lsr_306572.pdf#page=2",
+      "title": "חוק להחלפת המונח מעביד (תיקוני חקיקה), התשע\"ד-2014, ספר החוקים 2459 (15.7.2014)",
+      "title_he": "חוק להחלפת המונח מעביד (תיקוני חקיקה), התשע\"ד-2014",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.600), s.1(4)",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 600), סעיף 1(4)",
+      "page": 2,
+      "quote": "במקום \"המעביד\" יבוא \"המעסיק\"",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/18/law/18_lsr_301128.pdf#page=2",
+      "title": "חוק הביטוח הלאומי (תיקון מס' 127), התשע\"א-2011, ספר החוקים 2279 (2.3.2011)",
+      "title_he": "חוק הביטוח הלאומי (תיקון מס' 127), התשע\"א-2011, ספר החוקים 2279 (2.3.2011)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.2 (gazette p.364), s.3",
+      "locator_he": "עמוד הקובץ 2 (עמוד ספר החוקים 364), סעיף 3",
+      "page": 2,
+      "quote": "בתוספת, בפרט 5(3), במקום \"ודמי מחלה\"",
+      "checked": "2026-11-12"
+    },
+    {
+      "url": "https://knesset.gov.il/OdataV4/ParliamentInfo/KNS_LawBinding?$filter=IsraelLawID%20eq%202000238",
+      "title": "Knesset, laws binding the Wage Protection Law (IsraelLaw 2000238)",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-11-12",
+      "qualifier": "(official record of publication, not of the text)"
+    }
+  ]
+}

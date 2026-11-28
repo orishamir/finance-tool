@@ -127,7 +127,8 @@
     "mechanism_text": "'אפשרות לשבירת פיקדון: קיימת עם קנס שבירה' (447 table column).",
     "rule_ids": [
       "BANK-06",
-      "BANK-14"
+      "BANK-14",
+      "BANK-33"
     ]
   },
   "exit_points": {

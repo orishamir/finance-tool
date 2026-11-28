@@ -4229,8 +4229,6 @@ export const invest = {
   lists: {
     kicker: "איפה ואיך: החשבון והקרן",
     colLeft: "נשאר בסוף",
-    /** Above several funds with no price at the chosen account, after why: a pick moves the account (`pair.pickMoves` for one fund). */
-    pickMovesMany: (house: string) => `בחירה באחת מהן מעבירה את החשבון ${toName(house)}`,
     /** The accounts' side beside the ruler: an account is a stretch of it. */
     accounts: {
       title: "איפה: החשבון",
@@ -4242,9 +4240,27 @@ export const invest = {
       title: "איך: הקרן",
       /** A fund's figure against the pair in the receipt, said signed (+ or −) unless it leaves the same. */
       same: "אותו סכום",
-      /** The fold under the list: the funds the chosen account gives no price, with their reasons. */
-      unpriced: (n: number) => (n === 1 ? "ועוד קרן אחת בלי מחיר בחשבון הזה" : `ועוד ${n} קרנות בלי מחיר בחשבון הזה`),
-      unpricedLabel: (house: string) => `קרנות בלי מחיר ${inName(house)}`,
+      /** A grey fund row's figure: why the chosen account gives it no price, in a few words that open the full reason (founder,
+       *  2026-11-28). By `whyNoFundAt`'s state, and for "other" by the engine's reason code (`whyCode`). */
+      why: { doubt: "לא ברור המחיר", missing: "התעריפון לא נאסף", notSold: "לא ניתן לקנות", other: "אין מחיר" },
+      whyCode: {
+        "fund-type": "עוד לא מחושבת",
+        "need-yield": "חסרה תשואת החלוקה",
+        "need-rate": "אין שער מטבע",
+        "needs-fx-rate": "אין שער מטבע",
+        "no-fund-rate": "אין חשבון שמחשב אותה",
+        "no-hedge-record": "חסר הפער מהמדד",
+        "no-hedge-entered": "חסר הפער מהמדד",
+        "payout-unknown": "לא ידוע אם צוברת",
+        "fee-unknown": "חסרים דמי ניהול",
+        "domicile-unknown": "חסרה מדינת הרישום",
+        "sold-fund-by-fund": "לא ברור אם נקנית",
+        "no-agreement-found": "לא ברור אם נקנית",
+        "needs-share-price": "אין מחיר יחידה",
+        "other-venue": "לא ניתן לקנות",
+        "rule-open": "המס לא ידוע",
+        "deal-unpriced": "חסר מחיר בעסקה",
+      } as Record<string, string>,
     },
     /** The head, first among what a house's terms say can change its price, over a standing order's price its price list prints and the
      *  figure leaves out (D41, D56), its reason and their documents. */
@@ -4819,8 +4835,6 @@ export const invest = {
     /** On an account row with no price for the fund: picking it picks another fund too, said before the tap, with no figure: a
      *  row with no data shows no value ("אין נתון" beside "ונשארים 84,172 ₪"). */
     elsewhere: "בחירה בחשבון הזה מעבירה גם לקרן",
-    /** On a fund row with no price at the account: picking it moves the account, said before the tap. */
-    pickMoves: (house: string) => `בחירה בה מעבירה את החשבון ${toName(house)}`,
     /** On the row tapped, after the tap changed the other half too, with the way back: it puts back both the account and the fund,
      * not the fund alone. */
     movedHouse: (house: string) => `החשבון עבר ${toName(house)}`,
@@ -5141,18 +5155,7 @@ export const invest = {
     } as Record<string, string>,
     ruleOpenOther: "אי אפשר לחשב: המס על הקרן תלוי בכלל שעוד לא ידוע, ולכן הקרן לא מדורגת.",
   },
-  /** The same reasons said once over two funds or more that share them (the fund list's fold of funds with no price). */
-  reasonsMany: {
-    fundType: "הקרנות האלה עוד לא מחושבות באתר (סוג או מס שאין להם חישוב).",
-    needYield: "הקרנות מחלקות, וצריך את תשואת החלוקה של כל אחת כדי לחשב.",
-    noBroker: "אין חשבון ניירות ערך שאפשר לחשב לו את הקרנות האלה.",
-    noHedgeRecord: "אי אפשר לחשב: בדוחות השנתיים של הקרנות עוד אין שנה מלאה, ובקרנות המנוטרלות שבנתוני האתר רוב העלות היא הפער מהמדד, מעבר לדמי הניהול.",
-    noHedgeEntered: "אי אפשר לחשב: בקרנות המנוטרלות שבנתוני האתר רוב העלות היא הפער מהמדד, מעבר לדמי הניהול, והאתר לא יודע אותו לקרנות שהזנתם.",
-    payoutUnknown: "אי אפשר לחשב: לא צוין אם הקרנות צוברות או מחלקות, והמס תלוי בזה.",
-    feeUnknown: "אי אפשר לחשב: חלק מדמי הניהול של הקרנות לא הוזנו. השלימו אותם בעריכה.",
-    domicileUnknown: "אי אפשר לחשב: הקרנות מחלקות, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה כל אחת רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
-    noAgreementFound: "לא ידוע אם אפשר לקנות את הקרנות האלה שם: לא נמצא הסכם הפצה עליהן.",
-  },
+
 
   /** The word for an option inside a sentence ("ב…"). */
   optionIn: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "דרך בחו״ל" } as Record<string, string>,

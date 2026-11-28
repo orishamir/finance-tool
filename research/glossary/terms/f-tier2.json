@@ -310,6 +310,8 @@
       "FXD-02",
       "FXD-07",
       "FXD-16",
+      "FXD-25",
+      "FXD-26",
       "TX2-01",
       "TX2-02"
     ],
@@ -379,6 +381,8 @@
       "FXD-02",
       "FXD-09",
       "FXD-10",
+      "FXD-27",
+      "FXD-28",
       "TX2-01"
     ],
     "source": {
@@ -391,7 +395,7 @@
     "where": [
       "tier2-page"
     ],
-    "notes": "Seen in product names: Yahav 'חיסכון מישר חד פעמי - צמוד דולר' ('החיסכון ללא הבטחת קרן'); Discount 'פיקדונות מסוג צמודי מט\"ח' (linkage base: representative rate plus 0.2%); Leumi 'ברירה צמוד דולר-שקל' pays the higher of dollar linkage and a fixed rate (FXD-09). Term is institution-strength only; no primary source names this product.",
+    "notes": "Seen in product names: Yahav 'חיסכון מישר חד פעמי - צמוד דולר' ('החיסכון ללא הבטחת קרן', FXD-27); Discount 'פיקדונות מסוג צמודי מט\"ח' (linkage base: representative rate plus 0.2%, FXD-09); Leumi 'ברירה צמוד דולר-שקל' pays the higher of dollar linkage and a fixed rate (FXD-28). Term is institution-strength only; no primary source names this product.",
     "id": "tzmvd-dvlr"
   },
   {

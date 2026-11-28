@@ -199,7 +199,6 @@ describe("a record's text on a company's page names no other company (a ratchet)
   const all = Object.fromEntries([...rules].map(([id, r]) => [id, r as unknown as RuleRecord]));
   const own = ownDocuments(all);
   const known = new Set<string>([
-    "BANK-31",
     "BANK-34",
     "BANK-38",
     "BANK-48",
@@ -213,8 +212,6 @@ describe("a record's text on a company's page names no other company (a ratchet)
     "CAT-54",
     "CAT-55",
     "CS-30",
-    "FXD-07",
-    "FXD-09",
     "FXD-11",
     "KGL-29",
     "KGL-30",

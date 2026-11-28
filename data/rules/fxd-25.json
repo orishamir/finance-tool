@@ -1,0 +1,36 @@
+{
+  "id": "FXD-25",
+  "title": "Bank Leumi: its foreign-currency deposits (currencies, periods, customer categories)",
+  "title_he": "פיקדון במטבע חוץ בבנק לאומי: מטבעות, תקופות וסוגי לקוחות",
+  "text_he": "בטבלת הריביות של בנק לאומי יש פיקדונות בדולר, באירו ובלירה שטרלינג, לתושבי ישראל ולתושבי חוץ, ובדולר ובאירו גם ל״פיצויים״. התקופות הן משבוע עד 12 חודשים, באירו עד 24 חודשים ובלירה עד 18, ויש גם פיקדון תשלומים בדולר ל־12 חודשים לתושבי ישראל. כל הפיקדונות האלה בריבית קבועה, לא צמודים ובלי תחנות יציאה, והריבית שונה לפי סוג הלקוח. לאומי מגדיר ריבית קבועה כריבית שנקבעת בפתיחת הפיקדון ולא משתנה.",
+  "strength": "institution",
+  "dimensions": [
+    "currency",
+    "liquidity-lockup",
+    "eligibility",
+    "real-vs-nominal"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-22",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
+      "title": "Leumi interest-rate table",
+      "title_he": "טבלת הריביות של בנק לאומי",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

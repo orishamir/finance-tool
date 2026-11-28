@@ -1,0 +1,35 @@
+{
+  "id": "FXD-28",
+  "title": "Bank Leumi: a one-year deposit paying the better of dollar linkage and a fixed rate (265/9)",
+  "title_he": "ברירה צמוד דולר-שקל בלאומי: הגבוה מבין הצמדה לדולר וריבית קבועה",
+  "text_he": "״ברירה צמוד דולר-שקל לשנה״ של בנק לאומי, דגם 265/9, הוא פיקדון בשקלים לשנה, בלי תחנות יציאה. הוא משלם את ״הגבוהה מבין הצמדה לדולר ארה״ב לבין ריבית קבועה״. לפי קריאה של האתר, פיקדון שמבטיח בלי תנאי את הקרן ואת הגבוה מבין ההצמדה לדולר והריבית הקבועה נכנס לחריג בהגדרת ״מוצר מובנה״ בחוק הייעוץ. האתר לא יודע את התנאים המלאים, שכתובים בהסכם הפיקדון.",
+  "strength": "institution",
+  "dimensions": [
+    "currency",
+    "protection",
+    "liquidity-lockup"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-02-22",
+  "il_finance_file": "fx-and-structured-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "leumi",
+      "name_he": "בנק לאומי"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
+      "title": "Leumi interest-rate table",
+      "title_he": "טבלת הריביות של בנק לאומי",
+      "publisher": "Bank Leumi",
+      "publisher_he": "בנק לאומי",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

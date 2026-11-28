@@ -1,19 +1,16 @@
 {
   "id": "FXD-09",
-  "title": "Shekel deposits linked to an exchange rate: linkage base, choice deposits, principal not always guaranteed",
-  "title_he": "פיקדון שקלי צמוד לדולר: שער הבסיס, ברירה, ולא תמיד הבטחת קרן",
+  "title": "Discount Bank: its FX-linked shekel deposits (linkage base and cut-off times)",
+  "title_he": "פיקדון שקלי צמוד מט״ח בדיסקונט: שער ההפקדה, שער הפירעון ושעות ההגשה",
   "strength": "institution",
   "dimensions": [
     "currency",
-    "protection",
     "real-vs-nominal",
-    "fee-fx",
-    "liquidity-lockup",
-    "minimum"
+    "fee-fx"
   ],
   "likely_to_change": "yes",
   "recheck_date": "2027-02-22",
-  "text_he": "בנקים מציעים פיקדון שקלי שהערך שלו עוקב אחרי שער הדולר. התנאים שונים מבנק לבנק, וההבדלים משנים את התוצאה. בבנק דיסקונט שער ההפקדה הוא השער היציג ועוד 0.2%, והפירעון לפי השער היציג הידוע של היום הקודם. בבנק יהב ״חיסכון מישר חד פעמי - צמוד דולר״ הוא ל־365 ימים, מ־1,000 ₪, ובהערה כתוב ״החיסכון ללא הבטחת קרן״. בבנק לאומי ״ברירה צמוד דולר-שקל לשנה״ הוא לשנה, בלי נקודות יציאה, ומשלם את הגבוה מבין ההצמדה לדולר וריבית קבועה.",
+  "text_he": "בבנק דיסקונט, בפיקדון שקלי צמוד מטבע חוץ, שער ההפקדה הוא השער היציג ועוד 0.2%, ולכן ההצמדה מתחילה 0.2% מעל השער היציג. בפירעון השער הוא השער היציג הידוע של היום הקודם. הוראות הפקדה ומשיכה בפיקדונות האלה צריך לשלוח עד שעה קבועה: בימים שני עד חמישי עד 13:00, ובימי שישי, ערבי חג וחול המועד עד 10:00. האתר לא יודע את התנאים המלאים, שכתובים בהסכם של כל פיקדון.",
   "il_finance_file": "fx-and-structured-deposits.md",
   "checked": "2026-10-22",
   "scope": "institution",
@@ -21,46 +18,15 @@
     {
       "id": "discount",
       "name_he": "בנק דיסקונט"
-    },
-    {
-      "id": "yahav",
-      "name_he": "בנק יהב"
-    },
-    {
-      "id": "leumi",
-      "name_he": "בנק לאומי"
     }
   ],
   "sources": [
-    {
-      "url": "https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf",
-      "title": "Yahav rate board 13_26",
-      "title_he": "לוח הריביות על פיקדונות של בנק יהב",
-      "publisher": "Bank Yahav",
-      "publisher_he": "בנק יהב",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "locator": "p.4",
-      "locator_he": "עמוד 4",
-      "page": 4,
-      "checked": "2026-10-22"
-    },
     {
       "url": "https://www.discountbank.co.il/private/savings-investments/savings-interest/",
       "title": "Discount money-market products page, \"הבהרות\"",
       "title_he": "מוצרי שוק הכסף: עמוד המידע של בנק דיסקונט",
       "publisher": "Discount Bank",
       "publisher_he": "בנק דיסקונט",
-      "kind": "institution_doc",
-      "strength": "institution",
-      "checked": "2026-10-22"
-    },
-    {
-      "url": "https://www.leumi.co.il/he/savings/interest-rate-table",
-      "title": "Leumi interest-rate table",
-      "title_he": "טבלת הריביות של בנק לאומי",
-      "publisher": "Bank Leumi",
-      "publisher_he": "בנק לאומי",
       "kind": "institution_doc",
       "strength": "institution",
       "checked": "2026-10-22"

@@ -12,15 +12,15 @@
     "company with an account": { "script": 549, "data": 111 },
     "track": { "script": 336, "data": 51 },
     "tracks": { "script": 336, "data": 102 },
-    "deposits": { "script": 347, "data": 62 },
+    "deposits": { "script": 347, "data": 64 },
     "deal": { "script": 556, "data": 126 },
     "transfer": { "script": 321, "data": 14 },
     "indices": { "script": 635, "data": 620 },
-    "rules": { "script": 369, "data": 111 },
-    "rules shelf": { "script": 313, "data": 141 },
+    "rules": { "script": 369, "data": 116 },
+    "rules shelf": { "script": 313, "data": 146 },
     "documents": { "script": 347, "data": 65 },
     "parameters": { "script": 313, "data": 23 },
-    "not covered": { "script": 324, "data": 54 },
+    "not covered": { "script": 324, "data": 62 },
     "kit": { "script": 509, "data": 14 }
   }
 }
