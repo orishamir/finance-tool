@@ -106,7 +106,7 @@
         "ETF-06"
       ],
       "state": "sourced",
-      "empty_because": "unknown",
+      "empty_because": "not-collected",
       "notes": "Not printed. UCITS ETF units are bought on the exchange, not from the fund (ETF-29); the spread depends on the listing used. No TASE spread figure was read."
     },
     "fund_level_withholding_drag": {

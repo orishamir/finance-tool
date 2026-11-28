@@ -110,8 +110,8 @@
         "ETF-14"
       ],
       "state": "sourced",
-      "empty_because": "not-reported",
-      "notes": "Not printed: p.1 lists the manager's and the trustee's fees and no variable management fee, and Maya's fund data leave variableFee empty. A variable fee belongs to tracking funds (ETF-14); left null rather than 0 because no document prints 0."
+      "empty_because": "not-applicable",
+      "notes": "Not applicable: ETF-14 defines a variable management fee by a tracking fund's tracking difference, and this is not a tracking fund (its tracking difference is not applicable either). Beside that, p.1 lists the manager's and the trustee's fees and no variable management fee, and Maya's fund data leave variableFee empty; left null rather than 0 because no document prints 0."
     },
     "tracking_difference_12m": {
       "value": null,
