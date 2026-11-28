@@ -527,7 +527,7 @@ export function ruleFigure(rule: RuleRecord, name: string, today: string): SiteV
  * How often a rule's figure is set again, where its update rule says: a figure updated each 1 January by the CPI, or set anew each year, is
  * yearly. A figure a text fixes, a company sets, the market moves or the site chose states no cadence.
  */
-export function figureCadence(updateRule: string): Staleness["cadence"] {
+function figureCadence(updateRule: string): Staleness["cadence"] {
   return updateRule === "cpi-linked 1 jan" || updateRule === "set yearly" ? "yearly" : undefined;
 }
 

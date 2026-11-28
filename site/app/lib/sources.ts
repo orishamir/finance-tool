@@ -193,7 +193,7 @@ export function shownTitle(title: string, url: string, kind?: string): { text: s
  * .
  * @deprecated Use `sourceView`, whose `documentNames` names a document once for all its sources; removed when the source drawings switch to it.
  */
-export function sourceParts(source: RuleSource): { publisher: string | null; title: { text: string; host: boolean } | null; locator: string | null; pdf: boolean } {
+function sourceParts(source: RuleSource): { publisher: string | null; title: { text: string; host: boolean } | null; locator: string | null; pdf: boolean } {
   const n = sourceLabel2(source);
   const title = shownTitle(n.title, source.url, source.kind);
   if (title.host && n.publisher && n.publisher.includes(title.text)) return { publisher: n.publisher, title: null, locator: n.locator, pdf: n.pdf };

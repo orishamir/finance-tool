@@ -9,7 +9,7 @@ import type { FundStatement } from "@finance-tool/engine";
 import { system, buttons, computedInputs, flags as flagCopy, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { spanWords } from "../lib/rule-row";
-import { figureRows, fillSlot, missingSlot, wordUnits, type SlotSource } from "../lib/figure-slots";
+import { figureRows, fillSlot, missingSlot, wordUnits, type FigureRow, type SlotSource } from "../lib/figure-slots";
 import { fmt } from "../lib/format";
 import { headText } from "../lib/working";
 import { hasHebrew, mostlyHebrew } from "../lib/source-label";
@@ -1085,12 +1085,10 @@ function RuleFigures({ rule, today, pageValue = (v) => v, head, marked }: { rule
   }, [marked]);
   if (rows.length === 0) return null;
   // the figure the card was opened from: its first row holds the scroll, and every row of it is marked
-  let first = true;
-  const mark = (name: string) => {
-    if (name !== marked) return {};
-    const ref = first ? { ref: markedRow } : {};
-    first = false;
-    return { ...ref, "data-marked": "", className: "readout-row rounded-sm bg-secondary" };
+  const firstMarked = rows.find((r) => r.key === marked)?.id;
+  const mark = (row: FigureRow) => {
+    if (row.key !== marked) return {};
+    return { ...(row.id === firstMarked ? { ref: markedRow } : {}), "data-marked": "", className: "readout-row rounded-sm bg-secondary" };
   };
   const said = new Set<string>();
   return (
@@ -1106,7 +1104,7 @@ function RuleFigures({ rule, today, pageValue = (v) => v, head, marked }: { rule
             // law): the first row says each under its own figure, the edge's under the edge and the rate's under the rate
             const edge = row.firstBracket && row.bound?.kind === "up-to" ? row.bound.value : null;
             return (
-              <div key={row.id} className="readout-row" {...mark(row.key)}>
+              <div key={row.id} className="readout-row" {...mark(row)}>
                 <dt>
                   {figureLabel(rule, row.key)} {row.bound && (row.bound.kind === "up-to" ? "≤" : ruleCardMore.above)} {row.bound && <Num value={pageValue(row.bound.value)} />}
                   {row.firstBracket && <FigureNote v={edge ?? v} labelYear={null} />}
@@ -1121,7 +1119,7 @@ function RuleFigures({ rule, today, pageValue = (v) => v, head, marked }: { rule
           }
           const span = spanWords(v.value, v.unit);
           return (
-            <div key={row.id} className="readout-row" {...mark(row.key)}>
+            <div key={row.id} className="readout-row" {...mark(row)}>
               <dt>
                 {figureLabel(rule, row.key)}
                 {row.year && (
