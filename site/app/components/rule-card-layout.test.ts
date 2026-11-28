@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
 import { ruleCardMore, rule as ruleCopy, scopeWords, sourceBlock, strength } from "../copy";
 import { fmt } from "../lib/format";
+import { ruleTitle } from "../lib/rule-title";
 import { isNotRule, joinNames, ownDocCompanies } from "../lib/scope";
 import { ProvenanceProvider, RuleRef, RuleTitleRow, catchesOf, type ProvenanceData } from "./provenance";
 import { RuleCard, RuleDetail, TermCard, ValueSheet } from "./provenance-sheets";
@@ -141,6 +142,43 @@ describe("a general record that is not a rule", () => {
     const text = words(createElement(RuleCard, { id: r.id, data }), data);
     expect(text).toContain(scopeWords.allNoCompany);
     expect(text).not.toContain(ruleCopy.all);
+  });
+});
+
+describe("a company's term whose title names its company", () => {
+  it("carries no tag that says the company again", async () => {
+    const { loadRules } = await import("../lib/data.server");
+    const { companyLinks, ownDocuments } = await import("../lib/institutions.server");
+    const rules = loadRules();
+    const ownDocs = ownDocuments(rules);
+    const data = dataOf(rules, { ownDocs, companies: companyLinks() });
+    const r = must(
+      Object.values(rules).find((x) => {
+        const named = ownDocCompanies(x, ownDocs);
+        return x.scope === "institution" && named.length === 1 && ruleTitle(x, data).text.startsWith(must(named[0], "its company").name_he);
+      }),
+      "a company's term whose title opens with its company",
+    );
+    const name = must(ownDocCompanies(r, ownDocs)[0], "its company").name_he;
+    const tag = scopeWords.tag.institution.replace("{names}", name);
+    // the card's heading: its title, then the tags under it
+    for (const el of [createElement(RuleCard, { id: r.id, data, inline: true }), createElement(RuleDetail, { id: r.id, data, products: [] })]) {
+      const head = must(/<h2[\s\S]*?<\/header>/.exec(renderToStaticMarkup(createElement(MemoryRouter, null, el))), "the card's heading")[0].replace(/<[^>]+>/g, " ");
+      expect(head).not.toContain(tag);
+    }
+  });
+});
+
+describe("the open questions a record points to", () => {
+  it("stand as chips after \"ראו גם\", beside the rules it points to", async () => {
+    const { loadRules } = await import("../lib/data.server");
+    const rules = loadRules();
+    const r = must(Object.values(rules).find((x) => (x.see_also ?? []).some((y) => y.kind === "question")), "a record that points to an open question");
+    const q = must((r.see_also ?? []).find((y) => y.kind === "question"), "its question").id;
+    const data = dataOf({ [r.id]: r }, { openQuestions: { [q]: { status: "open", title_he: "שאלה שהכלל מפנה אליה" } } });
+    const text = words(createElement(RuleCard, { id: r.id, data, inline: true }), data);
+    expect(text).toContain(ruleCardMore.seeAlso);
+    expect(text).toContain("שאלה שהכלל מפנה אליה");
   });
 });
 

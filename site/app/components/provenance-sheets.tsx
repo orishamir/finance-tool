@@ -1149,8 +1149,9 @@ function NoRecordCard({ id, headId }: { id: string; headId?: string }) {
  * comes. While the body is on its way it holds nothing to act on, so the heading takes the focus a new view in the sheet gives
  * (`data-autofocus`), and keeps it as the body comes.
  */
-function RuleCardHead({ id, rule, title, data, headId, waiting }: { id: string; rule: Pick<RuleRecord, "id" | "strength" | "scope" | "scope_institutions">; title: ReactNode; data: ProvenanceData; headId: string | undefined; waiting?: boolean }) {
+function RuleCardHead({ id, rule, title, titleText, data, headId, waiting }: { id: string; rule: Pick<RuleRecord, "id" | "strength" | "scope" | "scope_institutions">; title: ReactNode; /** The title's words, which may name the tag's companies already. */ titleText: string; data: ProvenanceData; headId: string | undefined; waiting?: boolean }) {
   const open = rule.strength === "open";
+  const page = pageCompaniesOf(data);
   return (
     <header className="flex flex-col gap-1.5">
       <h2 id={headId} tabIndex={-1} data-autofocus={waiting || undefined} className="text-lg font-semibold leading-snug outline-none">
@@ -1161,7 +1162,7 @@ function RuleCardHead({ id, rule, title, data, headId, waiting }: { id: string; 
       </h2>
       {/* who it applies to (D30): a neutral label, never a warning; the strength tag stays only for an open or second-hand source, or a general rule read from a company's document */}
       <div className="flex flex-wrap items-center gap-1.5">
-        <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs, { company: pageCompaniesOf(data) })}</Tag>
+        {!titleSays(titleText, tagCompanies(rule, data.ownDocs, { company: page }), rule) && <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs, { company: page })}</Tag>}
         {/* a record the rule base keeps that is not a rule says so, general or not: its foot leads to "לא נכלל ככלל" on /companies */}
         {isNotRule(id) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
         {/* an open record's heading already says it is an open question */}
@@ -1169,6 +1170,15 @@ function RuleCardHead({ id, rule, title, data, headId, waiting }: { id: string; 
       </div>
     </header>
   );
+}
+
+/**
+ * Whether a title opens with the companies its scope tag names ("הראל: …" under "של הראל"), so the tag would only say them again. Never for a
+ * general or unsettled record, whose tag names no company, nor for a tag that names none in full ("לאומי ועוד 3").
+ */
+function titleSays(title: string, tagged: readonly { name_he: string }[], rule: Pick<RuleRecord, "scope">): boolean {
+  if (rule.scope === "general" || rule.scope === "unsettled" || tagged.length === 0) return false;
+  return title.startsWith(joinNames(tagged.map((c) => c.name_he)));
 }
 
 /**
@@ -1207,7 +1217,7 @@ export function RuleCard({ id, data, headId, inline, figure }: { id: string; dat
     const title = head.title.english ? <bdi dir="ltr">{head.title.text}</bdi> : head.title.text;
     return (
       <div data-code-ok data-opens-scope data-opens={id} className={cx("flex-1 flex flex-col gap-3", head.strength === "open" && "rule-open")}>
-        <RuleCardHead id={id} rule={pageScope(head, page)} title={title} data={data} headId={headId} waiting />
+        <RuleCardHead id={id} rule={pageScope(head, page)} title={title} titleText={head.title.text} data={data} headId={headId} waiting />
         <CardOnWay id={id} fetched={fetched} />
       </div>
     );
@@ -1229,7 +1239,7 @@ export function RuleCard({ id, data, headId, inline, figure }: { id: string; dat
     // the rule's own card: the one place outside the rules page where its code stands, in the heading "id · title" (D25)
     // a figure of the card opens no chip of the card's own rule (`opensAround`)
     <div data-code-ok data-opens-scope data-opens={id} className={cx("flex-1 flex flex-col gap-3", open && "rule-open")}>
-      <RuleCardHead id={id} rule={rule} title={<ShownRuleTitle rule={rule} slots={slots} />} data={data} headId={headId} />
+      <RuleCardHead id={id} rule={rule} title={<ShownRuleTitle rule={rule} slots={slots} />} titleText={ruleTitle(rule, slots).text} data={data} headId={headId} />
       {open ? (
         <Callout tone="blocked">
           <span className="block">
@@ -1317,18 +1327,20 @@ export function RuleCard({ id, data, headId, inline, figure }: { id: string; dat
 
 /**
  * "ראו גם:" and the rules the record's Source line points to (`derived_from`: the general rule a company's term sits under, a rule read
- * the same way), each beside the record's own sources, so the words claim no derivation; "לדוגמה:" and a general rule's named examples
- * at companies.
+ * the same way), each beside the record's own sources, so the words claim no derivation, with the open questions it points to
+ * (`see_also`); "לדוגמה:" and a general rule's named examples at companies.
  */
 function RulePointers({ rule }: { rule: RuleRecord }) {
   const derived = asSourced(rule).derived_from ?? [];
+  const questions = (rule.see_also ?? []).flatMap((x) => (x.kind === "question" ? [x.id] : []));
   const examples = rule.examples ?? [];
   return (
     <>
-      {derived.length > 0 && (
+      {(derived.length > 0 || questions.length > 0) && (
         <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
           <span>{ruleCardMore.seeAlso}</span>
           {derived.map((d) => <RuleRef key={d} id={d} />)}
+          {questions.map((q) => <IdRef key={q} id={q} titled />)}
         </p>
       )}
       {examples.length > 0 && (
@@ -1404,7 +1416,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
             <Tag key={p} tone="neutral">{gershayim(p)}</Tag>
           ))}
           {/* who it applies to: shown only when it is not every case (D30) */}
-          {!isGeneral(rule) && <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs)}</Tag>}
+          {!isGeneral(rule) && !titleSays(ruleTitle(rule, data).text, tagCompanies(rule, data.ownDocs), rule) && <Tag tone="neutral" wrap>{scopeTag(rule, data.ownDocs)}</Tag>}
           {isNotRule(id) && <Tag tone="neutral">{scopeWords.notRule.tag}</Tag>}
           {/* an open record's heading already says it is an open question */}
           {(rule.strength === "secondary" || (rule.strength === "institution" && rule.scope === "general")) && <StrengthLabel strength={rule.strength} />}
