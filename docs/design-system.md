@@ -637,8 +637,9 @@ Called for by 3.8 of the product (rules page, parameters page) and D25, D47.
     helper (`figureRows`), as the search's closest match does: a figure kept for another rule is left out, the top bracket reads "מעל"
     the edge before it, and a figure's way of updating and its last day in force are said once.
   - A record that is not a rule carries the not-rule tag on its card wherever it shows, general or a company's, and its card's foot leads
-    to the "לא נכלל ככלל" section of the rules page, where every such record is listed. A rule's foot leads to where it is listed: the
-    rules page at the rule, or the company's entry (`companyEntryHref`, which takes an old entry's address to the record it became).
+    to the "לא נכלל ככלל" section of the documents page, where every such record is listed. A rule's foot leads to where it is listed: the
+    rules page at the rule, or the company's entry on its page (`companyEntryHref`). An old entry's address on a company page replaces
+    itself with the record the entry became (`currentEntry`, `useMovedEntry`).
 - **Parameter card.** A parameter without a value shows "עוד לא נקבע" (N1).
 
 ### 3.8a Knowledge-layer pieces
