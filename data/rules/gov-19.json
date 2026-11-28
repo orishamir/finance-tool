@@ -33,8 +33,8 @@
     {
       "url": "https://data.gov.il/api/3/action/package_show?id=goverment-domesticdebt",
       "title": "data.gov.il: נתוני החוב הממשלתי המקומי (package_show)",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "publisher": "Ministry of Finance",
+      "publisher_he": "משרד האוצר",
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-25"

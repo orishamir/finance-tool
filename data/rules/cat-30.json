@@ -1,0 +1,35 @@
+{
+  "id": "CAT-30",
+  "title": "The `transfer_bank` dataset: fund-to-track crosswalk",
+  "title_he": "פרטי הקופות להעברת כספים: הקישור בין מספר קופה למסלולים",
+  "strength": "primary",
+  "dimensions": [
+    "transfer-switch-process"
+  ],
+  "likely_to_change": "no",
+  "text_he": "רשות שוק ההון מפרסמת באתר data.gov.il מאגר יומי בשם ״פרטי קופות לצורך העברת כספים בין גופים מוסדיים״, עם שורה לכל מסלול ולכל כיוון העברה. בכל שורה יש את החברה המנהלת, מספר הקופה ושמה, מספר המסלול ושמו, ההתמחות, החברה המתפעלת, פרטי קשר ופרטי בנק. כך המאגר מקשר בין מספרי המסלולים בגמל-נט לבין מספר הקופה ושמה, והאתר לא מצא מקור אחר שעושה זאת.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-11-28",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://data.gov.il/api/3/action/package_show?id=transfer_bank",
+      "title": "פרטי קופות לצורך העברת כספים בין גופים מוסדיים",
+      "title_he": "פרטי קופות לצורך העברת כספים בין גופים מוסדיים",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-11-28"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=b5223cbc-e1b2-4503-a499-97cdcd7190d2&limit=60&filters={\"מספר%20קופה%20-אישור%20מס%20הכנסה\":7857}",
+      "title": "transfer_bank fund 7857",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ]
+}

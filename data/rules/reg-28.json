@@ -1,0 +1,107 @@
+{
+  "id": "REG-28",
+  "title": "Meitav brand: legal entity per product line (partly closes domain OQ22)",
+  "title_he": "מיטב: איזו חברה עומדת מאחורי כל מוצר",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "protection"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "text_he": "מאחורי המותג מיטב, קרנות הפנסיה, קופות הגמל, קרנות ההשתלמות, קופות הגמל להשקעה, החיסכון לכל ילד, קופות הפיצויים המרכזיות וקופות הגמל בניהול אישי מנוהלים בידי מיטב גמל ופנסיה, בפיקוח רשות שוק ההון. קרנות הנאמנות מנוהלות בידי מיטב קרנות נאמנות, בפיקוח רשות ניירות ערך. המסחר העצמאי הוא של מיטב טרייד, שהיא חברה בבורסה ובמסלקת הבורסה בלבד, ולפי אתר האינטרנט של מיטב, ניהול התיקים הוא של מיטב ניהול תיקים. החברה השולטת נקראת בנתוני רשות שוק ההון ״מיטב דש השקעות״ ובאתר האינטרנט של מיטב ״מיטב בית השקעות״, והאתר לא יודע אם זו אותה חברה.",
+  "il_finance_file": "regulators-and-protection.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "meitav",
+      "name_he": "מיטב"
+    },
+    {
+      "id": "meitav-trade",
+      "name_he": "מיטב טרייד"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/Funds_Report2025.pdf",
+      "title": "ISA 2025 fund report",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "page": 7,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&filters={\"REPORT_PERIOD\":202609}&q=מיטב&limit=60",
+      "title": "Gemel-Net API, period 202609, q=מיטב",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=6d47d6b5-cb08-488b-b333-f1e717b1e1bd&filters={\"REPORT_PERIOD\":202609}&q=מיטב&limit=30",
+      "title": "Pensia-Net API, period 202609",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://content.tase.co.il/media/chilpz2c/1150_nbcm_372306_heb.pdf",
+      "title": "TASE NBCM guide (Hebrew)",
+      "title_he": "How to become a non-banking corporation member (ינואר 2026)",
+      "publisher": "Tel Aviv Stock Exchange",
+      "publisher_he": "הבורסה לניירות ערך בתל אביב",
+      "kind": "institution_doc",
+      "strength": "primary",
+      "locator": "p.12",
+      "locator_he": "עמוד 12",
+      "page": 12,
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/",
+      "title": "Meitav home",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/mutual_funds/",
+      "title": "mutual funds",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/trade/customer-service/meitav_terms/",
+      "title": "Meitav Trade terms",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://www.meitav.co.il/portfolio_management/",
+      "title": "portfolio management",
+      "publisher": "Meitav",
+      "publisher_he": "מיטב",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

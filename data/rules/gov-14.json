@@ -119,8 +119,8 @@
     {
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=c92fdda2-0939-4110-8ebc-edfcf35e8723&limit=3&sort=ISSUANCEDATE%20desc&filters=%7B%22SERIES%22%3A1205145%7D",
       "title": "משרד האוצר (data.gov.il): הנפקת אג\"ח סחירות בשוק המקומי, סדרה 1205145",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "publisher": "Ministry of Finance",
+      "publisher_he": "משרד האוצר",
       "kind": "dataset",
       "strength": "primary",
       "quote": "ממשלתית בריבית משתנה",

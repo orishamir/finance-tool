@@ -17,8 +17,8 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&q=IRA&filters={\"REPORT_PERIOD\":202609}",
       "title": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609",
       "title_he": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-25"
@@ -27,8 +27,8 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&q=אישי&filters={\"REPORT_PERIOD\":202609}",
       "title": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609, חיפוש \"אישי\"",
       "title_he": "גמל-נט, רשות שוק ההון: נתוני קופות הגמל לתקופת דיווח 202609, חיפוש \"אישי\"",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-25"

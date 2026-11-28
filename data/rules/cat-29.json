@@ -1,0 +1,56 @@
+{
+  "id": "CAT-29",
+  "title": "Refresh: cadence, new-period detection, and API behaviour",
+  "title_he": "עדכון הנתונים של רשות שוק ההון: תקופת דיווח בכל חודש",
+  "strength": "primary",
+  "dimensions": [
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "text_he": "הנתונים בשלושת המאגרים של רשות שוק ההון הם חודשיים, לפי תקופת דיווח, אף שהמאגרים מסומנים כמתעדכנים כל יום. ב־22.10.2026 תקופת הדיווח האחרונה בשלושתם הייתה 202609. האתר לא יודע אם שורות של תקופה מתווספות או מתוקנות אחרי שהיא מופיעה לראשונה. הקבצים מחולקים לפי טווחי שנים, ולכן חלוקה חדשה יכולה לשנות את מזהי הקבצים.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-10-22",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20MAX(%22REPORT_PERIOD%22)%20FROM%20%22a30dcbea-a1d2-482c-ae29-8f781f5025fb%22",
+      "title": "MAX gemel",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20MAX(%22REPORT_PERIOD%22)%20FROM%20%226d47d6b5-cb08-488b-b333-f1e717b1e1bd%22",
+      "title": "MAX pension",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search_sql?sql=SELECT%20MAX(%22REPORT_PERIOD%22)%20FROM%20%22c6c62cc7-fe02-4b18-8f3e-813abfbb4647%22",
+      "title": "MAX insurance",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=a30dcbea-a1d2-482c-ae29-8f781f5025fb&limit=0&filters={\"REPORT_PERIOD\":202609}",
+      "title": "count 202609",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-10-22"
+    }
+  ],
+  "derived_from": [
+    "CAT-01"
+  ]
+}
