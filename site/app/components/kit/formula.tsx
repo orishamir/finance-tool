@@ -1,6 +1,6 @@
-// A formula in math type, with a key to its symbols, and the working of one figure: a formula's sheet shows the math docs/method.md writes
-// for it, in place of a link to the document; a figure's sheet shows its own line of math with its values put in, or the lines of a
-// difference or a sum. KaTeX and its stylesheet load the first time a formula shows, not with every page; once loaded, a formula draws in
+// A formula in math type, with a key to its symbols, and the working of one figure: its own line of math with its values put in, or the
+// lines of a difference or a sum. Kept, with its gallery entry, for the step-by-step explanation of a page's main result; no sheet shows
+// one today. KaTeX and its stylesheet load the first time a formula shows, not with every page; once loaded, a formula draws in
 // its first render, so a sheet opened again does not shift. Drawn only, with no hidden MathML copy for screen readers.
 import { useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { assertNever } from "@finance-tool/schema";

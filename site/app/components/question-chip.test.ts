@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { formulaNames, guide, provenance, rule } from "../copy";
+import { guide, provenance, rule } from "../copy";
 import { IdRef, ProvenanceProvider, Ruled, Term } from "./provenance";
 
 /** What a reader can be told: the markup without `data-opens`, the attribute by which a sheet knows which rules its opener already opens. It
@@ -23,11 +23,6 @@ describe("an open question's chip (D49, 2026-11-02)", () => {
     expect(html).toContain(rule.title);
     expect(html).not.toContain(rule.set);
     expect(html).not.toContain("TXS-05");
-  });
-  it("a formula's chip says its name, not the code", () => {
-    const html = render("F-92");
-    expect(html).toContain(formulaNames["F-92"]!);
-    expect(html).not.toContain("F-92");
   });
   it("a rule's chip says the rule's title", () => {
     const html = told(renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { rules: { "TXS-05": { id: "TXS-05", title_he: "מס על רווח הון", title: "x" } }, today: "2026-11-02" } } as never, createElement(IdRef, { id: "TXS-05" })))));

@@ -1,4 +1,5 @@
-// The working a computed figure's sheet shows (`Working`, packages/schema): the lines of a difference or a sum as the page writes them, or
+// The working of a computed figure (`Working`, packages/schema), kept for the step-by-step explanation of a page's main result; no sheet
+// shows it today (the kit's FormulaBlock draws it in the gallery): the lines of a difference or a sum as the page writes them, or
 // one line of math docs/method.md draws for the figure's entry, then the same line with the figure's own values put in place of its symbols.
 // The line with values is made here from the drawn line and the inputs, never typed: each value is a number in the math, its unit and its
 // name stay in the key beside it.
@@ -10,7 +11,7 @@ import { isOpenValue, isParameter, type SiteValue } from "./value";
 export type FormulaWorking = Extract<Working, { kind: "formula" }>;
 
 /**
- * The figure as its sheet heads with it: the word a value that is not a number was shown as (`display`), the figure as its line writes it
+ * The figure as a sheet heads with it: the word a value that is not a number was shown as (`display`), the figure as its line writes it
  * (`written`), an open value's word, or the number by the display rule, with its sign where the figure was shown with one (`signed`);
  * `exact`, the two decimals a table cell showed.
  */

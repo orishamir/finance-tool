@@ -15,7 +15,7 @@ import { paidInWorking } from "../../lib/working";
 import { lumpSumEntered, type CashRateRange } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconReset } from "../icons";
-import { IdRef, Num, RuleRef, StateTag } from "../provenance";
+import { IdRef, Num, RuleRef } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Button, Callout, Card, ChartLegend, FoldGroup, HelpMark, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, rangeScale, yearsCheck } from "../kit";
 import { ToolBoundary } from "../tool-boundary";
@@ -323,7 +323,6 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
               ) : timeline.kind === "ok" ? (
                 <span className="figure text-muted-foreground">{system.loading}</span>
               ) : null}
-              {headline && <StateTag state="computed" />}
             </div>
           </div>
           {/* what each side's figure is stands in the "?" beside the switch; the other side's figure is the switch's other side */}

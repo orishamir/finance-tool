@@ -382,48 +382,13 @@ export function loadNotCovered(): NotCoveredRow[] {
   });
 }
 
-/** docs/method.md §2.3: which formulas each site parameter is used by. */
-export function loadParameterUses(): Record<string, string[]> {
-  const doc = readTextCached(join(root, "docs/method.md"));
-  const section = doc.slice(doc.indexOf("### 2.3"), doc.indexOf("### 2.4"));
-  const out: Record<string, string[]> = {};
-  for (const m of section.matchAll(/^\| (P-\d{2}) \| .+? \| (.+?) \|$/gm)) out[m[1]!] = [...m[2]!.matchAll(/F-\d{2,3}/g)].map((x) => x[0]);
-  return out;
-}
-
-/** The inverse of `loadParameterUses`: per formula, the site parameters it uses (the formula sheet's list). */
-export function loadFormulaParameters(): Record<string, string[]> {
-  const out: Record<string, string[]> = {};
-  for (const [param, formulas] of Object.entries(loadParameterUses())) for (const f of formulas) (out[f] ??= []).push(param);
-  return out;
-}
-
-/** docs/method.md: per formula, the math its entry writes ($`…`$, GitHub's inline math), in order: what the formula's sheet shows. */
+/** docs/method.md: per formula, the math its entry writes ($`…`$, GitHub's inline math), in order: the lines a calculation's working is drawn from (lib/working.ts). */
 export function loadFormulaTex(): Record<string, string[]> {
   const doc = readTextCached(join(root, "docs/method.md"));
   const out: Record<string, string[]> = {};
   for (const m of doc.matchAll(/^\*\*(F-\d{2,3}) .*$/gm)) {
     const tex = [...m[0].matchAll(/\$`([^`]+)`\$/g)].map((x) => x[1]!);
     if (tex.length) out[m[1]!] = tex;
-  }
-  return out;
-}
-
-/**
- * docs/method.md: per formula (`F-nn`, an entry's bold head) and per assumption (`A-nn`, a row of the assumptions' table), the anchor GitHub
- * gives the heading it stands under, so a link to its full definition opens at that section: GitHub gives an entry, a bold paragraph, no
- * anchor of its own. GitHub's anchor is the heading in lower case, with every character but a letter, a digit, a space, a hyphen or an
- * underscore dropped and each space a hyphen.
- */
-export function loadFormulaAnchors(): Record<string, string> {
-  const doc = readTextCached(join(root, "docs/method.md"));
-  const out: Record<string, string> = {};
-  let heading = "";
-  for (const line of doc.split("\n")) {
-    const h = /^#{1,6} (.+)$/.exec(line);
-    if (h?.[1]) heading = h[1].trim().toLowerCase().replace(/[^\p{L}\p{N} _-]/gu, "").replace(/ /g, "-");
-    const id = /^\*\*(F-\d{2,3}) /.exec(line)?.[1] ?? /^\| (A-\d{2,3}) \|/.exec(line)?.[1];
-    if (id && heading && !out[id]) out[id] = heading;
   }
   return out;
 }

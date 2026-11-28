@@ -1,28 +1,27 @@
-// What the provenance sheet shows (design-system 3.2, design-spec 1.3 and 3): a figure's source and how it was computed, a rule's card,
-// a term's card, a formula, an open question, a statement math proves, and the cards the rules page lays out. A script apart from the figures and chips
+// What the provenance sheet shows (design-system 3.2, design-spec 1.3 and 3): a figure's source, a calculated figure's catches, a rule's
+// card, a term's card, an open question, a statement math proves, and the cards the rules page lays out. A script apart from the figures and chips
 // (provenance.tsx `loadSheets`), fetched while the page hydrates (entry.client.tsx), so a page shows itself without waiting for it.
-import { useContext, useEffect, useState, type ReactNode } from "react";
+import { useContext, useState, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link, useLocation } from "react-router";
 import { assertNever, type RuleRecord } from "@finance-tool/schema";
-import type { FundStatement } from "@finance-tool/engine";
-import { buttons, computedInputs, flags as flagCopy, formulaKeys, formulaNames, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
+import { buttons, computedInputs, flags as flagCopy, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { ownFigures, spanWords } from "../lib/rule-row";
 import { fillSlot, missingSlot, wordUnits, type SlotSource } from "../lib/figure-slots";
 import { fmt } from "../lib/format";
-import { digitsFor, headText, keyOfLine, receiptLines, withValues } from "../lib/working";
+import { headText } from "../lib/working";
 import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
 import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
-import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetFlags, sheetReading, sheetRules, statementKey, strengthOf, type SiteValue } from "../lib/value";
+import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetReading, strengthOf, type SiteValue, type Staleness } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
 import { IconAlert, IconCheck, IconClock, IconCopy, IconExternal, IconReset } from "./icons";
 import { Button, Callout, cx, Disclosure, LinkButton, Tag } from "./ui";
-import { Card, CompanyLinks, DocLink, FormulaBlock, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
+import { Card, CompanyLinks, DocLink, GroupHead, PrintedText, StatRow, When, gershayim, keepTitleWhole } from "./kit";
 import { companyLinksOf, generalOnly, isGeneral, isNotRule, isOwnSourceOf, joinNames, listedCompanies, noCompanyAnchor, ownDocCompanies, sameCompanies, scopeCompanies, tagCompanies, pageView, sourceCompany, sourcesForPage, type OwnDocs } from "../lib/scope";
 import type { SheetPart } from "./provenance";
-import { CloseCtx, DataCtx, FormulaLink, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Item, type ProvenanceData } from "./provenance";
+import { CloseCtx, DataCtx, IdRef, IdText, InsideSheetCtx, Num, ReadingTag, RuleRef, RuleTitleList, RuleTitleRow, StateTag, StrengthLabel, TitleRow, TodayCtx, idKind, openQuestionOf, questionOf, ruleOf, scopeTag, startsAfter, textDir, useOpen, type Catch, type Item, type ProvenanceData } from "./provenance";
 import { proofOf } from "../content/proofs";
 
 /** What words that state several rules (`Ruled`) open: each rule by its title (`RuleTitleRow`), a company's term named; a row opens the card, with the sheet's back arrow to the list. */
@@ -161,7 +160,7 @@ export function SheetContent({ item, data, headId, descId }: { item: Item; data:
       {item.kind === "rules" && <RulesListSheet ids={item.ids} name={item.name} headId={headId} />}
       {item.kind === "term" && <TermCard id={item.id} data={data} headId={headId} />}
       {item.kind === "terms" && <TermsSheet ids={item.ids} name={item.name} lead={item.lead} rules={item.rules} parts={item.parts} data={data} headId={headId} />}
-      {item.kind === "formula" && <FormulaSheet id={item.id} data={data} headId={headId} />}
+      {item.kind === "catch" && <CatchSheet value={item.value} catches={item.catches} exact={!!item.exact} display={item.display} data={data} headId={headId} descId={descId} />}
       {item.kind === "question" && <QuestionSheet id={item.id} data={data} headId={headId} />}
       {item.kind === "proof" && <ProofSheet id={item.id} headId={headId} />}
       {item.kind === "proofs" && <ProofsListSheet ids={item.ids} headId={headId} />}
@@ -169,60 +168,6 @@ export function SheetContent({ item, data, headId, descId }: { item: Item; data:
   );
 }
 
-let anchorsOnce: Promise<Record<string, string>> | undefined;
-/** The anchor of the heading docs/method.md defines this formula under (routes/method-anchors.ts), once fetched; undefined before then, or if the fetch fails. */
-function useMethodAnchor(id: string, wanted: boolean): string | undefined {
-  const [anchors, setAnchors] = useState<Record<string, string>>();
-  useEffect(() => {
-    if (!wanted) return;
-    let live = true;
-    anchorsOnce ??= fetch(`${import.meta.env.BASE_URL}method-anchors.json`).then((r) => (r.ok ? (r.json() as Promise<Record<string, string>>) : {}), () => ({}));
-    void anchorsOnce.then((a) => {
-      if (live) setAnchors(a);
-    });
-    return () => {
-      live = false;
-    };
-  }, [wanted]);
-  return anchors?.[id];
-}
-
-/**
- * A formula's sheet: its Hebrew name; the formula itself in math type with a key to its symbols, when docs/method.md writes it as math,
- * else a link to its full definition there, at the section it stands in; and the
- * site parameters it uses, each a chip to its card (left out when there are none, or when the page did not pass `formulas`).
- */
-function FormulaSheet({ id, data, headId }: { id: string; data: ProvenanceData; headId: string }) {
-  const known = data.formulas?.[id];
-  const name = formulaNames[id] || known?.name || formulaNames._other;
-  const parameters = known?.parameters ?? [];
-  const tex = known?.tex ?? [];
-  const key = formulaKeys[id];
-  const anchor = useMethodAnchor(id, tex.length === 0);
-  return (
-    <div className="flex flex-col gap-3">
-      <h2 id={headId} data-code-ok className="text-lg font-semibold">
-        {name} <bdi dir="ltr" className="slashed-zero text-muted-foreground text-base">{id}</bdi>
-      </h2>
-      {tex.length > 0 ? (
-        <FormulaBlock lines={tex.map((t, i) => ({ tex: t, label: tex.length > 1 ? key?.lines?.[i] : undefined }))} symbols={key?.symbols ?? []} where={copy.formulaSheet.where} />
-      ) : (
-        <a href={anchor ? `${METHOD_URL}#${anchor}` : METHOD_URL} target="_blank" rel="noopener noreferrer" className="text-link inline-flex items-start gap-1 text-sm hover:underline" dir="ltr">
-          <span className="min-w-0 [overflow-wrap:anywhere]">{copy.formulaSheet.full}</span>
-          <IconExternal size={16} className="shrink-0 mt-0.5" />
-        </a>
-      )}
-      {parameters.length > 0 && (
-        <div className="flex flex-col gap-1.5">
-          <span className="text-sm text-muted-foreground">{copy.formulaSheet.usesLabel}</span>
-          <span className="flex flex-wrap gap-2">
-            {parameters.map((p) => <IdRef key={p} id={p} />)}
-          </span>
-        </div>
-      )}
-    </div>
-  );
-}
 const METHOD_URL = "https://github.com/orishamir/finance-tool/blob/main/docs/method.md";
 /** Section 14 of method.md, "What the math proves about bonds", by the anchor GitHub gives its heading. */
 const PROOFS_URL = `${METHOD_URL}#14-what-the-math-proves-about-bonds`;
@@ -466,118 +411,195 @@ export function SlottedText({ text, source }: { text: string; source: SlotSource
   );
 }
 
+
 /**
- * A fund statement on a figure's sheet, by the term it states: its sentence, and its document linked at the page: a stated tax index's annex
- * at the page the statement names (D84); a document naming the fund a foreign-investment fund by the record's own source, whose address opens
- * at the page and whose title names it (D119, data-schema §3.5).
+ * Why a figure has no number, said once in its sheet, or null where nothing is said: its note in Hebrew; else, for a sourced figure, that
+ * the source does not hold it. An open value's reason is its blocked callout, and an empty value a rule explains ("אין", PF-06) has that
+ * rule's chip: "not found in the source" would be untrue of either.
  */
-function statementShown(st: FundStatement): { sentence: string; href: string; doc: string } {
-  switch (st.term) {
-    case "tax-index":
-      return { sentence: copy.computed.statement["tax-index"](st), href: sourceHref({ url: st.source.url, page: st.page }), doc: copy.computed.statementDoc(st.source.title, st.page) };
-    case "foreign-investment-fund":
-      return { sentence: copy.computed.statement["foreign-investment-fund"](st), href: sourceHref({ url: st.source.url }), doc: st.source.title };
-    default:
-      return assertNever(st);
-  }
+function missingReason(value: SiteValue, display: string | undefined, blocked: boolean): string | null {
+  if (value.value === null && mostlyHebrew(value.notes)) return value.notes ?? null;
+  if (value.value !== null || blocked || value.state !== "sourced") return null;
+  return display && value.rule_ids?.length ? null : copy.sourced.noValue;
 }
 
-/** A computed figure's input as its sheet shows it: a figure that opens its own sheet, with its source, and the parameter tag on a site parameter. */
-function InputFigure({ label, input }: { label: string; input: SiteValue }) {
+/**
+ * A figure's head in its sheet: the figure as its line shows it, with its unit's word, then what else stands beside it (a state tag), and
+ * its `about` line under it. `ink`: the figure in its state's ink (a sourced or entered figure's sheet), or plain (a catch's sheet).
+ */
+function FigureHead({ value, text, ink, headId, descId, children }: { value: SiteValue; text: string; ink: boolean; headId: string; descId: string; children?: ReactNode }) {
+  // a long word (a deposit's tax: "ריבית לא צמודה. השיעור בעמוד המדריך.") wraps in a smaller size; kept on one line it ran past a phone's edge
+  const longHead = text.length > 24;
+  // the row's own words where they differ from the unit's (a one-year gap: "ב־2025"), so the head says what the row says (copy 10.4)
+  const unitWord = typeof value.value === "number" ? (value.unitText ?? unitWordOf(value.unit)) : null;
   return (
-    <>
-      <Num value={input} display={inputDisplay(label, input)} />
-      {/* a field's value (its default or what the reader typed) shows plainly: no parameter tag */}
-      {isParameter(input) && !input.field && <Tag tone="parameter">{numbers.parameter}</Tag>}
-    </>
+    <header className="flex flex-col gap-1">
+      <div className="flex items-center gap-2 flex-wrap">
+        <span id={headId} className={cx("font-semibold tabular-nums", longHead ? "text-xl" : "text-2xl", ink && `num num-static num-${value.state}`, value.value === null && "text-muted-foreground")}>
+          <bdi dir={textDir(text)} className={longHead ? undefined : "whitespace-nowrap"}>{text}</bdi>
+        </span>
+        {unitWord && <span className="text-sm text-muted-foreground">{unitWord}</span>}
+        {children}
+      </div>
+      {value.about && (
+        <p id={descId} className="text-sm text-muted-foreground">
+          {value.about}
+        </p>
+      )}
+    </header>
   );
 }
 
-/** A computed figure's inputs, each by its name with its figure: the list a figure with no working of its own shows, and what a line of math leaves out. */
-function InputList({ inputs }: { inputs: readonly (readonly [label: string, input: SiteValue])[] }) {
-  if (inputs.length === 0) return null;
+/** A figure not in force yet: its first day, and what that means. */
+function AheadLine({ from }: { from: string }) {
   return (
-    <div className="flex flex-col gap-1.5">
-      <span className="text-sm text-muted-foreground">{copy.computed.inputs}</span>
-      <dl className="readout">
-        {/* each input is a figure that opens its own sheet, with its source: the sheet names no source of its own under it */}
-        {inputs.map(([label, input]) => (
-          <div key={label} className="readout-row">
-            <dt>{inputName(label)}</dt>
-            <dd>
-              <InputFigure label={label} input={input} />
-            </dd>
-          </div>
-        ))}
-      </dl>
+    <p className="text-sm text-caution-foreground flex items-start gap-2">
+      <IconAlert size={16} className="text-caution shrink-0 mt-1" />
+      <span>
+        <When iso={from} lead={numbers.startsOn} />. {copy.sourced.notYetInForce}
+      </span>
+    </p>
+  );
+}
+
+/**
+ * The doubt about a figure (SiteValue.doubt), the record's own or the site's reading of an open rule, with the rules it rests on: a doubt
+ * carried from the inputs names them, as the weak inputs are named, and each input's own sheet says the doubt in words.
+ */
+function DoubtCallout({ value }: { value: SiteValue }) {
+  if (!value.doubt) return null;
+  return (
+    <Callout tone="caution" title={numbers.doubt}>
+      {value.doubtFrom ? `${copy.computed.doubtedInputs} ${value.doubtFrom.map(inputName).join(" · ")}` : <PrintedText text={value.doubt} />}
+      {value.doubtRules && <RuleTitleList ids={value.doubtRules} className="mt-1.5" />}
+    </Callout>
+  );
+}
+
+/** A weak or open strength, said once: what it means, and for an open value the question it waits on, named in its source or notes ("TXI OQ19"). */
+function StrengthNote({ value, strength }: { value: SiteValue; strength: "institution" | "secondary" | "open" }) {
+  const question = isOpenValue(value) ? openQuestionOf(value) : null;
+  return (
+    <Callout tone={strength === "open" ? "blocked" : "caution"} title={strengthCopy[strength].label}>
+      {strengthCopy[strength].line}
+      {question && (
+        <>
+          {" "}
+          <IdRef id={question} />
+        </>
+      )}
+    </Callout>
+  );
+}
+
+/** What a stale figure's source last said, and how often it should. */
+function StaleLine({ stale }: { stale: Staleness }) {
+  return (
+    <p className="text-sm text-caution-foreground flex items-start gap-2">
+      <IconClock size={16} className="text-caution shrink-0 mt-1" />
+      <span>
+        <When iso={stale.since} lead={`${copy.stale.before} `} />. {copy.stale.middle} {copy.stale.cadence[stale.cadence]}.
+      </span>
+    </p>
+  );
+}
+
+/** An engine flag on a figure: its words, whose {ID:figure} slots are the rule's figure from the page's records or those its cards point at, and its code. */
+function FlagCallout({ code, data }: { code: string; data: ProvenanceData }) {
+  return (
+    <Callout tone="caution">
+      <SlottedText text={flagCopy[code] ?? copy.flagOther} source={data} /> <bdi dir="ltr" className="text-xs">{code}</bdi>
+    </Callout>
+  );
+}
+
+/** Every sheet's way out: the rules of the page's product, or all rules; a fact of another country's product has no Israeli rules behind it. */
+function AllRulesLink({ value, data }: { value: SiteValue; data: ProvenanceData }) {
+  if (value.foreign) return null;
+  return data.rulesOf ? (
+    <LinkButton to={data.rulesOf.href}>
+      {copy.allRulesOf} {data.rulesOf.name}
+    </LinkButton>
+  ) : (
+    <LinkButton to="/rules">{buttons.allRules}</LinkButton>
+  );
+}
+
+/**
+ * The sheet a calculated figure's caution "?" opens: the figure in plain ink and what it is, then only its catches (provenance `catchesOf`,
+ * as the figure's place decided them), each as a sourced figure's sheet says it, and the way to the rules. The weak inputs are named, each
+ * with its figure, which opens its own sheet with its source.
+ */
+export function CatchSheet({ value, catches, exact, display, data, headId, descId }: { value: SiteValue; catches: readonly Catch[]; exact: boolean; display?: string; data: ProvenanceData; headId: string; descId: string }) {
+  return (
+    <div className="flex flex-col gap-3.5">
+      <FigureHead value={value} text={headText(value, exact, display)} ink={false} headId={headId} descId={descId} />
+      {catches.map((c) => (
+        <CatchPart key={c.kind === "flag" ? `flag ${c.code}` : c.kind} c={c} value={value} data={data} />
+      ))}
+      <AllRulesLink value={value} data={data} />
     </div>
   );
 }
 
+/** One catch as a catch's sheet says it. */
+function CatchPart({ c, value, data }: { c: Catch; value: SiteValue; data: ProvenanceData }) {
+  switch (c.kind) {
+    case "ahead":
+      return <AheadLine from={c.from} />;
+    case "doubt":
+      return <DoubtCallout value={value} />;
+    case "weak":
+      return <WeakInputs strength={c.strength} inputs={c.inputs} value={value} />;
+    case "open":
+      return <StrengthNote value={value} strength="open" />;
+    case "stale":
+      return <StaleLine stale={c.stale} />;
+    case "flag":
+      return <FlagCallout code={c.code} data={data} />;
+    case "reading":
+      return (
+        <div className="flex flex-col items-start gap-1.5">
+          <ReadingTag />
+          <RuleTitleList ids={c.rules} className="self-stretch" />
+        </div>
+      );
+    default:
+      return assertNever(c);
+  }
+}
+
 /**
- * How a computed figure was worked out, under its warnings (`Working`): a difference or a sum as the lines of a receipt, each figure as the
- * page writes it; a line of math method.md draws, with the figure's values put in and the key to its symbols, each input once, beside the
- * symbol it stands for; else, the formula's name as a chip to its sheet and the inputs. `result` is the figure as the head shows it.
+ * The inputs a calculated figure's weak strength comes from, each named with its figure, under a line by its strength; a secondary strength,
+ * and one no input carries (a rule or a fund's statement the calculation read), is said as a sourced figure's is (`StrengthNote`).
  */
-function ComputedWorking({ value, computedFrom, result, data }: { value: SiteValue; computedFrom: NonNullable<SiteValue["computed_from"]>; result: string; data: ProvenanceData }) {
-  // the sheet says what the figure is once, in its head's line (`about`): the line's own name stands over it only where there is none, and
-  // the key row of the symbol the line works out points at the head instead of saying it again
-  const inputs = computedFrom.inputs as Record<string, SiteValue>;
-  const working = typeof value.value === "number" ? computedFrom.working : undefined;
-  const tex = working?.kind === "formula" ? data.formulas?.[working.entry]?.tex?.[working.line] : undefined;
-  if (working && working.kind !== "formula") {
-    return <FormulaBlock variant="receipt" label={copy.computed.working} lines={receiptLines(working, inputs).map((l) => ({ key: l.key, sign: l.sign, name: inputName(l.key), value: <InputFigure label={l.key} input={l.input} /> }))} result={result} />;
-  }
-  if (working?.kind === "formula" && tex) {
-    const rows = keyOfLine(tex, formulaKeys[working.entry]?.symbols ?? [], working, inputs);
-    const keyed = new Set(rows.flatMap((r) => r.inputs.map((x) => x.key)));
-    return (
-      <>
-        <FormulaBlock
-          variant="worked"
-          label={value.about ? undefined : (formulaKeys[working.entry]?.lines?.[working.line] ?? formulaNames[working.entry])}
-          tex={tex}
-          values={withValues(tex, working, inputs, digitsFor(result))}
-          result={result}
-          rows={rows.map((r) => ({ tex: r.tex, words: r.result ? copy.formulaSheet.resultRow : r.words, inputs: r.inputs.map((x) => ({ key: x.key, name: inputName(x.key), value: <InputFigure label={x.key} input={x.input} /> })) }))}
-          where={copy.formulaSheet.where}
-          after={<FormulaLink id={working.entry} />}
-        />
-        <InputList inputs={Object.entries(inputs).filter(([k]) => !keyed.has(k))} />
-      </>
-    );
-  }
+function WeakInputs({ strength, inputs, value }: { strength: "institution" | "secondary"; inputs: Extract<Catch, { kind: "weak" }>["inputs"]; value: SiteValue }) {
+  const groups = (["institution", "secondary"] as const).map((st) => [st, inputs.filter(([, x]) => strengthOf(x) === st)] as const).filter(([, list]) => list.length > 0);
   return (
     <>
-      <dl className="sheet-dl">
-        <Row label={computedFrom.formula.startsWith("A-") ? copy.idRef.howComputed : copy.computed.formula}>
-          {/* the chip says the formula's name; its sheet holds the math */}
-          <IdRef id={computedFrom.formula} />
-        </Row>
-      </dl>
-      {/* a figure computed from no value (a count of a comparison's own options) has no inputs to list, and no heading over nothing */}
-      <InputList inputs={Object.entries(inputs)} />
+      {(strength === "secondary" || groups.length === 0) && <StrengthNote value={value} strength={strength} />}
+      {groups.map(([st, list]) => (
+        <div key={st} className="flex flex-col gap-1.5">
+          <span className="text-sm text-muted-foreground">{copy.computed.weakInputs[st]}</span>
+          <dl className="readout">
+            {list.map(([key, input]) => (
+              <div key={key} className="readout-row">
+                <dt>{inputName(key)}</dt>
+                <dd>
+                  <Num value={input} display={inputDisplay(key, input)} />
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      ))}
     </>
   );
 }
 
 /**
- * Why a figure has no number, said once in its sheet, or null where nothing is said: its note in Hebrew; else, for a sourced figure, that
- * the source does not hold it; else, for a computed one, that one of the values it reads has none. An open value's reason is its blocked
- * callout, and an empty value a rule explains ("אין", PF-06) has that rule's chip: "not found in the source" would be untrue of either.
- */
-function missingReason(value: SiteValue, display: string | undefined, blocked: boolean): string | null {
-  if (value.value !== null) return null;
-  if (mostlyHebrew(value.notes)) return value.notes ?? null;
-  if (blocked) return null;
-  if (value.state === "sourced") return display && value.rule_ids?.length ? null : copy.sourced.noValue;
-  if (value.state === "computed") return Object.values((value.computed_from?.inputs ?? {}) as Record<string, SiteValue>).some((x) => x.value === null) ? copy.computed.inputMissing : null;
-  return null;
-}
-
-/**
- * The sheet behind a figure (exported for the render tests). `shown`: the rules the place it was opened from already opens, whose chips it
- * leaves out, as it leaves out the doubt's rules, which the doubt's callout opens.
+ * The sheet behind a sourced or entered figure (exported for the render tests). `shown`: the rules the place it was opened from already
+ * opens, whose chips it leaves out, as it leaves out the doubt's rules, which the doubt's callout opens.
  */
 export function ValueSheet({ value, exact, display, shown = [], data, headId, descId }: { value: SiteValue; exact: boolean; display?: string; shown?: readonly string[]; data: ProvenanceData; headId: string; descId: string }) {
   const strength = strengthOf(value);
@@ -586,33 +608,13 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
   const blocked = isOpenValue(value);
   // a figure shown with its sign heads its sheet with it: "+0.37%" in the row read "0.37%" in the sheet
   const text = headText(value, exact, display);
-  // a long word (a deposit's tax: "ריבית לא צמודה. השיעור בעמוד המדריך.") wraps in a smaller size; kept on one line it ran past a phone's edge
-  const longHead = text.length > 24;
-  // the row's own words where they differ from the unit's (a one-year gap: "ב־2025"), so the head says what the row says (copy 10.4)
-  const unitWord = typeof value.value === "number" ? (value.unitText ?? unitWordOf(value.unit)) : null;
   const { setEntered } = useInputs();
   const fromDate = startsAfter(value, today);
   const year = calendarYearOf(value);
-  // the sheet says a weak or open strength once, in this callout: a sourced figure's source line leaves its word out. A figure worked out
-  // from a company's document says nothing of it: the remark is the sourced input's, whose own sheet (opened from its row) says it
-  const strengthSaid = (isWeak(value) || strength === "open") && value.state !== "entered" && !(value.state === "computed" && strength === "institution");
-  const strengthNote = strengthSaid && (
-    <Callout tone={strength === "open" ? "blocked" : "caution"} title={strengthCopy[strength].label}>
-      {strengthCopy[strength].line}
-      {/* the question an open value waits on, named in its source or notes ("TXI OQ19"): its chip opens the question */}
-      {blocked && openQuestionOf(value) && (
-        <>
-          {" "}
-          <IdRef id={openQuestionOf(value)!} />
-        </>
-      )}
-    </Callout>
-  );
-  // a computed figure's warnings stand together under its name, above its formula and inputs: under a long list of inputs the strength note
-  // sat below a small phone's fold; a sourced figure's source stands directly under its name, and its strength note after it
-  const warningsFirst = value.state === "computed";
+  // the sheet says a weak or open strength once, in this callout: a sourced figure's source line leaves its word out
+  const weakOrOpen = value.state !== "entered" && (strength === "open" || (isWeak(value) && (strength === "institution" || strength === "secondary"))) ? strength : null;
+  const strengthSaid = weakOrOpen !== null;
   const hidden = new Set([...shown, ...(value.doubtRules ?? [])]);
-  const rulesNamed = sheetRules(value).filter((r) => !hidden.has(r.id));
   const chips = (value.rule_ids ?? []).filter((id) => !hidden.has(id));
   const chipRow = chips.length > 0 && (
     <Row label={chips.length === 1 ? copy.sourced.rule : copy.sourced.rules}>
@@ -625,48 +627,21 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
   const reason = missingReason(value, display, blocked);
   return (
     <div className="flex flex-col gap-3.5">
-      <header className="flex flex-col gap-1">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span id={headId} className={cx("num num-static font-semibold", longHead ? "text-xl" : "text-2xl", `num-${value.state}`, value.value === null && "text-muted-foreground")}>
-            <bdi dir={textDir(text)} className={longHead ? undefined : "whitespace-nowrap"}>{text}</bdi>
-          </span>
-          {unitWord && <span className="text-sm text-muted-foreground">{unitWord}</span>}
-          {/* a missing figure is no figure of any kind: no state tag */}
-          {!blocked && !missing && <StateTag state={param ? "parameter" : value.state} />}
-          {/* a figure that rests on the site's reading of official texts says so wherever it is opened (the
-              guide visuals and the holdings page carried the engine's reading label and nothing showed it) */}
-          {sheetReading(value) && <ReadingTag />}
-          {value.stale && <IconClock size={16} className="text-caution" />}
-        </div>
-        {value.about && (
-          <p id={descId} className="text-sm text-muted-foreground">
-            {value.about}
-          </p>
-        )}
-      </header>
+      <FigureHead value={value} text={text} ink headId={headId} descId={descId}>
+        {/* a missing figure is no figure of any kind: no state tag */}
+        {!blocked && !missing && value.state !== "computed" && <StateTag state={param ? "parameter" : value.state} />}
+        {/* a figure that rests on the site's reading of official texts says so wherever it is opened */}
+        {sheetReading(value) && <ReadingTag />}
+        {value.stale && <IconClock size={16} className="text-caution" />}
+      </FigureHead>
 
       {/* what the figure means, before anything else in the sheet: at the end it sat below the popover's edge */}
       {value.lead && <p className="text-sm">{value.lead}</p>}
 
-      {fromDate && (
-        <p className="text-sm text-caution-foreground flex items-start gap-2">
-          <IconAlert size={16} className="text-caution shrink-0 mt-1" />
-          <span>
-            <When iso={fromDate} lead={numbers.startsOn} />. {copy.sourced.notYetInForce}
-          </span>
-        </p>
-      )}
+      {fromDate && <AheadLine from={fromDate} />}
 
-      {/* the doubt about this figure (SiteValue.doubt), the record's own or the site's reading of an open rule, with the rules it rests on:
-          said near the top of the figure's sheet, wherever the figure shows; at the end it sat below a phone's fold */}
-      {/* a doubt carried from the inputs names them, as the weak inputs are named; each input's own sheet says the doubt in words */}
-      {value.doubt && (
-        <Callout tone="caution" title={numbers.doubt}>
-          {value.doubtFrom ? `${copy.computed.doubtedInputs} ${value.doubtFrom.map(inputName).join(" · ")}` : <PrintedText text={value.doubt} />}
-          {value.doubtRules && <RuleTitleList ids={value.doubtRules} className="mt-1.5" />}
-        </Callout>
-      )}
-      {warningsFirst && strengthNote}
+      {/* the doubt, near the top of the figure's sheet, wherever the figure shows; at the end it sat below a phone's fold */}
+      <DoubtCallout value={value} />
 
       {/* why a figure is missing, once (`missingReason`); the working notes are English, and only a note written in Hebrew is shown */}
       {reason && <p className="text-sm">{reason}</p>}
@@ -715,54 +690,6 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
         </>
       )}
 
-      {value.state === "computed" && value.computed_from && (
-        <>
-          <ComputedWorking value={value} computedFrom={value.computed_from} result={unitWord ? `${text} ${unitWord}` : text} data={data} />
-          {rulesNamed.length > 0 && (
-            <div className="flex flex-col gap-1.5">
-              <span className="text-sm text-muted-foreground">{copy.computed.rules}</span>
-              <div className="flex flex-col gap-2">
-                {/* each rule is a chip that opens its card, with its source; beside it only a source weaker than primary, which the reader
-                    must see here */}
-                {rulesNamed.map((r) => (
-                  <span key={r.id} className="flex flex-wrap items-center gap-1.5 min-w-0">
-                    <RuleRef id={r.id} />
-                    {r.strength && r.strength !== "primary" && <StrengthLabel strength={r.strength} />}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-          {/* a fund's own statement the figure rests on in place of a rule (D84): said as the fund's, its document opened at the page */}
-          {value.statements && value.statements.length > 0 && (
-            <div className="flex flex-col gap-1.5">
-              <span className="text-sm text-muted-foreground">{copy.computed.statements}</span>
-              {value.statements.map((st) => {
-                const shown = statementShown(st);
-                return (
-                  <div key={statementKey(st)} className="flex flex-col">
-                    <p className="text-sm">{shown.sentence}</p>
-                    <DocLink href={shown.href}>{shown.doc}</DocLink>
-                    <p className="text-xs text-muted-foreground">
-                      {sourceCopy.checked} <Iso ltr>{fmt.date(st.checked)}</Iso>
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-          {/* a plain difference or sum leaves out the flags its inputs carry: each row of its receipt opens them (`sheetFlags`) */}
-          {sheetFlags(value).map((code) => (
-            <Callout key={code} tone="caution">
-              {/* a flag's words may carry {ID:figure} slots: the rule's figure, from the page's records or those its cards point at */}
-              <SlottedText text={flagCopy[code] ?? copy.flagOther} source={data} /> <bdi dir="ltr" className="text-xs">{code}</bdi>
-            </Callout>
-          ))}
-          {/* a missing figure's note is its reason, said above */}
-          {!missing && mostlyHebrew(value.notes) && <p className="text-sm text-muted-foreground"><IdText text={value.notes ?? ""} /></p>}
-        </>
-      )}
-
       {value.state === "entered" && (
         <div className="flex flex-col gap-3">
           <p className="text-sm">{copy.entered.line}</p>
@@ -785,24 +712,10 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
         </div>
       )}
 
-      {!warningsFirst && strengthNote}
-      {value.stale && (
-        <p className="text-sm text-caution-foreground flex items-start gap-2">
-          <IconClock size={16} className="text-caution shrink-0 mt-1" />
-          <span>
-            <When iso={value.stale.since} lead={`${copy.stale.before} `} />. {copy.stale.middle} {copy.stale.cadence[value.stale.cadence]}.
-          </span>
-        </p>
-      )}
+      {weakOrOpen && <StrengthNote value={value} strength={weakOrOpen} />}
+      {value.stale && <StaleLine stale={value.stale} />}
 
-      {/* a fact of another country's product has no Israeli rules behind it: its source's own page is the only way out */}
-      {value.foreign ? null : data.rulesOf ? (
-        <LinkButton to={data.rulesOf.href}>
-          {copy.allRulesOf} {data.rulesOf.name}
-        </LinkButton>
-      ) : (
-        <LinkButton to="/rules">{buttons.allRules}</LinkButton>
-      )}
+      <AllRulesLink value={value} data={data} />
     </div>
   );
 }

@@ -2,23 +2,15 @@
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
 import { countPhrase } from "./lib/count";
 import type { FeeCap } from "@finance-tool/schema";
-import type { ChangeKind, ForeignInvestmentFundStatement, FundStatement, HeldKind, NotKnown, TaxIndexStatement } from "@finance-tool/engine";
+import type { ChangeKind, HeldKind, NotKnown, TaxIndexStatement } from "@finance-tool/engine";
 import type { FeeKindId } from "./lib/fee-deal/core";
 
 /**
  * F-04, D84: the tax index a Tel Aviv foreign fund's own annex states under its ruling, said as the fund's statement and not a rule: the
- * main currency's exchange rate (its Hebrew name) or the CPI. The figure's sheet and the fund's chip both say it from the statement here.
+ * main currency's exchange rate (its Hebrew name) or the CPI. The fund's chip says it from the statement here.
  */
 function taxIndexStated(st: TaxIndexStatement): string {
   return `${st.index === "fx" ? `מס רווחי הון מחושב לפי שער ה${currencyWord(st.currency)}` : "מס רווחי הון מחושב לפי מדד המחירים לצרכן"}: כך כתוב בנספח לתשקיף הישראלי של הקרן, לפי החלטת המיסוי שהקרן קיבלה מרשות המסים. זו הצהרה של הקרן, ואין נוסח רשמי של רשות המסים שמאשר אותה.`;
-}
-/**
- * TXS-14, D119: a fund's own document naming it a foreign-investment fund with its principal currency, said as the fund's statement, and the
- * site's reading of TXS OQ26 that runs it on that currency, as TXS-14's own text says it (`readingDoubt` says the same law). The figure's sheet says it from the statement here.
- */
-function foreignInvestmentFundStated(st: ForeignInvestmentFundStatement): string {
-  const c = currencyWord(st.currency);
-  return `מס רווחי הון מחושב לפי שער ה${c}: במסמך של הקרן כתוב שהיא קרן נאמנות להשקעות חוץ, ושהמטבע העיקרי שלה הוא ה${c}. זו הצהרה של הקרן. בקרן כזו הרווח נמדד מול שער המטבע העיקרי שלה, אם התקנות מ־2003 שקובעות זאת עדיין בתוקף. אין על זה נוסח רשמי, והאתר קורא אותן כעדיין בתוקף. זו קריאה של האתר, לא מקור.`;
 }
 /** What the site does with a fund's stated tax index, after the statement on the fund's chip. */
 const taxIndexRanked = "האתר מחשב לפיה את מס רווחי הון של הקרן הזו בלבד, ומדרג אותה.";
@@ -66,7 +58,6 @@ export const site = {
 export const numbers = {
   legend: {
     sourced: "ממקור",
-    computed: "מחושב",
     entered: "הזנתם",
   },
   /** the tag on a figure or rate that rests on the site's own reading of official texts (the engine's "reading" label, a rate whose reach no official text states); not a secondary source, which is a press article or a forum post. */
@@ -434,41 +425,19 @@ export const provenance = {
   /** A glossary card's other names; each is drawn with its gershayim (copy 10.4). */
   termAlso: "נקרא גם:",
   computed: {
-    formula: "נוסחה",
-    inputs: "ערכים שנכנסו לחישוב",
-    rules: "חוקים וכללים שנכנסו לחישוב",
-    /** D84: a fund's own statement the figure rests on in place of a rule, each said with its document's page linked under it. */
-    statements: "הצהרות של הקרן שנכנסו לחישוב",
-    /** Each statement's sentence, by the term it states. */
-    statement: {
-      /** F-04: the tax index the fund's annex states under its ruling: the main currency's exchange rate, or the CPI. */
-      "tax-index": taxIndexStated,
-      /** TXS-14, D119: the fund's document naming it a foreign-investment fund, and the principal currency the site's reading runs it on. */
-      "foreign-investment-fund": foreignInvestmentFundStated,
-    } satisfies { [T in FundStatement["term"]]: (st: Extract<FundStatement, { term: T }>) => string },
-    /** A stated tax index's annex, linked at its page; a document naming the fund a foreign-investment fund is linked by its own title, which names the page. */
-    statementDoc: (title: string, page: number) => `${title}, עמוד ${page}`,
-    /** Over a difference's or a sum's lines in the figure's sheet. */
-    working: "החישוב",
-    /** The quiet line at the end of a figure's line of math: its formula's own sheet, with every line the entry draws and its parameters. */
-    toFormula: "לנוסחה הכללית",
-    weakInputs: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:",
+    /** In a calculated figure's catch sheet, over the inputs its weak strength comes from, by their strength. */
+    weakInputs: { institution: "בין הערכים שנכנסו לחישוב, אלה לפי מסמך של החברה:", secondary: "בין הערכים שנכנסו לחישוב, אלה ממקור משני:" },
     doubtedInputs: "בין הערכים שנכנסו לחישוב, על אלה יש ספק:",
-    /** A computed figure with no number and no note of its own, when one of the values it reads has none. */
-    inputMissing: "חסר אחד הערכים שנכנסו לחישוב, ולכן האתר לא מציג מספר.",
+    /** Over a difference's or a sum's lines (the kit's FormulaBlock receipt). */
+    working: "החישוב",
   },
   // a flag with no sentence of its own
   flagOther: "הערה על החישוב:",
-  // one chip for every id (IdRef); the formula sheet and the open-question sheet
-  idRef: { formula: "נוסחה", parameter: "פרמטר", question: "שאלה פתוחה", questionChip: "פרטים", howComputed: "איך זה מחושב" }, // questionChip: an open question's chip says a word, not its code
-  formulaSheet: {
-    usesLabel: "פרמטרים של האתר שהנוסחה משתמשת בהם",
-    full: "ההגדרה המלאה במסמך שיטת החישוב (באנגלית)",
-    /** Over the key to a formula's symbols (`formulaKeys`). */
-    where: "כאשר:",
-    /** In a figure's worked line, the key row of the symbol the line works out: the figure its sheet heads with, which the head's line names. */
-    resultRow: "המספר שבראש הגיליון",
-  },
+  /** The word over the key to a formula's symbols (`formulaKeys`, the kit's FormulaBlock), kept for the step-by-step explanation of a
+   *  page's main result. */
+  formulaSheet: { where: "כאשר:" },
+  // one chip for every id (IdRef) and the open-question sheet
+  idRef: { parameter: "פרמטר", question: "שאלה פתוחה", questionChip: "פרטים" }, // questionChip: an open question's chip says a word, not its code
   questionSheet: {
     what: "זו שאלה פתוחה בבסיס החוקים: משהו שעוד לא נמצא לו מקור ברור, בחוק או אצל הרשות.",
     onSite: "כל עוד היא פתוחה, האתר לא מציג תשובה כאילו היא ודאית: הוא לא מחשב את מה שתלוי בה, מציג אותו עם הערה, או מחשב לפי קריאה שלו ואומר זאת בגיליון.",
@@ -1576,6 +1545,8 @@ export const help = {
   markLabel: "מה זה {about}",
   /** The "!" variant: a fact added to a figure, not what its label means. */
   noteLabel: "עוד על {about}",
+  /** The caution "?" after a calculated figure that carries a catch (kit CatchMark). */
+  catchLabel: "מה צריך לדעת על {about}",
 };
 
 export const trackBrowser = {
@@ -5461,6 +5432,7 @@ export const kit = {
       HouseAverageLine: "שורה שקטה מתחת למחיר מהמחירון: מה שבית ההשקעות או הבנק גבה בפועל בממוצע על סוג העמלה, מהנמוך לגבוה לפי גודל התיק, התקופה וקישור למחשבון העמלות של הבורסה. לידיעה בלבד: שום חישוב לא קורא אותה.",
       SourcedTag: "תגית קצרה על חברה שמקור עומד מאחוריה, כמו ״בטלפון בלבד״ ליד בית השקעות שמוכר סוג קרן רק בטלפון. הקשה פותחת את המקור, כמו בכל מספר. התגית לא משנה אף מספר, ושטח המגע שלה בגובה 44 פיקסלים בלי להגדיל את השורה.",
       Formula: "נוסחה בכתב מתמטי, עם מקרא שאומר מה כל סימן בה: בכרטיס של נוסחה שמסמך שיטת החישוב כותב כך, במקום קישור למסמך. בכרטיס של מספר מחושב: השורה של המספר עם הערכים שלו, או השורות של הפרש או של סכום.",
+      CatchMark: "סימן שאלה בצבע זהירות אחרי מספר שהאתר חישב, רק כשיש בו משהו שצריך לדעת: ספק, ערך לפי מסמך של חברה או ממקור משני, נתון ישן, הערה של החישוב או קריאה של האתר. מספר מחושב בלי סימן כזה הוא טקסט רגיל, ולא נפתח. הסימן צמוד לספרה האחרונה ולא יורד לשורה לבד, ונפתח בהקשה לגיליון שאומר רק מה ההסתייגות.",
       HelpMark: "סימן שאלה ליד כותרת או תווית, שפותח בהקשה את כרטיס המונח ממילון המונחים, עם המקור, או הסבר קצר משלו: רק במקום שהוא מוסיף משהו שהכותרת לא אומרת.",
       TabCards: "שאלות בכרטיסים בשורה, ולוח אחד פתוח מתחתיהן: בכל כרטיס השאלה, התשובה בכמה מילים ושורה מתחתיה, והכרטיס כולו הוא הלשונית. התשובה מילים פשוטות, והמספר שבה נפתח מתוך הלוח. הכרטיס הפתוח במסגרת בצבע הפעולה, עם חץ קטן אל הלוח, ובמסך צר עם מילה שאומרת שהוא פתוח. החצים במקלדת עוברים בין הכרטיסים. כל לוח נפתח בשורה קטנה בצבע הפעולה ובמסקנה שלו (PanelHead).",
       TabStrip: "לשוניות בתוך עמוד שמחליפות חלק אחד שלו לתצוגה משלה, עם תוכן מסוג אחר, בלי לעזוב אותו (בחיפוש בעמוד החוקים והכללים: מה כתוב בחוק, ומה כתבו החברות): כל לשונית היא כפתור עם מספר השורות שבה, והחצים במקלדת עוברים ביניהן. בחירה שרק מצמצמת רשימה אחת היא ChoiceChips עם counts.",

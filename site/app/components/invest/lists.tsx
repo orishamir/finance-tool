@@ -60,14 +60,13 @@ export interface ListsProps {
   above?: RefObject<HTMLElement | null>;
 }
 
-/** A list's figure column named at its end with its computed mark (every figure in the column is computed, so the mark stands in the head
- *  and the cells stay plain, design.md); the items' column has no name, since the side's title above already says what they are. */
+/** A list's figure column named at its end; the items' column has no name, since the side's title above already says what they are. */
 function Head({ figure, lead }: { figure: string; lead?: ReactNode }) {
   // `lead`: a heading on the head's own row, at its start, level with the figure's name
   return (
     <span className={cx("col-span-full flex gap-3", lead ? "items-center justify-between" : "items-end justify-end")}>
       {lead}
-      <span className="num num-computed num-sample text-end whitespace-nowrap">{figure}</span>
+      <span className="text-end whitespace-nowrap">{figure}</span>
     </span>
   );
 }
@@ -493,7 +492,7 @@ export function PairLists(props: ListsProps) {
     />
   );
   const accountsList = (
-    <div className="nums-plain">
+    <div>
       <PickList
         look="line"
         tone="account"
@@ -512,7 +511,7 @@ export function PairLists(props: ListsProps) {
     </div>
   );
   const fundsList = (
-    <div className="nums-plain">
+    <div>
       <PickList
         look="line"
         tone="fund"
@@ -531,7 +530,7 @@ export function PairLists(props: ListsProps) {
       {abroadLine}
       {greyRows.length > 0 && (
         <Disclosure label={c.lists.funds.unpriced(new Set(unpricedFunds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size)} open={unpricedOpen} onOpenChange={setUnpricedOpen} look="link" summaryClassName="text-sm">
-          <div className="nums-plain pt-1">
+          <div className="pt-1">
             <PickList look="line" tone="fund" label={c.lists.funds.unpricedLabel(short)} columns="minmax(0,1fr) auto" rows={greyRows} />
           </div>
         </Disclosure>

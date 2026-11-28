@@ -30,8 +30,6 @@ export interface SheetProps {
   pc?: "popover" | "center";
   /** As a share of the screen height on a phone. */
   height?: 70 | 78 | 80 | 100;
-  /** How much of a computer's window a popover card may take: `roomy`, wider and taller than a `card`, for a figure's calculation. */
-  size?: "card" | "roomy";
   labelledBy?: string;
   describedBy?: string;
   onBack?: () => void;
@@ -95,10 +93,10 @@ function unlockScroll() {
 }
 
 
-/** The share of the window's height a popover card may take, by its size. */
-const POPOVER_SHARE: Record<NonNullable<SheetProps["size"]>, number> = { card: 0.6, roomy: 0.85 };
+/** The share of the window's height a popover card may take. */
+const POPOVER_SHARE = 0.6;
 
-export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, size = "card", labelledBy, describedBy, onBack, view, focusAfter, children, className }: SheetProps) {
+export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, labelledBy, describedBy, onBack, view, focusAfter, children, className }: SheetProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const closing = useRef<number | null>(null);
   // Many sheets drop their content when they close: what was in it stays until the sheet has finished leaving.
@@ -180,7 +178,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, size
         dialog.showModal();
         dialog.querySelector<HTMLElement>("[data-autofocus]")?.focus();
       }
-      place(dialog, anchor ?? null, pc, wide, POPOVER_SHARE[size]);
+      place(dialog, anchor ?? null, pc, wide, POPOVER_SHARE);
     } else if (stacked.current) {
       const s = stacked.current;
       if (!dialog.open) {
@@ -201,7 +199,7 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, size
     }
     wasOpen.current = open;
     lastView.current = view;
-  }, [open, anchor, pc, view, wide, covered, size]);
+  }, [open, anchor, pc, view, wide, covered]);
 
   // a sheet that leaves the page while open leaves the stack too
   useEffect(
@@ -226,10 +224,10 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, size
 
   useEffect(() => {
     if (!open) return;
-    const onResize = () => ref.current && place(ref.current, anchor ?? null, pc, wide, POPOVER_SHARE[size]);
+    const onResize = () => ref.current && place(ref.current, anchor ?? null, pc, wide, POPOVER_SHARE);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
-  }, [open, anchor, pc, wide, size]);
+  }, [open, anchor, pc, wide]);
 
   // The page behind an open sheet does not scroll; a count, since sheets can stack.
   useEffect(() => {
@@ -259,7 +257,6 @@ export function Sheet({ open, onClose, anchor, pc = "popover", height = 70, size
       ref={ref}
       className={cx("sheet", className)}
       data-pc={pc}
-      data-size={size}
       style={{ "--sheet-height": `${height}vh` } as React.CSSProperties}
       aria-labelledby={labelledBy}
       aria-describedby={describedBy}

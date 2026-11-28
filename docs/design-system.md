@@ -23,7 +23,7 @@ No financial figure appears here. Where a component shows a number, it shows a v
 
 | # | Principle | From |
 |---|---|---|
-| V1 | **Provenance is the visual language.** Every number shows whether it is sourced, computed or entered by you, and one tap shows where it came from. Stale, secondary-source and blocked states are visible in place, never only in a footnote. | guidelines/design.md, D3, D7, D10 |
+| V1 | **Provenance is the visual language.** A sourced number and one you entered show it, and one tap shows where it came from; a computed number is plain text, and shows only a catch it carries, as a caution "?" after it. Stale, secondary-source and blocked states are visible in place, never only in a footnote. | guidelines/design.md, D3, D7, D10 |
 | V2 | **Both screen sizes.** Every screen is checked at 1440 px and 390 px before it goes live. Touch targets at least 44 px. Nothing depends on hover. | guidelines/design.md, product.md §2, K7 |
 | V3 | **Right to left throughout.** Layout, reading order, disclosure and navigation flow from the right. Exceptions: every chart axis runs left to right, not only time (gap 8.6, guidelines/charts.md), and so does every slider, like a chart's time axis (guidelines/design.md, "Fields"), while a bar inside a table row may grow from the right with its Hebrew text; numbers, identifiers and Latin names are isolated left-to-right runs. | guidelines/project.md, guidelines/design.md, architecture 3.5 |
 | V4 | **Inputs sit next to the result they change.** Every graph and computed number shows the inputs it uses, each editable on the same page. | product.md §2 "interactive by default", K8 |
@@ -67,22 +67,22 @@ fields and controls.
 | State | Hue | What says it besides colour | Icon (Lucide) |
 |---|---|---|---|
 | sourced | grey | a solid 1 px underline | `FileText` |
-| computed | violet | a dotted 1 px underline | `Calculator` |
+| computed | the ink around it | nothing: plain text that opens nothing; a catch it carries is a caution "?" after it (3.2) | |
 | entered by you | blue | the number's own ink, with no highlight behind it and no underline, wherever it stands (not a chart field's value, below); the "entered" tag keeps its own fill | `Pencil` |
 
 **A chart field's value is plain** (guidelines/charts.md, "A field's starting value is a default"): plain wherever it shows, in the
-sentence that repeats it, in a calculation sheet's input row, on a chip; it opens nothing, and the field beside it is where it changes.
+sentence that repeats it, on a chip; it opens nothing, and the field beside it is where it changes.
 
-Why these: most numbers on a page are sourced, so sourced is the quietest. Computed results get their own hue so a calculation is
-recognisable at a glance. Entered values are in "blue pen", the colour of the person's own handwriting, and are the only state that
+Why these: most numbers on a page are sourced, so sourced is the quietest. A computed number carries no mark: most of what its sheet said
+repeated the inputs beside it, or showed only the last step of a long calculation; a page's main result is to get one explanation of its
+whole calculation, step by step. Entered values are in "blue pen", the colour of the person's own handwriting, and are the only state that
 changes the number's own colour, which makes an entered return impossible to mistake for the site's view (D9). Blue and violet are
 never used for chart series, so the states keep their meaning inside charts.
 
 **Words that open where they come from (D116).** Words that state a rule (`Ruled`) take the sourced figure's solid grey line: a solid
 grey line means "tap to see where this comes from", for a figure or for words. A glossary term (`Term`) takes a dotted grey line. Both
 turn `link` teal only under a computer's pointer, on keyboard focus and while the sheet they opened is open; nothing on a phone depends
-on the hover. A term is words and a computed figure is digits, so the two dotted lines are told apart by what they underline as well as
-by colour.
+on the hover. The dotted line is the term's alone: no figure wears one.
 
 **Flags and marks**
 
@@ -117,7 +117,6 @@ pairs after changing any value.
 | muted-foreground on background / card / muted (measured with neutral-400; the lighter neutral-300 only raises them) | 7.15 / 6.77 / 6.24 | 4.5 |
 | link on background | 11.32 | 4.5 |
 | primary-foreground on primary | 11.32 | 4.5 |
-| computed on background | 7.52 | 4.5 |
 | entered on entered-subtle | 9.51 | 4.5 |
 | caution-foreground on caution-subtle | 11.99 | 4.5 |
 | blocked-foreground on blocked-subtle | 12.14 | 4.5 |
@@ -344,7 +343,7 @@ Lucide, the set shadcn/ui uses.
 
 | Mirror in RTL | Do not mirror |
 |---|---|
-| chevrons for next, back, breadcrumbs and drill-in (drill-in points left) | `Check`, `Minus`, `Lock`, `Clock`, `Search`, `X`, `Pencil`, `Calculator`, `FileText`, `Trash2`, `GripVertical` |
+| chevrons for next, back, breadcrumbs and drill-in (drill-in points left) | `Check`, `Minus`, `Lock`, `Clock`, `Search`, `X`, `Pencil`, `FileText`, `Trash2`, `GripVertical` |
 | `ExternalLink` (the arrow points up and to the start; every link that leaves the site carries it) | `RotateCcw` for reset (circular, follows the clock) |
 | | the cases' and parts' icons: `Split`, `ChartNoAxesColumnIncreasing`, `ArrowDownToLine`, `ArrowUpToLine`, `Link2`, `Plus`, `Copy` |
 | arrows in the money-flow strip (3.5) | anything on a chart's time axis (time runs left to right) |
@@ -396,10 +395,18 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   them. A term's area follows the same rule. Kit guard 19.
 - A figure a merged cell's cases hold both from a source and as the person's wears both marks, the sourced underline and the entered ink
   (7.1). A field's value is no button and has no style.
-- A figure in headline size carries a state tag below it, because a headline number deserves its label in words.
+- A sourced or entered figure in headline size carries a state tag below it, because a headline number deserves its label in words; a
+  computed one carries none.
+- **A computed figure is plain** (`num-plain`): text in the ink around it, no button, no line under it, no tint; its display rounding,
+  counting, short billions, size, sign and lead words stay. A catch it carries (`catchesOf`) is a caution "?" (`CatchMark`, the look of
+  `HelpMark` with `tone="caution"`) right after its last digit, held on that line, with a 44 px tap area; it is the figure's only mark.
+  The catches: not in force yet; its own doubt; a secondary source, or at figure size a company's document out of its own context (in a
+  line or a cell each such input says its own source); an open rule; staleness a notice around it does not already say (`StaleSaid`); an
+  engine flag; the site's own reading of a rule. A plain difference or sum (`SiteValue.plain`) carries only a catch none of its inputs
+  carries: each input shows its own where it stands.
 - **Flags.** A stale figure carries a clock. Under a caution notice that already says the figures' source is old (`StaleSaid`), the
   figures inside leave the clock out (the accessible name and the sheet still say it). A secondary-strength figure, or an institution's
-  figure out of its own context, carries the caution icon before the digits (a computed figure only at figure size, its sheet naming the weak inputs), never between a number and its unit word; the strength word
+  figure out of its own context, carries the caution icon before the digits, never between a number and its unit word; the strength word
   is in the accessible name and the sheet, not in the line. A company's figure about its own product, shown on that product, carries no
   icon and its sheet names the company's document (D31). A sourced figure whose `effective_from` is after the page date carries the same
   icon, which a figure inside an `upcoming` callout leaves out. A figure its record doubts carries the icon with its digits in the caution
@@ -427,42 +434,30 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   inside a sheet never keeps the scroll of the one before, its head out of sight.
 - **What it shows.** A sourced figure's source stands directly under the figure's name. The source's title shows when it is Hebrew,
   else the link's host with the English title behind "שם המקור באנגלית"; English working notes are never shown; a rule without a source
-  link says so. A computed figure shows each input as a Num, so the chain can be followed, and its warnings (its doubt, its strength
-  note) stand under its name, above its formula and inputs, where the smallest phone shows them. A doubt a difference carries from its
-  figures names those figures, as the weak inputs are named: said in its own words on a difference of two funds, "the fund" named neither,
-  and each figure's own sheet says it in words. An entered figure's sheet shows the value it replaced. A source line wraps at every width
+  link says so. An entered figure's sheet shows the value it replaced. A source line wraps at every width
   and is never cut, so a figure's source, its name and date, stay in view.
 - **The rules a figure names.** A figure lists the rules that set it, under "חוק או כלל" for one and "חוקים וכללים" for more. It leaves
   out a rule the place it was opened from already opens, and a row left empty goes: on a rule's card that rule (its root is marked
   `data-opens-scope` with the rule's id), on a /rules fact row its rule, in a paragraph or list item a rule its words state, in a part of
   a company's card (each part that holds a figure is its own place, never the whole card) a rule that part opens. Every element that
   opens a rule carries `data-opens` with its ids, and the figure reads them when it is tapped (`opensAround`); inside a sheet only a
-  marked place counts, so a computed figure's input keeps its chips. A rule the figure's doubt opens is named once, under the doubt.
+  marked place counts, so a figure named inside a sheet keeps its chips. A rule the figure's doubt opens is named once, under the doubt.
 - **A note only where it is true of the value.** A figure's note says what is true of this value beyond its head's line, its chips and
   the page, and a builder sets it by value: a stock exposure share above 100% says why exposure can pass the assets, and one at or below
   says nothing. A sheet says what the figure is once, in its head's line: a line of math keeps its own name only where the figure has
   no head's line, and the key row of the symbol it works out points at the head ("המספר שבראש הגיליון").
 - **A missing figure** (`value: null`) heads its sheet with the word it was shown as and no state tag. Its reason is said once: its note;
-  else, for a sourced figure, that the source does not hold it; else, for a computed one, that a value it reads is missing, and only when
-  one is. A sourced one shows its source line, where the figure was looked for, without dates, and the chips of the rules that explain
-  the absence; a computed one keeps its inputs. An open value is unchanged. A figure not in force yet says its first day once, in the
+  else, for a sourced figure, that the source does not hold it. A sourced one shows its source line, where the figure was looked for, without dates, and the chips of the rules that explain
+  the absence. An open value is unchanged. A figure not in force yet says its first day once, in the
   caution line, with no "from" row beside it.
-- **A computed figure shows its working,** under its warnings, so the formula and the numbers that went into it are on screen together:
-  - a difference or a sum: the lines of a receipt, each figure as the page writes it (so the lines add up exactly), its sign at the start
-    of its line, then "=" and the figure as its head shows it. No formula chip: a subtraction under the name of a large formula explained
-    nothing.
-    Its sheet is its "computed" tag and its receipt: it names no rule, no fund statement, no company-document note, and no flag or
-    site-reading tag that one of its inputs carries, since each line is that input's own figure and opens its sheet, where they stand
-    (`sheetRules`, `sheetFlags`, `sheetReading`). A flag or a reading of its own, which no input carries, stays.
-  - a figure that is exactly one line of math docs/method.md draws: that line in symbols, the same line with the figure's values put in,
-    and "=" with the figure. The values are put in by code from the line and the inputs, never typed, each with the digits the result
-    needs, units and names left to the key. Under it the key: each symbol's words, with this figure's input beside the symbol it stands
-    for, so each input shows once; then one quiet line to the formula's own sheet. A line that cannot be worked out from the inputs (a
-    symbol no input holds) shows the symbols and the key without values.
-  - any other figure: its formula's name as a chip to the formula's sheet, and its inputs.
-
-  A computed figure's sheet is taller on a phone and wider on a computer than a card. It keeps that size for everything opened from
-  inside it and on the way back, so the card never jumps.
+- **A computed figure's catch sheet** (the "catch" item) is a card. It heads with the figure in plain ink and its `about` line, then says
+  only its catches, each as a sourced figure's sheet says it, in this order: the line of a figure not in force yet; the doubt's callout
+  with the rules it rests on (`doubtRules`), naming the doubted inputs where it carries theirs (`doubtFrom`); the weak inputs, each by its
+  name with its figure, which opens its own sheet with its source, under a line by strength, and the strength's callout for a secondary
+  or open one, or for a weakness no input carries; the stale line; each flag's callout with its code; the site's-reading tag with each
+  rule it reads, by title (`RuleTitleList`). Then the way to the rules, as every sheet has. No formula, no inputs, no rules the
+  calculation read, no fund statement, no note and no state tag: the step-by-step explanation of a page's main result is to come, kept
+  apart (lib/working.ts and each figure's `working` are kept for it).
 - **A source opens where it says it.** A link to a cited source opens at the cited words: a web page by text fragment, a PDF at its page
   (Chrome's PDF viewer does not follow a text fragment), a dataset at this fund's own record rather than the dataset's front page. Every
   such link is built by `sourceHref` (`site/app/lib/sources.ts`), never from a raw address (guard 23), and `tools/quote-fragments.mjs`
@@ -851,6 +846,7 @@ in the kit fits is added to the kit.
   terms are the bank's.
 - `HelpMark`: a "?" beside a head or a label, only where its card says what the label leaves out; `tone="caution"` where what it opens
   holds a catch about the figure, `note` ("!") where it opens a fact added to the figure rather than the label's meaning.
+- `CatchMark`: the caution "?" after a computed figure that carries a catch, drawn by `Num` only (3.2); it opens the figure's catch sheet.
 - `MixedName`: every fund, house or manager name, and every document title or other text from the data, inside Hebrew text (`DocLink`
   draws a title with it); a plain `<bdi>` takes its direction from the first letter and is right only for a name known to be Latin or a
   number (a ratchet, and the layout check's `direction` check on the built pages).
@@ -874,8 +870,8 @@ in the kit fits is added to the kit.
   sight without taking the room the terms need.
 - `GroupPriceFold`, `GroupPriceRows`: group prices (D43), stated beside a ranking and never in it.
 - `ClaimCheck`, `ClaimList`: a claim of a house's advertising set against its binding documents (D56, D57); never a figure of a ranking.
-- `FormulaBlock`, `Tex`: a formula in math type on a formula's sheet, where docs/method.md writes it as math; on a computed figure's
-  sheet, its working (3.2): its line with its values put in, or the lines of a difference or a sum. Math always runs left to right, and a
+- `FormulaBlock`, `Tex`: a formula in math type, its line with its values put in, or the lines of a difference or a sum: kept, with its
+  gallery entry, for the step-by-step explanation of a page's main result; no sheet shows one today. Math always runs left to right, and a
   line too wide for its box scrolls inside it with a fading edge.
 
 *Surfaces and structure*
@@ -1023,7 +1019,7 @@ in the kit fits is added to the kit.
 
 - `PeriodBars`: one of a few ordered periods chosen on a bar chart.
 - `MeterBar`: a thin bar of one share from 0 to 100% beside its figure in a table row; a single figure gets no bar under it against the
-  list's highest. Never a hand bar in the computed ink (a ratchet).
+  list's highest.
 - `ShareChart`: what something costs as a share of an amount, on a log axis (F-112, F-123).
 - `ShareStack`: a `ShareChart` and its `AmountLanes` on one axis with one reader's line; not for an amount over time, which is a year
   chart.
@@ -1166,10 +1162,10 @@ several products of one kind (tracks, funds, deposits, accounts):
   or members, and the small institutions in a group of their own lower down.
 - **Who offers what.** A list across companies keeps the companies in view, its rows grouped under or named by their company, so the
   reader sees who offers what and not only a pile of tracks.
-- **A column of one number state carries its mark in the head (D60).** Where every figure in a column is sourced, or every one computed,
-  the column head word carries the underline of that state and one line above the list says what it means; the cells stay plain and still
-  open their source or calculation when tapped. A cell whose state differs keeps its own mark; entered numbers keep their blue, flags keep
-  their icon. Every column that holds a figure has a head.
+- **A column of one number state carries its mark in the head (D60).** Where every figure in a column is sourced, the column head word
+  carries the sourced underline and one line above the list says what it means; the cells stay plain and still open their source when
+  tapped. A cell whose state differs keeps its own mark; entered numbers keep their blue, flags keep their icon. A column of computed
+  figures has no mark in its head: they are plain wherever they stand. Every column that holds a figure has a head.
 - **A very long list opens folded.** A list of over a hundred products under their companies (the track browser) starts with each company
   as one row, its count and its money, the first open so the reader sees what a row holds; on a phone each product under an open company
   is one line (`ProductPhoneFold`). A search or a chosen filter shows its matches open, with nothing to open. Opening a company moves only

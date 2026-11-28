@@ -2,26 +2,26 @@
 // Every figure on the site is a Num; a tap opens where it comes from. The words a rule states (Ruled), glossary terms (Term) and the
 // rule chips open their cards in the same sheet, with a back arrow when they were reached from a number. What the sheet shows (the cards) is in
 // provenance-sheets.tsx, fetched while the page hydrates, so the script a page needs to show itself holds only the figures and chips.
-import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, type MouseEvent, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useId, useMemo, useState, type MouseEvent, type ReactElement, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router";
 import { companyTermRule, isOwnDocument, type CompanyTermRef, type RuleRecord } from "@finance-tool/schema";
 import { formulaNames, numbers, parametersPage, provenance as copy, rule as ruleCopy, scopeWords, strength as strengthCopy } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
 import { fmt, formatValue, joinLead, SHORT_IN_ROW, shortBillions } from "../lib/format";
-import { isOpenValue, isParameter, isWeak, ownBy, strengthOf, type SiteValue, type Strength } from "../lib/value";
+import { isOpenValue, isParameter, isWeak, ownBy, sheetFlags, sheetReadings, strengthOf, type SiteValue, type Staleness, type Strength } from "../lib/value";
 import type { TermRow } from "../lib/data.server";
-import { IconAlert, IconCalculator, IconClock, IconDrillIn, IconFile, IconLock, IconPencil } from "./icons";
+import { IconAlert, IconClock, IconDrillIn, IconFile, IconLock, IconPencil } from "./icons";
 import { OwnCompanyCtx, Sheet, StaleSaidCtx } from "./Sheet";
-import { Button, cx, Disclosure, Tag } from "./ui";
-import { CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
+import { cx, Disclosure, Tag } from "./ui";
+import { CatchMark, CompanyLinks, LongestCase, When, gershayim, useAheadSaid, countsByItself, useCounting, useGlidingNumbers, useUnseen } from "./kit";
 import { chipName, companyLinksOf, isGeneral, joinNames, listedCompanies, ownDocCompanies, shownCompanies, type CompanyLink, type OwnDocs } from "../lib/scope";
 import { decodedPart } from "../lib/address-hash";
 import { useHydrated } from "../lib/hooks";
 
 // ---------------------------------------------------------------- context
 
-export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string; /** The rules the place the figure was opened from already opens (`opensAround`): its sheet leaves their chips out. */ shown?: readonly string[] } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string; /** After the line: the chip of the rules it rests on (a "?" with a sentence of its own and its rules). */ rules?: readonly string[]; /** After the lead: sentences of the sheet's own, each with what it is about and the document it rests on (why an account sells no fund on an index, a sentence and a source for each kind of fund). */ parts?: readonly SheetPart[] } | { kind: "formula"; id: string } | { kind: "question"; id: string } | { kind: "proof"; id: string } | { kind: "proofs"; ids: readonly string[] };
+export type Item = { kind: "value"; value: SiteValue; /** The figure was shown with two decimals (a table cell, or near a threshold): the sheet shows the same digits. */ exact?: boolean; /** The word a value that is not a number was shown as ("אין", "עוד לא דווח", "לא צמוד"): the sheet heads with the same word. */ display?: string; /** The rules the place the figure was opened from already opens (`opensAround`): its sheet leaves their chips out. */ shown?: readonly string[] } | { kind: "rule"; id: string } | { kind: "rules"; ids: readonly string[]; /** What the list backs: the fact it closes, under the sheet's title. */ name?: string } | { kind: "term"; id: string } | { kind: "terms"; ids: readonly string[]; /** What the terms make up (a column's head): the sheet's title. */ name: string; /** One line under the title, before the terms; with no terms, the sheet's whole text (a "?" with a text of its own). */ lead?: string; /** After the line: the chip of the rules it rests on (a "?" with a sentence of its own and its rules). */ rules?: readonly string[]; /** After the lead: sentences of the sheet's own, each with what it is about and the document it rests on (why an account sells no fund on an index, a sentence and a source for each kind of fund). */ parts?: readonly SheetPart[] } | { kind: "catch"; value: SiteValue; /** What its "?" says, as the figure's place decided them (`catchesOf`). */ catches: readonly Catch[]; /** As a value's: the figure was shown with two decimals. */ exact?: boolean; /** As a value's: the word a value that is not a number was shown as. */ display?: string } | { kind: "question"; id: string } | { kind: "proof"; id: string } | { kind: "proofs"; ids: readonly string[] };
 
 /** One sentence of a sheet's own text (`Item` "terms", `parts`): what it is about, the sentence, and the document it rests on. */
 export interface SheetPart {
@@ -53,8 +53,6 @@ export interface ProvenanceData {
   rulesOf?: { name: string; href: string };
   /** Where each rule is used (the rules pages fill it): pages that show it, and whether the calculation engine reads it. */
   ruleUses?: Record<string, RuleUses>;
-  /** Per formula, its Hebrew name and the site parameters it uses (the formula sheet). A page that does not pass it still gets the name from `formulaNames`. */
-  formulas?: Record<string, { name: string; parameters: string[]; /** The math docs/method.md writes for it, in order (`loadFormulaTex`). */ tex?: string[]; }>;
   /** Per id a card on /parameters answers to: `P-01` to itself, an `A-01` that is an input of a card to that card. PageShell fills it for every page. */
   parameters?: Record<string, string>;
   /**
@@ -125,18 +123,6 @@ function usePreloadSheets(): void {
 /** Set by a provider for what it holds: a provider inside it is nested (a deal's popup, which reads the fee page's data). */
 const NestedCtx = createContext(false);
 
-/**
- * How much room the provenance sheet takes, by what it opened to show (`roomOf`): a card (a sourced figure, a rule, a term), or more for a
- * computed figure, whose working holds a line of math with its values, the key to its symbols, or the lines of a difference or a sum:
- * taller on a phone and wider and taller on a computer.
- */
-const SHEET_ROOM = {
-  card: { height: 70, size: "card", className: "lg:max-h-[60vh] lg:backdrop:bg-transparent" },
-  calculation: { height: 80, size: "roomy", className: "lg:backdrop:bg-transparent" },
-} as const satisfies Record<string, { height: 70 | 80; size: "card" | "roomy"; className: string }>;
-
-const roomOf = (item: Item | undefined): keyof typeof SHEET_ROOM => (item?.kind === "value" && item.value.state === "computed" ? "calculation" : "card");
-
 export function ProvenanceProvider({ data, children }: { data: ProvenanceData; children: ReactNode }) {
   // A nested provider's sheet opens over the sheet that holds it, which then closes as a dialog (sheet-stack): drawn inside that sheet, it
   // would close with it, out of sight yet modal, and leave the whole page inert. So it is drawn at the body's end, once in the browser.
@@ -169,10 +155,8 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   const push = useCallback((item: Item) => setStack((s) => [...s, item]), []);
   const headId = useId();
   const descId = useId();
-  // the sheet takes its room from what it opened to show, and keeps it while a card opened from inside replaces it and on the way back
-  const room = SHEET_ROOM[roomOf(stack[0])];
   const sheet = (
-    <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={room.height} size={room.size} className={room.className} labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
+    <Sheet open={open} onClose={close} anchor={anchor} pc="popover" height={70} className="lg:max-h-[60vh] lg:backdrop:bg-transparent" labelledBy={headId} describedBy={descId} onBack={back} view={stack.length}>
       {top && code && <code.SheetContent item={top} data={data} headId={headId} descId={descId} />}
     </Sheet>
   );
@@ -192,7 +176,7 @@ export function ProvenanceProvider({ data, children }: { data: ProvenanceData; c
   );
 }
 
-/** The page's provenance data, for the chips that must know what exists (a parameter card, a formula). */
+/** The page's provenance data, for the chips that must know what exists (a parameter card, a rule). */
 export const DataCtx = createContext<ProvenanceData | null>(null);
 
 /** The page's provenance data, for a block that lays out rule cards or company links (the company pages' section, "תלוי בחברה"). */
@@ -280,11 +264,11 @@ export interface NumProps {
   wrap?: boolean;
 }
 
-const stateWord = { sourced: numbers.legend.sourced, computed: numbers.legend.computed, entered: numbers.legend.entered };
+const stateWord = { sourced: numbers.legend.sourced, entered: numbers.legend.entered };
 
 /**
  * A sourced figure that takes effect after the run date: a rate "from tomorrow" rolled forward for years is
- * not in force yet. Computed figures never carry the flag themselves; their sheet lists the inputs.
+ * not in force yet. A calculated figure never carries it itself: each input that does says it where it shows.
  */
 export function startsAfter(value: SiteValue, today: string): string | null {
   if (!today || value.state !== "sourced" || typeof value.value !== "number" || !value.effective_from) return null;
@@ -333,7 +317,7 @@ const opensOf = (el: Element): string[] => (el.getAttribute("data-opens") ?? "")
  * `data-opens-scope` (a rule's card, a /rules fact row, a section of a company's card) and, outside a sheet only, else the paragraph or list
  * item the figure stands in. Every element that opens a rule carries `data-opens` with its ids (a phrase that states it, a chip, a row
  * of a list of rules), and a scope may carry the id it is about itself. Inside a sheet only an explicit scope inside that sheet counts, so a
- * computed figure's input keeps its chips. No place, no ids.
+ * figure named in a sheet (a calculated figure's weak input) keeps its chips. No place, no ids.
  */
 export function opensAround(el: Element, insideSheet: boolean): string[] {
   const sheet = insideSheet ? el.closest("dialog") : null;
@@ -370,11 +354,75 @@ function ownOnPage(v: SiteValue, data: ProvenanceData | null): SiteValue {
   return c ? ownBy(v, c) : v;
 }
 
-/** The provenance number: a button holding the formatted value in an isolating span, then its flags. Marks sit before the digits, never between a number and the unit word that follows it. */
+/** A figure as a page shows it: on a page about one company (`OwnCompanyCtx`), a company-sourced figure that rests on that company's documents is its own (`ownOnPage`). */
+function onPage(v: SiteValue, ownPage: boolean, data: ProvenanceData | null): SiteValue {
+  return ownPage && !v.own && strengthOf(v) === "institution" ? ownOnPage(v, data) : v;
+}
+
+/**
+ * A catch a calculated figure carries: what to know before trusting it, which its caution "?" opens (`catchesOf`). A calculated figure shows
+ * nothing else of where it came from.
+ * - `ahead`: it takes effect after the page's date;
+ * - `doubt`: its own doubt (`SiteValue.doubt`);
+ * - `weak`: it rests on a secondary source, or, at figure size, on a company's document out of its own context, with the inputs that do,
+ *   by their key (in a line or a cell each such input says its own source where it stands);
+ * - `open`: it rests on an open rule;
+ * - `stale`: what it rests on is older than its cadence;
+ * - `flag`: an engine flag (`sheetFlags`);
+ * - `reading`: it rests on the site's own reading of the rules it names (`sheetReadings`).
+ */
+export type Catch =
+  | { kind: "ahead"; from: string }
+  | { kind: "doubt" }
+  | { kind: "weak"; strength: "institution" | "secondary"; inputs: readonly (readonly [key: string, input: SiteValue])[] }
+  | { kind: "open" }
+  | { kind: "stale"; stale: Staleness }
+  | { kind: "flag"; code: string }
+  | { kind: "reading"; rules: readonly string[] };
+
+/** What decides a figure's catches beyond the figure: the page's date, its size, the notices around it that already say a catch, and how the page shows a figure (`onPage`). */
+export interface CatchPlace {
+  today: string;
+  /** At figure size (a headline): a company's document out of its own context is a catch there. */
+  figure: boolean;
+  /** A notice around it already says its source is old (`StaleSaid`). */
+  staleSaid: boolean;
+  /** A callout around it already says these rules start later (`useAheadSaid`). */
+  aheadSaid: boolean;
+  onPage: (v: SiteValue) => SiteValue;
+}
+
+/**
+ * The catches a figure carries (`Catch`), in the order its sheet says them. A plain difference or sum (`SiteValue.plain`) is its inputs and
+ * nothing else: it carries only a catch none of its inputs carries, since each input shows its own where it stands (`sheetFlags`,
+ * `sheetReadings`, and the same for its doubt, weakness, open rule and staleness).
+ */
+export function catchesOf(v: SiteValue, place: CatchPlace): Catch[] {
+  const inputs = Object.entries((v.computed_from?.inputs ?? {}) as Record<string, SiteValue>).map(([k, x]) => [k, place.onPage(x)] as const);
+  const carried = (has: (x: SiteValue) => boolean) => !!v.plain && inputs.some(([, x]) => has(x));
+  const out: Catch[] = [];
+  const from = place.aheadSaid ? null : startsAfter(v, place.today);
+  if (from) out.push({ kind: "ahead", from });
+  if (v.doubt && !(v.plain && v.doubtFrom?.length)) out.push({ kind: "doubt" });
+  const strength = strengthOf(v);
+  if (isWeak(v) && (strength === "secondary" || (strength === "institution" && place.figure)) && !carried(isWeak)) out.push({ kind: "weak", strength, inputs: inputs.filter(([, x]) => isWeak(x)) });
+  if ((strength === "open" || isOpenValue(v)) && !carried((x) => strengthOf(x) === "open")) out.push({ kind: "open" });
+  if (v.stale && !place.staleSaid && !carried((x) => !!x.stale)) out.push({ kind: "stale", stale: v.stale });
+  for (const code of sheetFlags(v)) out.push({ kind: "flag", code });
+  const rules = [...new Set(sheetReadings(v).map((l) => l.ruleId))];
+  if (rules.length > 0) out.push({ kind: "reading", rules });
+  return out;
+}
+
+/**
+ * The provenance number. A sourced or entered figure is a button holding the formatted value in an isolating span, its marks before the
+ * digits, never between a number and the unit word that follows it; a tap opens where it comes from. A calculated figure is plain text, with
+ * a caution "?" after it only where it carries a catch (`catchesOf`).
+ */
 export function Num({ value: given, size = "inline", display, animate, className, prefix, exact, fullWord, name, wrap }: NumProps) {
   const ownPage = useContext(OwnCompanyCtx);
   const pageData = useContext(DataCtx);
-  const value = ownPage && !given.own && strengthOf(given) === "institution" ? ownOnPage(given, pageData) : given;
+  const value = onPage(given, ownPage, pageData);
   const open = useOpen();
   const inside = useContext(InsideSheetCtx);
   const today = useContext(TodayCtx);
@@ -414,13 +462,6 @@ export function Num({ value: given, size = "inline", display, animate, className
   const future = fromDate ? `${numbers.startsOn}${fmt.date(fromDate)}` : null;
   // an open value is no sourced figure: its label says the open question and the lock, not "ממקור"
   const doubt = value.doubt ? numbers.doubt : null;
-  const label = [name, fullWord ?? text, blocked ? null : stateWord[value.state], param ? numbers.parameter : null, weak, doubt, future, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ");
-  // one caution icon, before the digits, for a weak source or a date still ahead (the sheet says which); a computed figure
-  // carries the weak-source icon only at figure size, and each of its inputs says its own source in its own sheet. The words stay out of the line: a
-  // word between a number and its unit ("4 לפי החברה ימי עסקים") broke the sentence. At figure size a date ahead
-  // is also said in words, before the digits.
-  const markWeak = weak && (value.state !== "computed" || size === "figure");
-  const mark = "inline-block align-[-2px] select-none";
   // a long text value (a fund's full name) may wrap: kept on one line it ran 73 px past a phone's edge; any other figure is
   // one unit with its icon, which stood alone on the line above its digits in a phone's table
   const oneLine = !wrap && !(typeof value.value === "string" && text.length > 24);
@@ -430,6 +471,34 @@ export function Num({ value: given, size = "inline", display, animate, className
     const bare = <bdi dir={textDir(text)} className={cx("whitespace-nowrap", className)}>{text}</bdi>;
     return prefix ? <span className="whitespace-nowrap">{typeof prefix === "string" ? joinLead(prefix, text) : prefix}{bare}</span> : bare;
   }
+  const digits = short ? (
+    <>
+      {shortPc ? <ShortText text={shortPc} className="max-md:hidden" /> : <bdi dir={textDir(text)} className="whitespace-nowrap max-md:hidden">{text}</bdi>}
+      <ShortText text={short} className="md:hidden" />
+    </>
+  ) : (
+    <bdi dir={textDir(text)} className={oneLine ? "whitespace-nowrap" : undefined}>{text}</bdi>
+  );
+  // a maqaf lead before a figure said in words ("תעריפון מ־" before "נובמבר 2025") writes its letter on the word: "מנובמבר 2025" (copy.md 10)
+  const led = (figure: ReactElement): ReactElement => (prefix ? <span className="whitespace-nowrap">{typeof prefix === "string" ? joinLead(prefix, text) : prefix}{figure}</span> : figure);
+  // a calculated figure is plain text in the ink around it: it opens nothing, and only a catch it carries shows, as a caution "?" held to
+  // its last digit, which opens what the catch is (`catchesOf`)
+  if (value.state === "computed") {
+    const catches = catchesOf(value, { today, figure: size === "figure", staleSaid, aheadSaid, onPage: (v) => onPage(v, ownPage, pageData) });
+    const figure = <span className={cx("num-plain", size === "figure" && "num-figure", value.value === null && "num-unknown", oneLine && "whitespace-nowrap", className)}>{digits}</span>;
+    if (catches.length === 0) return led(figure);
+    return led(
+      <span className="whitespace-nowrap">
+        {figure}
+        <CatchMark about={value.about ?? text} item={{ kind: "catch", value, catches, ...(keepDecimals ? { exact: true } : {}), ...(typeof value.value !== "number" && (fullWord ?? written) ? { display: fullWord ?? written } : {}) }} className="ms-1" />
+      </span>,
+    );
+  }
+  const label = [name, fullWord ?? text, blocked ? null : stateWord[value.state], param ? numbers.parameter : null, weak, doubt, future, value.stale ? `${numbers.staleSince} ${fmt.date(value.stale.since)}` : null, numbers.details].filter(Boolean).join(", ");
+  // one caution icon, before the digits, for a weak source, a doubt or a date still ahead (the sheet says which). The words stay out of the
+  // line: a word between a number and its unit ("4 לפי החברה ימי עסקים") broke the sentence. At figure size a date ahead is also said in
+  // words, before the digits.
+  const mark = "inline-block align-[-2px] select-none";
   const button = (
     <button
       type="button"
@@ -438,21 +507,13 @@ export function Num({ value: given, size = "inline", display, animate, className
       onClick={(e) => open(valueItem(value, fullWord ?? written, keepDecimals, opensAround(e.currentTarget, inside)), e.currentTarget)}
     >
       {value.stale && !staleSaid && <IconClock size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
-      {(fromDate || markWeak || doubt) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
+      {(fromDate || weak || doubt) && <IconAlert size={14} className={cx("text-caution me-1", mark)} aria-hidden="true" />}
       {blocked && <IconLock size={14} className={cx("text-blocked me-1", mark)} aria-hidden="true" />}
       {fromDate && size === "figure" && <span className="text-xs text-caution-foreground font-normal me-1 no-underline select-none"><When iso={fromDate} lead={numbers.startsOn} /></span>}
-      {short ? (
-        <>
-          {shortPc ? <ShortText text={shortPc} className="max-md:hidden" /> : <bdi dir={textDir(text)} className="whitespace-nowrap max-md:hidden">{text}</bdi>}
-          <ShortText text={short} className="md:hidden" />
-        </>
-      ) : (
-        <bdi dir={textDir(text)} className={oneLine ? "whitespace-nowrap" : undefined}>{text}</bdi>
-      )}
+      {digits}
     </button>
   );
-  // a maqaf lead before a figure said in words ("תעריפון מ־" before "נובמבר 2025") writes its letter on the word: "מנובמבר 2025" (copy.md 10)
-  return prefix ? <span className="whitespace-nowrap">{typeof prefix === "string" ? joinLead(prefix, text) : prefix}{button}</span> : button;
+  return led(button);
 }
 
 /** A lead text that ends in a maqaf word ("נכון ל־", "ב־") or a word and a space ("ממוצע ") followed by a number: only its last word is
@@ -529,9 +590,8 @@ export function useAnimatedValue(target: number | null, enabled: boolean): numbe
 
 // ---------------------------------------------------------------- tags, chips, lines
 
-export function StateTag({ state }: { state: "sourced" | "computed" | "entered" | "parameter" }) {
+export function StateTag({ state }: { state: "sourced" | "entered" | "parameter" }) {
   if (state === "parameter") return <Tag tone="parameter">{numbers.parameter}</Tag>;
-  if (state === "computed") return <Tag tone="computed" icon={<IconCalculator size={14} />}>{numbers.legend.computed}</Tag>;
   if (state === "entered") return <Tag tone="entered" icon={<IconPencil size={14} />}>{numbers.legend.entered}</Tag>;
   return <Tag tone="neutral" icon={<IconFile size={14} />}>{numbers.legend.sourced}</Tag>;
 }
@@ -581,14 +641,6 @@ export function idKind(id: string): IdKind | null {
 }
 
 /**
- * One chip for any id the site has: a rule opens its card, a formula its sheet, an open question its sheet, a proof its sheet,
- * a parameter goes to its card on the parameters page. The chip says words, never the code (D101): a rule's chip is the rule's
- * title, or "חוק או כלל" for a record the page does not hold; a formula's says its name, a parameter's its name,
- * an open question's "פרטים", a proof's "הוכחה" (`ProofsChip`). The code stays in the card or sheet it opens and in the chip's address. A 44px tap area.
- * - `asLabel`: the chip as a label that does nothing (a parameter's own card, which a link would only point back at).
- * An empty id renders nothing; an id that is no kind renders as plain text; a parameter or an `A-nn` no card has, nothing.
- */
-/**
  * The punctuation that closes a sentence on a chip (".", ",", ";", ":"): held to the chip on one line, right after its edge, so it
  * never reads as a stray mark with a gap before it ("פרטים ."). A chip is its own frame and takes no
  * brackets (`IdText` drops them too). Kit guard 20.
@@ -604,18 +656,13 @@ function ChipEnd({ chip, end }: { chip: ReactNode; end?: string }) {
 }
 
 /**
- * The way from a figure's working to its formula's own sheet (every line the entry draws, its key and the site parameters it uses): a quiet
- * line of words at the end of the working, which opens that sheet in place of the figure's, with the way back.
+ * One chip for any id the site has: a rule opens its card, an open question its sheet, a proof its sheet, a parameter goes to its card on
+ * the parameters page. The chip says words, never the code (D101): a rule's chip is the rule's title, or "חוק או כלל" for a record the page
+ * does not hold; a parameter's says its name, an open question's "פרטים", a proof's "הוכחה" (`ProofsChip`). The code stays in the card or
+ * sheet it opens and in the chip's address. A 44px tap area.
+ * - `asLabel`: the chip as a label that does nothing (a parameter's own card, which a link would only point back at).
+ * An empty id renders nothing; an id that is no kind, or a formula, renders as plain text; a parameter or an `A-nn` no card has, nothing.
  */
-export function FormulaLink({ id }: { id: string }) {
-  const open = useOpen();
-  return (
-    <Button variant="quiet" flush size="sm" className="self-start" onClick={(e) => open({ kind: "formula", id }, e.currentTarget)}>
-      {copy.computed.toFormula}
-    </Button>
-  );
-}
-
 export function IdRef(props: { id: string; className?: string; asLabel?: boolean; /** A list of questions: the chip says the question's title, the rows being otherwise alike (D49). */ titled?: boolean; /** Punctuation that closes the sentence on the chip (`ChipEnd`). */ end?: string }) {
   return <ChipEnd chip={<IdChip {...props} />} end={props.end} />;
 }
@@ -627,7 +674,8 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   if (!id) return null;
   const kind = idKind(id);
   const plain = <bdi dir="ltr" className="slashed-zero whitespace-nowrap">{id}</bdi>;
-  if (!kind) return plain;
+  // a formula opens nothing: a figure the site calculates is plain, and says only its catches
+  if (!kind || kind === "formula") return plain;
   const shown = kind === "question" ? id.replace("-OQ", " OQ") : id;
   // a rule's chip says its title; a record the page does not hold says "חוק או כלל", and its card says the page does not hold it
   const rule = kind === "rule" ? ruleOf(data, shown) : undefined;
@@ -640,10 +688,9 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
   if (kind === "parameter") card = data?.parameters ? data.parameters[id] : id;
   if (kind === "assumption") card = data?.parameters?.[id];
   if ((kind === "parameter" || kind === "assumption") && !card) return null;
-  const formulaName = kind === "formula" ? formulaNames[id] || data?.formulas?.[id]?.name || formulaNames._other : undefined;
-  const words = title ?? (ruleName ? ruleName.text : card ? parametersPage.names[card] ?? copy.idRef.parameter : formulaName ?? (kind === "question" ? copy.idRef.questionChip : kind === "proof" ? copy.proofChip.one : ruleCopy.title));
+  const words = title ?? (ruleName ? ruleName.text : card ? parametersPage.names[card] ?? copy.idRef.parameter : kind === "question" ? copy.idRef.questionChip : kind === "proof" ? copy.proofChip.one : ruleCopy.title);
   // a short word stays on one line; a title or a name wraps inside the chip
-  const long = !!(title || ruleName || formulaName || (card && parametersPage.names[card]));
+  const long = !!(title || ruleName || (card && parametersPage.names[card]));
   const chip = ruleName?.english ? <bdi dir="ltr" className="text-start">{words}</bdi> : <span className={long ? "text-start" : "whitespace-nowrap"}>{words}</span>;
   if (asLabel) return <span className={cx("rule-chip pointer-events-none", long && "whitespace-normal", className)}>{chip}</span>;
   if (card) {
@@ -653,8 +700,8 @@ function IdChip({ id, className, asLabel, titled }: { id: string; className?: st
       </Link>
     );
   }
-  const aria = kind === "rule" ? (rule ? `${ruleCopy.title}: ${words}` : ruleCopy.title) : kind === "formula" && id.startsWith("A-") ? `${copy.idRef.howComputed}: ${words}` : kind === "question" ? copy.idRef.question : `${copy.idRef.formula}: ${words}`;
-  const item: Item = kind === "question" ? { kind: "question", id: shown } : { kind: kind as "rule" | "formula", id: shown };
+  const aria = kind === "rule" ? (rule ? `${ruleCopy.title}: ${words}` : ruleCopy.title) : copy.idRef.question;
+  const item: Item = kind === "question" ? { kind: "question", id: shown } : { kind: "rule", id: shown };
   return (
     <button type="button" className={cx("rule-chip", long && "whitespace-normal", className)} onClick={(e) => open(item, e.currentTarget)} aria-label={aria} data-opens={kind === "rule" ? shown : undefined}>
       {chip}
@@ -898,11 +945,6 @@ export function Ruled({ id, prefix, name, children }: { /** The rule or rules th
   );
 }
 
-/**
- * The key to the number styles (copy 2). Samples are marks, not figures. The fourth item is the mark a figure
- * carries when it rests on a company's document used out of its own context (D31); a page passes `institution` only when it has such a figure. `term`
- * adds the glossary-term sample (dotted grey underline, `.term`) for pages whose text has `Term`s (the guide, exposure pages).
- */
 /** A question's entry in the page's `openQuestions`, by either spelling of its code (`TX2 OQ6`, `TX2-OQ6`). */
 export function questionOf(data: ProvenanceData | null, id: string) {
   return data?.openQuestions?.[id.replace("-OQ", " OQ")] ?? data?.openQuestions?.[id];

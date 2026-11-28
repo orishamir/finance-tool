@@ -162,7 +162,7 @@ const HAND_SITE_LINK: Record<string, number> = {
     "content/guide/makam.tsx": 3,
 };
 const HAND_LINK_OUT: Record<string, number> = {
-    "components/provenance-sheets.tsx": 5,
+    "components/provenance-sheets.tsx": 4,
 };
 const BANG_OVERRIDE: Record<string, number> = {
 };
@@ -207,13 +207,11 @@ patterns["a fold label painted as a link"] = {
   allowed: FOLD_AS_LINK,
 };
 // The pieces of the second kit job: a label and its value in a row of a hand grid (KeyValueList plain draws the rows, its label column one
-// width for the site), a document's words in a hand muted box (PrintedQuotes), and a hand bar in the computed ink (a single computed figure takes no bar; MeterBar draws a track's exposure).
+// width for the site), a document's words in a hand muted box (PrintedQuotes).
 const HAND_KEY_VALUE_ROW: Record<string, number> = {
 };
 const HAND_QUOTES_BOX: Record<string, number> = {
     "components/decoder/institutions/product-row.tsx": 1,
-};
-const HAND_COMPUTED_BAR: Record<string, number> = {
 };
 patterns["a label and value row drawn by hand"] = {
   kit: "KeyValueList plain (rows between hairlines, the label column one width; `wide` for labels that run to a sentence)",
@@ -224,11 +222,6 @@ patterns["a muted quotes box drawn by hand"] = {
   kit: "PrintedQuotes (a document's terms quoted word for word in a muted box)",
   count: (s) => classStrings(s).filter((c) => { const t = c.split(/\s+/); return t.includes("bg-muted") && t.includes("rounded-md") && t.includes("p-3"); }).length,
   allowed: HAND_QUOTES_BOX,
-};
-patterns["a bar drawn by hand in the computed ink"] = {
-  kit: "no bar beside a single computed figure: the figure says it (MeterBar draws only a track's exposure shares)",
-  count: (s) => classValueTokens(s).filter((t) => /^(?:[^\s:]+:)*bg-computed$/.test(t)).length,
-  allowed: HAND_COMPUTED_BAR,
 };
 const scriptPatterns: Record<string, { kit: string; count: (s: string) => number; allowed: Record<string, number> }> = {
   "a media query asked by hand": {
@@ -252,7 +245,6 @@ describe("the duplicated text pieces' scans", () => {
     expect(n("a label and value row drawn by hand", '<div className="flex md:grid md:grid-cols-[14rem_1fr]"><dt>a</dt><dd>b</dd></div> <dl className="flex flex-col"><dt>c</dt></dl> <KeyValueList plain items={x} />')).toBe(1);
     expect(n("a muted quotes box drawn by hand", '<p className="text-sm bg-muted rounded-md p-3">a</p> <span className="bg-muted/50 rounded-md p-3">b</span> <PrintedQuotes quotes={q} />')).toBe(1);
     expect(n("chip", '<button className="inline-flex min-h-target rounded-[10px] bg-secondary px-3.5 text-sm">a</button> <Link className="a-chip" to="/">b</Link> <span className="rounded-[10px] border border-input">c</span> <ChoiceChips ids={x} />')).toBe(2);
-    expect(n("a bar drawn by hand in the computed ink", '<span className={cx("h-1.5 rounded-full", "bg-computed")} /> <MeterBar share={0.4} tone="stocks" />')).toBe(1);
     expect(n("a media query asked by hand", 'window.matchMedia("(min-width: 64rem)"); matchMedia("(prefers-reduced-motion: reduce)"); useMedia(MQ.lg)')).toBe(1);
   });
 });

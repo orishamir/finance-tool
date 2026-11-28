@@ -4,11 +4,11 @@ import { useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router";
 import { brands, companyFocus, computedInputs, dealCases as caseWords, feeDeal as dealWords, guideBlocks, formulaKeys, formulaNames, invest as investWords, kit as copy, provenance as provenanceWords, rulesFront, trackBrowser } from "../../copy";
 import type { SiteValue } from "../../lib/value";
-import { asField, computed, entered } from "../../lib/value";
+import { asField, computed, differenceOf, entered } from "../../lib/value";
 import { digitsFor, headText, keyOfLine, withValues, type FormulaWorking } from "../../lib/working";
 import { CalendarCheck, CalendarDays, Copy, Lock, Plus, X, Zap } from "lucide-react";
 import { IconAlert, IconCheck, IconClose, IconCoins, IconCopy, IconExternal, IconLock, IconPencil } from "../icons";
-import { FormulaLink, IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleList, RuleTitleRow, Ruled, StaleSaid, StrengthLabel, Term } from "../provenance";
+import { IdRef, LeadTail, MarkHead, Num, ProvenanceProvider, ReadingTag, RuleTitleList, RuleTitleRow, Ruled, StaleSaid, StrengthLabel, Term } from "../provenance";
 import { IconDrillIn } from "../icons";
 import { allLabels, label } from "../../lib/labels";
 import type { TaxIndexStatement } from "@finance-tool/engine";
@@ -409,7 +409,7 @@ function Basics() {
       </Demo>
       <Demo name="Tag" use={g.uses.Tag}>
         <div className="flex flex-wrap items-center gap-2">
-          {(["neutral", "parameter", "computed", "entered", "caution", "blocked", "positive"] as const).map((tone) => (
+          {(["neutral", "parameter", "entered", "caution", "blocked", "positive"] as const).map((tone) => (
             <Tag key={tone} tone={tone}>
               {tone}
             </Tag>
@@ -836,7 +836,6 @@ function WorkedStates({ today }: { today: string }) {
         result={head}
         rows={keyOfLine(tex, formulaKeys[working.entry]?.symbols ?? [], working, inputs).map((r) => ({ tex: r.tex, words: r.words, inputs: r.inputs.map((x) => ({ key: x.key, name: x.key, value: <Num value={x.input} /> })) }))}
         where={provenanceWords.formulaSheet.where}
-        after={<FormulaLink id={working.entry} />}
       />
     );
   };
@@ -861,6 +860,40 @@ function WorkedStates({ today }: { today: string }) {
         {receipt([[investWords.receipt.paidInToday, paid, null], [investWords.receipt.gain, gain, "plus"]], headText(left, false))}
       </State>
     </>
+  );
+}
+
+/**
+ * CatchMark's states: calculated figures, plain in the ink around them, with the caution "?" only where they carry a catch (a doubt, a weak
+ * input, a flag), held to the figure's last digit in a narrow column; a difference whose catch is its input's carries none.
+ */
+function CatchStates({ today }: { today: string }) {
+  const s = samples(today);
+  const weakInput: SiteValue = { ...s.sourced, value: 400, source: { ...s.sourced.source, strength: "institution" } };
+  const doubted = computed(1500, "nis", "F-08", { [g.sampleAbout]: s.sourced }, { today, about: g.sampleAbout, labels: [{ code: "cautious", ruleId: "TXF-04", notKnown: "documents" }] });
+  const weak = computed(1900, "nis", "F-08", { [g.sampleAbout]: weakInput }, { today, about: g.sampleAbout });
+  const flagged = computed(2100, "nis", "F-08", { [g.sampleAbout]: s.sourced }, { today, about: g.sampleAbout, flags: ["G-14"] });
+  const carried = differenceOf([g.sample.barA, flagged], [g.sample.barB, s.sourced], "F-08", { today, about: g.sample.diff });
+  return (
+    <Grid>
+      <State label="no catch: plain digits in the ink around them, nothing to tap">
+        <p className="text-sm">{g.sample.sentenceBefore} <Num value={s.comp} /> {g.sample.sentenceAfter}</p>
+      </State>
+      <State label="a doubt, a company's document out of its context, an engine flag: the caution '?' after the figure opens only what the catch is">
+        <p className="text-sm">
+          <Num value={doubted} /> · <Num value={weak} /> · <Num value={flagged} />
+        </p>
+      </State>
+      <State label="a narrow column: the '?' stays on the line of the figure's last digit">
+        <p className="w-20 text-sm">{g.sample.sentenceBefore} <Num value={doubted} /></p>
+      </State>
+      <State label="figure size: the same mark beside a headline figure">
+        <span className="figure"><Num value={weak} size="figure" /></span>
+      </State>
+      <State label="a difference whose only catch is its input's flag: no '?', since the input shows it where it stands">
+        <p className="text-sm"><Num value={carried} /></p>
+      </State>
+    </Grid>
   );
 }
 
@@ -902,7 +935,6 @@ function Words({ today }: { today: string }) {
         <Grid>
           <State label="rule: its title, where the chip names the rule itself (a figure's sheet's rules, the rule a run stopped on); opens its card"><SampleRules today={today}><div><IdRef id="TXS-05" /></div></SampleRules></State>
           <State label="rule the page does not hold: 'חוק או כלל', and its card says so"><div><IdRef id="TXS-05" /></div></State>
-          <State label="formula: its name, opens the formula sheet"><div><IdRef id="F-80" /></div></State>
           <State label="parameter: its name, goes to its card on /parameters"><div><IdRef id="P-01" /></div></State>
           <State label="open question: opens the question sheet"><div><IdRef id="TX2 OQ6" /></div></State>
           <State label="ends a sentence: the full stop is passed as end and stays on the chip's line, with no gap before it (guard 20)"><p className="w-56">{g.sample.chipSentence} <IdRef id="TX2 OQ6" end="." /></p></State>
@@ -2178,6 +2210,9 @@ function Lists({ today, statements }: { today: string; statements: readonly TaxI
           </span>
           <FundFeesPhoneHelp />
         </State>
+      </Demo>
+      <Demo name="CatchMark" use={g.uses.CatchMark}>
+        <CatchStates today={today} />
       </Demo>
       <Demo name="FormulaBlock, Tex" use={g.uses.Formula}>
         <State label="one formula and its key (the stock share of a provident track): the math left to right, the key's symbols on the start side">

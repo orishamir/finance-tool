@@ -4,8 +4,7 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { taxIndexStatementOf } from "@finance-tool/engine";
-import { invest, numbers, provenance } from "../../copy";
+import { invest, numbers } from "../../copy";
 import { fmt } from "../../lib/format";
 import { feeAbsent } from "../../lib/providers";
 import { paybackMayLower, pricedVariable, buildInvest, doubtOf, gapListFor, indexById, knownIndices, refOfCustom, kindOf } from "../../lib/invest";
@@ -17,8 +16,8 @@ import { NoFundAccountColumn, NoFundCall, NoFundColumn } from "./no-fund";
 import { TitleRow } from "./title";
 import { allFunds, GapCell, gapKindOf, gapNoteOf, gapStateOf, gapValue, pickOfHeadline, whyNoFundAt, whyNoKindAt } from "./pair";
 import { PlanCard } from "./plan-card";
-import { ValueSheet } from "../provenance-sheets";
-import { ProvenanceProvider } from "../provenance";
+import { CatchSheet } from "../provenance-sheets";
+import { ProvenanceProvider, catchesOf } from "../provenance";
 import { loadRules } from "../../lib/data.server";
 import { PairLists, listName } from "./lists";
 import { termsLeftOut } from "./deal-account";
@@ -26,6 +25,9 @@ import { PairReceipt } from "./receipt";
 import { BeforeDeciding, hedgeCard, mapTab } from "./before";
 import { useDollarCase } from "./dollar";
 import { bundle, t, plan, data, shown, html, inHost, lists, fundRow, StairsFor } from "./render-fixtures";
+
+/** The catches a figure's "?" says in a line of the page: on no company's page, with no notice around it. */
+const catchesHere = (v: SiteValue) => catchesOf(v, { today: t, figure: false, staleSaid: false, aheadSaid: false, onPage: (x) => x });
 
 describe("the index page's sections render", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan: plan, yourBroker: "leumi" });
@@ -417,7 +419,7 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(funds.find((f) => f.rec.id === "1159250")!.number).toBe("1159250");
     expect(funds.find((f) => f.rec.id === "ie00b5bmr087")!.number).toBe("IE00B5BMR087");
   });
-  it("a foreign fund in Tel Aviv whose annex states no index, and an Israeli fund whose documents name it a foreign-investment fund, wear no caution: their sheet tags the site's reading and names its rule, the Israeli fund's its document too; no note says it elsewhere (D84, D119, F-04)", () => {
+  it("a foreign fund in Tel Aviv whose annex states no index, and an Israeli fund whose documents name it a foreign-investment fund, wear no doubt: their caution mark opens a sheet that tags the site's reading and names its rule; no note says it elsewhere (D84, D119, F-04)", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
     const pick = pickOfHeadline(sp)!;
     const raw = lists(sp, bundle, plan, pick);
@@ -437,28 +439,16 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
       // the figure in its own row carries no caution mark
       expect(rowOf(id), id).not.toBe("");
       expect(rowOf(id), id).not.toMatch(caution);
-      // tapping it opens a sheet that tags the site's reading and names the rule it rests on, whose card says why; no doubt
+      // its "?" opens a sheet that tags the site's reading and names the rule it rests on, whose card says why; no doubt
       const record = rules[rule];
       if (!record?.title_he) throw new Error(`${rule} is in data/rules with its Hebrew title`);
-      const markup = withRules(createElement(ValueSheet, { value: at.value, exact: false, data, headId: "h", descId: "d" }));
-      const sheet = shown(markup);
+      const sheet = shown(withRules(createElement(CatchSheet, { value: at.value, catches: catchesHere(at.value), exact: false, data, headId: "h", descId: "d" })));
       expect(sheet, id).toContain(numbers.reading);
       expect(sheet, id).not.toContain(numbers.doubt);
       expect(at.value.doubt, id).toBeUndefined();
       expect(at.value.labels, id).toContainEqual({ code: "reading", ruleId: rule });
-      // its rules name the rule by its chip, whose title opens its card
-      expect(sheet, id).toContain(provenance.computed.rules);
-      expect(sheet.slice(sheet.indexOf(provenance.computed.rules)), id).toContain(record.title_he);
-      // an Israeli fund's sheet names the fund's own document that names it a foreign-investment fund, opened at its page (D119)
-      const status = f.rec.tax_status.foreign_investment_fund;
-      if (rule === "TXS-14") {
-        if (typeof status?.value !== "string") throw new Error(`${id}'s record names its principal currency`);
-        expect(sheet, id).toContain(provenance.computed.statements);
-        expect(sheet, id).toContain(provenance.computed.statement["foreign-investment-fund"]({ term: "foreign-investment-fund", currency: status.value, source: status.source, checked: status.checked }));
-        expect(sheet, id).toContain(fmt.date(status.checked));
-        expect(status.source.url, id).toMatch(/#page=\d+$/);
-        expect(markup, id).toContain(`href="${status.source.url}"`);
-      } else expect(sheet, id).not.toContain(provenance.computed.statements);
+      // the reading's tag stands with the chip of the rule it reads, whose title opens its card
+      expect(sheet.slice(sheet.indexOf(numbers.reading)), id).toContain(record.title_he);
     }
     // a fund whose annex states its index wears none
     const stated = rowOf("1159250");
@@ -511,10 +501,10 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     const record = rules["TXF-11"];
     if (!record?.title_he) throw new Error("TXF-11 is in data/rules with its Hebrew title");
     expect(at.value.labels).toContainEqual({ code: "reading", ruleId: "TXF-11" });
-    const sheet = shown(renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { ...data, rules } } as never, createElement(ValueSheet, { value: at.value, exact: false, data, headId: "h", descId: "d" })))));
+    const sheet = shown(renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { ...data, rules } } as never, createElement(CatchSheet, { value: at.value, catches: catchesHere(at.value), exact: false, data, headId: "h", descId: "d" })))));
     expect(sheet).toContain(numbers.reading);
     expect(sheet).not.toContain(numbers.doubt);
-    expect(sheet.slice(sheet.indexOf(provenance.computed.rules))).toContain(record.title_he);
+    expect(sheet.slice(sheet.indexOf(numbers.reading))).toContain(record.title_he);
     // no heading, row or note on the lists says a fund or an account is not ranked, with any account chosen
     for (const house of sp.providers.map((p) => p.id)) {
       const text = shown(lists(sp, bundle, plan, { house, fund: pick.fund }, { ruler: true }));
@@ -550,10 +540,10 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     const rules = loadRules();
     const record = rules["TXF-08"];
     if (!record?.title_he) throw new Error("TXF-08 is in data/rules with its Hebrew title");
-    const sheet = shown(renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { ...data, rules } } as never, createElement(ValueSheet, { value: at.value, exact: false, data, headId: "h", descId: "d" })))));
+    const sheet = shown(renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data: { ...data, rules } } as never, createElement(CatchSheet, { value: at.value, catches: catchesHere(at.value), exact: false, data, headId: "h", descId: "d" })))));
     expect(sheet).toContain(numbers.reading);
     expect(sheet).not.toContain(numbers.doubt);
-    expect(sheet.slice(sheet.indexOf(provenance.computed.rules))).toContain(record.title_he);
+    expect(sheet.slice(sheet.indexOf(numbers.reading))).toContain(record.title_he);
   });
   it("a fund in Tel Aviv and abroad is counted once", () => {
     const sp = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
@@ -568,33 +558,6 @@ describe("who reports the tax is the route's, not the fund's (TXF-29)", () => {
     expect(stated?.reason).toBeUndefined();
     // the list counts funds, so the head names no count of rows that would differ from it
     expect(shown(lists(sp, bundle, plan, pickOfHeadline(sp)!))).not.toContain("בשתי שורות");
-  });
-  it("what a Tel Aviv line whose annex states its index leaves names the statement as the fund's, its annex opened at the page (F-04, D84)", () => {
-    const sheetOf = (v: SiteValue) => html(createElement(ValueSheet, { value: v, exact: false, data, headId: "h", descId: "d" }));
-    // the fund's figure where it is priced: a test whose fund is missing or unpriced fails on its own line
-    const priced = (index: string, id: string) => {
-      const ref = indexById(bundle, index);
-      const f = ref ? allFunds(buildInvest({ bundle, index: ref, plan })).find((x) => x.rec.id === id) : undefined;
-      if (!f?.best) throw new Error(`${id} is priced on ${index}`);
-      return { rec: f.rec, value: f.best.value };
-    };
-    for (const [index, id, page, basis] of [
-      ["index-sp500", "1159250", 17, "מס רווחי הון מחושב לפי שער הדולר"],
-      ["index-msci-acwi", "1159235", 16, "מס רווחי הון מחושב לפי מדד המחירים לצרכן"],
-    ] as const) {
-      const f = priced(index, id);
-      const sheet = sheetOf(f.value);
-      const stated = taxIndexStatementOf(f.rec);
-      if (!stated) throw new Error(`${id}'s record states its tax index`);
-      expect(shown(sheet), id).toContain(provenance.computed.statements);
-      expect(shown(sheet), id).toContain(provenance.computed.statement["tax-index"](stated));
-      expect(shown(sheet), id).toContain(basis);
-      // the date the annex's words were read, as every source on a sheet shows its own
-      expect(shown(sheet), id).toContain(fmt.date(stated.checked));
-      expect(sheet, id).toContain(`href="${f.rec.tax_ruling?.source.url ?? "(no ruling)"}#page=${page}"`);
-    }
-    // a fund bought abroad, the same units, is taxed on TXF-03: its sheet names no statement
-    expect(shown(sheetOf(priced("index-sp500", "ie00b5bmr087").value))).not.toContain(provenance.computed.statements);
   });
 });
 
@@ -659,10 +622,10 @@ describe("a fund row is its name: a label only where it tells two rows apart (D1
   });
 });
 
-describe("a gap's sheet says its unit as its row does, in full (recheck 3 M2, copy 10.4, pass 5)", () => {
+describe("a gap's catch sheet says its unit as its row does, in full (recheck 3 M2, copy 10.4, pass 5)", () => {
   // the head read "−0.04% בשנה" while the row said "ב־2025": a one-year gap is that year's difference, not a yearly mean
   const headOf = (v: SiteValue) => {
-    const out = html(createElement(ValueSheet, { value: v, exact: false, data, headId: "h", descId: "d" })).replace(/<!-- -->/g, "");
+    const out = html(createElement(CatchSheet, { value: v, catches: catchesHere(v), exact: false, data, headId: "h", descId: "d" })).replace(/<!-- -->/g, "");
     return /<header[\s\S]*?<\/bdi><\/span>(?:<span class="text-sm text-muted-foreground">([^<]*)<\/span>)?/.exec(out)?.[1] ?? "";
   };
   const rowOf = (cell: string) => /<span class="text-xs text-muted-foreground whitespace-nowrap">([^<]*)<\/span>/.exec(cell.replace(/<!-- -->/g, ""))?.[1] ?? "";
@@ -692,18 +655,14 @@ describe("a gap's sheet says its unit as its row does, in full (recheck 3 M2, co
       expect(head, f.id).not.toBe("");
       // the head carries the row's full words: "בשנה · 3 שנים", not "בשנה"
       expect(head, `${f.id}: head "${head}", row "${row}"`).toBe(row);
-      const sheet = html(createElement(ValueSheet, { value: v, exact: false, data, headId: "h", descId: "d" }));
       if (f.tracking_record!.years.length === 1) {
         one++;
         expect(head, f.id).toBe(`ב־${f.tracking_record!.years[0]!.year}`);
         expect(head, f.id).not.toContain("בשנה");
-        // a one-year figure is no mean, and its sheet does not speak of one
-        expect(sheet, f.id).not.toContain("הממוצע");
       } else {
         many++;
         const n = f.tracking_record!.years.length;
         expect(head, f.id).toBe(`בשנה · ${n === 2 ? "שנתיים" : `${n} שנים`}`);
-        expect(sheet, f.id).toContain("הממוצע כולל גם שנים שבהן הקרן הקדימה את המדד");
       }
     }
     expect(one).toBeGreaterThan(0);

@@ -9,7 +9,7 @@ import type { RuleRecord } from "@finance-tool/schema";
 import { ruleCardMore, rule as ruleCopy, scopeWords, sourceBlock, strength } from "../copy";
 import { fmt } from "../lib/format";
 import { joinNames, ownDocCompanies } from "../lib/scope";
-import { ProvenanceProvider, type ProvenanceData } from "./provenance";
+import { ProvenanceProvider, catchesOf, type ProvenanceData } from "./provenance";
 import { RuleCard, RuleDetail, TermCard, ValueSheet } from "./provenance-sheets";
 import type { SiteValue } from "../lib/value";
 
@@ -234,14 +234,13 @@ describe("a term card", () => {
   });
 });
 
-describe("a computed figure's sheet", () => {
+describe("a calculated figure's catches", () => {
   const fee = (st: "institution" | "primary"): SiteValue => ({ value: 0.5, unit: "pct_per_year", source: { url: "https://example.org/fees.pdf", title: "תעריפון", publisher: "Bank", strength: st }, checked: "2026-10-25", effective_from: null, effective_to: null, update_rule: "provider-set", state: "sourced" });
-  it("says nothing of an input from a company's document; the input's own sheet does", async () => {
+  it("a difference carries none for an input from a company's document, even at figure size; the input's own sheet says it", async () => {
     const { differenceOf } = await import("../lib/value");
     const diff = differenceOf(["החברה", fee("institution")], ["החוק", fee("primary")], "F-92", { today: "2026-11-26" });
+    for (const figure of [false, true]) expect(catchesOf(diff, { today: "2026-11-26", figure, staleSaid: false, aheadSaid: false, onPage: (v) => v })).toEqual([]);
     const data = dataOf({});
-    const sheet = (v: SiteValue) => words(createElement(ValueSheet, { value: v, exact: false, data, headId: "h", descId: "d" }), data);
-    expect(sheet(diff)).not.toContain(strength.institution.line);
-    expect(sheet(fee("institution"))).toContain(strength.institution.line);
+    expect(words(createElement(ValueSheet, { value: fee("institution"), exact: false, data, headId: "h", descId: "d" }), data)).toContain(strength.institution.line);
   });
 });
