@@ -346,7 +346,9 @@ describe("a fund in euros on an index in dollars says so, and no figure calls it
     const pickFund = hedged.find((f) => house && "valueN" in (f.byHouse[house] ?? {}));
     if (!house || !pickFund) throw new Error("a house that prices both twins and a hedged fund");
     const data = { rules: {}, terms: {}, dimensions: {}, today: t };
-    const out = renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick: { house, fund: pickFund.rec.id }, chosen: false, onPick: () => undefined, moved: null })) })));
+    const lists = createElement(LabelSheetHost, null, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick: { house, fund: pickFund.rec.id }, chosen: false, onPick: () => undefined, moved: null }));
+    // oxlint-disable-next-line react/no-children-prop -- ProvenanceProvider's props type requires `children`, which createElement's third argument does not meet in a .ts file
+    const out = renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: lists })));
     const row = (id: string) => {
       const at = out.indexOf(`data-pick-key="${id}"`);
       expect(at).toBeGreaterThan(-1);

@@ -193,7 +193,7 @@ function fundCurrencyOf(kind: OptionId, tradesIn: TradingCurrency | null, curren
 const foreignOf = (tradesIn: TradingCurrency | null): TradingCurrency | null => (tradesIn && !isShekel(tradesIn) ? tradesIn : null);
 
 /** The foreign currency a saved fund is bought in, as the person said it (`tradesIn`); null where it is bought in shekels, or none was said. */
-export const boughtInOf = (f: Pick<CustomFund, "tradesIn">): string | null => foreignOf(f.tradesIn);
+const boughtInOf = (f: Pick<CustomFund, "tradesIn">): string | null => foreignOf(f.tradesIn);
 
 /** The foreign currency an answer to where the fund is bought names; null for the shekel, or none named. */
 export const boughtInAt = (at: BuyAt): string | null => foreignOf(BUY_AT[at].tradesIn);
@@ -638,10 +638,10 @@ export function withCustomEntries(bundle: IndicesBundle, typedFunds: readonly Cu
     entered: {
       layered: held?.layered ?? {},
       ...(held?.bases ? { bases: held.bases } : {}),
-      inputs: { ...(held?.inputs ?? {}), ...Object.fromEntries(funds.map((f) => [f.id, inputsOf(fundTerms(f), f.name)] as const)) },
-      exposures: { ...(held?.exposures ?? {}), ...exposures },
+      inputs: { ...held?.inputs, ...Object.fromEntries(funds.map((f) => [f.id, inputsOf(fundTerms(f), f.name)] as const)) },
+      exposures: { ...held?.exposures, ...exposures },
       shekelFunds: [...(held?.shekelFunds ?? []), ...funds.filter((f) => f.shekelIndex).map((f) => f.id)],
-      boughtIn: { ...(held?.boughtIn ?? {}), ...Object.fromEntries(funds.flatMap((f) => { const ccy = boughtInOf(f); return ccy ? [[f.id, ccy] as const] : []; })) },
+      boughtIn: { ...held?.boughtIn, ...Object.fromEntries(funds.flatMap((f) => { const ccy = boughtInOf(f); return ccy ? [[f.id, ccy] as const] : []; })) },
     },
   };
 }
