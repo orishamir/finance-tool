@@ -542,6 +542,18 @@ describe("the index page's saved state (D28)", () => {
     expect(JSON.parse(storage.data.get(STATE_KEY)!)).not.toHaveProperty("bank");
   });
 
+  it("leaves out a typed fund saved before the panel asked where it is bought, and loads the rest of the document", () => {
+    // the shape the panel saved before it asked where a fund is bought: a domicile, no country and no currency it is bought in
+    const before = { id: "custom-fund-old", name: "ישנה", number: null, indexId: nikkei.id, kind: "abroad", fixed: entered(0.07, "pct_per_year", day), variable: null, trustee: null, hedged: false, payout: "accumulating", yield: null, perYear: null, domicile: "IE", tracking: "physical", exchange: "europe", added: day };
+    const today = { id: "custom-fund-new", name: "חדשה", number: null, indexId: nikkei.id, kind: "abroad", fixed: entered(0.07, "pct_per_year", day), variable: null, trustee: null, hedged: false, payout: "accumulating", yield: null, perYear: null, country: "IE", tracking: "physical", exchange: "europe", tradesIn: "EUR", added: day };
+    storage.data.set(STATE_KEY, JSON.stringify({ version: 3, goals: [], inputs: {}, holdings: [holding("h1")], uncatalogued: [], imports: [], savedComparisons: [], customIndices: [nikkei], customFunds: [before, today] }));
+    expect(ensureLoaded().status).toBe("ok");
+    const state = getSnapshot().state;
+    expect(state.customFunds?.map((f) => f.id)).toEqual(["custom-fund-new"]);
+    expect(state.holdings.map((h) => h.id)).toEqual(["h1"]);
+    expect(state.customIndices).toEqual([nikkei]);
+  });
+
   it("loads a version 3 document, and leaves out a custom index that fails its shape", () => {
     const old = { version: 3, goals: [], inputs: {}, holdings: [], uncatalogued: [], imports: [], savedComparisons: [] };
     storage.data.set(STATE_KEY, JSON.stringify(old));
