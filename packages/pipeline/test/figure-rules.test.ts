@@ -1,6 +1,6 @@
-// The figure-rules table (src/figure-rules.ts): which ids a deposit's values may name, in which state, and the standing allow for the
-// card that holds a value's source; then the deposit records' own checks (src/checks/deposits.ts). Over the repository's own data the
-// checks run in validate.test.ts, leftovers and all.
+// The figure-rules table (src/figure-rules.ts): which ids a deposit's, a tariff's, a fund's, a product's and an average's values may
+// name, in which state, and the standing allow for the card that holds a value's source; then the deposit records' own checks
+// (src/checks/deposits.ts). Over the repository's own data the checks run in validate.test.ts, leftovers and all.
 import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -8,11 +8,11 @@ import { describe, expect, it } from "vitest";
 import * as deposits from "../src/checks/deposits.ts";
 import * as figureRulesCheck from "../src/checks/figure-rules.ts";
 import { testData } from "../src/checks/lib/kit.ts";
-import { annexAType, FIGURE_RULES, figureRuleProblems, judgeId, pathOf, rowFor, type CardSources } from "../src/figure-rules.ts";
+import { annexAType, cardsWithSources, FIGURE_RULES, figureRuleProblems, judgeId, pathOf, rowFor, trimIds, type Cards } from "../src/figure-rules.ts";
 
 const src = (url: string) => ({ url, title: "t", publisher: "p", strength: "institution" });
 const vo = (value: unknown, rule_ids: string[], url = "https://bank.example/rates") => ({ value, unit: "pct_per_year", source: src(url), rule_ids });
-const noCards: CardSources = new Map();
+const noCards = cardsWithSources(new Map());
 
 /** A deposit record as the table reads it, with the fields its rows look at. */
 function deposit(over: Record<string, unknown> = {}) {
@@ -113,10 +113,10 @@ describe("figure-rules table", () => {
   });
 
   it("allows an id no row covers when its card holds the value's source, and lets a row that lists the id decide", () => {
-    const cards: CardSources = new Map([
+    const cards = cardsWithSources(new Map([
       ["BANK-99", ["https://bank.example/rates#page=2"]],
       ["TXI-19", ["https://www.gov.il/ordinance.pdf"]],
-    ]);
+    ]));
     const record = deposit({ linkage: "cpi", tax_bucket: vo("linked_25", ["TXI-02", "TXI-05", "TXI-19"], "https://www.gov.il/ordinance.pdf") });
     // no row covers a value at /exit_points, so the standing allow holds there
     expect(judgeId("terms/deposits", record, "/exit_points", vo(true, ["BANK-99"]), "BANK-99", cards)).toBe("allowed");
@@ -126,10 +126,10 @@ describe("figure-rules table", () => {
 
   it("closes every deposit row to the standing allow: an id it does not list is unknown though its card cites the value's source", () => {
     expect(FIGURE_RULES.filter((r) => r.collection === "terms/deposits").every((r) => r.closed)).toBe(true);
-    const cards: CardSources = new Map([
+    const cards = cardsWithSources(new Map([
       ["BANK-99", ["https://bank.example/rates#page=2"]],
       ["TXI-14", ["https://www.gov.il/ordinance.pdf"]],
-    ]);
+    ]));
     const record = deposit({ rate_offered: vo(2, ["BANK-13", "BANK-99"]), tax_bucket: vo("unlinked_15", ["TXI-03", "TXI-14"], "https://www.gov.il/ordinance.pdf") });
     expect(figureRuleProblems("terms/deposits", record, cards)).toEqual([
       { pointer: "/rate_offered", id: "BANK-99", verdict: "unknown" },
@@ -163,6 +163,117 @@ describe("figure-rules table", () => {
     const spread = (bank: string) => deposit({ bank, rate_type: "variable", anchor: "prime", rate_offered: vo(2, ["BANK-13", "BANK-25"]), spread: vo(-2, ["BANK-25", "BANK-34"]) });
     expect(figureRuleProblems("terms/deposits", spread("one-zero"), noCards)).toEqual([]);
     expect(figureRuleProblems("terms/deposits", spread("esh"), noCards)).toEqual([{ pointer: "/spread", id: "BANK-34", verdict: "disallowed" }]);
+  });
+});
+
+
+// ---------------------------------------------------------------- tariffs, funds, products, averages
+
+/** A tariff with one line: a bank's unless `provider` says otherwise. */
+function tariff(line: Record<string, unknown>, over: Record<string, unknown> = {}) {
+  return { id: "leumi", provider: { class: "bank" }, lines: [{ id: "l", base: "trade", applies_to: ["tase_shares_bonds", "etf_units", "mutual_fund_units"], channel: "branch", ...line }], ...over };
+}
+const ids = (collection: Parameters<typeof figureRuleProblems>[0], record: unknown, cards: Cards = noCards) => figureRuleProblems(collection, record, cards).map((p) => `${p.pointer} ${p.id} ${p.verdict}`);
+const kept = (collection: Parameters<typeof trimIds>[0], record: Record<string, unknown>, pointer: string, cards: Cards = noCards) => {
+  const value = pointer.split("/").slice(1).reduce<unknown>((n, k) => (n as Record<string, unknown>)[k], record) as Record<string, unknown>;
+  return trimIds(collection, record, pointer, value, value.rule_ids as string[], cards).kept;
+};
+
+describe("figure-rules table: tariffs", () => {
+  it("gives a bank's branch line for Tel Aviv the fund units' card alone (worked case 14)", () => {
+    const leumi = tariff({ rate: vo(0.65, ["BRK-16", "BRK-19", "MF-27"]), min: vo(30, ["BRK-16"]) });
+    expect(kept("fees", leumi, "/lines/0/rate")).toEqual(["MF-27"]);
+    expect(kept("fees", leumi, "/lines/0/min")).toEqual([]);
+  });
+
+  it("keeps BRK-16 on the rate of a bank's direct Tel Aviv line only", () => {
+    const direct = tariff({ channel: "direct", rate: vo(0.4, ["BRK-16", "BRK-19", "MF-27"]), max: vo(7000, ["BRK-16"]) });
+    expect(kept("fees", direct, "/lines/0/rate")).toEqual(["BRK-16", "MF-27"]);
+    expect(kept("fees", direct, "/lines/0/max")).toEqual([]);
+    const foreign = tariff({ channel: "direct", applies_to: ["foreign_securities"], rate: vo(0.4, ["BRK-16"]) });
+    expect(kept("fees", foreign, "/lines/0/rate")).toEqual([]);
+  });
+
+  it("keeps BRK-17 on a custody line, and drops a non-bank member's reporting rules", () => {
+    expect(kept("fees", tariff({ base: "custody", rate: vo(0.1, ["BRK-16", "BRK-17"]) }), "/lines/0/rate")).toEqual(["BRK-17"]);
+    const broker = tariff({ rate: vo(0.1, ["BRK-24", "BRK-15"]) }, { id: "altshuler-trade", provider: { class: "broker" } });
+    expect(ids("fees", broker)).toEqual(["/lines/0/rate BRK-24 disallowed", "/lines/0/rate BRK-15 disallowed"]);
+  });
+
+  it("keeps a company card on its line by the standing allow, so the sheet keeps the card's title and place (One Zero)", () => {
+    const tariffPdf = "https://www.onezerobank.com/tariff.pdf";
+    const event = tariff({ base: "corporate_event", applies_to: ["foreign_securities"], rate: vo(50, ["BRK-16", "BRK-74"], `${tariffPdf}#page=9`) }, { id: "one-zero" });
+    expect(ids("fees", event, cardsWithSources(new Map([["BRK-74", [tariffPdf]]])))).toEqual(["/lines/0/rate BRK-16 disallowed"]);
+    expect(ids("fees", event)).toEqual(["/lines/0/rate BRK-16 disallowed", "/lines/0/rate BRK-74 unknown"]);
+  });
+
+  it("keeps the provident cap's cards only on a fee at the cap", () => {
+    const capped: Cards = { sources: new Map(), institutions: new Map(), figures: new Map([["PF-02", { balance_cap: { value: 1.05 }, deposit_cap: { value: 4 } }]]) };
+    const list = (rate: number) => tariff({ base: "balance", applies_to: ["kupat-gemel-lehashkaa"], rate: vo(rate, ["PF-02", "PF-03"]) }, { id: "clal", provider: { class: "provident-manager" } });
+    expect(kept("fees", list(1.05), "/lines/0/rate", capped)).toEqual(["PF-02", "PF-03"]);
+    expect(kept("fees", list(0.7), "/lines/0/rate", capped)).toEqual([]);
+  });
+});
+
+describe("figure-rules table: funds and averages", () => {
+  const fund = (over: Record<string, unknown>) => ({ id: "f", domicile: "IL", manager: "מיטב", fees: {}, ...over });
+
+  it("takes the report's cost layers and the voluntary undertaking off an Israeli fund's fees", () => {
+    const f = fund({ fees: { fixed_management: vo(0.1, ["ETF-13", "MF-16", "MF-17"]), trustee: vo(0.01, ["ETF-13", "MF-20"]), variable_management: vo(0, ["ETF-13", "ETF-14"]) } });
+    expect(ids("funds", f)).toEqual(["/fees/fixed_management ETF-13 disallowed", "/fees/fixed_management MF-17 disallowed", "/fees/trustee ETF-13 disallowed", "/fees/variable_management ETF-13 disallowed"]);
+  });
+
+  it("keeps BlackRock's card on an iShares fund's expense ratio only, and no tax rule on it", () => {
+    const er = ["ETF-27", "ETF-28", "TXF-16", "TXF-29"];
+    expect(ids("funds", fund({ domicile: "IE", manager: "BlackRock (fund: iShares VII plc)", fees: { fixed_management: vo(0.07, er) } }))).toEqual([
+      "/fees/fixed_management ETF-28 disallowed",
+      "/fees/fixed_management TXF-16 disallowed",
+      "/fees/fixed_management TXF-29 disallowed",
+    ]);
+    expect(ids("funds", fund({ domicile: "IE", manager: "Invesco Investment Management Limited", fees: { fixed_management: vo(0.05, ["ETF-27"]) } }))).toEqual(["/fees/fixed_management ETF-27 disallowed"]);
+  });
+
+  it("gives a distribution yield no rule, and leaves a benchmark to its own check", () => {
+    const f = fund({ distribution: { yield: vo(1.2, ["ETF-28", "TXF-08"]) }, tracking_record: { benchmark: vo("x", ["ETF-42"]) } });
+    expect(ids("funds", f)).toEqual(["/distribution/yield ETF-28 disallowed", "/distribution/yield TXF-08 disallowed"]);
+  });
+
+  it("keeps the exchange's calculator on an average, not the exchange's duty to publish", () => {
+    expect(ids("averages", { id: "tase-leumi", averages: { rows: [{ rate: vo(0.2, ["BRK-15", "BRK-33"]) }] } })).toEqual(["/averages/rows/0/rate BRK-15 disallowed"]);
+  });
+});
+
+describe("figure-rules table: products", () => {
+  const product = (id: string, over: Record<string, unknown>) => ({ id, eligibility: { rule_ids: ["KH-01"], text: "t" }, ...over });
+
+  it("keeps the institution's card first on the payout days, never reordering what it keeps", () => {
+    const kgl = product("kupat-gemel-lehashkaa", { lawful_exit: { kind: "any_time", payout_business_days: vo(4, ["KH-16", "KGL-08"]) } });
+    expect(kept("instruments", kgl, "/lawful_exit/payout_business_days")).toEqual(["KH-16"]);
+    const pension = product("pension-comprehensive", { lawful_exit: { kind: "at_age", payout_business_days: vo(4, ["PF-47", "KH-16"]) } });
+    expect(kept("instruments", pension, "/lawful_exit/payout_business_days")).toEqual(["PF-47", "KH-16"]);
+  });
+
+  it("keeps one card of a same-cap pair: BRK-17 over BANK-18 on custody, PF-02 over PEN-22 on a provident fund for annuity", () => {
+    const makam = product("makam", { fee_caps: { custody: vo(0, ["BRK-17", "BANK-18", "BRK-16", "BRK-52"]) } });
+    expect(kept("instruments", makam, "/fee_caps/custody")).toEqual(["BRK-17", "BRK-52"]);
+    const annuity = product("provident-for-annuity", { fee_caps: { balance: vo(1.05, ["PF-02", "PEN-22"]) } });
+    expect(kept("instruments", annuity, "/fee_caps/balance")).toEqual(["PF-02"]);
+  });
+
+  it("keeps PF-06 and KH-22 together on a study fund's balance cap, where KH-22 holds the study fund's own terms", () => {
+    const keren = product("keren-hishtalmut", { fee_caps: { balance: vo(2, ["KH-22", "PF-06"]) } });
+    expect(kept("instruments", keren, "/fee_caps/balance")).toEqual(["KH-22", "PF-06"]);
+    const ira = product("ira-provident", { fee_caps: { balance: vo(2, ["PF-06", "IRA-17", "IRA-16", "KH-22"]) } });
+    expect(kept("instruments", ira, "/fee_caps/balance")).toEqual(["PF-06", "IRA-16"]);
+  });
+
+  it("keeps on a null cap only the rules that say there is none", () => {
+    const account = product("brokerage-account", { fee_caps: { trade: vo(null, ["BRK-15", "BRK-16", "BRK-19", "BRK-21", "BRK-24", "BRK-33"]) } });
+    expect(kept("instruments", account, "/fee_caps/trade")).toEqual(["BRK-16", "BRK-24"]);
+  });
+
+  it("judges no text a product cites rules in, only its values", () => {
+    expect(ids("instruments", product("keren-hishtalmut", { protection: { rule_ids: ["NOPE-1"], text: "t" } }))).toEqual([]);
   });
 });
 
