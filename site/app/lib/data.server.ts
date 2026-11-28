@@ -421,18 +421,17 @@ export function loadPublishersHe(): Record<string, string> {
 }
 
 /** What a question sheet knows about an open question, by its code (`TX2 OQ6`): its status and its Hebrew lines. */
-export type OpenQuestionView = { status: "open" | "narrowed"; title_he?: string; blocks_he?: string };
+export type OpenQuestionView = { status: "open" | "narrowed"; title_he?: string; blocks_he?: string; meanwhile_he?: string };
 
 /**
- * data/open-questions.json (data-schema 3.15) for every page's sheets, through the root loader. Only the questions a
- * sheet has something to say about: one with Hebrew lines (every question the site names). Any other code opens the sheet's general
- * lines, which are true of an open question. An answered question is deleted from the rule base, so none is closed.
+ * data/open-questions.json (data-schema 3.15) for every page's sheets, through the root loader: every question, each with its status
+ * (a question answered in part says so, Hebrew lines or not) and the Hebrew lines it has. An answered question is deleted from the rule
+ * base, so none is closed.
  */
 export function loadOpenQuestions(): Record<string, OpenQuestionView> {
   const out: Record<string, OpenQuestionView> = {};
   for (const q of readParsedCached(join(root, "data/open-questions.json"), openQuestionsFile)) {
-    if (!q.title_he && !q.blocks_he) continue;
-    out[q.id] = { status: q.status, ...(q.title_he ? { title_he: q.title_he } : {}), ...(q.blocks_he ? { blocks_he: q.blocks_he } : {}) };
+    out[q.id] = { status: q.status, ...(q.title_he ? { title_he: q.title_he } : {}), ...(q.blocks_he ? { blocks_he: q.blocks_he } : {}), ...(q.meanwhile_he ? { meanwhile_he: q.meanwhile_he } : {}) };
   }
   return out;
 }

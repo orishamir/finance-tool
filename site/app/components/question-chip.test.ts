@@ -1,9 +1,11 @@
+import { readFileSync } from "node:fs";
 import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { guide, provenance, rule } from "../copy";
 import { IdRef, ProvenanceProvider, Ruled, Term } from "./provenance";
+import { SheetContent } from "./provenance-sheets";
 
 /** What a reader can be told: the markup without `data-opens`, the attribute by which a sheet knows which rules its opener already opens. It
  *  holds rule ids for the code alone, and is neither shown nor read out. */
@@ -74,5 +76,25 @@ describe("the words a rule states (Ruled)", () => {
     const html = render(createElement(Ruled, { id: [], children: "מנכה מס" }));
     expect(html).not.toContain("role=\"button\"");
     expect(html).toContain("מנכה מס");
+  });
+});
+
+describe("an open question's sheet", () => {
+  const sheet = (data: object, id: string) =>
+    renderToString(createElement(MemoryRouter, null, createElement(SheetContent, { item: { kind: "question", id }, data: { rules: {}, terms: {}, dimensions: {}, today: "2026-11-28", ...data } as never, headId: "h", descId: "d" })))
+      .replace(/<!-- -->/g, "")
+      .replace(/<[^>]+>/g, " ");
+  it("every question reaches the pages with its status, a question answered in part among them, Hebrew lines or not", async () => {
+    const { loadOpenQuestions } = await import("../lib/data.server");
+    const file = JSON.parse(readFileSync(new URL("../../../data/open-questions.json", import.meta.url), "utf8")) as { id: string; status: string; title_he?: string; blocks_he?: string }[];
+    const shipped = loadOpenQuestions();
+    for (const q of file) expect(shipped[q.id]?.status).toBe(q.status);
+    const bare = file.find((q) => q.status === "narrowed" && !q.title_he && !q.blocks_he);
+    if (bare) expect(sheet({ openQuestions: shipped }, bare.id)).toContain(provenance.questionSheet.statuses.narrowed);
+  });
+  it("says what the site does meanwhile, beside its status", () => {
+    const text = sheet({ openQuestions: { "TX OQ1": { status: "open", title_he: "שאלה לבדיקה", meanwhile_he: "בינתיים החישוב לוקח את השיעור הנמוך." } } }, "TX OQ1");
+    expect(text).toContain(provenance.questionSheet.meanwhile);
+    expect(text).toContain("בינתיים החישוב לוקח את השיעור הנמוך.");
   });
 });

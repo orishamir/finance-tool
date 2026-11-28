@@ -327,26 +327,27 @@ function ProofsListSheet({ ids, headId }: { ids: readonly string[]; headId: stri
 
 
 /**
- * An open question's sheet: its title, status and what it blocks from data/open-questions.json, then what an open question means on
- * the site. An answered question is deleted from the rule base once its answer is in a rule, so no sheet is closed.
+ * An open question's sheet: its title, status, what it blocks and what the site does meanwhile, from data/open-questions.json, then what
+ * an open question is. An answered question is deleted from the rule base once its answer is in a rule, so no sheet is closed.
  */
 function QuestionSheet({ id, data, headId }: { id: string; data: ProvenanceData; headId: string }) {
   const q = questionOf(data, id);
   const status = q?.status_he ?? (q?.status ? copy.questionSheet.statuses[q.status] : undefined);
   const blocks = q?.blocks_he;
+  const meanwhile = q?.meanwhile_he;
   return (
     <div className="flex flex-col gap-3">
       <h2 id={headId} className="text-lg font-semibold">
         {q?.title_he ?? copy.idRef.question}
       </h2>
-      {(status || blocks) && (
+      {(status || blocks || meanwhile) && (
         <dl className="sheet-dl">
           {status && <Row label={copy.questionSheet.status}>{status}</Row>}
           {blocks && <Row label={copy.questionSheet.blocks}>{blocks}</Row>}
+          {meanwhile && <Row label={copy.questionSheet.meanwhile}>{meanwhile}</Row>}
         </dl>
       )}
       <p className="text-sm">{copy.questionSheet.what}</p>
-      <p className="text-sm text-muted-foreground">{copy.questionSheet.onSite}</p>
     </div>
   );
 }

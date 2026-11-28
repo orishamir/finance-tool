@@ -64,10 +64,11 @@ export interface ProvenanceData {
   /** Per id a card on /parameters answers to: `P-01` to itself, an `A-01` that is an input of a card to that card. PageShell fills it for every page. */
   parameters?: Record<string, string>;
   /**
-   * Per open question (`TX2 OQ6`), from data/open-questions.json: the root loader fills it for every page (PageShell), as `parameters`.
-   * The sheet shows its status and Hebrew lines. An answered question is deleted from the rule base, so none here is closed.
+   * Per open question (`TX2 OQ6`), from data/open-questions.json: the root loader fills it for every page (PageShell), as `parameters`,
+   * with every question. The sheet shows its status and Hebrew lines. An answered question is deleted from the rule base, so none here is
+   * closed.
    */
-  openQuestions?: Record<string, { status?: "open" | "narrowed"; title_he?: string; status_he?: string; blocks_he?: string }>;
+  openQuestions?: Record<string, { status?: "open" | "narrowed"; title_he?: string; status_he?: string; blocks_he?: string; meanwhile_he?: string }>;
   /** Per source host, the company's Hebrew name (`data/sources/publishers.json`); PageShell fills it for every page. */
   publishersHe?: Record<string, string>;
   /** Per company of `data/sources/institutions.json`, where its terms are listed (D30): its page, or its group on /companies. PageShell fills it for every page. */
