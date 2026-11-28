@@ -1,0 +1,49 @@
+{
+  "id": "CAT-01",
+  "title": "The three CMA monthly fund datasets and their resources",
+  "title_he": "שלושת מאגרי הנתונים החודשיים של רשות שוק ההון",
+  "strength": "primary",
+  "dimensions": [
+    "regulator",
+    "reporting-obligation"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-04-01",
+  "text_he": "רשות שוק ההון מפרסמת במאגר המידע הממשלתי שלושה מאגרי נתונים חודשיים: גמל נט לקופות גמל, קרנות השתלמות, קופות גמל להשקעה, חיסכון לכל ילד, קופות פיצויים מרכזיות וקופות למטרה אחרת, פנסיה נט לקרנות הפנסיה החדשות והכלליות, וביטוח נט למסלולי החיסכון בביטוח חיים. בכל מאגר יש שלושה קובצי נתונים לפי טווחי שנים ומילון שדות. אפשר לקרוא את כולם דרך ממשק תכנות. ברישיון של גמל נט ושל פנסיה נט כתוב ״Other (Open)״, וביטוח נט מופיע בלי רישיון.",
+  "il_finance_file": "tracks-catalogue-and-decoder.md",
+  "checked": "2026-11-28",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://data.gov.il/api/3/action/package_show?id=gemelnet",
+      "title": "גמל-נט",
+      "title_he": "גמל-נט",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-11-28"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/package_show?id=pensia-net",
+      "title": "פנסיה-נט",
+      "title_he": "פנסיה-נט",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "dataset",
+      "strength": "primary",
+      "checked": "2026-11-28"
+    },
+    {
+      "url": "https://data.gov.il/api/3/action/package_show?id=insurance",
+      "title": "ביטוח-נט",
+      "title_he": "ביטוח-נט",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "dataset",
+      "strength": "primary",
+      "quote": "רשות שוק ההון, ביטוח וחיסכון",
+      "checked": "2026-11-28"
+    }
+  ]
+}

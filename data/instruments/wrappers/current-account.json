@@ -29,8 +29,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "REG-01",
-      "REG-03"
+      "REG-01"
     ],
     "state": "sourced",
     "notes": "Banks are supervised by the Supervisor of Banks at the Bank of Israel, who holds \"הפיקוח הכללי והביקורת על כל תאגיד בנקאי\" (Banking Ordinance s.5(א)); the banking corporations themselves are the 17 entries (11 ordinary banks) in the BoI's list on data.gov.il (REG-03, 2026-10-22)."
@@ -85,9 +84,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "TXI-08",
-      "SW-26",
-      "SW-29"
+      "TXI-08"
     ],
     "state": "sourced",
     "notes": "Derived from the cited rules, not stated in words by any of them: interest on the credit balance is taxed when the bank credits it (TXI-08, F-26), so moving the balance to another bank through the online account-switching service (SW-26) moves money that is already after tax. Deposits and securities left behind stay at the old bank on their terms until maturity, and the BoI Q&A to directive 448 says the move may cause a tax event for those (SW-29)."
@@ -147,5 +144,8 @@
     "TXI-OQ11",
     "REG-OQ13"
   ],
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "context_rule_ids": [
+    "REG-03"
+  ]
 }

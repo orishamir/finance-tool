@@ -7,7 +7,8 @@
 // row lists the ids it drops with `never`): packages/pipeline/scripts/apply-figure-rules.ts removes it. An id no row lists is unknown: it
 // is kept and listed, and goes to a finance reviewer before a row admits it. Besides the rows, one standing allow holds for every id a
 // row does not list: an id whose card under data/rules/ lists, among its sources, the document the value's own source is (its address
-// without the part after "#"), since that card holds the source the figure's sheet names. A row that lists the id decides it: a tax
+// without the part after "#", percent-encoding decoded; the machine address a collector read it from counts as the value's source too),
+// since that card holds the source the figure's sheet names. A row that lists the id decides it: a tax
 // bucket's source is the Income Tax Ordinance, which many tax cards cite, and its row still says which of them set the bucket. A row can
 // close itself to the standing allow (`closed`): then an id it does not list is unknown even when its card cites the value's source.
 // Every deposit row is closed: a deposit's values cite a bank's table or the Ordinance, which cards about other products cite too, so
@@ -163,6 +164,13 @@ const fees = "fees" as const;
 const BRK19 = "a direct channel's price below a clerk's is a rule on how two of a bank's prices compare, and the line's own tariff sets the price";
 const BRK24 = "how a TASE member reports its fees to the exchange: it sets none of them";
 const BRK15 = "the exchange's duty to publish members' fees: it sets none of them";
+const BRK41 = "which account, protection and products Interactive Israel offers: it sets no price, and the tariff card BRK-40 does";
+const BRK43 = "which entity carries an Interactive Brokers account and who regulates it: it states no figure, and the tariff card BRK-42 does";
+/** A conversion line (base "fx") of a house a conversion card's scope names, at a pointer into the line's own tiers or flat amount. */
+const fxStep =
+  (card: string, step: RegExp) =>
+  (record: Json, value: Json, at: FigurePlace): boolean =>
+    inCardScope(card)(record, value, at) && baseIs("fx")(record, value, at) && step.test(at.pointer);
 const FEE_ROWS: FigureRow[] = [
   {
     collection: fees,
@@ -173,6 +181,28 @@ const FEE_ROWS: FigureRow[] = [
       never("BRK-15", BRK15),
       never("KGL-14", "retired: PF-03 states that a provident fund for investment is under the general cap"),
       never("BRK-18", "retired: SW-33 states the supervised price of moving securities out of a bank"),
+      never("BRK-41", BRK41),
+      never("BRK-43", BRK43),
+      {
+        id: "BRK-84",
+        when: fxStep("BRK-84", /(size_tiers|flat_up_to)/),
+        why: "Hapoalim's flat price for a conversion up to $99 ($5.50 at a clerk, $3.3 direct) and the $99 step where the percent and the minimum take over",
+      },
+      {
+        id: "BRK-86",
+        when: fxStep("BRK-86", /size_tiers/),
+        why: "Discount's and Mercantile's conversion steps: free up to $10, 50% off up to $100, the minimum included",
+      },
+      {
+        id: "BRK-48",
+        when: fxStep("BRK-48", /size_tiers/),
+        why: "IBI's annex for a new self-trading customer: a 0.7% spread on a conversion below USD 15,000 and 0.5% above it",
+      },
+      {
+        id: "BRK-23",
+        when: (_r, v, at) => /\/spread$/.test(at.pointer) && v.value === null,
+        why: "Leumi converts at its own rate when the account lacks the currency, so no figure bounds the spread; the card has no rate, minimum or maximum, and does not cite the price list that sets them",
+      },
       {
         id: "BRK-16",
         when: (r, v, at) => atBank(r) && lineBase(r, at) === "trade" && lineOf(r, at)?.channel === "direct" && lineClasses(r, at).some((c) => TASE_CLASSES.has(c)) && /\/rate$/.test(at.pointer),
@@ -202,6 +232,7 @@ const FEE_ROWS: FigureRow[] = [
     allow: [
       { id: "BRK-40", when: houseIs("interactive-israel"), why: "Interactive Israel's own tariff card, whose commission page states no minimum deposit" },
       never("BRK-41", "which American or Irish account Interactive Israel opens and its cover: no minimum to open one"),
+      never("BRK-43", BRK43),
       { id: "BRK-42", when: houseIs("interactive-brokers"), why: "Interactive Brokers' direct terms, which state no minimum to open an account" },
     ],
   },
@@ -217,6 +248,10 @@ const promotionOf = (record: Json, at: FigurePlace): Json | undefined => {
 };
 const ETF13 = "the cost layers an Israeli tracking fund's annual report lists: the report's layout, not this fee";
 const FOREIGN_ER = "a foreign fund's expense ratio is its own prospectus's figure, and this rule sets none of it";
+/** The fund is domiciled in Israel: its manager is under the Securities Authority's tracking-fund directive. */
+const israeli = (r: Json): boolean => field(r, "domicile") === "IL";
+/** An Israeli exchange-traded tracking fund (a closed fund, "קרן סל"), whose median spread the directive defines. */
+const israeliEtf = (r: Json): boolean => israeli(r) && /^קרן סגורה, קרן סל/.test(String(field(r, "legal_form")));
 const FUND_ROWS: FigureRow[] = [
   {
     collection: funds,
@@ -224,6 +259,10 @@ const FUND_ROWS: FigureRow[] = [
     allow: [
       never("ETF-13", ETF13),
       never("MF-17", "a voluntary undertaking on when a fee may rise: it says when the fee changes, not what it is"),
+      never("MF-35", "how a renewable money-market fund trades, on fixed dates: its liquidity rules set no fee"),
+      never("MF-34", "how a daily money-market fund trades: its liquidity rules set no fee"),
+      never("BANK-15", "a bank's duty to display a fund's fee: the record cites the prospectus, which sets it"),
+      never("TXS-24", "which money-market funds pay tax: unrelated to a fund's fee"),
       { id: "MF-16", why: "a fund's management fee is a yearly percent of its assets, inside the price, as its prospectus sets it" },
       ...["TXF-12", "TXF-16", "TXF-27", "TXF-29", "TXF-30", "TXF-31", "ETF-28"].map((id) => never(id, FOREIGN_ER)),
       {
@@ -247,6 +286,41 @@ const FUND_ROWS: FigureRow[] = [
     collection: funds,
     path: "fees.load",
     allow: [{ id: "MF-21", why: "the load is the manager's add-on to the unit price at purchase, its rate set in the prospectus" }],
+  },
+  {
+    collection: funds,
+    path: "fees.tracking_difference_12m",
+    allow: [
+      { id: "ETF-08", when: israeli, why: "the Securities Authority defines the tracking difference of an Israeli tracking fund: its return less its tracking asset's, over the period" },
+      { id: "ETF-09", when: israeli, why: "an Israeli tracking fund's annual report compares its return to its benchmark's change and explains a gap above the threshold" },
+      { id: "ETF-07", when: israeli, why: "the directive has an Israeli tracking fund's manager publish its tracking difference for the last 12 months each day a price is calculated" },
+      never("ETF-10", "defines the tracking asset: the benchmark is the fund's own policy, and this rule sets none of its difference"),
+      never("MF-07", "the law's definition of a money-market fund: it is not a tracking fund, and this value is not-applicable for it"),
+    ],
+  },
+  {
+    collection: funds,
+    path: "fees.median_spread",
+    allow: [
+      { id: "ETF-07", when: israeliEtf, why: "the directive (s.7(ב)) has an exchange-traded fund's manager publish the median spread between buy and sell orders, and defines it" },
+      never("ETF-06", "the gap of the price from the net asset value: a different figure from the spread"),
+      never("ETF-29", "ESMA's warning on exchange-traded funds: it sets no figure of the spread"),
+      never("ETF-04", "an open tracking fund has no spread (its value is not-applicable), and its load has a row of its own"),
+      never("MF-21", "an open tracking fund has no spread (its value is not-applicable), and its load has a row of its own"),
+      never("MF-35", "how a renewable money-market fund trades, on fixed dates: a fund with no spread, and its value is not-applicable"),
+      never("MF-09", "how a unit's price is computed from the net asset value: a money-market fund has no spread, and its value is not-applicable"),
+    ],
+  },
+  {
+    collection: funds,
+    path: "fees.fund_level_withholding_drag",
+    allow: [
+      { id: "TXF-16", when: (r) => field(r, "domicile") === "IE", why: "the US-Ireland treaty limits the US tax on an Irish fund's dividends to 15%, a cost inside the fund" },
+      never("ETF-11", "a non-binding description of how a fund replicates its index: it sets no tax cost"),
+      never("MF-43", "the exposure profile in a fund's name: it sets no tax cost inside a money-market fund"),
+      never("MF-29", "the assets a money-market fund may hold: it sets no tax cost inside the fund"),
+      never("TXS-24", "which money-market funds pay tax: it sets no cost inside the fund"),
+    ],
   },
   {
     collection: funds,
@@ -274,6 +348,11 @@ const PF02_PRODUCTS = ["kupat-gemel-lehashkaa", "provident-for-annuity", "child-
 const PENSION = ["pension-comprehensive", "pension-general"];
 const IRA = ["ira-hishtalmut", "ira-provident"];
 const BANK18 = "BANK-18 is about makam's own trade lines at a bank; BRK-17 states the ban on custody of makam and money-market units, and binds banks only";
+/** The wrappers a bank holds: the Supervisor of Banks is their regulator. */
+const BANK_WRAPPERS = ["bank-deposit", "current-account", "savings-plan", "child-savings-bank"];
+/** The products the Capital Markets Authority supervises. */
+const CMA_PRODUCTS = [...PENSION, ...IRA, "keren-hishtalmut", "kupat-gemel-lehashkaa", "provident-for-annuity", "child-savings-provident"];
+const MONEY_MARKET = ["money-market-fund-daily", "money-market-fund-renewable"];
 const capRows = (base: string, allow: FigureAllow[]): FigureRow => ({ collection: instruments, path: `fee_caps.${base}`, closed: true, allow });
 const INSTRUMENT_ROWS: FigureRow[] = [
   capRows("balance", [
@@ -410,8 +489,33 @@ const INSTRUMENT_ROWS: FigureRow[] = [
   },
   {
     collection: instruments,
+    path: "regulator",
+    allow: [
+      { id: "REG-01", when: houseIs(...BANK_WRAPPERS), why: "the Supervisor of Banks, a Bank of Israel officer with general supervision over every banking corporation: the body the value names" },
+      { id: "REG-13", when: houseIs("government-bond", "brokerage-account"), why: "the exchange needs a licence and the Securities Authority supervises it: the body the value names for a bond and a brokerage account" },
+      { id: "REG-17", when: houseIs(...CMA_PRODUCTS), why: "the Capital Markets Authority is set up by law and supervises the provident funds and the pension funds: the body the value names" },
+      { id: "MF-07", when: houseIs(...MONEY_MARKET), why: "the law lets the Securities Authority set rules for money-market funds: the body the value names" },
+      { id: "REG-07", when: houseIs(...MONEY_MARKET), why: "the Securities Authority is set up by the Securities Law and holds its powers over mutual funds from the joint investment law: the body the value names" },
+      never("REG-03", "the Bank of Israel's list of banking corporations: it names the banks, not who supervises them"),
+      never("CS-22", "which banks run the child savings: it names the banks, not who supervises them"),
+      never("BRK-32", "the exchange's list of members: it names who may hold an account, not who supervises"),
+      never("GOV-10", "the sales channels and the primary dealers of a government bond: not who supervises it"),
+      never("GOV-05", "who may bid at the makam auction: not who supervises"),
+      never("CS-08", "the provident track's companies and tracks: not who supervises them"),
+      never("CS-05", "that the child savings belong to the child and cannot be attached: not who supervises"),
+    ],
+  },
+  {
+    collection: instruments,
     path: "switch_is_tax_event",
-    allow: [never("KH-18", "its card states how a study fund's money moves between tracks, not whether moving it is taxed")],
+    allow: [
+      never("KH-18", "its card states how a study fund's money moves between tracks, not whether moving it is taxed"),
+      { id: "TXI-08", when: houseIs("current-account", "bank-deposit", "savings-plan"), why: "the bank withholds tax on the interest it pays an individual, a current account's included: the tax falls as interest is paid, whether or not the account is moved" },
+      { id: "TXH-17", when: houseIs("ira-hishtalmut", "keren-hishtalmut"), why: "a move between tracks in a study fund creates no capital gains tax" },
+      { id: "IRA-23", when: houseIs(...IRA), why: "how a transfer into or out of a personally managed fund is made, in cash or in securities, and that seniority is kept for the tax" },
+      { id: "TXK-29", when: (r, v) => houseIs("child-savings-bank")(r) && v.value === null, why: "the usual tax rules on interest hold for a child's savings in a bank, and whether the trust chapter applies to the account is not known: the value is open" },
+      ...["PF-23", "PEN-17", "BANK-06", "SW-29", "SW-32", "SW-26", "TXS-05", "CS-10", "TXK-22", "CS-11", "CS-16"].map((id) => never(id, "it governs how the product moves, not whether the move is a tax event")),
+    ],
   },
 ];
 
@@ -593,8 +697,15 @@ export function rowFor(collection: FigureCollection, pointer: string): FigureRow
   return best;
 }
 
-/** A document's address without the part after "#": two links to one document at two places are one source. */
-const documentOf = (url: string): string => url.replace(/#.*$/, "");
+/** A document's address as text: without the part after "#" (two links to one document at two places are one source) and with its percent-encoding decoded (one address written in Hebrew letters and as "%D7..." is one source). An address that is not valid encoding stays as written. */
+const documentOf = (url: string): string => {
+  const whole = url.replace(/#.*$/, "");
+  try {
+    return decodeURIComponent(whole);
+  } catch {
+    return whole;
+  }
+};
 
 /** By rule id, the addresses of the sources its card under data/rules/ lists. */
 export type CardSources = ReadonlyMap<string, readonly string[]>;
@@ -632,8 +743,10 @@ export function judgeId(collection: FigureCollection, record: Json, pointer: str
   const allow = row?.allow.filter((a) => a.id === id) ?? [];
   if (allow.length > 0) return allow.some((a) => !a.when || a.when(record, value, { pointer, cards })) ? "allowed" : "disallowed";
   if (row?.closed) return "unknown";
-  const url = (value.source as Json | undefined)?.url;
-  return typeof url === "string" && (cards.sources.get(id) ?? []).some((u) => documentOf(u) === documentOf(url)) ? "allowed" : "unknown";
+  // the document the value's source is: the page a reader opens (`url`) or the machine address a collector read (`fetched_from`)
+  const source = value.source as Json | undefined;
+  const documents = [source?.url, source?.fetched_from].flatMap((u) => (typeof u === "string" ? [documentOf(u)] : []));
+  return (cards.sources.get(id) ?? []).some((u) => documents.includes(documentOf(u))) ? "allowed" : "unknown";
 }
 
 /**

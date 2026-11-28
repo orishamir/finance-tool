@@ -28,8 +28,8 @@
     {
       "url": "https://data.gov.il/api/3/action/package_show?id=transfer_bank",
       "title": "רשות שוק ההון (data.gov.il): פרטי קופות לצורך העברת כספים בין גופים מוסדיים",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "dataset",
       "strength": "primary",
       "quote": "מספר מסלול השקעה",
@@ -39,8 +39,8 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=76ad9eed-d076-46d6-96e2-a4eb8e045444&limit=100",
       "title": "גמל-נט: מילון השדות",
       "title_he": "גמל-נט: מילון השדות",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-25"
@@ -49,8 +49,8 @@
       "url": "https://data.gov.il/api/3/action/datastore_search?resource_id=b58b5a80-84b7-490d-ab02-bff12f1941b2&limit=100",
       "title": "פנסיה-נט: מילון השדות",
       "title_he": "פנסיה-נט: מילון השדות",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "publisher": "Capital Market Authority",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-25"

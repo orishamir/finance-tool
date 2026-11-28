@@ -1,6 +1,6 @@
 # Foreign (Irish UCITS) bond ETFs: the general ideas (2026-11-28)
 
-Evidence for showing foreign bond ETFs on the indices page one day. Nothing here is a fund record. The task's named funds were only examples: no fund was researched one by one and no per-fund facts were compiled. A fund's or an issuer's document is used only as that issuer's example of a general point. Tax is left to the tax-specialist. The records are ETF-103 to ETF-117 in `.claude/skills/il-finance/references/etfs-and-index-funds.md` and CORP-32 in `corporate-bonds.md`. The open questions are ETF OQ44 to OQ48 and CORP OQ22.
+Evidence for showing foreign bond ETFs on the indices page one day. Nothing here is a fund record. The task's named funds were only examples: no fund was researched one by one and no per-fund facts were compiled. A fund's or an issuer's document is used only as that issuer's example of a general point. Tax is left to the tax-specialist. The records are ETF-103 to ETF-117 in `.claude/skills/il-finance/references/etfs-and-index-funds.md` and CORP-32 in `corporate-bonds.md`. The open questions are ETF OQ44 to OQ48 and CORP OQ22. A second pass the same day (below) closed ETF OQ48 and CORP OQ22, narrowed OQ44 and OQ47, and added defined-term funds (ETF-118 to ETF-122, CORP-33, CORP-34, ETF OQ49, OQ50).
 
 ## What was found
 
@@ -71,3 +71,60 @@ Nothing found here changes the tax files. One question this research raises and 
 - Securities lending, convexity and spreads.
 - Inflation-linked, floating-rate and emerging-market bond indices.
 - Interest-rate-hedged indices, seen only in names.
+
+## Second pass, same day: retries and defined-term funds
+
+FlareSolverr was used for pages that refused scripts. For PDFs behind a check, the cookies and user agent of a FlareSolverr visit were used for one GET (Moody's).
+
+### What the retries settled
+
+- **Bloomberg** (ETF-104, ETF-107). The two "403" documents were wrong file names. Bloomberg's asset host answers 403 for a missing file. The real names are Euro-Corporate-Index (3 June 2025) and US-Treasury-Bill-Index (15 December 2023). The Short Treasury index is bills plus notes and bonds that have fallen below one year. Bloomberg's euro corporate index may use expected ratings at issuance and issuer ratings for unrated bonds; ICE does not.
+- **The agencies' own definitions** (CORP-33). Moody's: "Aaa through Baa3 as investment grade, and Ba1 through C as speculative grade" (23 October 2026). Fitch: 'AAA' to 'BBB' investment grade, 'BB' to 'D' speculative, and both terms are "market conventions" (19 September 2025). S&P: BB and below have "significant speculative characteristics" (12 October 2026). The same S&P document defines the Maalot (Israel) national scale: it ranks only within Israel and is not comparable with the global scale (CORP-34). This closes the first half of CORP OQ3.
+- **PRIIPs** (ETF-111, ETF-115). The KID gives "the term of the PRIIP, if known" (Art. 8(3)(c)(v)). The Commission's standards say what that means: "the maturity date of the PRIIP or an indication that there is no maturity date", whether the manufacturer may end it unilaterally, and when it ends automatically (Art. 2(5)). UCITS give this KID from 1 January 2023 (Regulation 2021/2259; Directive 2021/2261, Art. 82a). ETF-111 is now a general record. The issuer's KID moved to ETF-122.
+- **Index transparency** (ETF-121). ESMA paras 52 to 60 and the Irish reg. 9: a UCITS may follow only an index whose full methodology and constituents are free to investors, and whose performance is freely available. Nothing in these texts lets a third party republish them (ETF OQ46 stays open).
+
+### Defined-term (target-maturity) funds
+
+- **The rules** (ETF-118). No EU or Irish text read gives a fixed-term UCITS bond fund a class of its own. Three duties apply to one:
+  - the KID gives the date (ETF-111);
+  - the prospectus gives "the distribution provisions on the termination or winding up" (reg. 57(1)(f));
+  - redemptions are paid within ten business days (reg. 33(2)).
+
+  The final-year holding of government paper rests on UCITS Directive Art. 54: up to 100% in one government's paper, with at least six issues and no more than 30% in any one. The Irish fixed-maturity conditions (reg. 18) are for structured UCITS with a payoff, not for these funds.
+- **The indices** (ETF-119; iShares' and Invesco's own descriptions, not Bloomberg's rules). Each index holds bonds maturing in one calendar year. Invesco counts a callable bond in its likely call year. No new corporate bonds are added in the final year. Maturing money goes into government paper:
+  - iShares: Treasuries, or German and French bonds, over the final 12 months;
+  - Invesco's index: six equally weighted Treasuries over the last six months.
+
+  iShares says the fund may not suit new money in or near its final year.
+- **The end and the yield** (ETF-120). iShares redeems at net asset value "without further notice" and delists. Invesco gives "reasonable notice" and pays net asset value less costs. Neither promises a return.
+
+  Marketing goes further: Invesco's release says a ladder of the funds "would provide a more predictable income", and TASE says its bullet indices let investors "לקבע". Derived from BND-03 and M-02: the yield at purchase is reached only if no bond defaults or is called, all money is reinvested at that yield, and fees are left out.
+
+  The named risks:
+  - pull to par;
+  - defaults;
+  - low yields on the final government paper;
+  - concentration as bonds mature;
+  - larger losses when selling early;
+  - "not ... a regular deposit account".
+- **The Israeli comparison.** Israeli funds of this kind are limited in time on TASE's bullet indices (MF-59 to MF-62, MF-75). The design is the same. The wind-up differs: Israeli law sets 60 to 30 days' notice (MF-60), while iShares redeems without further notice.
+
+### Still unreachable
+
+- S&P DJI iBoxx. Akamai's "Access Denied" also blocked FlareSolverr. Further probing was refused by the session's permission system and not pursued (ETF OQ44).
+- Bloomberg's own dated-index rules. bloomberg.com shows a captcha, and the file names could not be found (ETF OQ49).
+- A regulator's text on target-maturity funds, and Invesco Markets II plc's prospectus of 9 September 2026 (ETF OQ50).
+- The SEC bulletin PDFs were not retried, since their investor.gov versions were read.
+
+### For the tax-specialist
+
+The iShares V plc prospectus (p.157, library 4380001efa9706cd) says a holder's tax treatment "may differ depending on whether they hold their Shares in the Fund until such Shares are redeemed on the Redemption Date or they sell their Shares". For an Israeli holder, the question is how a redemption at the fund's end is taxed against a sale on the exchange. The earlier note on Invesco's "redeemed" against the US "distribution" stands (ETF-81).
+
+
+## Third pass: iBoxx in the founder's Chrome (2026-11-28)
+
+The four S&P DJI documents that refused scripts and FlareSolverr opened in the founder's Chrome and were read in the page with pdf.js; no copy was kept, so the library has none. Recorded as ETF-123 (how iBoxx rates, sizes, matures and weights bonds, three indices as examples) and ETF-124 (a dated iBoxx high-yield index that rolls into the next window instead of ending). Open question 44 is answered and deleted; 49 is narrowed.
+
+## Fourth pass: Bloomberg's dated indices (2026-11-28)
+
+Bloomberg's documentation page opened in the founder's Chrome with no captcha; its search for "Maturity" listed the dated-index documents, which then downloaded from the asset host with plain curl. Four methodologies and one announcement were filed in the library and recorded as ETF-125. Open question 49 is answered and deleted.

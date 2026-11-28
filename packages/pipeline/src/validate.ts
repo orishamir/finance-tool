@@ -262,6 +262,10 @@ export function validateData(ctx: ValidationContext): Problem[] {
       for (const message of checkFundList(parsed.value as FundListFile, parts[parts.length - 1]!)) report(file, message);
     }
     if (collection === "funds" && result.success) {
+      // only a fund's latest snapshot is held to its marks; an older one stands as it was read
+      const fundFile = rel.split(/[\\/]/).pop() ?? "";
+      const latestFund = !files.some((f) => { const n = f.split(/[\\/]/).pop() ?? ""; return n.startsWith(`${fundFile.split("@")[0]}@`) && n > fundFile; });
+      if (latestFund) for (const message of checkDimensionMarks(parsed.value as Record<string, unknown>, ruleDimensions, ctx.ruleBase, "fund")) report(file, message);
       for (const message of checkFundLoad(parsed.value as Pick<FundRecord, "fees">)) report(file, message);
       for (const message of checkFundDistribution(parsed.value as Pick<FundRecord, "distribution_policy" | "distribution">)) report(file, message);
       for (const message of checkFundNames(parsed.value as Pick<FundRecord, "names">)) report(file, message);
@@ -1769,9 +1773,25 @@ function readRuleDimensions(files: string[], dataDir: string): Map<string, strin
  * dimensions. Every dimension a cited rule carries must be marked; a `covered` mark must come from a cited rule;
  * a `blocked:<OQ>` mark must name an open question of the rule base. A rule cited without a record under
  * data/rules/ is reported, because the page could not open its rule card.
+ *
+ * A `covered:<id>` mark names the rule the record cites for the dimension, in any record: an id the record cites in no `rule_ids` or
+ * `context_rule_ids` is reported. A fund (`kind` "fund") is held to that alone: its plain fields (the tax track, the distribution
+ * policy, the currency) have no `rule_ids` to carry a rule, so a fund's mark names a rule only where a value of the record cites it, and
+ * reads a bare `covered` where none does.
  */
-export function checkDimensionMarks(record: Record<string, unknown>, ruleDimensions: ReadonlyMap<string, readonly string[]>, ruleBase: Pick<RuleBaseIds, "openQuestions">): string[] {
+export function checkDimensionMarks(
+  record: Record<string, unknown>,
+  ruleDimensions: ReadonlyMap<string, readonly string[]>,
+  ruleBase: Pick<RuleBaseIds, "openQuestions">,
+  kind: "product" | "fund" = "product",
+): string[] {
   const out: string[] = [];
+  const cites = new Set([...collectStrings(record, "rule_ids"), ...collectStrings(record, "context_rule_ids")]);
+  for (const [dim, mark] of Object.entries((record.dimensions ?? {}) as Record<string, string>)) {
+    const id = /^covered:(.+)$/.exec(mark)?.[1];
+    if (id && !cites.has(id)) out.push(`dimensions.${dim}: marked ${mark}, but the record cites ${id} in no rule_ids (§4 item 9)`);
+  }
+  if (kind === "fund") return out;
   // a security's `held_in` rules (where it is held) can cover a dimension, but a dimension only they carry need not be marked:
   // the wrapper's own dimensions are that wrapper's record's
   const { held_in: _heldIn, ...own } = record;

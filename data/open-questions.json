@@ -450,10 +450,6 @@
     "status": "open"
   },
   {
-    "id": "CORP OQ22",
-    "status": "open"
-  },
-  {
     "id": "ETF OQ3",
     "status": "open"
   },
@@ -601,10 +597,6 @@
     "status": "open"
   },
   {
-    "id": "ETF OQ44",
-    "status": "open"
-  },
-  {
     "id": "ETF OQ45",
     "status": "open"
   },
@@ -614,10 +606,14 @@
   },
   {
     "id": "ETF OQ47",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "ETF-111",
+      "ETF-115"
+    ]
   },
   {
-    "id": "ETF OQ48",
+    "id": "ETF OQ50",
     "status": "open"
   },
   {
@@ -2066,7 +2062,10 @@
   },
   {
     "id": "TXF OQ20",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXF-29"
+    ]
   },
   {
     "id": "TXF OQ21",
@@ -2125,14 +2124,24 @@
   },
   {
     "id": "TXF OQ33",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "TXF OQ34",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXF-63"
+    ]
   },
   {
     "id": "TXF OQ35",
+    "status": "narrowed",
+    "answered_by": [
+      "TXF-62"
+    ]
+  },
+  {
+    "id": "TXF OQ36",
     "status": "open"
   },
   {

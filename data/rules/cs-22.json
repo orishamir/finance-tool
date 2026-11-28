@@ -69,8 +69,8 @@
     {
       "url": "https://data.gov.il/he/datasets/mof/savingsplaninterest",
       "title": "משרד האוצר (data.gov.il): ריביות של פיקדונות חסכון לכל ילד",
-      "publisher": "data.gov.il",
-      "publisher_he": "מאגר המידע הממשלתי (data.gov.il)",
+      "publisher": "Ministry of Finance",
+      "publisher_he": "משרד האוצר",
       "kind": "dataset",
       "strength": "primary",
       "checked": "2026-10-25"

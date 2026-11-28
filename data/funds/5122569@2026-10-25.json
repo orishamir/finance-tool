@@ -124,8 +124,7 @@
       "rule_ids": [
         "ETF-07",
         "ETF-08",
-        "ETF-09",
-        "ETF-10"
+        "ETF-09"
       ],
       "state": "sourced",
       "empty_because": "not-collected",
@@ -145,10 +144,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-04",
-        "MF-21"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-applicable",
       "notes": "Not applicable: an open tracking fund is bought and redeemed at the unit price computed from net asset value, with no exchange spread. Load (שיעור הוספה): 0% on Maya's fund page and in the report (p. 1). The distributor may charge its own buy and sell commission (MF-26)."
@@ -167,9 +163,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-11"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-collected",
       "notes": "Not collected: the report prints no withholding figure and no computation is made here. The fund takes its exposure mainly through derivatives (see REPLICATION in legal_form), so any dividend-withholding drag sits inside the instrument pricing and is not published as a rate."
@@ -196,12 +190,12 @@
     }
   },
   "dimensions": {
-    "fund-tax-track": "covered:TXS-07",
+    "fund-tax-track": "covered",
     "fee-management-balance": "covered:MF-16",
-    "distribution-policy": "covered:MF-49",
-    "currency": "covered:ETF-10",
+    "distribution-policy": "covered",
+    "currency": "covered",
     "fee-trade": "covered:MF-21",
-    "protection": "covered:MF-02"
+    "protection": "covered"
   },
   "prospectus": {
     "url": "https://mayafiles.tase.co.il/rpdf/1729001-1730000/P1729627-00.pdf",

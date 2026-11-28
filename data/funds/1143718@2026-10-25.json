@@ -150,7 +150,6 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-06",
         "ETF-07"
       ],
       "state": "sourced",
@@ -171,21 +170,19 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-11"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-collected",
       "notes": "Not collected: no computation is made here (data-update rule) and the report prints no withholding rate. The fund holds the index constituents plus synthetic contracts (options) on the index (ETF-11, local index). The report's expense table prints 'הוצאות מס' as a negligible share (*) in 2023, 2025 and the first half of 2026 and 0.01% in 2024; note 6 says the fund may owe tax on income from dual-listed securities and prints the amounts: ₪110,517.96 (2023), ₪129,133.24 (2024), ₪314,547.54 (2025), ₪104,465.39 (01.01.2026-30.06.2026)."
     }
   },
   "dimensions": {
-    "fund-tax-track": "covered:TXS-07",
+    "fund-tax-track": "covered",
     "fee-management-balance": "covered:MF-16",
-    "distribution-policy": "covered:ETF-19",
-    "currency": "covered:MF-43",
-    "fee-trade": "covered:ETF-05",
-    "protection": "covered:MF-02"
+    "distribution-policy": "covered:ETF-42",
+    "currency": "covered:ETF-42",
+    "fee-trade": "covered",
+    "protection": "covered"
   },
   "prospectus": {
     "url": "https://mayafiles.tase.co.il/rpdf/1753001-1754000/P1753287-00.pdf",
