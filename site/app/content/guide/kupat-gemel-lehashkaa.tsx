@@ -15,7 +15,7 @@ export const content: GuideContent = {
     return (
     <>
       <p className="max-w-measure">
-        אתם מפקידים לקופה בעצמכם, <Ruled id="KGL-02">עד</Ruled> {ceiling ? <Num value={ceiling} /> : "התקרה"} <Ruled id="KGL-02">בשנה, בכל הקופות שלכם יחד</Ruled>. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ומי שלא בוחר <Ruled id="KGL-11">מצורף</Ruled> <Term prefix="ל" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term> של הקופה.
+        אתם מפקידים לקופה בעצמכם, עד {ceiling ? <Num value={ceiling} /> : "התקרה"} <Ruled id="KGL-02">בשנה, בכל הקופות שלכם יחד</Ruled>. הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים, ומי שלא בוחר <Ruled id="KGL-11">מצורף</Ruled> <Term prefix="ל" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term> של הקופה.
       </p>
       <p className="max-w-measure">
         <Ruled id="TXK-03">על הרווחים בתוך הקופה לא משלמים מס</Ruled>. מס הכנסה משלמים רק כש<Term id="משיכה">מושכים</Term>, <Ruled id="TXK-05" prefix="ו">רק על הרווח</Ruled>: <Ruled id={["TXK-06", "TXK-07"]}>עד</Ruled> {rate ? <Num value={rate} /> : "השיעור המרבי"} <Term prefix="מ" id="הרווח הריאלי">הרווח הריאלי</Term>.
@@ -60,7 +60,7 @@ export const content: GuideContent = {
           </Callout>
         ) : null}
         <Callout tone="blocked" className="max-w-measure">
-          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} <Ruled id="KGL-09">אפשר להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> הכסף נכנס שם למסלול למקבלי <Term id="קצבה">קצבה</Term>, <Ruled id="KGL-09" prefix="ל">קבלת קצבה בלבד</Ruled>. לפי טיוטת הבהרה מ־<bdi>2020</bdi> של הממונה על שוק ההון, ביטוח וחיסכון, אחרי ההעברה <Ruled id="PEN-71">אי אפשר לבטל את הבחירה בקצבה</Ruled>, למשל במשיכה בסכום חד־פעמי. את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>. שאלה פתוחה <IdRef id="PEN OQ7" end="." />
+          <span className="font-medium">מגיל {age ? <Num value={age} /> : null} <Ruled id="KGL-09">אפשר להעביר את הכסף</Ruled> <Term prefix="ל" id="קופת גמל לקצבה">קופת גמל לקצבה</Term>.</span> הכסף נכנס שם למסלול למקבלי <Term id="קצבה">קצבה</Term>, לקבלת קצבה בלבד. לפי טיוטת הבהרה מ־<bdi>2020</bdi> של הממונה על שוק ההון, ביטוח וחיסכון, אחרי ההעברה <Ruled id="PEN-71">אי אפשר לבטל את הבחירה בקצבה</Ruled>, למשל במשיכה בסכום חד־פעמי. את הקצבה האתר עוד לא מחשב, כי חסרים <Term id="מקדם המרה">מקדמי ההמרה</Term>. שאלה פתוחה <IdRef id="PEN OQ7" end="." />
         </Callout>
         <Callout tone="caution" className="max-w-measure">
           <span className="font-medium">מגיל {sixty ? <Num value={sixty} /> : null} המס על הרווח יכול להיות נמוך יותר.</span> {rate ? <Num value={rate} /> : "השיעור על הרווח"} הוא <Ruled id="TXG-07">תקרה, לא שיעור קבוע</Ruled>. מגיל {sixty ? <Num value={sixty} /> : null} <Ruled id="TXG-04">חלות על ההכנסה מדרגות המס הנמוכות</Ruled>, ואם המדרגה נמוכה מהתקרה, משלמים לפיה. הרווח <Ruled id="TXK-06">נספר כחלק העליון של ההכנסה</Ruled>, ולכן זה עוזר רק כשהכנסות אחרות לא ממלאות את המדרגות הנמוכות. כשמזינים גיל, האתר מחשב את ההקלה לפי ההכנסה השנתית שבחישוב.
