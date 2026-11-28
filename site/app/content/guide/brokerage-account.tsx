@@ -109,7 +109,7 @@ export const content: GuideContent = {
           הפסד ממכירה <Ruled id={["TXS-17", "TXS-19"]}>מתקזז מרווחים של אותה שנה באותו בנק או בית השקעות</Ruled>. <Term id="קיזוז הפסדים">קיזוז</Term> בין מוסדות, או <Term id="הפסד מועבר">העברת הפסד</Term> לשנים הבאות, <Ruled id="TXS-18">דורשים</Ruled> <Term id="דוח שנתי">דוח שנתי</Term>.
         </p>
         <Sentence measure>
-          מי שכל המס נוכה לו במקור, ותמורת המכירות שלו לא עולה על {ceiling ? <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> : null} בשנה<YearOf v={ceiling} />, <Ruled id="TXG-17">לא חייב בדוח שנתי</Ruled> רק בגלל החשבון. <Ruled id="TXG-18">זה לא חל</Ruled> על מי ששולט בחברה. זה גם לא חל על מי שלו, לבן הזוג או לילד מתחת לגיל 18 יש נכסים בחו״ל או חשבונות בבנק בחו״ל מעל הסף שבתקנות.
+          מי שכל המס נוכה לו במקור, ותמורת המכירות שלו לא עולה על {ceiling ? <Num value={ceiling} display={fmt.nisWhole(Number(ceiling.value))} /> : null} בשנה<YearOf v={ceiling} />, <Ruled id="TXG-17">לא חייב בדוח שנתי</Ruled> רק בגלל החשבון. <Ruled id="TXG-18">זה לא חל</Ruled> על מי ששולט בחברה. זה גם לא חל על מי שלו, לבן הזוג או לילד מתחת לגיל <bdi>18</bdi> יש נכסים בחו״ל או חשבונות בבנק בחו״ל מעל הסף שבתקנות.
         </Sentence>
         <p className="max-w-measure">בחשבון ישיר אצל ברוקר זר <Ruled id="BRK-27">לא מנכים מס בישראל</Ruled>. <Ruled id={["TXG-20", "TXF-22"]}>מדווחים ומשלמים מקדמה</Ruled> {reports ? <Num value={reports} /> : null} פעמים בשנה, ומגישים דוח שנתי.</p>
         <Sentence measure>
