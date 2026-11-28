@@ -6,7 +6,7 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "rea
 import { Pencil } from "lucide-react";
 import { invest as root } from "../../copy";
 import type { FundRecord, ValueObject } from "@finance-tool/schema";
-import { asksCountry, boughtInAt, BUY_ABROAD, BUY_IN_ISRAEL, countriesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type FundCountry, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
+import { asksCountry, boughtInAt, BUY_ABROAD, BUY_IN_ISRAEL, countriesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { dividendTaxLabel, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { INDEX_REGIONS, type IndexFacts, type IndexRegion } from "../../lib/index-region";
 import { optionsOf, type CustomIndex, type IndexRef } from "../../lib/invest";
@@ -142,7 +142,6 @@ export function FundTerms({ id }: { id: string }) {
 
 const pctCheck = percentCheck();
 const UNSURE = "unsure";
-const OTHER = "other";
 
 /** What the panel says of the index: what was saved on it, as the person changes it here (the region, and the yield as typed). */
 interface FactsDraft {
@@ -215,9 +214,9 @@ function needsOf(d: FundDraft, rec: FundRecord | null, index: IndexRef, seen: In
 /** Where the calculation stands: a missing item leaves the fund with no price; an item left out leaves a price without it. */
 const statusOf = (needs: readonly NeedItem[]): keyof typeof c.status => (needs.some((x) => x.state === "missing") ? "missing" : needs.some((x) => x.state === "left-out") ? "left-out" : "ok");
 
-function FundPanel({ headId, index, fund, start, others, writable, onSave, onCancel, onRemove }: { headId: string; index: IndexRef; fund: CustomFund | null; start: Editing["start"]; others: readonly CustomFund[]; writable: boolean; onSave: (f: CustomFund, index: CustomIndex | null, again: { buyAt: BuyAt; country: FundCountry | null } | null) => void; onCancel: () => void; onRemove: (id: string) => void }) {
+function FundPanel({ headId, index, fund, start, others, writable, onSave, onCancel, onRemove }: { headId: string; index: IndexRef; fund: CustomFund | null; start: Editing["start"]; others: readonly CustomFund[]; writable: boolean; onSave: (f: CustomFund, index: CustomIndex | null, again: { buyAt: BuyAt; country: CountryAnswer } | null) => void; onCancel: () => void; onRemove: (id: string) => void }) {
   const [today] = useState(isoToday);
-  const { draft, now, set, setMany } = useDraft<FundDraft>(() => fundDraftOf(fund, start ?? { buyAt: null, country: index.israeli ? "IL" : null }, index.israeli));
+  const { draft, now, set, setMany } = useDraft<FundDraft>(() => fundDraftOf(fund, start ?? { buyAt: null, country: index.israeli ? "IL" : "unsure" }, index.israeli));
   const [facts, setFacts] = useState<FactsDraft>(() => ({ region: index.custom?.region ?? null, yieldPct: typeof index.custom?.dividendYield?.value === "number" ? index.custom.dividendYield.value : null }));
   const [errors, setErrors] = useState<EntryError[]>([]);
   const form = useRef<HTMLDivElement>(null);
@@ -314,13 +313,15 @@ function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, set
   // a foreign fund, or one whose kind is not known yet, has one yearly charge; an Israeli one its fixed and variable fees and the trustee's
   const yearly = !kind || isForeignKind(kind);
   const priceUnit = draftPriceUnit(draft, currencyOfIndex);
-  const setPlace = (buyAt: BuyAt, country: FundCountry | null) => setMany(draftWithPlace(draft, { buyAt, country }, currencyOfIndex));
+  const setPlace = (buyAt: BuyAt, country: CountryAnswer) => setMany(draftWithPlace(draft, { buyAt, country }, currencyOfIndex));
   // no "0" in an empty field: an empty fee is not known, not a fee of zero
   const percent = (k: "fixed" | "variable" | "trustee", label: string, hint?: string) => <NumberField label={label} unit="pct_per_year" value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} hint={hint} optional />;
   const open = draft.buyAt ? countriesAt(draft.buyAt) : COUNTRIES;
   const onlyIsrael = index.israeli || !asksCountry(draft.buyAt);
-  const countryIds = [...COUNTRIES, OTHER] as const;
-  const countryLook: Partial<Record<string, ChipLook>> = { [OTHER]: "unsure", ...(open.includes("IL") ? {} : { IL: "closed" }) };
+  // Israel stays in sight, closed, where the answer closes it; abroad "another country" and "not sure" lead to the same fund, and one chip says both
+  const countryIds = COUNTRIES.filter((x) => x === "IL" || open.includes(x));
+  const countryLook: Partial<Record<string, ChipLook>> = { unsure: "unsure", ...(open.includes("IL") ? {} : { IL: "closed" }) };
+  const countryLabels = open.includes("other") ? c.countryNames : { ...c.countryNames, unsure: c.countryOtherOrUnsure };
   const step1 = !!draft.buyAt;
   const step2 = !!draft.name.trim() && (yearly ? draft.fixed !== null : draft.fixed !== null && draft.variable !== null && draft.trustee !== null);
   const step3 = draft.payout !== null && (!asksHedge(index) || draft.hedged !== null);
@@ -347,7 +348,7 @@ function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, set
           </Question>
         ) : (
           <Question id={`${ids}-country`} text={c.ask.country} aside={c.ask.countryWhere} after={!open.includes("IL") && <p className="text-xs text-muted-foreground">{c.countryWhy.abroad}</p>}>
-            <ChoiceChips ids={countryIds} labels={c.countryNames} value={draft.country ?? OTHER} onChange={(v) => (draft.buyAt ? setPlace(draft.buyAt, v === OTHER ? null : v) : set("country", v === OTHER ? null : v))} ariaLabel={c.ask.country} look={countryLook} wrap />
+            <ChoiceChips ids={countryIds} labels={countryLabels} value={draft.country} onChange={(v) => (draft.buyAt ? setPlace(draft.buyAt, v) : set("country", v))} ariaLabel={c.ask.country} look={countryLook} wrap />
           </Question>
         )}
       </Step>

@@ -5,7 +5,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { countriesAt, customFundGaps, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, recordOfFund, validCustomFunds, withCustomEntries, type BuyAt, type CustomFund, type FundCountry } from "./custom-entries";
+import { countriesAt, customFundGaps, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, recordOfFund, validCustomFunds, withCustomEntries, type BuyAt, type CustomFund, type CountryAnswer } from "./custom-entries";
 import type { CustomIndex } from "./invest";
 import { fundWayAt, indexById, indexSeenBy, pairCosts, refOfCustom, type FundWay, type WayPrice } from "./invest";
 import { dividendTaxLabel, fundLabels } from "./labels";
@@ -29,22 +29,22 @@ function must<T>(v: T | null | undefined, what: string): T {
 }
 
 /** An accumulating unhedged fund with its yearly fee typed, bought and registered as the two answers say. */
-const fundAt = (buyAt: BuyAt, country: FundCountry | null, more: Partial<Parameters<typeof fundFromDraft>[0]> = {}, indexId = SP, id = `custom-fund-${buyAt}-${(country ?? "none").toLowerCase()}`): CustomFund =>
+const fundAt = (buyAt: BuyAt, country: CountryAnswer, more: Partial<Parameters<typeof fundFromDraft>[0]> = {}, indexId = SP, id = `custom-fund-${buyAt}-${(country ?? "none").toLowerCase()}`): CustomFund =>
   fundFromDraft({ ...fundDraftOf(null, { buyAt, country }), buyAt, name: id, fixed: 0.07, variable: 0, trustee: 0, payout: "accumulating", hedged: false, ...more }, id, indexId, t, "USD");
 
 const priced = (w: FundWay) => Object.entries(w.byHouse).flatMap(([h, at]) => ("valueN" in at ? [[h, at as WayPrice] as const] : []));
 
 describe("where the person buys a fund and where it is registered make its kind, exchange and currency (F-65)", () => {
   it("each answer gives the kind, the exchange and the currency the method names", () => {
-    const cases: [BuyAt, FundCountry | null, string, string | undefined, string | null][] = [
+    const cases: [BuyAt, CountryAnswer, string, string | undefined, string | null][] = [
       ["manager", "IL", "il-tracking", undefined, "ILS"],
       ["tase", "IL", "il-etf", undefined, "ILS"],
       ["tase", "IE", "tase-foreign", undefined, "ILS"],
-      ["tase", null, "tase-foreign", undefined, "ILS"],
+      ["tase", "unsure", "tase-foreign", undefined, "ILS"],
       ["us-usd", "US", "abroad", "us", "USD"],
       ["europe-eur", "IE", "abroad", "europe", "EUR"],
       ["europe-usd", "IE", "abroad", "europe", "USD"],
-      ["abroad", null, "abroad", undefined, null],
+      ["abroad", "unsure", "abroad", undefined, null],
     ];
     for (const [buyAt, country, kind, exchange, tradesIn] of cases) {
       const f = fundAt(buyAt, country);
@@ -55,7 +55,7 @@ describe("where the person buys a fund and where it is registered make its kind,
   it("a fund bought abroad is in the currency it is bought in; one in Tel Aviv, or abroad not sure where, stands in by its index's", () => {
     expect(recordOfFund(fundAt("europe-eur", "IE"), "USD").currency).toBe("EUR");
     expect(recordOfFund(fundAt("us-usd", "US"), "EUR").currency).toBe("USD");
-    expect(recordOfFund(fundAt("abroad", null), "EUR").currency).toBe("EUR");
+    expect(recordOfFund(fundAt("abroad", "unsure"), "EUR").currency).toBe("EUR");
     expect(recordOfFund(fundAt("tase", "IE"), "EUR").currency).toBe("EUR");
     expect(recordOfFund(fundAt("manager", "IL"), "USD").currency).toBe("NIS");
   });
@@ -63,19 +63,22 @@ describe("where the person buys a fund and where it is registered make its kind,
   it("Israel is closed abroad, and the only country from the manager; a closed country gives way as the answer changes", () => {
     for (const at of ["us-usd", "europe-eur", "europe-usd", "abroad"] as const) expect(countriesAt(at)).not.toContain("IL");
     expect(countriesAt("manager")).toEqual(["IL"]);
-    expect(countriesAt("tase")).toEqual(expect.arrayContaining(["IL", "IE", "US"]));
+    expect(countriesAt("tase")).toEqual(expect.arrayContaining(["IL", "IE", "US", "other", "unsure"]));
+    // abroad another country and not sure make the same fund: one answer, and "another country" gives way to it
+    for (const at of ["us-usd", "europe-eur", "europe-usd", "abroad"] as const) expect(countriesAt(at)).not.toContain("other");
     const inTase = { ...fundDraftOf(null, { buyAt: "tase", country: "IL" }), name: "x" };
-    expect(draftWithPlace(inTase, { buyAt: "europe-eur", country: "IL" }, "USD").country).toBeNull();
-    expect(draftWithPlace(inTase, { buyAt: "manager", country: null }, "USD").country).toBe("IL");
+    expect(draftWithPlace(inTase, { buyAt: "europe-eur", country: "IL" }, "USD").country).toBe("unsure");
+    expect(draftWithPlace(inTase, { buyAt: "manager", country: "unsure" }, "USD").country).toBe("IL");
     expect(draftWithPlace({ ...inTase, country: "IE" }, { buyAt: "us-usd", country: "IE" }, "USD").country).toBe("IE");
+    expect(draftWithPlace({ ...inTase, country: "other" }, { buyAt: "us-usd", country: "other" }, "USD").country).toBe("unsure");
   });
 
   it("a fund not yet told where it is bought is not saved", () => {
     expect(fundErrors({ ...fundDraftOf(null), name: "א", hedged: false }, [], null)).toEqual(["place-none"]);
   });
 
-  it("in Tel Aviv with no country said it is listed with its reason, never priced: whether it is Israeli is not known", () => {
-    const f = fundAt("tase", null);
+  it("in Tel Aviv with \"not sure\" it is listed with its reason, never priced: whether it is Israeli is not known", () => {
+    const f = fundAt("tase", "unsure");
     const b = withCustomEntries(bundle, [f]);
     const w = must(fundWayAt({ bundle: b, index: must(indexById(b, SP), "S&P 500"), plan, fundId: f.id }), "the fund on the S&P 500");
     expect(w.reason).toEqual({ code: "tase-country-unknown" });
@@ -84,7 +87,7 @@ describe("where the person buys a fund and where it is registered make its kind,
   });
 
   it("every reason a typed fund has no price is listed, not only the first", () => {
-    const f = fundAt("tase", null, { fixed: null, payout: null, hedged: true });
+    const f = fundAt("tase", "unsure", { fixed: null, payout: null, hedged: true });
     expect(customFundGaps(recordOfFund(f, "USD"))).toEqual(["fee-unknown", "tase-country-unknown", "payout-unknown", "no-hedge-entered"]);
     expect(customFundGaps(recordOfFund(fundAt("europe-eur", "IE"), "USD"))).toEqual([]);
   });

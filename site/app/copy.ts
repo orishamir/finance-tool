@@ -4547,7 +4547,9 @@ export const invest = {
     buyGroups: { israel: "בישראל", abroad: "בחו״ל" },
     /** Where the fund is bought (F-65): the exchange and the currency it is bought in. */
     buyAtNames: { manager: "ישירות ממנהל הקרן", tase: "בורסה בתל אביב · שקל", "us-usd": "ארה״ב · דולר", "europe-eur": "אירופה · אירו", "europe-usd": "אירופה · דולר", abroad: "בחו״ל, לא בטוח איפה" } as Record<string, string>,
-    countryNames: { IL: "ישראל (IL)", IE: "אירלנד (IE)", US: "ארה״ב (US)", other: "אחרת, או לא בטוח" } as Record<string, string>,
+    countryNames: { IL: "ישראל (IL)", IE: "אירלנד (IE)", US: "ארה״ב (US)", other: "אחרת", unsure: "לא בטוח" } as Record<string, string>,
+    /** Abroad, where another country and not sure lead to the same fund: one answer for both. */
+    countryOtherOrUnsure: "אחרת, או לא בטוח",
     /** Why a country is closed, or the only one, for where the fund is bought: what the site works out, not a rule. */
     countryWhy: {
       abroad: "קרן שקונים בחו״ל מחושבת כאן כקרן חוץ, ולכן ״ישראל״ סגורה.",
@@ -5174,7 +5176,7 @@ export const invest = {
     feeUnknown: "אי אפשר לחשב: חלק מדמי הניהול של הקרן לא הוזנו. השלימו אותם בעריכה.",
     domicileUnknown: "אי אפשר לחשב: הקרן מחלקת, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה היא רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
     /** A fund the person buys in Tel Aviv, its country not said: an Israeli ETF and a foreign fund are worked out apart (F-04). */
-    taseCountryUnknown: "אי אפשר לחשב: לא ידוע אם הקרן ישראלית או קרן חוץ, והחישוב שונה לכל אחת. אפשר לבחור את המדינה שבה היא רשומה בעריכת הקרן.",
+    taseCountryUnknown: "אי אפשר לחשב: לא בחרתם באיזו מדינה הקרן רשומה, ולכן לא ידוע אם היא קרן ישראלית או קרן חוץ, והחישוב שונה לכל אחת. אפשר לבחור את המדינה בעריכת הקרן.",
     /** A house that sells this kind of fund only under distribution agreements (BRK-38), and a fund with no number a report can name. */
     soldFundByFund: "אין מחיר בלי קרן מסוימת: הבית מוכר קרן כזו רק אם מנהל הקרן חתם איתו על הסכם הפצה.",
     /** The same house, and a fund no report of an agreement names: open, never "not sold" (the record's own words show where it has them). */

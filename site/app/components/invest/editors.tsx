@@ -3,12 +3,12 @@
 import { createContext, useContext, useRef, useState } from "react";
 import { invest as root } from "../../copy";
 import { Button } from "../kit";
-import type { BuyAt, CustomFund, FundCountry } from "../../lib/custom-entries";
+import type { BuyAt, CountryAnswer, CustomFund } from "../../lib/custom-entries";
 import type { CustomIndex, IndexRef, InvestView } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 
 /** The fund being edited, or a new one (`id` null) opening with the first question's answers in `start` ("save and add another"). */
-export type Editing = { kind: "fund"; id: string | null; start?: { buyAt: BuyAt; country: FundCountry | null } };
+export type Editing = { kind: "fund"; id: string | null; start?: { buyAt: BuyAt; country: CountryAnswer } };
 
 /** What a fund's preview prices on: the page's own data, plan and view. */
 export interface PanelWorld {

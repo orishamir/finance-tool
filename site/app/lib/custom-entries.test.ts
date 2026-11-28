@@ -8,12 +8,13 @@ import { MemoryRouter } from "react-router";
 import { beforeEach, describe, expect, it } from "vitest";
 import { calendarMonthOf } from "@finance-tool/engine";
 import { allFunds, pickOfHeadline } from "../components/invest/pair";
+import { reasonText } from "../components/invest/parts";
 import { PairLists } from "../components/invest/lists";
 import { EditorsContext, type Editors } from "../components/invest/editors";
 import { invest, numbers } from "../copy";
 import { LabelSheetHost } from "../components/kit";
 import { ProvenanceProvider } from "../components/provenance";
-import { fundDraftOf, fundErrors, fundFromDraft, validCustomBrokers, validCustomFunds, withCustomEntries, type BuyAt, type CustomBroker, type CustomFund, type FundCountry, type FundDraft } from "./custom-entries";
+import { fundDraftOf, fundErrors, fundFromDraft, validCustomBrokers, validCustomFunds, withCustomEntries, type BuyAt, type CustomBroker, type CustomFund, type CountryAnswer, type FundDraft } from "./custom-entries";
 import { feesData } from "./fees.server";
 import { fxRunInput } from "./fx";
 import { dealProviderId, withDeals } from "./deal-account/bundle";
@@ -76,7 +77,7 @@ const moveCtx: MoveContext = { houses: data.houses, kinds: data.kinds, snapshots
  * registered in Israel and a foreign fund where it is registered abroad (Ireland, where the case does not turn on the country); abroad,
  * not sure where.
  */
-const PLACE = { "il-tracking": { buyAt: "manager", country: "IL" }, "il-etf": { buyAt: "tase", country: "IL" }, "tase-foreign": { buyAt: "tase", country: "IE" }, abroad: { buyAt: "abroad", country: null } } as const satisfies Record<string, { buyAt: BuyAt; country: FundCountry | null }>;
+const PLACE = { "il-tracking": { buyAt: "manager", country: "IL" }, "il-etf": { buyAt: "tase", country: "IL" }, "tase-foreign": { buyAt: "tase", country: "IE" }, abroad: { buyAt: "abroad", country: "unsure" } } as const satisfies Record<string, { buyAt: BuyAt; country: CountryAnswer }>;
 /** A fund draft of a kind that says it accumulates and is unhedged, as the golden script prices it (since a payout not said has no price). */
 const said = (kind: keyof typeof PLACE): FundDraft & { buyAt: BuyAt } => ({ ...fundDraftOf(null, PLACE[kind]), buyAt: PLACE[kind].buyAt, payout: "accumulating" as const, hedged: false });
 const fund = fundFromDraft({ ...said("il-tracking"), name: "קרן שלי", fixed: 0.2, variable: 0.05, trustee: 0.02 }, "custom-fund-mine", "index-ta125", t);
@@ -194,6 +195,29 @@ describe("a fund the person types is priced at the collected houses under its ki
     }
     // a fund typed abroad has no such status
     expect(withCustomEntries(bundle, [abroad]).funds.at(-1)?.tax_status).not.toHaveProperty("foreign_investment_fund");
+  });
+
+  it("in Tel Aviv, another country is a foreign fund priced as the Irish one is, and not sure is listed with no price and the reason that it was not said whether it is Israeli (F-65)", () => {
+    const at = (country: CountryAnswer) => {
+      const f = fundFromDraft({ ...said("tase-foreign"), country, name: country, fixed: 0.1 }, `custom-fund-tase-${country.toLowerCase()}`, "index-sp500", t);
+      const typed = allFunds(buildInvest({ bundle: withCustomEntries(bundle, [f]), index: sp, plan })).find((x) => x.rec.id === f.id);
+      if (!typed) throw new Error(`the ${country} fund is on the S&P 500's list`);
+      return { kind: f.kind, typed, values: Object.values(typed.byHouse).flatMap((w) => ("valueN" in w ? [w.valueN] : [])) };
+    };
+    const ireland = at("IE");
+    const other = at("other");
+    expect(other.kind).toBe("tase-foreign");
+    expect(other.typed.reason).toBeUndefined();
+    expect(other.values.length).toBeGreaterThan(0);
+    // an accumulating fund's run reads no country: what another country's fund leaves is what the Irish one's does, house by house
+    expect(other.values).toEqual(ireland.values);
+    // distributing, its country's withholding on a payout is not known (F-20): no price, with that reason
+    const dist = fundFromDraft({ ...said("tase-foreign"), country: "other", name: "dist", fixed: 0.1, payout: "distributing", yield: 1.2, perYear: 4 }, "custom-fund-tase-other-dist", "index-sp500", t);
+    expect(allFunds(buildInvest({ bundle: withCustomEntries(bundle, [dist]), index: sp, plan })).find((x) => x.rec.id === dist.id)?.reason).toEqual({ code: "domicile-unknown" });
+    const unsure = at("unsure");
+    expect(unsure.typed.reason).toEqual({ code: "tase-country-unknown" });
+    expect(unsure.values).toEqual([]);
+    expect(reasonText({ code: "tase-country-unknown" }, "tase_foreign_fund_units")).toBe(invest.reasons.taseCountryUnknown);
   });
 
   it("a Tel Aviv foreign fund typed on a dollar index is priced on the reading that leaves less, its doubt saying the site read none of its documents (F-04)", () => {

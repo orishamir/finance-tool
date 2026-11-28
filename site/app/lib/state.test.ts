@@ -551,7 +551,7 @@ describe("the index page's saved state (D28)", () => {
 });
 
 describe("what an import brings of the index page's own and of the plan (the transfer page)", () => {
-  const fund = (id: string, indexId: string) => ({ id, name: id, number: null, indexId, kind: "il-tracking" as const, fixed: null, variable: null, trustee: null, hedged: false, payout: null, yield: null, perYear: null, domicile: null, tracking: null, tradesIn: "ILS" as const, added: day });
+  const fund = (id: string, indexId: string) => ({ id, name: id, number: null, indexId, kind: "il-tracking" as const, fixed: null, variable: null, trustee: null, hedged: false, payout: null, yield: null, perYear: null, country: "IL" as const, tracking: null, tradesIn: "ILS" as const, added: day });
   const theirs = (): StateV3 => ({
     ...emptyOf(),
     inputs: { horizon_years: entered(20, "years", day), "A-01": entered(5, "pct_per_year", day) },
