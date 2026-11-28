@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
 import { ruleCardMore, rule as ruleCopy, scopeWords, sourceBlock, strength } from "../copy";
 import { fmt } from "../lib/format";
-import { joinNames, ownDocCompanies } from "../lib/scope";
+import { isNotRule, joinNames, ownDocCompanies } from "../lib/scope";
 import { ProvenanceProvider, RuleRef, RuleTitleRow, catchesOf, type ProvenanceData } from "./provenance";
 import { RuleCard, RuleDetail, TermCard, ValueSheet } from "./provenance-sheets";
 import type { SiteValue } from "../lib/value";
@@ -126,6 +126,21 @@ describe("a company's term on a brand's page", () => {
       expect(text).toContain(must(second, "its second company").name_he);
       expect(text).not.toContain("ועוד");
     }
+  });
+});
+
+describe("a general record that is not a rule", () => {
+  it("is listed with what is not a rule, and its card's foot leads there, not to the rules", async () => {
+    const { loadRules } = await import("../lib/data.server");
+    const { companyLinks, noPageCompanyTerms, ownDocuments } = await import("../lib/institutions.server");
+    const rules = loadRules();
+    const ownDocs = ownDocuments(rules);
+    const r = must(Object.values(rules).find((x) => x.scope === "general" && isNotRule(x.id)), "a general not-rule");
+    expect(noPageCompanyTerms(rules, ownDocs).none).toContain(r.id);
+    const data = dataOf(rules, { ownDocs, companies: companyLinks() });
+    const text = words(createElement(RuleCard, { id: r.id, data }), data);
+    expect(text).toContain(scopeWords.allNoCompany);
+    expect(text).not.toContain(ruleCopy.all);
   });
 });
 

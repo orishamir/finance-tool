@@ -1566,11 +1566,16 @@ function scopeLine(rule: RuleRecord, ownDocs: OwnDocs | undefined, tagged: reado
 /** An address without its fragment and its trailing slash: the page it opens. */
 const pageOfHref = (href: string): string => (href.split("#")[0] ?? "").replace(/(.)\/$/, "$1");
 
-/** The card's foot: where the record is listed. A link to the page the card is open on is left out, and two links to one place are one. */
+/**
+ * The card's foot: where the record is listed. A not-rule, general or not, is listed with what is not a rule; a general rule on the rules
+ * page. A link to the page the card is open on is left out, and two links to one place are one.
+ */
 function CardFoot({ rule, data }: { rule: RuleRecord; data: ProvenanceData }) {
   const close = useContext(CloseCtx);
   const here = pageOfHref(useLocation().pathname);
   const elsewhere = (href: string) => pageOfHref(href) !== here;
+  const noCompany = documentsPath({ hash: noCompanyAnchor });
+  if (isNotRule(rule.id)) return elsewhere(noCompany) ? <LinkButton to={noCompany} onClick={close}>{scopeWords.allNoCompany}</LinkButton> : null;
   if (isGeneral(rule)) {
     const to = data.rulesOf ? `${data.rulesOf.href}#${rule.id}` : rulesPath({ hash: rule.id });
     if (!elsewhere(to)) return null;
@@ -1579,7 +1584,7 @@ function CardFoot({ rule, data }: { rule: RuleRecord; data: ProvenanceData }) {
   const listed = companyLinksOf(listedCompanies(rule, data.ownDocs), data.companies).map((c) => ({ name: c.name, href: c.hasPage ? `${c.href}#${rule.id}` : c.href }));
   const links = listed.filter((l, i) => elsewhere(l.href) && listed.findIndex((x) => x.href === l.href) === i);
   if (listed.length > 0 && links.length === 0) return null;
-  if (links.length === 0) return elsewhere(documentsPath({ hash: noCompanyAnchor })) ? <LinkButton to={documentsPath({ hash: noCompanyAnchor })} onClick={close}>{scopeWords.allNoCompany}</LinkButton> : null;
+  if (links.length === 0) return elsewhere(noCompany) ? <LinkButton to={noCompany} onClick={close}>{scopeWords.allNoCompany}</LinkButton> : null;
   if (links.length === 1) return <LinkButton to={links[0]!.href} onClick={close}>{scopeWords.allAt.replace("{name}", links[0]!.name)}</LinkButton>;
   return (
     <span onClick={close}>

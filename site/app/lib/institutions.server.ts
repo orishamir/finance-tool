@@ -28,7 +28,7 @@ import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instrumen
 import { isFxToFx, shortName } from "./providers";
 import { ownBy, type SiteValue } from "./value";
 import { fileRank } from "./rule-shelves";
-import { listedCompanies, noPageAnchor, type CompanyLink, type OwnDocs } from "./scope";
+import { isNotRule, listedCompanies, noPageAnchor, type CompanyLink, type OwnDocs } from "./scope";
 import { brandOfMember, brandOfPage, loadBrands } from "./brands.server";
 import { readParsedCached, readJsonCached, readTextCached } from "./read-cache.server";
 import { sourceHref, type TextFragment } from "./sources";
@@ -527,7 +527,8 @@ function groupByTopic(list: RuleRecord[], topic: (file: string) => string): Comp
 
 /**
  * /companies: the companies that have no page of their own and whose terms the site holds, each with the records its section lists;
- * then what no company's section lists (the not-rules: a list, a count, a site's terms).
+ * then what is not a rule ("לא נכלל ככלל", the tag every not-rule's card carries): every not-rule the rule base keeps, general or not,
+ * among them every record no company's section lists.
  */
 export function noPageCompanyTerms(rules: Record<string, RuleRecord>, ownDocs: OwnDocs = ownDocuments(rules)): { companies: { id: string; name: string; ids: string[] }[]; none: string[] } {
   const links = companyLinks();
@@ -540,6 +541,7 @@ export function noPageCompanyTerms(rules: Record<string, RuleRecord>, ownDocs: O
     .map((r) => ({ id: r.id, name: r.name_he, ids: listed.filter((x) => x.at.includes(r.id)).map((x) => x.id).sort(byId) }))
     .filter((c) => c.ids.length > 0)
     .sort((a, b) => heCollator.compare(a.name, b.name));
-  const none = listed.filter((x) => x.at.length === 0).map((x) => x.id).sort(byId);
+  const nowhere = listed.filter((x) => x.at.length === 0).map((x) => x.id);
+  const none = [...new Set([...nowhere, ...Object.keys(rules).filter(isNotRule)])].sort(byId);
   return { companies, none };
 }
