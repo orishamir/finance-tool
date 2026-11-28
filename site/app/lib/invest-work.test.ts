@@ -37,7 +37,7 @@ describe("the index page's work is plain data both ways, as the worker sends it 
   }
 
   it("an index with no fund to price: its view, with the split by fee line of every priced house its account list shows", () => {
-    const view = work.view(bundle, { index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: bundle.today }), plan, yourBroker: null });
+    const view = work.view(bundle, { index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", added: bundle.today }), plan, yourBroker: null });
     expect(notPlain(view, "view")).toEqual([]);
     const priced = view.houses.filter((h) => h.generic);
     expect(priced.length).toBeGreaterThan(0);

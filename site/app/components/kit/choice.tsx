@@ -94,10 +94,11 @@ export function SegmentedControl<T extends string>({ label, options, value, onCh
  * The chips have a soft fill and no outline; the chosen one a teal fill, a thin teal ring and a check before its words. Every chip holds
  * room for the check and its words at the chosen weight (`ChosenRoom`), so choosing changes no chip's width and moves no chip beside it.
  * `counts` puts a number in a fixed slot after each label (how many rows a choice would show); a chip that would show none dims in place.
- * `missing` marks chips whose choice holds nothing found (a country with no product like the guide's): a dashed outline and muted words, and
- * still a chip that can be chosen, since choosing it says what was looked for. Its label says it in words too, never the dashes alone.
- * The row is one radio group and one stop of the Tab key (the chosen chip, else the first): the arrow keys move between the chips, and
- * Space or Enter chooses the one with the focus.
+ * `look` sets a chip apart, each in a dashed outline with muted words whose label says it in words too, never the dashes alone: `missing`,
+ * a choice that holds nothing found (a country with no product like the guide's), still a chip that can be chosen, since choosing it says
+ * what was looked for; `unsure`, the answer "not sure" to a question; `closed`, an answer that cannot hold here, struck through and not
+ * chosen, with the words that say why beside the row (the page's). The row is one radio group and one stop of the Tab key (the chosen
+ * chip, else the first open one): the arrow keys move between the open chips, and Space or Enter chooses the one with the focus.
  */
 /**
  * A chip's spoken name: its words with their gershayim, and the count after them where the row shows one, as the eye reads the chip. None
@@ -108,12 +109,16 @@ export function chipName(label: ReactNode, count: number | undefined): string | 
   return count === undefined ? gershayim(label) : `${gershayim(label)} ${fmt.number(count)}`;
 }
 
-export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, line, counts, missing, other }: { ids: readonly T[]; /** Words, or a node where a label needs its own direction (an amount isolated left to right). */ labels: Record<string, ReactNode>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways. */ wrap?: boolean; /** One line at every width: a row that does not fit scrolls sideways, never wraps or grows. */ line?: boolean; /** A number after each label, in a fixed slot. */ counts?: Partial<Record<T, number>>; /** Chips whose choice holds nothing found: a dashed outline and muted words, still chosen like any other. */ missing?: Partial<Record<T, boolean>>; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last chip, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then. */ other?: { label: string; open: boolean; onToggle: () => void } }) {
+/** How a chip stands apart from the plain ones of its row (`ChoiceChips`' `look`). */
+export type ChipLook = "missing" | "unsure" | "closed";
+
+export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ariaLabel, bleed = "-mx-gutter px-gutter", wrap, line, counts, look, other }: { ids: readonly T[]; /** Words, or a node where a label needs its own direction (an amount isolated left to right). */ labels: Record<string, ReactNode>; value: T | null; onChange: (id: T) => void; ariaLabel: string; /** Wrap into rows on a phone too, instead of scrolling sideways. */ wrap?: boolean; /** One line at every width: a row that does not fit scrolls sideways, never wraps or grows. */ line?: boolean; /** A number after each label, in a fixed slot. */ counts?: Partial<Record<T, number>>; /** Chips set apart: nothing found, "not sure", or closed here. */ look?: Partial<Record<T, ChipLook>>; /** The phone bleed to the edge of whatever holds the row (a card pads 16px, the page pads its gutter). */ bleed?: string; /** "אחר": the last chip, the kit's `OtherChip`; the page opens its own field under the row while `open`, and no preset is chosen then. */ other?: { label: string; open: boolean; onToggle: () => void } }) {
   const layout = wrap ? "flex flex-wrap gap-2" : line ? cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto pb-1 scrollbar-none") : cx(bleed, "md:mx-0 md:px-0 flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 scrollbar-none");
-  const stop = value !== null && ids.includes(value) ? value : ids[0];
+  const open = ids.filter((id) => look?.[id] !== "closed");
+  const stop = value !== null && open.includes(value) ? value : open[0];
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
     if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(e.key)) return;
-    const chips = [...e.currentTarget.querySelectorAll<HTMLElement>("[role=radio]")];
+    const chips = [...e.currentTarget.querySelectorAll<HTMLElement>("[role=radio]:not(:disabled)")];
     const i = chips.indexOf(document.activeElement as HTMLElement);
     if (i < 0) return;
     e.preventDefault();
@@ -125,7 +130,7 @@ export function ChoiceChips<T extends string>({ ids, labels, value, onChange, ar
   return (
     <div role="radiogroup" aria-label={ariaLabel} className={layout} onKeyDown={onKey}>
       {ids.map((id) => (
-        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} onClick={() => onChange(id)} className={cx("sec-chip gap-1.5 shrink-0 transition-[background-color,color,opacity] duration-(--duration-fast)", value === id && "sec-chip-on", counts?.[id] === 0 && value !== id && "opacity-45", missing?.[id] && cx("chip-dashed", value !== id && "text-muted-foreground"))}>
+        <button key={id} type="button" role="radio" aria-checked={value === id} aria-label={chipName(labels[id], counts?.[id])} tabIndex={id === stop ? 0 : -1} disabled={look?.[id] === "closed"} onClick={() => onChange(id)} className={cx("sec-chip gap-1.5 shrink-0 transition-[background-color,color,opacity] duration-(--duration-fast)", value === id && "sec-chip-on", counts?.[id] === 0 && value !== id && "opacity-45", look?.[id] && cx("chip-dashed", value !== id && "text-muted-foreground"), look?.[id] === "closed" && "line-through opacity-60 cursor-not-allowed")}>
           <ChosenRoom check={<IconCheck size={16} className="shrink-0" />} gap="gap-1.5" on={value === id}>
             {labels[id]}
           </ChosenRoom>
@@ -196,62 +201,6 @@ export function OtherChip({ label, expanded, onClick }: { label: string; expande
   );
 }
 
-export interface Tile<T extends string> {
-  value: T;
-  /** The choice in words; left out when the body already names it (a label that is the answer itself). */
-  title?: ReactNode;
-  /** What the choice brings: the labels it adds, or a short muted line. */
-  body: ReactNode;
-}
-
-/**
- * Two to five answers to one question, each a tile that shows what the answer brings (the own fund's panel: each answer shows the
- * labels it adds to the fund's row). A radio group: arrow keys move between tiles; `value` may be null (nothing chosen yet). The tiles of a
- * row share one height, so a longer body never moves the row below. What is inside a tile is never a control of its own.
- */
-export function TileChoice<T extends string>({ label, labelledBy, tiles, value, onChange, columns = 2, className }: { label?: string; labelledBy?: string; tiles: Tile<T>[]; value: T | null; onChange: (v: T) => void; /** Tiles a row where the space holding them is wide (a container query: a narrow panel on a computer is one a row, as a phone). */ columns?: 2 | 3; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(e.key)) return;
-    e.preventDefault();
-    const i = Math.max(0, tiles.findIndex((t) => t.value === value));
-    // right to left: the left arrow goes on, as in SegmentedControl
-    const next = e.key === "Home" ? 0 : e.key === "End" ? tiles.length - 1 : e.key === "ArrowLeft" || e.key === "ArrowDown" ? (i + 1) % tiles.length : (i - 1 + tiles.length) % tiles.length;
-    onChange(tiles[next]!.value);
-    ref.current?.querySelectorAll<HTMLElement>("[role=radio]")[next]?.focus();
-  };
-  const chosen = tiles.some((t) => t.value === value);
-  return (
-    <div className="@container">
-      <div ref={ref} role="radiogroup" aria-label={label} aria-labelledby={labelledBy} onKeyDown={onKey} className={cx("grid gap-2 grid-cols-[minmax(0,1fr)]", columns === 3 ? "@md:grid-cols-2 @xl:grid-cols-3" : "@md:grid-cols-2", className)}>
-        {tiles.map((t, i) => {
-          const on = value === t.value;
-          return (
-            <button
-              key={t.value}
-              type="button"
-              role="radio"
-              aria-checked={on}
-              tabIndex={on || (!chosen && i === 0) ? 0 : -1}
-              onClick={() => onChange(t.value)}
-              className={cx(
-                "flex items-start gap-2.5 min-h-target rounded-md border px-3 py-2.5 cursor-pointer text-start transition-colors duration-(--duration-fast) focus-visible:outline-2 focus-visible:outline-ring",
-                on ? "border-primary bg-primary/10" : "border-border bg-card hover:bg-accent/60",
-              )}
-            >
-              <span aria-hidden="true" className={cx("size-4 shrink-0 rounded-full mt-0.5 transition-[border-width] duration-(--duration-fast)", on ? "border-[5px] border-primary" : "border-[1.5px] border-input")} />
-              <span className="flex flex-col gap-1.5 min-w-0">
-                {t.title && <span className={cx("text-sm", on && "font-medium")}>{t.title}</span>}
-                {t.body}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 /**
  * Links, buttons, fields and source taps inside a card whose whole face is one button (`PickCard`, a case's row) lie above that button, so
  * they keep working; a field's whole box (`data-lift`, FigureField's) lies above it too, so a press anywhere in the box goes to the field
@@ -301,7 +250,7 @@ export function onOwnSurface(t: Element, root: Element): boolean {
 
 /**
  * An option shown as a card, the whole card one button: a tap anywhere on it chooses it (guidelines/design.md, "Choose by
- * tapping the option itself"), never a "choose this" link inside it. Unlike TileChoice, what is inside may hold controls of its own (a
+ * tapping the option itself"), never a "choose this" link inside it. What is inside may hold controls of its own (a
  * figure that opens its source, a fund number that opens its page, a figure typed in place): they lie above the card's button. The button
  * is stretched over the card and comes first inside it, so the keyboard meets the card before what is in it, and a part of the card
  * positioned over it lets a press through to it (`PRESS_THROUGH`); `label` names it for a screen reader. `chosen`: the option chosen, marked by the action colour's edge (a word inside says so too, never colour alone); it keeps

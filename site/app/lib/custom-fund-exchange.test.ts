@@ -5,7 +5,7 @@
 // pricing of another fund or another answer.
 import { describe, expect, it } from "vitest";
 import type { FundExchange, FundRecord } from "@finance-tool/schema";
-import { draftWithKind, fundDraftOf, fundFromDraft, fundsAsRead, recordOfFund, validCustomFunds, withCustomEntries, type CustomFund, type FundDomicile } from "./custom-entries";
+import { draftWithPlace, fundDraftOf, fundFromDraft, fundsAsRead, recordOfFund, validCustomFunds, withCustomEntries, type BuyAt, type CustomFund, type CountryAnswer } from "./custom-entries";
 import { buildInvest, dealOnPlan, pairCosts, dealRunOf, fundWayAt, indexById, venueOfFund, type DealOnPlan, type FundWay, type WayPrice } from "./invest";
 import { invest as copy } from "../copy";
 import { leftOf } from "../components/invest/receipt";
@@ -34,14 +34,19 @@ function must<T>(v: T | null | undefined, what: string): T {
 }
 const indexOf = (b: typeof bundle) => must(indexById(b, SP), "the S&P 500 index");
 
+/** A new draft with the panel's first two answers. */
+const draftAt = (buyAt: BuyAt, country: CountryAnswer) => ({ ...fundDraftOf(null, { buyAt, country }), buyAt });
+/** The panel's answer for a fund bought abroad on an exchange in dollars, or abroad not sure where. */
+const AT_EXCHANGE: Record<FundExchange | "none", BuyAt> = { us: "us-usd", europe: "europe-usd", none: "abroad" };
+
 /**
  * An accumulating fund on the S&P 500, unhedged, its exchange as said (null: not sure), with or without a unit price in dollars, registered
  * in Ireland unless another country (null: other or not known) is given.
  */
-const typed = (exchange: FundExchange | null, unitPrice: number | null = null, domicile: FundDomicile | null = "IE"): CustomFund =>
+const typed = (exchange: FundExchange | null, unitPrice: number | null = null, domicile: CountryAnswer = "IE"): CustomFund =>
   fundFromDraft(
-    { ...fundDraftOf(null, "abroad"), name: `שלי ${exchange ?? "לא ידוע"} ${domicile ?? "-"}`, fixed: 0.07, payout: "accumulating", hedged: false, domicile, exchange, unitPrice: unitPrice === null ? null : { value: unitPrice, unit: "usd" } },
-    `custom-fund-${exchange ?? "unsure"}-${(domicile ?? "none").toLowerCase()}${unitPrice ? "-priced" : ""}`,
+    { ...draftAt(AT_EXCHANGE[exchange ?? "none"], domicile), name: `שלי ${exchange ?? "לא ידוע"} ${domicile}`, fixed: 0.07, payout: "accumulating", hedged: false, unitPrice: unitPrice === null ? null : { value: unitPrice, unit: "usd" } },
+    `custom-fund-${exchange ?? "unsure"}-${domicile.toLowerCase()}${unitPrice ? "-priced" : ""}`,
     SP,
     t,
     "USD",
@@ -122,7 +127,7 @@ describe("a fund typed abroad whose exchange is not given goes by its country on
 describe("a fund typed abroad with neither its exchange nor its country (F-65)", () => {
   // with a unit price the exchange changes a house's whole units (F-109); without one only the lines read differ
   describe.each([100, null])("unit price %s", (price) => {
-    const funds = [typed("us", price, null), typed("europe", price, null), typed(null, price, null)];
+    const funds = [typed("us", price, "unsure"), typed("europe", price, "unsure"), typed(null, price, "unsure")];
     const b = withCustomEntries(bundle, funds);
     const [us, europe, unsure] = funds.map((f) => wayOf(b, f.id)) as [FundWay, FundWay, FundWay];
 
@@ -156,7 +161,7 @@ describe("a fund typed abroad with neither its exchange nor its country (F-65)",
   });
 
   it("with a unit price, some house buys it in whole units on the exchange it is priced on (F-109)", () => {
-    const f = typed(null, 100, null);
+    const f = typed(null, 100, "unsure");
     const w = wayOf(withCustomEntries(bundle, [f]), f.id);
     const priced = houses.flatMap((h) => { const at = w.byHouse[h]; return at && "valueN" in at ? [at] : []; });
     expect(priced.length).toBeGreaterThan(3);
@@ -166,40 +171,6 @@ describe("a fund typed abroad with neither its exchange nor its country (F-65)",
 });
 
 describe("a typed fund as saved and read back (F-65, F-109)", () => {
-  // a fund abroad as the site saved it before the exchange and the unit price were asked: no field for either
-  const PRE_BRANCH = {
-    id: "custom-fund-saved-before",
-    name: "קרן ששמרתי",
-    number: null,
-    indexId: SP,
-    kind: "abroad",
-    fixed: { value: 0.07, unit: "pct_per_year", source: { url: "local", title: "הזנתם", publisher: "אתם", strength: "entered" }, checked: "2026-11-01", effective_from: "2026-11-01", effective_to: null, update_rule: "founder", state: "entered", about: "דמי ניהול שנתיים" },
-    variable: null,
-    trustee: null,
-    hedged: false,
-    payout: "accumulating",
-    yield: null,
-    perYear: null,
-    domicile: "IE",
-    tracking: null,
-    added: "2026-11-01",
-  };
-
-  it("a fund saved before the questions loads unchanged, as the same answers saved now with both left empty, and, registered in Ireland, reads as of no known exchange", () => {
-    const back = must(validCustomFunds([PRE_BRANCH])[0], "the saved fund read back");
-    expect(back).toEqual(PRE_BRANCH);
-    const now = fundFromDraft({ ...fundDraftOf(null, "abroad"), name: PRE_BRANCH.name, fixed: 0.07, payout: "accumulating", hedged: false, domicile: "IE", exchange: null, unitPrice: null }, PRE_BRANCH.id, SP, PRE_BRANCH.added, "USD");
-    expect(now).toEqual(back);
-    const b = withCustomEntries(bundle, [back, typed("us"), typed("europe")]);
-    const old = wayOf(b, back.id);
-    const [us, europe] = [typed("us"), typed("europe")].map((f) => wayOf(b, f.id)) as [FundWay, FundWay];
-    for (const h of houses) {
-      const a = left(us, h);
-      const e = left(europe, h);
-      expect([h, left(old, h)]).toEqual([h, a === null || e === null ? null : Math.min(a, e)]);
-    }
-  });
-
   it("the exchange and the unit price are kept through a save and a reload", () => {
     const f = typed("europe", 87.5);
     const back = must(validCustomFunds([JSON.parse(JSON.stringify(f))])[0], "the fund read back");
@@ -209,7 +180,7 @@ describe("a typed fund as saved and read back (F-65, F-109)", () => {
 
   it("a unit price keeps the day it was typed when saved again unchanged, and takes the day it is changed", () => {
     const first = typed("us", 100);
-    const draft = fundDraftOf(first, "abroad");
+    const draft = { ...fundDraftOf(first), buyAt: "us-usd" as const };
     const same = fundFromDraft(draft, first.id, SP, "2099-01-01", "USD", first);
     expect(same.unitPrice).toEqual(first.unitPrice);
     const changed = fundFromDraft({ ...draft, unitPrice: { value: 101, unit: "usd" } }, first.id, SP, "2099-01-01", "USD", first);
@@ -217,7 +188,7 @@ describe("a typed fund as saved and read back (F-65, F-109)", () => {
   });
 
   it("a unit price in a unit its kind is not typed in is not read back: a fund in Tel Aviv in agorot, a fund abroad in its currency", () => {
-    const etf = fundFromDraft({ ...fundDraftOf(null, "il-etf"), name: "סל", fixed: 0.1, variable: 0, trustee: 0, payout: "accumulating", hedged: false, unitPrice: { value: 12_345, unit: "agorot" } }, "custom-fund-etf", SP, t, "USD");
+    const etf = fundFromDraft({ ...draftAt("tase", "IL"), name: "סל", fixed: 0.1, variable: 0, trustee: 0, payout: "accumulating", hedged: false, unitPrice: { value: 12_345, unit: "agorot" } }, "custom-fund-etf", SP, t, "USD");
     expect(etf.unitPrice?.unit).toBe("agorot");
     const etfPrice = must(etf.unitPrice, "the ETF's unit price");
     const inShekels = { ...etf, id: "custom-fund-etf-nis", unitPrice: { ...etfPrice, unit: "nis" } };
@@ -232,7 +203,7 @@ describe("a typed fund as saved and read back (F-65, F-109)", () => {
 
 describe("a unit price typed in agorot for a fund bought in Tel Aviv (F-109, ETF-32)", () => {
   it("is read as a hundredth of a shekel: every house leaves what it leaves on the same fund priced in shekels", () => {
-    const draft = { ...fundDraftOf(null, "il-etf"), fixed: 0.1, variable: 0, trustee: 0, payout: "accumulating" as const, hedged: false, unitPrice: { value: 12_345, unit: "agorot" as const } };
+    const draft = { ...draftAt("tase", "IL"), fixed: 0.1, variable: 0, trustee: 0, payout: "accumulating" as const, hedged: false, unitPrice: { value: 12_345, unit: "agorot" as const } };
     const etf = fundFromDraft({ ...draft, name: "סל באגורות" }, "custom-fund-etf-agorot", SP, t, "USD");
     expect(etf.unitPrice?.unit).toBe("agorot");
     // the same fund, its price in shekels as a collected record's NAV would be: a record, since the page reads no typed price in shekels
@@ -254,8 +225,8 @@ describe("an account made from Interactive Israel's price list prices a typed fu
   const deal = must(fillDeal({ ...newDeal("brokerage-account", "interactive-israel"), id: "deal-interactive-israel" }, "house:interactive-israel", data, t), "Interactive Israel's deal");
   const pid = dealProviderId(deal.id);
   // its US line is a price per share (BRK-40), so the fund's unit price is typed
-  const unsureFund = typed(null, 100, null);
-  const funds = [typed("us", 100, null), typed("europe", 100, null), unsureFund];
+  const unsureFund = typed(null, 100, "unsure");
+  const funds = [typed("us", 100, "unsure"), typed("europe", 100, "unsure"), unsureFund];
   const bare = typed("us");
   const b = withDeals(withCustomEntries(bundle, [...funds, bare]), [deal], data.kinds);
   const ix = indexOf(b);
@@ -336,29 +307,29 @@ describe("the popup's place tile (F-128)", () => {
 
 describe("what the record says of the exchange (F-65)", () => {
   it("says it is not known where the exchange was not given and the country is not the United States; registered there it follows it, as a collected record's", () => {
-    expect(recordOfFund(typed(null, null, null), "USD").exchange).toBe("unknown");
+    expect(recordOfFund(typed(null, null, "unsure"), "USD").exchange).toBe("unknown");
     expect(recordOfFund(typed(null, null, "IE"), "USD").exchange).toBe("unknown");
     expect(recordOfFund(typed(null, null, "US"), "USD").exchange).toBeUndefined();
-    expect(recordOfFund(typed("us", null, null), "USD").exchange).toBe("us");
+    expect(recordOfFund(typed("us", null, "unsure"), "USD").exchange).toBe("us");
   });
 
   it("a collected record with no exchange ticker, registered outside the United States, names no exchange and is never priced: the data check refuses it", () => {
-    const { exchange: _, ...rec } = recordOfFund(typed(null, 100, null), "USD");
+    const { exchange: _, ...rec } = recordOfFund(typed(null, 100, "unsure"), "USD");
     const collected: FundRecord = { ...rec, id: "collected-lu", domicile: "LU" };
     expect(venueOfFund(collected)).toBeNull();
     const b = { ...bundle, funds: [...bundle.funds, collected] };
     expect(() => wayOf(b, collected.id)).toThrow(/names no exchange/);
   });
   it("a collected record's tickers name its exchange, the keys of SIX and Deutsche Boerse among them", () => {
-    const { exchange: _, ...rec } = recordOfFund(typed(null, 100, null), "USD");
+    const { exchange: _, ...rec } = recordOfFund(typed(null, 100, "unsure"), "USD");
     for (const key of ["SIX", "Deutsche Boerse", "Xetra", "LSE_GBP", "Euronext Amsterdam"]) expect([key, venueOfFund({ ...rec, domicile: "IE", identifiers: { ...rec.identifiers, ticker: { [key]: "X" } } })]).toEqual([key, "europe"]);
     for (const key of ["NYSE Arca", "NASDAQ"]) expect([key, venueOfFund({ ...rec, domicile: "IE", identifiers: { ...rec.identifiers, ticker: { [key]: "X" } } })]).toEqual([key, "us"]);
   });
 });
 
 describe("the caution of a fund whose exchange is not known is on its figure (F-65)", () => {
-  const unsure = typed(null, 100, null);
-  const known = typed("us", 100, null);
+  const unsure = typed(null, 100, "unsure");
+  const known = typed("us", 100, "unsure");
   const b = withCustomEntries(bundle, [unsure, known]);
   const pricedAt = (w: FundWay) => houses.flatMap((h) => { const at = w.byHouse[h]; return at && "valueN" in at ? [at as WayPrice] : []; });
 
@@ -404,9 +375,9 @@ describe("a house with lines on both exchanges that prices one of them and not t
   // Interactive Israel's list prices each exchange on its own line: its line for Europe is left with no value, so it has no price there
   const europeLine = "interactive-israel-buy-sell-europe";
   const snapshots = bundle.snapshots.map((s) => (s.id === "interactive-israel" ? { ...s, lines: s.lines.map((l) => (l.id === europeLine ? { ...l, rate: { ...l.rate, value: null } } : l)) } : s));
-  const unsure = typed(null, 100, null);
-  const onEurope = typed("europe", 100, null);
-  const onUs = typed("us", 100, null);
+  const unsure = typed(null, 100, "unsure");
+  const onEurope = typed("europe", 100, "unsure");
+  const onUs = typed("us", 100, "unsure");
   const b = withCustomEntries({ ...bundle, snapshots }, [unsure, onEurope, onUs]);
   const at = (f: CustomFund) => wayOf(b, f.id).byHouse["interactive-israel"];
 
@@ -458,17 +429,20 @@ describe("the generic fund abroad at a deal priced on both exchanges (F-63)", ()
 });
 
 describe("the unit price as the panel types it (F-109)", () => {
-  const abroad = { ...fundDraftOf(null, "abroad"), name: "קרן", fixed: 0.07, payout: "accumulating" as const, hedged: false, domicile: "IE" as const, unitPrice: { value: 100, unit: "usd" as const } };
+  // abroad, not sure where: the fund's currency stands in by its index's (`fundCurrencyOf`)
+  const abroad = { ...draftAt("abroad", "IE"), name: "קרן", fixed: 0.07, payout: "accumulating" as const, hedged: false, unitPrice: { value: 100, unit: "usd" as const } };
 
   it("is cleared on a kind whose price is typed in another unit, and kept on one typed in the same unit", () => {
-    expect(draftWithKind(abroad, "il-etf", "USD").unitPrice).toBeNull();
-    expect(draftWithKind(abroad, "il-tracking", "USD").unitPrice).toBeNull();
-    const etf = { ...abroad, kind: "il-etf" as const, unitPrice: { value: 12_345, unit: "agorot" as const } };
-    expect(draftWithKind(etf, "tase-foreign", "USD").unitPrice).toEqual(etf.unitPrice);
+    expect(draftWithPlace(abroad, { buyAt: "tase", country: "IL" }, "USD").unitPrice).toBeNull();
+    expect(draftWithPlace(abroad, { buyAt: "manager", country: "IL" }, "USD").unitPrice).toBeNull();
+    expect(draftWithPlace(abroad, { buyAt: "europe-eur", country: "IE" }, "USD").unitPrice).toBeNull();
+    expect(draftWithPlace(abroad, { buyAt: "europe-usd", country: "IE" }, "USD").unitPrice).toEqual(abroad.unitPrice);
+    const etf = { ...abroad, ...draftAt("tase", "IL"), unitPrice: { value: 12_345, unit: "agorot" as const } };
+    expect(draftWithPlace(etf, { buyAt: "tase", country: "IE" }, "USD").unitPrice).toEqual(etf.unitPrice);
   });
 
-  it("is not saved in a unit other than the kind's at the index's currency", () => {
-    expect(fundFromDraft({ ...abroad, kind: "il-etf" }, "custom-fund-a", SP, t, "USD").unitPrice).toBeUndefined();
+  it("is not saved in a unit other than the kind's at the fund's currency", () => {
+    expect(fundFromDraft({ ...abroad, ...draftAt("tase", "IL") }, "custom-fund-a", SP, t, "USD").unitPrice).toBeUndefined();
     expect(fundFromDraft(abroad, "custom-fund-b", SP, t, "EUR").unitPrice).toBeUndefined();
     expect(fundFromDraft(abroad, "custom-fund-c", SP, t, "USD").unitPrice).toMatchObject({ value: 100, unit: "usd" });
   });
@@ -480,12 +454,19 @@ describe("the unit price as the panel types it (F-109)", () => {
     expect(back.map((x) => [x.id, x.unitPrice])).toEqual([["custom-fund-neg", undefined], ["custom-fund-text", undefined]]);
   });
 
-  it("is not read on a fund whose index is in another currency than the price, and the fund is bought by amount", () => {
-    const f = typed("us", 100);
+  it("is not read on a fund whose currency stands in by its index's, where the index is in another currency than the price, and the fund is bought by amount", () => {
+    const f = typed(null, 100);
     const exposures = bundle.exposures.map((e) => (e.id === SP ? { ...e, currency: "EUR" } : e));
     const [read] = fundsAsRead({ exposures }, [f]);
     expect(read?.id).toBe(f.id);
     expect(read?.unitPrice).toBeUndefined();
     expect(fundsAsRead(bundle, [f])[0]).toBe(f);
+  });
+  it("is kept on a fund bought on the US exchange, whose currency the person said, on an index in euros: its price is in the dollar it is bought in", () => {
+    const f = typed("us", 100);
+    const exposures = bundle.exposures.map((e) => (e.id === SP ? { ...e, currency: "EUR" } : e));
+    const [read] = fundsAsRead({ exposures }, [f]);
+    expect(read).toBe(f);
+    expect(read?.unitPrice).toMatchObject({ value: 100, unit: "usd" });
   });
 });

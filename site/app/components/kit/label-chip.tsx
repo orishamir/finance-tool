@@ -2,7 +2,7 @@
 // a chip of an icon and two or three words, a row of them, and the one sheet per page that a tap opens with the label's meaning
 // and its rules. The words and the rules come from lib/labels.ts.
 import { createContext, useContext, useId, useState, type ReactNode } from "react";
-import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, Building2, CalendarClock, Coins, Currency, DollarSign, Euro, EyeOff, FileCheck, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Megaphone, Percent, Package, PiggyBank, PoundSterling, ReceiptText, Scale, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, UserPlus, type LucideProps } from "lucide-react";
+import { Activity, ArrowRightLeft, Ban, BadgePercent, Blend, Building2, CalendarClock, Coins, Currency, DollarSign, Euro, EyeOff, FileCheck, FileClock, FilePen, FileSignature, Gavel, Globe, HandCoins, House, JapaneseYen, Landmark, Lock, Megaphone, Percent, Package, PiggyBank, PoundSterling, ReceiptText, Scale, ScrollText, ShieldCheck, SwissFranc, TrendingUpDown, Unlink, UserPlus, type LucideProps } from "lucide-react";
 import { invest as c } from "../../copy";
 import type { Label, LabelIconKey } from "../../lib/labels";
 import { labelDoc, labelRules } from "../../lib/label-rests";
@@ -48,6 +48,7 @@ const icons: Record<LabelIconKey, React.ComponentType<LucideProps>> = {
   building: Building2,
   coins: Coins,
   scale: Scale,
+  unlink: Unlink,
 };
 
 export function LabelIcon({ name, size = 14 }: { name: LabelIconKey; size?: number }) {
@@ -125,7 +126,7 @@ export const chipShape = "inline-flex items-center gap-[5px] text-xs leading-[18
 
 /** A label: an icon and two or three words; colour never alone (the icon and the words carry it; the open tone also has the lock). Its tap area
  *  reaches 44 px high, beyond the drawn chip, so a row of chips keeps its height. */
-export function LabelChip({ label, still = false, words = false }: { label: Label; /** Drawn only, not a button: inside a control of its own (a tile of TileChoice), where a tap is the control's. */ still?: boolean; /** Words only, in the line's own colour, no chip: a kind that follows a product's name ("קבועה לשנה, מבצע"); a tap still opens its meaning. */ words?: boolean }) {
+export function LabelChip({ label, still = false, words = false }: { label: Label; /** Drawn only, not a button: a preview of a row that is not on the page yet (the own fund's panel), whose sheet has nothing to rest on. */ still?: boolean; /** Words only, in the line's own colour, no chip: a kind that follows a product's name ("קבועה לשנה, מבצע"); a tap still opens its meaning. */ words?: boolean }) {
   const open = useContext(OpenCtx);
   if (words)
     return (

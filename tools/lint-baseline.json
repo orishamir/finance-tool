@@ -85,7 +85,6 @@
    "site/app/lib/guide.server.ts": 2,
    "site/app/lib/import-check.ts": 2,
    "site/app/lib/invest.ts": 4,
-   "site/app/lib/labels.ts": 1,
    "site/app/lib/list-sort.ts": 2,
    "site/app/lib/own-account.ts": 5,
    "site/app/lib/providers.ts": 1,
@@ -97,7 +96,7 @@
    "site/app/lib/side-stores.ts": 1,
    "site/app/lib/sources.ts": 3,
    "site/app/lib/stairs.ts": 1,
-   "site/app/lib/state.ts": 13,
+   "site/app/lib/state.ts": 12,
    "site/app/lib/track-browser.ts": 1
   },
   "types": {
@@ -284,7 +283,6 @@
    "site/app/components/fee-deal/undo-line.tsx": 2,
    "site/app/components/fee-deal/use-deal-document.ts": 2,
    "site/app/components/fee-deal/use-open-case.ts": 1,
-   "site/app/components/invest/custom-entries.tsx": 1,
    "site/app/components/invest/deal-account.tsx": 1,
    "site/app/components/invest/dollar.tsx": 1,
    "site/app/components/invest/lists.tsx": 1,
@@ -449,7 +447,6 @@
    "site/app/components/guide/worth-knowing.test.ts": 3,
    "site/app/components/home/body.test.ts": 10,
    "site/app/components/invest/before.tsx": 2,
-   "site/app/components/invest/custom-entries.tsx": 9,
    "site/app/components/invest/deal-account.tsx": 12,
    "site/app/components/invest/dollar.tsx": 17,
    "site/app/components/invest/funds.tsx": 2,
@@ -478,7 +475,7 @@
    "site/app/components/kit/chart-parts.tsx": 1,
    "site/app/components/kit/chart-zoom.test.ts": 2,
    "site/app/components/kit/chip-list.tsx": 6,
-   "site/app/components/kit/choice.tsx": 4,
+   "site/app/components/kit/choice.tsx": 3,
    "site/app/components/kit/cost-stack.tsx": 32,
    "site/app/components/kit/deposit-words.tsx": 3,
    "site/app/components/kit/did-you-know.tsx": 1,
@@ -537,7 +534,7 @@
    "site/app/lib/company-docs.ts": 3,
    "site/app/lib/company-focus.server.ts": 5,
    "site/app/lib/company-focus.ts": 2,
-   "site/app/lib/custom-entries.test.ts": 49,
+   "site/app/lib/custom-entries.test.ts": 47,
    "site/app/lib/custom-entries.ts": 2,
    "site/app/lib/data-as-of.ts": 2,
    "site/app/lib/data.server.ts": 19,
@@ -660,7 +657,7 @@
    "site/app/lib/instrument-terms.test.ts": 8,
    "site/app/lib/instruments.server.ts": 7,
    "site/app/lib/invest.test.ts": 120,
-   "site/app/lib/invest.ts": 25,
+   "site/app/lib/invest.ts": 24,
    "site/app/lib/jsx-scan.ts": 5,
    "site/app/lib/left-out.test.ts": 1,
    "site/app/lib/left-out.ts": 1,
@@ -761,7 +758,6 @@
   },
   "unicorn(no-useless-fallback-in-spread)": {
    "packages/engine/src/inputs.ts": 1,
-   "site/app/lib/custom-entries.ts": 2,
    "site/app/lib/own-rate.ts": 2
   },
   "unicorn(no-useless-length-check)": {
