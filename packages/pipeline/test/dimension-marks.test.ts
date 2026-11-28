@@ -41,6 +41,36 @@ describe("checkDimensionMarks", () => {
   });
 });
 
+describe("checkDimensionMarks on a fund", () => {
+  const fee = (rule_ids: string[]) => ({ value: 0.2, unit: "pct_per_year", source: { url: "https://example.org/r" }, rule_ids });
+  const fund = (marks: Record<string, string>) => ({ fees: { fixed_management: fee(["PF-06"]), trustee: fee(["KH-22"]) }, dimensions: marks });
+
+  it("holds a covered:<id> mark to an id the record cites", () => {
+    expect(checkDimensionMarks(fund({ "fee-management-balance": "covered:PF-06", "fee-deposit": "covered:KH-22" }), dims, noQuestions, "fund")).toEqual([]);
+    expect(checkDimensionMarks(fund({ "fee-management-balance": "covered:IRA-11" }), dims, noQuestions, "fund")).toEqual([
+      "dimensions.fee-management-balance: marked covered:IRA-11, but the record cites IRA-11 in no rule_ids (§4 item 9)",
+    ]);
+  });
+
+  it("lets a bare covered mark stand, whatever the record cites", () => {
+    expect(checkDimensionMarks(fund({ currency: "covered" }), dims, noQuestions, "fund")).toEqual([]);
+  });
+});
+
+describe("the funds under data/funds", () => {
+  const data = { dataDir: OWN_DATA, files: listFiles(OWN_DATA), whole: true };
+  const funds = latestRecords(data, "funds");
+
+  it("finds the records", () => {
+    expect(funds.length).toBeGreaterThan(40);
+  });
+
+  it("names, in every covered:<id> mark of a fund's latest snapshot, an id the record cites", () => {
+    const problems = funds.flatMap((r) => checkDimensionMarks(r.record as Record<string, unknown>, new Map(), noQuestions, "fund").map((m) => `${r.key}: ${m}`));
+    expect(problems).toEqual([]);
+  });
+});
+
 describe("the wrappers and securities under data/instruments", () => {
   const data = { dataDir: OWN_DATA, files: listFiles(OWN_DATA), whole: true };
   const ruleDimensions = new Map<string, string[]>();

@@ -92,11 +92,11 @@
     "fund_level_withholding_drag": null
   },
   "dimensions": {
-    "foreign-withholding-domicile": "covered:TXF-16",
-    "distribution-policy": "covered:ETF-28",
-    "currency": "covered:ETF-28",
-    "fee-management-balance": "covered:ETF-28",
-    "fee-trade": "covered:ETF-29"
+    "foreign-withholding-domicile": "covered",
+    "distribution-policy": "covered:ETF-27",
+    "currency": "covered:ETF-27",
+    "fee-management-balance": "covered:ETF-27",
+    "fee-trade": "covered"
   },
   "prospectus": {
     "url": "https://www.ishares.com/gls-download/literature/fact-sheet/csndx-ishares-nasdaq-100-ucits-etf-fund-fact-sheet-en-gb.pdf",

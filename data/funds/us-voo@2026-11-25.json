@@ -84,10 +84,10 @@
     "fund_level_withholding_drag": null
   },
   "dimensions": {
-    "foreign-withholding-domicile": "covered:TXF-12",
-    "distribution-policy": "covered:ETF-28",
-    "currency": "covered:ETF-28",
-    "fee-management-balance": "covered:ETF-28"
+    "foreign-withholding-domicile": "covered",
+    "distribution-policy": "covered",
+    "currency": "covered",
+    "fee-management-balance": "covered:ETF-09"
   },
   "prospectus": {
     "url": "https://fund-docs.vanguard.com/F0968.pdf",

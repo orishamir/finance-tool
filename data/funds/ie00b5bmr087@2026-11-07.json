@@ -134,9 +134,9 @@
   },
   "dimensions": {
     "foreign-withholding-domicile": "covered:TXF-16",
-    "distribution-policy": "covered:ETF-28",
-    "currency": "covered:ETF-28",
-    "fee-management-balance": "covered:ETF-28",
+    "distribution-policy": "covered:ETF-27",
+    "currency": "covered:ETF-27",
+    "fee-management-balance": "covered:ETF-27",
     "fee-trade": "covered:ETF-29"
   },
   "prospectus": {

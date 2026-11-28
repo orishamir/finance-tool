@@ -202,9 +202,9 @@
   },
   "dimensions": {
     "liquidity-lockup": "covered:MF-35",
-    "fee-custody": "covered:BRK-17",
+    "fee-custody": "covered",
     "fee-management-balance": "covered:MF-16",
-    "protection": "covered:MF-02",
+    "protection": "covered:MF-43",
     "currency": "covered:MF-43"
   },
   "prospectus": {

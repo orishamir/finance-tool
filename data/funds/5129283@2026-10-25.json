@@ -196,12 +196,12 @@
     }
   },
   "dimensions": {
-    "fund-tax-track": "covered:TXS-07",
+    "fund-tax-track": "covered",
     "fee-management-balance": "covered:MF-16",
-    "distribution-policy": "covered:MF-49",
+    "distribution-policy": "covered",
     "currency": "covered:ETF-10",
     "fee-trade": "covered:MF-21",
-    "protection": "covered:MF-02"
+    "protection": "covered:ETF-11"
   },
   "prospectus": {
     "url": "https://mayafiles.tase.co.il/rpdf/1730001-1731000/P1730280-00.pdf",
