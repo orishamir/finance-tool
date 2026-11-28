@@ -387,7 +387,7 @@ function countedLabel(t: InsideTax): DividendTaxLabelId | null {
       return b.fund === "us" ? null : "tax-fund-dividend";
     case "none":
     case "futures-net":
-    case "synthetic-region":
+    case "synthetic-domestic":
     case "way-not-known":
       throw new Error(`an inside tax of kind ${b.kind} is counted through its years or at two ends`);
     default:

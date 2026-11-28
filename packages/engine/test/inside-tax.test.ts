@@ -102,16 +102,16 @@ describe("F-133 a net index's deduction, and a fund's gap measured from it", () 
     const fut = insideTaxEnds({ basis: { kind: "futures-net" }, parts: worldUs, netRule: "TXF-59" }, rate);
     expect(fut.low).toBe(0);
     expect(pct(fut.high)).toBeCloseTo(0.24669, 6);
-    const europe = insideTaxEnds({ basis: { kind: "synthetic-region" }, parts: [{ countries: REGION_COUNTRIES.europe, yield: 0.03, weight: 1 }] }, rate);
+    const europe = insideTaxEnds({ basis: { kind: "synthetic-domestic" }, parts: [{ countries: REGION_COUNTRIES.europe, yield: 0.03, weight: 1 }] }, rate);
     expect(pct(europe.high)).toBeCloseTo(1.05, 9);
-    const us = insideTaxEnds({ basis: { kind: "synthetic-region" }, parts: [{ countries: REGION_COUNTRIES.us, yield: 0.03, weight: 1 }] }, rate);
+    const us = insideTaxEnds({ basis: { kind: "synthetic-domestic" }, parts: [{ countries: REGION_COUNTRIES.us, yield: 0.03, weight: 1 }] }, rate);
     expect(pct(us.high)).toBeCloseTo(0.9, 9);
   });
   it("takes the widest of holding and swap where the way of following is not known", () => {
     const e = insideTaxEnds({ basis: { kind: "way-not-known", fund: "ireland", swap: "net" }, parts: worldUs, netRule: "TXF-59" }, rate);
     expect(pct(e.low)).toBeCloseTo(0.123345, 6);
     expect(pct(e.high)).toBeCloseTo(0.24669, 6);
-    const added = insideTaxEnds({ basis: { kind: "way-not-known", fund: "ireland", swap: "region" }, parts: [{ countries: REGION_COUNTRIES.us, yield: 0.03, weight: 1 }] }, rate);
+    const added = insideTaxEnds({ basis: { kind: "way-not-known", fund: "ireland", swap: "domestic" }, parts: [{ countries: REGION_COUNTRIES.us, yield: 0.03, weight: 1 }] }, rate);
     expect(added.low).toBe(0);
     expect(pct(added.high)).toBeCloseTo(0.9, 9);
   });

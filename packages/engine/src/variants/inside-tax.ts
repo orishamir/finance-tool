@@ -151,16 +151,17 @@ export const INSIDE_TAX_FLAGS: readonly string[] = [
  * - `net`: a swap fund with no years, read as paying the net index, bears its deduction (F-133 (a)): the fund's own statement, or the
  *   site's reading for a typed fund;
  * - `futures-net`: a typed futures fund on a collected index, 0 to the net index's deduction;
- * - `synthetic-region`: a typed swap or futures fund on an index the person added, 0 to the region's highest domestic rate;
- * - `way-not-known`: a typed fund whose way of following was not said, the widest of `held` and its swap reading (`net` or the region's);
+ * - `synthetic-domestic`: a typed swap or futures fund on an index the person added, 0 to the highest domestic rate over each part's countries;
+ * - `way-not-known`: a typed fund whose way of following was not said, the widest of `held` and its swap reading (`net`, or the highest
+ *   domestic rate, `domestic`);
  * - `none`: 0, where its years carry what it bore (F-133 (b)).
  */
 export type InsideTaxBasis =
   | { kind: "held"; fund: FundCountry; ends: "accepted" | "both" }
   | { kind: "net"; statement: "fund" | "reading" }
   | { kind: "futures-net" }
-  | { kind: "synthetic-region" }
-  | { kind: "way-not-known"; fund: FundCountry; swap: "net" | "region" }
+  | { kind: "synthetic-domestic" }
+  | { kind: "way-not-known"; fund: FundCountry; swap: "net" | "domestic" }
   | { kind: "none" };
 
 /** A-11 as the run counts it: its basis, the index parts it rests on, the index's net rule, and F-133 (b)'s years where they apply. */
@@ -228,7 +229,7 @@ export function insideTaxOf(fund: InsideTaxFund, dividends: IndexDividends | und
     case "swap":
     case "futures": {
       if (parts.length === 0) return notCounted("synthetic");
-      if (dividends?.source === "added") return fund.typed ? counted({ kind: "synthetic-region" }) : notCounted("synthetic");
+      if (dividends?.source === "added") return fund.typed ? counted({ kind: "synthetic-domestic" }) : notCounted("synthetic");
       if (!netRule) return notCounted("synthetic");
       if (fund.replication === "swap") return counted({ kind: "net", statement: fund.typed ? "reading" : "fund" });
       return fund.typed ? counted({ kind: "futures-net" }) : notCounted("synthetic");
@@ -242,7 +243,7 @@ export function insideTaxOf(fund: InsideTaxFund, dividends: IndexDividends | und
       // a US fund that pays out bears no US tax on its US companies however it follows its index (TXF-56); its other parts as it holds them
       if (country === "us" && !fund.typed) return counted(heldBasis(country));
       if (!fund.typed) return notCounted("some-shares");
-      if (dividends?.source === "added") return counted({ kind: "way-not-known", fund: country, swap: "region" });
+      if (dividends?.source === "added") return counted({ kind: "way-not-known", fund: country, swap: "domestic" });
       return netRule ? counted({ kind: "way-not-known", fund: country, swap: "net" }) : notCounted("some-shares");
     }
     default:
@@ -260,7 +261,7 @@ export function hasTwoEnds(t: InsideTax): boolean {
     case "held":
       return b.ends === "both" && t.parts.some((p) => p.countries.length > 1 || p.countries.some((c) => INSIDE_TAX_ROWS[b.fund].cells[c].question !== undefined));
     case "futures-net":
-    case "synthetic-region":
+    case "synthetic-domestic":
     case "way-not-known":
       return true;
     case "net":
@@ -324,7 +325,7 @@ function deductionOf(netRule: string, parts: readonly DividendPart[], rate: Rate
 }
 
 /** The highest domestic rate (TXF-53) over each part's countries, times its yield and share: the high end of a swap or futures on an added index. */
-const regionHigh = (parts: readonly DividendPart[], rate: RateOf): number =>
+const domesticHigh = (parts: readonly DividendPart[], rate: RateOf): number =>
   heldDividendTax(parts.map((p) => ({ rate: Math.max(...p.countries.map((c) => rate(DOMESTIC, c))), yield: p.yield, weight: p.weight })));
 
 const needNet = (t: InsideTax): string => {
@@ -356,13 +357,13 @@ export function insideTaxEnds(t: InsideTax, rate: RateOf): InsideTaxEnds {
       const d = deductionOf(netRule, t.parts, rate);
       return { low: 0, high: d, open: { rule: netRule, why: "futures" }, cites: ["TXS-41"], flags: [], formulas: ["F-133"], deduction: d };
     }
-    case "synthetic-region":
-      return { low: 0, high: regionHigh(t.parts, rate), open: { rule: DOMESTIC, why: "synthetic" }, cites: ["TXS-41"], flags: t.parts.some((p) => p.countries.length > 1) ? [REGION_FLAG] : [], formulas: ["F-107"] };
+    case "synthetic-domestic":
+      return { low: 0, high: domesticHigh(t.parts, rate), open: { rule: DOMESTIC, why: "synthetic" }, cites: ["TXS-41"], flags: t.parts.some((p) => p.countries.length > 1) ? [REGION_FLAG] : [], formulas: ["F-107"] };
     case "way-not-known": {
       const held = heldEnds(b.fund, t.parts, true, rate);
       const swap = b.swap === "net" ? deductionOf(needNet(t), t.parts, rate) : null;
       const low = Math.min(held.low, swap ?? 0);
-      const high = Math.max(held.high, swap ?? regionHigh(t.parts, rate));
+      const high = Math.max(held.high, swap ?? domesticHigh(t.parts, rate));
       return {
         low,
         high,
