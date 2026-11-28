@@ -200,4 +200,15 @@ describe("a sourced figure's source", () => {
     expect(other).not.toContain("חוק לבדיקה");
     expect(other).not.toContain("סעיף 9");
   });
+  it("a figure that names no place takes the rule's place when the rule cites its document at one place, and only its names at several", () => {
+    const one = sheet(value());
+    expect(one).toContain("חוק לבדיקה");
+    expect(one).toContain("סעיף 9");
+    const second = { url: "https://example.org/law.pdf", title: "The law", title_he: "חוק לבדיקה", publisher: "x", kind: "law", strength: "primary", page: 6, locator_he: "סעיף 10", checked: today };
+    const two = { ...data, rules: { "TXA-30": { ...rule, sources: [...(rule.sources ?? []), second] } as unknown as RuleRecord } };
+    const several = render(createElement(ValueSheet, { value: value(), exact: false, data: two, headId: "h", descId: "d" }), two);
+    expect(several).toContain("חוק לבדיקה");
+    expect(several).not.toContain("סעיף 9");
+    expect(several).not.toContain("סעיף 10");
+  });
 });

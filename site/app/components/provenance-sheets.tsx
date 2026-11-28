@@ -492,22 +492,32 @@ function FigureSource({ value, data, strengthSaid }: { value: SiteValue; data: P
     const r = ruleOf(data, id);
     return r ? [asSourced(r)] : [];
   });
-  const samePlace = (x: RuleSource) => documentKey(x.url) === documentKey(value.source.url) && (x.page ?? null) === (at.page ?? null) && (x.quote ?? null) === (quote ?? null);
-  const known = loaded.flatMap((r) => pickSources(r)).find(samePlace);
+  // the rules' places in the figure's document, each once
+  const inDocument = [...new Map(loaded.flatMap((r) => pickSources(r)).filter((x) => documentKey(x.url) === documentKey(value.source.url)).map((x) => [`${x.page ?? ""}|${x.quote ?? ""}|${x.locator_he ?? ""}`, x])).values()];
+  const samePlace = (x: RuleSource) => (x.page ?? null) === (at.page ?? null) && (x.quote ?? null) === (quote ?? null);
+  // a figure that names no place of its own is at the rules' place when they cite its document at one place only, and takes that place
+  // whole (TXH-02's cap: the booklet's page and row); cited at several places, it takes only the names they all give the document
+  const placeless = !at.page && !quote && !at.fragment;
+  const whole = placeless && inDocument.length === 1 ? inDocument[0] : undefined;
+  const oneTitle = new Set(inDocument.map((x) => x.title_he ?? x.title)).size === 1;
+  const known = whole ?? inDocument.find(samePlace) ?? (placeless && oneTitle ? inDocument[0] : undefined);
   const owner = [...loaded].sort((x, y) => (x.recheck_date ?? "9999").localeCompare(y.recheck_date ?? "9999"))[0];
   const publisherHe = at.publisher_he ?? known?.publisher_he;
   const titleHe = at.title_he ?? known?.title_he;
   const kind = at.kind ?? known?.kind;
+  const locatorHe = at.locator_he ?? whole?.locator_he;
+  const shownQuote = quote ?? whole?.quote;
+  const page = at.page ?? whole?.page;
   const source: RuleSource = {
     title: value.source.title,
     publisher: value.source.publisher,
     ...(publisherHe ? { publisher_he: publisherHe } : {}),
     ...(titleHe ? { title_he: titleHe } : {}),
     ...(kind ? { kind } : {}),
-    ...(at.locator_he ? { locator_he: at.locator_he } : {}),
-    ...(quote ? { quote } : {}),
+    ...(locatorHe ? { locator_he: locatorHe } : {}),
+    ...(shownQuote ? { quote: shownQuote } : {}),
     url: value.source.url,
-    ...(at.page ? { page: at.page } : {}),
+    ...(page ? { page } : {}),
     ...(at.fragment ? { fragment: at.fragment } : {}),
     strength: strengthOk(value.source.strength) ? value.source.strength : (known?.strength ?? "secondary"),
     checked: value.checked,
