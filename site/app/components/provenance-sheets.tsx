@@ -4,7 +4,7 @@
 import { useContext, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link, useLocation } from "react-router";
-import { assertNever, type RuleRecord, type SourceStanding } from "@finance-tool/schema";
+import { assertNever, type RuleRecord } from "@finance-tool/schema";
 import type { FundStatement } from "@finance-tool/engine";
 import { system, buttons, computedInputs, flags as flagCopy, notCovered as notCoveredCopy, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
@@ -65,12 +65,6 @@ function Iso({ children, ltr }: { children: ReactNode; ltr?: boolean }) {
  */
 type OwnSource = boolean | ((source: RuleSource) => boolean);
 
-/**
- * What a source is where it is not the binding text in force (the schema's `standing`, read from the rule base's qualifier). The record's
- * source carries it; the sources layer's hand-written shape (lib/sources.ts `RuleSource`) does not name the field yet.
- */
-const standingOf = (s: RuleSource): SourceStanding | undefined => (s as RuleSource & { standing?: SourceStanding }).standing;
-
 /** A document's names on its head link, each once (`SourceView`): the publisher, a dot, the document's title; either may be left out. */
 function DocumentNames({ view }: { view: Pick<SourceView, "publisher" | "title" | "hebrew"> }) {
   const pub = view.publisher && <Iso ltr={!hasHebrew(view.publisher)}>{gershayim(view.publisher)}</Iso>;
@@ -113,7 +107,7 @@ function DocumentSource({ view, rules, today, english, own, strengthSaid, boxed,
     // D31: a company's own document on its own term carries no "לפי החברה"; `own` lifts only that word, never "מקור משני"
     const isOwn = typeof own === "function" ? own(s) : !!own;
     const weak = !strengthSaid && s.strength !== "primary" && !(isOwn && s.strength === "institution") ? sourceCopy.weak[s.strength] : null;
-    const standing = standingOf(s);
+    const standing = s.standing;
     const changed = sourceChange(rules, s, today) === "may-have-changed";
     const words = [weak, standing ? sourceCopy.standing[standing] : null, changed ? sourceCopy.mayHaveChanged : null].filter((x): x is string => !!x);
     const link = placeWords(place, view);
@@ -500,7 +494,7 @@ function unitWordOf(unit: string): string | null {
 /**
  * The sourced figure's one source block: the figure's own source, place and date. Of its rules it borrows the document's names (the Hebrew
  * publisher and title, the document's kind), and a place only from its own rule, when that rule cites the document at one place and the
- * figure names none or the same page; the figure's own names come first. Whether it may have changed reads the rule behind it that is soonest to be read again. `strengthSaid`: the sheet's
+ * figure names none or the same page; the figure's own names come first. Whether it may have changed reads the soonest re-check date of the rules behind it. `strengthSaid`: the sheet's
  * strength callout already names the source's strength.
  */
 function FigureSource({ value, data, strengthSaid }: { value: SiteValue; data: ProvenanceData; strengthSaid: boolean }) {
@@ -528,7 +522,6 @@ function FigureSource({ value, data, strengthSaid }: { value: SiteValue; data: P
   const places = loaded.flatMap(inDocument);
   const oneTitle = new Set(places.map((x) => x.title_he ?? x.title)).size === 1;
   const known = whole ?? places.find((x) => (x.page ?? null) === (ownPage ?? null) && (x.quote ?? null) === (quote ?? null)) ?? (oneTitle ? places[0] : undefined);
-  const owner = [...loaded].sort((x, y) => (x.recheck_date ?? "9999").localeCompare(y.recheck_date ?? "9999"))[0];
   const publisherHe = at.publisher_he ?? known?.publisher_he;
   const titleHe = at.title_he ?? known?.title_he;
   const kind = at.kind ?? known?.kind;
@@ -551,7 +544,7 @@ function FigureSource({ value, data, strengthSaid }: { value: SiteValue; data: P
   };
   // a figure's source can be a file of the site, not a web address: the old plain label stays for it
   if (!/^https?:/.test(publicUrl(source.url))) return <SourceLink url={source.url} title={source.title} />;
-  return <SourceBlock source={source} rules={owner ? [owner] : []} today={data.today} english own={!!value.own} strengthSaid={strengthSaid} />;
+  return <SourceBlock source={source} rules={loaded} today={data.today} english own={!!value.own} strengthSaid={strengthSaid} />;
 }
 
 /**
@@ -1617,7 +1610,7 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
  */
 function TopSource({ view, rule, today }: { view: SourceView; rule: Pick<SourcedRule, "recheck_date">; today: string }) {
   const place = view.places[0];
-  const standing = standingOf(place.source);
+  const standing = place.source.standing;
   const changed = sourceChange([rule], place.source, today) === "may-have-changed";
   return (
     <p className={cx("text-xs-flow", changed ? "text-caution-foreground" : "text-muted-foreground")}>

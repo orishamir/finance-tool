@@ -14,7 +14,7 @@ import { companyLinks } from "./institutions.server";
 import { pageView, scopeCompanies } from "./scope";
 import { parseAnswer } from "./answer-slots";
 import { fillSlot, missingSlot, slotsAsText } from "./figure-slots";
-import { citationText, pickSources, type SourcedRule } from "./sources";
+import { citationFor, pickSources, sourceView, type SourcedRule } from "./sources";
 import { ruleTitle } from "./rule-title";
 import { formatValue } from "./format";
 import { provenance } from "../copy";
@@ -87,7 +87,9 @@ describe("a rule text with slots", () => {
     expect(ruleTitle(slotted, source).text).toBe(plain.split(". ")[0]);
     const first = pickSources(slotted as unknown as SourcedRule)[0];
     if (!first) throw new Error("TXA-30 has a source");
-    expect(citationText(slotted as unknown as SourcedRule, first, first.checked, source).startsWith(`הגיל הוא ${ownShown}`)).toBe(true);
+    const [view] = sourceView([first]);
+    if (!view) throw new Error("TXA-30's source has a view");
+    expect(citationFor(slotted as unknown as SourcedRule, view, source).startsWith(`הגיל הוא ${ownShown}`)).toBe(true);
   });
 
   it("says where its data lacks a slot's record, so the test above can catch it", () => {

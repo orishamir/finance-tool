@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { citationFor, citationText, documentKey, isPdfUrl, mayHaveChanged, moreSourcesLabel, onSharedPortal, pickSources, publicUrl, publisherName, sourceChange, sourceHref, sourceLabel2, sourceView, withoutCodes, type RuleSource, type SourcedRule } from "./sources";
+import { citationFor, documentKey, isPdfUrl, moreSourcesLabel, onSharedPortal, pickSources, publicUrl, publisherName, sourceChange, sourceHref, sourceLabel2, sourceView, withoutCodes, type RuleSource, type SourcedRule } from "./sources";
 import { root } from "./data.server";
 import { groupDocuments } from "./documents.server";
 import { publisherHe } from "./publisher-he.server";
@@ -60,24 +60,6 @@ describe("sourceLabel2", () => {
   it("prefers the Hebrew fields", () => {
     const n = sourceLabel2(src({ publisher_he: "רשות", title_he: "מסמך", locator: "s. 3", locator_he: "סעיף 3" }));
     expect(n).toEqual({ publisher: "רשות", title: "מסמך", locator: "סעיף 3", pdf: false });
-  });
-});
-
-describe("citationText", () => {
-  const rule = { title: "x", title_he: "מעבר מסלול אינו אירוע מס" };
-  it("writes the one line", () => {
-    const t = citationText(rule, src({ publisher_he: "רשות המסים", title_he: "פקודת מס הכנסה", locator_he: "סעיף 3" }), "2026-10-24", { rules: {}, today: "2026-10-24" });
-    expect(t).toBe("מעבר מסלול אינו אירוע מס — רשות המסים, פקודת מס הכנסה, סעיף 3. https://example.gov.il/a (נבדק 24.10.2026)");
-  });
-});
-
-describe("mayHaveChanged", () => {
-  const today = "2026-10-24";
-  it("is false for a rule likely to change whose recheck date is still ahead (the card shows that date instead)", () => expect(mayHaveChanged({ likely_to_change: "yes", recheck_date: "2027-01-01" }, { checked: today }, today)).toBe(false));
-  it("is true when the recheck date has passed", () => expect(mayHaveChanged({ likely_to_change: "no", recheck_date: "2026-10-01" }, { checked: today }, today)).toBe(true));
-  it("is true past six months", () => {
-    expect(mayHaveChanged({ likely_to_change: "no" }, { checked: "2026-04-23" }, today)).toBe(true);
-    expect(mayHaveChanged({ likely_to_change: "no" }, { checked: "2026-04-24" }, today)).toBe(false);
   });
 });
 

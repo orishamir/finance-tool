@@ -1,7 +1,7 @@
 // Sources of a rule, as the source block shows them (knowledge layer W2, synthesis 3.3). Pure helpers: no I/O, no React.
 // The rule records are gaining `sources` and `derived_from` (W1); the shape is typed here so this file stands until the
 // schema export is there. A record without `sources` falls back to the sources of its figures.
-import type { RuleRecord } from "@finance-tool/schema";
+import type { RuleRecord, SourceStanding } from "@finance-tool/schema";
 import { documents as documentsCopy, sourceBlock } from "../copy";
 import { countPhrase, fmt } from "./format";
 import { monthsBefore } from "./dates";
@@ -36,6 +36,8 @@ export interface RuleSource {
   fragment?: TextFragment;
   checked: string;
   qualifier?: string;
+  /** What the source is where it is not the binding text in force that its kind names (data-schema 3.1). */
+  standing?: SourceStanding;
 }
 
 /** The rule fields this layer reads, whether or not the schema export carries them yet. */
@@ -190,40 +192,6 @@ export function shownTitle(title: string, url: string, kind?: string): { text: s
   const word = kind ? (documentsCopy.kinds as Record<string, string>)[kind] : undefined;
   if (word) return { text: word, host: false };
   return { text: hostOf(url) ?? title, host: !!hostOf(url) };
-}
-
-/**
- * What a source line shows, each name once: who published it, the document's title as shown (`shownTitle`), its place in it. The publisher
- * is left out when the title opens with it ("בנק לאומי, 'שיעורי הריבית…'"); the title is left out when it is only the link's host and
- * the publisher's name holds that host already: "מאגר המידע הממשלתי (data.gov.il)", not "מאגר המידע הממשלתי (data.gov.il) · data.gov.il"
- * .
- * @deprecated Use `sourceView`, whose `documentNames` names a document once for all its sources; removed when the source drawings switch to it.
- */
-function sourceParts(source: RuleSource): { publisher: string | null; title: { text: string; host: boolean } | null; locator: string | null; pdf: boolean } {
-  const n = sourceLabel2(source);
-  const title = shownTitle(n.title, source.url, source.kind);
-  if (title.host && n.publisher && n.publisher.includes(title.text)) return { publisher: n.publisher, title: null, locator: n.locator, pdf: n.pdf };
-  return { publisher: !n.publisher || title.text.startsWith(n.publisher) ? null : n.publisher, title, locator: n.locator, pdf: n.pdf };
-}
-
-/**
- * `{title_he} — {publisher}, {document}, {locator}. {url} (נבדק {date})`, the line the copy button writes; `slots` fill a title read from the text.
- * @deprecated Use `citationFor`, which names the place as its document's `sourceView` does; removed when the source drawings switch to it.
- */
-export function citationText(rule: Pick<SourcedRule, "title" | "title_he" | "text_he">, source: RuleSource, date: string, slots: SlotSource): string {
-  const n = sourceParts(source);
-  const parts = [n.publisher, n.title?.text].filter((x): x is string => !!x);
-  if (n.locator) parts.push(n.locator);
-  const claim = ruleTitle(rule, slots).text;
-  return `${claim} — ${parts.join(", ")}. ${sourceHref(source)} (${sourceBlock.citation.checked} ${fmt.date(date)})`;
-}
-
-/** The "it may have changed since" line shows when the rule's recheck date has passed, or the source was read more than six months ago
- * (a rule that is likely to change but whose recheck date is still ahead shows that date instead; the line is for a read that is past its time, not a forecast).
- * @deprecated Use `sourceChange`, which reads the source's own date and says "unknown" when no rule is loaded; removed when the source drawings switch to it. */
-export function mayHaveChanged(rule: Pick<SourcedRule, "likely_to_change" | "recheck_date">, source: Pick<RuleSource, "checked">, today: string): boolean {
-  if (recheckStale(rule, today)) return true;
-  return !!today && source.checked < monthsBefore(today, SOURCE_AGE_WARNING_MONTHS);
 }
 
 /**
