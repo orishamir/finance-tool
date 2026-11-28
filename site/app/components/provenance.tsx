@@ -432,7 +432,7 @@ function partsOf(c: Catch): string[] {
     case "open":
       return ["open"];
     case "stale":
-      return [`stale ${c.stale.since} ${c.stale.cadence}`];
+      return [`stale ${c.stale.since} ${c.stale.cadence ?? ""}`];
     case "flags":
       return c.codes.map((code) => `flag ${code}`);
     case "reading":

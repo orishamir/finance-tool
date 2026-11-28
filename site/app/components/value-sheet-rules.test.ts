@@ -11,7 +11,7 @@ import { numbers, provenance } from "../copy";
 import { loadRules } from "../lib/data.server";
 import { fmt } from "../lib/format";
 import { ruleTitle } from "../lib/rule-title";
-import type { SiteValue } from "../lib/value";
+import { ruleFigure, type SiteValue } from "../lib/value";
 import { ProvenanceProvider, valueItem, type ProvenanceData } from "./provenance";
 import { RuleDetail, ValueSheet } from "./provenance-sheets";
 
@@ -121,6 +121,22 @@ describe("a figure's head, as the figure was tapped", () => {
     expect(out).toContain("שנתיים");
     expect(out).not.toContain(provenance.unit.years);
     expect(out).toContain("תקופת הפיקדון");
+  });
+});
+
+describe("a stale figure", () => {
+  it("says how often it is updated only where its record says, and the day it was last read either way", () => {
+    const past = { ...record("TXI-03"), recheck_date: "2026-01-01", checked: "2025-06-01" };
+    const key = Object.keys(past.figures ?? {})[0];
+    if (!key) throw new Error("TXI-03 has a figure");
+    const fixed = ruleFigure(past, key, today);
+    if (!fixed?.stale) throw new Error("a figure of a rule past its re-check date is stale");
+    const said = sheet({ ...fixed, update_rule: "fixed in law", stale: { since: "2025-06-01" } });
+    expect(said).toContain(provenance.stale.before);
+    expect(said).not.toContain(provenance.stale.middle);
+    expect(sheet({ ...fixed, stale: { since: "2025-06-01", cadence: "yearly" } })).toContain(`${provenance.stale.middle} ${provenance.stale.cadence.yearly}`);
+    expect(ruleFigure({ ...past, figures: { [key]: { ...(past.figures?.[key] as object), update_rule: "fixed in law" } } } as RuleRecord, key, today)?.stale?.cadence).toBeUndefined();
+    expect(ruleFigure({ ...past, figures: { [key]: { ...(past.figures?.[key] as object), update_rule: "cpi-linked 1 jan" } } } as RuleRecord, key, today)?.stale?.cadence).toBe("yearly");
   });
 });
 

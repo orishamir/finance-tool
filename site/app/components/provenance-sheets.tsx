@@ -658,7 +658,7 @@ function StrengthNote({ strength, question = null }: { strength: "institution" |
   );
 }
 
-/** What a stale figure's source last said, and how often it should. */
+/** What a stale figure's source last said, and how often it should where its record says. */
 function StaleLine({ stale }: { stale: Staleness }) {
   return (
     <p className="text-sm text-caution-foreground flex items-start gap-2">

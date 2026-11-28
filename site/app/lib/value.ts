@@ -11,10 +11,10 @@ export function asParameter(p: ParameterRecord, v: ValueObject): SiteValue {
   return { ...v, parameter: { rationale: p.rationale, rationaleHe: p.rationale_he ?? null } };
 }
 
-/** Why a value is stale, when it is: the date it was last known good, and its usual cadence. */
+/** Why a value is stale, when it is: the date it was last known good, and its usual cadence where its record states one. */
 export interface Staleness {
   since: string;
-  cadence: "daily" | "monthly" | "quarterly" | "yearly";
+  cadence?: "daily" | "monthly" | "quarterly" | "yearly";
 }
 
 export interface SiteValue extends ValueObject {
@@ -518,9 +518,24 @@ export function ruleFigure(rule: RuleRecord, name: string, today: string): SiteV
   }
   const v = "by_tax_year" in f ? (taxYear === null ? undefined : f.by_tax_year[taxYear]) : f;
   if (!v) return null;
-  const stale = recheckStale(rule, today) ? { since: rule.checked, cadence: "yearly" as const } : null;
+  const stale = figureStale(rule, v.update_rule, today);
   const he = rule.figure_names_he?.[base];
   return { ...v, stale, rule_ids: v.rule_ids ?? [rule.id], ...(he ? { about: taxYear ? `${he} ${taxYear}` : he } : {}) };
+}
+
+/**
+ * How often a rule's figure is set again, where its update rule says: a figure updated each 1 January by the CPI, or set anew each year, is
+ * yearly. A figure a text fixes, a company sets, the market moves or the site chose states no cadence.
+ */
+export function figureCadence(updateRule: string): Staleness["cadence"] {
+  return updateRule === "cpi-linked 1 jan" || updateRule === "set yearly" ? "yearly" : undefined;
+}
+
+/** A rule's figure is stale once the rule's re-check date has passed: since the day the rule was read, with the figure's cadence where it states one. */
+export function figureStale(rule: Pick<RuleRecord, "checked" | "recheck_date">, updateRule: string, today: string): Staleness | null {
+  if (!recheckStale(rule, today)) return null;
+  const cadence = figureCadence(updateRule);
+  return { since: rule.checked, ...(cadence ? { cadence } : {}) };
 }
 
 /** Whether a rule's re-check date has passed by `today` (YYYY-MM-DD); a rule with none never has. */
