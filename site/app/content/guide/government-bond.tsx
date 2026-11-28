@@ -18,7 +18,7 @@ export const content: GuideContent = {
           <Term id="איגרת חוב">איגרת חוב</Term> ממשלתית היא הלוואה שאתם נותנים למדינה. המדינה מחזירה את <Term prefix="ה" id="שווי נקוב">שווי הנקוב</Term> במועד <Term prefix="ה" id="פדיון">פדיון</Term>. בסוגים שמשלמים <Term id="ריבית">ריבית</Term> <Ruled id={["GOV-11", "GOV-13", "GOV-14"]}>היא משלמת בדרך</Ruled> <Term id="קופון">קופון</Term>: ריבית במועדים קבועים.
         </p>
         <Sentence measure>
-          <Ruled id="GOV-08">יש שלושה סוגים עיקריים</Ruled>. <Term id={'אג"ח בריבית קבועה'}>בריבית קבועה</Term>: <Term id="לא צמוד">לא צמודה</Term> <Term prefix="ל" id="מדד">מדד</Term>, עם <Ruled id="GOV-13">קופון קבוע</Ruled> שמשולם כל {fixedEvery ? <Num value={fixedEvery} /> : null} חודשים. <Term id={'אג"ח ממשלתית צמודה'}>צמודה למדד</Term>: <Ruled id="GOV-11">הקרן והריבית עולות ויורדות</Ruled> עם <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term>. <Term id={'אג"ח בריבית משתנה'}>בריבית משתנה</Term>: לא צמודה, <Ruled id="GOV-14" prefix="ו">הריבית מתעדכנת</Ruled> כל {floatingEvery ? <Num value={floatingEvery} /> : null} חודשים לפי תשואת <Term prefix="ה" id={'מק"מ'}>מק״מ</Term>. <Ruled id="GOV-14">בנוסח התקנות אין</Ruled> <Term id="מרווח">מרווח</Term> ואין רצפה.
+          <Ruled id="GOV-08">יש שלושה סוגים עיקריים</Ruled>. <Term id={'אג"ח בריבית קבועה'}>בריבית קבועה</Term>: <Term id="לא צמוד">לא צמודה</Term> <Term prefix="ל" id="מדד">מדד</Term>, עם <Ruled id="GOV-13">קופון קבוע</Ruled> שמשולם כל {fixedEvery ? <Num value={fixedEvery} /> : null} חודשים. <Term id={'אג"ח ממשלתית צמודה'}>צמודה למדד</Term>: <Ruled id="GOV-11">הקרן והריבית עולות ויורדות</Ruled> עם <Term id="מדד המחירים לצרכן">מדד המחירים לצרכן</Term>. <Term id={'אג"ח בריבית משתנה'}>בריבית משתנה</Term>: לא צמודה, והריבית מתעדכנת כל {floatingEvery ? <Num value={floatingEvery} /> : null} חודשים לפי תשואת <Term prefix="ה" id={'מק"מ'}>מק״מ</Term>. <Ruled id="GOV-14">בנוסח התקנות אין</Ruled> <Term id="מרווח">מרווח</Term> ואין רצפה.
         </Sentence>
         <p className="max-w-measure">
           באיגרת הצמודה הקרן גדלה או קטנה עם המדד מאז <Term id="מדד הבסיס">מדד הבסיס</Term>, והקופון מחושב על הקרן אחרי <Term prefix="ה" id="הצמדה">הצמדה</Term>. לכן הקופון שלה הוא ריבית מעל עליית המחירים, ולא ריבית בשקלים.
@@ -95,7 +95,7 @@ export const content: GuideContent = {
         את הקרן והקופונים <Ruled id="GOV-02">משלמת המדינה מהכנסותיה הכלליות</Ruled>, לא הבנק ולא <Term prefix="ה" id="ברוקר">ברוקר</Term>.
       </p>
       <p className="max-w-measure">
-        <span className="font-medium">מכירה לפני הפדיון.</span> מי שמחזיק עד הפדיון <Ruled id="BND-02">מקבל את השווי הנקוב</Ruled>, ובאיגרת צמודה <Ruled id="GOV-11">את הקרן אחרי הצמדה</Ruled>. מי שמוכר קודם <Ruled id="BND-02">מקבל את המחיר בבורסה</Ruled> באותו יום, שיכול להיות נמוך ממה ששילם. ככל שהמח״מ ארוך יותר, הפער יכול להיות גדול יותר.
+        <span className="font-medium">מכירה לפני הפדיון.</span> מי שמחזיק עד הפדיון מקבל את השווי הנקוב, ובאיגרת צמודה <Ruled id="GOV-11">את הקרן אחרי הצמדה</Ruled>. מי שמוכר קודם <Ruled id="BND-02">מקבל את המחיר בבורסה</Ruled> באותו יום, שיכול להיות נמוך ממה ששילם. ככל שהמח״מ ארוך יותר, הפער יכול להיות גדול יותר.
       </p>
       <p className="max-w-measure">
         <span className="font-medium">החזקה עד הסוף לא מבטלת את ההפסד.</span> אם הריבית עלתה אחרי שקניתם, ההחזקה עד הפדיון מחזירה את השווי הנקוב. אבל הרווח שלכם נמוך ממה שמקבל מי שקנה אחרי העלייה. מי שמכר והשקיע את הכסף בריבית החדשה עד אותו מועד מגיע בסוף לאותו סכום. ההפסד קרה כשהריבית עלתה, וההחזקה רק פורסת אותו על השנים שנשארו. <ProofsChip ids={["M-04"]} />

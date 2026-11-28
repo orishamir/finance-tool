@@ -26,18 +26,6 @@
       "why": "On the page when the check came in (2026-11-28)."
     },
     {
-      "page": "/guide/government-bond",
-      "rule": "GOV-14",
-      "blocks": 1,
-      "why": "On the page when the check came in (2026-11-28)."
-    },
-    {
-      "page": "/guide/government-bond",
-      "rule": "BND-02",
-      "blocks": 1,
-      "why": "On the page when the check came in (2026-11-28)."
-    },
-    {
       "page": "/guide/makam",
       "rule": "BANK-18",
       "blocks": 1,
