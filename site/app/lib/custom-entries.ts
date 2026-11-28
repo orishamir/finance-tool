@@ -173,10 +173,23 @@ export const newFundId = () => newId("custom-fund-");
  * it.
  */
 function fundCurrencyOf(kind: OptionId, tradesIn: TradingCurrency | null, currencyOfIndex: string | null): string {
+  const bought = foreignOf(tradesIn);
+  if (bought) return bought;
   if (!isForeignKind(kind)) return "NIS";
-  if (kind === "abroad" && tradesIn && tradesIn !== "ILS") return tradesIn;
   return currencyOfIndex && !isShekel(currencyOfIndex) ? currencyOfIndex : "USD";
 }
+
+/** The foreign currency a fund is bought in, where the answer to where it is bought names one (`BUY_AT`); null for the shekel, or none said. */
+const foreignOf = (tradesIn: TradingCurrency | null): TradingCurrency | null => (tradesIn && !isShekel(tradesIn) ? tradesIn : null);
+
+/** The foreign currency a saved fund is bought in, as the person said it (`tradesIn`); null where it is bought in shekels, or none was said. */
+export const boughtInOf = (f: Pick<CustomFund, "tradesIn">): string | null => foreignOf(f.tradesIn);
+
+/** The foreign currency an answer to where the fund is bought names; null for the shekel, or none named. */
+export const boughtInAt = (at: BuyAt): string | null => foreignOf(BUY_AT[at].tradesIn);
+
+/** Whether the country question is asked after this answer to where the fund is bought: where it leaves more than one country open. */
+export const asksCountry = (at: BuyAt | null): boolean => at === null || countriesAt(at).length > 1;
 
 /**
  * The unit a typed fund's unit price is typed in (`UNIT_PRICE_BY_KIND`): abroad the fund's currency (`fundCurrencyOf`), on TASE agorot;
@@ -514,13 +527,6 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
 }
 
 /**
- * The currency a typed fund is bought in where the person said it: a fund bought abroad on an exchange they named, in that exchange's
- * currency; null where the record's currency stands in for one not known (`fundCurrencyOf`) or is the shekel.
- */
-export const saidCurrencyOf = (rec: Pick<FundRecord, "trading_currency_on_tase" | "exchange" | "currency">): string | null =>
-  rec.trading_currency_on_tase === null && (rec.exchange === "us" || rec.exchange === "europe") && !isShekel(rec.currency) ? rec.currency : null;
-
-/**
  * Why a fund the person typed has no price, every reason, from what they said of it, in the order the page names the first (its row says
  * one); none: nothing they left out stops it. The page and the panel's checklist both read it.
  */
@@ -569,6 +575,11 @@ export interface EnteredInBundle {
   exposures: Record<string, Pick<ExposureRecord, "id" | "cash_like" | "currency"> & Partial<Pick<ExposureRecord, "us_dividends">>>;
   /** The person's funds whose index they said is in shekels: each runs on a shekel index and carries no currency label. */
   shekelFunds: string[];
+  /**
+   * By fund id: the foreign currency the person said a fund is bought in (`boughtInOf`). On an index they added, whose currency the site
+   * does not know, the fund's run moves with it and its label names it (invest.ts `exposureOf`, `indexSeenBy`).
+   */
+  boughtIn: Record<string, string>;
 }
 
 // an index the person added says nothing of its currency: a foreign one in dollars, as the page's generic fund abroad; a fund whose index
@@ -618,6 +629,7 @@ export function withCustomEntries(bundle: IndicesBundle, typedFunds: readonly Cu
       inputs: { ...(held?.inputs ?? {}), ...Object.fromEntries(funds.map((f) => [f.id, inputsOf(fundTerms(f), f.name)] as const)) },
       exposures: { ...(held?.exposures ?? {}), ...exposures },
       shekelFunds: [...(held?.shekelFunds ?? []), ...funds.filter((f) => f.shekelIndex).map((f) => f.id)],
+      boughtIn: { ...(held?.boughtIn ?? {}), ...Object.fromEntries(funds.flatMap((f) => { const ccy = boughtInOf(f); return ccy ? [[f.id, ccy] as const] : []; })) },
     },
   };
 }

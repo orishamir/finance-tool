@@ -90,6 +90,11 @@ export interface IndexRef {
   exposure: ExposureRecord | null;
   custom: CustomIndex | null;
   oneLine: string | null;
+  /**
+   * An index the person added as one fund sees it (`indexSeenBy`): the foreign currency they said the fund is bought in, which its run
+   * moves with, since the site does not know the index's own; absent where they said none.
+   */
+  boughtIn?: string;
 }
 
 /** Every exposure record that is an equity index, in file order. */
@@ -103,9 +108,17 @@ export const refOfExposure = (e: ExposureRecord): IndexRef => ({ id: e.id, name:
 /** An index the person added asks nothing of its currency: every kind of fund is offered on it, and each fund says. */
 export const refOfCustom = (c: CustomIndex): IndexRef => ({ id: c.id, name: c.name, israeli: false, exposure: null, custom: c, oneLine: null });
 
-/** The index as one fund sees it: a fund the person said is on a shekel index reads it as Israeli (no currency, no hedge, no currency tax). */
-export const indexSeenBy = (index: IndexRef, rec: Pick<FundRecord, "id">, bundle: Pick<IndicesBundle, "entered">): IndexRef =>
-  index.custom && bundle.entered?.shekelFunds.includes(rec.id) ? { ...index, israeli: true } : index;
+/**
+ * The index as one fund sees it: on an index the person added, a fund they said is on a shekel index reads it as Israeli (no currency, no
+ * hedge, no currency tax), and one they said is bought in a foreign currency reads it in that currency (`IndexRef.boughtIn`).
+ */
+export function indexSeenBy(index: IndexRef, rec: Pick<FundRecord, "id">, bundle: Pick<IndicesBundle, "entered">): IndexRef {
+  const entered = bundle.entered;
+  if (!index.custom || !entered) return index;
+  if (entered.shekelFunds.includes(rec.id)) return { ...index, israeli: true };
+  const boughtIn = entered.boughtIn[rec.id];
+  return boughtIn ? { ...index, boughtIn } : index;
+}
 
 export function indexById(bundle: Pick<IndicesBundle, "exposures">, id: string, customs: readonly CustomIndex[] = []): IndexRef | null {
   const known = knownIndices(bundle).find((i) => i.id === id);
@@ -1186,11 +1199,13 @@ function pricedLines(ctx: Ctx, s: FeesSnapshot, row: ComparedProvider): PairCost
  * else the stand-in of `customExposures`.
  */
 function exposureOf(ctx: Ctx, rec: FundRecord) {
-  const entered = ctx.bundle.entered?.exposures[rec.exposure_id];
+  const typed = ctx.bundle.entered;
+  const entered = typed?.exposures[rec.exposure_id];
   const collected = ctx.bundle.exposures.find((e) => e.id === rec.exposure_id);
-  if (collected || !entered) return collected ?? entered;
-  if (ctx.bundle.entered!.shekelFunds.includes(rec.id)) return { ...entered, currency: "ILS" };
-  return isShekel(rec.currency) ? entered : { ...entered, currency: rec.currency };
+  if (collected || !typed || !entered) return collected ?? entered;
+  if (typed.shekelFunds.includes(rec.id)) return { ...entered, currency: "ILS" };
+  const boughtIn = typed.boughtIn[rec.id];
+  return boughtIn ? { ...entered, currency: boughtIn } : entered;
 }
 
 function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } | { reason: Reason } {

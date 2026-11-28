@@ -4580,8 +4580,8 @@ export const invest = {
       gap: "בקרן מנוטרלת רוב העלות היא הפער מהמדד, והאתר עוד לא שואל עליו.",
     },
     /** The status over the buttons, and its short form in a phone's bar. */
-    status: { ok: "אפשר לחשב את הקרן.", "left-out": "אפשר לחשב את הקרן, בלי מס הדיבידנד בתוך הקרן.", missing: "הקרן תופיע בלי מחיר עד שיושלם מה שחסר." } as Record<string, string>,
-    statusShort: { ok: "אפשר לחשב", "left-out": "אפשר לחשב · בלי מס דיבידנד", missing: "תופיע בלי מחיר" } as Record<string, string>,
+    status: { ok: "אפשר לחשב את הקרן.", "left-out": "אפשר לחשב את הקרן, בלי מס הדיבידנד בתוך הקרן.", missing: "הקרן תופיע בלי מחיר עד שיושלם מה שחסר." },
+    statusShort: { ok: "אפשר לחשב", "left-out": "אפשר לחשב · בלי מס דיבידנד", missing: "תופיע בלי מחיר" },
     /** A fee of a typed fund left empty, where its figure would stand. */
     notTyped: "לא הוזן",
     /** The doubt of what a typed fund bought abroad leaves at an account, where its exchange is not known (F-65, invest.ts `withPlaceDoubt`). */

@@ -31,6 +31,7 @@ function withTypedAccount(bundle: IndicesBundle, house: BundleSnapshot, b: Custo
       inputs: { ...held?.inputs, [b.id]: groupInputs(b) },
       exposures: held?.exposures ?? {},
       shekelFunds: held?.shekelFunds ?? [],
+      boughtIn: held?.boughtIn ?? {},
     },
   };
 }

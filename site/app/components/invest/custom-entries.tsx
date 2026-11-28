@@ -6,7 +6,7 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "rea
 import { Pencil } from "lucide-react";
 import { invest as root } from "../../copy";
 import type { FundRecord, ValueObject } from "@finance-tool/schema";
-import { BUY_ABROAD, BUY_IN_ISRAEL, countriesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type FundCountry, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
+import { asksCountry, boughtInAt, BUY_ABROAD, BUY_IN_ISRAEL, countriesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type FundCountry, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { dividendTaxLabel, fundLabels, optionLabels, type Label } from "../../lib/labels";
 import { INDEX_REGIONS, type IndexFacts, type IndexRegion } from "../../lib/index-region";
 import { optionsOf, type CustomIndex, type IndexRef } from "../../lib/invest";
@@ -150,10 +150,16 @@ interface FactsDraft {
   yieldPct: number | null;
 }
 
-/** The index as the draft sees it: what the panel says of an added index, and an added index the person said is in shekels read as Israeli (as indexSeenBy on the page). */
+/**
+ * The index as the draft sees it, as `indexSeenBy` on the page: what the panel says of an added index; an added index the person said is
+ * in shekels read as Israeli, and one bought in a foreign currency read in it.
+ */
 function seenBy(d: FundDraft, index: IndexRef, facts: FactsDraft, today: string): IndexRef {
-  const custom = index.custom ? { ...index.custom, ...factsOf(index.custom, facts, today) } : null;
-  return { ...index, custom, israeli: index.israeli || (!!custom && d.shekelIndex) };
+  if (!index.custom) return index;
+  const custom = { ...index.custom, ...factsOf(index.custom, facts, today) };
+  if (d.shekelIndex) return { ...index, custom, israeli: true };
+  const boughtIn = d.buyAt ? boughtInAt(d.buyAt) : null;
+  return { ...index, custom, ...(boughtIn ? { boughtIn } : {}) };
 }
 
 /** The index's facts as they would be saved: a yield whose value is unchanged keeps its date (it is dated the day it was typed). */
@@ -196,7 +202,7 @@ function needsOf(d: FundDraft, rec: FundRecord | null, index: IndexRef, seen: In
   out.push(item("fee", (rec ? gaps.includes("fee-unknown") : d.fixed === null) ? "missing" : "done"));
   out.push(item("payout", d.payout ? "done" : "missing"));
   if (d.payout === "distributing") out.push(item("yield", gaps.includes("need-yield") ? "missing" : "done"));
-  if (!index.israeli && d.buyAt !== "manager") {
+  if (!index.israeli && asksCountry(d.buyAt)) {
     const tase = gaps.includes("tase-country-unknown");
     out.push(item("country", tase || gaps.includes("domicile-unknown") ? "missing" : "done", tase ? w.taseCountry : undefined));
   }
@@ -207,7 +213,7 @@ function needsOf(d: FundDraft, rec: FundRecord | null, index: IndexRef, seen: In
 }
 
 /** Where the calculation stands: a missing item leaves the fund with no price; an item left out leaves a price without it. */
-const statusOf = (needs: readonly NeedItem[]): NeedState | "ok" => (needs.some((x) => x.state === "missing") ? "missing" : needs.some((x) => x.state === "left-out") ? "left-out" : "ok");
+const statusOf = (needs: readonly NeedItem[]): keyof typeof c.status => (needs.some((x) => x.state === "missing") ? "missing" : needs.some((x) => x.state === "left-out") ? "left-out" : "ok");
 
 function FundPanel({ headId, index, fund, start, others, writable, onSave, onCancel, onRemove }: { headId: string; index: IndexRef; fund: CustomFund | null; start: Editing["start"]; others: readonly CustomFund[]; writable: boolean; onSave: (f: CustomFund, index: CustomIndex | null, again: { buyAt: BuyAt; country: FundCountry | null } | null) => void; onCancel: () => void; onRemove: (id: string) => void }) {
   const [today] = useState(isoToday);
@@ -278,9 +284,9 @@ function FundPanel({ headId, index, fund, start, others, writable, onSave, onCan
 
 /** A custom index without what the panel says of it, so a fact cleared there leaves the saved index. */
 function withoutFacts(i: CustomIndex): CustomIndex {
-  const { region: _r, dividendYield: _y, ...rest } = i;
-  void _r;
-  void _y;
+  const rest = { ...i };
+  delete rest.region;
+  delete rest.dividendYield;
   return rest;
 }
 
@@ -312,7 +318,7 @@ function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, set
   // no "0" in an empty field: an empty fee is not known, not a fee of zero
   const percent = (k: "fixed" | "variable" | "trustee", label: string, hint?: string) => <NumberField label={label} unit="pct_per_year" value={draft[k]} isEntered={draft[k] !== null} validate={pctCheck} onCommit={(n) => set(k, n)} onReset={() => set(k, null)} hint={hint} optional />;
   const open = draft.buyAt ? countriesAt(draft.buyAt) : COUNTRIES;
-  const onlyIsrael = index.israeli || draft.buyAt === "manager";
+  const onlyIsrael = index.israeli || !asksCountry(draft.buyAt);
   const countryIds = [...COUNTRIES, OTHER] as const;
   const countryLook: Partial<Record<string, ChipLook>> = { [OTHER]: "unsure", ...(open.includes("IL") ? {} : { IL: "closed" }) };
   const step1 = !!draft.buyAt;

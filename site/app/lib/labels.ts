@@ -8,7 +8,6 @@ import { currencyWord, invest as c } from "../copy";
 import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
 import { assertNever, isShekel } from "@finance-tool/schema";
-import { saidCurrencyOf } from "./custom-entries";
 import { typedDividendTax, type TypedDividendTax } from "./index-region";
 
 /** The engine's fund kind for an option's funds (F-04). */
@@ -222,7 +221,7 @@ export function fundLabels(rec: FundRecord, index: IndexRef, option: OptionId): 
   // an index the person added: the site does not know its currency, so the label names the one the fund is bought in where the person said
   // it (the run moves the fund with it, invest.ts `exposureOf`), and none otherwise
   else if (!index.exposure && !index.israeli) {
-    const said = index.custom ? saidCurrencyOf(rec) : rec.currency;
+    const said = index.custom ? (index.boughtIn ?? null) : rec.currency;
     out.push(said ? label("currency", said) : label("currency-foreign"));
   }
   // tax: an Israeli fund on a foreign index that is not a foreign-investment fund is taxed on the currency move too (TXS-09, TXS-14); one
