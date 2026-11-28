@@ -228,7 +228,7 @@ export interface SecuritiesInput {
   broker?: "israeli" | "foreign";
   /**
    * F-14: whether an Israeli account is at a bank or at a TASE member that is not a bank. A bank may not charge
-   * custody on money-market fund units (BRK-17, BANK-18); no rule limits a non-bank member's custody fee on them, so there the
+   * custody on money-market fund units (BRK-17); no rule limits a non-bank member's custody fee on them, so there the
    * tariff's line applies (BRK-52: the distribution-fee regulations leave out an investment marketer, MF-26). Default
    * `bank`, the case every money-market guide and comparison assumes.
    */
@@ -275,7 +275,7 @@ export class NotEvaluatedError extends Error {
 
 /**
  * F-14: a provider class as `memberKind`. Only a bank is a bank: a broker (a TASE member that is not a bank)
- * and a foreign broker are not bound by the banks' custody ban on money-market units (BRK-17, BANK-18; BRK-52), so their
+ * and a foreign broker are not bound by the banks' custody ban on money-market units (BRK-17; BRK-52), so their
  * tariff's custody line applies. Every caller that prices a run on a provider's snapshot passes this.
  */
 export const memberKindOf = (providerClass: string): NonNullable<SecuritiesInput["memberKind"]> => (providerClass === "bank" ? "bank" : "non-bank");
@@ -793,13 +793,10 @@ function securitiesLedgerAt(input: SecuritiesInput, ctx: RunContext, trace: Acti
   const wrapperFee = input.wrapper ? Math.min(input.wrapper.managerFee, managerCap) : 0;
   if (input.wrapper && input.wrapper.managerFee > managerCap) book.on("fees", "manager").took("PF-06");
   if (input.wrapper) formulas.push("F-51", "F-15", "F-46");
-  // No custody fee on money-market fund units at a bank (BRK-17, BANK-18); at a non-bank member the tariff's custody line
+  // No custody fee on money-market fund units at a bank (BRK-17); at a non-bank member the tariff's custody line
   // applies as published (F-14; BRK-17 binds banks only, and MF-26 does not bind an investment marketer).
   const mmfFree = isMmf && input.memberKind !== "non-bank";
-  if (mmfFree) {
-    custodyBook.cite("BRK-17");
-    custodyBook.peek.cite("BANK-18");
-  }
+  if (mmfFree) custodyBook.cite("BRK-17");
   // F-102 with BANK-35: from the order's start the Governor caps managing a payment account (a current account included) by the month's
   // actions, lower for 0 to 2 actions than the minimum a bank's row counts. How the amended rules count an action is not in the rule base,
   // so the run keeps the price list's minimum for the whole plan and flags the first month, from the cap's start on, whose stretch charges a

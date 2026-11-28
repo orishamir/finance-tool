@@ -338,10 +338,10 @@ describe("the parts each run's rules went into", () => {
   it("files a bank's free custody of a money-market fund under BRK-17 alone", () => {
     const bank = run("money-market fund at a bank member");
     expect(changedIn(bank, "BRK-17")).toEqual(["fees:custody"]);
-    for (const id of ["MF-26", "BANK-18"]) {
-      expect(read(bank, id), id).toBe(true);
-      expect(changedIn(bank, id), id).toEqual([]);
-    }
+    expect(read(bank, "MF-26")).toBe(true);
+    expect(changedIn(bank, "MF-26")).toEqual([]);
+    // BANK-18 is about makam's trade lines, which this run does not use
+    expect(read(bank, "BANK-18")).toBe(false);
     expect(changedIn(run("money-market fund at a non-bank member"), "BRK-17")).toEqual([]);
   });
 

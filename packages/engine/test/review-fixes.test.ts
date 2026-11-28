@@ -525,7 +525,7 @@ describe("flags the method asks for", () => {
   });
 });
 
-it("charges no custody on money-market fund units (BRK-17, BANK-18)", () => {
+it("charges no custody on money-market fund units (BRK-17)", () => {
   const r = runSecurities(
     fund({
       market: { grossReturn: 0.03, inflation: 0.02 },
