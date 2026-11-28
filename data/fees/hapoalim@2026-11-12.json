@@ -35,7 +35,7 @@
         "value": 0.6,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע הנסחרים בבורסה של ת\"א (כולל קניה מכירה שלא בוצעה): - מניות ואג\"ח, גובה העמלה שעור/סכום",
           "publisher": "Bank Hapoalim B.M.",
@@ -56,7 +56,7 @@
         "value": 26,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע הנסחרים בבורסה של ת\"א (כולל קניה מכירה שלא בוצעה): - מניות ואג\"ח, גובה העמלה מינימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -75,7 +75,7 @@
         "value": 7500,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע הנסחרים בבורסה של ת\"א (כולל קניה מכירה שלא בוצעה): - מניות ואג\"ח, גובה העמלה מקסימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -94,7 +94,7 @@
         "value": 25,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, הערות/מידע נוסף, הערה (06)",
           "publisher": "Bank Hapoalim B.M.",
@@ -134,7 +134,7 @@
         "value": 0.4,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), קנייה מכירה של ני\"ע הנסחרים בבורסה של תל אביב (כולל קניה מכירה שלא בוצעה) - מניות אג\"ח, מחיר בערוץ ישיר",
           "publisher": "Bank Hapoalim B.M.",
@@ -156,7 +156,7 @@
         "value": 20,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מניות אג\"ח, מינימום בערוץ ישיר",
           "publisher": "Bank Hapoalim B.M.",
@@ -175,7 +175,7 @@
         "value": 7000,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מניות אג\"ח, מקסימום בערוץ ישיר",
           "publisher": "Bank Hapoalim B.M.",
@@ -194,7 +194,7 @@
         "value": 25,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, הערות/מידע נוסף, הערה (06)",
           "publisher": "Bank Hapoalim B.M.",
@@ -234,7 +234,7 @@
         "value": 0.11,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה שעור/סכום",
           "publisher": "Bank Hapoalim B.M.",
@@ -253,7 +253,7 @@
         "value": 19,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה מינימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -272,7 +272,7 @@
         "value": 7500,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה מקסימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -291,7 +291,7 @@
         "value": 25,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, הערות/מידע נוסף, הערה (06)",
           "publisher": "Bank Hapoalim B.M.",
@@ -329,7 +329,7 @@
         "value": 0.1,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), קנייה מכירה (כולל הנפקה) של מלווה קצר מועד (כולל קניה/מכירה שלא בוצעה), מחיר בערוץ ישיר",
           "publisher": "Bank Hapoalim B.M.",
@@ -348,7 +348,7 @@
         "value": 15,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מלווה קצר מועד, מינימום בערוץ ישיר",
           "publisher": "Bank Hapoalim B.M.",
@@ -367,7 +367,7 @@
         "value": 7000,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), מלווה קצר מועד, מקסימום בערוץ ישיר",
           "publisher": "Bank Hapoalim B.M.",
@@ -386,7 +386,7 @@
         "value": 25,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, הערות/מידע נוסף, הערה (06)",
           "publisher": "Bank Hapoalim B.M.",
@@ -425,7 +425,7 @@
         "value": 0.11,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה שעור/סכום",
           "publisher": "Bank Hapoalim B.M.",
@@ -445,7 +445,7 @@
         "value": 19,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה מינימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -464,7 +464,7 @@
         "value": 7500,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה (כולל הנפקה) ופדיון של מלווה קצר מועד (כולל קניה/ מכירה שלא בוצעה), גובה העמלה מקסימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -483,7 +483,7 @@
         "value": 25,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, הערות/מידע נוסף, הערה (06)",
           "publisher": "Bank Hapoalim B.M.",
@@ -520,7 +520,7 @@
         "value": 0.9,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות, אג\"ח, קרנות נאמנות, גובה העמלה שעור/סכום",
           "publisher": "Bank Hapoalim B.M.",
@@ -539,7 +539,7 @@
         "value": 25,
         "unit": "usd",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות, אג\"ח, קרנות נאמנות, גובה העמלה מינימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -558,7 +558,7 @@
         "value": 7500,
         "unit": "usd",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, קניה מכירה ופדיון של ני\"ע בחו\"ל (כולל קניה מכירה שלא בוצעה): - מניות, אג\"ח, קרנות נאמנות, גובה העמלה מקסימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -577,7 +577,7 @@
         "value": 25,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, הערות/מידע נוסף, הערה (08)",
           "publisher": "Bank Hapoalim B.M.",
@@ -624,7 +624,7 @@
         "value": 0.15,
         "unit": "pct_of_balance_per_period",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ני\"ע הנסחרים בארץ (לרבות יחידות השתתפות בקרנות נאמנות) - לנייר",
           "publisher": "Bank Hapoalim B.M.",
@@ -645,7 +645,7 @@
         "value": null,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ני\"ע הנסחרים בארץ, גובה העמלה מינימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -665,7 +665,7 @@
         "value": 10600,
         "unit": "nis",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ני\"ע הנסחרים בארץ - לנייר, מקסימום; דמי ניהול פקדון ני\"ע הנסחרים בארץ - מקסימום לפקדון",
           "publisher": "Bank Hapoalim B.M.",
@@ -703,7 +703,7 @@
         "value": 0.2,
         "unit": "pct_of_balance_per_period",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ניירות ערך נסחרים בחו\"ל, קרנות זרות (לרבות יחידות השתתפות בקרנות נאמנות) - לנייר",
           "publisher": "Bank Hapoalim B.M.",
@@ -722,7 +722,7 @@
         "value": null,
         "unit": "nis_per_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ניירות ערך נסחרים בחו\"ל, מינימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -742,7 +742,7 @@
         "value": 10600,
         "unit": "nis",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, דמי ניהול פיקדון ניירות ערך נסחרים בחו\"ל - לנייר, מקסימום; מקסימום לפקדון",
           "publisher": "Bank Hapoalim B.M.",
@@ -780,7 +780,7 @@
         "value": 0.2,
         "unit": "pct_of_balance_per_period",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות מסוג 1",
           "publisher": "Bank Hapoalim B.M.",
@@ -821,7 +821,7 @@
         "value": 0.35,
         "unit": "pct_of_balance_per_period",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, עמלת הפצה מרוכש יחידת השתתפות בקרן נאמנות מסוג 3",
           "publisher": "Bank Hapoalim B.M.",
@@ -862,7 +862,7 @@
         "value": 0.1,
         "unit": "pct_of_balance_per_period",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, עמלת הפצת מרוכש יחידת השתתפות בקרן נאמנות מסוג 4",
           "publisher": "Bank Hapoalim B.M.",
@@ -903,7 +903,7 @@
         "value": 0.19,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מעל 99 $",
           "publisher": "Bank Hapoalim B.M.",
@@ -922,7 +922,7 @@
         "value": 6.7,
         "unit": "usd",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מעל 99 $, מינימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -941,7 +941,7 @@
         "value": 2700,
         "unit": "usd",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מעל 99 $, מקסימום",
           "publisher": "Bank Hapoalim B.M.",
@@ -995,7 +995,7 @@
             "source": {
               "publisher": "Bank Hapoalim B.M.",
               "strength": "institution",
-              "url": "https://www.bankhapoalim.co.il/he/fee-list",
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
               "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
               "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $",
               "quote": "עד 99 $ | $5.50"
@@ -1018,7 +1018,7 @@
             "source": {
               "publisher": "Bank Hapoalim B.M.",
               "strength": "institution",
-              "url": "https://www.bankhapoalim.co.il/he/fee-list",
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
               "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
               "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $",
               "quote": "עד 99 $ | $5.50"
@@ -1049,7 +1049,7 @@
           "source": {
             "publisher": "Bank Hapoalim B.M.",
             "strength": "institution",
-            "url": "https://www.bankhapoalim.co.il/he/fee-list",
+            "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
             "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
             "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $",
             "quote": "עד 99 $ | $5.50"
@@ -1071,7 +1071,7 @@
           "source": {
             "publisher": "Bank Hapoalim B.M.",
             "strength": "institution",
-            "url": "https://www.bankhapoalim.co.il/he/fee-list",
+            "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
             "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
             "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: מטבע חוץ, עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $",
             "quote": "עד 99 $ | $5.50"
@@ -1100,7 +1100,7 @@
         "value": 0.17,
         "unit": "pct_of_trade",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מעל 99 $, מחיר בערוץ ישיר",
           "publisher": "Bank Hapoalim B.M.",
@@ -1119,7 +1119,7 @@
         "value": 5.7,
         "unit": "usd",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מינימום בערוץ ישיר",
           "publisher": "Bank Hapoalim B.M.",
@@ -1138,7 +1138,7 @@
         "value": 2300,
         "unit": "usd",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, מקסימום בערוץ ישיר",
           "publisher": "Bank Hapoalim B.M.",
@@ -1193,7 +1193,7 @@
             "source": {
               "publisher": "Bank Hapoalim B.M.",
               "strength": "institution",
-              "url": "https://www.bankhapoalim.co.il/he/fee-list",
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
               "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
               "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $, מחיר בערוץ ישיר",
               "quote": "עד 99 $"
@@ -1216,7 +1216,7 @@
             "source": {
               "publisher": "Bank Hapoalim B.M.",
               "strength": "institution",
-              "url": "https://www.bankhapoalim.co.il/he/fee-list",
+              "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
               "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
               "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $, מחיר בערוץ ישיר",
               "quote": "3.3 $"
@@ -1247,7 +1247,7 @@
           "source": {
             "publisher": "Bank Hapoalim B.M.",
             "strength": "institution",
-            "url": "https://www.bankhapoalim.co.il/he/fee-list",
+            "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
             "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
             "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $, מחיר בערוץ ישיר",
             "quote": "3.3 $"
@@ -1269,7 +1269,7 @@
           "source": {
             "publisher": "Bank Hapoalim B.M.",
             "strength": "institution",
-            "url": "https://www.bankhapoalim.co.il/he/fee-list",
+            "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
             "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
             "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), הטבות בערוצי בנקאות בתקשורת (נספח ה'), עמלת חליפין בקניה /מכירה לפי השער הידוע מיידי וצהריים, עד 99 $, מחיר בערוץ ישיר",
             "quote": "עד 99 $"
@@ -1303,7 +1303,7 @@
         "value": 5,
         "unit": "nis_per_transfer",
         "source": {
-          "url": "https://www.bankhapoalim.co.il/he/fee-list",
+          "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
           "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
           "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: ניירות ערך, העברת ניירות ערך לחשבון אותו לקוח בגוף פיננסי אחר",
           "publisher": "Bank Hapoalim B.M.",
@@ -1344,7 +1344,7 @@
       "value": 5.3,
       "unit": "nis_per_month",
       "source": {
-        "url": "https://www.bankhapoalim.co.il/he/fee-list",
+        "url": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.pdf",
         "fetched_from": "https://www.bankhapoalim.co.il/sites/default/files/media/PDFS/Taarifon/single_small_51026.xls",
         "title": "תעריפון הבנק באינטרנט ללקוח יחיד/עסק קטן - בנק הפועלים ('נכון ליום: 05/10/2026'), פרק: חשבון עובר ושב, פעולה על ידי פקיד והערה (03)",
         "publisher": "Bank Hapoalim B.M.",
