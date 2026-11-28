@@ -450,10 +450,6 @@
     "status": "open"
   },
   {
-    "id": "CORP OQ22",
-    "status": "open"
-  },
-  {
     "id": "ETF OQ3",
     "status": "open"
   },
@@ -602,7 +598,7 @@
   },
   {
     "id": "ETF OQ44",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "ETF OQ45",
@@ -614,10 +610,18 @@
   },
   {
     "id": "ETF OQ47",
+    "status": "narrowed",
+    "answered_by": [
+      "ETF-111",
+      "ETF-115"
+    ]
+  },
+  {
+    "id": "ETF OQ49",
     "status": "open"
   },
   {
-    "id": "ETF OQ48",
+    "id": "ETF OQ50",
     "status": "open"
   },
   {
