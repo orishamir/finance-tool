@@ -258,11 +258,29 @@ describe("figure-rules table: products", () => {
     expect(kept("instruments", pension, "/lawful_exit/payout_business_days")).toEqual(["PF-47", "KH-16"]);
   });
 
-  it("keeps one card of a same-cap pair: BRK-17 over BANK-18 on custody, PF-02 over PEN-22 on a provident fund for annuity", () => {
+  it("keeps BRK-17 over BANK-18 on custody, and BRK-52 beside it and on a null custody cap", () => {
     const makam = product("makam", { fee_caps: { custody: vo(0, ["BRK-17", "BANK-18", "BRK-16", "BRK-52"]) } });
     expect(kept("instruments", makam, "/fee_caps/custody")).toEqual(["BRK-17", "BRK-52"]);
-    const annuity = product("provident-for-annuity", { fee_caps: { balance: vo(1.05, ["PF-02", "PEN-22"]) } });
-    expect(kept("instruments", annuity, "/fee_caps/balance")).toEqual(["PF-02"]);
+    const account = product("brokerage-account", { fee_caps: { custody: vo(null, ["BRK-16", "BRK-17", "BRK-24", "MF-26", "BRK-52"]) } });
+    expect(kept("instruments", account, "/fee_caps/custody")).toEqual(["BRK-16", "BRK-17", "BRK-24", "MF-26", "BRK-52"]);
+  });
+
+  it("keeps BRK-52 beside MF-26, MF-71 and BRK-72 on a money-market fund's trade cap", () => {
+    const fund = product("money-market-fund-daily", { fee_caps: { trade: vo(null, ["MF-26", "MF-71", "BRK-72", "BRK-52"]) } });
+    expect(kept("instruments", fund, "/fee_caps/trade")).toEqual(["MF-26", "MF-71", "BRK-72", "BRK-52"]);
+  });
+
+  it("keeps PEN-22 beside PF-02 on a provident fund for annuity's caps, as PF-03 stands beside it on the investment provident fund's", () => {
+    const annuity = product("provident-for-annuity", { fee_caps: { balance: vo(1.05, ["PF-02", "PEN-22"]), deposit: vo(4, ["PF-02", "PEN-22"]) } });
+    expect(kept("instruments", annuity, "/fee_caps/balance")).toEqual(["PF-02", "PEN-22"]);
+    expect(kept("instruments", annuity, "/fee_caps/deposit")).toEqual(["PF-02", "PEN-22"]);
+    const gemel = product("kupat-gemel-lehashkaa", { fee_caps: { balance: vo(1.05, ["PF-02", "PF-03"]) } });
+    expect(kept("instruments", gemel, "/fee_caps/balance")).toEqual(["PF-02", "PF-03"]);
+  });
+
+  it("keeps KGL-02 beside KGL-03 on the investment provident fund's yearly ceiling", () => {
+    const gemel = product("kupat-gemel-lehashkaa", { ceiling: { amount: vo(83641, ["KGL-03", "KGL-02"]) } });
+    expect(kept("instruments", gemel, "/ceiling/amount")).toEqual(["KGL-03", "KGL-02"]);
   });
 
   it("keeps PF-06 and KH-22 together on a study fund's balance cap, where KH-22 holds the study fund's own terms", () => {
