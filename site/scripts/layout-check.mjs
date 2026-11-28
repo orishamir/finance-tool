@@ -1228,9 +1228,9 @@ async function checkPage(page, path, width) {
       await page.evaluate(settled); // the sheet slides up
       const hidden = await page.evaluate(warningsOutOfSight);
       opened++;
-      // a caution "?" is named by what it is about
+      // a caution "?", drawn and so without text, is named by what it is about
       const text = (await fig.innerText()).trim();
-      const name = text === "?" ? ((await fig.getAttribute("aria-label")) ?? text) : text;
+      const name = text === "?" || text === "" ? ((await fig.getAttribute("aria-label")) ?? text) : text;
       for (const h of hidden) findings.push({ check: "warning", id: h.title.slice(0, 12), detail: `the sheet of ${name} shows "${h.title}" only after scrolling (its top ${h.top} px, the sheet shows to ${h.bottom} px)` });
       await page.keyboard.press("Escape");
       await page.evaluate(settled);

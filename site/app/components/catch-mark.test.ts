@@ -37,7 +37,9 @@ describe("a calculated figure on the page", () => {
     expect(html.match(/<button/g)).toHaveLength(1);
     expect(html).toContain(`aria-label="${help.catchLabel.replace("{about}", "מה נשאר")}"`);
     expect(html.indexOf("1,500")).toBeLessThan(html.indexOf("<button"));
-    expect(html).not.toContain("<svg");
+    // the only drawing is the mark's own "?" (an icon, kit CatchMark): no warning or clock icon before the digits
+    expect(html.match(/<svg/g)).toHaveLength(1);
+    expect(html.indexOf("<svg")).toBeGreaterThan(html.indexOf("<button"));
   });
 });
 

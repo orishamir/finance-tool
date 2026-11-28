@@ -13,7 +13,7 @@ import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, differenceOf, type SiteValue } from "../../lib/value";
 import { amountCheck, DotLine, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
-import { Num, ReadingTag, Ruled, Term, catchesOf, useCatchPlace } from "../provenance";
+import { CatchesSaid, Num, ReadingTag, Ruled, Term, catchesOf, useCatchPlace } from "../provenance";
 import { text } from "./g2-parts";
 import { figure, Gap, inputSite, notFeeFlag, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
 import { rulesOfRun, salaryTaxOnly, withoutSalaryTax, type RunParts } from "../../lib/run-rules";
@@ -238,15 +238,17 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
               <Num value={ranValue(slice.tax, story.about.tax, true, ofRuns(picked.runs, ["taxDuring", "taxAtExit"]))} display={fmt.nisWhole} />
             </StatTile>
           );
+  // the chart's note repeats the wait tile's two figures, which stand right above it with their own "?": inside the chart they say no catch again
+  const tileSays = waitWords ? [...catchesOf(waitWords.more, catchPlace(false)), ...catchesOf(waitWords.saved, catchPlace(false))] : [];
   const stripNote = waitWords && (
-    <>
+    <CatchesSaid catches={tileSays}>
       <div>
         {story.note.wait} <bdi>{fmt.years(lock - year)}</bdi>: <span className={cx("font-semibold", waitGains && "text-gain")}><Num value={waitWords.more} display={(v) => fmt.nisWhole(Math.abs(Number(v)))} /></span> {waitGains ? story.note.more : story.note.less}
       </div>
       <div>
         <Num value={waitWords.saved} display={fmt.nisWhole} /> {story.note.saved}
       </div>
-    </>
+    </CatchesSaid>
   );
 
   const brokerCount = fact(data, "brokerCount");

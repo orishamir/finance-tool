@@ -122,8 +122,8 @@ colour, touch and speed rules); this file adds what is particular to charts.
   that opens. What the reader types looks the same, with no blue background
   and no "you entered" mark; a reset beside the fields brings the defaults
   back. A slider's own number is in the slider's blue, the default and a
-  typed value alike: it is the control's colour, not a "you entered" mark. Every other number keeps its sourced or computed mark, and the
-  site's real parameters keep theirs.
+  typed value alike: it is the control's colour, not a "you entered" mark. Every other number keeps its own mark (a calculated one has none:
+  [design.md](design.md)), and the site's real parameters keep theirs.
 
 ### Legend
 
