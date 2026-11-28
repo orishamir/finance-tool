@@ -147,7 +147,6 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "ETF-06",
         "ETF-07"
       ],
       "state": "sourced",
@@ -168,9 +167,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-11"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "empty_because": "not-collected",
       "notes": "Not collected: the report prints no withholding figure and no computation is made here. The fund takes its exposure mainly through derivatives (see REPLICATION in legal_form), so any dividend-withholding drag sits inside the instrument pricing and is not published as a rate."
