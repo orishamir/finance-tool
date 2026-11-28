@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 import { countriesAt, customFundGaps, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, recordOfFund, validCustomFunds, withCustomEntries, type BuyAt, type CustomFund, type CountryAnswer, type FundDraft, type FundTracking } from "./custom-entries";
 import type { CustomIndex } from "./invest";
 import { buildInvest, fundWayAt, indexById, indexSeenBy, kindOf, pairCosts, refOfCustom, type FundWay, type WayPrice } from "./invest";
-import { dividendTaxLabel, fundLabels, labelDefs } from "./labels";
+import { dividendTaxLabel, fundLabels, label, labelDefs } from "./labels";
 import { invest as copy } from "../copy";
 import { panelStateOf } from "../components/invest/custom-entries";
 import { allFunds, labelsOf, steadyOf, whyNoFundAt } from "../components/invest/pair";
@@ -358,6 +358,14 @@ describe("the panel's checklist: an answer not given is never done (D56)", () =>
     expect(stateOf(draftOf("europe-usd", "IE", { tracking: "physical" }), world).needs.find((x) => x.id === "dividendTax")).toMatchObject({ state: "left-out", note: w["tax-fund-dividend-part"] });
   });
 
+  it("before the hedge is answered, the preview says nothing of the currency, the one it is bought in among it", () => {
+    const added: CustomIndex = { id: "custom-nikkei", name: "ניקיי", added: t };
+    const draft = { ...draftOf("europe-eur", "IE"), hedged: null };
+    const ids = panelStateOf(draft, refOfCustom(added), facts, t).labels.map((l) => l.id);
+    expect(ids).not.toContain("currency-bought");
+    expect(panelStateOf({ ...draft, hedged: false }, refOfCustom(added), facts, t).labels.map((l) => l.id)).toContain("currency-bought");
+  });
+
   it("the gap to the index and the spread, which the panel does not ask, are named as not entered and not counted, and the status names them", () => {
     const w = copy.customEntries.needs;
     const onExchange = stateOf(draftOf("us-usd", "US", { tracking: "swap", payout: "distributing", yield: 1.2, perYear: 4 }));
@@ -399,6 +407,12 @@ describe("a fund in euros on an index in dollars says so, and no figure calls it
   const b = withCustomEntries(bundle, [eur, usd]);
   const view = buildInvest({ bundle: b, index: must(indexById(b, SP), "S&P 500"), plan });
   const way = (id: string) => must(allFunds(view).find((f) => f.rec.id === id), id);
+
+  it("the label says the currency is the one the fund is bought in, as the site's reading", () => {
+    const { explain } = label("currency-mismatch", "EUR");
+    expect(explain).toContain("הקרן נקנית באירו");
+    expect(explain).toContain("זו קריאה של האתר");
+  });
 
   it("its row carries the label that its currency is not its index's; the dollar twin's does not", () => {
     const ids = (id: string) => labelsOf(view, way(id), b).map((l) => l.id);

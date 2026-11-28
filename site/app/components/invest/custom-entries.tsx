@@ -181,7 +181,7 @@ function rowLabels(d: FundDraft, rec: FundRecord | null, seen: IndexRef): Label[
   const all = [...optionLabels(kind), ...fundLabels(rec, seen, optionOfFund(rec, seen.exposure ?? undefined))];
   return d.hedged === null ? all.filter((l) => !HEDGE_LABELS.has(l.id)) : all;
 }
-const HEDGE_LABELS = new Set<string>(["currency", "currency-many", "currency-foreign", "hedged", "hedged-many", "tax-currency"]);
+const HEDGE_LABELS = new Set<string>(["currency", "currency-many", "currency-foreign", "currency-bought", "hedged", "hedged-many", "tax-currency"]);
 
 /** Whether the panel asks what the fund does with the currency: on any index but an Israeli one, as the page reads it. */
 const asksHedge = (index: IndexRef) => !index.israeli;
