@@ -7,7 +7,8 @@
 // row lists the ids it drops with `never`): packages/pipeline/scripts/apply-figure-rules.ts removes it. An id no row lists is unknown: it
 // is kept and listed, and goes to a finance reviewer before a row admits it. Besides the rows, one standing allow holds for every id a
 // row does not list: an id whose card under data/rules/ lists, among its sources, the document the value's own source is (its address
-// without the part after "#"), since that card holds the source the figure's sheet names. A row that lists the id decides it: a tax
+// without the part after "#", percent-encoding decoded; the machine address a collector read it from counts as the value's source too),
+// since that card holds the source the figure's sheet names. A row that lists the id decides it: a tax
 // bucket's source is the Income Tax Ordinance, which many tax cards cite, and its row still says which of them set the bucket. A row can
 // close itself to the standing allow (`closed`): then an id it does not list is unknown even when its card cites the value's source.
 // Every deposit row is closed: a deposit's values cite a bank's table or the Ordinance, which cards about other products cite too, so
@@ -593,8 +594,15 @@ export function rowFor(collection: FigureCollection, pointer: string): FigureRow
   return best;
 }
 
-/** A document's address without the part after "#": two links to one document at two places are one source. */
-const documentOf = (url: string): string => url.replace(/#.*$/, "");
+/** A document's address as text: without the part after "#" (two links to one document at two places are one source) and with its percent-encoding decoded (one address written in Hebrew letters and as "%D7..." is one source). An address that is not valid encoding stays as written. */
+const documentOf = (url: string): string => {
+  const whole = url.replace(/#.*$/, "");
+  try {
+    return decodeURIComponent(whole);
+  } catch {
+    return whole;
+  }
+};
 
 /** By rule id, the addresses of the sources its card under data/rules/ lists. */
 export type CardSources = ReadonlyMap<string, readonly string[]>;
@@ -632,8 +640,10 @@ export function judgeId(collection: FigureCollection, record: Json, pointer: str
   const allow = row?.allow.filter((a) => a.id === id) ?? [];
   if (allow.length > 0) return allow.some((a) => !a.when || a.when(record, value, { pointer, cards })) ? "allowed" : "disallowed";
   if (row?.closed) return "unknown";
-  const url = (value.source as Json | undefined)?.url;
-  return typeof url === "string" && (cards.sources.get(id) ?? []).some((u) => documentOf(u) === documentOf(url)) ? "allowed" : "unknown";
+  // the document the value's source is: the page a reader opens (`url`) or the machine address a collector read (`fetched_from`)
+  const source = value.source as Json | undefined;
+  const documents = [source?.url, source?.fetched_from].flatMap((u) => (typeof u === "string" ? [documentOf(u)] : []));
+  return (cards.sources.get(id) ?? []).some((u) => documents.includes(documentOf(u))) ? "allowed" : "unknown";
 }
 
 /**

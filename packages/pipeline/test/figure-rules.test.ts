@@ -125,6 +125,22 @@ describe("figure-rules table", () => {
     expect(figureRuleProblems("terms/deposits", record, cards)).toEqual([{ pointer: "/tax_bucket", id: "TXI-19", verdict: "disallowed" }]);
   });
 
+  it("reads a source address by its decoded text, and by the machine address a collector read it from", () => {
+    const cards = cardsWithSources(new Map([
+      ["BANK-99", ["https://bank.example/%D7%AA%D7%A2%D7%A8%D7%99%D7%A4%D7%95%D7%9F.pdf#page=3"]],
+      ["BANK-98", ["https://bank.example/rates.pdf"]],
+    ]));
+    const at = (source: Record<string, unknown>) => ({ ...vo(1, []), source: { ...src("x"), ...source } });
+    // the card writes the address percent-encoded and the value in Hebrew letters, and the other way round
+    expect(judgeId("terms/deposits", deposit(), "/exit_points", at({ url: "https://bank.example/תעריפון.pdf#page=7" }), "BANK-99", cards)).toBe("allowed");
+    expect(judgeId("terms/deposits", deposit(), "/exit_points", at({ url: "https://bank.example/rates%2Epdf" }), "BANK-98", cards)).toBe("allowed");
+    // the page a reader opens differs from the card's, but the file the collector read is the card's source
+    expect(judgeId("terms/deposits", deposit(), "/exit_points", at({ url: "https://bank.example/page", fetched_from: "https://bank.example/rates.pdf" }), "BANK-98", cards)).toBe("allowed");
+    expect(judgeId("terms/deposits", deposit(), "/exit_points", at({ url: "https://bank.example/page", fetched_from: "https://bank.example/other.pdf" }), "BANK-98", cards)).toBe("unknown");
+    // an address that is not valid percent-encoding is compared as written
+    expect(judgeId("terms/deposits", deposit(), "/exit_points", at({ url: "https://bank.example/100%.pdf" }), "BANK-98", cards)).toBe("unknown");
+  });
+
   it("closes every deposit row to the standing allow: an id it does not list is unknown though its card cites the value's source", () => {
     expect(FIGURE_RULES.filter((r) => r.collection === "terms/deposits").every((r) => r.closed)).toBe(true);
     const cards = cardsWithSources(new Map([
