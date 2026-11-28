@@ -107,7 +107,7 @@ export function termOf(bundle: Bundle | undefined): Record<string, SiteValue> {
 
 /**
  * A guide input as a value object: P-05's own when untouched, else an entered one. Either way it is a field's value:
- * a plain number in the sentence and in a calculation sheet, with no site-parameter tag and no "you entered" mark.
+ * a plain number in the sentence, with no site-parameter tag and no "you entered" mark.
  */
 export function inputSite(bundle: Bundle, key: P05Input, n: number, source: InputSource, today: string, about: string): SiteValue {
   return asField(source === "p05" ? { ...p05Value(bundle.p05, key), about } : enteredValue(n, p05Units[key], today, about));

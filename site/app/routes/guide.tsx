@@ -534,6 +534,7 @@ export default function GuidePage() {
                 )
               }
             />
+            {content?.cost?.(cp)}
           </GuideSection>
         )}
 

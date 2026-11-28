@@ -4,6 +4,7 @@
 import type { GuideContent } from "./types";
 import { IdRef, Num, ProofsChip, Ruled, Term } from "../../components/provenance";
 import { Sentence } from "../../components/kit";
+import { GuideFold, GuidePart } from "../../components/guide/sections";
 import { fmt } from "../../lib/format";
 
 export const content: GuideContent = {
@@ -11,40 +12,55 @@ export const content: GuideContent = {
     const maxBeyond = figure("MF-36", "max_share_maturing_after_next_fixed_date");
     const maxInterval = figure("MF-08", "max_interval_months");
     const noticeAfter = figure("MF-38", "advance_notice_min_interval_years");
-    const distCap = figure("MF-24", "distribution_fee_cap_money_market");
     const foreign = figure("MF-74", "foreign_securities_line");
     return (
       <>
         <p className="max-w-measure">
-          התקופה יכולה להיות, למשל, שבוע, חודש או רבעון, והכסף <Ruled id="MF-08">נעול עד המועד הקבוע הבא</Ruled>. בסוף התקופה הכסף <Ruled id="MF-35">מושקע מחדש אוטומטית לתקופה הבאה</Ruled>, אלא אם ביקשתם <Term prefix="ל" id="פדיון">פדות</Term>.
+          <Term id="קרן כספית">קרן כספית</Term> מתחדשת היא מקום לכסף שלא תצטרכו עד תאריך ידוע. <Ruled id="MF-35">בוחרים תקופה, למשל שבוע, חודש או רבעון, ואפשר להוציא את הכסף רק בסוף שלה</Ruled>.
+        </p>
+        <p className="max-w-measure">
+          מי שלא מוציא את הכסף בסוף התקופה, <Ruled id="MF-35">הכסף מושקע מחדש אוטומטית לתקופה הבאה</Ruled>. <Ruled id={["MF-35", "MF-36"]}>לפעמים מתפרסם מראש כמה הקרן צפויה להרוויח</Ruled>, אבל <Ruled id="MF-37">זו הערכה ולא הבטחה</Ruled>.
+        </p>
+        <GuidePart title="כמה היא צפויה להרוויח">
+          <Sentence measure>
+            בניגוד <Term prefix="ל" id="קרנות כספיות יומיות">קרן כספית יומית</Term>, <Term id="מנהל קרן">מנהל הקרן</Term> <Ruled id="MF-36">יכול לפרסם</Ruled> <Term id="תשואה צפויה">תשואה צפויה</Term>, בתנאי שלכל היותר {maxBeyond ? <Num value={maxBeyond} /> : null} מהנכסים נפרעים אחרי המועד הקבוע הבא. היא מוצגת במונחים שנתיים, אחרי <Term id="דמי ניהול">דמי הניהול</Term> ושכר <Term prefix="ה" id="נאמן">נאמן</Term> ולפני מס.
+          </Sentence>
+          <p className="max-w-measure">
+            בטבלת <Term id="מוצרי שוק הכסף">מוצרי שוק הכסף</Term> <Ruled id={["BANK-15", "MF-37"]}>הבנק מציג קרן כזו</Ruled> רק אם מנהל הקרן דיווח על תשואה צפויה.
+          </p>
+        </GuidePart>
+        <GuidePart title="איך קונים ופודים">
+          <p className="max-w-measure">
+            קונים <Term id="יחידה">יחידות</Term> דרך <Term id="חשבון ניירות ערך">חשבון ניירות ערך</Term> בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term>, לפי שם הסדרה או המספר שלה <Term prefix="ב" id="בורסה">בורסה</Term>. קרנות לאותה תקופה עם מועדים שונים מוצעות כסדרות של קרן אחת, והתאריך מופיע בשם הסדרה. יחידות של סדרה חדשה מוצעות רק כמה ימים אחרי תאריך הסדרה.
+          </p>
+          <p className="max-w-measure">
+            <Ruled id="MF-73">ההוראה צריכה להגיע עד</Ruled> <Term id="השעה היעודה">השעה היעודה</Term> של המועד הקבוע. גם <Term prefix="ה" id="פדיון">פדיון</Term> <Ruled id="MF-35">נעשה רק במועד הקבוע</Ruled>, <Ruled id="MF-73" prefix="ו">מנהל הקרן מפרסם מחיר רק למועד הזה</Ruled>.
+          </p>
+          <Sentence measure>
+            מתי הכסף מפדיון מגיע לחשבון תלוי בקרן. בקרן שמדיניות ההשקעות שלה מגבילה <Term id="נייר ערך">ניירות ערך</Term> זרים ל־{foreign ? <Num value={foreign} /> : null} מהנכסים, הוא מגיע באותו יום, אם ההוראה ניתנה לפני השעה היעודה. בקרן שיכולה להחזיק יותר, הוא <Ruled id="MF-74">מגיע ביום המסחר הבא</Ruled>.
+          </Sentence>
+          <GuideFold label="כמה ארוכה יכולה להיות תקופה, ומה החוק קורא לבנק">
+            <Sentence measure>
+              <Ruled id="MF-08">המרווח בין מועדים קבועים הוא עד</Ruled> {maxInterval ? <Num value={maxInterval} /> : null} חודשים, אלא אם <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> התירה יותר. רק בקרנות שבהן המרווח בין מועדים קבועים ארוך {noticeAfter ? <>מ<Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /></> : "מהתקופה שבתקנות"} הפדיון יכול לדרוש הודעה מוקדמת. כשהמרווח בין מועדים {noticeAfter ? <><Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /> או יותר</> : "ארוך"}, <Ruled id="MF-38">מנהל הקרן שולח לפני המועד תזכורת</Ruled>.
+            </Sentence>
+            <p className="max-w-measure">
+              החוק קורא לבנק או לבית ההשקעות שדרכו קונים <Term id="מפיץ">מפיץ</Term>.
+            </p>
+          </GuideFold>
+        </GuidePart>
+      </>
+    );
+  },
+  cost: ({ figure }) => {
+    const distCap = figure("MF-24", "distribution_fee_cap_money_market");
+    return (
+      <>
+        <p className="max-w-measure">
+          דמי הניהול ושכר הנאמן <Ruled id="MF-37">כבר מופחתים מהתשואה הצפויה שמוצגת</Ruled>. <Ruled id="MF-18">רשות ניירות ערך מפרסמת ממוצע שנתי לקטגוריה</Ruled>.
         </p>
         <Sentence measure>
-          בניגוד <Term prefix="ל" id="קרנות כספיות יומיות">קרן כספית יומית</Term>, <Term id="מנהל קרן">מנהל הקרן</Term> <Ruled id="MF-36">יכול לפרסם</Ruled> <Term id="תשואה צפויה">תשואה צפויה</Term>, בתנאי שלכל היותר {maxBeyond ? <Num value={maxBeyond} /> : null} מהנכסים נפרעים אחרי המועד הקבוע הבא. היא מוצגת במונחים שנתיים, אחרי <Term id="דמי ניהול">דמי הניהול</Term> ושכר <Term prefix="ה" id="נאמן">נאמן</Term> ולפני מס. <Ruled id="MF-37">זו הערכה של מנהל הקרן, לא התחייבות</Ruled>.
+          בבנק, <Ruled id="MF-24">מנהל הקרן משלם לבנק</Ruled> <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה. <Ruled id="MF-71">בלי הסכם הפצה, הבנק יכול לגבות מכם עד גובה עמלת ההפצה</Ruled>.
         </Sentence>
-        <p className="max-w-measure">
-          קרנות לאותה תקופה עם מועדים שונים מוצעות כסדרות של קרן אחת, והתאריך מופיע בשם הסדרה.
-        </p>
-        <Sentence measure>
-          <Ruled id="MF-08">המרווח בין מועדים קבועים הוא עד</Ruled> {maxInterval ? <Num value={maxInterval} /> : null} חודשים, אלא אם <Term id="רשות ניירות ערך">רשות ניירות ערך</Term> התירה יותר. רק בקרנות שבהן המרווח בין מועדים קבועים ארוך {noticeAfter ? <>מ<Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /></> : "מהתקופה שבתקנות"} הפדיון יכול לדרוש הודעה מוקדמת. כשהמרווח בין מועדים {noticeAfter ? <><Num value={noticeAfter} display={fmt.years(Number(noticeAfter.value))} /> או יותר</> : "ארוך"}, <Ruled id="MF-38">מנהל הקרן שולח לפני המועד תזכורת</Ruled>. <Ruled id="MF-73">מנהל הקרן מפרסם מחיר רק למועד הקבוע</Ruled>.
-        </Sentence>
-        <p className="max-w-measure">
-          קונים <Term id="יחידה">יחידות</Term> דרך <Term id="חשבון ניירות ערך">חשבון ניירות ערך</Term> בבנק או <Term prefix="ב" id="בית השקעות">בית השקעות</Term> שהוא <Term id="חבר בורסה">חבר בורסה</Term>, לפי שם הסדרה או המספר שלה <Term prefix="ב" id="בורסה">בורסה</Term>. החוק קורא לבנק או לבית ההשקעות <Term id="מפיץ">מפיץ</Term>. <Ruled id="MF-73">ההוראה צריכה להגיע עד</Ruled> <Term id="השעה היעודה">השעה היעודה</Term> של המועד הקבוע. גם הפדיון <Ruled id="MF-35">נעשה רק במועד הקבוע</Ruled>. יחידות של סדרה חדשה מוצעות רק כמה ימים אחרי תאריך הסדרה.
-        </p>
-        <p className="max-w-measure">
-          בטבלת <Term id="מוצרי שוק הכסף">מוצרי שוק הכסף</Term> <Ruled id={["BANK-15", "MF-37"]}>הבנק מציג קרן כזו</Ruled> רק אם מנהל הקרן דיווח על תשואה צפויה.
-        </p>
-        <Sentence measure>
-          מתי הכסף מפדיון מגיע לחשבון תלוי בקרן. בקרן שמדיניות ההשקעות שלה מגבילה <Term id="נייר ערך">ניירות ערך</Term> זרים ל־{foreign ? <Num value={foreign} /> : null} מהנכסים, הוא מגיע באותו יום, אם ההוראה ניתנה לפני השעה היעודה. בקרן שיכולה להחזיק יותר, הוא <Ruled id="MF-74">מגיע ביום המסחר הבא</Ruled>.
-        </Sentence>
-        <p className="max-w-measure">
-          דמי הניהול ושכר הנאמן <Ruled id="MF-37">כבר מופחתים מהתשואה הצפויה שמוצגת</Ruled>. <Ruled id="MF-18">רשות ניירות ערך מפרסמת ממוצע שנתי לקטגוריה</Ruled>. הממוצע מופיע בקישור שבכרטיס של המספר שלמטה.
-        </p>
-        <Sentence measure>
-          בבנק: <Ruled id="MF-24">מנהל הקרן משלם לבנק</Ruled> <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה. כשיש הסכם הפצה כזה, <Ruled id="MF-71">הבנק לא יכול לגבות מכם</Ruled> <Term id="עמלה">עמלה</Term> על קנייה, החזקה או פדיון של <Term id="קרן כספית">קרן כספית</Term>. בלי הסכם, הוא יכול לגבות מכם עד גובה עמלת ההפצה. <Term id="דמי ניהול פיקדון ניירות ערך">דמי ניהול פיקדון ניירות ערך</Term> על קרן כספית <Ruled id={["BANK-18", "BRK-17"]}>בנק לא יכול לגבות בשום מקרה</Ruled>.
-        </Sentence>
-        <p className="max-w-measure">
-          <Ruled id="BRK-52">רוב בתי ההשקעות הם משווקי השקעות</Ruled>. אצלם לא נמצא כלל שמגביל את העמלות, והן לפי התעריפון. בית השקעות שהוא לא משווק השקעות כפוף לאותם כללים כמו הבנק.
-        </p>
         <p className="max-w-measure">תוספת בקנייה או <Term id="ניכוי בפדיון">ניכוי בפדיון</Term> <Ruled id={["MF-21", "MF-22"]}>אפשריים רק אם הסכם הקרן קובע אותם</Ruled>.</p>
       </>
     );

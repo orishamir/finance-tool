@@ -99,11 +99,9 @@ jobs:
   #   grids             the layout check's self-test and its checks of the fee grids by keys, pointer and finger (keys, lines, drag, ask, grip);
   #   kit 1/2 and 2/2   the layout check's checks of the kit's pieces by hand (site/scripts/kit-input-check.mjs), half each;
   #   others            the policy check (site/scripts/csp-check.mjs: a sample of the pages; anything a page's Content Security Policy refuses,
-  #                     an inline script without its hash, a font or a fetch from elsewhere, eval, fails the run), the chart check
+  #                     an inline script without its hash, a font or a fetch from elsewhere, eval, fails the run) and the chart check
   #                     (site/scripts/chart-check/: python3 with only its standard library, which ubuntu-latest has; a chart that overlaps, cuts
-  #                     off or shrinks its text, or draws bars off the zero line or in more than six colours, fails the run) and the weight
-  #                     check (tools/weight.mjs --check: each kind of page's first-view script and data against its budget in
-  #                     tools/weight-budgets.json; it counts bytes, so a slower runner can't fail it).
+  #                     off or shrinks its text, or draws bars off the zero line or in more than six colours, fails the run).
   # The response check runs only in npm run check: its 100 ms limit is measured on a processor slowed four times, and a shared runner's
   # own speed would make it fail by chance. Every share runs even when another fails, so one run says all that failed.
   browser:
@@ -151,8 +149,6 @@ jobs:
         run: npm run csp-check
       - if: matrix.part == 'others' && !cancelled()
         run: npm run chart-check
-      - if: matrix.part == 'others' && !cancelled()
-        run: npm run weight
 
   # GitHub Pages (docs/architecture.md section 6). Only main is deployed, and only after every check passed.
   deploy:

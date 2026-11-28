@@ -6,6 +6,7 @@ import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, Ruled, Term } from "../../components/provenance";
 import { Callout } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 import { disabilityRetirement, EmployerUntaxed, ExemptShare, LumpSums } from "./pension-parts";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
@@ -14,19 +15,26 @@ export const content: GuideContent = {
   what: () => (
     <>
       <p className="max-w-measure">
-        המעסיק ואתם, או עצמאים בעצמם, מפקידים <Ruled id="TXP-24">לפי אותן תקרות מס</Ruled> כמו <Term prefix="ב" id="קרן פנסיה">קרן פנסיה</Term>.
+        תגמולים ואישית לפיצויים היא <Term id="קופת גמל">קופת גמל</Term> <Ruled id="PEN-34">לחיסכון לפרישה</Ruled>. <Ruled id="TXP-24">כללי המס בה הם כמו</Ruled> <Term prefix="ב" id="קרן פנסיה">קרן פנסיה</Term>, אבל <Ruled id="PEN-66">ביטוח למקרה מוות או נכות יש בה רק אם החברה שמנהלת אותה קנתה ביטוח כזה</Ruled>.
       </p>
       <p className="max-w-measure">
-        ההבדלים מקרן פנסיה: הקופה <Ruled id="PEN-35">לא כוללת מעצמה ביטוח נכות</Ruled> <Term prefix="ו" id="שאירים">שאירים</Term>, ואם יש כיסוי, הוא תלוי <Term prefix="ב" id="חברה מנהלת">חברה המנהלת</Term>. <Ruled id="PEN-69">אין</Ruled> <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה.
+        היא גם <Ruled id="PEN-34">לא משלמת בעצמה</Ruled> <Term id="קצבה">קצבה</Term>: בפרישה <Ruled id="PEN-34">מעבירים את הכסף לקרן פנסיה או לחברת ביטוח</Ruled>, והן משלמות אותה, <Ruled id="PEN-63">אם הן מקבלות אותו</Ruled>.
       </p>
-      <p className="max-w-measure">
-        הקופה עצמה לא משלמת <Term id="קצבה">קצבה</Term>: בפרישה <Ruled id="PEN-34">מעבירים את הכסף לקרן פנסיה או לחברת ביטוח</Ruled>, והן משלמות, <Ruled id="PEN-63">אם הן מקבלות אותו</Ruled>.
-      </p>
+      <GuidePart title="מי מפקיד">
+        <p className="max-w-measure">
+          המעסיק ואתם, או עצמאים בעצמם, מפקידים <Ruled id="TXP-24">לפי אותן תקרות מס</Ruled> כמו בקרן פנסיה.
+        </p>
+      </GuidePart>
+      <GuidePart title="מה אין בה">
+        <p className="max-w-measure">
+          הקופה <Ruled id="PEN-35">לא כוללת מעצמה ביטוח נכות</Ruled> <Term prefix="ו" id="שאירים">שאירים</Term>, ואם יש כיסוי, הוא תלוי <Term prefix="ב" id="חברה מנהלת">חברה המנהלת</Term>. <Ruled id="PEN-69">אין</Ruled> <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה.
+        </p>
+      </GuidePart>
     </>
   ),
   who: () => (
     <>
-      <p className="max-w-measure">חברות מנהלות של <Term id="קופת גמל">קופות גמל</Term>, <Ruled id="REG-17" prefix="ב">פיקוח</Ruled> <Term id="רשות שוק ההון ביטוח וחיסכון">רשות שוק ההון, ביטוח וחיסכון</Term>. <Term prefix="ב" id="גמל נט">גמל נט</Term> הקופות האלה <Ruled id="PEN-34">מסווגות ״תגמולים ואישית לפיצויים״</Ruled>.</p>
+      <p className="max-w-measure">חברות מנהלות של קופות גמל, <Ruled id="REG-17" prefix="ב">פיקוח</Ruled> <Term id="רשות שוק ההון ביטוח וחיסכון">רשות שוק ההון, ביטוח וחיסכון</Term>. <Term prefix="ב" id="גמל נט">גמל נט</Term> הקופות האלה <Ruled id="PEN-34">מסווגות ״תגמולים ואישית לפיצויים״</Ruled>.</p>
     </>
   ),
   switchLine: (

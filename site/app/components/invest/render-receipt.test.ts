@@ -396,14 +396,12 @@ describe("the lists beside the receipt", () => {
   const view = buildInvest({ bundle, index: indexById(bundle, "index-sp500")!, plan });
   const pick = pickOfHeadline(view)!;
   const props = { view, bundle, plan, livePlan: plan, today: t, pick, chosen: false, onPick: () => undefined, moved: null };
-  it("a row is one line: the name and one figure, no fee bar and no fees column, and the figures' mark only in the column's head", () => {
+  it("a row is one line: the name and one figure, no fee bar and no fees column, and the column's head names the figure", () => {
     const out = html(createElement(PairLists, props));
     expect(out).not.toContain('data-chart="cost-stack"');
     const from = out.indexOf('aria-checked="true"');
     expect(from).toBeGreaterThan(0);
     expect(shown(out)).toContain(w.lists.colLeft);
-    expect(out).toContain("nums-plain");
-    expect(out).toContain("num-sample");
     // no star and no open-question line on any row
     expect(shown(out)).not.toContain("*");
   });
@@ -479,8 +477,9 @@ describe("the receipt's large figures in one form (a phone mixed \"101.33 מיל
     const view = buildInvest({ bundle, index: need(indexById(bundle, "index-sp500"), "the S&P 500"), plan: big });
     const pick = need(pickOfHeadline(view), "the page's pair");
     const out = html(createElement(PairReceipt, { view, bundle, plan: big, pick, chosen: false }));
-    const buttons = [...out.matchAll(/<button[^>]*class="num[^"]*"[^>]*>([\s\S]*?)<\/button>/g)].map((m) => shown(m[1] ?? "").replace(/[⁦-⁩‎‏]/g, ""));
-    const large = buttons.filter((b) => [...b.matchAll(/(\d{1,3}(?:,\d{3})+) ₪/g)].some((m) => Number((m[1] ?? "").replace(/,/g, "")) >= 1e8));
+    // every figure: a sourced or entered one is a button, a calculated one plain text (`num-plain`); each ends with its digits' isolate
+    const figures = [...out.matchAll(/<(?:button|span)[^>]*class="num(?:-plain)?[ "][^>]*>([\s\S]*?)<\/bdi><\/(?:button|span)>/g)].map((m) => shown(m[1] ?? "").replace(/[⁦-⁩‎‏]/g, ""));
+    const large = figures.filter((b) => [...b.matchAll(/(\d{1,3}(?:,\d{3})+) ₪/g)].some((m) => Number((m[1] ?? "").replace(/,/g, "")) >= 1e8));
     expect(large.length).toBeGreaterThan(1);
     for (const b of large) expect(b, b).toContain(numbers.billion);
   });

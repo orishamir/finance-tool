@@ -176,7 +176,7 @@ export function interestOn(o: DbOffer, amount: number, amountValue: SiteValue, t
   const inputs: Record<string, SiteValue> = { [t.interest.inputs.rate]: o.rate_offered, [t.interest.inputs.amount]: amountValue };
   if (!o.paidOut && o.calc?.effectiveAnnual) inputs[t.interest.inputs.effective] = o.calc.effectiveAnnual;
   else if (!o.paidOut && o.calc?.periodsPerYear) inputs[t.interest.inputs.periods] = o.calc.periodsPerYear;
-  return computed(v, "nis", "F-21", inputs, { today, about: `${t.interest.about}${t.termIn[o.term]}`, notes: o.kind === "variable" ? t.interest.variableNote : undefined });
+  return computed(v, "nis", "F-21", inputs, { today, about: `${t.interest.about}${t.termIn[o.term]}`, caveat: o.kind === "variable" ? t.interest.variableNote : undefined });
 }
 
 /**

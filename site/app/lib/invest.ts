@@ -1578,6 +1578,7 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
   const payout = !!distribution;
   const at = (n: number, formula: string, about: string, from: Record<string, SiteValue>, parts: RunParts, flags: readonly FlagIn[] = []) => computed(n, "nis", formula, from, { today: ctx.bundle.today, rules: rulesOf(row, parts), about, ...(flags.length ? { flags } : {}) });
   const paidInReal = paidInAsEntered(ctx.plan.amountNow, ctx.plan.monthly, ctx.plan.years);
+  const depositsRise = ctx.plan.monthly > 0 ? { caveat: copy.pair.paidInCaveat } : {};
   // the run's own price index at the horizon (F-03): the last month of its path, which is the horizon's
   const end = row.run.series.at(-1);
   if (!end || end.month !== row.run.exitMonth) throw new Error(`pairCosts: the run's index path ends at month ${String(end?.month)}, not at its exit, ${row.run.exitMonth}`);
@@ -1613,10 +1614,10 @@ export function pairCosts(a: InvestArgs & { fundId: string; providerId: string }
     fundId: rec.id,
     ...(dealLines ? { dealLines } : {}),
     // what was paid in, in today's money (F-106): the amount, the deposit and the years, and nothing else
-    // the monthly deposit rises with prices each month (A-04 "constant real", F-05), so in today's money it is the same each month: said in
-    // its sheet, since A-04 is the method's setting and no value to list
-    paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout, lead: copy.pair.paidInLead, working: paidInWorking(copy.planInputs.amount, copy.planInputs.monthly, copy.planInputs.years) }),
-    paidInNominal: computed(row.run.paidIn, "nis", "F-05", planInputs(ctx.plan, ["amount", "monthly", "years", "inflation"]), { today: ctx.bundle.today, about: copy.pair.paidInNominalAbout, lead: copy.pair.paidInLead }),
+    // the monthly deposit rises with prices each month (A-04 "constant real", F-05), so in today's money it is the same each month: a caveat
+    // of the figure, since A-04 is the method's setting and no value to list, and only where there is a monthly deposit for it to raise
+    paidIn: computed(paidInReal, "nis", "F-106", planInputs(ctx.plan, ["amount", "monthly", "years"]), { today: ctx.bundle.today, about: copy.pair.paidInAbout, ...depositsRise, working: paidInWorking(copy.planInputs.amount, copy.planInputs.monthly, copy.planInputs.years) }),
+    paidInNominal: computed(row.run.paidIn, "nis", "F-05", planInputs(ctx.plan, ["amount", "monthly", "years", "inflation"]), { today: ctx.bundle.today, about: copy.pair.paidInNominalAbout, ...depositsRise }),
     index: computed(end.index, "index_points", "F-03", planInputs(ctx.plan, ["inflation", "years"]), { today: ctx.bundle.today, about: copy.pair.indexAbout }),
     left: computed(row.real, "nis", "F-65", taxedInputs, { today: ctx.bundle.today, rules: rulesOf(row, "all"), statements: statementsOf(row), flags: leftFlags(row), labels: labelsOf(row, fs.spec), about: nameOf(rec) }),
     account: lines,

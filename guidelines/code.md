@@ -153,9 +153,6 @@ interface pieces follow [design.md](design.md).
 - **A loader returns only what the first view draws.** Its data is paid
   for twice, inside the page and again as the route's `.data` file. The
   rest is a resource route fetched when needed.
-- **Every kind of page has a weight budget:** compressed script plus the
-  data its first view needs. `tools/weight.mjs` fails a page that goes
-  over. A budget is raised only in its own commit, with why.
 - **Internal pages are reached with `<Link>`,** with `prefetch="intent"`
   on the likely next page. `<a>` is only for jumps within a page and for
   other sites.

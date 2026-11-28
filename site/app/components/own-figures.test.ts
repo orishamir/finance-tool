@@ -3,10 +3,9 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
-import { formulaNames } from "../copy";
 import { computed, type SiteValue } from "../lib/value";
-import { Num, OwnCompanyPage, ProvenanceProvider } from "./provenance";
-import { ValueSheet } from "./provenance-sheets";
+import { Num, OwnCompanyPage, ProvenanceProvider, catchesOf } from "./provenance";
+import { CatchSheet, ValueSheet } from "./provenance-sheets";
 import { FeeFigure } from "./kit";
 
 const fee = (extra: Partial<SiteValue> = {}): SiteValue => ({
@@ -49,18 +48,17 @@ describe("the sheet", () => {
   it("an out-of-context figure keeps the amber block", () => {
     expect(sheet(fee())).toContain("לפי החברה");
   });
-  // each input opens its own sheet with its source, so a computed figure's sheet prints none under its inputs
-  it("names no input's source: each input is a figure that opens its own sheet", () => {
-    const other = fee({ own: "הראל", source: { url: "https://example.org/other.pdf", title: "מסמך אחר", publisher: "הראל", strength: "institution" } });
-    const html = sheet(computed(0.37, "pct_per_year", "F-92", { a: fee({ own: "הראל" }), b: other }, { today: "2026-11-07", lead: "מה המספר אומר", signed: true }));
+  // each input opens its own sheet with its source, so a calculated figure's catch sheet prints none of its inputs' sources
+  const catchSheet = (v: SiteValue) => inProvider(createElement(CatchSheet, { value: v, catches: catchesOf(v, { today: "2026-11-07", figure: true, staleSaid: false, aheadSaid: false, onPage: (x) => x }), exact: false, data, headId: "h", descId: "d" }));
+  it("a catch sheet names no input's source: each input is a figure that opens its own sheet", () => {
+    const other = fee({ source: { url: "https://example.org/other.pdf", title: "מסמך אחר", publisher: "הראל", strength: "institution" } });
+    const html = catchSheet(computed(0.37, "pct_per_year", "F-92", { a: fee({ own: "הראל" }), b: other }, { today: "2026-11-07", lead: "מה המספר אומר", signed: true }));
     expect(html).not.toContain("הדוח של הראל על הקרן");
     expect(html).not.toContain("מסמך אחר");
   });
-  it("heads a signed figure with its sign and says what it means before the formula", () => {
-    const html = sheet(computed(0.37, "pct_per_year", "F-92", { a: fee({ own: "הראל" }) }, { today: "2026-11-07", lead: "מה המספר אומר", signed: true }));
-    expect(html).toContain("+0.37%");
-    expect(html.indexOf("מה המספר אומר")).toBeLessThan(html.indexOf(formulaNames["F-92"]!));
-    expect(sheet(computed(-0.37, "pct_per_year", "F-92", {}, { today: "2026-11-07", signed: true }))).toContain("−0.37%");
+  it("a catch sheet heads a signed figure with its sign", () => {
+    expect(catchSheet(computed(0.37, "pct_per_year", "F-92", { a: fee({ own: "הראל" }) }, { today: "2026-11-07", signed: true }))).toContain("+0.37%");
+    expect(catchSheet(computed(-0.37, "pct_per_year", "F-92", {}, { today: "2026-11-07", signed: true }))).toContain("−0.37%");
   });
 });
 

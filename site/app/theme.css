@@ -194,12 +194,8 @@
   --destructive: var(--palette-red-300);
   --destructive-foreground: var(--palette-neutral-975); /* words on a filled danger button */
 
-  /* The three number states (D7) */
+  /* The number states (D7): a calculated number has no mark of its own, only the ink around it */
   --sourced: var(--palette-neutral-500); /* solid hairline under a sourced number */
-  --computed: var(--palette-violet-400); /* mark of a computed number (its tag's ink) */
-  --computed-line: var(--palette-violet-600); /* dotted underline under a computed number: a step darker than the mark, so the line
-                                                 stays quiet under running text */
-  --computed-subtle: var(--palette-violet-950);
   /* A glossary term in running text (Term): its own role beside the number states, a dotted line where a sourced figure has a solid one */
   --term-line: var(--palette-neutral-500); /* dotted hairline under a glossary term */
   /* A value the person entered outside a chart's fields (an offer, a custom entry). A chart field's value, its default or what the
@@ -398,7 +394,7 @@
   --word-spacing-hebrew: 0.05em;
 
   /* Provenance marks under numbers (D7) */
-  --num-underline-thickness: 1px; /* sourced solid, computed dotted */
+  --num-underline-thickness: 1px; /* the solid line under a sourced number and under words a rule states */
   --num-underline-offset: 0.3em;
 
   /* Motion. Movement is set to zero when the device asks for reduced motion; a chart then fades instead. */
@@ -540,8 +536,6 @@
   --color-destructive-foreground: var(--destructive-foreground);
 
   --color-sourced: var(--sourced);
-  --color-computed: var(--computed);
-  --color-computed-subtle: var(--computed-subtle);
   --color-entered: var(--entered);
   --color-entered-subtle: var(--entered-subtle);
 

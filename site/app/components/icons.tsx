@@ -3,7 +3,6 @@
 import {
   ArrowLeft,
   ArrowRight,
-  Calculator,
   CalendarDays,
   Check,
   ChevronDown,
@@ -57,7 +56,6 @@ export const IconLock = base(Lock);
 export const IconCheck = base(Check);
 export const IconMinus = base(Minus);
 export const IconPencil = base(Pencil);
-export const IconCalculator = base(Calculator);
 export const IconFile = base(FileText);
 export const IconAll = base(Layers);
 export const IconReset = base(RotateCcw);

@@ -92,8 +92,8 @@ describe("the worth-knowing row of the current account", () => {
     expect(text).toContain("הכי הרבה:");
     expect(text).toContain("אצל דיסקונט");
     expect(html).toContain('href="#current-account-banks"');
-    // every figure goes through the provenance component
-    expect(html.match(/class="num /g)!.length).toBeGreaterThanOrEqual(4);
+    // every figure goes through the provenance component: a sourced one a button (`num`), a calculated one plain text (`num-plain`)
+    expect(html.match(/class="num(?:-plain)?[ "]/g)!.length).toBeGreaterThanOrEqual(4);
   });
   it("is absent for a page with no bank records", () => {
     expect(accountWorthRow({ ...p.signature!, banks: [] })).toBeNull();
@@ -138,7 +138,8 @@ describe("study fund page", () => {
   const p = buildGuidePage("keren-hishtalmut")!;
   const d = p.signature!;
   const html = renderToString(inProviders(p, createElement(SignatureFrame, { id: "keren-hishtalmut", data: d, today: p.today, timeline: null })));
-  const text = html.replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ");
+  // the sentences' words, without the caution "?" a calculated figure with a catch carries after it
+  const text = html.replace(/<button[^>]*data-catch[^>]*>[\s\S]*?<\/button>/g, "").replace(/<[^>]+>/g, " ").replace(/&nbsp;|\s+/g, " ");
 
   it("a share the reader typed keeps the limit it is measured against within the figure's reach (TXH-01, TXH-08); a default share is that limit", () => {
     const employerPct = fact(d, "employerPct");

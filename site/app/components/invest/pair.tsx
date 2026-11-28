@@ -540,12 +540,14 @@ export function gapValue(rec: FundWay["rec"], list: GapList, today: string): Sit
   inputs[c.kinds.gapInputKind] = doc.strength === "institution" ? ownBy(kindValue, rec.manager) : kindValue;
   // the returns are in shekels in an Israeli fund's annual report, in the fund's own currency in a foreign issuer's documents
   const israeli = rec.domicile === "IL" && !isCustomFund(rec);
-  // Mor's footnote only where A-07 is floored at 0: above the floor the variable fee charged cancels out of the forward cost (F-92 (b))
-  const lead = c.kinds.gapLead(state, israeli ? c.kinds.currencyIn.ILS! : (c.kinds.currencyIn[rec.currency] ?? c.kinds.currencyInOther), israeli, g.years, !!rec.tracking_record.variable_positive_only && paybackMayLower(rec, list));
+  const lead = c.kinds.gapLead(state, israeli ? c.kinds.currencyIn.ILS! : (c.kinds.currencyIn[rec.currency] ?? c.kinds.currencyInOther), israeli, g.years);
+  // Mor's footnote, a caveat of the gap, only where A-07 is floored at 0: above the floor the variable fee charged cancels out of the
+  // forward cost (F-92 (b))
+  const positiveOnly = !!rec.tracking_record.variable_positive_only && paybackMayLower(rec, list);
   // the head says what the row says, in full ("בשנה" alone hid how many years): one year is that year's
   // difference, "ב־2025"; more years, the yearly mean and how many, "בשנה · 3 שנים"
   const year = rec.tracking_record.years[0]?.year;
-  return computed(Math.round(g.pct * 100) / 100, g.years === 1 ? "pct" : "pct_per_year", "F-92", inputs, { today, about: c.kinds.gapHead[state], lead, signed: true, unitText: c.kinds.gapYears(g.years, year) });
+  return computed(Math.round(g.pct * 100) / 100, g.years === 1 ? "pct" : "pct_per_year", "F-92", inputs, { today, about: c.kinds.gapHead[state], lead, ...(positiveOnly ? { caveat: c.kinds.gapPositiveOnly } : {}), signed: true, unitText: c.kinds.gapYears(g.years, year) });
 }
 
 /** The note under the gap column: a sentence for each state the list shows and none for the others. */

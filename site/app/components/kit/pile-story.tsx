@@ -227,6 +227,8 @@ const INK: Record<PileBarPart, string> = { own: "text-background", extra: "text-
 const measured = (part: PileBarPart, v: number, compact: boolean) => `${part === "own" ? "" : part === "extra" || part === "gain" ? "+" : "−"}${Math.round(Math.abs(v)).toLocaleString("en-US")}${compact ? "" : " ₪"}`;
 
 const OUT_H = 26;
+/** The room a caution "?" takes after a figure: its 14 px circle and the 4 px before it (kit CatchMark). */
+const MARK_ROOM = 18;
 const BAR_H = 40;
 
 /**
@@ -240,6 +242,7 @@ export function PileBar({
   slice,
   names,
   number,
+  marked = () => false,
   left,
   other,
   gap,
@@ -250,6 +253,8 @@ export function PileBar({
   names: Record<PileBarPart, string>;
   /** A part's figure; `compact` when the chart is phone-wide and has no room for the shekel sign. */
   number: (part: PileBarPart, compact: boolean) => ReactNode;
+  /** Whether a part's figure carries a caution "?" after it (a calculated figure with a catch, provenance `catchesOf`): its room is counted where the figures are placed. */
+  marked?: (part: PileBarPart) => boolean;
   /** The bracket's words and what is left, in bold. */
   left: { words: string; number: ReactNode };
   other?: { net: number | null; words: ReactNode; number: ReactNode };
@@ -297,7 +302,7 @@ export function PileBar({
   /** Each figure inside the part's unhatched length when it fits with room on both sides, else in the row beside it (above the bar, under the cuts), pushed apart. */
   const place = (list: typeof segs, hatched: boolean) => {
     const placed = list.map((p) => {
-      const w = chartTextWidth(measured(p.part, p.value, compact), size);
+      const w = chartTextWidth(measured(p.part, p.value, compact), size) + (marked(p.part) ? MARK_ROOM : 0);
       const to = hatched ? p.to : Math.min(p.to, end);
       const mid = hatched ? (x(p.from) + x(p.to)) / 2 : (x(p.from) + x(to)) / 2;
       return { ...p, w, mid, inside: !hatched && x(p.from) - x(to) - 2 >= w + 12, at: mid };

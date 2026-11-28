@@ -1,6 +1,6 @@
 // The index page's plan card, first on the page (over the receipt's ticket from 1280 px): its heading and the plan's tiles. What the results rest on
-// is said where each figure is: the receipt's caption names the inflation its figures are in today's money by, and each figure's sheet
-// lists what its run read, the exchange rate among them where the run reads one (F-84).
+// is said where each figure is: the receipt's caption names the inflation its figures are in today's money by; a calculated figure opens
+// nothing, and the exchange rate a run reads (F-84) is said with the ECB's attribution in the dollar section.
 import type { ReactNode } from "react";
 import { invest as c } from "../../copy";
 import { Card } from "../kit";
