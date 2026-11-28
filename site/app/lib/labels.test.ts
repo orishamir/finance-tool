@@ -110,7 +110,9 @@ describe("wherever a collected fund may bear dividend tax inside it that the run
   it("a figure of the fund's own, or a published 12-month gap, may hold the tax: counted", () => {
     const [f] = funds((x) => x.domicile === "IE" && x.replication?.method === "physical" && weighed(x));
     if (!f) throw new Error("an Irish fund on MSCI World or ACWI");
-    const gap = { ...f, fees: { ...f.fees, tracking_difference_12m: { ...f.fees.fixed_management!, value: 0.1 } } };
+    const fee = f.fees.fixed_management;
+    if (!fee) throw new Error(`the fee of ${f.id}`);
+    const gap = { ...f, fees: { ...f.fees, tracking_difference_12m: { ...fee, value: 0.1 } } };
     expect(taxOf(gap)).toBe("tax-fund-dividend");
   });
 

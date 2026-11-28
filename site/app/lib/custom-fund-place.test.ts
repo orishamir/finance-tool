@@ -304,7 +304,8 @@ describe("wherever a typed fund may bear dividend tax inside it that the run doe
     expect(labelOn(f, world)).toBe("tax-fund-dividend-part");
     const b = withCustomEntries(bundle, [f]);
     const [, at] = must(priced(must(fundWayAt({ bundle: b, index: world, plan, fundId: f.id }), f.id))[0], "a priced house");
-    expect((at.value.computed_from?.inputs as Record<string, SiteValue>)[copy.pair.fundInputs.usWithholding]?.computed_from?.formula).toBe("F-107");
+    const inputs = must(at.value.computed_from, "the figure's working").inputs as Record<string, SiteValue>;
+    expect(inputs[copy.pair.fundInputs.usWithholding]?.computed_from?.formula).toBe("F-107");
   });
 
   it("an Israeli fund that may hold foreign shares: not counted (TXF-57), on an index of Israeli companies too, which may hold foreign shares (ETF-44); through a swap, the swap's label", () => {

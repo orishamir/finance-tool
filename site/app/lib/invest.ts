@@ -51,7 +51,7 @@ export function optionOfFund(rec: FundRecord, exposure: ExposureRecord | undefin
  * The kind a fund's row names: its option's, except a typed fund in Tel Aviv whose country is not known, which is listed among the foreign
  * funds there (`optionOfFund`) but is not known to be one (F-04).
  */
-export const kindOfFund = (rec: FundRecord, option: OptionId): FundKind => (kindNotKnown(rec) ? "tase-unknown" : option);
+const kindOfFund = (rec: FundRecord, option: OptionId): FundKind => (kindNotKnown(rec) ? "tase-unknown" : option);
 
 export type Venue = FundExchange;
 const EXCHANGES = fundExchange.options;

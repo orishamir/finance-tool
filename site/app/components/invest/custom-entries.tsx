@@ -220,7 +220,10 @@ function needsOf(d: FundDraft, rec: FundRecord | null, index: IndexRef, seen: In
 function withoutOf(needs: readonly NeedItem[], tax: DividendTaxLabelId | null): string[] {
   const w = c.needs.without;
   const word = { gap: w.gap, spread: w.spread, dividendTax: tax === "tax-fund-dividend-part" ? w.dividendTaxPart : w.dividendTax } as Record<string, string>;
-  return needs.flatMap((x) => (x.state === "left-out" && word[x.id] ? [word[x.id]!] : []));
+  return needs.flatMap((x) => {
+    const said = x.state === "left-out" ? word[x.id] : undefined;
+    return said ? [said] : [];
+  });
 }
 
 /** The country item: missing where the fund has no price without it; "not sure" with what stands in, or none where it changes nothing. */
