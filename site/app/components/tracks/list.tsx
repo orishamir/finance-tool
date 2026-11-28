@@ -380,8 +380,8 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
           <HelpMark term={HELP_TERMS.exposure} about={t.help.exposure} />
         </span>
       ),
-      // a line for each share: its word, a 4 rem bar and its figure, at most "מניות ▬ 101%"
-      width: 12.75,
+      // a line for each share: its word, a 4 rem bar and its figure, at most "מניות ▬ 123% ?", the caution "?" of a share above 100%
+      width: 14,
       sort: state("stock"),
     },
     { id: "yield", head: pastHead(t.columns.yield, `${t.columns.beforeFees} · ${periodNote}`), width: 15.25 },
