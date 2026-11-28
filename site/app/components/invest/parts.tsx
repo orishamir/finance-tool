@@ -27,9 +27,9 @@ export function OptionTag({ option }: { option: OptionId }) {
 /** The tariff class each option is bought as, for the sentence that names a missing tariff line. */
 export const optionClass = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "tase_foreign_fund_units", abroad: "foreign_securities" } as const;
 
-/** The sentence for a price the engine or the site could not give, of one fund or, `many`, of the funds it is said once over. */
-export function reasonText(r: Reason, cls: string, many = false): string {
-  const w = many ? { ...c.reasons, ...c.reasonsMany } : c.reasons;
+/** The sentence for a price the engine or the site could not give. */
+export function reasonText(r: Reason, cls: string): string {
+  const w = c.reasons;
   switch (r.code) {
     case "fund-type":
       return w.fundType;
