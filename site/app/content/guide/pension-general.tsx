@@ -5,6 +5,7 @@ import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, Ruled, Term } from "../../components/provenance";
 import { Callout } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 import { disabilityRetirement, EmployerUntaxed, ExemptShare, LumpSums } from "./pension-parts";
 
 const N = ({ v }: { v: SiteValue | null }) => (v ? <Num value={v} /> : null);
@@ -13,17 +14,31 @@ export const content: GuideContent = {
   what: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        <Term id="תקרת הפקדה">תקרת ההפקדה</Term> החודשית לקרן המקיפה, של המעסיק ושלכם יחד, היא <N v={figure("PEN-08", "monthly_deposit_ceiling")} />. העודף <Ruled id="PEN-10">עובר לקרן הכללית אוטומטית</Ruled>, אצל אותה <Term id="חברה מנהלת">חברה מנהלת</Term>. תקרה שלא נוצלה בחודש אחד <Ruled id="PEN-08">עוברת לחודשים הבאים באותה שנה</Ruled>.
+        הקרן הכללית היא <Term id="קרן פנסיה">קרן פנסיה</Term> להפקדות שלא נכנסות לקרן המקיפה. <Ruled id="PEN-08">לקרן המקיפה יש תקרה להפקדות של כל חודש</Ruled>, ו<Ruled id="PEN-10">מה שמעל התקרה עובר לקרן הכללית של אותה חברה</Ruled>.
       </p>
       <p className="max-w-measure">
-        בקרן הכללית הכסף נצבר בחשבון על שמכם ומושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term>. בפרישה היתרה הופכת <Term prefix="ל" id="קצבה">קצבה</Term> חודשית, <Ruled id="PEN-70">לפי</Ruled> <Term id="מקדם המרה">מקדם המרה</Term> של הקרן. <Term prefix="ב" id="מסלול ביטוח">מסלולי הביטוח</Term> של הקרן, הגיל שממנו היא משולמת <Ruled id="PEN-64">הוא לפחות</Ruled> <N v={figure("PEN-64", "min_retirement_age")} />.
+        גם בה <Ruled id="PEN-70">החיסכון הופך בפרישה</Ruled> <Term prefix="ל" id="קצבה">קצבה</Term>: סכום שמקבלים כל חודש. ההבדל: <Ruled id="PEN-69">בקרן המקיפה המדינה מבטיחה רווח על חלק מהכסף, ובקרן הכללית לא</Ruled>.
       </p>
-      <p className="max-w-measure">
-        במסלולי הביטוח <Ruled id="PEN-64">יש גם כיסוי לנכות ולמוות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Term prefix="ל" id="עמית פעיל">עמית פעיל</Term>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> ששווייה לא נמוך מהיתרה שצברתם. הקרן <Ruled id="PEN-64">רשאית להציע גם מסלול בלי הכיסוי הזה</Ruled>.
-      </p>
-      <p className="max-w-measure">
-        כללי המס <Ruled id="TXP-24">הם כמו במקיפה</Ruled>. <Ruled id="PEN-69">אין</Ruled> <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה. תקרת דמי הניהול מהחיסכון גבוהה יותר, <N v={figure("PF-05", "balance_cap")} /> מול <N v={figure("PF-04", "balance_cap")} />, ותקרת דמי הניהול מההפקדה נמוכה יותר, <N v={figure("PF-05", "deposit_cap")} /> מול <N v={figure("PF-04", "deposit_cap")} />.
-      </p>
+      <GuidePart title="התקרה של הקרן המקיפה">
+        <p className="max-w-measure">
+          <Term id="תקרת הפקדה">תקרת ההפקדה</Term> החודשית לקרן המקיפה, של המעסיק ושלכם יחד, היא <N v={figure("PEN-08", "monthly_deposit_ceiling")} />. העודף <Ruled id="PEN-10">עובר לקרן הכללית אוטומטית</Ruled>, אצל אותה <Term id="חברה מנהלת">חברה מנהלת</Term>. תקרה שלא נוצלה בחודש אחד <Ruled id="PEN-08">עוברת לחודשים הבאים באותה שנה</Ruled>.
+        </p>
+      </GuidePart>
+      <GuidePart title="החיסכון והקצבה">
+        <p className="max-w-measure">
+          בקרן הכללית הכסף נצבר בחשבון על שמכם ומושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term>. בפרישה היתרה הופכת לקצבה חודשית <Ruled id="PEN-70">לפי</Ruled> <Term id="מקדם המרה">מקדם המרה</Term> של הקרן. <Term prefix="ב" id="מסלול ביטוח">מסלולי הביטוח</Term> של הקרן, הגיל שממנו היא משולמת <Ruled id="PEN-64">הוא לפחות</Ruled> <N v={figure("PEN-64", "min_retirement_age")} />.
+        </p>
+      </GuidePart>
+      <GuidePart title="ביטוח לנכות ולמוות">
+        <p className="max-w-measure">
+          במסלולי הביטוח <Ruled id="PEN-64">יש גם כיסוי לנכות ולמוות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Term prefix="ל" id="עמית פעיל">עמית פעיל</Term>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> ששווייה לא נמוך מהיתרה שצברתם. הקרן <Ruled id="PEN-64">רשאית להציע גם מסלול בלי הכיסוי הזה</Ruled>.
+        </p>
+      </GuidePart>
+      <GuidePart title="מה עוד שונה מהמקיפה">
+        <p className="max-w-measure">
+          <Ruled id="PEN-69">אין בה</Ruled> <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה. כללי המס <Ruled id="TXP-24">הם כמו במקיפה</Ruled>.
+        </p>
+      </GuidePart>
     </>
   ),
   who: () => (
@@ -37,6 +52,11 @@ export const content: GuideContent = {
     </>
   ),
   termIds: ["מסלול השקעה", "קצבת נכות", "קצבת שאירים", "עמית פעיל", "קרן נבחרת", "זיכוי ממס", "עמית מוטב", "הכנסה מזכה", "מקדם המרה", "קצבה מזכה", "משיכה שלא כדין", "איזון אקטוארי", "קופת גמל לקצבה", "קרן פנסיה", "עמית", "משיכה", "גיל הפרישה", "תגמולי מעסיק", "מרכיב הפיצויים", "רשות שוק ההון ביטוח וחיסכון", "השלמת תשואה", "קצבה", "חברה מנהלת", "אינפלציה", "תקרת הפקדה", "מסלול ביטוח", "שאירים"],
+  cost: ({ figure }) => (
+    <p className="max-w-measure">
+      לעומת הקרן המקיפה, תקרת דמי הניהול מהחיסכון כאן גבוהה יותר, ותקרת דמי הניהול מההפקדה נמוכה יותר. במקיפה הן <N v={figure("PF-04", "balance_cap")} /> בשנה מהחיסכון ו־<N v={figure("PF-04", "deposit_cap")} /> מההפקדה.
+    </p>
+  ),
   afterTax: ({ figure }) => (
     <>
       <p className="max-w-measure">
