@@ -166,7 +166,7 @@ describe("an account that prices no fund on an index says why, over every kind o
     expect(fundRow(out, "interactive-brokers")).not.toContain(invest.pair.noFund.doubt);
     expect(fundRow(out, "interactive-brokers")).not.toContain("אין נתון");
   });
-  it("the line over the funds an account gives no price opens why, as the account's row does (D105)", () => {
+  it("a fund row the chosen account gives no price says why in a few words, which open why, as the account's row does (D105, founder 2026-11-28)", () => {
     let seen = 0;
     for (const house of ["one-zero", "pepper", "psagot", "interactive-israel"]) {
       for (const idx of knownIndices(bundle)) {
@@ -175,11 +175,18 @@ describe("an account that prices no fund on an index says why, over every kind o
         const unpriced = allFunds(v).filter((f) => f.byHouse[house] && !("valueN" in f.byHouse[house]!));
         if (!priced || unpriced.length === 0) continue;
         const o = lists(v, bundle, plan, { house, fund: priced.rec.id });
-        const short = v.providers.find((p) => p.id === house)!.short;
-        const words = [invest.pair.noPriceAt.doubt(short), invest.pair.noPriceAt.notSold(short), invest.pair.noPriceAt.missing(short), invest.pair.noPriceAt.other(short)].map((w) => w.replace(/"/g, "&quot;"));
-        const said = words.filter((w) => o.includes(`>${w}</span>`));
-        expect(said.length, `${idx.id} ${house}`).toBeGreaterThan(0);
-        for (const w of said) expect(o, `${idx.id} ${house}`).toMatch(new RegExp(`class="(?:term|ruled)"[^>]*>${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<`));
+        const words = [...Object.values(invest.lists.funds.why), ...Object.values(invest.lists.funds.whyCode)].map((w) => w.replace(/"/g, "&quot;"));
+        for (const f of unpriced) {
+          // the row's markup, from its key to the next row's
+          const at = o.indexOf(`data-pick-key="${f.rec.id}"`);
+          expect(at, `${idx.id} ${house} ${f.rec.id}`).toBeGreaterThan(-1);
+          const next = o.indexOf("data-pick-key=", at + 1);
+          const row = next < 0 ? o.slice(at) : o.slice(at, next);
+          // the row's words are one of the short reasons, and they are what opens why
+          expect(words.some((w) => new RegExp(`class="(?:term|ruled)"[^>]*>${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<`).test(row)), `${idx.id} ${house} ${f.rec.id}`).toBe(true);
+        }
+        // no fold over them any more: they stand in the one list
+        expect(o).not.toContain("בלי מחיר בחשבון הזה");
         seen++;
       }
     }
@@ -837,7 +844,6 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     const sp = buildInvest({ bundle: b, index: found.index, plan });
     const unnamed = found.unnamed!;
     const named = found.named!;
-    const house = sp.providers.find((p) => p.id === "one-zero")!.short;
     // what the row says and what its words open: the fund's own reason, the search as its document, BRK-38 and BRK OQ24
     const why = whyNoFundAt(bundle, "one-zero", [unnamed]);
     expect(why.state).toBe("doubt");
@@ -846,10 +852,9 @@ describe("no price on what no document says can be done (2026-10-31)", () => {
     expect(why.rules).toEqual(["BRK-38", "BRK-OQ24"]);
     // the list with One Zero picked: the unnamed fund under the grey line of a doubt, the named one priced
     const out = lists(sp, b, plan, { house: "one-zero", fund: twin.id });
-    // the grey line the unnamed fund's row stands under is the doubt's, not "not sold" (One Zero's ETFs stand under that one)
-    const before = shown(out.slice(0, out.indexOf(`data-pick-key="${unnamed.rec.id}"`)));
-    expect(before.lastIndexOf(invest.pair.noPriceAt.doubt(house))).toBeGreaterThan(before.lastIndexOf(invest.pair.noPriceAt.notSold(house)));
-    expect(fundRow(out, unnamed.rec.id)).toBeTruthy();
+    // the unnamed fund's row says the doubt's words, not "not sold" (One Zero's ETFs say that one)
+    expect(fundRow(out, unnamed.rec.id)).toContain(invest.lists.funds.why.doubt);
+    expect(fundRow(out, unnamed.rec.id)).not.toContain(invest.lists.funds.why.notSold);
     // the named fund, beside the pick, shows its figure against it
     expect(fundRow(out, named.rec.id)).toMatch(/₪/);
   });
@@ -925,28 +930,20 @@ describe("a record that names the rules behind what an account does not sell nam
   });
 });
 
-describe("the fold of funds with no price says its reason in the plural over two funds or more", () => {
-  it("a fund's own reason shared by several funds reads in the plural, and in the singular over one", () => {
-    // every index whose fund list holds funds no account prices for one reason of their own, at the page's pair
+describe("a fund no account prices says its own reason on its row (founder, 2026-11-28)", () => {
+  it("its row stands in the list with its reason's short words", () => {
     let seen = 0;
     for (const index of knownIndices(bundle)) {
       const view = buildInvest({ bundle, index, plan });
       const pick = pickOfHeadline(view);
       if (!pick) continue;
       const own = allFunds(view).flatMap((f) => (f.reason && !f.byHouse[pick.house] ? [{ f, reason: f.reason }] : []));
-      const byReason = new Map<string, number>();
-      for (const { reason } of own) byReason.set(reason.code, (byReason.get(reason.code) ?? 0) + 1);
-      const out = shown(lists(view, bundle, plan, pick));
+      const out = lists(view, bundle, plan, pick);
       for (const { f, reason } of own) {
-        const cls = { "il-tracking": "mutual_fund_units", "il-etf": "etf_units", "tase-foreign": "tase_foreign_fund_units", abroad: "foreign_securities" }[f.option];
-        const one = reasonText(reason, cls);
-        const many = reasonText(reason, cls, true);
-        if (one === many) continue;
+        const row = fundRow(out, f.rec.id);
+        expect(row, `${index.id}: ${f.rec.id}`).toBeTruthy();
+        expect(row, `${index.id}: ${f.rec.id}`).toContain(invest.lists.funds.whyCode[reason.code] ?? invest.lists.funds.why.other);
         seen++;
-        if ((byReason.get(reason.code) ?? 0) > 1) {
-          expect(out, `${index.id}: ${reason.code}`).toContain(many);
-          expect(out, `${index.id}: ${reason.code}`).not.toContain(one);
-        } else expect(out, `${index.id}: ${reason.code}`).toContain(one);
       }
     }
     expect(seen).toBeGreaterThan(0);

@@ -6,10 +6,23 @@
 - When shared data or rules change, keep every page they touch correct, the
   fees page among them, but don't polish a page he didn't ask about.
 
+## 2. Work in a worktree
+
+- Every task, small ones included, is done on a branch of its own in a
+  worktree of its own (`tools/mkwt.sh <name> <branch>`), never in the main
+  checkout. Other sessions may be working at the same time, and in a shared
+  checkout one session's edits, builds and commits mix with another's.
+- The local `main` is always up to date, and only `main` itself is
+  pushed. To land: run the checks in the worktree (4); in the main
+  checkout, bring `main` up to date (`git fetch` and `git merge --ff-only
+  origin/main`), merge the branch into it, and push `main`. Never push a
+  branch, and never push to `main` from anywhere but the local `main`.
+  Then remove the worktree and branch.
+
 ## 3. Brief a builder
 
 - Small work (a text fix, a few lines of code) is done in the main
-  conversation, without a builder.
+  conversation, without a builder, in its own worktree all the same (2).
 - Give each builder its own worktree
   (`tools/mkwt.sh <name> <branch> main`) and the files it
   owns.
@@ -71,7 +84,7 @@
 
 ## 5. Land it
 
-- Merge to `main` and push. Never open a pull request. Large work is built
+- Merge into the local `main` and push it (2). Never open a pull request. Large work is built
   on a branch of its own and goes live in finished slices, also on `main`
   without a pull request. Nothing is held off the links for review: what is
   not finished stays on its branch.
