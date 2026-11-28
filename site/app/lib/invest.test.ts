@@ -232,7 +232,7 @@ describe("invest page computation", () => {
   });
 
   it("a custom non-Israeli index shows broker costs per option and no funds; a foreign fund in Tel Aviv has none, its tax being open (F-04)", () => {
-    const c: CustomIndex = { id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t };
+    const c: CustomIndex = { id: "custom-nikkei", name: "ניקיי 225", added: t };
     const v = buildInvest({ bundle, index: refOfCustom(c), plan: plan() });
     expect(v.options.filter((o) => o.exists).map((o) => o.id)).toEqual(["il-tracking", "il-etf", "tase-foreign", "abroad"]);
     for (const o of v.options) {

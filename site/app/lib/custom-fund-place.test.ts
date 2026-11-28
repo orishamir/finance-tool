@@ -198,28 +198,21 @@ describe("what the person says of an index they added feeds F-107, and the label
   });
 });
 
-describe("saved entries from before the panel asked these still load", () => {
+describe("a saved entry that is not the shape the panel saves never breaks the page", () => {
   const base = fundAt("us-usd", "IE");
-  const { tradesIn: _t, ...old } = JSON.parse(JSON.stringify(base)) as CustomFund;
+  const json = JSON.parse(JSON.stringify(base)) as Record<string, unknown>;
 
-  it("a fund bought abroad on an exchange reads as bought in dollars, as it was priced; one in Israel in shekels; one on no exchange in none", () => {
-    expect(validCustomFunds([old])[0]?.tradesIn).toBe("USD");
-    expect(validCustomFunds([{ ...old, exchange: "europe" }])[0]?.tradesIn).toBe("USD");
-    expect(validCustomFunds([{ ...old, exchange: "europe", tradesIn: "EUR" }])[0]?.tradesIn).toBe("EUR");
-    // a currency the exchange is not bought in on the panel reads as the dollar
-    expect(validCustomFunds([{ ...old, exchange: "us", tradesIn: "EUR" }])[0]?.tradesIn).toBe("USD");
-    const { exchange: _e, ...unsure } = old;
-    expect(validCustomFunds([unsure])[0]?.tradesIn).toBeNull();
-    expect(validCustomFunds([{ ...unsure, kind: "il-etf" }])[0]?.tradesIn).toBe("ILS");
+  it("a fund whose place is not one of the panel's answers is left out, and the others load", () => {
+    const { tradesIn: _t, ...noCurrency } = json;
+    const back = validCustomFunds([noCurrency, { ...json, id: "custom-fund-eur-on-us", tradesIn: "EUR" }, { ...json, id: "custom-fund-no-payout", payout: undefined }, { ...json, id: "custom-fund-kept" }]);
+    expect(back.map((f) => f.id)).toEqual(["custom-fund-kept"]);
   });
 
-  it("an index answered Israeli before has its companies in Israel; a region that is not an answer, or a yield that is not one, reads as not said", () => {
-    const [israeli, junk, kept] = validCustomIndices([
-      { id: "custom-a", name: "א", israeli: true, added: t },
+  it("a region that is not an answer, or a yield that is not one, reads as not said, and the index is kept", () => {
+    const [junk, kept] = validCustomIndices([
       { id: "custom-b", name: "ב", region: "גרמניה", dividendYield: { value: 3 }, added: t },
       { id: "custom-c", name: "ג", region: "europe", dividendYield: entered(2.5, "pct_per_year", t), added: t },
     ]);
-    expect(israeli?.region).toBe("israel");
     expect(junk).toEqual({ id: "custom-b", name: "ב", added: t });
     expect(kept?.region).toBe("europe");
     expect(kept?.dividendYield?.value).toBe(2.5);

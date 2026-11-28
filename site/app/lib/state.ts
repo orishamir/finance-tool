@@ -264,26 +264,16 @@ export function checkState(s: unknown): string | null {
 }
 
 /**
- * An index added before 2026-11-05 was asked "החברות במדד ישראליות?"; the question is now asked of each fund. A fund on an index answered
- * "yes" keeps that answer as its own ("המדד בשקלים"), unless it is hedged.
- */
-export function shekelFromIndex(funds: CustomFund[], indices: readonly CustomIndex[]): CustomFund[] {
-  const israeli = new Set(indices.filter((i) => i.israeli === true).map((i) => i.id));
-  return funds.map((f) => (israeli.has(f.indexId) && !f.hedged && !f.shekelIndex ? { ...f, shekelIndex: true as const } : f));
-}
-
-/**
  * The custom indices of a document that pass the shape check; a bad entry is left out, never a reason to refuse the file. A region or a
- * yield that does not parse reads as not said, and the index is kept. An index answered "החברות במדד ישראליות?" yes before the region was
- * asked has its companies in Israel.
+ * yield that does not parse reads as not said, and the index is kept.
  */
 export function validCustomIndices(list: unknown[]): CustomIndex[] {
   const out: CustomIndex[] = [];
   for (const c of list) {
     if (!isObj(c) || typeof c.id !== "string" || !c.id || typeof c.name !== "string" || !c.name.trim() || out.some((x) => x.id === c.id)) continue;
-    const region = isIndexRegion(c.region) ? c.region : c.israeli === true ? ("israel" as const) : null;
+    const region = isIndexRegion(c.region) ? c.region : null;
     const dividendYield = enteredPercent(c.dividendYield);
-    out.push({ id: c.id, name: c.name, ...(typeof c.israeli === "boolean" ? { israeli: c.israeli } : {}), ...(typeof c.currency === "string" && c.currency ? { currency: c.currency } : {}), ...(region ? { region } : {}), ...(dividendYield ? { dividendYield } : {}), added: typeof c.added === "string" ? c.added : "" });
+    out.push({ id: c.id, name: c.name, ...(typeof c.currency === "string" && c.currency ? { currency: c.currency } : {}), ...(region ? { region } : {}), ...(dividendYield ? { dividendYield } : {}), added: typeof c.added === "string" ? c.added : "" });
   }
   return out;
 }
@@ -305,7 +295,7 @@ function normalizeState(s: Record<string, unknown>): StateV3 {
     savedComparisons: [],
     ...(Array.isArray(s.customIndices) && validCustomIndices(s.customIndices).length ? { customIndices: validCustomIndices(s.customIndices) } : {}),
     ...(Array.isArray(s.customBrokers) && validCustomBrokers(s.customBrokers).length ? { customBrokers: validCustomBrokers(s.customBrokers) } : {}),
-    ...(Array.isArray(s.customFunds) && validCustomFunds(s.customFunds).length ? { customFunds: shekelFromIndex(validCustomFunds(s.customFunds), Array.isArray(s.customIndices) ? validCustomIndices(s.customIndices) : []) } : {}),
+    ...(Array.isArray(s.customFunds) && validCustomFunds(s.customFunds).length ? { customFunds: validCustomFunds(s.customFunds) } : {}),
     ...(typeof s.broker === "string" && s.broker ? { broker: s.broker } : {}),
     inputs: s.inputs as Record<string, ValueObject>,
     holdings: s.holdings as Holding[],

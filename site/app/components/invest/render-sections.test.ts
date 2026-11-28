@@ -81,7 +81,7 @@ describe("the index page's sections render", () => {
     for (const f of view.options.filter((o) => o.exists).flatMap((o) => o.funds)) expect(out).toContain(`data-pick-key="${f.rec.id}"`);
   });
   it("a custom index: the same two lists, the accounts by what they charge, and the request to add a fund (founder, 2026-11-04)", () => {
-    const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
+    const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", added: t }), plan });
     const out = html(createElement("div", null, createElement(NoFundCall, { view: v }), createElement(NoFundAccountColumn, { view: v, bundle, years: 20, chosen: null, onPick: () => undefined }), createElement(NoFundColumn, { view: v, mayaHref: "https://maya.tase.co.il" })));
     expect(out).toContain(invest.noFund.callTitle);
     expect(out).toContain(invest.noFund.fundTitle);
@@ -99,7 +99,7 @@ describe("the index page's sections render", () => {
     const ii = bundle.snapshots.find((s) => s.id === "interactive-israel")!;
     const no = ii.availability!.find((a) => a.available === false)!;
     const planted = { ...bundle, snapshots: bundle.snapshots.map((s) => (s === ii ? { ...s, availability: [...s.availability!, { ...no, applies_to: ["foreign_securities"] }] } : s)) } as typeof bundle;
-    const v = buildInvest({ bundle: planted, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
+    const v = buildInvest({ bundle: planted, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", added: t }), plan });
     const out = html(createElement(NoFundAccountColumn, { view: v, bundle: planted, years: 20, chosen: null, onPick: () => undefined }));
     const missing = v.houses.filter((h) => !h.generic);
     expect(missing.map((h) => h.provider.id)).toEqual(["one-zero", "interactive-israel"]);
@@ -248,7 +248,7 @@ describe("a bank's standing-order price the figure leaves out is said first in i
     expect((psagot?.changes ?? []).some((ch) => ch.head === invest.lists.otherPriceWords)).toBe(false);
   });
   it("a custom index's account list says the same, and under its head that monthly purchases are priced on the regular line", () => {
-    const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", israeli: false, added: t }), plan });
+    const v = buildInvest({ bundle, index: refOfCustom({ id: "custom-nikkei", name: "ניקיי 225", added: t }), plan });
     const list = html(createElement(NoFundAccountColumn, { view: v, bundle, years: 20, chosen: null, onPick: () => undefined }));
     expect(list).toContain(invest.pair.asideNote(3, v.providers.filter((p) => !p.foreign && !p.custom).length));
     for (const id of ["leumi", "massad", "fibi"]) expect(list, id).toContain(bundle.snapshots.find((s) => s.id === id)!.lines.find((l) => l.not_ranked)!.not_ranked!.reason_he.replace(/"/g, "&quot;"));

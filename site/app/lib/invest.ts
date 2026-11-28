@@ -78,8 +78,6 @@ export function venueOfFund(rec: FundRecord): Venue | null {
 export interface CustomIndex extends IndexFacts {
   id: string;
   name: string;
-  /** Asked before 2026-11-05 ("החברות במדד ישראליות?") and read only to carry the answer to the index's funds (state.ts, shekelFromIndex) and to its region. */
-  israeli?: boolean;
   /** "לידיעתכם בלבד": shown in the header, never used (spec §1, 10.8). */
   currency?: string;
   added: string;

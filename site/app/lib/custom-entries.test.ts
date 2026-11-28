@@ -218,7 +218,7 @@ describe("a fund the person types is priced at the collected houses under its ki
 
   it("belongs to the index it was added on, a custom index too", () => {
     expect(allFunds(view).some((f) => f.rec.id === abroad.id)).toBe(false);
-    const custom = { id: "custom-nikkei", name: "ניקיי", israeli: false, added: t };
+    const custom = { id: "custom-nikkei", name: "ניקיי", added: t };
     const onCustom = fundFromDraft({ ...said("il-tracking"), name: "על ניקיי", fixed: 0.3, variable: 0, trustee: 0 }, "custom-fund-nikkei", custom.id, t);
     const v = buildInvest({ bundle: withCustomEntries(bundle, [onCustom], [custom]), index: refOfCustom(custom), plan });
     const f = allFunds(v).find((x) => x.rec.id === onCustom.id)!;
@@ -238,7 +238,7 @@ describe("a fund the person types is priced at the collected houses under its ki
   });
 
   it("on an index the person added, the currency is named by no one: חשיפה למט״ח, never the dollar (founder, 2026-11-05)", () => {
-    const custom = { id: "custom-nikkei", name: "ניקיי", israeli: false, added: t };
+    const custom = { id: "custom-nikkei", name: "ניקיי", added: t };
     const onCustom = fundFromDraft({ ...said("il-tracking"), name: "על ניקיי", fixed: 0.3 }, "custom-fund-nikkei", custom.id, t);
     const rec = withCustomEntries(bundle, [onCustom], [custom]).funds.at(-1)!;
     const labels = fundLabels(rec, refOfCustom(custom), onCustom.kind);
@@ -294,13 +294,6 @@ describe("what the person says the fund does (2026-11-05): nothing is filled in 
     const f = fundFromDraft({ ...abroadDraft, payout: null }, "custom-fund-silent", "index-sp500", t);
     expect(priceOf(f).reason).toEqual({ code: "payout-unknown" });
     expect(ids(f)).not.toContain("pays-accumulating");
-  });
-
-  it("a fund saved before the question was asked reads as not said, not as accumulating", () => {
-    const { payout: _p, yield: _y, perYear: _n, domicile: _d, tracking: _t, ...old } = abroad;
-    const [back] = validCustomFunds([JSON.parse(JSON.stringify(old))]);
-    expect(back!.payout).toBeNull();
-    expect(back!.tracking).toBeNull();
   });
 
   it("a distributing foreign fund needs its country, then its yield, and is priced with both", () => {
@@ -452,7 +445,7 @@ describe("kept on the device and carried in the export file (D44)", () => {
 
   it("removing a custom index takes its funds with it", () => {
     ensureLoaded();
-    const custom = { id: "custom-nikkei", name: "ניקיי", israeli: false, added: t };
+    const custom = { id: "custom-nikkei", name: "ניקיי", added: t };
     saveCustomIndex(custom);
     saveCustomFund({ ...fund, indexId: custom.id });
     saveCustomFund(abroad);

@@ -171,41 +171,6 @@ describe("a fund typed abroad with neither its exchange nor its country (F-65)",
 });
 
 describe("a typed fund as saved and read back (F-65, F-109)", () => {
-  // a fund abroad as the site saved it before the exchange and the unit price were asked: no field for either
-  const PRE_BRANCH = {
-    id: "custom-fund-saved-before",
-    name: "קרן ששמרתי",
-    number: null,
-    indexId: SP,
-    kind: "abroad",
-    fixed: { value: 0.07, unit: "pct_per_year", source: { url: "local", title: "הזנתם", publisher: "אתם", strength: "entered" }, checked: "2026-11-01", effective_from: "2026-11-01", effective_to: null, update_rule: "founder", state: "entered", about: "דמי ניהול שנתיים" },
-    variable: null,
-    trustee: null,
-    hedged: false,
-    payout: "accumulating",
-    yield: null,
-    perYear: null,
-    domicile: "IE",
-    tracking: null,
-    added: "2026-11-01",
-  };
-
-  it("a fund saved before the questions loads unchanged, as the same answers saved now with both left empty, and, registered in Ireland, reads as of no known exchange", () => {
-    const back = must(validCustomFunds([PRE_BRANCH])[0], "the saved fund read back");
-    // the currency it is bought in, asked later, reads as not known for a fund bought abroad on no named exchange
-    expect(back).toEqual({ ...PRE_BRANCH, tradesIn: null });
-    const now = fundFromDraft({ ...draftAt("abroad", "IE"), name: PRE_BRANCH.name, fixed: 0.07, payout: "accumulating", hedged: false, unitPrice: null }, PRE_BRANCH.id, SP, PRE_BRANCH.added, "USD");
-    expect(now).toEqual(back);
-    const b = withCustomEntries(bundle, [back, typed("us"), typed("europe")]);
-    const old = wayOf(b, back.id);
-    const [us, europe] = [typed("us"), typed("europe")].map((f) => wayOf(b, f.id)) as [FundWay, FundWay];
-    for (const h of houses) {
-      const a = left(us, h);
-      const e = left(europe, h);
-      expect([h, left(old, h)]).toEqual([h, a === null || e === null ? null : Math.min(a, e)]);
-    }
-  });
-
   it("the exchange and the unit price are kept through a save and a reload", () => {
     const f = typed("europe", 87.5);
     const back = must(validCustomFunds([JSON.parse(JSON.stringify(f))])[0], "the fund read back");
