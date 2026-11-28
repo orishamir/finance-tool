@@ -378,6 +378,7 @@ Scope: in: the three CMA monthly datasets on data.gov.il (Gemel-Net, Pension-Net
 - Conditions / exceptions: The flyer carries per-track "קוד מזרחי" and "קוד נס פנסיה" columns (operator codes). Their use is not explained (open question 16). The "פאסיבי - כללי" old name of 7979 and 481 is a "general"-looking label for what is now the flexible index-tracking track.
 - Figures: n/a
 - Source: [Meitav flyer](https://www.meitav.co.il/media/0lhfrzgy/פלייר-תפעולי-מונגש.pdf) pp.1 to 5; [Meitav merger summary](https://www.meitav.co.il/media/r0wh30iv/%D7%A8%D7%99%D7%9B%D7%95%D7%96-%D7%9E%D7%99%D7%96%D7%95%D7%92%D7%99%D7%9D-%D7%9E%D7%95%D7%A0%D7%92%D7%A9.pdf) · checked 2026-10-22 · institution
+- Scope: institution: Meitav
 - Dimensions: transfer-switch-process
 - Likely to change: no (historical mapping)
 
