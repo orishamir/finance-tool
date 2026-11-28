@@ -1,7 +1,6 @@
 {
   "long": [
     "BRK-07",
-    "BRK-14",
     "BRK-58"
   ],
   "research-talk": [],
@@ -12,7 +11,6 @@
     "BRK-58#extra_client_subaccount_equity"
   ],
   "typed-data-figure": [
-    "BRK-14",
     "BRK-28",
     "BRK-35",
     "BRK-38",

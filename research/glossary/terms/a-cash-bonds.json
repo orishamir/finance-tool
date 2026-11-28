@@ -2153,25 +2153,25 @@
   {
     "term_he": "פדיון מוקדם",
     "term_source": {
-      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006, קובץ התקנות 6457, עמוד 3",
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=3"
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\") (תיקון), התשס\"ז-2007, קובץ התקנות 6597, עמוד 3",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=3"
     },
     "variants_he": [],
-    "explain_he": "קנייה חוזרת של איגרות חוב בידי המדינה לפני מועד הפדיון, במחיר השוק, וזו בחירה של המדינה בלבד",
+    "explain_he": "קנייה חוזרת של איגרות חוב בידי המדינה לפני מועד הפדיון, בהליך תחרותי שהתקנות לא קובעות לו מחיר, וזו בחירה של המדינה בלבד",
     "rule_ids": [
       "GOV-16"
     ],
     "source": {
-      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006, קובץ התקנות 6457, עמוד 3",
-      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=3",
-      "checked": "2026-11-07",
+      "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\") (תיקון), התשס\"ז-2007, קובץ התקנות 6597, עמוד 3",
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=3",
+      "checked": "2026-11-28",
       "strength": "primary",
       "publisher": "Reshumot (Ministry of Justice)"
     },
     "where": [
       "guide:government-bond"
     ],
-    "notes": "A holder who wants out early sells on the market (GOV-17). The Debt Unit calls the process 'מכרזים הפוכים'; none were held in 2025 (GOV-16). Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law01/999_564.htm) to the official text.",
+    "notes": "A holder who wants out early sells on the market (GOV-17). The Debt Unit calls the process 'מכרזים הפוכים'; none were held in 2025 (GOV-16). Re-cited 2026-11-07 (glossary sweep) from a copy (https://www.nevo.co.il/law_html/law01/999_564.htm) to the official text. Re-cited 2026-11-28 to the 2007 amendment (gazette 6597), which replaced the 2006 tail \"ובמחיר השוק\", so the regulations set no buyback price (GOV-16, GOV-25).",
     "id": "pdyvn-mvkdm"
   },
   {

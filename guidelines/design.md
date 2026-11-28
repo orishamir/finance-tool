@@ -74,7 +74,13 @@ What goes on a page is his call. When he asks for a change, build it this way:
   (`foreground`, `muted-foreground`, `primary`, `border`, `input`, `ring`).
 - **Number states.**
   - Sourced: a solid grey underline.
-  - Computed: a dotted violet underline.
+  - Computed: plain, and it opens nothing. A popup on each calculated
+    number mostly repeated what stood beside it, or showed only the last
+    step of a long calculation. Where one carries a catch (a doubt, a
+    company's or an old figure inside it, a flag, the site's own reading),
+    a "?" in caution colour after it opens just the catch. A page's main
+    result instead opens one explanation of its whole calculation, step
+    by step, with the reader's numbers.
   - Entered by the person: blue ink, with no highlight behind it (the
     "entered" tag keeps its own). Not a chart's
     field: its default and what the reader types in it are plain numbers

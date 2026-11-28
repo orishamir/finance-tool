@@ -298,7 +298,7 @@ Out, and where it lives:
 - Likely to change: no (law); yearly (shares)
 
 ### MGD-15 If the manager fails: assets sit at the custodian; the manager must keep equity and security against negligence and embezzlement
-- Rule: Client assets are in the client's account at the custodian (MGD-14, REG-09), so the manager's own failure does not put them in the manager's estate. Protection then depends on the custodian: a bank (REG-04 to REG-06; no deposit insurance), a non-bank TASE member (BRK-07, BRK-08), or a foreign custodian (BRK-14).
+- Rule: Client assets are in the client's account at the custodian (MGD-14, REG-09), so the manager's own failure does not put them in the manager's estate. Protection then depends on the custodian: a bank (REG-04 to REG-06; no deposit insurance), a non-bank TASE member (BRK-07, BRK-08), or a foreign custodian (REG-27, BRK-35).
 - What the licensee must maintain:
   - **Security for clients.** Under the Equity and Insurance regulations, a licensee must arrange or deposit security ("בטוחה") "לכיסוי חבותו בשל מעשה או מחדל רשלני כלפי לקוח". For a licensed corporation, the security must also cover employee "מעילה באמון" (reg. 3(א)).
   - **Its form.** Security may be insurance, a cash deposit, a securities deposit or a bank guarantee (reg. 1). Its scope is set by the licensee "considering its activity" (reg. 3(ב)); no minimum amount was found. The board approves it, and it is reviewed yearly (reg. 3(ג), (ד)). It stays valid for one year after the licensee stops operating (reg. 7(ב)).

@@ -2,7 +2,7 @@
   "id": "pdyvn-mvkdm",
   "he": "פדיון מוקדם",
   "en": null,
-  "meaning": "קנייה חוזרת של איגרות חוב בידי המדינה לפני מועד הפדיון, במחיר השוק, וזו בחירה של המדינה בלבד",
+  "meaning": "קנייה חוזרת של איגרות חוב בידי המדינה לפני מועד הפדיון, בהליך תחרותי שהתקנות לא קובעות לו מחיר, וזו בחירה של המדינה בלבד",
   "where": [],
   "wrapper_ids": [
     "government-bond"
@@ -12,10 +12,10 @@
     "GOV-16"
   ],
   "source": {
-    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmWhyAjAO9sieYV7GsTkIsdY=#page=3",
-    "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\"), התשס\"ו-2006, קובץ התקנות 6457, עמוד 3",
+    "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/yC2TN9CtZzPO8Yj5JpRxmXONlitPuu1cAlpRLobaJ4U=#page=3",
+    "title": "תקנות מילווה המדינה (איגרות חוב מסוג \"אג\"ח ממשלתית צמודה\") (תיקון), התשס\"ז-2007, קובץ התקנות 6597, עמוד 3",
     "publisher": "Reshumot (Ministry of Justice)",
     "strength": "primary",
-    "checked": "2026-11-07"
+    "checked": "2026-11-28"
   }
 }

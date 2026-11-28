@@ -13,7 +13,6 @@
     "israeli_tax_service": true,
     "protection_rule_ids": [
       "BRK-06",
-      "BRK-14",
       "BRK-35",
       "BRK-41",
       "REG-27"
