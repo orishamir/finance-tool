@@ -71,7 +71,7 @@ const productFields = {
   open_questions: z.array(z.string()),
   /**
    * Rules that govern the product but set none of its figures (data-schema §3.3), never shown as a figure's rule. The dimension check
-   * does not read this field yet, so it stays empty until that check counts it beside `rule_ids`.
+   * counts them beside the values' `rule_ids`, so a rule moved here from a figure keeps the marks it carries.
    */
   context_rule_ids: ruleIds.optional(),
   /** Set when the wrapper closes (D6); absent or null while it is open. */

@@ -1763,12 +1763,14 @@ function readRuleDimensions(files: string[], dataDir: string): Map<string, strin
 }
 
 /**
- * data-schema §3.3 and §4 item 9: a wrapper's `dimensions` is regenerated from its `rule_ids`, never edited by
- * hand. Every dimension a cited rule carries must be marked; a `covered` mark must come from a cited rule;
+ * data-schema §3.3 and §4 item 9: a wrapper's `dimensions` is regenerated from the rules it cites, never edited by
+ * hand. A rule is cited by a value's `rule_ids` or by the record's `context_rule_ids` (the rules that govern the
+ * product and set none of its figures), so a rule moved from a figure to the record's context still carries its
+ * dimensions. Every dimension a cited rule carries must be marked; a `covered` mark must come from a cited rule;
  * a `blocked:<OQ>` mark must name an open question of the rule base. A rule cited without a record under
  * data/rules/ is reported, because the page could not open its rule card.
  */
-function checkDimensionMarks(record: Record<string, unknown>, ruleDimensions: Map<string, string[]>, ruleBase: RuleBaseIds): string[] {
+export function checkDimensionMarks(record: Record<string, unknown>, ruleDimensions: ReadonlyMap<string, readonly string[]>, ruleBase: Pick<RuleBaseIds, "openQuestions">): string[] {
   const out: string[] = [];
   // a security's `held_in` rules (where it is held) can cover a dimension, but a dimension only they carry need not be marked:
   // the wrapper's own dimensions are that wrapper's record's
@@ -1785,7 +1787,7 @@ function checkDimensionMarks(record: Record<string, unknown>, ruleDimensions: Ma
     }
     return union;
   };
-  const ownUnion = dimsOf(new Set(collectStrings(own, "rule_ids")));
+  const ownUnion = dimsOf(new Set([...collectStrings(own, "rule_ids"), ...collectStrings(own, "context_rule_ids")]));
   const heldUnion = _heldIn ? dimsOf(new Set(collectStrings(_heldIn, "rule_ids"))) : new Set<string>();
   const marks = (record.dimensions ?? {}) as Record<string, string>;
   for (const [dim, mark] of Object.entries(marks)) {
