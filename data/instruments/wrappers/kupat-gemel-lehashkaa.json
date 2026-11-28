@@ -97,7 +97,8 @@
       "tax_year": 2026,
       "update_rule": "cpi-linked 1 jan",
       "rule_ids": [
-        "KGL-03"
+        "KGL-03",
+        "KGL-02"
       ],
       "state": "sourced",
       "notes": "NIS per person per calendar year, 2026, across all kupat gemel lehashkaa accounts: the law's NIS 70,000 (Amendment 15 s.3, section 22(א)) indexed by the CPI; the CBS linkage calculator returns 83,641.09 for 1.1.2026, shown rounded to the shekel (KGL-03). No regulator notice is required. Updated every 1 January."
@@ -230,7 +231,6 @@
   ],
   "checked": "2026-10-23",
   "context_rule_ids": [
-    "KGL-02",
     "KGL-08"
   ]
 }

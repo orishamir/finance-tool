@@ -279,7 +279,7 @@ const INSTRUMENT_ROWS: FigureRow[] = [
   capRows("balance", [
     { id: "PF-02", when: houseIs(...PF02_PRODUCTS), why: "the general cap on a provident fund's fee from the balance, whose list of exclusions leaves this product in" },
     { id: "PF-03", when: houseIs("kupat-gemel-lehashkaa"), why: "a provident fund for investment is under the general cap" },
-    never("PEN-22", "PF-02 states the same cap, and its exclusions leave a provident fund for annuity under it"),
+    { id: "PEN-22", when: houseIs("provident-for-annuity"), why: "a provident fund for annuity is under the general cap, which PEN-22 states for it" },
     { id: "PF-04", when: houseIs("pension-comprehensive"), why: "the cap on a comprehensive pension fund's fee from the balance" },
     { id: "PF-05", when: houseIs("pension-general"), why: "the cap on a general pension fund's fee from the balance" },
     {
@@ -306,7 +306,7 @@ const INSTRUMENT_ROWS: FigureRow[] = [
   capRows("deposit", [
     { id: "PF-02", when: houseIs(...PF02_PRODUCTS), why: "the general cap on a provident fund's fee from each deposit" },
     { id: "PF-03", when: houseIs("kupat-gemel-lehashkaa"), why: "a provident fund for investment is under the general cap" },
-    never("PEN-22", "PF-02 states the same cap, and its exclusions leave a provident fund for annuity under it"),
+    { id: "PEN-22", when: houseIs("provident-for-annuity"), why: "a provident fund for annuity is under the general cap, which PEN-22 states for it" },
     { id: "PF-04", when: houseIs("pension-comprehensive"), why: "the cap on a comprehensive pension fund's fee from each deposit" },
     { id: "PF-05", when: houseIs("pension-general"), why: "the cap on a general pension fund's fee from each deposit" },
     { id: "PEN-10", when: houseIs("pension-general"), why: "the fee on money moved from a comprehensive fund above its ceiling is at most the member's fee there" },
@@ -321,7 +321,7 @@ const INSTRUMENT_ROWS: FigureRow[] = [
     { id: "BRK-24", when: (_r, v) => v.value === null, why: "no rule makes a non-bank member's published fee a cap" },
     { id: "MF-26", when: houseIs("money-market-fund-daily", "money-market-fund-renewable", "brokerage-account"), why: "a distributor that is not an investment marketer may charge nothing for holding money-market units under a distribution agreement" },
     never("MF-27", "the same ban as BRK-17, summed up for fund units"),
-    { id: "BRK-52", when: (_r, v) => v.value !== null, why: "no rule limits a non-bank member's custody fee on makam, or an investment marketer's on money-market units: whom the zero does not bind" },
+    { id: "BRK-52", why: "no rule limits a non-bank member's custody fee on makam, or an investment marketer's on money-market units: whom the ban BRK-17 states does not bind" },
     { id: "IRA-16", when: houseIs(...IRA), why: "a personally managed fund pays the custodian's fees at most as the same company's other funds do" },
   ]),
   capRows("trade", [
@@ -334,6 +334,7 @@ const INSTRUMENT_ROWS: FigureRow[] = [
     { id: "MF-26", when: houseIs("money-market-fund-daily", "money-market-fund-renewable"), why: "under a distribution agreement a distributor that is not an investment marketer may charge the holder nothing to buy or redeem money-market units" },
     { id: "MF-71", when: houseIs("money-market-fund-daily", "money-market-fund-renewable"), why: "a bank may charge no buy, sell or redemption fee on money-market units" },
     { id: "BRK-72", when: houseIs("money-market-fund-daily", "money-market-fund-renewable"), why: "a bank's Tel Aviv buy and sell line leaves out a fund that is not a tracking or listed fund" },
+    { id: "BRK-52", when: houseIs("money-market-fund-daily", "money-market-fund-renewable"), why: "no rule limits what a non-bank member that is an investment marketer charges to buy, sell or redeem money-market units: whom MF-71's zero does not bind" },
     never("MF-27", "BRK-72 and MF-71 state which of a bank's lines a money-market fund's units pay"),
     never("BANK-18", "BANK-18 is about makam's trade lines; the money-market units' zero is MF-26's and MF-71's"),
     never("IRA-16", "the closed list names trade commissions among the charges allowed, and IRA-18 states that there is no cap"),
@@ -361,7 +362,7 @@ const INSTRUMENT_ROWS: FigureRow[] = [
     closed: true,
     allow: [
       { id: "KGL-03", why: "the yearly ceiling in force, the law's amount linked to the index" },
-      never("KGL-02", "the law's base amount: the ceiling in force is KGL-03's, whose card gives the base too"),
+      { id: "KGL-02", why: "the law's base amount, how it is linked to the index and that the ceiling counts across all of a person's accounts, which the ceiling in force rests on" },
       { id: "IRA-08", why: "the ceiling on the money in a personally managed fund, which its card states" },
       { id: "IRA-07", why: "which money enters, and over which accounts the ceiling counts" },
       never("IRA-27", "a draft that binds no one: the ceiling in force is IRA-08's"),
