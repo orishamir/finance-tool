@@ -2,7 +2,7 @@
   "id": "TXF-56",
   "title": "A fund domiciled in the US (a RIC) that holds the shares: what each company's country withholds from it",
   "title_he": "קרן אמריקנית שמחזיקה את המניות: כמה מס מנכה ממנה מדינת החברה",
-  "text_he": "על דיבידנד מחברה אמריקנית לא מנוכה מס בקרן אמריקנית: הניכוי האמריקני חל על תשלום לזר, ולכן המס האמריקני חל על החלוקה של הקרן למחזיק. משווייץ השיעור הוא {TXF-56:ch} לפי האמנה, ומצרפת, מיפן ומקנדה האמנה עם ארצות הברית מגבילה אותו ל־{TXF-56:fr_treaty}, {TXF-56:jp_treaty} ו־{TXF-56:ca_treaty}. מגרמניה {TXF-56:de_accepted} לקרן השקעות זרה עם אישור מעמד. אם קרן אמריקנית זכאית לאמנות האלה נקרא רק לשווייץ ולאמנה עם ישראל.",
+  "text_he": "הניכוי האמריקני חל על תשלום לזר, ומכאן קורא האתר שקרן אמריקנית, שהיא תאגיד אמריקני, לא נושאת מס אמריקני על דיבידנד מחברה אמריקנית: המס האמריקני חל על החלוקה שלה למחזיק. משווייץ השיעור הוא {TXF-56:ch} לפי האמנה, ומגרמניה {TXF-56:de_accepted} לקרן השקעות זרה עם אישור מעמד. מצרפת, מיפן ומקנדה האמנה עם ארצות הברית מגבילה את השיעור ל־{TXF-56:fr_treaty}, {TXF-56:jp_treaty} ו־{TXF-56:ca_treaty}. אם קרן אמריקנית זכאית לאמנות האלה נקרא רק לשווייץ ולאמנה עם ישראל.",
   "figure_names_he": {
     "us": "מס ארצות הברית בקרן אמריקנית על דיבידנד מחברה אמריקנית",
     "ch": "מס שווייץ על דיבידנד לקרן אמריקנית, לפי האמנה",
@@ -29,7 +29,7 @@
         "publisher": "US Internal Revenue Service",
         "strength": "primary",
         "locator": "Withholding of Tax",
-        "quote": "Most types of U.S. source income received by a foreign person are subject to U.S. tax of 30%"
+        "quote": "The tax is generally withheld (chapter 3 withholding) from the payment made to the foreign person"
       },
       "checked": "2026-11-28",
       "effective_from": null,
