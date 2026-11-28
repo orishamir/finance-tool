@@ -230,7 +230,7 @@ describe("every rule a figure on the indices page names is a record the page hol
  * (TXH-16, under the term "הפקדה שאינה מוטבת", among them). A term card's list leaves them out (`TermCard`), and each waits for its
  * record. A ratchet: an id leaves the list when it gains a record or when no glossary row cites it any more, and none joins it.
  */
-const noRecord = new Set(["CAT-01", "CAT-02", "CAT-25", "CAT-26", "CAT-29", "CAT-30", "CORP-10", "FXD-16", "INS-23", "KH-24", "MGD-20", "REG-28", "RG-16", "RG-18", "RG-23", "TXH-16", "TXP-25"]);
+const noRecord = new Set(["CAT-01", "CAT-02", "CAT-25", "CAT-26", "CAT-29", "CAT-30", "CORP-10", "FXD-16", "INS-23", "KH-24", "MGD-20", "REG-28", "RG-16", "RG-18", "RG-23"]);
 
 /** The rows of the page's term cards whose rule has no record: rows `TermCard` leaves out. Held at what they are, as a ratchet. */
 const PLACEHOLDER_ROWS = 60;

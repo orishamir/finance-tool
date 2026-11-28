@@ -1,0 +1,72 @@
+{
+  "id": "TX2-11",
+  "title": "Selling REIT units: capital gain; a loss on sale can absorb same-year REIT distributions",
+  "title_he": "מכירת מניה של קרן להשקעות במקרקעין: רווח הון, והפסד שמתקזז גם מול החלוקות",
+  "text_he": "מניות של קרן להשקעות במקרקעין רשומות למסחר בבורסה, ולכן על מכירה שלהן חלים כללי רווח ההון בניירות ערך. המס הוא עד {TXS-01:rate} מהרווח הריאלי, והבנק או חבר הבורסה מנכים אותו. הפסד ממכירת מניה כזו בשנת המס אפשר לקזז לפי סעיף 92 לפקודה, או מול ההכנסה החייבת שהקרן העבירה למוכר באותה שנה, חוץ מהכנסה חריגה.",
+  "strength": "primary",
+  "dimensions": [
+    "tax-at-exit",
+    "loss-offset"
+  ],
+  "likely_to_change": "no",
+  "il_finance_file": "tax-tier2-other.md",
+  "checked": "2026-11-07",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.113, s.64A8",
+      "locator_he": "עמוד 113, סעיף 64א8",
+      "page": 113,
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "pp.103-104, s.64A3",
+      "locator_he": "עמודים 103 עד 104, סעיף 64א3",
+      "page": 103,
+      "quote": "בתוך 24 חודשים מיום התאגדותה",
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
+    },
+    {
+      "url": "https://www.gov.il/BlobFolder/legalinfo/law_pkudat_mas_hachnasa/he/LegalInformation_kesher_%D7%A4%D7%A7%D7%95%D7%93%D7%AA%20%D7%9E%D7%A1%20%D7%94%D7%9B%D7%A0%D7%A1%D7%94%20%5B%D7%A0%D7%95%D7%A1%D7%97%20%D7%97%D7%93%D7%A9%5D%20-%20%D7%9C%D7%90%20%D7%9E%D7%A8%D7%95%D7%91%D7%93.pdf",
+      "title": "פקודת מס הכנסה [נוסח חדש], נוסח רשות המסים",
+      "title_he": "פקודת מס הכנסה [נוסח חדש], נוסח משולב (רשות המסים)",
+      "publisher": "gov.il",
+      "publisher_he": "רשות המסים",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "p.113, s.64A9(a)(1)",
+      "locator_he": "עמוד 113, סעיף 64א9(א)(1)",
+      "page": 113,
+      "checked": "2026-11-07",
+      "standing": "consolidated-not-binding"
+    },
+    {
+      "url": "https://fs.knesset.gov.il/25/law/25_lsr_2572039.pdf",
+      "title": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2023 ו-2024), התשפ\"ג-2023, ספר החוקים 3045",
+      "title_he": "חוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנות התקציב 2023 ו-2024), התשפ\"ג-2023, ספר החוקים 3045",
+      "publisher": "The Knesset",
+      "publisher_he": "הכנסת",
+      "kind": "law",
+      "strength": "primary",
+      "locator": "file p.17 (gazette p.163), s.12(2): in s.64A3(a)(2)",
+      "page": 17,
+      "checked": "2026-11-07"
+    }
+  ]
+}
