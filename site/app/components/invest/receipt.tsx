@@ -91,7 +91,7 @@ export function verdictOf(v: ReturnType<typeof pairVerdict>, chosen: boolean): {
 }
 
 /**
- * The fund's fees as rows under its line, as the account's are: a name, the leader, the rate. A foreign fund's "אין" and "לא נאסף" in
+ * The fund's fees as rows under its line, as the account's are: a name, the leader, the rate. A foreign fund's "אין" and "עוד לא נאסף" in
  * place of a rate are said in a "?" beside the first of them (wording.md: a note beside what it qualifies).
  */
 function feeRows(rec: FundRecord, bundle: IndicesBundle, today: string) {

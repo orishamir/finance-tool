@@ -466,8 +466,8 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   says nothing. A sheet says what the figure is once, in its head's line: a line of math keeps its own name only where the figure has
   no head's line, and the key row of the symbol it works out points at the head ("המספר שבראש הגיליון").
 - **One word per empty state.** A figure with no number says it in one word, the same in every cell, row and sheet head (`emptyWords`
-  in `copy.ts`): "לא נאסף" for one the site has not collected, "לא דווח" for one its source did not report, "אין" for one there is none
-  of. The word says what is missing and never stands beside a value; the two cells that still differ are listed in `docs/copy.md` 3.
+  in `copy.ts`): "עוד לא נאסף" for one the site has not collected, "עוד לא דווח" for one its source did not report, "אין" for one there is none
+  of. The word says what is missing and never stands beside a value.
 - **A missing figure** (`value: null`) heads its sheet with the word it was shown as and no state tag. Its reason is said once: its
   Hebrew note; else the reason its record gives (`empty_because`, worded in `provenance.sourced.emptyBecause`; a figure none of by rule
   leaves it to the rule's chips); else, for a sourced figure, that the source does not hold it. Of an English note it shows only the open
@@ -983,7 +983,7 @@ in the kit fits is added to the kit.
   an arrow that opens a page of the site is `RowArrow`, never a grey one (guard 11).
 - `ProductPhoneFold`: a product on a phone in a list too long to show whole; not for a list a reader compares across at a glance, where
   every row stays whole.
-- `FeeFigure`, `FundFeesHead`, `FundFeesPhoneHelp`, `FeeWordsNote`: a fee among a product's figures, saying "אין" or "לא נאסף" where it
+- `FeeFigure`, `FundFeesHead`, `FundFeesPhoneHelp`, `FeeWordsNote`: a fee among a product's figures, saying "אין" or "עוד לא נאסף" where it
   has no number.
 - `SortHead`, `SortNote`: a column head that sorts, or a plain head with the same second line; a "?" for the head stands beside it, never
   inside its button.

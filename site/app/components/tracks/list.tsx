@@ -327,7 +327,7 @@ export function TrackList({ view, groups, by, sort, sortable, onSort, feeYear, p
   // tracks, measured with that padding: the fund's number with its link mark (5.35), the fee head with its arrow and "?" in two lines in every
   // sort state (10.3; its cap caption wraps under that where it names an age), the deposit fee's cap caption ("התקרה בתקנות: 4%", 7.9), a share
   // above 100% with the caution "?" its caveat gives it ("123% ?", 4.3, wider than the sorted head "מניות ▼" and than "מט״ח"), where the words a
-  // share takes without a figure ("אין נכסים", "לא דווח") take two lines, a
+  // share takes without a figure ("אין נכסים", "עוד לא דווח") take two lines, a
   // yield's figure ("33.05%", 4.9 each, the head over both with its "?" fitting over that), the money ("110.79 מיליארד ₪", 9.6, at the table's end). The
   // name keeps the least width where the longest name of the companies with the most tracks still takes two lines ("אשראי ואג״ח עם מניות (עד
   // 25% מניות)", 10.95); a longer name elsewhere may take three.

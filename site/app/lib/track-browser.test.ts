@@ -2,6 +2,7 @@
 // search, the sort and its missing figures, and the group headings' figures.
 import { describe, expect, it } from "vitest";
 import { HELP_TERMS, SORTS, assetsText, feeMarkTerms, sortInForce, sortableIn, ascending, buildGroups, buildProductView, defaultSort, feeRangeOf, filterTracks, missingYield, showsKindChip, showsShortName, sortTracks, type ProductView, type TbData } from "./track-browser";
+import { emptyWords } from "../copy";
 import { pressSort } from "./list-sort";
 import { loadTerms } from "./data.server";
 import { buildTrackBrowser, defaultProduct, trackProductIds } from "./track-browser.server";
@@ -224,7 +225,7 @@ describe("rows", () => {
     expect(young).toBeDefined();
     expect(missingYield(young!, 3)).toBe("אין");
     const old = gemel.tracks.find((x) => !x.young5 && x.y5?.value === null);
-    if (old) expect(missingYield(old, 5)).toBe("לא דווח");
+    if (old) expect(missingYield(old, 5)).toBe(emptyWords.notReported);
     expect(gemel.tracks.some((x) => x.isNew)).toBe(true);
   });
 

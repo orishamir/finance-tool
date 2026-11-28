@@ -515,7 +515,7 @@ export function ProductFigures({ items, inline }: { items: { id: string; figure:
   );
 }
 
-/** A fee among a product's figures: its number, "אין" for a fee the product does not have, "לא נאסף" for one whose number was not collected. */
+/** A fee among a product's figures: its number, "אין" for a fee the product does not have, "עוד לא נאסף" for one whose number was not collected. */
 export function FeeFigure({ value, absent, inline }: { value: SiteValue | null; absent?: boolean; inline?: boolean }) {
   if (value) return <Num value={value} size={inline ? "inline" : "cell"} />;
   return <span className="text-sm text-muted-foreground">{absent ? invest.funds.noSuchFee : invest.funds.notCollected}</span>;
@@ -548,17 +548,17 @@ export function FundFeesPhoneHelp() {
   );
 }
 
-/** The rules behind what "אין" and "לא נאסף" say: the lines of an Israeli fund, the variable fee set by the regulations and the trustee's pay by
+/** The rules behind what "אין" and "עוד לא נאסף" say: the lines of an Israeli fund, the variable fee set by the regulations and the trustee's pay by
  *  the fund's agreement, and that the Israeli law for funds does not apply to a foreign fund. */
 const FEE_WORDS_RULES = { lines: ["ETF-14", "MF-20"], foreign: ["ETF-71"] } as const;
 
-/** What "אין" and "לא נאסף" say, as a "?" opens it beside a fund's fees: the sheet's text, a string, and the rules it rests on at its end. */
+/** What "אין" and "עוד לא נאסף" say, as a "?" opens it beside a fund's fees: the sheet's text, a string, and the rules it rests on at its end. */
 export const FEE_WORDS_HELP = (() => {
   const w = invest.funds.feeWordsNote;
   return { text: `${w.before} ${w.lines}${w.mid}${w.prefix}${w.foreign}${w.after}`, rules: [...FEE_WORDS_RULES.lines, ...FEE_WORDS_RULES.foreign] };
 })();
 
-/** What "אין" and "לא נאסף" say, under a list of funds that may hold a foreign fund: the words that state a rule open it (D116). */
+/** What "אין" and "עוד לא נאסף" say, under a list of funds that may hold a foreign fund: the words that state a rule open it (D116). */
 export function FeeWordsNote({ className }: { className?: string }) {
   const w = invest.funds.feeWordsNote;
   return (

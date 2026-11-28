@@ -136,8 +136,8 @@ export const strength = {
  * beside it (wording.md, missing data).
  */
 export const emptyWords = {
-  notCollected: "לא נאסף",
-  notReported: "לא דווח",
+  notCollected: "עוד לא נאסף",
+  notReported: "עוד לא דווח",
   none: "אין",
 } as const;
 
@@ -802,7 +802,7 @@ export const track = {
   /** A child-savings fee is what members past National Insurance's age paid, spread over the whole track (CS OQ9); the label's caution
    * "?" says the rest (`trackBrowser.childFee`). */
   feeOver21: "על כל המסלול",
-  feeNotReported: "עוד לא דווח",
+  feeNotReported: emptyWords.notReported,
   /** An empty deposit-fee average that PF-06 explains: the product has no deposit fee. */
   feeNone: "אין",
   sameNameElsewhere: "יש מסלול נוסף באותו שם.",
@@ -4984,15 +4984,15 @@ export const invest = {
         grossApart && kind ? "״לא מושווה״ ליד קרן על מדד ברוטו: המדד סופר את הדיבידנדים לפני המס על דיבידנדים, ופער מולו לא דומה לפער של שאר הקרנות ברשימה." : null,
         // "אין שנה מלאה" stood in the list with no word about it
         noYear > 0 ? "״אין שנה מלאה״: בדוח השנתי של הקרן עוד אין שנה קלנדרית מלאה להשוות למדד." : null,
-        notCollected > 0 ? "״עוד לא נאסף״: האתר עוד לא קרא את התשואות של הקרן ושל המדד שלה." : null,
+        notCollected > 0 ? `״${emptyWords.notCollected}״: האתר עוד לא קרא את התשואות של הקרן ושל המדד שלה.` : null,
         typed > 0 ? "״לא נבדק״: לקרן שהזנתם האתר לא קורא דוח שנתי, ולכן הוא לא יודע את הפער שלה מהמדד." : null,
       ]
         .filter(Boolean)
         .join(" "),
     notCollected: emptyWords.notCollected,
     noSuchFee: emptyWords.none,
-    /** What "אין" and "לא נאסף" say: `lines` states ETF-14 and MF-20 and `foreign` ETF-71, after the prefix ו (D116); a "?" sheet joins them all. */
-    feeWordsNote: { before: "״אין״ ליד דמי ניהול משתנים או שכר נאמן: אלה שורות של קרן נאמנות ישראלית,", lines: "שקובעים התקנות והסכם הקרן", mid: ", ", prefix: "ו", foreign: "החוק הישראלי לקרנות לא חל על קרן זרה", after: ". ״לא נאסף״: לקרן יש שורה כזאת, והאתר עוד לא אסף את המספר שלה." },
+    /** What "אין" and "עוד לא נאסף" say: `lines` states ETF-14 and MF-20 and `foreign` ETF-71, after the prefix ו (D116); a "?" sheet joins them all. */
+    feeWordsNote: { before: "״אין״ ליד דמי ניהול משתנים או שכר נאמן: אלה שורות של קרן נאמנות ישראלית,", lines: "שקובעים התקנות והסכם הקרן", mid: ", ", prefix: "ו", foreign: "החוק הישראלי לקרנות לא חל על קרן זרה", after: `. ״${emptyWords.notCollected}״: לקרן יש שורה כזאת, והאתר עוד לא אסף את המספר שלה.` },
     /** After "אין": "אין נאמן" alone could read as a fund with no custodian, which is not what the site knows. */
     noTrusteeWord: "שכר נאמן",
     /** A fee lowered for a stated period (F-121), after its rate: "0.0085% במבצע עד 31.12.2026". */
@@ -5028,7 +5028,7 @@ export const invest = {
      */
     gapYears: (n: number, year?: number) => (n === 1 && year ? gapUnit(1, year) : `${gapUnit(n)} · ${n === 2 ? "שנתיים" : `${n} שנים`}`),
     gapNone: "אין שנה מלאה",
-    gapNotCollected: "עוד לא נאסף",
+    gapNotCollected: emptyWords.notCollected,
     /** a fund the person typed: the site reads no report of it, so its gap is not something still to collect (D105) */
     gapTyped: "לא נבדק",
     /** F-92 (d): years not compared: an index of unstated kind, or a gross one beside a net one or off TA-35, TA-90 and TA-125 or on a fund that is not exempt */

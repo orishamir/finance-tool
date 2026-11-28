@@ -105,7 +105,7 @@ export function exposureShares(c: CompactHoldings | null, template: HoldingsTemp
 
 /**
  * A share as the page shows it: a whole percent, one decimal under 1% so a small exposure does not read as none (the sheet keeps the
- * exact figure). A share that could not be computed reads "לא דווח", or "אין נכסים" for a track that reported assets of 0.
+ * exact figure). A share that could not be computed reads "עוד לא דווח", or "אין נכסים" for a track that reported assets of 0.
  */
 export function shareText(v: SiteValue): string {
   if (typeof v.value !== "number") return v.notes === copy.stock.noteNoAssets ? copy.stock.noAssets : copy.stock.missing;
