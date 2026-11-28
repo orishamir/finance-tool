@@ -163,7 +163,7 @@ export function End({ figure }: ContentProps) {
       <Sentence measure>
         המועד האחרון לתשלום כתוב במסמך של הקרן: בקרן 5137492 של ילין לפידות עד {yalin("MF-75", "last_payment")}, בקרן 5140249 של תכלית עד {tachlit("MF-64", "payment_5140249")}, ובקרן 5140231 של תכלית עד {tachlit("MF-64", "payment_5140231")}. בשתי קרנות תכלית האלה <Ruled id="MF-64">המנהל יכול להודיע על מועד אחר</Ruled>, והוא מתחייב לא להעלות את שכרו עד הפירוק.
       </Sentence>
-      <Callout tone="caution" className="max-w-measure" title="עוד לא נבדק פירוק בפועל">
+      <Callout tone="caution" className="max-w-measure" title="האתר לא מצא פירוק כזה שכבר קרה">
         הקרנות הראשונות מסתיימות ב־{kesem("MF-62", "end_first")}. ב־{kesem("MF-66", "notice_checked")} <Ruled id="MF-66">עוד לא נמצאה הודעת פירוק</Ruled> בשתי הקרנות שנבדקו. <Ruled id="MF-60">בחוק כתוב שהמפרק פודה את היחידות במועד הפירוק</Ruled>. החוק לא אומר אם אפשר עוד לפדות יחידות אחרי ההודעה. האתר לא מצא בכללים שקרא איך הכסף מגיע <Term prefix="ל" id="חשבון ניירות ערך">חשבון ניירות ערך</Term>.
       </Callout>
     </>
