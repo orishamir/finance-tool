@@ -471,10 +471,11 @@
         "checked": "2026-11-15",
         "quote": "מסחר בבורסה הישראלית דרך אינטראקטיב ברוקרז אפשרית רק לחשבונות חברה (חברה בע\"מ בלבד!)"
       },
-      "reason_he": "לפי תשובה בכתב של החברה מ־15.11.2026, מסחר בבורסה בתל אביב אפשרי אצלה רק בחשבון של חברה בע״מ, עם אישור פטור מניכוי מס במקור. לפי רשות המסים, ככלל אדם פרטי לא מקבל פטור כזה.",
-      "note": "The company's written answer of 15.11.2026 (BRK-65) settles which of its pages holds: Tel Aviv trading only for a limited company's account, which must hand in a withholding-exemption form. Before it, the pages read 2026-11-12 differed: the Israeli-market page (dateModified 2026-10-14) and the company-account page (/company-account/, dateModified 2026-06-30) said institutional clients only; the world-markets page (/world-markets/, dateModified 2026-10-14) said companies or individuals with a withholding exemption. Whom the Tax Authority gives such an exemption is BRK-65's, from the Tax Authority. The tariff (p.1) prices Tel Aviv 'מניות ותעודות סל' only; its mutual-fund table (p.5) is the mutual_fund_units entry.",
+      "reason_he": "החברה ענתה שבבורסה בתל אביב היא מאפשרת לקנות ולמכור ניירות ערך רק מחשבון של חברה בע״מ שקיבלה פטור מניכוי מס במקור, ופטור כזה אדם פרטי ככלל לא מקבל.",
+      "note": "The company's written answer of 15.11.2026 (BRK-65) settles which of its pages holds: Tel Aviv trading only for a limited company's account, which must hand in a withholding-exemption form. Before it, the pages read 2026-11-12 differed: the Israeli-market page (dateModified 2026-10-14) and the company-account page (/company-account/, dateModified 2026-06-30) said institutional clients only; the world-markets page (/world-markets/, dateModified 2026-10-14) said companies or individuals with a withholding exemption. Whom the Tax Authority gives such an exemption is TXS-42's, from its execution instruction 02/2026. The tariff (p.1) prices Tel Aviv 'מניות ותעודות סל' only; its mutual-fund table (p.5) is the mutual_fund_units entry.",
       "rule_ids": [
-        "BRK-65"
+        "BRK-65",
+        "TXS-42"
       ]
     },
     {
