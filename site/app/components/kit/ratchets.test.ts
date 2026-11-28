@@ -162,7 +162,7 @@ const HAND_SITE_LINK: Record<string, number> = {
     "content/guide/makam.tsx": 3,
 };
 const HAND_LINK_OUT: Record<string, number> = {
-    "components/provenance-sheets.tsx": 4,
+    "components/provenance-sheets.tsx": 3,
 };
 const BANG_OVERRIDE: Record<string, number> = {
 };

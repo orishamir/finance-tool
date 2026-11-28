@@ -3365,6 +3365,9 @@ export const sourceBlock = {
   more: { one: "עוד מקור אחד", two: "עוד שני מקורות", many: "עוד {n} מקורות" },
   /** The word after "נבדק {date} ·" when the source is weaker than the law. */
   weak: { institution: "לפי החברה", secondary: "מקור משני" } as Record<string, string>,
+  /** A place cited in a document that has no locator of its own: its page, or the passage its quoted words open at. */
+  page: "עמוד {n}",
+  passage: "המקום במסמך",
   /** The word after "נבדק {date} ·" for a source that is not the binding text in force (its `standing`, data-schema 3.1). */
   standing: {
     draft: "טיוטה, לא בתוקף",

@@ -6,13 +6,14 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { updateRule, type RuleRecord } from "@finance-tool/schema";
-import { scopeWords, sourceBlock, updateRules } from "../copy";
+import { rulesDetail, scopeWords, sourceBlock, updateRules } from "../copy";
+import type { SiteValue } from "../lib/value";
 import { ProvenanceProvider } from "./provenance";
-import { RuleCard, SourceBlock } from "./provenance-sheets";
+import { RuleCard, SourceBlock, ValueSheet } from "./provenance-sheets";
 
 const src = (strength: "primary" | "institution" | "secondary", url: string) => ({ url, title: `מסמך ${strength}`, publisher: "x", strength, checked: "2026-10-25" });
 const sources = [src("institution", "https://example.org/own.pdf"), src("secondary", "https://example.org/press")];
-const render = (el: ReturnType<typeof createElement>, data = { rules: {}, terms: {}, dimensions: {}, today: "2026-10-26" }) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: el })));
+const render = (el: ReturnType<typeof createElement>, data: object = { rules: {}, terms: {}, dimensions: {}, today: "2026-10-26" }) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: el })));
 const weak = sourceBlock.weak;
 
 describe("the source lines of a company's own term", () => {
@@ -117,5 +118,71 @@ describe("a span of years on a rule card", () => {
     const html = render(createElement(RuleCard, { id: "ETF-38", data, inline: true }), data).replace(/<!-- -->/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
     expect(html).not.toMatch(/\b1 שנים/);
     expect(html).toMatch(/שנה/);
+  });
+});
+
+describe("one drawing for every source (sourceView)", () => {
+  const today = "2026-11-28";
+  const words = (html: string) => (html.split("<dialog")[0] ?? "").replace(/<!-- -->/g, "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  const law = { url: "https://example.org/law.pdf", title: "The law", title_he: "חוק לבדיקה", publisher: "x", kind: "law", strength: "primary" as const, checked: today };
+  it("names a document once for all its places, each place on its own line, and gives a quoted page with no locator its own link", () => {
+    const html = render(createElement(SourceBlock, { source: [{ ...law, page: 3, locator_he: "סעיף 1" }, { ...law, page: 7, quote: "המילים שבעמוד" }], today, inline: true }));
+    expect(words(html).split("חוק לבדיקה").length - 1).toBe(1);
+    expect(html).toContain(">סעיף 1<");
+    expect(html).toContain(sourceBlock.page.replace("{n}", "7"));
+    expect(html).toContain('href="https://example.org/law.pdf#page=7"');
+  });
+  it("prints the word of a source that is not the binding text in force", () => {
+    const html = render(createElement(SourceBlock, { source: [{ ...law, standing: "draft" }], today, inline: true }));
+    expect(html).toContain(sourceBlock.standing.draft);
+    expect(render(createElement(SourceBlock, { source: [law], today, inline: true }))).not.toContain(sourceBlock.standing.draft);
+  });
+  it("never names a shared portal's keeper as the publisher of a document on it", () => {
+    const notice = { url: "https://www.gov.il/he/pages/notice", title: "Notice", title_he: "הודעה לבדיקה", publisher: "gov.il", strength: "primary" as const, checked: today };
+    const data = { rules: {}, terms: {}, dimensions: {}, today, publishersHe: { "gov.il": "אתר הממשלה" } };
+    const html = render(createElement(SourceBlock, { source: [notice], today, inline: true }), data);
+    expect(html).toContain("הודעה לבדיקה");
+    expect(html).not.toContain("אתר הממשלה");
+  });
+  it("a rule card heads its sources", () => {
+    const root = new URL("../../../", import.meta.url);
+    const txa30 = JSON.parse(readFileSync(new URL("data/rules/txa-30.json", root), "utf8")) as RuleRecord;
+    const data = { rules: { "TXA-30": txa30 }, terms: {}, dimensions: {}, today };
+    expect(words(render(createElement(RuleCard, { id: "TXA-30", data, inline: true }), data))).toContain(rulesDetail.sourcesHead);
+  });
+});
+
+describe("a sourced figure's source", () => {
+  const today = "2026-11-28";
+  const rule = {
+    id: "TXA-30",
+    title: "x",
+    title_he: "כלל לבדיקה",
+    scope: "general",
+    strength: "primary",
+    dimensions: [],
+    checked: today,
+    sources: [{ url: "https://example.org/law.pdf", title: "The law", title_he: "חוק לבדיקה", publisher: "x", kind: "law", strength: "primary", page: 5, locator_he: "סעיף 9", checked: today }],
+  } as unknown as RuleRecord;
+  const data = { rules: { "TXA-30": rule }, terms: {}, dimensions: {}, today };
+  const value = (page?: number): SiteValue => ({
+    value: 3,
+    unit: "pct",
+    source: { url: "https://example.org/law.pdf", title: "law.pdf", publisher: "x", strength: "primary", ...(page ? { page } : {}) } as SiteValue["source"],
+    checked: today,
+    effective_from: null,
+    effective_to: null,
+    update_rule: "fixed in law",
+    state: "sourced",
+    rule_ids: ["TXA-30"],
+  });
+  const sheet = (v: SiteValue) => render(createElement(ValueSheet, { value: v, exact: false, data, headId: "h", descId: "d" }), data);
+  it("borrows a rule's names only from the same place, and never its locator", () => {
+    const same = sheet(value(5));
+    expect(same).toContain("חוק לבדיקה");
+    expect(same).not.toContain("סעיף 9");
+    const other = sheet(value(8));
+    expect(other).not.toContain("חוק לבדיקה");
+    expect(other).not.toContain("סעיף 9");
   });
 });

@@ -4,7 +4,7 @@
 import { useContext, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { documentsPath, rulesPath } from "../lib/site-paths";
 import { Link, useLocation } from "react-router";
-import { assertNever, type RuleRecord } from "@finance-tool/schema";
+import { assertNever, type RuleRecord, type SourceStanding } from "@finance-tool/schema";
 import type { FundStatement } from "@finance-tool/engine";
 import { system, buttons, computedInputs, flags as flagCopy, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
@@ -12,8 +12,8 @@ import { ownFigures, spanWords } from "../lib/rule-row";
 import { fillSlot, missingSlot, wordUnits, type SlotSource } from "../lib/figure-slots";
 import { fmt } from "../lib/format";
 import { headText } from "../lib/working";
-import { hasHebrew, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "../lib/source-label";
-import { citationText, mayHaveChanged, moreSourcesLabel, pickSources, publicUrl, sourceHref, sourceLabel2, sourceParts, type CitedPlace, type RuleSource, type SourcedRule } from "../lib/sources";
+import { hasHebrew, mostlyHebrew } from "../lib/source-label";
+import { citationFor, documentKey, moreSourcesLabel, pickSources, publicUrl, sourceChange, sourceHref, sourceView, type CitedPlace, type RuleSource, type SourcedRule, type SourcePlace, type SourceView } from "../lib/sources";
 import { useInputs } from "../lib/inputs";
 import { isOpenValue, isParameter, isWeak, ownBy, recheckStale, sheetReading, strengthOf, type SiteValue, type Staleness } from "../lib/value";
 import { parseAnswer } from "../lib/answer-slots";
@@ -65,10 +65,16 @@ function Iso({ children, ltr }: { children: ReactNode; ltr?: boolean }) {
  */
 type OwnSource = boolean | ((source: RuleSource) => boolean);
 
-/** A source's names on its link line, each once (`sourceParts`): the publisher, a dot, the document's title; either may be left out. */
-function SourceNames({ parts, hebrewTitle }: { parts: ReturnType<typeof sourceParts>; hebrewTitle: boolean }) {
-  const pub = parts.publisher && <Iso ltr={!hasHebrew(parts.publisher)}>{gershayim(parts.publisher)}</Iso>;
-  const title = parts.title && <Iso ltr={parts.title.host || !hebrewTitle}>{keepTitleWhole(parts.title.text)}</Iso>;
+/**
+ * What a source is where it is not the binding text in force (the schema's `standing`, read from the rule base's qualifier). The record's
+ * source carries it; the sources layer's hand-written shape (lib/sources.ts `RuleSource`) does not name the field yet.
+ */
+const standingOf = (s: RuleSource): SourceStanding | undefined => (s as RuleSource & { standing?: SourceStanding }).standing;
+
+/** A document's names on its head link, each once (`SourceView`): the publisher, a dot, the document's title; either may be left out. */
+function DocumentNames({ view }: { view: Pick<SourceView, "publisher" | "title" | "hebrew"> }) {
+  const pub = view.publisher && <Iso ltr={!hasHebrew(view.publisher)}>{gershayim(view.publisher)}</Iso>;
+  const title = view.title && <Iso ltr={view.title.host || !view.hebrew}>{keepTitleWhole(view.title.text)}</Iso>;
   return (
     <>
       {pub}
@@ -78,47 +84,85 @@ function SourceNames({ parts, hebrewTitle }: { parts: ReturnType<typeof sourcePa
   );
 }
 
+/** The words of a place's own link: its own title and its locator; else its page, or the passage its quote opens at; nothing for a place that is the document itself. */
+function placeWords(place: SourcePlace, view: SourceView): string | null {
+  const named = [place.title, place.locator].filter((x): x is string => !!x).join(", ");
+  if (named) return named;
+  if (view.places.length === 1 || place.href === view.href) return null;
+  return place.source.page ? sourceCopy.page.replace("{n}", String(place.source.page)) : sourceCopy.passage;
+}
+
 /**
- * One source: the link line, the quoted words, then when it was read and how strong it is (synthesis 3.3). `strengthSaid`: the sheet
- * states the strength itself (a figure's strength callout over its one source), so the line leaves its word out.
+ * One document of a source list (`sourceView`, the one shape every source drawing reads): its names as the head link, then each place
+ * cited in it on a line of its own: its own link (`placeWords`), its quoted words, and the words that qualify it: a weak strength, what the
+ * source is where it is not the binding text in force, and that it may have changed. The day it was read stands once under the document,
+ * or on each place when they were read on different days. `strengthSaid`: the sheet states the strength itself (a figure's strength
+ * callout over its one source), so the lines leave its word out. `boxed`: a document of the rules page's detail, framed, with its citation
+ * copied by a button.
  */
-function OneSource({ source, rule, today, english, own, strengthSaid }: { source: RuleSource; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; english?: boolean; own?: OwnSource; strengthSaid?: boolean }) {
-  // a data file names its company in English: the publishers table gives the Hebrew name by the source's host
-  const publishersHe = useContext(DataCtx)?.publishersHe;
-  const host = hostOf(source.url);
-  const he = source.publisher_he ?? (host ? publishersHe?.[host] : undefined);
-  const n = sourceLabel2(he ? { ...source, publisher_he: he } : source);
-  const parts = sourceParts(he ? { ...source, publisher_he: he } : source);
-  // D31: a company's own document on its own term is shown with a neutral source line, no "לפי החברה"; `own` lifts only that label,
-  // never "מקור משני"
-  const isOwn = typeof own === "function" ? own(source) : !!own;
-  const weak = !strengthSaid && source.strength !== "primary" && !(isOwn && source.strength === "institution") ? sourceCopy.weak[source.strength] : null;
-  const changed = mayHaveChanged(rule ?? { likely_to_change: "no" }, source, today);
+function DocumentSource({ view, rules, today, english, own, strengthSaid, boxed, citation }: { view: SourceView; /** The loaded rules the source serves, whose re-check dates say whether it may have changed. */ rules: readonly Pick<SourcedRule, "recheck_date">[]; today: string; english?: boolean; own?: OwnSource; strengthSaid?: boolean; boxed?: boolean; /** The lines the copy button writes, one per place (`boxed`). */ citation?: string }) {
+  const oneDay = view.checked.length === 1;
+  const single = view.places.length === 1;
+  const dateLine = (date: string) => (
+    <>
+      {sourceCopy.checked} <Iso ltr>{fmt.date(date)}</Iso>
+    </>
+  );
+  const places = view.places.map((place, i) => {
+    const s = place.source;
+    // D31: a company's own document on its own term carries no "לפי החברה"; `own` lifts only that word, never "מקור משני"
+    const isOwn = typeof own === "function" ? own(s) : !!own;
+    const weak = !strengthSaid && s.strength !== "primary" && !(isOwn && s.strength === "institution") ? sourceCopy.weak[s.strength] : null;
+    const standing = standingOf(s);
+    const changed = sourceChange(rules, s, today) === "may-have-changed";
+    const words = [weak, standing ? sourceCopy.standing[standing] : null, changed ? sourceCopy.mayHaveChanged : null].filter((x): x is string => !!x);
+    const link = placeWords(place, view);
+    if (!link && !place.quote && words.length === 0 && oneDay) return null;
+    return (
+      <li key={`${i}:${place.href}`} className={cx("flex flex-col gap-0.5", !single && "border-s-2 border-border ps-2.5")}>
+        {link && (
+          <a href={place.href} target="_blank" rel="noopener noreferrer" className="text-link text-sm hover:underline w-fit [overflow-wrap:anywhere]">
+            <Iso>{link}</Iso>
+          </a>
+        )}
+        {place.quote && <p className={cx("text-sm text-muted-foreground", !boxed && "line-clamp-3")}>״{place.quote}״</p>}
+        {(!oneDay || words.length > 0) && (
+          <p className={cx("text-xs", changed ? "text-caution-foreground" : "text-muted-foreground")}>
+            {!oneDay && dateLine(place.checked)}
+            {words.map((w, k) => (
+              <span key={w}>
+                {k > 0 || !oneDay ? " · " : ""}
+                {w}
+              </span>
+            ))}
+          </p>
+        )}
+      </li>
+    );
+  });
+  const shown = places.filter(Boolean);
+  const first = view.places[0];
   return (
-    <div className="flex flex-col gap-1">
-      <a href={sourceHref(source)} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline">
+    <div className={cx("flex flex-col gap-1.5", boxed && "rounded-md border border-border p-3")}>
+      <a href={single ? first.href : view.href} target="_blank" rel="noopener noreferrer" className={cx("text-link inline-flex max-w-full items-start gap-1 hover:underline", boxed && "font-medium")}>
         <span className="min-w-0 [overflow-wrap:anywhere]">
-          <SourceNames parts={parts} hebrewTitle={isHebrewTitle(n.title)} />
-          {n.locator && (
-            <>
-              , <Iso>{n.locator}</Iso>
-            </>
-          )}
+          <DocumentNames view={view} />
         </span>
-        {n.pdf && <span className="shrink-0 mt-1 text-xs leading-none rounded-sm border border-border px-1 py-0.5 text-muted-foreground">{sourceCopy.pdfTag}</span>}
+        {view.pdf && <span className="shrink-0 mt-1 text-xs leading-none rounded-sm border border-border px-1 py-0.5 text-muted-foreground font-normal">{sourceCopy.pdfTag}</span>}
         <IconExternal size={16} className="shrink-0 mt-1" />
       </a>
-      {source.quote && <p className="text-sm text-muted-foreground line-clamp-3">״{source.quote}״</p>}
-      <p className={cx("text-xs", changed ? "text-caution-foreground" : "text-muted-foreground")}>
-        {sourceCopy.checked} <Iso ltr>{fmt.date(source.checked)}</Iso>
-        {weak && ` · ${weak}`}
-        {changed && ` · ${sourceCopy.mayHaveChanged}`}
-      </p>
-      {english && !isHebrewTitle(n.title) && (
+      {shown.length > 0 && <ul className="flex flex-col gap-1.5">{shown}</ul>}
+      {(oneDay || citation) && (
+        <div className="flex items-center gap-3">
+          {oneDay && <p className="text-xs text-muted-foreground">{dateLine(view.checked[0] ?? first.checked)}</p>}
+          {citation && <CopyCitation text={citation} />}
+        </div>
+      )}
+      {english && !view.hebrew && (
         <details className="text-xs text-muted-foreground">
           <summary className="cursor-pointer">{copy.sourced.englishTitle}</summary>
           <bdi dir="ltr" className="[overflow-wrap:anywhere]">
-            {source.title}
+            {first.source.title}
           </bdi>
         </details>
       )}
@@ -127,25 +171,24 @@ function OneSource({ source, rule, today, english, own, strengthSaid }: { source
 }
 
 /**
- * The source block (synthesis 3.3): the first source in full; further ones behind "עוד מקור אחד" in the sheet and all
- * shown when `inline` (the rules pages). `english` keeps the English title in a collapsed line when the shown name is a host.
+ * The source block (synthesis 3.3): its documents (`sourceView`), the first in full; further ones behind "עוד מקור אחד" in the sheet and all
+ * shown when `inline` (the rules pages). `english` keeps the English title in a collapsed line when the shown name is not Hebrew.
  */
-export function SourceBlock({ source, rule, today, inline, english, own, strengthSaid }: { source: RuleSource | readonly RuleSource[]; rule?: Pick<SourcedRule, "likely_to_change" | "recheck_date">; today: string; inline?: boolean; english?: boolean; own?: OwnSource; strengthSaid?: boolean }) {
+export function SourceBlock({ source, rules = [], today, inline, english, own, strengthSaid }: { source: RuleSource | readonly RuleSource[]; /** The loaded rules the sources serve (`DocumentSource`). */ rules?: readonly Pick<SourcedRule, "recheck_date">[]; today: string; inline?: boolean; english?: boolean; own?: OwnSource; strengthSaid?: boolean }) {
+  const publishersHe = useContext(DataCtx)?.publishersHe;
   const list = Array.isArray(source) ? (source as readonly RuleSource[]) : [source as RuleSource];
-  const [first, ...rest] = list;
+  const [first, ...rest] = sourceView(list, publishersHe);
   if (!first) return null;
-  // no "לקריאה נוחה" copy after an official source any more: pickSources leaves copies out when there is one
-  // one page may be cited twice, for two quotes (IRA-29): the place in the list keeps the keys apart
-  const more = rest.map((s, i) => <OneSource key={`${i}:${s.url}${s.locator ?? ""}`} source={s} rule={rule} today={today} english={english} own={own} strengthSaid={strengthSaid} />);
+  const draw = (v: SourceView) => <DocumentSource key={v.key} view={v} rules={rules} today={today} english={english} own={own} strengthSaid={strengthSaid} />;
   return (
     <div className="flex flex-col gap-3">
-      <OneSource source={first} rule={rule} today={today} english={english} own={own} strengthSaid={strengthSaid} />
+      {draw(first)}
       {rest.length > 0 &&
         (inline ? (
-          more
+          rest.map(draw)
         ) : (
           <Disclosure label={<span className="text-sm">{moreSourcesLabel(rest.length)}</span>}>
-            <div className="flex flex-col gap-3 pt-1">{more}</div>
+            <div className="flex flex-col gap-3 pt-1">{rest.map(draw)}</div>
           </Disclosure>
         ))}
     </div>
@@ -362,27 +405,31 @@ function Row({ label, children }: { label: ReactNode; children: ReactNode }) {
   );
 }
 
-/** A source: its Hebrew title, or the link's host with the English title in a collapsed line. */
+/**
+ * A source named by its link and title alone (a glossary term's, a figure's file of the site): its document's names as every source drawing
+ * names them (`sourceView`), with the English title in a collapsed line when the shown name is not Hebrew; a file of the site is named so.
+ */
 function SourceLink({ url, title }: { url: string; title: string }) {
-  const external = /^https?:/.test(publicUrl(url));
-  const label = sourceLabel({ url, title }, copy.sourced.localFile);
-  const text = label.host ? <bdi dir="ltr">{label.text}</bdi> : label.text;
-  const link = !external ? (
-    <span className="[overflow-wrap:anywhere]">{text}</span>
-  ) : (
-    <a href={sourceHref({ url })} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline">
-      <span className="min-w-0 [overflow-wrap:anywhere]">{text}</span>
+  const publishersHe = useContext(DataCtx)?.publishersHe;
+  if (!/^https?:/.test(publicUrl(url))) return <span className="[overflow-wrap:anywhere]">{copy.sourced.localFile}</span>;
+  const [view] = sourceView([{ url, title, publisher: "", strength: "primary", checked: "" }], publishersHe);
+  if (!view) return null;
+  const link = (
+    <a href={view.href} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline">
+      <span className="min-w-0 [overflow-wrap:anywhere]">
+        <DocumentNames view={view} />
+      </span>
       <IconExternal size={16} className="shrink-0 mt-1" />
     </a>
   );
-  if (!label.english) return link;
+  if (view.hebrew) return link;
   return (
     <span className="flex flex-col gap-1">
       {link}
       <details className="text-xs text-muted-foreground">
         <summary className="cursor-pointer">{copy.sourced.englishTitle}</summary>
         <bdi dir="ltr" className="[overflow-wrap:anywhere]">
-          {label.english}
+          {title}
         </bdi>
       </details>
     </span>
@@ -428,30 +475,37 @@ function unitWordOf(unit: string): string | null {
 }
 
 /**
- * The sourced figure's one source block: the figure's own source and date, with the Hebrew names and the locator of the same link in its
- * rule record when there is one. `strengthSaid`: the sheet's strength callout already names the source's strength.
+ * The sourced figure's one source block: the figure's own source, place and date. Of a rule that cites the same place (the same document,
+ * page and quoted words) it borrows only the names (the Hebrew publisher and title, the document's kind), never a place; the figure's own
+ * names come first. Whether it may have changed reads the rule behind it that is soonest to be read again. `strengthSaid`: the sheet's
+ * strength callout already names the source's strength.
  */
 function FigureSource({ value, data, strengthSaid }: { value: SiteValue; data: ProvenanceData; strengthSaid: boolean }) {
   if (value.state !== "sourced") return null;
-  const ids = value.rule_ids ?? [];
   const strengthOk = (st: string): st is RuleSource["strength"] => st === "primary" || st === "institution" || st === "secondary";
-  let known: RuleSource | undefined;
-  let owner: SourcedRule | undefined;
-  for (const id of ids) {
-    const r = data.rules[id];
-    if (!r) continue;
-    owner ??= asSourced(r);
-    known ??= pickSources(asSourced(r)).find((x) => x.url === value.source.url);
-  }
-  // the figure's own place in the document (its PDF page, the words its web page opens at, the words it quotes) before the rule's; a
-  // data file's source object may carry them beside the schema's four fields (a price list's quoted line)
-  const at = value.source as CitedPlace & { quote?: string };
-  // a figure whose source names itself in Hebrew (a page abroad: its publisher, its kind, the paragraph of a law) keeps those names
-  const named = value.source as Partial<Pick<RuleSource, "publisher_he" | "title_he" | "kind" | "locator_he">>;
-  const own = { ...(named.publisher_he ? { publisher_he: named.publisher_he } : {}), ...(named.title_he ? { title_he: named.title_he } : {}), ...(named.kind ? { kind: named.kind } : {}), ...(named.locator_he ? { locator_he: named.locator_he } : {}) };
+  // the figure's own place in the document (its PDF page, the words its web page opens at, the words it quotes) and its own Hebrew names
+  // (a page abroad: its publisher, its kind, the paragraph of a law); a data file's source object may carry them beside the schema's four
+  // fields (a price list's quoted line)
+  const at = value.source as CitedPlace & { quote?: string } & Partial<Pick<RuleSource, "publisher_he" | "title_he" | "kind" | "locator_he">>;
+  const quote = value.quote ?? at.quote;
+  const loaded = (value.rule_ids ?? []).flatMap((id) => {
+    const r = ruleOf(data, id);
+    return r ? [asSourced(r)] : [];
+  });
+  const samePlace = (x: RuleSource) => documentKey(x.url) === documentKey(value.source.url) && (x.page ?? null) === (at.page ?? null) && (x.quote ?? null) === (quote ?? null);
+  const known = loaded.flatMap((r) => pickSources(r)).find(samePlace);
+  const owner = [...loaded].sort((x, y) => (x.recheck_date ?? "9999").localeCompare(y.recheck_date ?? "9999"))[0];
+  const publisherHe = at.publisher_he ?? known?.publisher_he;
+  const titleHe = at.title_he ?? known?.title_he;
+  const kind = at.kind ?? known?.kind;
   const source: RuleSource = {
-    ...(known ?? { title: value.source.title, publisher: value.source.publisher, ...own }),
-    ...(value.quote ?? at.quote ? { quote: value.quote ?? at.quote } : {}),
+    title: value.source.title,
+    publisher: value.source.publisher,
+    ...(publisherHe ? { publisher_he: publisherHe } : {}),
+    ...(titleHe ? { title_he: titleHe } : {}),
+    ...(kind ? { kind } : {}),
+    ...(at.locator_he ? { locator_he: at.locator_he } : {}),
+    ...(quote ? { quote } : {}),
     url: value.source.url,
     ...(at.page ? { page: at.page } : {}),
     ...(at.fragment ? { fragment: at.fragment } : {}),
@@ -460,7 +514,7 @@ function FigureSource({ value, data, strengthSaid }: { value: SiteValue; data: P
   };
   // a figure's source can be a file of the site, not a web address: the old plain label stays for it
   if (!/^https?:/.test(publicUrl(source.url))) return <SourceLink url={source.url} title={source.title} />;
-  return <SourceBlock source={source} rule={owner} today={data.today} english own={!!value.own} strengthSaid={strengthSaid} />;
+  return <SourceBlock source={source} rules={owner ? [owner] : []} today={data.today} english own={!!value.own} strengthSaid={strengthSaid} />;
 }
 
 /**
@@ -1164,6 +1218,7 @@ export function RuleCard({ id, data, headId, inline, figure }: { id: string; dat
   const open = rule.strength === "open";
   const sourced = asSourced(rule);
   const sources = page.length ? sourcesForPage(rule, pickSources(sourced), page, data.companies) : pickSources(sourced);
+  const firstView = sourceView(sources, data.publishersHe)[0];
   /** A company's figure on its own term, on its own page, is its own (D31): no "לפי החברה". */
   const pageValue = (v: SiteValue): SiteValue => {
     const c = page.length && v.source.strength === "institution" ? sourceCompany(rule, v.source, data.companies) : null;
@@ -1199,7 +1254,10 @@ export function RuleCard({ id, data, headId, inline, figure }: { id: string; dat
       {/* the text's sources right under it, then who it applies to and the rules it points to */}
       {sources.length > 0 ? (
         // a company's term read from that company's own document is its own context (D31): the source line carries no "לפי החברה"
-        <SourceBlock source={sources} rule={sourced} today={data.today} inline={inline} own={rule.scope === "institution" ? (s) => isOwnSourceOf(rule, s, data.ownDocs, data.companies) : false} />
+        <section className="flex flex-col gap-1.5" aria-label={rulesDetail.sourcesHead}>
+          <span className="text-sm text-muted-foreground">{rulesDetail.sourcesHead}</span>
+          <SourceBlock source={sources} rules={[sourced]} today={data.today} inline={inline} own={rule.scope === "institution" ? (s) => isOwnSourceOf(rule, s, data.ownDocs, data.companies) : false} />
+        </section>
       ) : (
         // rule records without a source link are shown as such, not hidden
         <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>
@@ -1248,7 +1306,7 @@ export function RuleCard({ id, data, headId, inline, figure }: { id: string; dat
       {uses && uses.pages.length === 0 && !uses.engine && <p className="text-xs text-muted-foreground">{ruleCardMore.usesNone}</p>}
       {/* the card's foot: pushed to the bottom, so cards side by side have it at one height */}
       <div className="mt-auto flex flex-col gap-3 pt-1">
-        {sources[0] && <CitationBox text={citationText(sourced, sources[0], sources[0].checked, slots)} />}
+        {firstView && <CitationBox text={citationFor(sourced, firstView, slots)} />}
         {!inline && <CardFoot rule={rule} data={data} />}
       </div>
     </div>
@@ -1304,80 +1362,16 @@ function CopyCitation({ text }: { text: string }) {
   );
 }
 
-/** A rule's sources by document: one block per address (its names, its PDF tag), each cited place in it on its own line with its quoted words, then when it was read and the document's copy button. */
+/** A rule's sources by document (`sourceView`): one framed block per document, each place cited in it on its own line, and the document's copy button. */
 function SourcesByDocument({ sources, rule, slots }: { sources: readonly RuleSource[]; rule: SourcedRule; /** The page's records and its day: a citation's title read from the text fills its slots. */ slots: SlotSource }) {
-  const today = slots.today;
   const publishersHe = useContext(DataCtx)?.publishersHe;
-  const docs: RuleSource[][] = [];
-  const at = new Map<string, number>();
-  for (const s of sources) {
-    const key = publicUrl(s.url).split("#")[0]!;
-    if (!at.has(key)) {
-      at.set(key, docs.length);
-      docs.push([]);
-    }
-    docs[at.get(key)!]!.push(s);
-  }
   const w = rulesDetail;
   return (
     <section className="flex flex-col gap-3" aria-label={w.sourcesHead}>
       <GroupHead>{w.sourcesHead}</GroupHead>
-      {docs.map((list) => {
-        const first = list[0]!;
-        const host = hostOf(first.url);
-        const he = first.publisher_he ?? (host ? publishersHe?.[host] : undefined);
-        const named = he ? { ...first, publisher_he: he } : first;
-        const parts = sourceParts(named);
-        const n = sourceLabel2(named);
-        const dates = [...new Set(list.map((s) => s.checked))];
-        return (
-          <div key={first.url} className="flex flex-col gap-1.5 rounded-md border border-border p-3">
-            <a href={sourceHref(list.length === 1 ? first : { url: first.url })} target="_blank" rel="noopener noreferrer" className="text-link inline-flex max-w-full items-start gap-1 hover:underline font-medium">
-              <span className="min-w-0 [overflow-wrap:anywhere]">
-                <SourceNames parts={parts} hebrewTitle={isHebrewTitle(n.title)} />
-              </span>
-              {n.pdf && <span className="shrink-0 mt-1 text-xs leading-none rounded-sm border border-border px-1 py-0.5 text-muted-foreground font-normal">{sourceCopy.pdfTag}</span>}
-              <IconExternal size={16} className="shrink-0 mt-1" />
-            </a>
-            <ul className="flex flex-col gap-1.5">
-              {list.map((s, i) => {
-                const loc = sourceLabel2(s).locator;
-                const weak = s.strength !== "primary" ? sourceCopy.weak[s.strength] : null;
-                const changed = mayHaveChanged(rule, s, today);
-                return (
-                  <li key={`${i}:${s.locator ?? ""}`} className="flex flex-col gap-0.5 border-s-2 border-border ps-2.5">
-                    {loc && (
-                      <a href={sourceHref(s)} target="_blank" rel="noopener noreferrer" className="text-link text-sm hover:underline w-fit [overflow-wrap:anywhere]">
-                        <Iso>{loc}</Iso>
-                      </a>
-                    )}
-                    {s.quote && <p className="text-sm text-muted-foreground">״{s.quote}״</p>}
-                    {(weak || changed || dates.length > 1) && (
-                      <p className={cx("text-xs", changed ? "text-caution-foreground" : "text-muted-foreground")}>
-                        {dates.length > 1 && (
-                          <>
-                            {sourceCopy.checked} <Iso ltr>{fmt.date(s.checked)}</Iso>
-                          </>
-                        )}
-                        {weak && `${dates.length > 1 ? " · " : ""}${weak}`}
-                        {changed && `${dates.length > 1 || weak ? " · " : ""}${sourceCopy.mayHaveChanged}`}
-                      </p>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-            <div className="flex items-center gap-3">
-              {dates.length === 1 && (
-                <p className="text-xs text-muted-foreground">
-                  {sourceCopy.checked} <Iso ltr>{fmt.date(dates[0]!)}</Iso>
-                </p>
-              )}
-              <CopyCitation text={list.map((s) => citationText(rule, s, s.checked, slots)).join("\n")} />
-            </div>
-          </div>
-        );
-      })}
+      {sourceView(sources, publishersHe).map((view) => (
+        <DocumentSource key={view.key} view={view} rules={[rule]} today={slots.today} boxed citation={view.places.map((place) => citationFor(rule, view, slots, place)).join("\n")} />
+      ))}
     </section>
   );
 }
@@ -1506,9 +1500,7 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
   const rule = ruleOf(data, id);
   if (!rule) return null;
   const figures = ownFigures(rule, Number(data.today.slice(0, 4))).slice(0, 2);
-  const sources = pickSources(asSourced(rule));
-  const first = sources[0];
-  const parts = first ? sourceParts(first) : null;
+  const first = sourceView(pickSources(asSourced(rule)), data.publishersHe)[0];
   return (
     <Card edge="accent" pad="tight" className="flex flex-col gap-3" data-opens-scope data-opens={id}>
       <span className="text-xs-flow font-medium text-primary">{label}</span>
@@ -1535,12 +1527,25 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
       ) : (
         lead && <p className="text-base">{lead}</p>
       )}
-      {first && parts && (
-        <p className="text-xs-flow text-muted-foreground">
-          <SourceNames parts={parts} hebrewTitle={isHebrewTitle(sourceLabel2(first).title)} /> · {sourceCopy.checked} <Iso ltr>{fmt.date(first.checked)}</Iso>
-        </p>
-      )}
+      {first && <TopSource view={first} rule={asSourced(rule)} today={data.today} />}
     </Card>
+  );
+}
+
+/**
+ * The search's closest match's first document (`sourceView`), in one line: its names, when it was read, and the words that qualify its
+ * first place: what the source is where it is not the binding text in force, and that it may have changed.
+ */
+function TopSource({ view, rule, today }: { view: SourceView; rule: Pick<SourcedRule, "recheck_date">; today: string }) {
+  const place = view.places[0];
+  const standing = standingOf(place.source);
+  const changed = sourceChange([rule], place.source, today) === "may-have-changed";
+  return (
+    <p className={cx("text-xs-flow", changed ? "text-caution-foreground" : "text-muted-foreground")}>
+      <DocumentNames view={view} /> · {sourceCopy.checked} <Iso ltr>{fmt.date(place.checked)}</Iso>
+      {standing && ` · ${sourceCopy.standing[standing]}`}
+      {changed && ` · ${sourceCopy.mayHaveChanged}`}
+    </p>
   );
 }
 
