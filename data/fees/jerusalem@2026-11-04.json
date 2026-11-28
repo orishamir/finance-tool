@@ -54,8 +54,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
-          "BRK-19",
           "MF-27"
         ],
         "state": "sourced",
@@ -77,9 +75,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'20 ש\"ח מינימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -99,9 +95,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'20,000 מקסימום' (NIS). The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -143,7 +137,6 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-16",
-          "BRK-19",
           "MF-27"
         ],
         "state": "sourced",
@@ -165,9 +158,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex ה', PDF page 19, prints the internet price with its minimum on the shares, bonds and funds line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no minimum. Re-read 2026-11-04 in annex E as its own file, dated 08/06/2026 (library e0fbba6023213674), the newest binding document: the same figure. The combined file's annex E (15/07/2025, p.19) prints it too."
       },
@@ -187,9 +178,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex ה', PDF page 19, prints the internet price with its maximum on the shares, bonds and funds line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no maximum. Re-read 2026-11-04 in annex E as its own file, dated 08/06/2026 (library e0fbba6023213674), the newest binding document: the same figure. The combined file's annex E (15/07/2025, p.19) prints it too."
       },
@@ -228,10 +217,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מלווה קצר מועד 0.10% (20 ש\"ח מינימום 7,500 ₪ מקסימום)'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -251,9 +237,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'20 ש\"ח מינימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -273,9 +257,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'7,500 ₪ מקסימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -313,10 +295,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Note (4): '... ושיעור מופחת של 0.09% לפעולה במלווה קצר מועד'. No minimum or maximum restated. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -336,9 +315,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex ה', PDF page 19, prints the internet price with its minimum on the makam line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no minimum. Re-read 2026-11-04 in annex E as its own file, dated 08/06/2026 (library e0fbba6023213674), the newest binding document: the same figure. The combined file's annex E (15/07/2025, p.19) prints it too."
       },
@@ -358,9 +335,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Annex ה', PDF page 19, prints the internet price with its maximum on the makam line. Note (4) on page 6 does not restate it. Corrected 2026-10-31: the record held no maximum. Re-read 2026-11-04 in annex E as its own file, dated 08/06/2026 (library e0fbba6023213674), the newest binding document: the same figure. The combined file's annex E (15/07/2025, p.19) prints it too."
       },
@@ -399,10 +374,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Section 4א(1) names redemption. The reduced price (note 4, 0.09%) is for an action \"המבוצעת ישירות באמצעות האינטרנט\", so a redemption, where no order is placed, stays at the section's price (inferred from the wording)."
       },
@@ -422,9 +394,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'20 ש\"ח מינימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -444,9 +414,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'7,500 ₪ מקסימום'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -484,9 +452,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.6%, מינימום 50$ מקסימום 10,000$ לעסקה'.Page 20 prints an internet price, 'אינטרנט – 0.55%, מינימום 45$', on shares and bonds; it names no funds, so a fund abroad stays on this row. Notes: (1) an order not executed pays the minimum only if a clerk acted; (2) also charged on unlisted securities. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed. Re-read 2026-11-04: annex E of 08/06/2026 prices the internet rate on 'קניה מכירה - ני\"ע הנסחרים בחו\"ל - מניות, אג\"ח' only. The exchange's sheet prints 0.55%, 45$ minimum on 'מניות, אג\"ח, קרנות נאמנות - כללי', which is the exchange's own category label, so a fund abroad stays on this row. Part 11 (16/09/2026) adds third-party costs abroad without a fixed amount: a broker in the United States 'לפי חיוב בפועל ועד למקסימום 3% מהעסקה', funds in other markets up to 3%, a correspondent bank up to 100$ (see left_out)."
       },
@@ -506,9 +472,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 50$'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -528,9 +492,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מקסימום 10,000$ לעסקה'. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -579,7 +541,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
           "BRK-17"
         ],
         "state": "sourced",
@@ -601,10 +562,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "No minimum is printed. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
       "max": {
@@ -623,9 +583,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'10,000 ש\"ח מקסימום' per quarter. The exchange's sheet (trading_fees, 'עדכון אחרון: 05/07/26') prints the ceiling as 'דמי ניהול/טיפול פקדון ני\"ע כללי - לפקדון ... 10,000.00 ₪ לרבעון', so it is per deposit. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -672,9 +630,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'הנסחרים בחוץ לארץ 0.15% לרבעון (10,000 ש\"ח מקסימום)'; the same for securities not traded on an exchange. Part 4(ב)(4) also lists 'עמלת קסטודיאן 0.50% (50 ש\"ח מינימום 10,000 ש\"ח מקסימום)' without saying which holdings it applies to; not recorded as a line. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed. General terms s.145.11 (p.48): the customer also bears the fees of the bank's agents abroad, including for 'ארועי חברה' such as dividends, with no amount printed (left_out)."
       },
@@ -694,10 +650,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "No minimum is printed. The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
       "max": {
@@ -716,9 +671,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'10,000 ש\"ח מקסימום' per quarter, per deposit by the exchange's sheet ('כללי - לפקדון'). The part's effective date is printed '06/02/20217', a misprint in the source; effective_from is left null rather than guessed."
       },
@@ -941,9 +894,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.20% (6.7 $ מינימום, 2,750 $ מקסימום)'. No channel split in part 5. The spread is not printed (BRK-16). Re-read 2026-11-04: part 5 unchanged. The combined file's annex E ('15/07/2025', p.20) prints 'אינטרנט / אפליקציה' 0.18% (6$ minimum, 2,730$ maximum); annex E as its own file, dated 08/06/2026 and the newest, prints no conversion row. Part 5's 0.20% is the most the documents allow."
       },
@@ -963,9 +914,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'6.7 $ מינימום'."
       },
@@ -985,9 +934,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'2,750 $ מקסימום'."
       },
@@ -1017,10 +964,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-16). Library 43f36f509e83fcf3, p.48, checked on the page image."
       }
     },
@@ -1047,9 +993,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.40% (13.4 $ מינימום, 5,500 $ מקסימום)'."
       },
@@ -1069,9 +1013,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'13.4 $ מינימום'."
       },
@@ -1091,9 +1033,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'5,500 $ מקסימום'."
       },
@@ -1123,10 +1063,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents. For foreign securities the bank buys the currency 'לפי שער החליפין הגבוה ביותר שבו הבנק מוכר המחאות הנקובות במטבע החוץ הנ\"ל לציבור (בתוספת כל עמלות הרכישה של מטבע החוץ כמקובל בבנק)', on the day of purchase, the day payment is due or the day paid, 'הכל לפי השער הגבוה' (s.145.12); proceeds are converted at the lowest cheque-buying rate (s.145.13). The bank sets those rates; no document limits their distance from the representative rate (BRK-16). Library 43f36f509e83fcf3, p.48, checked on the page image."
       }
     }

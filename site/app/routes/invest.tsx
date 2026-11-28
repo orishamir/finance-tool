@@ -367,7 +367,7 @@ const PlanBody = memo(function PlanBody({ wb, data, search, inputs, invest, fees
   return (
     <LabelSheetHost>
       <DealAccountsHost data={feesData} onWant={wantFees} failed={feesFailed} left={notMoved} saved={savedDeals} writable={stored.writable} today={deviceDay} world={dealWorld} opening={opening} onOpened={onOpened} onOpenChange={setDealOpen} onDeleted={onDealDeleted}>
-      <CustomEntriesHost index={pageIndex} funds={typedFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onRemoveFund={invest.removeFund} world={world}>
+      <CustomEntriesHost index={pageIndex} funds={typedFunds} writable={invest.status !== "unavailable"} onSaveFund={invest.saveFund} onSaveIndex={invest.add} onRemoveFund={invest.removeFund} world={world}>
       <Frame title={title}>
         <div ref={swap.ref} className="flex flex-col gap-5 lg:gap-6">
           {customId && !exposureId && !pageIndex && <Callout tone="caution">{c.custom.missing}</Callout>}

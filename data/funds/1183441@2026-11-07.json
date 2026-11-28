@@ -55,11 +55,7 @@
       "effective_to": null,
       "tax_year": null,
       "update_rule": "provider-set",
-      "rule_ids": [
-        "ETF-28",
-        "ETF-27",
-        "TXF-16"
-      ],
+      "rule_ids": [],
       "state": "sourced",
       "notes": "Ongoing charge of the share class as its KIID prints it, 'based on the fee paid to the Manager. The Manager is responsible for discharging from its fee, costs attributable to the Investment Manager, Administrator, Depositary as well as the Operational Expenses incurred by the Fund' (KIID p. 2), so the Israeli fee layers (variable fee, trustee fee) do not exist here (ETF-27). Entry and exit charge 'None*' (KIID p. 2). The swap fee and any counterparty contribution are not in this figure; the KIID does not print them."
     },
@@ -84,6 +80,7 @@
         "ETF-09"
       ],
       "state": "sourced",
+      "empty_because": "not-collected",
       "notes": "Not printed as one number. The KIID prints the share class's return and the index's for each calendar year on p. 2 ('Past Performance', '% growth', rows 'Share Class' and 'Index', one decimal); they are in tracking_record. Basis: 'Past performance of the Share Class is calculated in USD'; 'Performance is calculated after deduction of ongoing charges'. Index as the KIID names it: 'S&P 500 Index', whose net total return is the objective (p. 1); the chart's index row is not itself labelled net or gross; the fund's own Israeli prospectus annex says it seeks the index's net total return, so the benchmark is recorded as net (tracking_record.benchmark). The figures are the share class's returns in US dollars, not a return in shekels on the Tel Aviv line. The difference is not computed here (data-update rule)."
     },
     "median_spread": null,

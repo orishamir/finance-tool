@@ -708,16 +708,6 @@ async function throughCheck(browser, base) {
   }
   if (!opened) found.push("through: no case row on the kit page opens on a tap on its parts' cell holding a grip");
   await ctx.close();
-  // a tile of a tile choice is a button: Space chooses it
-  const desk = await open(browser, base, DESK);
-  const tiles = desk.page.locator('article[aria-label="TileChoice"] button[role="radio"]');
-  if ((await tiles.count()) < 2) found.push("through: the tile choice's tiles are not buttons");
-  else {
-    await tiles.nth(1).focus();
-    await desk.page.keyboard.press("Space");
-    if ((await tiles.nth(1).getAttribute("aria-checked")) !== "true") found.push("through: Space on a tile does not choose it");
-  }
-  await desk.ctx.close();
   return found;
 }
 

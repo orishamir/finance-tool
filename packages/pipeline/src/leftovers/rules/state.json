@@ -4,30 +4,24 @@
     "CAT-07",
     "CAT-08",
     "CAT-09",
-    "CAT-10",
     "CAT-11",
     "CAT-13",
-    "CAT-15",
     "CAT-17",
     "CAT-20",
     "CAT-21",
     "CAT-24",
     "CAT-43",
-    "CAT-45",
     "CAT-46",
     "CAT-47",
     "CAT-48",
     "CAT-49",
     "CAT-50",
-    "GOV-01",
     "GOV-03",
     "GOV-07",
     "GOV-10",
     "GOV-11",
-    "GOV-12",
     "GOV-16",
     "GOV-18",
-    "GOV-19",
     "REG-02",
     "REG-03",
     "REG-05",
@@ -39,33 +33,17 @@
     "REG-16",
     "REG-17",
     "REG-19",
-    "REG-20",
-    "REG-22",
     "REG-34",
     "REG-35"
   ],
-  "research-talk": [
-    "CAT-10",
-    "CAT-15",
-    "CAT-45",
-    "GOV-06",
-    "GOV-12",
-    "REG-05",
-    "REG-14",
-    "REG-20",
-    "REG-22",
-    "REG-34"
-  ],
+  "research-talk": [],
   "fixed-line": [],
   "spelled-number": [
-    "CAT-15",
     "CAT-42",
-    "GOV-01",
     "GOV-06",
     "GOV-11"
   ],
   "typed-figure": [
-    "CAT-49",
     "REG-08"
   ],
   "figure-title": [
@@ -81,9 +59,7 @@
     "REG-11#order_lift_days"
   ],
   "missing-record": [],
-  "silence": [
-    "CAT-44"
-  ],
+  "silence": [],
   "typed-data-figure": [
     "CAT-45",
     "CAT-47",
@@ -103,7 +79,5 @@
   "title-ditto": [
     "CAT-24"
   ],
-  "page-copy": [
-    "REG-14#brokerage-account"
-  ]
+  "page-copy": []
 }

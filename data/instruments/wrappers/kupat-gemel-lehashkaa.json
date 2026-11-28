@@ -97,8 +97,8 @@
       "tax_year": 2026,
       "update_rule": "cpi-linked 1 jan",
       "rule_ids": [
-        "KGL-02",
-        "KGL-03"
+        "KGL-03",
+        "KGL-02"
       ],
       "state": "sourced",
       "notes": "NIS per person per calendar year, 2026, across all kupat gemel lehashkaa accounts: the law's NIS 70,000 (Amendment 15 s.3, section 22(א)) indexed by the CPI; the CBS linkage calculator returns 83,641.09 for 1.1.2026, shown rounded to the shekel (KGL-03). No regulator notice is required. Updated every 1 January."
@@ -146,8 +146,7 @@
       "tax_year": null,
       "update_rule": "fixed in regulation",
       "rule_ids": [
-        "KH-16",
-        "KGL-08"
+        "KH-16"
       ],
       "state": "sourced",
       "notes": "Rule 41יא(א) of the 1964 Income Tax Rules: a provident fund pays a withdrawal within 4 business days of the day the request reaches it; if that date falls in the month's first three business days it may defer to the 4th business day of the month. The law's timetable for every fund, not one company's (scope pass 2026-10-25). The CMA standard bylaw for kupat gemel lehashkaa repeats it (ss.12.1-12.2). Tax is withheld at payment (TXK-07)."
@@ -230,5 +229,8 @@
     "TXK-OQ3",
     "TXK-OQ10"
   ],
-  "checked": "2026-10-23"
+  "checked": "2026-10-23",
+  "context_rule_ids": [
+    "KGL-08"
+  ]
 }

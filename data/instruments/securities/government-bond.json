@@ -99,7 +99,7 @@
   },
   "lawful_exit": {
     "kind": "trading_day",
-    "text": "Any trading day: a tradable series can be sold on TASE at the market price of the day (GOV-17). Held to maturity, the state redeems the face value in one payment, indexed for a CPI-linked series (GOV-11, GOV-15). An early redemption by the state is its option, by buyback at market price (GOV-16). A sale on TASE settles on the next business day (GOV-17); no payout-days figure is recorded."
+    "text": "Any trading day: a tradable series can be sold on TASE at the market price of the day (GOV-17). Held to maturity, the state redeems the face value in one payment, indexed for a CPI-linked series (GOV-11, GOV-15). An early redemption by the state is its option, by a competitive buyback whose price the regulations do not set (GOV-16). A sale on TASE settles on the next business day (GOV-17); no payout-days figure is recorded."
   },
   "switch_is_tax_event": {
     "value": true,
@@ -143,7 +143,7 @@
       "GOV-12",
       "GOV-16"
     ],
-    "text": "principal and coupons are paid from the state's general revenues, an obligation of the state and not of the bank or broker (GOV-02). A CPI-linked series has no floor in the regulation text: if the index falls below the base index, principal and coupon are reduced (GOV-12; per-series floors unverified, GOV open question 6). A state buyback before maturity is at market price and the state's option (GOV-16). How the account keeps the bonds, and what happens if the bank or member fails, is the account's (brokerage-account)"
+    "text": "principal and coupons are paid from the state's general revenues, an obligation of the state and not of the bank or broker (GOV-02). A CPI-linked series has no floor in the regulation text: if the index falls below the base index, principal and coupon are reduced (GOV-12; per-series floors unverified, GOV open question 6). A state buyback before maturity is the state's option, by a competitive process whose price the regulations do not set (GOV-16). How the account keeps the bonds, and what happens if the bank or member fails, is the account's (brokerage-account)"
   },
   "dimensions": {
     "age-or-use-exemption": "covered",

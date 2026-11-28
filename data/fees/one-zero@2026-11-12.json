@@ -48,8 +48,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
-          "BRK-19",
           "MF-27"
         ],
         "state": "sourced",
@@ -70,9 +68,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 30 ש\"ח'."
       },
@@ -91,9 +87,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מקסימום 6,000 ש\"ח'."
       },
@@ -131,9 +125,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.3 אחוז, מינימום 24 דולר ארה\"ב, מקסימום 1,500 דולר ארה\"ב'. Notes: an order not executed pays the minimum only if a clerk acted; also charged on unlisted securities; third-party costs (broker, custodian) per part 11 are added. No internet price is printed, so channel is null. The page states trading is in US-traded securities only. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
       },
@@ -153,9 +145,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 24 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
       },
@@ -175,9 +165,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מקסימום 1,500 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
       },
@@ -226,7 +214,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
           "BRK-17"
         ],
         "state": "sourced",
@@ -268,9 +255,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0 אחוז'. 4(ב)(4) 'עמלת קסטודיאן': '0 אחוז', 'בנוסף יגבו הוצאות צד ג', לרבות הוצאות ברוקר והוצאות קסטודיאן, כפי חלק 11 לתעריפון'. Re-read 2026-11-04 (D56): the bank's own fee is a binding, unconditional 0 for every customer, but note (3) and 4(ב)(4) add third-party costs per part 11, and part 11 (PDF page 17, checked against the page image) prints an unnumbered row 'הוצאות קסטודיאן בחו\"ל, לרבות בגין אירועי חברה | בהתאם להוצאה הממשית | בעלות מרבית של עד 5,000 דולר ארה\"ב לחודש, ובעלות מרבית של עד 50 דולר ארה\"ב ללקוח לכל אירוע חברה', plus (20) up to 2 USD per symbol on a transfer out and (19) foreign exchanges' trading data up to 10 USD per client per month. The monthly 5,000 USD ceiling does not say per client, so it is not priced. The 50 USD per corporate event is priced in its own line, one-zero-custodian-corporate-event (F-103, D67), on each dividend of a fund bought abroad; this line stays the bank's printed 0. 2026-11-04: the 0 is the bank's fee only; foreign custodian costs are passed on with printed ceilings (see the rate's notes), so a held foreign ETF is not free of custody-type costs. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
       },
@@ -311,7 +296,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
           "BRK-74"
         ],
         "state": "sourced",
@@ -397,9 +381,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.15 אחוז, מינימום 5 דולר ארה\"ב, מקסימום 3,000 דולר ארה\"ב', charged on execution. No channel split. The spread is not printed, and no general rule limits a conversion spread or says how it is disclosed (FXD OQ2, open); the spreads some non-bank price lists print beside or instead of the conversion fee are BRK-48 and BRK-76. Under annex ו' the ONE and ONE PLUS plans are exempt from this fee (see the plan line). 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
       },
@@ -419,9 +401,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 5 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
       },
@@ -441,9 +421,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מקסימום 3,000 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
       },
@@ -472,10 +450,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents (D56). The tariff prints a conversion fee but no spread; the general terms define 'שער הבנק הדיגיטלי' as the rate the bank publishes, 'נקבע על ידי הבנק בהתאם לנהלים ולכללים הנהוגים בבנק מעת לעת', with the conversion fee added on top. The securities standing-order terms (4.4.2): 'תבוצע המרה של סכום ההשקעה בהתאם לשער של הבנק הדיגטלי'. Advertising 'ללא עמלת המרת מט\"ח' (lp/tradenew) holds for the One plans only (annex ו'); for ZERO the fee is 0.15%, minimum 5 USD."
       }
     },
@@ -502,9 +479,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.3 אחוז, מינימום 10 דולר ארה\"ב, מקסימום 3,000 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
       },
@@ -524,9 +499,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 10 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
       },
@@ -546,9 +519,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מקסימום 3,000 דולר ארה\"ב'. 2026-11-12: re-read by the lead in the founder's browser (pdf.js in the page; nothing downloaded, so no library copy); the value and the quoted words stand as printed on this page."
       },
@@ -577,10 +548,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents (D56). The tariff prints a conversion fee but no spread; the general terms define 'שער הבנק הדיגיטלי' as the rate the bank publishes, 'נקבע על ידי הבנק בהתאם לנהלים ולכללים הנהוגים בבנק מעת לעת', with the conversion fee added on top. The securities standing-order terms (4.4.2): 'תבוצע המרה של סכום ההשקעה בהתאם לשער של הבנק הדיגטלי'. Advertising 'ללא עמלת המרת מט\"ח' (lp/tradenew) holds for the One plans only (annex ו'); for ZERO the fee is 0.15%, minimum 5 USD."
       }
     }

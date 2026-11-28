@@ -110,7 +110,8 @@
         "ETF-14"
       ],
       "state": "sourced",
-      "notes": "Not printed: p.1 lists the manager's and the trustee's fees and no variable management fee, and Maya's fund data leave variableFee empty. A variable fee belongs to tracking funds (ETF-14); left null rather than 0 because no document prints 0."
+      "empty_because": "not-applicable",
+      "notes": "Not applicable: ETF-14 defines a variable management fee by a tracking fund's tracking difference, and this is not a tracking fund (its tracking difference is not applicable either). Beside that, p.1 lists the manager's and the trustee's fees and no variable management fee, and Maya's fund data leave variableFee empty; left null rather than 0 because no document prints 0."
     },
     "tracking_difference_12m": {
       "value": null,
@@ -130,6 +131,7 @@
         "MF-07"
       ],
       "state": "sourced",
+      "empty_because": "not-applicable",
       "notes": "Not applicable: not a tracking fund."
     },
     "median_spread": {
@@ -150,6 +152,7 @@
         "MF-35"
       ],
       "state": "sourced",
+      "empty_because": "not-applicable",
       "notes": "Not applicable: open fund with liquidity only on the fixed date (MF-35), not exchange-traded."
     },
     "fund_level_withholding_drag": {
@@ -171,6 +174,7 @@
         "TXS-24"
       ],
       "state": "sourced",
+      "empty_because": "not-applicable",
       "notes": "Shekel money-market fund (exposure code 00); no foreign withholding; no computation made here. Tax track not printed on the pages read and this series' presence in the 2026-10-22 Maya export behind TXS-24 is not certain, so il_fund_tax_track is left null."
     },
     "load": {

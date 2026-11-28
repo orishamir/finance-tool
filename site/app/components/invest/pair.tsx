@@ -6,12 +6,13 @@
 import { mayaFundHref } from "../../lib/sources";
 import { type ReactNode } from "react";
 import { isTie, type GapList } from "@finance-tool/engine";
-import { groupPrices, invest as c } from "../../copy";
-import { isCustomFund } from "../../lib/custom-entries";
+import { currencyWord, groupPrices, invest as c } from "../../copy";
+import { isShekel } from "@finance-tool/schema";
+import { isCustomFund, type FundKind } from "../../lib/custom-entries";
 import { doubtAt, doubtOf, entryRules, tieShareOf, paybackMayLower, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type Availability, type FundWay, type OptionId, type InvestView, type Kind, type Reason, type WayPrice } from "../../lib/invest";
 import { brokeragePagePath } from "../../lib/site-paths";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
-import { brokerLabels, fundLabels, optionLabels, type Label } from "../../lib/labels";
+import { brokerLabels, fundLabels, label, optionLabels, type Label } from "../../lib/labels";
 import { computed, differenceOf, ownBy, type SiteValue } from "../../lib/value";
 import { fmt } from "../../lib/format";
 import { Num, Ruled, Term, type SheetPart } from "../provenance";
@@ -80,7 +81,7 @@ export function whyNoPrice(bundle: { snapshots: IndicesBundle["snapshots"] }, ho
 /** A fund's entry at a house as a `KindAt`: a price stands for no reason. */
 const kindAt = (fund: FundWay, houseId: string): KindAt => {
   const at = fund.byHouse[houseId];
-  return { option: fund.option, at: at && !priced(at) ? at : undefined };
+  return { option: fund.option, kind: fund.kind, at: at && !priced(at) ? at : undefined };
 };
 
 /**
@@ -89,6 +90,8 @@ const kindAt = (fund: FundWay, houseId: string): KindAt => {
  */
 export interface KindAt {
   option: OptionId;
+  /** The kind the reasons name, where it is not the option's own (`FundWay.kind`). */
+  kind?: FundKind;
   at?: { availability?: Availability | null; reason?: Reason; doubt?: Availability } | undefined;
 }
 
@@ -138,10 +141,11 @@ export type WhyNone = ReturnType<typeof whyNoKindAt>;
  */
 export function whyNoKindAt(bundle: { snapshots: IndicesBundle["snapshots"] }, houseId: string, ways: readonly KindAt[]) {
   const snap = bundle.snapshots.find((s) => s.id === houseId);
-  const kinds = ways.filter((f, i) => ways.findIndex((g) => g.option === f.option) === i);
+  const named = (f: KindAt): FundKind => f.kind ?? f.option;
+  const kinds = ways.filter((f, i) => ways.findIndex((g) => named(g) === named(f)) === i);
   // a run its open question's readings stopped (method §13): the reason's sentence carries the question, whose card it opens
   const questionOf = (f: KindAt) => (f.at?.reason?.code === "rule-open" ? f.at.reason.question : undefined);
-  const reasons = kinds.map((f) => ({ kind: c.stairs.kinds[f.option] ?? f.option, why: whyOfKind(bundle, houseId, f), at: entryOfWhy(bundle, houseId, f), question: questionOf(f) }));
+  const reasons = kinds.map((f) => ({ kind: c.stairs.kinds[named(f)] ?? named(f), why: whyOfKind(bundle, houseId, f), at: entryOfWhy(bundle, houseId, f), question: questionOf(f) }));
   const told = reasons.filter((r, i) => reasons.findIndex((x) => x.why === r.why) === i);
   const why = told.length === 1 ? told[0]!.why : told.map((r) => `${r.kind}: ${r.why}`).join(" ");
   const state: "doubt" | "missing" | "notSold" | "other" = kinds.some((f) => f.at?.doubt || doubtOf(snap, f.option)) ? "doubt" : snap?.missing ? "missing" : kinds.length > 0 && kinds.every((f) => !!f.at?.availability) ? "notSold" : "other";
@@ -330,12 +334,20 @@ export function pairVerdict(view: InvestView, bundle: IndicesBundle, plan: Workb
   return { best, onBest, other, pc, pcOther, theta, n, nFunds, crown, tied, tie, mineRole, otherRole, taxName, nameOf, fundOf, mineKey, otherKey, gap, moreIfOther };
 }
 
-/** A foreign fund's figure rests on a steady dollar (a custom index's, on its currency), and says so; a hedged fund's and an Israeli index's do not. */
+/**
+ * A fund's figure rests on a steady currency, and says which: the fund's own where it is in a foreign currency, else its index's; on an
+ * index the person added, the currency they said the fund is bought in, else the index's, unnamed. A hedged fund's and an Israeli index's
+ * figures rest on none.
+ */
 export function steadyOf(view: InvestView, bundle: IndicesBundle, fund: string): string | null {
   if (view.index.israeli) return null;
   const rec = allFunds(view).find((f) => f.rec.id === fund)?.rec;
-  if (!rec || kindOf(rec) !== "unhedged" || indexSeenBy(view.index, rec, bundle).israeli) return null;
-  return view.index.custom ? c.pair.steadyIndexCurrency : c.pair.steadyDollar;
+  if (!rec || kindOf(rec) !== "unhedged") return null;
+  const seen = indexSeenBy(view.index, rec, bundle);
+  if (seen.israeli) return null;
+  if (seen.custom) return seen.boughtIn ? c.pair.steadyIn(currencyWord(seen.boughtIn)) : c.pair.steadyIndexCurrency;
+  const moves = !isShekel(rec.currency) ? rec.currency : seen.exposure?.currency;
+  return moves ? c.pair.steadyIn(currencyWord(moves)) : c.pair.steadyIndexCurrency;
 }
 
 /** The "!" beside the total: the dollar held still where the figure rests on it, and for a fund bought abroad what its price leaves out. */
@@ -475,8 +487,15 @@ export const mayaHrefOf = (f: FundWay) => {
   return !isCustomFund(f.rec) && (f.option === "il-etf" || f.option === "il-tracking") && f.rec.identifiers.tase_number ? mayaFundHref(f.rec.identifiers.tase_number) : null;
 };
 
-/** The fund's labels: how it trades (the type, from its option; a foreign fund, where it is listed, since the same fund can have a row for each), then what the record says about it. */
-export const labelsOf = (view: InvestView, f: FundWay, bundle: IndicesBundle): Label[] => [f.option === "tase-foreign" ? optionLabels(f.option)[0]! : optionLabels(f.option)[1] ?? optionLabels(f.option)[0]!, ...fundLabels(f.rec, indexSeenBy(view.index, f.rec, bundle), f.option)];
+/**
+ * The fund's labels: how it trades (the type, from its option; a foreign fund, where it is listed, since the same fund can have a row for
+ * each), then what the record says about it, and where its run flags a currency other than its index's (F-65), that.
+ */
+export const labelsOf = (view: InvestView, f: FundWay, bundle: IndicesBundle): Label[] => [
+  f.option === "tase-foreign" ? optionLabels(f.kind)[0]! : optionLabels(f.kind)[1] ?? optionLabels(f.kind)[0]!,
+  ...fundLabels(f.rec, indexSeenBy(view.index, f.rec, bundle), f.option),
+  ...(f.currencyMismatch ? [label("currency-mismatch", f.rec.currency)] : []),
+];
 
 /** What a fund's gap cell shows (F-92): a compared gap against a net or gross index, years not compared, or no years. */
 export type GapState = "net" | "gross" | "unstated" | "gross-apart" | "none";

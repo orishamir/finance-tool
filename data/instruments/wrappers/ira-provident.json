@@ -62,7 +62,6 @@
       "update_rule": "fixed in regulation",
       "rule_ids": [
         "PF-06",
-        "IRA-17",
         "IRA-16"
       ],
       "state": "sourced",
@@ -103,7 +102,6 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "IRA-16",
         "IRA-18"
       ],
       "state": "sourced",
@@ -148,8 +146,7 @@
       "update_rule": "cpi-linked 1 jan",
       "rule_ids": [
         "IRA-07",
-        "IRA-08",
-        "IRA-27"
+        "IRA-08"
       ],
       "state": "sourced",
       "notes": "NOT A YEARLY DEPOSIT CEILING: the total that may sit in the member's IRA funds under reg. 2(א)(4) to (6) (index-tracking money, members who meet the pension or savings test, new accounts), four times 'הסכום הקובע' across all the member's IRA accounts, less capital money under (2) and (3). 2026 figure computed under the regulation from primary inputs (the Tax Authority's minimum pension amount and the Ordinance's multiplier 180; IRA-08). The 2025 draft would delete the capital and index routes and double the pension and savings tests (IRA-27). The pension-side deposit ceilings and credits of a provident fund for annuity apply to deposits (TXP-02)."
@@ -208,8 +205,7 @@
       "update_rule": "fixed in law",
       "rule_ids": [
         "PEN-26",
-        "PEN-34",
-        "IRA-25"
+        "PEN-34"
       ],
       "state": "sourced",
       "notes": "Early retirement age, 60 for men and women: the minimum old-age eligibility age. The fund does not pay annuities itself; the money is moved to a pension fund or an insurance fund to be paid as an annuity (PEN-34)."
@@ -341,5 +337,9 @@
       "IRA-21",
       "IRA-22"
     ]
-  }
+  },
+  "context_rule_ids": [
+    "IRA-17",
+    "IRA-25"
+  ]
 }

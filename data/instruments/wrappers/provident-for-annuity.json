@@ -245,7 +245,7 @@
       "PEN-07",
       "PEN-06"
     ],
-    "text": "employees, through an employer, and the self-employed; the bylaws take up to 7.5% employer tagmulim, 7% employee tagmulim and 8.33% severance of the wage; it satisfies mandatory pension only if death and disability cover is held elsewhere, and a self-employed person may meet the deposit duty in it; no pooled insurance, no guaranteed-return share, no actuarial balancing"
+    "text": "employees, through an employer, and the self-employed; the bylaws take up to 7.5% employer tagmulim, 7% employee tagmulim and 8.33% severance of the wage; it satisfies mandatory pension only if death and disability cover is held elsewhere, and a self-employed person may meet the deposit duty in it; no pooled insurance, no guaranteed-return share; whether it balances actuarially is open (PEN OQ34)"
   },
   "protection": {
     "rule_ids": [
@@ -253,12 +253,13 @@
       "REG-19",
       "PEN-69"
     ],
-    "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value; the fund is not an eligible fund for the state guaranteed-return mechanism and has no actuarial balancing, so the balance moves only with the track's investments"
+    "text": "assets are held in trust, separately from the managing company's property, and cannot be attached; if the company fails, management moves to another company; the state does not guarantee the fund's value; the fund is not an eligible fund for the state guaranteed-return mechanism; whether it balances actuarially is open (PEN OQ34)"
   },
   "tier": 1,
   "open_questions": [
     "PEN-OQ19",
     "PEN-OQ7",
+    "PEN-OQ34",
     "TXP-OQ9",
     "TXP-OQ18"
   ],

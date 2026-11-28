@@ -48,8 +48,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
-          "BRK-19",
           "MF-27"
         ],
         "state": "sourced",
@@ -71,9 +69,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 27 ש\"ח'; note 6: not more than 30% of the payment."
       },
@@ -93,9 +89,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מכסימום 7000 ש\"ח'."
       },
@@ -126,8 +120,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
-          "BRK-19",
           "MF-27"
         ],
         "state": "sourced",
@@ -161,7 +153,6 @@
         "update_rule": "provider-set",
         "rule_ids": [
           "BRK-16",
-          "BRK-19",
           "MF-27"
         ],
         "state": "sourced",
@@ -183,9 +174,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 26 ש\"ח אך לא יותר מ-27% מהתשלום'."
       },
@@ -205,9 +194,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מכסימום 6300 ש\"ח'."
       },
@@ -240,8 +227,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
-          "BRK-19",
           "MF-27"
         ],
         "state": "sourced",
@@ -271,10 +256,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Separate price row for makam ('מילווה קצר מועד') on the same TASE buy/sell line. Note 12: an unexecuted order is NIS 25 except for makam. Charged on execution."
       },
@@ -294,9 +276,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 20 ש\"ח'."
       },
@@ -316,9 +296,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מכסימום 2000 ש\"ח'."
       },
@@ -348,10 +326,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the payment (p.30 note 6)."
       }
@@ -379,10 +354,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Direct channels ('אינטרנט וסלולר / גישה ישירה TRADE ON'): 0.095%, also in part 4(א)(1) note 3."
       },
@@ -402,9 +374,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 18 ש\"ח אך לא יותר מ-27% מהתשלום'."
       },
@@ -424,9 +394,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מכסימום 1800 ש\"ח'."
       },
@@ -458,10 +426,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the payment (p.30 note 6)."
       }
@@ -489,10 +454,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Section 4א(1) names redemption. The reduced price of annex ה (p.13, 0.095%) reads \"קניה, מכירה של ני\"ע\", without redemption, so a redemption stays at the section's price."
       },
@@ -512,9 +474,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 20 ש\"ח'."
       },
@@ -534,9 +494,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מכסימום 2000 ש\"ח'."
       },
@@ -566,10 +524,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the payment (p.30 note 6)."
       }
@@ -597,10 +552,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": ""
       },
@@ -620,10 +572,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": ""
       },
@@ -643,10 +592,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": ""
       },
@@ -676,10 +622,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the payment."
       }
@@ -707,10 +650,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Part 4(א)(4) note 8: 'בנוסף יגבו הוצאות צד ג', לרבות הוצאות ברוקר והוצאות קסטודיאן, כפי חלק 11'. Part 11 (p.60): broker costs in the US 'עד 2 סנט לכל ע.נ.', Europe and the East up to 0.2% of the trade, plus 'מיסים והיטלים כפי החוק במדינות היעד'. Not priced; the taxes and levies are not limited. Leumi's app page names US ETFs on NASDAQ, NYSE and AMEX as tradable."
       },
@@ -730,10 +670,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": ""
       },
@@ -753,10 +690,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": ""
       },
@@ -788,10 +722,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16",
-          "BRK-19"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The minimum, not the rate, is limited to this share of the payment."
       }
@@ -830,7 +761,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
           "BRK-17"
         ],
         "state": "sourced",
@@ -852,10 +782,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "No minimum is printed for this line (only a maximum)."
       },
       "max": {
@@ -874,9 +803,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מכסימום 3700 ש\"ח לני\"ע, 11500 לפקדון' per quarter: 3,700 per security and 11,500 per securities deposit (the whole account). Note 5: in the quarterly charge the lower of the per-security and per-deposit maximum applies. Note 4: on a balance reduction during a quarter the per-transaction maximum applies without accumulation."
       },
@@ -908,7 +835,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
           "BRK-69"
         ],
         "state": "sourced",
@@ -938,9 +864,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.200% לרבעון', same collection mechanics as the Israeli line (note 3). Note 8 (mobile-app first year, at most 50%) applies to the whole item. On top, part 11 ('הוצאות ני\"ע', p.60) passes on the foreign custodian's costs 'לפי חיוב בפועל': in the US 'בעלות מירבית של עד 3 דולר לנייר' on exchanges and 6 dollars OTC, other markets up to 32 dollars, and for funds ('פעילות בקרנות') with no ceiling. These are not limited by the documents for a fund and are not priced here."
       },
@@ -960,10 +884,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "No minimum is printed for this line."
       },
       "max": {
@@ -982,9 +905,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מכסימום 7400 ש\"ח לני\"ע, 23000 לפקדון' per quarter."
       },
@@ -1016,7 +937,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
           "BRK-69"
         ],
         "state": "sourced",
@@ -1048,7 +968,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-16",
           "MF-27",
           "MF-58"
         ],
@@ -1071,9 +990,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינ' 5 ש\"ח'."
       },
@@ -1093,9 +1010,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-16"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מכסימום 6,300 ש\"ח'."
       },
@@ -1344,6 +1259,7 @@
           "BRK-23"
         ],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents. The tariff prints only the percentage fee (עמלת חליפין). The general terms (310-93, version 06.26, s.51.35, p.61) define 'שער בל\"ל' as a rate 'שייקבע על ידי הבנק', and the securities-deposit section (s.3, p.13) converts foreign proceeds 'לפי שער בל\"ל'; no document caps the gap from the representative rate (BRK-23). Not zero."
       },
       "period": null,
@@ -1381,8 +1297,7 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "BRK-23",
-          "BRK-19"
+          "BRK-23"
         ],
         "state": "sourced",
         "notes": "Direct channels ('עמדות דיגיטל, אינטרנט וסלולר, גישה ישירה TRADE ON'): '0.16% מהשווי'."
@@ -1451,6 +1366,7 @@
           "BRK-23"
         ],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not limited by the documents. The tariff prints only the percentage fee (עמלת חליפין). The general terms (310-93, version 06.26, s.51.35, p.61) define 'שער בל\"ל' as a rate 'שייקבע על ידי הבנק', and the securities-deposit section (s.3, p.13) converts foreign proceeds 'לפי שער בל\"ל'; no document caps the gap from the representative rate (BRK-23). Not zero."
       },
       "period": null,

@@ -87,9 +87,7 @@
       "update_rule": "fixed in law",
       "rule_ids": [
         "CS-14",
-        "CS-13",
-        "CS-15",
-        "CS-16"
+        "CS-15"
       ],
       "state": "sourced",
       "notes": "Redemption age: the child may withdraw from 18 (from the end of the month of the 18th birthday), with a parent's signature until 21 and alone from 21 (CS-14). Any withdrawal before 21 forfeits the NIS 582 (2026) age-21 grant (CS-13)."
@@ -118,6 +116,7 @@
       "TXK-29"
     ],
     "state": "sourced",
+    "empty_because": "unknown",
     "notes": "Unknown for a track change at a bank exit station: asked whether each maturity, renewal and track change is a tax event, the Ministry of Finance's tender committee answered only that the existing tax rules apply (questions 71, 72; TXK-29), and no text says whether the general rules make it one (TXK OQ1). Redirecting future deposits to a provident fund moves no balance: the money already saved stays at the bank (CS-12). The plan can never move to another bank, so the Minister of Finance's statement that a move between banks is a tax event (TXK-29) has no case here. The product side: the bank track can change only at an exit station, every 5 years, and only if that type was chosen; since January 2025 future deposits may be redirected once to a provident fund (CS-12)."
   },
   "transfer_routes": [
@@ -151,7 +150,7 @@
       "REG-04",
       "REG-06"
     ],
-    "text": "the money belongs to the child, is held in trust by the parent and cannot be transferred, pledged or attached; the bank promises that the balance will not fall below the sums NII deposited, in nominal terms, and the interest is known in advance; the money is a bank deposit with no deposit insurance in Israel: if a bank fails the Governor may, with Government approval, announce a guarantee, but is not obliged to"
+    "text": "the money belongs to the child, is held in trust by the parent and cannot be transferred, pledged or attached; the interest is known in advance, and at the end of the savings period the child gets at least the deposits credited to the account; the money is a bank deposit with no deposit insurance in Israel: if a bank fails the Governor may, with Government approval, announce a guarantee, but is not obliged to"
   },
   "tier": 1,
   "open_questions": [
@@ -190,5 +189,9 @@
         ]
       }
     ]
-  }
+  },
+  "context_rule_ids": [
+    "CS-13",
+    "CS-16"
+  ]
 }

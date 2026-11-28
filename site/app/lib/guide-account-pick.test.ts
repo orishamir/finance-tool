@@ -108,7 +108,7 @@ describe("the guides name the house that leaves the example plan the most", () =
     expect(own.pick!.id).toBe("psagot");
     expect(own.pick!.tied).toBeUndefined();
   });
-  it("names no bank on a money-market fund: the fees are the law's zero (MF-26, BANK-18)", () => {
+  it("names no bank on a money-market fund: the fees are the law's zero (MF-26, MF-71, BRK-17)", () => {
     const own = buildGuidePage("money-market-fund-daily")!.bundle!;
     expect(own.pick).toBeUndefined();
     expect(loadProducts().find((w) => w.id === "money-market-fund-daily")).toHaveProperty("held_in");

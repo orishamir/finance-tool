@@ -71,8 +71,6 @@
       "update_rule": "fixed in regulation",
       "rule_ids": [
         "BRK-17",
-        "BANK-18",
-        "BRK-16",
         "BRK-52"
       ],
       "state": "sourced",
@@ -188,5 +186,9 @@
     "TXI-OQ3",
     "TXI-OQ9"
   ],
-  "checked": "2026-11-07"
+  "checked": "2026-11-07",
+  "context_rule_ids": [
+    "BANK-18",
+    "BRK-16"
+  ]
 }

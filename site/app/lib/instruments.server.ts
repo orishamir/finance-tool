@@ -459,10 +459,11 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
 /**
  * A money-market fund bought through a bank (method 2.4): a distributor with a distribution agreement may not charge
  * the holder for buying, holding or redeeming units (MF-26), and a bank may not charge securities custody on one
- * (BANK-18). So the trade and custody lines are each rule's zero figure, which carries its own source: the 2016 amendment in
+ * (BRK-17 owns that ban). So the trade and custody lines are each a zero figure, which carries its own source: the 2016 amendment in
  * the official gazette (Kovetz HaTakanot 7653, page 1098, regulations 2(b) to 2(d)) for MF-26, the First Schedule's custody item for
- * BANK-18. The assumption that the bank has a distribution agreement for the fund (the common case) is written on the value. The
- * tariff's own `mutual_fund_units` lines are not read: they price tracking funds.
+ * the ban, which BRK-17's block states without a figure and BANK-18's card keeps one for. The assumption that the bank has a
+ * distribution agreement for the fund (the common case) is written on the value. The tariff's own `mutual_fund_units` lines are not
+ * read: they price tracking funds.
  */
 function buildMoneyMarketTariff(wrapperId: string, src: InstrumentSources, missing: string[], feeValues: Record<string, SiteValue>): NonNullable<InstrumentTerms["tariff"]> | null {
   const trade = figure(src, "MF-26", "mmf_unit_fee_under_distribution_agreement");

@@ -61,12 +61,8 @@
       "tax_year": null,
       "update_rule": "provider-set",
       "rule_ids": [
-        "BRK-15",
         "BRK-16",
-        "BRK-19",
-        "BRK-21",
-        "BRK-24",
-        "BRK-33"
+        "BRK-24"
       ],
       "state": "sourced",
       "notes": "No regulatory cap. For banks the rules fix the fee type (a percentage of the trade with a minimum and a maximum, separately for shares and bonds and for makam) but each bank sets the price; a direct-channel fee must be lower than the clerk fee; two weeks' notice of changes. Non-bank members follow the same part structure; their tariff is a ceiling and negotiated prices exist. TASE publishes every member's average fees actually charged, by security type and portfolio band."
@@ -88,13 +84,12 @@
       "rule_ids": [
         "BRK-16",
         "BRK-17",
-        "BANK-18",
         "BRK-24",
         "MF-26",
         "BRK-52"
       ],
       "state": "sourced",
-      "notes": "No regulatory cap on the rate (banks: a percentage with a maximum per deposit, price set by the bank). Banks may not charge it at all on makam or on money-market fund units (BRK-17, BANK-18); the ban binds banks only, and no rule limits a non-bank member's custody fee on them (BRK-17, BRK-52; BRK open question 11 closed 2026-10-26). Non-bank members name it דמי משמרת or דמי ניהול/טיפול פיקדון ני\"ע."
+      "notes": "No regulatory cap on the rate (banks: a percentage with a maximum per deposit, price set by the bank). Banks may not charge it at all on makam or on money-market fund units (BRK-17); the ban binds banks only, and no rule limits a non-bank member's custody fee on them (BRK-17, BRK-52; BRK open question 11 closed 2026-10-26). Non-bank members name it דמי משמרת or דמי ניהול/טיפול פיקדון ני\"ע."
     },
     "fx": {
       "value": null,
@@ -281,7 +276,7 @@
       "ETF-98",
       "ETF-26"
     ],
-    "text": "anyone who opens a securities account at a bank that is a TASE member or at a non-bank TASE member (a written custody agreement at a bank); minimums are provider-set (each provider's own terms: BRK-28, BRK-73, BRK-79, on the companies' pages); rules for minors' accounts were not found (BRK OQ17); a foreign broker is reached directly or through a section 49A permit holder (BRK-70; BRK OQ9); trading is on TASE trading days, Monday to Friday since 5.1.2026"
+    "text": "anyone who opens a securities account at a bank that is a TASE member or at a non-bank TASE member (a written custody agreement at a bank); minimums are provider-set (each provider's own terms: BRK-28, BRK-73, BRK-79, on the companies' pages), and a fund's manager may limit the size of an order to create or redeem its ETF units (ETF-98); rules for minors' accounts were not found (BRK OQ17); a foreign broker is reached directly or through a section 49A permit holder (BRK-70; BRK OQ9); trading is on TASE trading days, Monday to Friday since 5.1.2026"
   },
   "protection": {
     "rule_ids": [
@@ -365,5 +360,12 @@
     "BRK-OQ23",
     "TXS-OQ17"
   ],
-  "checked": "2026-11-07"
+  "checked": "2026-11-07",
+  "context_rule_ids": [
+    "BRK-15",
+    "BRK-19",
+    "BRK-21",
+    "BRK-33",
+    "BANK-18"
+  ]
 }

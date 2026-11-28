@@ -1,0 +1,21 @@
+[
+  "instruments/securities/money-market-fund-daily#/fee_caps/balance",
+  "instruments/securities/money-market-fund-daily#/fee_caps/load",
+  "instruments/securities/money-market-fund-daily#/fee_caps/redemption_deduction",
+  "instruments/securities/money-market-fund-daily#/fee_caps/trade",
+  "instruments/securities/money-market-fund-daily#/fee_caps/trustee",
+  "instruments/securities/money-market-fund-renewable#/fee_caps/balance",
+  "instruments/securities/money-market-fund-renewable#/fee_caps/load",
+  "instruments/securities/money-market-fund-renewable#/fee_caps/redemption_deduction",
+  "instruments/securities/money-market-fund-renewable#/fee_caps/trade",
+  "instruments/securities/money-market-fund-renewable#/fee_caps/trustee",
+  "instruments/wrappers/brokerage-account#/fee_caps/custody",
+  "instruments/wrappers/brokerage-account#/fee_caps/distribution_handling",
+  "instruments/wrappers/brokerage-account#/fee_caps/fixed_period",
+  "instruments/wrappers/brokerage-account#/fee_caps/fx",
+  "instruments/wrappers/brokerage-account#/fee_caps/trade",
+  "instruments/wrappers/ira-hishtalmut#/fee_caps/custody",
+  "instruments/wrappers/ira-hishtalmut#/fee_caps/trade",
+  "instruments/wrappers/ira-provident#/fee_caps/custody",
+  "instruments/wrappers/ira-provident#/fee_caps/trade"
+]
