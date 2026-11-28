@@ -13,7 +13,7 @@ import { RuleCard, SourceBlock, ValueSheet } from "./provenance-sheets";
 
 const src = (strength: "primary" | "institution" | "secondary", url: string) => ({ url, title: `מסמך ${strength}`, publisher: "x", strength, checked: "2026-10-25" });
 const sources = [src("institution", "https://example.org/own.pdf"), src("secondary", "https://example.org/press")];
-const render = (el: ReturnType<typeof createElement>, data: object = { rules: {}, terms: {}, dimensions: {}, today: "2026-10-26" }) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: el })));
+const render = (el: ReturnType<typeof createElement>, data: object = { rules: {}, terms: {}, dimensions: {}, today: "2026-10-26" }) => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: el } as never)));
 const weak = sourceBlock.weak;
 
 describe("the source lines of a company's own term", () => {
@@ -133,7 +133,8 @@ describe("one drawing for every source (sourceView)", () => {
     expect(html).toContain('href="https://example.org/law.pdf#page=7"');
   });
   it("prints the word of a source that is not the binding text in force", () => {
-    const html = render(createElement(SourceBlock, { source: [{ ...law, standing: "draft" }], today, inline: true }));
+    // a record's source carries its standing (the schema's `standing`), which the sources layer's own shape does not name
+    const html = render(createElement(SourceBlock, { source: [{ ...law, standing: "draft" } as typeof law], today, inline: true }));
     expect(html).toContain(sourceBlock.standing.draft);
     expect(render(createElement(SourceBlock, { source: [law], today, inline: true }))).not.toContain(sourceBlock.standing.draft);
   });

@@ -8,8 +8,8 @@ import { assertNever, type RuleRecord, type SourceStanding } from "@finance-tool
 import type { FundStatement } from "@finance-tool/engine";
 import { system, buttons, computedInputs, flags as flagCopy, numbers, provenance as copy, rule as ruleCopy, ruleCardMore, rulesDetail, scopeWords, sourceBlock as sourceCopy, strength as strengthCopy, updateRules } from "../copy";
 import { ruleTitle } from "../lib/rule-title";
-import { ownFigures, spanWords } from "../lib/rule-row";
-import { fillSlot, missingSlot, wordUnits, type SlotSource } from "../lib/figure-slots";
+import { spanWords } from "../lib/rule-row";
+import { figureRows, fillSlot, missingSlot, wordUnits, type SlotSource } from "../lib/figure-slots";
 import { fmt } from "../lib/format";
 import { headText } from "../lib/working";
 import { hasHebrew, mostlyHebrew } from "../lib/source-label";
@@ -664,7 +664,7 @@ function StaleLine({ stale }: { stale: Staleness }) {
     <p className="text-sm text-caution-foreground flex items-start gap-2">
       <IconClock size={16} className="text-caution shrink-0 mt-1" />
       <span>
-        <When iso={stale.since} lead={`${copy.stale.before} `} />. {copy.stale.middle} {copy.stale.cadence[stale.cadence]}.
+        <When iso={stale.since} lead={`${copy.stale.before} `} />.{stale.cadence && ` ${copy.stale.middle} ${copy.stale.cadence[stale.cadence]}.`}
       </span>
     </p>
   );
@@ -1019,16 +1019,32 @@ function figureLabel(rule: RuleRecord, name: string, className = "text-xs"): Rea
   return rule.figure_names_he?.[name] ? <span className={className}>{rule.figure_names_he[name]}</span> : <bdi dir="ltr" className={className}>{name}</bdi>;
 }
 
-/** A rule figure's head line in its sheet: its Hebrew name, with the tax year of a figure by year; nothing where the record names it in English only. */
-function aboutOf(rule: RuleRecord, name: string, year?: string | null): { about?: string } {
-  const he = rule.figure_names_he?.[name];
-  return he ? { about: year ? `${he} ${year}` : he } : {};
-}
-
 const unitSuffix = (unit: string, className = "text-sm text-muted-foreground") => (suffixUnits.has(unit) ? <span className={className}> {unitWordOf(unit)}</span> : null);
 
-/** "לשנת המס 2026 · קבוע בחוק": the tax year the figure is for (when its label does not say) and how it is updated. */
-function FigureNote({ v, labelYear, className = "block text-xs text-muted-foreground font-normal" }: { v: { tax_year?: number | null; update_rule: string }; labelYear: string | null; className?: string }) {
+/** The words of a figure's update rule ("קבוע בחוק", "מוקפא בשנים 2025–2027"), the years of a frozen figure isolated; null for a rule with no words. */
+function updateWord(updateRule: string): ReactNode | null {
+  const frozen = /^frozen (\d{4})-(\d{4})$/.exec(updateRule);
+  const word = frozen ? updateRules.frozen : (updateRules as Record<string, string>)[updateRule];
+  if (!word) return null;
+  const [before, after] = word.split("{years}");
+  return (
+    <>
+      {before}
+      {frozen && (
+        <bdi dir="ltr">
+          {frozen[1]}–{frozen[2]}
+        </bdi>
+      )}
+      {after}
+    </>
+  );
+}
+
+/**
+ * "לשנת המס 2026 · קבוע בחוק · בתוקף עד 31.12.2026": the tax year the figure is for (when its label does not say), how it is updated (unless
+ * `updated` is false: a row above said it already) and its last day in force (unless it is the label's calendar year).
+ */
+function FigureNote({ v, labelYear, updated = true, className = "block text-xs text-muted-foreground font-normal" }: { v: { tax_year?: number | null; update_rule: string; effective_to?: string | null }; labelYear: string | null; updated?: boolean; className?: string }) {
   const bits: ReactNode[] = [];
   if (v.tax_year && String(v.tax_year) !== labelYear)
     bits.push(
@@ -1036,37 +1052,28 @@ function FigureNote({ v, labelYear, className = "block text-xs text-muted-foregr
         {ruleCardMore.forTaxYear} <bdi dir="ltr">{v.tax_year}</bdi>
       </span>,
     );
-  const frozen = /^frozen (\d{4})-(\d{4})$/.exec(v.update_rule);
-  const word = frozen ? updateRules.frozen : (updateRules as Record<string, string>)[v.update_rule];
-  if (word) {
-    const [before, after] = word.split("{years}");
-    bits.push(
-      <span key="u">
-        {before}
-        {frozen && (
-          <bdi dir="ltr">
-            {frozen[1]}–{frozen[2]}
-          </bdi>
-        )}
-        {after}
-      </span>,
-    );
-  }
+  const word = updated ? updateWord(v.update_rule) : null;
+  if (word) bits.push(<span key="u">{word}</span>);
+  if (v.effective_to && !(labelYear && v.effective_to === `${labelYear}-12-31`)) bits.push(<When key="t" iso={v.effective_to} lead={`${copy.sourced.to} `} />);
   if (bits.length === 0) return null;
   return <span className={className}>{bits.flatMap((b, i) => (i ? [" · ", b] : [b]))}</span>;
 }
 
+/** Whether a rule's figures say how they are updated (`FigureNote`), which "לא משתנה מעצמו" would only say less well. */
+const figuresSayUpdate = (rule: RuleRecord, today: string): boolean => figureRows(rule, today).some((r) => updateWord(r.value.update_rule) !== null);
+
 /**
- * The rule's "המספרים" block: every figure of the record, by tax year and by bracket, each a Num. `marked`: the figure the card was opened
- * from (a figure's sheet), whose rows are marked and scrolled into view.
+ * The rule's "המספרים" block: every figure of the record (`figureRows`), by tax year and by bracket, each a Num; a figure's update rule is
+ * said once, on its first row. `marked`: the figure the card was opened from (a figure's sheet), whose rows are marked and scrolled into
+ * view.
  */
-function RuleFigures({ rule, id, pageValue = (v) => v, head, marked }: { rule: RuleRecord; id: string; pageValue?: (v: SiteValue) => SiteValue; /** In place of the plain muted "המספרים". */ head?: ReactNode; marked?: string }) {
-  const figures = Object.entries(rule.figures ?? {});
+function RuleFigures({ rule, today, pageValue = (v) => v, head, marked }: { rule: RuleRecord; today: string; pageValue?: (v: SiteValue) => SiteValue; /** In place of the plain muted "המספרים". */ head?: ReactNode; marked?: string }) {
+  const rows = figureRows(rule, today);
   const markedRow = useRef<HTMLDivElement>(null);
   useEffect(() => {
     markedRow.current?.scrollIntoView({ block: "nearest" });
   }, [marked]);
-  if (figures.length === 0) return null;
+  if (rows.length === 0) return null;
   // the figure the card was opened from: its first row holds the scroll, and every row of it is marked
   let first = true;
   const mark = (name: string) => {
@@ -1075,50 +1082,53 @@ function RuleFigures({ rule, id, pageValue = (v) => v, head, marked }: { rule: R
     first = false;
     return { ...ref, "data-marked": "", className: "readout-row rounded-sm bg-secondary" };
   };
+  const said = new Set<string>();
   return (
     <div className="flex flex-col gap-1.5">
       {head ?? <span className="text-sm text-muted-foreground">{ruleCopy.figures}</span>}
       <dl className="readout">
-        {figures.flatMap(([name, f]) => {
-          // a bracket's edges and its rates are updated each by its own rule (TXG-02: the edges frozen in 2025–2027, the rates fixed in
-          // law): the first row says each under its own figure, the edge's under the edge and the rate's under the rate
-          if (Array.isArray(f))
-            return f.map((b, i) => {
-              const edge = i === 0 && b.up_to.value !== null;
-              return (
-                <div key={`${name}-${i}`} className="readout-row" {...mark(name)}>
-                  <dt>
-                    {figureLabel(rule, name)} {b.up_to.value === null ? "" : "≤"} {b.up_to.value !== null && <Num value={pageValue({ ...b.up_to, rule_ids: b.up_to.rule_ids ?? [id], ...aboutOf(rule, name) })} />}
-                    {i === 0 && <FigureNote v={edge ? b.up_to : b.rate} labelYear={null} />}
-                  </dt>
-                  <dd>
-                    <Num value={pageValue({ ...b.rate, rule_ids: b.rate.rule_ids ?? [id], ...aboutOf(rule, name) })} />
-                    {unitSuffix(b.rate.unit)}
-                    {edge && b.rate.update_rule !== b.up_to.update_rule && <FigureNote v={{ update_rule: b.rate.update_rule }} labelYear={null} />}
-                  </dd>
-                </div>
-              );
-            });
-          const byYear = "by_tax_year" in f ? Object.entries(f.by_tax_year) : [[null, f] as const];
-          return byYear.map(([year, v]) => (
-            <div key={`${name}-${year ?? ""}`} className="readout-row" {...mark(name)}>
+        {rows.map((row) => {
+          const v = row.value;
+          const firstOfFigure = !said.has(row.key);
+          said.add(row.key);
+          if (row.bound || row.firstBracket) {
+            // a bracket's edges and its rates are updated each by its own rule (TXG-02: the edges frozen in 2025–2027, the rates fixed in
+            // law): the first row says each under its own figure, the edge's under the edge and the rate's under the rate
+            const edge = row.firstBracket && row.bound?.kind === "up-to" ? row.bound.value : null;
+            return (
+              <div key={row.id} className="readout-row" {...mark(row.key)}>
+                <dt>
+                  {figureLabel(rule, row.key)} {row.bound && (row.bound.kind === "up-to" ? "≤" : ruleCardMore.above)} {row.bound && <Num value={pageValue(row.bound.value)} />}
+                  {row.firstBracket && <FigureNote v={edge ?? v} labelYear={null} />}
+                </dt>
+                <dd>
+                  <Num value={pageValue(v)} />
+                  {unitSuffix(v.unit)}
+                  {edge && v.update_rule !== edge.update_rule && <FigureNote v={{ update_rule: v.update_rule }} labelYear={null} />}
+                </dd>
+              </div>
+            );
+          }
+          const span = spanWords(v.value, v.unit);
+          return (
+            <div key={row.id} className="readout-row" {...mark(row.key)}>
               <dt>
-                {figureLabel(rule, name)}
-                {year && (
+                {figureLabel(rule, row.key)}
+                {row.year && (
                   <>
                     {" "}
-                    <bdi dir="ltr">{year}</bdi>
+                    <bdi dir="ltr">{row.year}</bdi>
                   </>
                 )}
-                <FigureNote v={v} labelYear={year} />
+                <FigureNote v={v} labelYear={row.year} updated={firstOfFigure} />
               </dt>
               <dd>
                 {/* one or two years or months in words ("שנה"), never "1 שנים" */}
-                <Num value={pageValue({ ...v, rule_ids: v.rule_ids ?? [id], ...aboutOf(rule, name, year) })} {...(spanWords(v.value, v.unit) ? { display: spanWords(v.value, v.unit)! } : {})} />
-                {spanWords(v.value, v.unit) ? null : unitSuffix(v.unit)}
+                <Num value={pageValue(v)} {...(span ? { display: span } : {})} />
+                {span ? null : unitSuffix(v.unit)}
               </dd>
             </div>
-          ));
+          );
         })}
       </dl>
     </div>
@@ -1274,7 +1284,7 @@ export function RuleCard({ id, data, headId, inline, figure }: { id: string; dat
       )}
       {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs, tagCompanies(rule, data.ownDocs, { company: page }))}</p>}
       <RulePointers rule={rule} />
-      <RuleFigures rule={rule} id={id} pageValue={pageValue} marked={figure} />
+      <RuleFigures rule={rule} today={data.today} pageValue={pageValue} marked={figure} />
       <dl className="sheet-dl">
         {/* each source line says the day the site read it; the record's own date stands only on a card with no source */}
         {sources.length === 0 && (
@@ -1312,7 +1322,7 @@ export function RuleCard({ id, data, headId, inline, figure }: { id: string; dat
           </Row>
         )}
       </dl>
-      {rule.likely_to_change === "no" && !rule.recheck_date && <p className="text-xs text-muted-foreground">{ruleCardMore.stable}</p>}
+      {rule.likely_to_change === "no" && !rule.recheck_date && !figuresSayUpdate(rule, data.today) && <p className="text-xs text-muted-foreground">{ruleCardMore.stable}</p>}
       {uses && uses.pages.length === 0 && !uses.engine && <p className="text-xs text-muted-foreground">{ruleCardMore.usesNone}</p>}
       {/* the card's foot: pushed to the bottom, so cards side by side have it at one height */}
       <div className="mt-auto flex flex-col gap-3 pt-1">
@@ -1440,7 +1450,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
       )}
       {!isGeneral(rule) && <p className="text-sm text-muted-foreground">{scopeLine(rule, data.ownDocs, tagCompanies(rule, data.ownDocs))}</p>}
       <RulePointers rule={rule} />
-      <RuleFigures rule={rule} id={id} head={<GroupHead>{ruleCopy.figures}</GroupHead>} />
+      <RuleFigures rule={rule} today={data.today} head={<GroupHead>{ruleCopy.figures}</GroupHead>} />
       {sources.length > 0 ? <SourcesByDocument sources={sources} rule={sourced} slots={data} /> : <p className="text-sm text-muted-foreground">{ruleCopy.sourceMissing}</p>}
       {(dims.length > 0 || uses || sources.length === 0 || rule.recheck_date) && (
       <dl className="sheet-dl border-t border-border pt-3">
@@ -1480,7 +1490,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
                 <span className={recheckStale(rule, data.today) ? "text-caution-foreground" : "text-muted-foreground"}>
                   · <When iso={rule.recheck_date} lead={`${ruleCopy.recheck} `} />
                 </span>
-              ) : rule.likely_to_change === "no" ? (
+              ) : rule.likely_to_change === "no" && !figuresSayUpdate(rule, data.today) ? (
                 <span className="text-muted-foreground">· {ruleCardMore.stable}</span>
               ) : null}
             </span>
@@ -1497,7 +1507,7 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
         )}
       </dl>
       )}
-      {sources.length > 0 && !rule.recheck_date && rule.likely_to_change === "no" && <p className="text-xs text-muted-foreground">{ruleCardMore.stable}</p>}
+      {sources.length > 0 && !rule.recheck_date && rule.likely_to_change === "no" && !figuresSayUpdate(rule, data.today) && <p className="text-xs text-muted-foreground">{ruleCardMore.stable}</p>}
       {after}
     </article>
   );
@@ -1511,7 +1521,10 @@ export function RuleDetail({ id, data, products, headId, after }: { id: string; 
 export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: ProvenanceData; label: string; lead: string; onOpen: () => void }) {
   const rule = ruleOf(data, id);
   if (!rule) return null;
-  const figures = ownFigures(rule, Number(data.today.slice(0, 4))).slice(0, 2);
+  // its own numbers, one per figure (this year's of a figure set by year), no bracket table: its numbers need their bounds
+  const figures = figureRows(rule, data.today, Number(data.today.slice(0, 4)))
+    .filter((r) => !r.bound && !r.firstBracket && typeof r.value.value === "number")
+    .slice(0, 2);
   const first = sourceView(pickSources(asSourced(rule)), data.publishersHe)[0];
   return (
     <Card edge="accent" pad="tight" className="flex flex-col gap-3" data-opens-scope data-opens={id}>
@@ -1521,13 +1534,15 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
           <ShownRuleTitle rule={rule} slots={data} />
         </button>
       </h3>
-      {figures.length > 0 ? (
+      {/* its first sentence, then its own numbers beside it */}
+      {lead && <p className="text-base">{lead}</p>}
+      {figures.length > 0 && (
         <StatRow cols={2}>
-          {figures.map(({ key, value }) => (
-            <div key={key} className="flex flex-col gap-0.5 min-w-0">
+          {figures.map(({ id: rowId, key, value }) => (
+            <div key={rowId} className="flex flex-col gap-0.5 min-w-0">
               <dd className="order-1 flex items-baseline gap-1.5">
                 <span className="figure">
-                  <Num value={{ ...value, rule_ids: value.rule_ids ?? [id], ...aboutOf(rule, key) }} size="figure" />
+                  <Num value={value} size="figure" />
                 </span>
                 {unitSuffix(value.unit, "text-lg text-muted-foreground")}
               </dd>
@@ -1536,8 +1551,6 @@ export function TopMatch({ id, data, label, lead, onOpen }: { id: string; data: 
             </div>
           ))}
         </StatRow>
-      ) : (
-        lead && <p className="text-base">{lead}</p>
       )}
       {first && <TopSource view={first} rule={asSourced(rule)} today={data.today} />}
     </Card>

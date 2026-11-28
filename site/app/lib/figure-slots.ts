@@ -5,7 +5,7 @@ import { assertNever, type RuleRecord } from "@finance-tool/schema";
 import { provenance as copy } from "../copy";
 import { formatValue } from "./format";
 import { parseAnswer } from "./answer-slots";
-import { isParameter, ruleFigure, type SiteValue } from "./value";
+import { figureStale, isParameter, ruleFigure, type SiteValue } from "./value";
 
 /** The records a slot may read and the day it is read on: a page's own rules and the records its cards point at (`ProvenanceData` fits). */
 export interface SlotSource {
@@ -69,4 +69,57 @@ export function slotsAsText(text: string, source: SlotSource): string {
   return parseAnswer(text)
     .map((p) => (p.kind === "text" ? p.text : figureText(fillSlot(p, source))))
     .join("");
+}
+
+/** One row of a rule's figures (`figureRows`): a figure, a year of a figure set by tax year, or a bracket of a table. */
+export interface FigureRow {
+  /** The figure's key in the record's `figures` (`figure_names_he` names it). */
+  key: string;
+  /** The row's own id: the key with its year or its bracket. */
+  id: string;
+  /** The tax year of a figure set by year. */
+  year: string | null;
+  /** The figure, with the rules it belongs to, what it is in the rule's words and whether it is stale. */
+  value: SiteValue;
+  /** A bracket's bound: up to its edge, or above the edge before it (the top bracket, which has none of its own). */
+  bound?: { kind: "up-to" | "above"; value: SiteValue };
+  /** The first row of a bracket table: it says how the edges are updated under the edge, and the rates under the rate. */
+  firstBracket?: boolean;
+}
+
+/**
+ * Every figure of a rule's record as a row, in the record's order: by tax year (with `year`, only that year's, or the latest before it,
+ * else the latest) and by bracket. A figure the record keeps for another rule (`rule_ids` without this one: TXH-09 stores TXH-10's three
+ * years) is left out. Each figure carries its rules, its name in the rule's words and its staleness, so a card, the search's top match and
+ * a slot draw it alike.
+ */
+export function figureRows(rule: RuleRecord, today: string, year?: number): FigureRow[] {
+  const own = (v: { rule_ids?: string[] | undefined }) => !v.rule_ids?.length || v.rule_ids.includes(rule.id);
+  const as = (v: SiteValue, key: string, taxYear: string | null): SiteValue => {
+    const he = rule.figure_names_he?.[key];
+    return { ...v, rule_ids: v.rule_ids ?? [rule.id], stale: figureStale(rule, v.update_rule, today), ...(he ? { about: taxYear ? `${he} ${taxYear}` : he } : {}) };
+  };
+  const out: FigureRow[] = [];
+  for (const [key, f] of Object.entries(rule.figures ?? {})) {
+    if (Array.isArray(f)) {
+      f.forEach((b, i) => {
+        if (!own(b.rate)) return;
+        const before = f[i - 1]?.up_to;
+        const bound = b.up_to.value !== null ? { kind: "up-to" as const, value: as(b.up_to, key, null) } : before && before.value !== null ? { kind: "above" as const, value: as(before, key, null) } : undefined;
+        out.push({ key, id: `${key}-${i}`, year: null, value: as(b.rate, key, null), ...(bound ? { bound } : {}), ...(i === 0 ? { firstBracket: true } : {}) });
+      });
+      continue;
+    }
+    if (!("by_tax_year" in f)) {
+      if (own(f)) out.push({ key, id: key, year: null, value: as(f, key, null) });
+      continue;
+    }
+    const years = Object.keys(f.by_tax_year).sort();
+    const pick = year === undefined ? years : [years.includes(String(year)) ? String(year) : (years.filter((y) => Number(y) <= year).pop() ?? years[years.length - 1])];
+    for (const y of pick) {
+      const v = y === undefined ? undefined : f.by_tax_year[y];
+      if (v && own(v)) out.push({ key, id: `${key}-${y}`, year: y ?? null, value: as(v, key, y ?? null) });
+    }
+  }
+  return out;
 }

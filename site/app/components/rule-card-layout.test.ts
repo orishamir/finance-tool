@@ -6,12 +6,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import type { RuleRecord } from "@finance-tool/schema";
-import { ruleCardMore, rule as ruleCopy, scopeWords, sourceBlock, strength } from "../copy";
+import { ruleCardMore, rule as ruleCopy, scopeWords, sourceBlock, strength, updateRules } from "../copy";
 import { fmt } from "../lib/format";
 import { ruleTitle } from "../lib/rule-title";
 import { isNotRule, joinNames, ownDocCompanies } from "../lib/scope";
 import { ProvenanceProvider, RuleRef, RuleTitleRow, catchesOf, type ProvenanceData } from "./provenance";
-import { RuleCard, RuleDetail, TermCard, ValueSheet } from "./provenance-sheets";
+import { RuleCard, RuleDetail, TermCard, TopMatch, ValueSheet } from "./provenance-sheets";
 import type { SiteValue } from "../lib/value";
 
 const root = new URL("../../../", import.meta.url);
@@ -179,6 +179,46 @@ describe("the open questions a record points to", () => {
     const text = words(createElement(RuleCard, { id: r.id, data, inline: true }), data);
     expect(text).toContain(ruleCardMore.seeAlso);
     expect(text).toContain("שאלה שהכלל מפנה אליה");
+  });
+});
+
+describe("a rule's figures", () => {
+  const card = (r: RuleRecord) => {
+    const data = dataOf({ [r.id]: r });
+    return words(createElement(RuleCard, { id: r.id, data, inline: true }), data);
+  };
+  it("write the top bracket's bound as above the edge before it", () => {
+    const r = record("TXG-02");
+    const brackets = must(Object.values(r.figures ?? {}).find(Array.isArray), "TXG-02's brackets") as { up_to: { value: number | null } }[];
+    const edge = must(brackets.at(-2)?.up_to.value, "the edge before the top bracket");
+    expect(card(r)).toContain(`${ruleCardMore.above} ${fmt.nis(edge)}`);
+  });
+  it("leave out a figure the record keeps for another rule (TXH-09 keeps TXH-10's)", () => {
+    const r = record("TXH-09");
+    const other = must(r.figure_names_he?.lock_years_retirement_or_study, "the name of TXH-10's figure");
+    const own = must(r.figure_names_he?.lock_years, "the name of TXH-09's own figure");
+    expect(card(r)).toContain(own);
+    expect(card(r)).not.toContain(other);
+  });
+  it("say a figure's update rule once, and no 'does not change by itself' beside it", () => {
+    const r = structuredClone(record("TXI-03"));
+    r.likely_to_change = "no";
+    delete r.recheck_date;
+    const v = must(r.figures?.rate, "TXI-03's rate") as Record<string, unknown>;
+    r.figures = { rate: { by_tax_year: { "2025": { ...v, tax_year: 2025, update_rule: "fixed in law" }, "2026": { ...v, tax_year: 2026, update_rule: "fixed in law" } } } } as unknown as RuleRecord["figures"];
+    const text = card(r);
+    expect(count(text, updateRules["fixed in law"])).toBe(1);
+    expect(text).not.toContain(ruleCardMore.stable);
+  });
+});
+
+describe("the search's closest match", () => {
+  it("keeps its first sentence beside its numbers", () => {
+    const r = record("TXI-03");
+    const data = dataOf({ [r.id]: r });
+    const text = words(createElement(TopMatch, { id: r.id, data, label: "התאמה", lead: "המשפט הראשון של הכלל.", onOpen: () => undefined }), data);
+    expect(text).toContain("המשפט הראשון של הכלל.");
+    expect(text).toContain(must(r.figure_names_he?.rate, "TXI-03's rate's name"));
   });
 });
 

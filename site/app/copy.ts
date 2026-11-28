@@ -3456,6 +3456,8 @@ export const ruleCardMore = {
   /** A general rule's pointers to companies' terms: named examples, never a derivation. */
   examples: "לדוגמה:",
   stable: "לא משתנה מעצמו",
+  /** Before the edge of a bracket table's top bracket, which has none of its own: "מעל 721,560 ₪". */
+  above: "מעל",
   usesLead: "משפיע על",
   usesEngine: "החישובים באתר",
   usesNone: "רקע בלבד: לא נכנס לחישוב ולא מוצג בעמוד אחר.",
