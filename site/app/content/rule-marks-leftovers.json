@@ -1,0 +1,89 @@
+{
+  "about": "Rules that a guide or exposure page marks twice or more in one block (rule-marks.test.ts). Each is listed with why it is left; a new one fails, and so does one that is gone or changed, until its entry is removed. `blocks` is how many blocks of the page mark the rule twice.",
+  "leftovers": [
+    {
+      "page": "/guide/limited-bond-fund",
+      "rule": "MF-64",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/mutual-funds",
+      "rule": "TXS-07",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/bank-deposit",
+      "rule": "TXI-26",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/kupat-gemel-lehashkaa",
+      "rule": "KGL-02",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/kupat-gemel-lehashkaa",
+      "rule": "KGL-09",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/pension-general",
+      "rule": "PEN-64",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/government-bond",
+      "rule": "GOV-14",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/government-bond",
+      "rule": "BND-02",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/makam",
+      "rule": "BANK-18",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/money-market-fund-daily",
+      "rule": "MF-02",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/money-market-fund-daily",
+      "rule": "MF-41",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/money-market-fund-renewable",
+      "rule": "MF-35",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/guide/money-market-fund-renewable",
+      "rule": "MF-02",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    },
+    {
+      "page": "/exposure/index-sp500",
+      "rule": "TXF-17",
+      "blocks": 1,
+      "why": "On the page when the check came in (2026-11-28)."
+    }
+  ]
+}
