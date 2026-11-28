@@ -8,14 +8,16 @@
 
 ## 2. Work in a worktree
 
-- Every task, small ones included, is done in a worktree of its own
-  (`tools/mkwt.sh <name> <branch>`), never in the main checkout. Other
-  sessions may be working at the same time, and in a shared checkout one
-  session's edits, builds and commits mix with another's.
-- Land from the worktree: rebase on `origin/main`, run the checks there
-  (4), and push the branch straight to `main` (`git push origin
-  HEAD:main`), so the main checkout is never touched. Then remove the
-  worktree and branch.
+- Every task, small ones included, is done on a branch of its own in a
+  worktree of its own (`tools/mkwt.sh <name> <branch>`), never in the main
+  checkout. Other sessions may be working at the same time, and in a shared
+  checkout one session's edits, builds and commits mix with another's.
+- The local `main` is always up to date, and only `main` itself is
+  pushed. To land: run the checks in the worktree (4); in the main
+  checkout, bring `main` up to date (`git fetch` and `git merge --ff-only
+  origin/main`), merge the branch into it, and push `main`. Never push a
+  branch, and never push to `main` from anywhere but the local `main`.
+  Then remove the worktree and branch.
 
 ## 3. Brief a builder
 
@@ -82,7 +84,7 @@
 
 ## 5. Land it
 
-- Push to `main` from the worktree (2). Never open a pull request. Large work is built
+- Merge into the local `main` and push it (2). Never open a pull request. Large work is built
   on a branch of its own and goes live in finished slices, also on `main`
   without a pull request. Nothing is held off the links for review: what is
   not finished stays on its branch.
