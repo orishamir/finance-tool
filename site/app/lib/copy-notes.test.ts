@@ -30,15 +30,11 @@ const COPY_NOTES: Record<string, string> = {
 const NOTE_LEFTOVERS: Partial<Record<NoteFlaw, string[]>> = {
   "research-talk": [
     "flags.BANK-35",
-    "flags.G-23",
     "flags.G-36",
     "flags.G-38",
-    "flags.G-41",
     "flags.G-42",
     "flags.PEN-OQ7",
-    "flags.PF-36",
     "flags.TXP-11",
-    "flags.TXP-OQ20",
     "flags.TXS-OQ26",
   ],
   "too-long": [

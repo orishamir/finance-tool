@@ -12,6 +12,9 @@
   "variants": [
     "ניכוי במקור"
   ],
+  "also_called": [
+    "ניכוי במקור"
+  ],
   "rule_ids": [
     "BRK-27",
     "TXF-05",

@@ -100,6 +100,13 @@ import { analyze, highlightRanges, nearHits, relaxedHits, ruleFigs, snippetOf, s
 import { aliasRows } from "./search-aliases";
 import { siteQuestions } from "./search-claims";
 import { namedGuides } from "./search";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { guideContent } from "../content/guide";
+import { exposureContent } from "../content/exposure";
+
+const root = fileURLToPath(new URL("../../../", import.meta.url));
 
 let real: SearchEntry[] = [];
 let texts: SearchTexts = {};
@@ -162,6 +169,17 @@ describe("figures of a rule", () => {
     );
     expect(figs.map((f) => [f.n, f.u])).toEqual([[84120, "nis"], [10, "pct"], [57.5, "pct"]]);
     expect(figs[0]!.f).toBe("מדרגות");
+  });
+  it("keeps a value's dates in force, so a figure that starts later is not read as the one now", () => {
+    const figs = ruleFigs({ term: { value: 364, unit: "days", effective_from: "2026-12-01", effective_to: "2028-02-01" }, cap: { value: 5, unit: "pct", effective_from: null, effective_to: null } }, {});
+    expect(figs).toEqual([
+      { n: 364, u: "days", k: "term", from: "2026-12-01", to: "2028-02-01" },
+      { n: 5, u: "pct", k: "cap" },
+    ]);
+  });
+  it("keeps two versions of a figure apart when only their dates differ", () => {
+    const figs = ruleFigs({ rate: { by_tax_year: { "2026": { value: 3, unit: "pct", effective_from: "2026-01-01" }, "2027": { value: 3, unit: "pct", effective_from: "2027-01-01" } } } }, {});
+    expect(figs.map((f) => f.from)).toEqual(["2026-01-01", "2027-01-01"]);
   });
 });
 
@@ -242,10 +260,17 @@ describe("rules in groups and the negatives", () => {
     expect(search("הלוואה")).toHaveLength(0);
     expect(search("בן זוג")).toHaveLength(0);
     // the real rule base has rules about a spouse, and the survivors' pension term names "בן או בת הזוג"
-    // (its explanation now follows the CMA's standard bylaw): only rules and terms answer, nothing in the catalogue
-    expect(top("בן זוג").every((h) => isRuleKind(h.entry.kind) || h.entry.kind === "term")).toBe(true);
-    // the real rule base does have rules about loans against a fund, so "הלוואה" now finds those and nothing in the catalogue
-    expect(top("הלוואה", false).every((h) => isRuleKind(h.entry.kind) || h.entry.kind === "term")).toBe(true);
+    // (its explanation now follows the CMA's standard bylaw), and rules about loans against a fund: what answers is the knowledge
+    // layer (rules, terms and the documents the rules rest on), nothing in the catalogue. A gazette order on a housing loan stands in
+    // the index, as one does once three rules cite it and it becomes a featured document, and a document's title may name a loan
+    const booklet = e("document", "צו הבנקאות (שירות ללקוח) (פיקוח על שירות שינויים במועד הפירעון החודשי של הלוואה לדיור), התשפ״ו-2026", "/documents#booklet");
+    const withBooklet = [...real, booklet];
+    const knowledge = (h: SearchHit) => isRuleKind(h.entry.kind) || h.entry.kind === "term" || h.entry.kind === "document";
+    expect(searchEntries(withBooklet, normalize("בן זוג"), texts).every(knowledge)).toBe(true);
+    const loan = searchEntries(withBooklet, normalize("הלוואה"), null);
+    expect(loan.every(knowledge)).toBe(true);
+    expect(loan.some((h) => h.entry.href === booklet.href)).toBe(true);
+    expect(loan.some((h) => isRuleKind(h.entry.kind))).toBe(true);
   });
   it("shows track numbers first for a bare 25, then the 25% rules before the tracks that merely contain it", () => {
     const withTrack: SearchEntry[] = [...real, e("track", "מסלול לדוגמה", "/companies/1/2500", ["2500"])];
@@ -387,5 +412,92 @@ describe("an entry as the search shows it", () => {
     expect(out.norm).toBe(raw.norm);
     // the row is still found by the abbreviation typed either way
     expect(normalize(out.name)).toBe(normalize(raw.name));
+  });
+});
+
+describe("a glossary term's rows", () => {
+  const termRows = () => real.filter((e) => e.kind === "term");
+  it("are keyed by the term's record, so two records of one name keep their own rows and texts", () => {
+    const records = new Set(readdirSync(join(root, "data/terms")).filter((f) => f.endsWith(".json")).map((f) => `term:${f.replace(/\.json$/, "")}`));
+    const keys = new Set(termRows().map((e) => e.key));
+    expect([...keys].filter((k) => !records.has(k ?? ""))).toEqual([]);
+    expect(Object.keys(texts).filter((k) => k.startsWith("term:") && !records.has(k))).toEqual([]);
+    // נכס בסיס and ניכוי מס במקור are names of several records
+    const byName = new Map<string, Set<string>>();
+    for (const e of termRows()) byName.set(e.name, (byName.get(e.name) ?? new Set()).add(e.key ?? ""));
+    expect([...byName.values()].some((ks) => ks.size > 1)).toBe(true);
+  });
+  it("are found by a search string, which the card does not list as another name", () => {
+    const rec = JSON.parse(readFileSync(join(root, "data/terms/mvdl-hshkavt-tlvy-gyl.json"), "utf8")) as { he: string; also_called?: string[]; search?: string[] };
+    expect(rec.search).toContain("לבני 50 ומטה");
+    expect(rec.also_called ?? []).not.toContain("לבני 50 ומטה");
+    expect(termRows().some((e) => e.key === "term:mvdl-hshkavt-tlvy-gyl" && e.name === "לבני 50 ומטה")).toBe(true);
+  });
+});
+
+// A term's row opens its card on a page whose content ships the term. Where none of the term's pages ships it, the row opens
+// the first of them, where the word is not marked; those terms are listed here, and the list only shrinks.
+describe("a term's row opens a page that ships it (a ratchet)", () => {
+  const opensAlone = new Set<string>([
+    "term:alvt-shntyt-tzpvyh", "term:amlh", "term:amyt-atzmay-224a", "term:amyt-la-mbvtch", "term:amyt-shkyr-ee56", "term:arbvt-hmdynh",
+    "term:arkt-bytvch", "term:avshh-shvk", "term:aychvd-chshbvnvt", "term:aygrvt-chvb-mmshltyvt", "term:aygrvt-chvb-myvadvt", "term:aykvl",
+    "term:bal-mnyvt-mhvty", "term:bnk-yshral", "term:brvkr", "term:byt-hshkavt", "term:bytvch-chyym-kbvtzty", "term:chlvkt-rvvchym",
+    "term:chshbvn-nyyrvt-ark", "term:chshbvn-rdvm", "term:chvskym-hmadypym-sykvn-bynvny", "term:chvskym-hmadypym-sykvn-mvat",
+    "term:chyskvn-lkl-yld-bbnk", "term:chytvm-rpvay", "term:dmy-bytvch-lavmy", "term:dmy-nyhvl-mchyskvn", "term:dmy-nykyvn-e",
+    "term:dvch-shnty-mpvrt", "term:dyn-vchshbvn-rbavny-lamyt", "term:dyn-vchshbvn-shnty-lamyt", "term:gml-lhshkah", "term:gvp-mvsdy",
+    "term:gyl-hpryshh", "term:gyl-hpryshh-hmvkdmt", "term:gyl-pryshh", "term:gyl-pryshh-mvkdmt", "term:habrt-kspym-byn-kvpvt-gml-c",
+    "term:habrt-kspym-byn-kvpvt-gml-d", "term:habrt-kspym-byn-mslvly-hshkah-d", "term:habrt-nyhvl", "term:hbytvch-hlavmy",
+    "term:hknsh-chyybt", "term:hknsh-chyybt-mmkvr-hvny", "term:hknsh-kvbat", "term:hknsh-mbvtcht", "term:hknsh-mrybyt",
+    "term:hknsh-mygyah-ayshyt", "term:hknsh-shaynh-mabvdh", "term:hknsh-shaynh-mygyah-ayshyt", "term:hlvvavt-lamytym",
+    "term:hnchh-bdmy-nyhvl", "term:hpkdh-shaynh-mvtbt", "term:hprshvt-havbd", "term:hprshvt-hmasyk-lkvpt-gml", "term:hprshy-htzmdh-c",
+    "term:hprshy-htzmdh-e", "term:hrkb-dmy-nyhvl-mytyb", "term:hsdr-bytvch", "term:hsdr-dmy-nyhvl-mytyb", "term:htzmdh",
+    "term:hvrat-mynvy-mvtbym", "term:hvsph", "term:hvtzavt-yshyrvt-bshl-bytzva-askavt", "term:hyvvn", "term:hyvvn-ktzbh",
+    "term:kblt-myda-al-chskvnvt-pnsyvnyym", "term:kns-pygvr", "term:krn-aktybyt", "term:krn-chdshh-kllyt", "term:krn-hshtlmvt",
+    "term:krn-hshtlmvt-bnyhvl-ayshy", "term:krn-hshtlmvt-latzmaym", "term:krn-kspyt-lla-kvntzrny", "term:krn-nzylh", "term:krn-ptvchh",
+    "term:krn-vtykh", "term:kshlb-hgbvh-byvtr-bsvlm-hknstv-hchyybt", "term:ktzbh-mvkrt-c", "term:ktzbh-mvkrt-d", "term:kvpt-bryrt-mchdl",
+    "term:kvpt-gml-lhshkah", "term:kvpt-gml-lhshkah-chskvn-lyld", "term:kvpt-gml-lyldym", "term:kybva-zkvyvt",
+    "term:la-mvtzat-rybyt-al-ytrt-zkvt-bchshbvn", "term:lla-ayrva-ms", "term:mamd-ms", "term:mank-hvn-akb-pryshh",
+    "term:markt-slykh-pnsyvnyt-mrkzyt", "term:mchyr-knyyh", "term:mdd-b", "term:mdrgvt-ms", "term:mdynt-hmvtza", "term:mgna",
+    "term:mkdmt-ms-b", "term:mkdmt-ms-e", "term:mmvtza-dmy-nyhvl-bkvph", "term:mnpyk", "term:mnyvt", "term:mrkyb-htgmvlym",
+    "term:mrvvch-tzytvt-shl-pkvdvt-knyyh-vmkyrh", "term:ms-al-hknsh-mrybyt", "term:msci-acwi", "term:msci-world",
+    "term:mshykh-ltzvrk-hshtlmvt", "term:mshykt-kspym-kdyn", "term:mshykt-kspym-shla-kdyn", "term:mslvl-hdyvvch-hmkvtzr",
+    "term:mslvl-hshkah-avkb-mddym", "term:mslvl-hshkah-bryrt-mchdl", "term:mslvl-klly-c", "term:mslvl-klly-d", "term:mslvl-mvrchb-plvs",
+    "term:msy-chvtz", "term:mtnh-blty-chvzrt", "term:mvdl-hshkavt-tlvy-gyl", "term:myzvg-kvpvt-gml", "term:namn-a",
+    "term:namnvt-vhprdt-nksym", "term:nasdaq-100", "term:nksy-chvtz", "term:nkvdt-zykvy", "term:nqvdt-achvz", "term:nspch-d-tvps-1324",
+    "term:ntzybvt-tlvnvt-htzybvr", "term:nvscht-hkyzvz", "term:nykvy-lkvpt-gml", "term:nykvy-ms-bmkvr-c", "term:pdyvn-mvkdm", "term:pkm",
+    "term:pnsyyt-chvbh-latzmaym", "term:pnyvt-htzybvr", "term:pry", "term:pryym-pchvt", "term:ptvr-mhgsht-dvch",
+    "term:ptvr-mms-al-hktzbh-hmzkh", "term:pykdvn", "term:pykdvn-lzmn-ktzvb", "term:pykdvn-yvmy", "term:rshvt-hmsym", "term:rtzp-ktzbh",
+    "term:rtzp-pytzvyym", "term:rvvch-hvn-b", "term:rvvch-nvmynly", "term:ryaly", "term:rybyt-mtvamt-shntyt", "term:shar-chlypyn",
+    "term:shayrym", "term:shkbvt-hms-bkrn-hshtlmvt", "term:shkr-kvba", "term:shkr-mbvtch", "term:shkr-mmvtza-bmshk", "term:shnt-hms",
+    "term:shvvy-hvgn-ayndyktyby", "term:shvvy-ms", "term:shyavr-hms-hshvly", "term:shyavr-ms-kbva", "term:shyavr-ms-mrby",
+    "term:skvm-aynpltzyvny-b", "term:skvm-aynpltzyvny-e", "term:skvm-ktzbh-mzary", "term:smkvt-larvb", "term:sykvn-ashray",
+    "term:sykvn-aynpltzyh", "term:sykvn-nzylvt", "term:sykvn-rybyt", "term:symn-kryah", "term:ta-35", "term:ta-90", "term:tagyd-bnkay",
+    "term:tarypvn-mla", "term:tavdvt-sl", "term:tavt-akybh", "term:tgmvly-avbd", "term:tgmvlym-vayshyt-lpytzvyym", "term:ticker",
+    "term:tknvn", "term:tkrt-hpkdh", "term:tkrt-hpkdh-chvdshyt", "term:tkvpt-akshrh", "term:tkvpt-hmtnh", "term:tkvpt-tshlvmym-mvbtchym",
+    "term:tlvsh-shkr", "term:tshlvmym-ptvrym-c", "term:tshvah", "term:tshvah-kvllt-brvtv", "term:tvps-0135", "term:tvps-1325",
+    "term:tvps-161", "term:tvps-867-a", "term:tvps-867-e", "term:tvshb-yshral", "term:typvl-brybyt-vbdybydnd", "term:tzd-ngdy-mrkzy",
+    "term:tzv-hrchbh", "term:tzv-hrchbh-nvsch-mshvlb-lpnsyh-chvbh", "term:ychyd-shmlav-lv-60-shnym", "term:ytrh-tzbvrh-c",
+    "term:ytrh-tzbvrh-d", "term:zykvy-mmsy-chvtz",
+  ]);
+  const shipped = (href: string, he: string): boolean => {
+    const guide = /^\/guide\/([^#]+)#/.exec(href)?.[1];
+    if (guide) return !!guideContent[guide]?.termIds.includes(he);
+    const exposure = /^\/exposure\/([^#]+)#/.exec(href)?.[1];
+    return !!exposure && !!exposureContent[exposure]?.termIds.includes(he);
+  };
+  const offenders = () => {
+    const out = new Set<string>();
+    for (const e of real.filter((x) => x.kind === "term")) {
+      const he = decodeURIComponent(/#term=(.+)$/.exec(e.href)?.[1] ?? "");
+      if (!shipped(e.href, he)) out.add(e.key ?? "");
+    }
+    return out;
+  };
+  it("no term outside the list opens a page that does not ship it", () => {
+    expect([...offenders()].filter((k) => !opensAlone.has(k)).sort()).toEqual([]);
+  });
+  it("every listed term still does (strike it once a page ships it)", () => {
+    const now = offenders();
+    expect([...opensAlone].filter((k) => !now.has(k))).toEqual([]);
   });
 });

@@ -1,7 +1,7 @@
 {
   "id": "ETF-44",
   "title": "TA-35: what TASE says it is, how its 35 shares are chosen, a 7% weight cap, gross total return in shekels",
-  "title_he": "ת״א 35: בחירה, תקרת משקל, תשואה כוללת",
+  "title_he": "ת״א-35: בחירה, תקרת משקל, תשואה כוללת",
   "strength": "primary",
   "dimensions": [
     "currency",
@@ -17,7 +17,8 @@
         "url": "https://market.tase.co.il/he/market_data/index/142/about",
         "title": "הבורסה, \"ת\"א-35 אודות המדד\" (מדד 142; נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "quote": "מס' ני\"ע במדד 35"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -28,7 +29,7 @@
         "ETF-44"
       ],
       "state": "sourced",
-      "notes": "Index page \"מס' ני\"ע במדד 35\"; annex 1 s.3."
+      "notes": "Annex 1 s.3."
     },
     "weight_cap": {
       "value": 7,
@@ -37,7 +38,8 @@
         "url": "https://market.tase.co.il/he/market_data/index/142/about",
         "title": "הבורסה, \"ת\"א-35 אודות המדד\" (מדד 142; נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "quote": "מגבלת משקל 7%"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -48,7 +50,7 @@
         "ETF-44"
       ],
       "state": "sourced",
-      "notes": "Index page \"מגבלת משקל 7%\"; annex 1 footnote: the committee set 7% and a specific cap for each share of a U.S.-incorporated company."
+      "notes": "Annex 1 footnote: the committee set 7% and a specific cap for each share of a U.S.-incorporated company."
     },
     "weight_cap_ceiling": {
       "value": 10,
@@ -60,7 +62,8 @@
         "strength": "primary",
         "locator": "p.29, annex 1 s.6",
         "locator_he": "עמוד 29, נספח 1 סעיף 6",
-        "page": 29
+        "page": 29,
+        "quote": "ובלבד שלא תעלה על 10%"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -70,8 +73,7 @@
       "rule_ids": [
         "ETF-44"
       ],
-      "state": "sourced",
-      "notes": "\"ובלבד שלא תעלה על 10%\"."
+      "state": "sourced"
     },
     "min_public_holdings": {
       "value": 30,
@@ -97,7 +99,7 @@
       "notes": "20% for a share listed less than two years."
     }
   },
-  "text_he": "לפי הבורסה, מדד הדגל כולל את שלושים וחמש המניות בעלות שווי השוק הממוצע הגבוה ביותר, מבין המניות שעומדות בתנאי הסף. ההרכב מתעדכן פעמיים בשנה. מניה נכנסת כשהיא מדורגת מספיק גבוה, ויוצאת רק כשהיא יורדת מתחת לדירוג היציאה. ועדת המדדים קבעה תקרת משקל למניה בודדת. המדד מחושב כתשואה כוללת ברוטו: הדיבידנד נכנס למדד לפני מס. לכן קרן שעוקבת אחריו נמדדת מול מדד שלא ניכה ממנו מס.",
+  "text_he": "לפי הבורסה, מדד הדגל כולל את {ETF-44:constituents} המניות בעלות שווי השוק הממוצע הגבוה ביותר, מבין המניות שעומדות בתנאי הסף. מניה נכנסת כשהיא מדורגת מספיק גבוה, ויוצאת רק כשהיא יורדת מתחת לדירוג היציאה. ועדת המדדים קבעה תקרת משקל של {ETF-44:weight_cap} למניה בודדת. המדד מחושב כתשואה כוללת ברוטו: הדיבידנד נכנס למדד לפני מס.",
   "figure_names_he": {
     "constituents": "מספר המניות במדד",
     "weight_cap": "תקרת המשקל למניה",

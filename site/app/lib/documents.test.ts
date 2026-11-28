@@ -42,6 +42,13 @@ describe("groupDocuments", () => {
   });
 });
 
+describe("a document card's publisher", () => {
+  it("names the publisher as a source line does: the record's Hebrew name first, never a shared portal's", () => {
+    const named = groupDocuments({ "B-1": rule("B-1", [src("https://data.gov.il/dataset/x", "A dataset", { publisher: "Capital Market Authority", kind: "dataset" })]), "B-2": rule("B-2", [src("https://www.boi.org.il/y", "Page", { publisher_he: "המפקח על הבנקים", kind: "regulator_page" })]) }, [], { "data.gov.il": { publisher_he: "מאגר המידע הממשלתי (data.gov.il)" }, "boi.org.il": { publisher_he: "בנק ישראל" } });
+    expect(named.map((c) => c.publisher).sort()).toEqual(["Capital Market Authority", "המפקח על הבנקים"]);
+  });
+});
+
 describe("loadDocuments on the real data", () => {
   const docs = loadDocuments();
   it("lists a law document with at least five rules, once the rule records carry sources", () => {

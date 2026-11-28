@@ -1,0 +1,31 @@
+{
+  "id": "PEN-24",
+  "title": "Regulator reference for fees actually charged",
+  "title_he": "דמי הניהול שנגבו בפועל בממוצע בשנת 2024, לפי רשות שוק ההון",
+  "strength": "primary",
+  "dimensions": [
+    "fee-management-balance",
+    "fee-deposit"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-09-30",
+  "text_he": "רשות שוק ההון מפרסמת כל שנה את דמי הניהול הממוצעים שנגבו בפועל, מהנכסים ומההפקדות. בדוח לשנת 2024 הם מופיעים לקרנות הפנסיה החדשות המקיפות, ולשם השוואה גם לקופות הגמל. אלה ממוצעים, לא מחיר שאפשר לקבל.",
+  "il_finance_file": "pension-and-gemel-lekitzba.md",
+  "checked": "2026-11-08",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.gov.il/BlobFolder/news/press_0083/he/Commisioner%20Report%20Design%20B_chapter4%20ver%206.0_digital.pdf#page=6",
+      "title": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 4: נתונים כמותיים בתחום החיסכון הפנסיוני",
+      "title_he": "דוח הממונה על שוק ההון, החיסכון והביטוח לשנת 2024 – פרק 4: נתונים כמותיים בתחום החיסכון הפנסיוני",
+      "publisher": "gov.il",
+      "publisher_he": "רשות שוק ההון, ביטוח וחיסכון",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "file pp. 6-7",
+      "locator_he": "עמודי הקובץ 6 עד 7",
+      "page": 6,
+      "checked": "2026-11-08"
+    }
+  ]
+}

@@ -1,13 +1,15 @@
 // The deposits page's grid (D92), under the list, open under its heading: the banks by the eight terms of the standard table. A cell is the highest rate of
 // the chosen kind, among the bank's offers of the term that are unlinked and open to every customer, that the chosen amount opens (method
 // F-108), with "ועוד n" for the bank's other offers of the term; a cell with none says why. Shaded by rate on one scale from no interest to
-// the highest rate of the kind, so every rate has a shade of its own; the highest cell of each column is framed and says so. Each cell is
-// one button: it picks its term and brings the bank's rows of the list into view, where each rate opens its source. On a phone, two halves
+// the highest rate of the kind, so every rate has a shade of its own; the highest cell of each column is framed and says so, and a cell
+// whose record doubts its rate carries the caution mark. Each cell is one button: it picks its term and brings the bank's rows of the list
+// into view, where each rate opens its source. On a phone, two halves
 // of four terms each.
 import { useMemo } from "react";
-import { depositBrowser as t } from "../../copy";
+import { depositBrowser as t, numbers } from "../../copy";
 import { TERMS, cellOf, columnBest, scaleTop, sheetNames, type DbCell, type DbData, type DbOffer, type RateKind, type TermId } from "../../lib/deposit-browser";
 import { fmt } from "../../lib/format";
+import { IconAlert } from "../icons";
 import { HelpMark, MixedName, cx } from "../kit";
 
 /** The shade's strength for a rate on the scale `0..top`: never so faint a low rate disappears into the card. */
@@ -21,11 +23,14 @@ function Cell({ cell, kind, top, best, bankName, canGo, onGo }: { cell: DbCell; 
   const words = rate === null ? (cell.gap === "none" ? t.grid.gap.none : cell.gap === "otherKind" ? t.grid.gap.otherKind[kind] : cell.gap === "otherOffers" ? t.grid.gap.otherOffers : t.grid.gap[cell.gap!]) : null;
   const a = rate !== null ? strength(rate, top) : 0;
   const dark = a >= DARK_TEXT_FROM;
+  // the picked offer's record doubts its rate: the cell carries the caution mark, as the rate does in the list it scrolls to
+  const doubt = rate !== null && !!cell.pick?.rate_offered.doubt;
   const body = (
     <>
       {rate !== null && <span data-mark aria-hidden="true" className="absolute inset-0 rounded-md bg-chart-value" style={{ opacity: a }} />}
       {rate !== null ? (
-        <span className={cx("relative z-[1] text-sm font-semibold tabular-nums", dark ? "text-background" : "text-foreground")}>
+        <span className={cx("relative z-[1] inline-flex items-center gap-0.5 text-sm font-semibold tabular-nums", dark ? "text-background" : "text-foreground")}>
+          {doubt && <IconAlert size={14} className="text-caution shrink-0" aria-hidden="true" />}
           <bdi dir="ltr">{`${fmt.number(rate)}%`}</bdi>
         </span>
       ) : (
@@ -43,7 +48,7 @@ function Cell({ cell, kind, top, best, bankName, canGo, onGo }: { cell: DbCell; 
     <button
       type="button"
       onClick={onGo}
-      aria-label={`${t.grid.goTo.before}${bankName}${t.grid.goTo.middle}${t.terms[cell.term]}${t.grid.goTo.after}${rate !== null ? `, ${fmt.number(rate)}%` : `, ${words}`}${best ? `, ${t.grid.best}` : ""}`}
+      aria-label={`${t.grid.goTo.before}${bankName}${t.grid.goTo.middle}${t.terms[cell.term]}${t.grid.goTo.after}${rate !== null ? `, ${fmt.number(rate)}%` : `, ${words}`}${doubt ? `, ${numbers.doubt}` : ""}${best ? `, ${t.grid.best}` : ""}`}
       className={cx(frame, "cursor-pointer hover:brightness-125", rate === null && "border border-dashed border-border hover:bg-accent")}
     >
       {body}

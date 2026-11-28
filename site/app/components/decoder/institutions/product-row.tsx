@@ -24,10 +24,14 @@ const item = (id: string, label: ReactNode, value: ReactNode, more: { tag?: Reac
 export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; known: ReadonlySet<string>; wrapperName: string }) {
   const l = copy.labels;
   const term = termWords(p.term);
+  // the record's doubt sits once, under the line of the field it is about (`doubt_on`; the rate where the record names none)
+  const doubtOn = (on: NonNullable<ProductRowData["doubtOn"]>) => (p.doubt && p.doubtOn === on ? <DoubtNote text={p.doubt} className="text-sm" /> : undefined);
+  // a current account has no term, no break, no exit points and no renewal: those lines are a deposit's (BANK-09 is its rule)
+  const deposit = !p.currentAccount;
   const items: KeyValueItem[] = [
     // the row's name says which directive the bank's own word for the type answers to
     item("type", statedKnown(l.type447, ["BANK-13"], known), <MixedName>{p.type447}</MixedName>),
-    item("term", l.term, p.currentAccount || term === null ? copy.term.none : <Num value={p.term} display={term} />),
+    ...(deposit ? [item("term", l.term, term === null ? copy.term.none : <Num value={p.term} display={term} />, { after: doubtOn("term_months") })] : []),
     item(
       "rateType",
       l.rateType,
@@ -39,25 +43,36 @@ export function BankProductRow({ p, known, wrapperName }: { p: ProductRowData; k
         copy.rateType.fixed
       ),
     ),
-    item("rate", l.rate, <Num value={p.rate} size="cell" />, { after: p.doubt ? <DoubtNote text={p.doubt} className="text-sm" /> : undefined }),
+    item("rate", l.rate, <Num value={p.rate} size="cell" />, { after: doubtOn("rate") }),
     item("asOf", l.asOf, <Num value={p.asOf} />, { tag: p.asOfAfterRead && <Tag tone="caution" icon={<IconAlert size={14} />}>{copy.asOfAfterRead}</Tag> }),
-    item("linkage", l.linkage, <Num value={p.linkageValue} display={copy.linkage[p.linkage]} />),
+    item("linkage", l.linkage, <Num value={p.linkageValue} display={copy.linkage[p.linkage]} />, { after: doubtOn("linkage") }),
     // an empty bucket gets no word here: Num says what it is (an open rule, or unknown), never the record's "null" (WIN WIN)
     item("tax", l.tax, <Num value={p.taxBucket} display={taxWord(p.taxBucket.value)} />),
-    item("amount", l.amount, <AmountRange min={p.amountMin} max={p.amountMax} edges={p.amountEdges} />),
-    item("break", l.breakTerms, statedKnown(breakText(p.breakTerms.penalty, p.exitPoints.exists), p.breakTerms.rules, known), {
-      after: p.breakTerms.quotes.length > 0 && (
-        <Disclosure look="link" label={copy.breakDisclosure} summaryClassName="text-sm">
-          <PrintedQuotes quotes={p.breakTerms.quotes} />
-        </Disclosure>
-      ),
-    }),
-    // exits with no fixed interval: the dates are in the bank's conditions above ("יש" alone said nothing)
-    item("exits", l.exits, exitsText(p.exitPoints, p.conditions)),
-    item("renew", l.autoRenew, renewText(p.autoRenew.value, p.autoRenew.maxRenewals)),
+    item("amount", l.amount, <AmountRange min={p.amountMin} max={p.amountMax} edges={p.amountEdges} />, { after: doubtOn("amount_range") }),
+    ...(deposit
+      ? [
+          item("break", l.breakTerms, statedKnown(breakText(p.breakTerms.penalty, p.exitPoints.exists), p.breakTerms.rules, known), {
+            after:
+              p.breakTerms.quotes.length > 0 || (p.doubt && p.doubtOn === "break") ? (
+                <>
+                  {doubtOn("break")}
+                  {p.breakTerms.quotes.length > 0 && (
+                    <Disclosure look="link" label={copy.breakDisclosure} summaryClassName="text-sm">
+                      <PrintedQuotes quotes={p.breakTerms.quotes} />
+                    </Disclosure>
+                  )}
+                </>
+              ) : undefined,
+          }),
+          // exits with no fixed interval: the dates are in the bank's conditions above ("יש" alone said nothing)
+          item("exits", l.exits, exitsText(p.exitPoints, p.conditions), { after: doubtOn("exits") }),
+          item("renew", l.autoRenew, renewText(p.autoRenew.value, p.autoRenew.maxRenewals)),
+        ]
+      : []),
   ];
   return (
-    <Card as="article" id={`product-${p.id}`} className="flex flex-col gap-3 anchor-target target:outline-2 target:outline-ring target:outline-offset-2">
+    // the card is one place for what its figures open: a figure's sheet leaves out the rules its lines already open (`opensAround`)
+    <Card as="article" data-opens-scope id={`product-${p.id}`} className="flex flex-col gap-3 anchor-target target:outline-2 target:outline-ring target:outline-offset-2">
       <header className="flex flex-col gap-1.5">
         <h3 className="text-lg font-semibold max-w-measure">
           <MixedName>{p.name}</MixedName>

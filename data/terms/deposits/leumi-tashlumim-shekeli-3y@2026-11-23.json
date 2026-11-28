@@ -29,10 +29,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-27",
-      "BANK-28"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Printed as 'פיקדון ל-3 שנים'; recorded as 36 months. 'תשלומים' is Leumi's name for a periodic-deposit plan: its general terms say an instalment deposit ('פיקדון בתשלומים') takes consecutive monthly deposits ('הלקוחות יפקידו בפיקדון תשלומים חודשיים רצופים מדי חודש': חוברת תנאים כלליים לניהול חשבון 310-93 (06.26; https://www.leumi.co.il/leumi-hebrew/s3fs-public/newsite/General/chozim%20achidim/310-93%20-%20%D7%AA%D7%99%D7%A7%D7%95%D7%9F%20%D7%94%D7%9C%D7%95%D7%95%D7%90%D7%95%D7%AA%20%D7%90%D7%95%D7%9F%20%D7%A7%D7%95%D7%9C%20(002)%20-%20%D7%9E%D7%95%D7%A0%D7%92%D7%A9-PDFUA.pdf, library 92690e4986a08814), p.10, s.2.5.2). The term is the plan's, counted from its start, and the whole plan is paid out at its end; each deposit is not locked for 36 months from its own date. Leumi's form 'פיקדון בתשלומים בריבית קבועה עם נקודות יציאה' (https://www.leumi.co.il/leumi-hebrew/s3fs-public/complex_link_file/08-23/pikadon_ribit_p.pdf, 3 pages, undated, file created 09.01.2022, library 0f15d5eb50fba46e), the one fixed-rate instalment form on its page 'חוזים אחידים' (https://www.leumi.co.il/he/standard-contracts), p.1: s.2.1 'הפיקדון הינו לתקופה של ___ שנים, שתחילתה במועד תחילת הפיקדון וסיומה בתום תקופת הפיקדון'; s.2.3.1 'ההפקדה החודשית הראשונה תבוצע במועד תחילת הפיקדון ... ההפקדה החודשית האחרונה תבוצע בחודש שיחול לפני החודש בו חל תום תקופת הפיקדון'; s.2.2 'בתום תקופת הפיקדון יועברו כספי הפיקדון להם זכאי המפקיד על פי תנאי כתב זה לזכות חשבון העו\"ש'. The general terms say the same for every deposit: p.9, s.2.4 'בתום תקופת הפיקדון יעביר הבנק את סכום הפיקדון ואת הריבית בגינו ... לזכות חשבון העו\"ש'; s.2.1.6: with no exit points in the deposit request 'לא יהיו נקודות יציאה בפיקדון עד לתום תקופת הפיקדון'. The form does not name model 503/3 and is headed 'עם נקודות יציאה' with the number of exit points left blank ('בפיקדון יש __ נקודות יציאה', s.3); the plan's own figures go in an opening part ('מבוא') that is not published. Read 2026-11-23."
   },
@@ -54,9 +51,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25",
-      "BANK-28"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Printed '1.50 %'; nominal annual before tax, rate type 'קבועה', linkage 'לא צמוד'; the row also prints 'ריבית מתואמת: 1.50 %'; exit points 'לא קיימת'; renewal 'לא קיימת'. Unchanged from the reads of 2026-10-23 and 2026-11-07. Sister rows on the same pages: 'תשלומים פריים ל-3 שנים' (504/1, record leumi-tashlumim-prime-3y, p.33), 'תשלומים שקלי ל-5 שנים' (506/6, record leumi-tashlumim-shekeli-5y, p.34); the row 'תשלומים צמוד מדד 15 שנים' (508/2, record leumi-tashlumim-madad-15y) is not in this table. Read 2026-11-23 from the PDF the page prints (69 pages, created 22.11.2026; library 191125f38a2d3c04), which states 'הנתונים נכונים ליום 23.11.2026'. The page also says 'שיעור הריבית המוצעת הינו לתום תקופת ההפקדה'. Each row adds 'המוצר ניתן להפקדה באמצעות בנקאי, האתר המאובטח, אפליקציה'; digital benefit column '-'. One rate for the whole plan: the bank's rate page (https://www.leumi.co.il/he/savings/interest-rate-table, read 2026-11-23) holds for model 503/3 one rate entry only, at maturity after 3 years ('Maturity', '1.50'), and 'exitPointsAmount' '0'. Leumi's fixed-rate instalment form (pikadon_ribit_p.pdf, library 0f15d5eb50fba46e, p.1, s.4.1) sets the rate in the plan's opening part and charges it on each deposit from its own date to the plan's end: 'הריבית בתום תקופת הפיקדון ... הינה ריבית שנתית שקלית קבועה, המפורטת במבוא תחת הכותרת \"נתוני ריבית\" בשורת \"תום תקופת הפיקדון\" ... הריבית תחושב לפי ריבית דריבית שנתית, על כל הפקדה בנפרד, בגין התקופה שממועד הפקדתה ועד יום לפני משיכתה מהפיקדון, או, לפי העניין, עד יום לפני תום תקופת הפיקדון'."
@@ -120,9 +115,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-03"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel plan (the 447 table's linkage column 'לא צמוד'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

@@ -3,7 +3,8 @@
 // build's time. A file is read again when its modification time changes, so the dev server still shows an edit (a production build's
 // prerender, where nothing under data/ changes, reads each file once and checks no times; see `watching`). What comes back is
 // frozen, deep: it is shared by every caller, so a caller that changed it would change it for every page; copy before changing. A record
-// under data/ first gains the words its cited web pages open at (`withFragments`, fragments.server.ts).
+// under data/ first gains the words its cited web pages open at (`withFragments`, fragments.server.ts), and its values' sources lose what
+// no page shows (`withShownSources`).
 import { readFileSync, statSync } from "node:fs";
 import type { z } from "zod";
 import { fragmentsMtime, withFragments } from "./fragments.server";
@@ -40,6 +41,27 @@ function recordMtime(path: string): string {
   return `${mtimeOf(path)}:${fragmentsMtime(path)}`;
 }
 
+/**
+ * Takes out of every value's source, in place, what no page shows, so no page ships it: `fetched_from`, the machine address a collector
+ * read (the sheet opens `url`), and, where the source names its publisher in Hebrew (`publisher_he`, which every source line shows first),
+ * the English `publisher`, left an empty string so the field keeps its type. Returns the record.
+ */
+function withShownSources<T>(value: T): T {
+  const walk = (n: unknown): void => {
+    if (Array.isArray(n)) return n.forEach(walk);
+    if (!n || typeof n !== "object") return;
+    const o = n as Record<string, unknown>;
+    const source = o.source as Record<string, unknown> | null | undefined;
+    if ("value" in o && source && typeof source === "object") {
+      delete source.fetched_from;
+      if (typeof source.publisher_he === "string" && source.publisher_he !== "") source.publisher = "";
+    }
+    for (const v of Object.values(o)) walk(v);
+  };
+  walk(value);
+  return value;
+}
+
 function deepFreeze<T>(value: T): T {
   if (value === null || typeof value !== "object" || Object.isFrozen(value)) return value;
   Object.freeze(value);
@@ -68,7 +90,7 @@ export function readJsonCached<T = unknown>(path: string): T {
   if (hit && !watching) return hit.value as T;
   const mtime = recordMtime(path);
   if (hit && hit.mtime === mtime) return hit.value as T;
-  const value = deepFreeze(withFragments(JSON.parse(readFileSync(path, "utf8")) as unknown, path));
+  const value = deepFreeze(withShownSources(withFragments(JSON.parse(readFileSync(path, "utf8")) as unknown, path)));
   raw.set(path, { mtime, value });
   return value as T;
 }
@@ -85,7 +107,7 @@ export function readParsedCached<T extends z.ZodType>(path: string, schema: T): 
   if (hit && hit.mtime === mtime) return hit.value as z.infer<T>;
   const result = schema.safeParse(JSON.parse(readFileSync(path, "utf8")));
   if (!result.success) throw new Error(`${path}: ${result.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`);
-  const value = deepFreeze(withFragments(result.data, path));
+  const value = deepFreeze(withShownSources(withFragments(result.data, path)));
   bySchema.set(path, { mtime, value });
   return value;
 }

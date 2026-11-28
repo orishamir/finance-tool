@@ -70,8 +70,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax printed '2.15%'. Row 'פיקדון לשנה (365 יום)', rate type 'קבועה', linkage 'לא צמוד', amount '50,000 עד 100,00 ש\"ח', break 'אין אפשרות לשבירה', automatic renewal 'לא קיימת', number of renewals 'ללא', exit points 'לא קיימת'. This row as printed: '50,000 עד 100,00 ש\"ח': '2.15%'. Read 2026-11-14 on p.6 of the file the bank's deposits page links (https://www.bank-yahav.co.il/investments/deposits/), re-issued on 10.11.2026, headed 'בתוקף מיום: 11/11/2026' with '10/11/2026 11_26' under the date. The common-deposit column is empty on every row."
@@ -92,9 +91,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-03"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

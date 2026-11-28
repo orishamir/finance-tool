@@ -3,7 +3,7 @@
 // Pure functions (normalise, mergeObservations, sanityCheck, diffSeries) do no I/O.
 import { seriesRecord, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";
 import { USER_AGENT, type Downloaded } from "./cma.ts";
-import { lastDate, refreshSeries, type SeriesDiff, type SeriesRefreshOptions, type SeriesSpec, type SourceReport } from "./series-common.ts";
+import { keepChecked, lastDate, refreshSeries, type SeriesDiff, type SeriesRefreshOptions, type SeriesSpec, type SourceReport } from "./series-common.ts";
 
 export const CPI_ID = "cbs-cpi";
 export const CPI_CODE = 120010;
@@ -13,6 +13,19 @@ export const EXPECTED_BASE = "2024 ממוצע";
 export const START_PERIOD = "01-2025";
 export const API_URL = `https://api.cbs.gov.il/index/data/price?id=${CPI_CODE}&format=json&download=false&startPeriod=${START_PERIOD}`;
 export const LICENCE_URL = "https://www.cbs.gov.il/he/Pages/רישיון-שימוש.aspx";
+export const PUBLISHER_HE = "הלשכה המרכזית לסטטיסטיקה";
+
+/**
+ * The source of the index of `month` (YYYY-MM). No page of the CBS's site was found that prints the series' monthly values, so `url` is
+ * still the API's JSON, which the refresh reads, and there is no `fetched_from`; the values check lists it.
+ */
+export const cpiSource = (month: string): SeriesObservation["source"] => ({
+  url: API_URL,
+  title: `מדד המחירים לצרכן - כללי (code ${CPI_CODE}), CBS price-index API, base ${EXPECTED_BASE} = 100, index of ${month}`,
+  publisher: "Central Bureau of Statistics",
+  publisher_he: PUBLISHER_HE,
+  strength: "primary",
+});
 
 // Pipeline configuration (not site parameters): the sanity thresholds.
 export const SANITY = { minValue: 50, maxValue: 300, maxMonthlyDropPct: 5 } as const;
@@ -77,12 +90,7 @@ const observation = (row: CpiRow, runDate: string): SeriesObservation => ({
   date: row.date,
   value: row.value,
   unit: "index_points",
-  source: {
-    url: API_URL,
-    title: `מדד המחירים לצרכן - כללי (code ${CPI_CODE}), CBS price-index API, base ${EXPECTED_BASE} = 100, index of ${monthKey(row.date)}`,
-    publisher: "Central Bureau of Statistics",
-    strength: "primary",
-  },
+  source: cpiSource(monthKey(row.date)),
   checked: runDate,
   effective_from: row.date,
   effective_to: lastDayOfMonth(monthKey(row.date)),
@@ -90,13 +98,13 @@ const observation = (row: CpiRow, runDate: string): SeriesObservation => ({
   state: "sourced",
 });
 
-/** Months already stored keep their stored object (and its `checked`) while the value is unchanged; a changed value takes the fresh one so the sanity check sees the revision. */
+/**
+ * The fresh months over the stored ones: a month read again keeps its stored `checked` while the value is unchanged (`keepChecked`), and a
+ * changed value is the fresh one, so the sanity check sees the revision; a stored month the response leaves out stays as stored.
+ */
 export function mergeObservations(previous: SeriesObservation[], fresh: SeriesObservation[]): SeriesObservation[] {
   const byDate = new Map(previous.map((o) => [o.date, o]));
-  for (const f of fresh) {
-    const p = byDate.get(f.date);
-    if (!p || p.value !== f.value) byDate.set(f.date, f);
-  }
+  for (const f of fresh) byDate.set(f.date, keepChecked(f, byDate.get(f.date)));
   return [...byDate.values()].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
 }
 
@@ -222,6 +230,7 @@ export const cpiSpec: SeriesSpec = {
     title: "Raw CBS CPI downloads",
     notes: "Raw gzipped JSON from the CBS price-index API (docs/architecture.md section 3.3). Evidence for data/series/cbs-cpi.json.",
   },
+  sourceOf: (o) => cpiSource(monthKey(o.date)),
 };
 
 export const refreshCbsCpi = (opts: SeriesRefreshOptions): Promise<SourceReport> => refreshSeries(cpiSpec, opts);

@@ -1,7 +1,7 @@
 {
   "id": "ETF-45",
   "title": "TA-90: the next 90 Israeli shares after TA-35, a 2% weight cap, gross total return in shekels",
-  "title_he": "ת״א 90: תשעים המניות שאחרי מדד הדגל",
+  "title_he": "ת״א-90: המניות שאחרי מדד הדגל",
   "strength": "primary",
   "dimensions": [
     "currency",
@@ -97,7 +97,7 @@
       "notes": "A new share not in Tamar enters at the February or August parameter update if ranked 65 or higher."
     }
   },
-  "text_he": "מדד התשעים כולל את המניות הישראליות הגדולות ביותר אחרי שלושים וחמש המניות של מדד הדגל, לפי שווי שוק ממוצע. יחד הם מרכיבים את מדד מאה עשרים וחמש. תקרת המשקל למניה בודדת נמוכה בהרבה מבמדד הדגל. המדד מחושב כתשואה כוללת ברוטו, כלומר עם הדיבידנדים לפני מס.",
+  "text_he": "המדד כולל את המניות הישראליות הגדולות ביותר אחרי {ETF-44:constituents} המניות של מדד הדגל, לפי שווי שוק ממוצע. יחד הם מרכיבים את מדד ת״א-125. תקרת המשקל למניה בודדת נמוכה בהרבה מבמדד הדגל. המדד מחושב כתשואה כוללת ברוטו, כלומר עם הדיבידנדים לפני מס.",
   "figure_names_he": {
     "constituents": "מספר המניות במדד",
     "weight_cap": "תקרת המשקל למניה",

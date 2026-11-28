@@ -1,65 +1,23 @@
 {
   "long": [
-    "BANK-01",
-    "BANK-02",
     "BANK-06",
-    "BANK-07",
     "BANK-08",
-    "BANK-12",
-    "BANK-14",
     "BANK-16",
-    "BANK-19",
-    "BANK-20",
+    "BANK-17",
     "BANK-21",
-    "BANK-22",
-    "BANK-25",
-    "BANK-31",
     "BANK-32",
     "BANK-34",
     "BANK-35",
-    "BANK-38",
     "BANK-42",
-    "BANK-46",
-    "BANK-49",
-    "BANK-50",
-    "BANK-51",
     "BANK-54",
+    "BANK-56",
     "BPN-09",
-    "BPN-10",
-    "FXD-01",
+    "FXD-06",
     "FXD-07",
-    "FXD-09",
-    "FXD-10",
     "FXD-11",
     "FXD-14",
-    "FXD-18",
-    "FXD-19",
-    "FXD-20",
-    "FXD-23"
-  ],
-  "research-talk": [
-    "BANK-21",
-    "BANK-34",
-    "BANK-38",
-    "BANK-46",
-    "BANK-49",
-    "BANK-51",
-    "BANK-52",
-    "FXD-07",
-    "FXD-23"
-  ],
-  "fixed-line": [
-    "BANK-30",
-    "BANK-31",
-    "BANK-38"
-  ],
-  "spelled-number": [
-    "BANK-06",
-    "BANK-34",
-    "BANK-38"
-  ],
-  "typed-figure": [
-    "BANK-49"
+    "FXD-15",
+    "FXD-20"
   ],
   "figure-title": [
     "BANK-17#basic_direct_actions",
@@ -78,22 +36,16 @@
   ],
   "typed-data-figure": [
     "BANK-04",
+    "BANK-21",
     "BANK-47",
-    "BANK-49",
-    "FXD-07",
+    "FXD-06",
     "FXD-09",
+    "FXD-12",
     "FXD-14",
+    "FXD-15",
     "FXD-19",
-    "FXD-24"
-  ],
-  "pointer-word": [
-    "BANK-07",
-    "BANK-34"
-  ],
-  "title-ditto": [
-    "BANK-34"
-  ],
-  "page-copy": [
-    "BANK-17#current-account"
+    "FXD-24",
+    "FXD-26",
+    "FXD-27"
   ]
 }

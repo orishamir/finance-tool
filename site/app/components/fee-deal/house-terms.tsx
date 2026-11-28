@@ -19,12 +19,13 @@ import { FeeBlock, HelpMark, HouseAverageLine, LeftOutFold, PartChip, ReadOnly, 
 import { useDealEditor } from "./editor";
 import type { FeeSlot } from "./fee-block";
 
-/** The page's provenance with the fee page's data over it (its rules, the records they point at, its terms), which the editor's sheets read. */
-export function withFeesData(page: ProvenanceData, data: Pick<TermsFeesData, "rules" | "pointed" | "terms">): ProvenanceData {
+/** The page's provenance with the fee page's data over it (its rules, the records and heads they point at, its terms), which the editor's sheets read. */
+export function withFeesData(page: ProvenanceData, data: Pick<TermsFeesData, "rules" | "pointed" | "heads" | "terms">): ProvenanceData {
   return {
     ...page,
     rules: { ...page.rules, ...Object.fromEntries(data.rules.map((r) => [r.id, r])) },
     ...(page.pointed || data.pointed ? { pointed: { ...page.pointed, ...recordsById(data.pointed) } } : {}),
+    ...(page.heads || data.heads ? { heads: { ...page.heads, ...data.heads } } : {}),
     terms: { ...page.terms, ...data.terms },
   };
 }

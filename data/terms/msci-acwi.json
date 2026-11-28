@@ -17,6 +17,12 @@
     "MSCI AC WORLD INDEX",
     "מדד MSCI AC World"
   ],
+  "also_called": [
+    "MSCI AC World",
+    "MSCI All Country World",
+    "MSCI AC WORLD INDEX",
+    "מדד MSCI AC World"
+  ],
   "rule_ids": [
     "ETF-48",
     "ETF-49"

@@ -1,5 +1,6 @@
 // Every path the site pre-renders (react-router.config.ts): one page per guide, company and track.
-import { loadCma, loadProducts } from "./data.server";
+import { loadCma, loadProducts, loadRules } from "./data.server";
+import { ruleCardPath } from "./rule-card-file";
 import { exposureFolds, loadExposures } from "./instruments.server";
 import { trackProductIds } from "./track-browser.server";
 import { institutionIds } from "./institutions.server";
@@ -30,6 +31,8 @@ export function prerenderPaths(): string[] {
   // the brands (D33): every address of a brand shows its one page (a fund manager or a foreign broker has no other page)
   for (const b of loadBrands()) for (const id of b.pageIds) if (!paths.includes(companyPath(id))) paths.push(companyPath(id));
   paths.push("/indices-bundle.json");
+  // every rule's card file: a chip whose rule a page does not ship fetches it when tapped (routes/rule-card.ts)
+  for (const id of Object.keys(loadRules())) paths.push(ruleCardPath(id));
   // the component gallery: for builders, noindex, in no menu and no search
   paths.push("/kit");
   return paths;

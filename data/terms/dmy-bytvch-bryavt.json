@@ -10,6 +10,9 @@
   "variants": [
     "מס בריאות"
   ],
+  "also_called": [
+    "מס בריאות"
+  ],
   "rule_ids": [
     "TXG-26",
     "TXG-34"

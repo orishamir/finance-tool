@@ -47,7 +47,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const feePage = loadProducts().some((p) => p.id === params.id && p.fee_bases_allowed.length > 0 && productOffered({ id: p.id, bases: p.fee_bases_allowed, regulator: String(p.regulator.value) }));
   // the note on other countries (D114), where the guide has a record and words for it
   const abroadRecord = content?.abroad ? loadAbroad(params.id) : null;
-  return { ...data, rules, pointed: pointedWithFlagSlots(rules, allRules), worthIds, feePage, abroad: abroadRecord ? abroadView(abroadRecord) : null };
+  return { ...data, rules, ...pointedWithFlagSlots(rules, allRules), worthIds, feePage, abroad: abroadRecord ? abroadView(abroadRecord) : null };
 }
 
 export function meta({ loaderData: data, location }: Route.MetaArgs) {
@@ -417,7 +417,7 @@ export default function GuidePage() {
   ];
 
   const regulatorName = blocks.regulatorNames[String(record.regulator.value)] ?? String(record.regulator.value);
-  const provenance = { rules, pointed: data.pointed, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: rulesPath({ product: record.id }) } }; // the rules page's product filter: the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
+  const provenance = { rules, pointed: data.pointed, heads: data.heads, terms: data.termsById, dimensions: data.dimensionNames, today, rulesOf: { name: data.name, href: rulesPath({ product: record.id }) } }; // the rules page's product filter: the old `#<file>` anchor stopped existing when groups became `<shelf>-<file>`
   const signature = hasSignatureVisual(record.id, data.signature) ? data.signature : null;
   // the current account starts from the rate most of the collected banks publish (F-85), and says how many do
   const common = record.id === "current-account" && signature?.facts.commonCount && signature.facts.bankCount ? { count: signature.facts.commonCount, of: signature.facts.bankCount } : null;

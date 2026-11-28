@@ -8,8 +8,8 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 
 - Only banks may take current-account deposits, and anyone who is not a banking corporation may not both take deposits and give credit (FXD-01). FX deposits at banks fall under the same 1992 disclosure rules as shekel deposits; "index" there includes an exchange rate (FXD-02). Directive 447's uniform table covers shekel deposits only, and the closed-system "deposit without a current account" is shekel-only unless the Supervisor extends it, which was not found to have happened (FXD-03, FXD-04).
 - FX fees at banks come from a closed list in part 5 of the BoI fee rules: a conversion fee, cash and transfer charges, value dates, and others. There is no part-5 line for holding an FX account or an FX deposit (FXD-05). A Leumi tariff shows the levels and the value-date table (FXD-06).
-- FX deposit rates and terms are each bank's product terms. They are typically fixed-rate, run from a week to a year or two, have no exit points, and are priced separately for residents, non-residents, severance money and "exempt" customers (FXD-07, FXD-08). Leaving early follows the general deposit rules: the agreement states the repayment terms and a break goes through the bank's form, but whether a break is allowed and what it costs are each bank's terms (FXD-22).
-- FX-linked shekel deposits differ in whether the principal is protected. Yahav's dollar-linked savings states it has no principal guarantee. Leumi's "ברירה" pays the higher of dollar linkage and a fixed rate. Discount fixes the linkage base at the representative rate plus 0.2% (FXD-09).
+- FX deposit rates and terms are each bank's product terms. They are typically fixed-rate, run from a week to a year or two, have no exit points, and are priced separately for residents, non-residents, severance money and "exempt" customers (FXD-07, FXD-25, FXD-26, FXD-08). Leaving early follows the general deposit rules: the agreement states the repayment terms and a break goes through the bank's form, but whether a break is allowed and what it costs are each bank's terms (FXD-22).
+- FX-linked shekel deposits differ in whether the principal is protected. Yahav's dollar-linked savings states it has no principal guarantee. Leumi's "ברירה" pays the higher of dollar linkage and a fixed rate. Discount fixes the linkage base at the representative rate plus 0.2% (FXD-09, FXD-27, FXD-28).
 - A structured product is defined in the Investment Advice Law, but an investment that unconditionally guarantees principal and the stated return is excluded (FXD-10). Banks sell structured deposits with principal "generally" guaranteed and a conditional grant. Two banks require investment advice first, and the deposits are locked to maturity (FXD-11, FXD-12). No fee rule covers them, so their cost is inside the formula, which no rule read makes the bank disclose (FXD-23). Since 4.5.2026 the Securities Authority says a bank product tracking a securities index stays a deposit only with 90% or more of the principal guaranteed and at least three months before it can be redeemed (FXD-24).
 - Non-banks: Altshuler Shaham Financial Services offers FX accounts and fixed-rate FX deposits under what it says is a CMA financial-asset-service licence, and it also appears in the BoI banking-corporation list as a "מוסד כספי" (FXD-13). LAYA is a payment wallet whose operator says it holds an ISA payment-services licence; its terms do not describe balances as deposits (FXD-14).
 - Israel Bonds are the State's non-tradable dollar debt, sold mainly to retail buyers through the Bonds organisation and outside Israel's Securities Law (FXD-18). The buyer pays face value and the State pays the selling costs, so the cost is in the rate (FXD-19). They are held to maturity: early buyback only on the owner's death or a few other events, transfer only to listed people (FXD-15, FXD-20). The State owes them directly, unsecured (FXD-21). Whether residents of Israel can buy them is still open (open question 10). There is no deposit insurance for any of these (FXD-16).
@@ -78,24 +78,39 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
   - Transfer of FX to or from the same customer's account at another bank in Israel: USD 10 "(בפיקוח)". A standing order to an FX instalment deposit ("הוראת קבע לפיקדון מט"ח בתשלומים") is exempt.
   - Value-date table: a deposit to an FX deposit or FX current account from the same or another account, or a purchase of FX, takes 0 business days. A withdrawal from an FX account or conversion to shekels takes 0. Banknote deposits take 2, and foreign cheques 6 to 14 depending on currency.
   - Footnotes: cash deposits to and withdrawals from an FX account, FX transfers and some cheque actions count as clerk actions for the part-1 minimum-fee calculation. A fee charged in a currency other than the tariff's is converted at the representative rate.
-- Conditions / exceptions: Institution example only, dated. Leumi says the bank may charge less than the tariff, except for price-controlled services. Other banks' part 5 was not read (open question 3). Population benefits (Annex A) give 50% off conversion for some groups, for example "לאומי צעיר 14-16".
+- Conditions / exceptions: Institution example only, dated. Leumi says the bank may charge less than the tariff, except for price-controlled services. Other banks' part 5 was not read (open question 3). Population benefits (Annex A) give 50% off conversion for some groups, for example "לאומי צעיר 14-16". Its value-date table also has rows for "הפקדת פדיון סופי של אגרת בונדס" (p.38), so redemptions of State of Israel Bonds (FXD-15) are credited to Leumi accounts; that does not show residents may buy them (FXD-18, open question 10).
 - Figures: as above, effective 01/10/2026. Bank tariff, changed by the bank with notice (BANK-12); values go to `data/` as a dated snapshot, not to the rule base.
 - Source: [Leumi, "תעריפון העמלות המלא ללקוחות יחידים ולעסקים קטנים", updated 01/10/2026](https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf), pp.1-2, 35-38 · checked 2026-10-22 · institution
+- Scope: institution: Bank Leumi
 - Dimensions: fee-fx, fee-exit, currency, liquidity-lockup
 - Likely to change: yes. Tariffs change several times a year.
 
-### FXD-07 FX deposit terms are product terms: currencies, periods, customer categories, fixed rate, no exit points
-- Rule: No regulatory standard for FX deposit terms was found. Banks set currencies, periods, rates, tiers and categories themselves.
-  - **Hapoalim** says its FX deposits rest on "התחייבות הבנק לשלם למפקיד ריבית, על פי תנאי הפיקדון". The rate depends on "סכום ההשקעה, תקופת ההשקעה ותנאי הפיקדון האחרים". Main currencies are USD, GBP, EUR and JPY, plus CAD and AUD. There are separate product lines for residents, "בעל פטור" (exempt) and "תושב חוץ" (non-resident). Day-based terms run 7 to 370 days. Data are "אינדיקטיביים בלבד", may update daily, and the deposit agreement sets the rate.
-  - **Leumi**'s rate table lists "פיקדון בדולר ארה"ב", "פיקדון באירו" and "פיקדון בלירה שטרלינג" for "תושב ישראל", "תושב חוץ" and "פיצויים" (USD and EUR). Terms run from a week to 12 months (EUR to 24, GBP to 18). There is also a USD 12-month "תשלומים - תושב ישראל". All are shown as fixed rate ("קבועה"), unlinked, with no exit points ("לא קיימת"). Leumi defines a fixed rate as one set at opening that does not change. Rates differ by customer category.
-  - **Yahav**'s board 13_26 (effective 06/10/2026) has "לוח שיעורי ריבית על פקדונות במט"ח בריבית קבועה": USD, GBP, AUD, CAD, EUR, CHF and JPY, "מ-2,000 לפי סוג מטבע", with periods of 1-2 months, 3-5 months, 6-11 months and one year. Rates are quoted as "תעריפית". Several currencies showed 0.00% on the board read.
-- Conditions / exceptions: None of the pages read states a break penalty for an FX deposit, how the FX rate is derived (for example from a foreign benchmark), or the day count (open question 4). Leumi's page shows no date: its date field is an unfilled placeholder. Its rates are therefore not recorded here.
-- Figures: Yahav minimum 2,000 currency units per deposit, effective 06/10/2026; institution, changes at the bank's discretion.
-- Source: [Hapoalim, "שיעורי ריבית בפיקדונות במט"ח"](https://www.bankhapoalim.co.il/he/savings/product-of-the-month/forex-interest-rates) · checked 2026-10-22 · institution. [Leumi interest-rate table](https://www.leumi.co.il/he/savings/interest-rate-table) · checked 2026-10-22 · institution. [Yahav rate board 13_26, effective 06/10/2026](https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf), p.3 · checked 2026-10-22 · institution
-- Scope: institution: Bank Hapoalim, Bank Leumi, Bank Yahav
-- Dimensions: currency, liquidity-lockup, minimum, eligibility, real-vs-nominal
+### FXD-07 Bank Hapoalim: its foreign-currency deposit terms
+- Rule: Bank Hapoalim says its FX deposits rest on "התחייבות הבנק לשלם למפקיד ריבית, על פי תנאי הפיקדון". The rate depends on "סכום ההשקעה, תקופת ההשקעה ותנאי הפיקדון האחרים". Main currencies are USD, GBP, EUR and JPY, plus CAD and AUD. There are separate product lines for residents, "בעל פטור" (exempt) and "תושב חוץ" (non-resident). Day-based terms run 7 to 370 days. Data are "אינדיקטיביים בלבד", may update daily, and the deposit agreement sets the rate.
+- Conditions / exceptions: No regulatory standard for FX deposit terms was found: each bank sets currencies, periods, rates, tiers and categories itself, and the general rule on leaving early is FXD-22. Hapoalim's page states no break penalty for an FX deposit, how the FX rate is derived (for example from a foreign benchmark), or the day count (open question 4). Bank Leumi's FX deposits are FXD-25; Bank Yahav's, FXD-26. Split on 2026-11-27 (card sweep): Bank Leumi's part is FXD-25, Bank Yahav's FXD-26.
+- Figures: none.
+- Source: [Hapoalim, "שיעורי ריבית בפיקדונות במט"ח"](https://www.bankhapoalim.co.il/he/savings/product-of-the-month/forex-interest-rates) · checked 2026-10-22 · institution
+- Scope: institution: Bank Hapoalim
+- Dimensions: currency, eligibility
 - Likely to change: yes (rates and products change at the bank's discretion)
 
+### FXD-25 Bank Leumi: its foreign-currency deposits (currencies, periods, customer categories)
+- Rule: Bank Leumi's rate table lists "פיקדון בדולר ארה"ב", "פיקדון באירו" and "פיקדון בלירה שטרלינג" for "תושב ישראל", "תושב חוץ" and "פיצויים" (USD and EUR). Terms run from a week to 12 months (EUR to 24, GBP to 18). There is also a USD 12-month "תשלומים - תושב ישראל". All are shown as fixed rate ("קבועה"), unlinked, with no exit points ("לא קיימת"). Leumi defines a fixed rate as one set at opening that does not change. Rates differ by customer category.
+- Conditions / exceptions: Leumi's page states no break penalty for an FX deposit, how the FX rate is derived, or the day count (open question 4). The page shows no date: its date field is an unfilled placeholder. Its rates are therefore not recorded here. The general rule on leaving early is FXD-22; Bank Hapoalim's FX deposits are FXD-07, Bank Yahav's FXD-26. Split from FXD-07 on 2026-11-27 (card sweep).
+- Figures: none.
+- Source: [Leumi interest-rate table](https://www.leumi.co.il/he/savings/interest-rate-table) · checked 2026-10-22 · institution
+- Scope: institution: Bank Leumi
+- Dimensions: currency, liquidity-lockup, eligibility, real-vs-nominal
+- Likely to change: yes (rates and products change at the bank's discretion)
+
+### FXD-26 Bank Yahav: its fixed-rate foreign-currency deposit board
+- Rule: Bank Yahav's board 13_26 (effective 06/10/2026) has "לוח שיעורי ריבית על פקדונות במט"ח בריבית קבועה": USD, GBP, AUD, CAD, EUR, CHF and JPY, "מ-2,000 לפי סוג מטבע", with periods of 1-2 months, 3-5 months, 6-11 months and one year. Rates are quoted as "תעריפית". Several currencies showed 0.00% on the board read.
+- Conditions / exceptions: The board states no break penalty for an FX deposit, how the FX rate is derived, or the day count (open question 4). The general rule on leaving early is FXD-22; Bank Hapoalim's FX deposits are FXD-07, Bank Leumi's FXD-25. Split from FXD-07 on 2026-11-27 (card sweep).
+- Figures: Yahav minimum 2,000 currency units per deposit, effective 06/10/2026; institution, changes at the bank's discretion.
+- Source: [Yahav rate board 13_26, effective 06/10/2026](https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf), p.3 · checked 2026-10-22 · institution
+- Scope: institution: Bank Yahav
+- Dimensions: currency, minimum
+- Likely to change: yes (rates and products change at the bank's discretion)
 ### FXD-08 Periodic and income-paying FX deposits
 - Rule: Two institution structures were seen.
   - Yahav "חיסכון חודשי בהוראת קבע" in FX: from 50 currency units, for 3 to 48 months, with rates valid for deposits in USD, EUR and GBP.
@@ -106,24 +121,38 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Dimensions: currency, liquidity-lockup, minimum, distribution-policy
 - Likely to change: yes
 
-### FXD-09 Shekel deposits linked to an exchange rate: linkage base, choice deposits, principal not always guaranteed
-- Rule: Banks offer shekel deposits whose value follows the USD/ILS rate. Their terms differ in ways that change the outcome:
-  - **Discount** ("פיקדונות מסוג צמודי מט"ח"): "שער הפקדה - השער הבסיסי כולל תוספת בשיעור של 0.2% לשער היציג". Redemption: "שער פירעון - לפי שער יציג ידוע של יום קודם". So the linkage starts 0.2% above the representative rate. FX-linked deposits and withdrawals must be sent by stated cut-off times.
-  - **Yahav** "חיסכון מישר חד פעמי - צמוד דולר": 365 days, from NIS 1,000, rate tiers from NIS 100,000, quoted as "תעריפית" and "מתואמת". Footnote: "החיסכון ללא הבטחת קרן". On the same page, CPI-linked "חיסכון אודם" carries "החיסכון מעניק הבטחת קרן".
-  - **Leumi** "ברירה צמוד דולר-שקל לשנה" (model 265/9): one year, no exit points, paying "הגבוהה מבין הצמדה לדולר ארה"ב לבין ריבית קבועה".
-- Conditions / exceptions: These are shekel deposits, so they sit under the general deposit rules (FXD-02, BANK-02). Whether the principal can fall with the dollar depends on the product wording ("ללא הבטחת קרן" vs a choice that guarantees the higher). The full terms are in each deposit agreement, which was not read (open question 5). Discount's cut-off times: Monday to Thursday by 13:00, Fridays, holiday eves and Chol Hamoed by 10:00.
-- Figures: Discount linkage base, representative rate + 0.2%; Yahav minimum NIS 1,000 (board effective 06/10/2026). Institution terms.
-- Source: [Discount money-market products page, "הבהרות"](https://www.discountbank.co.il/private/savings-investments/savings-interest/) · checked 2026-10-22 · institution. [Yahav rate board 13_26](https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf), p.4 · checked 2026-10-22 · institution. [Leumi interest-rate table](https://www.leumi.co.il/he/savings/interest-rate-table) · checked 2026-10-22 · institution
-- Scope: institution: Discount Bank, Bank Yahav, Bank Leumi
-- Dimensions: currency, protection, real-vs-nominal, fee-fx, liquidity-lockup, minimum
+### FXD-09 Discount Bank: its FX-linked shekel deposits (linkage base and cut-off times)
+- Rule: Discount Bank's FX-linked shekel deposits ("פיקדונות מסוג צמודי מט"ח"): "שער הפקדה - השער הבסיסי כולל תוספת בשיעור של 0.2% לשער היציג". Redemption: "שער פירעון - לפי שער יציג ידוע של יום קודם". So the linkage starts 0.2% above the representative rate. FX-linked deposits and withdrawals must be sent by stated cut-off times.
+- Conditions / exceptions: These are shekel deposits, so they sit under the general deposit rules (FXD-02, BANK-02). The full terms are in each deposit agreement, which was not read (open question 5). Discount's cut-off times: Monday to Thursday by 13:00, Fridays, holiday eves and Chol Hamoed by 10:00. Bank Yahav's dollar-linked saving is FXD-27; Bank Leumi's dollar choice deposit, FXD-28. Split on 2026-11-27 (card sweep): Bank Yahav's part is FXD-27, Bank Leumi's FXD-28.
+- Figures: Discount linkage base, representative rate + 0.2%. Institution term.
+- Source: [Discount money-market products page, "הבהרות"](https://www.discountbank.co.il/private/savings-investments/savings-interest/) · checked 2026-10-22 · institution
+- Scope: institution: Discount Bank
+- Dimensions: currency, real-vs-nominal, fee-fx
 - Likely to change: yes (product terms)
 
+### FXD-27 Bank Yahav: dollar-linked one-off savings with no principal guarantee
+- Rule: Bank Yahav's "חיסכון מישר חד פעמי - צמוד דולר", a shekel saving linked to the US dollar: 365 days, from NIS 1,000, rate tiers from NIS 100,000, quoted as "תעריפית" and "מתואמת". Footnote: "החיסכון ללא הבטחת קרן".
+- Conditions / exceptions: A shekel saving, so it sits under the general deposit rules (FXD-02, BANK-02). Whether the principal can fall with the dollar depends on the product wording; this one says "ללא הבטחת קרן". Bank Yahav's CPI-linked "חסכון אודם", on the same board, carries "החיסכון מעניק הבטחת קרן" (BANK-63). The full terms are in the saving's agreement, which was not read (open question 5). Split from FXD-09 on 2026-11-27 (card sweep).
+- Figures: Yahav minimum NIS 1,000 (board effective 06/10/2026). Institution term.
+- Source: [Yahav rate board 13_26](https://www.bank-yahav.co.il/media/zidh1r2r/deposit-interest.pdf), p.4 · checked 2026-10-22 · institution
+- Scope: institution: Bank Yahav
+- Dimensions: currency, protection, minimum
+- Likely to change: yes (product terms)
+
+### FXD-28 Bank Leumi: a one-year deposit paying the better of dollar linkage and a fixed rate (265/9)
+- Rule: Bank Leumi's "ברירה צמוד דולר-שקל לשנה" (model 265/9), a shekel deposit: one year, no exit points, paying "הגבוהה מבין הצמדה לדולר ארה"ב לבין ריבית קבועה".
+- Conditions / exceptions: A shekel deposit, so it sits under the general deposit rules (FXD-02, BANK-02). A choice that guarantees the higher of dollar linkage and a fixed rate is read in FXD-10 as fitting the law's principal-guarantee exclusion. The full terms are in the deposit agreement, which was not read (open question 5). Split from FXD-09 on 2026-11-27 (card sweep).
+- Figures: none.
+- Source: [Leumi interest-rate table](https://www.leumi.co.il/he/savings/interest-rate-table) · checked 2026-10-22 · institution
+- Scope: institution: Bank Leumi
+- Dimensions: currency, protection, liquidity-lockup
+- Likely to change: yes (product terms)
 ### FXD-10 "Structured product" in law, and the principal-guarantee exclusion
 - Rule: The Investment Advice Law defines "מוצר מובנה" as "השקעה, בין בפיקדון ובין בדרך אחרת שהתשואה עליה או הסיכון הכרוך בה" "נקבעים על פי נוסחה המבוססת על שינויים באחד או יותר מאלה:". The items are an index or indices; the price of one or more securities; the price of one or more commodities; the price of options or futures; interest rates or spreads; and exchange rates or spreads between exchange rates.
   - Exclusion: "למעט השקעה המבטיחה, באופן בלתי מותנה, את תשלום הקרן" "בשינויים הנובעים מפסקאות (1) או (2) שלהלן, אם נקבעו בתנאי ההשקעה" "וכן באופן בלתי מותנה את התשלום כאמור בפסקה (3) שלהלן, אם נקבע כזה" "ובלבד שאם ניתנה ברירה בין שניים או יותר מהמנויים להלן" "יובטח תשלום לפי הגבוה מביניהם:". The listed items are (1) "הפרשי מדד, שאינו מדד ניירות ערך;", (2) "הפרשי שערי מט״ח;" and (3) "ריבית קבועה או משתנה;".
   - "נכסים פיננסיים" includes "מוצרים מובנים". Banking corporations may give investment advice without a licence under the law, within the Banking (Licensing) Law (s.9(ב)), and may not manage portfolios (s.9(א)).
   - Under s.9(ג1), a banking corporation of the kind in s.7(ג2)(2) may not market investments. However, its employees who are licensed advisers, or who may advise without a licence under s.3(א)(11), may market structured products, options and futures issued by that same bank, with Chapter 3 applying (except s.16א(א)(1)).
-- Conditions / exceptions: Reading: a choice deposit that unconditionally pays principal plus the higher of FX linkage and a fixed rate (Leumi "ברירה", FXD-09) fits the exclusion. A deposit whose extra return depends on an index or share price is inside the definition unless the exclusion applies. Discount states that its principal-and-interest-guaranteed USD deposit with a conditional grant "אינו מהווה נכס פיננסי" under this law (FXD-12). Whether a conditional grant on top of guaranteed principal and interest is inside or outside the definition is not settled in any source read (open question 6). The Minister may add or exclude investments by order (definition, final clause). No order was read.
+- Conditions / exceptions: Reading: a choice deposit that unconditionally pays principal plus the higher of FX linkage and a fixed rate (Leumi "ברירה", FXD-28) fits the exclusion. A deposit whose extra return depends on an index or share price is inside the definition unless the exclusion applies. Discount states that its principal-and-interest-guaranteed USD deposit with a conditional grant "אינו מהווה נכס פיננסי" under this law (FXD-12). Whether a conditional grant on top of guaranteed principal and interest is inside or outside the definition is not settled in any source read (open question 6). The Minister may add or exclude investments by order (definition, final clause). No order was read.
 - Figures: none.
 - Source: [Investment Advice Law, Securities Authority's consolidated copy, file of 26.8.2026](https://www.new.isa.gov.il/images/Fittings/isa-be/asset_library_pic/al_lobby/al_lobby-628ce07f9490d/Yiutz01.pdf#page=3) (file pages: s.1 3, 4, 5, 6; s.9 21-22), s.1 (definitions "מוצר מובנה", "נכסים פיננסיים"), s.9(א), 9(ב), 9(ג1); latest amendment listed ס"ח תשפ"ו · checked 2026-10-31 · primary (state body's consolidated copy, not the binding gazette wording)
 - Scope: general
@@ -153,6 +182,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
 - Conditions / exceptions: This is a closed 2024 issue, kept as an example of the structure and of what a sheet discloses. The tax line is Discount's statement, not a rule; the rule belongs in `tax-tier2-other.md`. The sheet's own example shows the grant is all-or-nothing on one observation date.
 - Figures: as above, for the 2024 issue only.
 - Source: [Discount, "פיקדון פלוס" product sheet, May 2024](https://www.discountbank.co.il/media/ti4h15pw/deposit_plus_19524.pdf), pp.1-2 · checked 2026-10-22 · institution
+- Scope: institution: Discount Bank
 - Dimensions: currency, liquidity-lockup, minimum, protection, tax-during
 - Likely to change: n/a (closed issue)
 
@@ -193,9 +223,10 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
   - "You may not transfer, assign or pledge the bonds", except to listed permitted transferees: Israel, qualifying charities, close family, on death, or anyone Israel designates in writing.
   - The holder can make the State repurchase before maturity only on listed events: the original owner's death, death of an owner holding through a trust or a US retirement plan, or termination of an employee benefit plan. The State may suspend this if many owners die in war, epidemic or disaster.
   - The bonds are "direct, unconditional and general obligations of the State of Israel". DCI is the sole underwriter in the United States, and "Israel may sell the bonds outside of the United States through additional underwriters or dealers, as will be described in the applicable prospectus supplement".
-- Conditions / exceptions: Who issues and sells them, and the open question of whether an Israeli resident may buy them, are in FXD-18 (open question 10). How an Israeli resident is taxed on them goes to `tax-tier2-other.md`. Cost, getting out and protection are in FXD-19 to FXD-21. Leumi's value-date table has rows for "הפקדת פדיון סופי של אגרת בונדס", so redemptions of these bonds are credited to Leumi accounts. That does not show residents may buy. Because transfer is restricted and early repurchase is limited to the listed events, the money is locked to maturity for a living holder.
+- Conditions / exceptions: Who issues and sells them, and the open question of whether an Israeli resident may buy them, are in FXD-18 (open question 10). How an Israeli resident is taxed on them goes to `tax-tier2-other.md`. Cost, getting out and protection are in FXD-19 to FXD-21. Because transfer is restricted and early repurchase is limited to the listed events, the money is locked to maturity for a living holder.
 - Figures: as above, for the 2025 series; each series has its own supplement.
-- Source: [State of Israel, prospectus supplement of 1 August 2025 with prospectus of 29 July 2025, as filed with the SEC (424B2)](https://www.sec.gov/Archives/edgar/data/52749/000110465925072790/tm2522097-1_424b2.htm), cover, pp.S-1 to S-3, S-7 to S-12, prospectus pp.3-7 · checked 2026-11-07 · primary (the State's own prospectus, filed by the State; re-cited from Israel Bonds' copy on 2026-11-07). [Leumi tariff](https://www.bankleumi.co.il/static-files/Commissions_Leumi/AmlotYechidimL.pdf), p.38 · checked 2026-10-22 · institution
+- Source: [State of Israel, prospectus supplement of 1 August 2025 with prospectus of 29 July 2025, as filed with the SEC (424B2)](https://www.sec.gov/Archives/edgar/data/52749/000110465925072790/tm2522097-1_424b2.htm), cover, pp.S-1 to S-3, S-7 to S-12, prospectus pp.3-7 · checked 2026-11-07 · primary (the State's own prospectus, filed by the State)
+- Scope: general
 - Dimensions: currency, liquidity-lockup, eligibility, minimum, distribution-policy, protection
 - Likely to change: yes (new series each year)
 
@@ -206,9 +237,9 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
   - **Altshuler Shaham Financial Services** deposits are held in the company's account (FXD-13); no segregation, trust or guarantee statement was found.
   - **LAYA** balances are recorded under the company's account with operating and customer accounts kept separate (FXD-14); the statutory safeguarding regime was not read.
   - **Israel Bonds** are direct, unsecured obligations of the State; a holder can accelerate after 90 days of default (FXD-21).
-- Conditions / exceptions: See the cited rules. Currency risk is separate from failure risk. A USD deposit or bond guarantees dollars, and its shekel value moves with the exchange rate. Yahav's dollar-linked savings has no principal guarantee even in shekels (FXD-09).
+- Conditions / exceptions: See the cited rules. Currency risk is separate from failure risk. A USD deposit or bond guarantees dollars, and its shekel value moves with the exchange rate. Yahav's dollar-linked savings has no principal guarantee even in shekels (FXD-27).
 - Figures: none.
-- Source: as cited in FXD-09, FXD-11 to FXD-15 and FXD-21; REG-04 to REG-06 and BANK-23 by reference · checked 2026-10-22 · links from the cited rules: [1](<https://www.fibi.co.il/private/depositsandsavings/structured/>), [2](<https://www.bankmassad.co.il/private/depositsandsavings/structureddeposits/>), [3](<https://www.discountbank.co.il/media/ti4h15pw/deposit_plus_19524.pdf>), [4](<https://asfs.as-invest.co.il/%d7%a4%d7%99%d7%a7%d7%93%d7%95%d7%a0%d7%95%d7%aa/>), [5](<https://asfs.as-invest.co.il/>), [6](<https://data.gov.il/api/3/action/datastore_search?resource_id=ebb61778-e34c-4e67-8fcf-0e643d9cf8c2&limit=200>)
+- Source: as cited in FXD-27, FXD-11 to FXD-15 and FXD-21; REG-04 to REG-06 and BANK-23 by reference · checked 2026-10-22 · links from the cited rules: [1](<https://www.fibi.co.il/private/depositsandsavings/structured/>), [2](<https://www.bankmassad.co.il/private/depositsandsavings/structureddeposits/>), [3](<https://www.discountbank.co.il/media/ti4h15pw/deposit_plus_19524.pdf>), [4](<https://asfs.as-invest.co.il/%d7%a4%d7%99%d7%a7%d7%93%d7%95%d7%a0%d7%95%d7%aa/>), [5](<https://asfs.as-invest.co.il/>), [6](<https://data.gov.il/api/3/action/datastore_search?resource_id=ebb61778-e34c-4e67-8fcf-0e643d9cf8c2&limit=200>)
 - Dimensions: protection, currency
 - Likely to change: yes (REG-04 examination of deposit insurance)
 
@@ -218,7 +249,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
   - Hapoalim and Leumi price separate lines for "בעל פטור" (exempt) and "פיצויים" (severance) customers.
 - Conditions / exceptions: These lines are inputs for the tax file, not rules.
 - Figures: none here.
-- Source: as in FXD-07, FXD-12, FXD-13 · checked 2026-10-22 · institution
+- Source: as in FXD-07, FXD-25, FXD-12, FXD-13 · checked 2026-10-22 · institution
 - *2026-10-24 R5 pass:* `tax-tier2-other.md` now exists. FX deposits: TX2-01 to TX2-03 and TX2-19 (the olim and returning-resident orders read in full; the olim order requires a fixed term of at least three months, which explains Leumi's statement). Structured deposits: TX2-05 and TX2-18 classify each payout type from the partial-linkage regulations (derived): Discount's "פיקדון פלוס" (FXD-12) fits the fully-FX-linked case, so its 25% line matches TX2-01; a shekel deposit with a share-index grant is 15% of the nominal grant. The "בעל פטור" lines are the olim and returning-resident customers of TX2-03.
 - Dimensions: tax-during, eligibility
 - Likely to change: n/a
@@ -288,7 +319,7 @@ Scope: in: FX current accounts and FX deposits at banks (currencies, how rates a
   - In an agreement for a deposit longer than one year, it must also state "בפקדון שניתן לפרעון גם לפני מועד הפרעון הסופי - תנאי הפרעון המוקדם" (s.7(ב)(5)).
   - A request to withdraw before the agreed date is made on the dedicated form of s.10, as for any deposit (BANK-06).
   - For deposits of a year or more, the bank must give 21 to 45 days' notice before a renewal (s.9(ב)) and before repaying a deposit that does not renew (s.11).
-- Conditions / exceptions: No law or Bank of Israel rule read sets whether an FX deposit may be broken or what breaking it costs. Each bank decides that in its agreement. Directive 447's column on whether a deposit can be broken sits in its table of shekel deposits (BANK-06, FXD-03), so no rule read makes a bank publish that for FX deposits. Leumi's rate table shows its FX deposits with no exit points (FXD-07). Each bank's own break terms, day count, how it sets the rate and what happens at renewal are still open (open question 4). The full mechanics for shekel deposits, including the liquidity directive that shapes break pricing, are in BANK-06; whether that directive's retail-deposit rule covers FX deposits was not checked.
+- Conditions / exceptions: No law or Bank of Israel rule read sets whether an FX deposit may be broken or what breaking it costs. Each bank decides that in its agreement. Directive 447's column on whether a deposit can be broken sits in its table of shekel deposits (BANK-06, FXD-03), so no rule read makes a bank publish that for FX deposits. Leumi's rate table shows its FX deposits with no exit points (FXD-25). Each bank's own break terms, day count, how it sets the rate and what happens at renewal are still open (open question 4). The full mechanics for shekel deposits, including the liquidity directive that shapes break pricing, are in BANK-06; whether that directive's retail-deposit rule covers FX deposits was not checked.
 - Figures: notice of 21 to 45 days before renewal or repayment, for deposits of a year or more (s.9(ב), s.11).
 - Source: [כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ"ב-1992, Bank of Israel's consolidated copy](https://boi.org.il/media/rvzi1ngd/151.pdf#page=5), s.7(א)(2) and s.7(ב)(5) p.5 "בפקדון שניתן לפרעון גם לפני מועד הפרעון הסופי"; s.9, s.10, s.11 p.6 "יגיש המפקיד את הבקשה על גבי טופס שייוחד"; s.2(ב) p.2 · checked 2026-11-07 · primary (state body's consolidated copy). As in BANK-06.
 - Scope: general

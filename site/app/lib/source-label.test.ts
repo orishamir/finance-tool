@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { hebrewCitation, hebrewDocTitle, hostOf, isHebrewTitle, mostlyHebrew, sourceLabel } from "./source-label";
+import { hebrewCitation, hebrewDocTitle, hostOf, isHebrewTitle, mostlyHebrew, shownTitleLtr, sourceLabel } from "./source-label";
+import { shownTitle } from "./sources";
 
 describe("source-label", () => {
   it("tells a Hebrew title from an English one", () => {
@@ -35,5 +36,14 @@ describe("a document's Hebrew title", () => {
     expect(hebrewDocTitle("פקודת מס הכנסה")).toBe(true);
     expect(hebrewDocTitle('Reit 1, investor relations page, "שאלות ותשובות", "מהו שיעור המס שחל על דיבידנד?"')).toBe(false);
     expect(hebrewDocTitle('Tax Authority, מדריך להגשת בקשה להחזר מס למי שאינו חייב בהגשת דו"ח (updated 20.4.2026), chapter "מי הם החייבים להגיש דוח שנתי למס הכנסה"')).toBe(false);
+  });
+});
+
+describe("a source title's direction follows the words shown", () => {
+  it("a kind's word standing in for an English title reads right to left; a host and an English name left to right", () => {
+    expect(shownTitleLtr(shownTitle("s.2", "https://www.gov.il/x", "law"))).toBe(false);
+    expect(shownTitleLtr(shownTitle("Ordinance", "https://www.gov.il/x"))).toBe(true);
+    expect(shownTitleLtr({ text: "iShares", host: false })).toBe(true);
+    expect(shownTitleLtr(shownTitle("פקודת מס הכנסה", "https://www.gov.il/x"))).toBe(false);
   });
 });

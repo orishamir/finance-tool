@@ -1,7 +1,7 @@
 // The deposits page's data (D92): every bank-deposit record, the latest of each id, as offers the page lists and the grid picks from
 // (F-108); P-11's amounts and P-05's amount to start at. Server-only. Each rate and amount is the record's own value object.
 import type { DepositTerms, ValueObject } from "@finance-tool/schema";
-import { depositLabels, depositName, exitPointsOf, shownRate } from "./deposit-kind";
+import { depositLabels, depositName, doubtFor, exitPointsOf, restatesDoubt, shownRate } from "./deposit-kind";
 import { labelRules } from "./label-rests";
 import { termOf, type DbBank, type DbData, type DbOffer } from "./deposit-browser";
 import { loadParameters, loadRules, today } from "./data.server";
@@ -12,23 +12,26 @@ import { shortName } from "./providers";
 import { mostlyHebrew } from "./source-label";
 import { asParameter, type SiteValue } from "./value";
 
-/** A record's figure as the page shows it: the bank's own, with the record's English working note left in the data (the sheet shows only a Hebrew one). */
-function shown(v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {
-  return site(mostlyHebrew(v.notes) ? v : { ...v, notes: "" }, t, snapshot, owner);
+/**
+ * A record's figure as the page shows it: the bank's own, with the record's English working note left in the data (the sheet shows only a
+ * Hebrew one), and a Hebrew note that says again what the record's doubt says left out too, since the doubt is shown (`restatesDoubt`).
+ */
+function shown(v: ValueObject, t: string, d: DepositTerms, owner: string): SiteValue {
+  const s = site(v, t, d.snapshot, owner);
+  return mostlyHebrew(s.notes) && !restatesDoubt(s.notes, d.doubt_he) ? s : { ...s, notes: "" };
 }
 
-/** The top of an offer's amounts; one the record holds with no number carries the record's doubt, which says why it is unknown (F-108). */
-function maxOf(v: ValueObject, doubt: string | null | undefined, t: string, snapshot: string, owner: string): SiteValue {
-  const top = shown(v, t, snapshot, owner);
-  return typeof v.value !== "number" && doubt ? { ...top, doubt } : top;
-}
+/** The record's doubt as the value it is about carries it (`doubtFor`): on the rate where `doubt_on` is absent, on the amounts where it names them. */
+const doubted = (v: SiteValue, d: DepositTerms, on: "rate" | "amount_range"): SiteValue => ({ ...v, ...doubtFor(d, on) });
 
-function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffer | null {
+/** One record as the page's offer; null for a term the standard table does not have. */
+export function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffer | null {
   const term = termOf(d.term_months as { value: unknown; unit: string });
   if (!term) return null;
   const owner = shortName(d.bank, d.bank);
-  // a doubt travels with the number: its sheet says it, and the figure carries the caution mark
-  const rate = shown(shownRate(d), t, d.snapshot, owner);
+  // a doubt travels with the number it is about: its sheet says it, and the figure carries the caution mark
+  const max = d.amount_range.max ? doubted(shown(d.amount_range.max, t, d, owner), d, "amount_range") : null;
+  const min = shown(d.amount_range.min, t, d, owner);
   return {
     id: d.id,
     bank: d.bank,
@@ -38,23 +41,25 @@ function offerOf(d: DepositTerms, t: string, known: ReadonlySet<string>): DbOffe
     linkage: d.linkage,
     limited: (d.variant ?? []).some((v) => v === "closed_system" || v === "new_customers"),
     labels: depositLabels(d.variant, known, { url: d.rate_offered.source.url, title: d.rate_offered.source.title }),
-    rate_offered: d.doubt_he ? { ...rate, doubt: d.doubt_he } : rate,
+    rate_offered: doubted(shown(shownRate(d), t, d, owner), d, "rate"),
     anchor: d.anchor ?? null,
-    spread: d.spread ? shown(d.spread, t, d.snapshot, owner) : null,
+    spread: d.spread ? shown(d.spread, t, d, owner) : null,
     amount_range: {
-      min: shown(d.amount_range.min, t, d.snapshot, owner),
-      max: d.amount_range.max ? maxOf(d.amount_range.max, d.doubt_he, t, d.snapshot, owner) : null,
+      min: max ? min : doubted(min, d, "amount_range"),
+      max,
       ...(d.amount_range.min_edge ? { min_edge: d.amount_range.min_edge } : {}),
       ...(d.amount_range.max_edge ? { max_edge: d.amount_range.max_edge } : {}),
     },
+    ...(d.doubt_he && d.doubt_on && d.doubt_on !== "amount_range" ? { doubt: { on: d.doubt_on, text: d.doubt_he } } : {}),
+    ...(d.conditions_he ? { conditions: d.conditions_he } : {}),
     breakTerm: d.break.allowed ? d.break.penalty : "not_allowed",
     ...(d.term_days && typeof d.term_days.value === "number" ? { termDays: d.term_days.value } : {}),
     ...(d.interest_calc
       ? {
           calc: {
-            ...(d.interest_calc.effective_annual ? { effectiveAnnual: shown(d.interest_calc.effective_annual, t, d.snapshot, owner) } : {}),
-            ...(d.interest_calc.effective_decimals ? { effectiveDecimals: shown(d.interest_calc.effective_decimals, t, d.snapshot, owner) } : {}),
-            ...(d.interest_calc.periods_per_year ? { periodsPerYear: shown(d.interest_calc.periods_per_year, t, d.snapshot, owner) } : {}),
+            ...(d.interest_calc.effective_annual ? { effectiveAnnual: shown(d.interest_calc.effective_annual, t, d, owner) } : {}),
+            ...(d.interest_calc.effective_decimals ? { effectiveDecimals: shown(d.interest_calc.effective_decimals, t, d, owner) } : {}),
+            ...(d.interest_calc.periods_per_year ? { periodsPerYear: shown(d.interest_calc.periods_per_year, t, d, owner) } : {}),
           },
         }
       : {}),

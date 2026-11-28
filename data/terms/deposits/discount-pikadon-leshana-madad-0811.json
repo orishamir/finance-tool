@@ -49,8 +49,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax: offered column printed 0.5; code 0811 'פקדון לשנה', period '1 שנה', interest type 'צמוד מדד', linkage 'צמוד מדד', exit points 'ללא תחנות יציאה' (feed 'No exit stations'); renewal 'ללא אפשרות חידוש' (feed 'No renewal option', max renewals 0); break 'קיימת עם קנס שבירה'; 'שיעור הריבית לפיקדון שכיח' '0.75'; deposit channels 'סניף,אפליקציית עסקים,אתר פרטיים,אתר עסקים'; remarks ''. This row as printed: 'החל מ-250 שח': 0.5, common '0.75'. The interest-type column prints 'צמוד מדד', not 'קבועה' or 'משתנה', and the row has no anchor or spread; the record reads it as a fixed rate over the index (rate_type fixed). The feed's 'OfferedCalculatedNominalInterest' 4.25 equals the prime 4.75 less the offered rate and is not a column the page shows for this row; it is not recorded. Whether a linked rate in the 447 table is real or nominal is BANK open question 17. Read 2026-11-14 from the data the page loads (https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-11-13T18:00:00, prime 4.75%); the row was already in the feed of 2026-11-08 the bank's other records were read from. ProductFamily 1, the standard table."
@@ -73,8 +72,7 @@
     "rule_ids": [
       "TXI-02",
       "TXI-04",
-      "TXI-05",
-      "TXI-19"
+      "TXI-05"
     ],
     "state": "sourced",
     "notes": "Read as fully linked to the consumer price index on the 447 table's linkage column alone (quoted in the notes of rate_offered); no terms document of this deposit was read for its linkage, so whether the linkage is full, which the bucket needs (TXI-04: a deposit counts as linked only when fully linked to the index), rests on that column. Fully linked: the linkage differentials are exempt (TXI-05) and the interest above the linkage is taxed at up to 25% (TXI-02), at a lower bracket from age 60 (TXI-19). Copied from the rule base (sources read there 2026-10-25), not re-read today. The engine reads no tax_bucket today."
@@ -108,7 +106,8 @@
     "mechanism_text": "'אפשרות לשבירת פיקדון: קיימת עם קנס שבירה' (447 table column); the page's penalty mechanism was not re-read for this row.",
     "rule_ids": [
       "BANK-06",
-      "BANK-14"
+      "BANK-14",
+      "BANK-33"
     ]
   },
   "exit_points": {

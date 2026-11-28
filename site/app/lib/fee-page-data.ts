@@ -7,6 +7,7 @@ import type { FeeDeal } from "./fee-deal/model";
 import type { HouseTemplate } from "./fee-deal/templates";
 import type { FxSnapshot } from "./fx";
 import type { TermRow } from "./data.server";
+import type { RuleHead } from "./rule-card-file";
 import { expandFee, staleCmaFee, type CompactFee, type SiteValue } from "./value";
 
 /**
@@ -27,8 +28,10 @@ export interface TrackLite {
 export interface FeesData {
   /** The rules the page's figures and cap lines cite. */
   rules: RuleRecord[];
-  /** The records those rules' cards point at (derived_from, examples) that `rules` does not hold: only chips and cards read them. */
+  /** The records those rules' cards point at (derived_from, examples) whose figures fill their slots, which `rules` does not hold: only chips and cards read them. */
   pointed?: RuleRecord[];
+  /** The heads of the other rules they point at: a chip names its rule from them, and its card is fetched when tapped (`pointedShipment`). */
+  heads?: Record<string, RuleHead>;
   /** The value object shared by a dataset's tracks (source, dates, rule ids), per fee. */
   templates: Record<string, { balance: ValueObject; deposit: ValueObject }>;
   tracks: TrackLite[];
@@ -57,7 +60,7 @@ export function termsHouse(t: HouseTemplate): TermsHouse {
 }
 
 /** What of the fee page's data a house's terms read: the rules their figures cite with the records those point at, the kinds with their caps, the glossary cards. */
-export type TermsFeesData = Pick<FeesData, "rules" | "pointed" | "kinds" | "terms">;
+export type TermsFeesData = Pick<FeesData, "rules" | "pointed" | "heads" | "kinds" | "terms">;
 
 /**
  * The fee page's data for the read-only editor of a house's terms, from what the terms read: no track, house or exchange rate, which only

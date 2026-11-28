@@ -14,8 +14,13 @@
     "kupat-gemel-lehashkaa"
   ],
   "variants": [
-    "עמית עצמאי",
     "מעמד עצמאי"
+  ],
+  "also_called": [
+    "מעמד עצמאי"
+  ],
+  "search": [
+    "עמית עצמאי"
   ],
   "rule_ids": [
     "KGL-01",

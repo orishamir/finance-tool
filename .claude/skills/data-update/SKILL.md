@@ -37,6 +37,7 @@ Follow the schema section for the collection exactly; do not invent fields or un
 - **Never estimate.** Do not round, interpolate, average, convert, annualise or fill in a number the source does not print. If the source prints it, copy it as printed, in the unit it uses (percent stays percent, never a fraction). If a unit or definition is not stated, keep the raw value as the schema allows (for example `raw_fields` in `data/cma/`, with `fees: null`) and say so in `notes`. A computed value is not collected here; it belongs to the engine.
 - If a value is not found, or the document is unreadable, write `value: null` with the reason in `notes`, or `missing: true` and `missing_reason` where the collection has them (fee files). Never leave a plausible number there.
 - If two places in the source disagree, store the one the source treats as authoritative and put the conflict in `notes`.
+- A value's `rule_ids` follow the table in `packages/pipeline/src/figure-rules.ts`: only the rules it admits on that field, in that state.
 
 ## 4. Run the data check, then report
 

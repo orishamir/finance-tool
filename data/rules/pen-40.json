@@ -2,7 +2,7 @@
   "id": "PEN-40",
   "title": "Survivors' pension with several orphans (unsettled)",
   "title_he": "קצבת שאירים כשיש כמה יתומים (לא מוסדר)",
-  "text_he": "כשיש יותר מיתום אחד, הנוסח המקורי של התקנון האחיד של רשות שוק ההון נותן לכל יתום שיעור משלו. בתקנונים של מור, הראל, אלטשולר שחם, מיטב, מנורה מבטחים ואינפיניטי כל היתומים יחד מקבלים שיעור אחד, ומתחלקים בו שווה בשווה. באלטשולר שחם, במיטב ובאינפיניטי יש שיעור נוסף למסלול אחד. חוזר שמשנה את השיעור לא נמצא, ולכן לא ברור מה מחייב היום. נמצא רק בתקנונים של החברות האלה, ומקור כללי לא נמצא.",
+  "text_he": "כשיש יותר מיתום אחד, הנוסח המקורי של התקנון האחיד של רשות שוק ההון נותן {PEN-40:orphan_share_each_standard_text} לכל יתום. בתקנונים של מור, הראל, אלטשולר שחם ואינפיניטי כל היתומים יחד מקבלים שיעור אחד, ומתחלקים בו שווה בשווה. באלטשולר שחם ובאינפיניטי יש שיעור נוסף למסלול אחד. האתר לא מצא חוזר שמשנה את השיעור, ולכן לא ברור מה מחייב היום.",
   "figure_names_he": {
     "orphan_share_each_standard_text": "שיעור לכל יתום בנוסח המקורי של התקנון האחיד",
     "orphans_share_total_current_bylaws": "שיעור לכל היתומים יחד בתקנונים העדכניים",
@@ -59,7 +59,7 @@
         "PEN-40"
       ],
       "state": "sourced",
-      "notes": "All the orphans together, shared equally, in the 2025 bylaws of Mor (cited), Harel, Altshuler Shaham, Meitav and Menora Mivtachim (read by the scope research, links not recorded); Altshuler Shaham and Meitav add a 15% variant for one track."
+      "notes": "All the orphans together, shared equally, in the bylaws of Mor, Harel, Altshuler Shaham and Infinity (cited); Altshuler Shaham and Infinity add a 15% variant for one track."
     },
     "harel_orphans_share_total": {
       "value": 40,
@@ -100,14 +100,6 @@
     {
       "id": "altshuler-shaham",
       "name_he": "אלטשולר שחם"
-    },
-    {
-      "id": "meitav",
-      "name_he": "מיטב"
-    },
-    {
-      "id": "menora-mivtachim",
-      "name_he": "מנורה מבטחים"
     },
     {
       "id": "infinity",

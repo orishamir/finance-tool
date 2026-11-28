@@ -1,10 +1,15 @@
 // Every chip on a rule card opens its record: on /guide/brokerage-account BRK-35's "לדוגמה" chip opened an
 // empty card, because BRK-51 was not in the page's data; then a probe found 24 figure chips (TXG-04's figures cite TXG-02 and TXG-03)
 // that did the same. A card's chips are its record's `derived_from` and `examples`, and every `rule_ids` inside its figures (each
-// figure opens a value sheet that shows them), with the rules whose figures fill its text's `{ID:figure}` slots; each page that shows cards passes the records they point at as `pointed`
-// (`pointedRecords`). This walks the pages' data: for every record a page holds (its own rules and the pointed ones), every chip its
-// card or its figures can show opens a record the page holds. The chips are read from the record here, not through `pointedIds`.
-import { describe, expect, it } from "vitest";
+// figure opens a value sheet that shows them), with the rules whose figures fill its text's `{ID:figure}` slots. A page ships in full its
+// own rules and the records whose figures fill its cards' slots (`pointed`), and of every other rule its cards point at a head, whose
+// card is fetched from the rule's own file when its chip is tapped (`pointedShipment`, routes/rule-card.ts). This walks the pages' data: for every record a page holds in full, every chip its card
+// or its figures can show opens a record the page holds, or has a head and a file the build pre-renders; every slot reads a record the
+// page holds. The chips are read from the record here, not through `pointedIds`.
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { MemoryRouter } from "react-router";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { wrapperId, type RuleRecord } from "@finance-tool/schema";
 import { loadCma, loadRules, loadTerms } from "./data.server";
 import { buildExposurePage, buildGuidePage } from "./guide.server";
@@ -22,34 +27,57 @@ import { loader as bondGuideLoader } from "../routes/guide-limited-bond-fund";
 import { loader as fundsGuideLoader } from "../routes/guide-mutual-funds";
 import { shelfBundle } from "./rule-uses.server";
 import { valueRuleIds } from "./page-rules.server";
+import { ruleCardData } from "./rule-uses.server";
+import { prerenderPaths } from "./paths.server";
+import { ruleCardPath } from "./rule-card-file";
+import { ruleHeadOf } from "./rule-head";
 import { shelfIds } from "./rule-shelves";
 import { flags } from "../copy";
 import { parseAnswer } from "./answer-slots";
 import { buildInvest, indexById, pairCosts } from "./invest";
 import type { IndicesBundle, WorkbenchInputs } from "./providers";
 import { entered } from "./value";
+import { rule as ruleCopy, system } from "../copy";
+import { ProvenanceProvider, RuleRef, ruleOf, type ProvenanceData } from "../components/provenance";
+import { RuleCard, fetchCard, loadCardFile, withFetched, type CardFetch } from "../components/provenance-sheets";
 
 const all = loadRules();
+/** A value the test needs, or a failure that names it. */
+function must<T>(v: T | undefined | null, what: string): T {
+  if (v === undefined || v === null) throw new Error(`missing: ${what}`);
+  return v;
+}
 type Map_ = Record<string, RuleRecord>;
 const asMap = (x: Map_ | readonly RuleRecord[] | undefined): Map_ => (Array.isArray(x) ? Object.fromEntries(x.map((r) => [r.id, r])) : ((x as Map_ | undefined) ?? {}));
 
 /** The chips a record's card can show: its derivations and examples, the rules its figures' sheets name, and the rules whose figures fill its text's slots. */
 const chipsOf = (r: RuleRecord): string[] => [...new Set([...(r.derived_from ?? []), ...(r.examples ?? []), ...valueRuleIds(r.figures), ...slotIds(r.text_he ?? "")])].filter((id) => id !== r.id);
 
-/** The chips of the page's cards whose record the page does not hold: "BRK-35 → BRK-51". */
-function unopened(rules: Map_ | readonly RuleRecord[] | undefined, pointed: Map_ | readonly RuleRecord[] | undefined): string[] {
+/** What the build pre-renders, the rule card files among it (routes/rule-card.ts). */
+const served = new Set(prerenderPaths());
+const hasFile = (id: string) => served.has(ruleCardPath(id));
+
+/**
+ * The chips of the page's cards that open no card: "BRK-35 → BRK-51". A chip opens when the page holds its record, or holds its head
+ * and the build pre-renders its file; a slot of a card's text draws its figure, so it needs the record itself ("TXG-04 → TXG-02 (slot)").
+ */
+function unopened(rules: Map_ | readonly RuleRecord[] | undefined, pointed: Map_ | readonly RuleRecord[] | undefined, heads: Record<string, unknown> = {}): string[] {
   const have = { ...asMap(rules), ...asMap(pointed) };
-  return Object.values(have).flatMap((r) => chipsOf(r).filter((id) => all[id] && !have[id]).map((id) => `${r.id} → ${id}`));
+  return Object.values(have).flatMap((r) => [
+    ...chipsOf(r).filter((id) => all[id] && !have[id] && !(heads[id] && hasFile(id))).map((id) => `${r.id} → ${id}`),
+    ...slotIds(r.text_he ?? "").filter((id) => all[id] && !have[id]).map((id) => `${r.id} → ${id} (slot)`),
+  ]);
 }
 
 /** Every guide page's loader data, by wrapper id: read once for the tests that walk it. */
-let guides: Promise<[string, Record<string, unknown> & { rules: Map_; pointed: Map_ }][]> | null = null;
+type Shipped = { rules: Map_; pointed: Map_; heads?: Record<string, unknown> };
+let guides: Promise<[string, Record<string, unknown> & Shipped][]> | null = null;
 const guidePages = () =>
   (guides ??= (async () => {
-    const out: [string, Record<string, unknown> & { rules: Map_; pointed: Map_ }][] = [];
+    const out: [string, Record<string, unknown> & Shipped][] = [];
     for (const id of wrapperId.options) {
       if (!buildGuidePage(id)) continue;
-      out.push([id, (await guideLoader({ params: { id } } as never)) as Record<string, unknown> & { rules: Map_; pointed: Map_ }]);
+      out.push([id, (await guideLoader({ params: { id } } as never)) as Record<string, unknown> & Shipped]);
     }
     return out;
   })());
@@ -59,22 +87,48 @@ describe("every chip on a page's rule cards opens its record", () => {
     expect(chipsOf(all["TXG-04"]!)).toEqual(expect.arrayContaining(["TXG-02", "TXG-03"]));
   });
 
-  it("the brokerage guide holds BRK-51, the example BRK-35's card names", async () => {
-    const d = (await guideLoader({ params: { id: "brokerage-account" } } as never)) as { rules: Map_; pointed: Map_ };
+  it("the brokerage guide opens BRK-51, the example BRK-35's card names: its record, or its head and its file", async () => {
+    const d = (await guideLoader({ params: { id: "brokerage-account" } } as never)) as Shipped;
     expect(d.rules["BRK-35"]?.examples).toContain("BRK-51");
-    expect(d.pointed["BRK-51"] ?? d.rules["BRK-51"]).toBeDefined();
+    expect(d.pointed["BRK-51"] ?? d.rules["BRK-51"] ?? (hasFile("BRK-51") ? d.heads?.["BRK-51"] : undefined)).toBeDefined();
   }, 60000);
+
+  it("a chip whose rule the page holds no record of, nor a head with a file, is caught", () => {
+    const r = must(all["BRK-35"], "BRK-35");
+    const heads = Object.fromEntries(chipsOf(r).map((id) => [id, {}]));
+    expect(unopened({ [r.id]: r }, {}, heads)).toEqual([]);
+    const without = Object.fromEntries(Object.entries(heads).filter(([id]) => id !== "BRK-51"));
+    expect(unopened({ [r.id]: r }, {}, without)).toEqual(["BRK-35 → BRK-51"]);
+    const slotted = Object.values(all).find((x) => slotIds(x.text_he ?? "").some((id) => all[id] && id !== x.id));
+    if (!slotted) throw new Error("no record's text has a slot of another record");
+    const target = must(slotIds(slotted.text_he ?? "").find((id) => all[id] && id !== slotted.id), "a slot of another record");
+    expect(unopened({ [slotted.id]: slotted }, {}, { [target]: {} })).toContain(`${slotted.id} → ${target} (slot)`);
+  });
+
+  it("every rule has a card file the build pre-renders, and each file opens every chip of the cards it holds", () => {
+    const bad: string[] = [];
+    for (const id of Object.keys(all)) {
+      if (!hasFile(id)) bad.push(`${id}: no file`);
+      const f = ruleCardData(id);
+      if (!f) {
+        bad.push(`${id}: no card data`);
+        continue;
+      }
+      bad.push(...unopened({ [id]: f.record }, f.pointed, f.heads).map((x) => `${id}'s file: ${x}`));
+    }
+    expect(bad).toEqual([]);
+  }, 120000);
 
   it("guide pages", async () => {
     const bad: string[] = [];
-    for (const [id, d] of await guidePages()) bad.push(...unopened(d.rules, d.pointed).map((x) => `${id}: ${x}`));
+    for (const [id, d] of await guidePages()) bad.push(...unopened(d.rules, d.pointed, d.heads).map((x) => `${id}: ${x}`));
     expect(bad).toEqual([]);
   }, 300000);
 
   it("exposure pages", () => {
     const bad = loadExposures().flatMap((e) => {
       const d = buildExposurePage(e.id);
-      return d ? unopened(d.rules, d.pointed).map((x) => `${e.id}: ${x}`) : [];
+      return d ? unopened(d.rules, d.pointed, d.heads).map((x) => `${e.id}: ${x}`) : [];
     });
     expect(bad).toEqual([]);
   }, 120000);
@@ -83,21 +137,24 @@ describe("every chip on a page's rule cards opens its record", () => {
     const bad: string[] = [];
     for (const id of institutionIds()) {
       const d = buildInstitution(id);
-      if (d) bad.push(...unopened(d.rules, d.pointed).map((x) => `${id}: ${x}`));
+      if (d) bad.push(...unopened(d.rules, d.pointed, d.heads).map((x) => `${id}: ${x}`));
     }
     for (const c of loadCma().companies) {
-      const d = (await companyLoader({ params: { id: c.id } } as never)) as { kind: string; companyTerms?: { rules: Map_; pointed: Map_ } };
-      if (d.kind === "company" && d.companyTerms) bad.push(...unopened(d.companyTerms.rules, d.companyTerms.pointed).map((x) => `${c.id}: ${x}`));
+      const d = (await companyLoader({ params: { id: c.id } } as never)) as { kind: string; companyTerms?: Shipped };
+      if (d.kind === "company" && d.companyTerms) bad.push(...unopened(d.companyTerms.rules, d.companyTerms.pointed, d.companyTerms.heads).map((x) => `${c.id}: ${x}`));
     }
-    const d = (await companiesLoader()) as { rules: Map_; pointed: Map_ };
-    bad.push(...unopened(d.rules, d.pointed).map((x) => `/companies: ${x}`));
+    const d = (await companiesLoader()) as Shipped;
+    bad.push(...unopened(d.rules, d.pointed, d.heads).map((x) => `/companies: ${x}`));
     expect(bad).toEqual([]);
   }, 300000);
 
   it("the rules shelves and the not-covered page", async () => {
-    const n = (await notCoveredLoader()) as { rules: Map_; pointed: Map_ };
-    const shelves = shelfIds.flatMap((s) => unopened(shelfBundle(s).rules, {}).map((x) => `${s}: ${x}`));
-    expect([...unopened(n.rules, n.pointed), ...shelves]).toEqual([]);
+    const n = (await notCoveredLoader()) as Shipped;
+    const shelves = shelfIds.flatMap((s) => {
+      const b = shelfBundle(s);
+      return unopened(b.rules, {}, b.heads).map((x) => `${s}: ${x}`);
+    });
+    expect([...unopened(n.rules, n.pointed, n.heads), ...shelves]).toEqual([]);
   }, 120000);
 
   it("the bundles the indices page and fees read, and the indices page's own rules beside its bundle's", async () => {
@@ -106,7 +163,7 @@ describe("every chip on a page's rule cards opens its record", () => {
     // the indices page's rules are its loader's (the glossary cards' rules) and its bundle's, the records they point at its bundle's
     const page = await indicesLoader({ params: {} } as never);
     const own = Object.fromEntries([...page.feeRules, ...w.rules].map((r) => [r.id, r as RuleRecord]));
-    expect([...unopened(w.rules, w.pointed), ...unopened(f.rules, f.pointed), ...unopened(own, w.pointed)]).toEqual([]);
+    expect([...unopened(w.rules, w.pointed, w.heads), ...unopened(f.rules, f.pointed, f.heads), ...unopened(own, w.pointed, w.heads)]).toEqual([]);
   }, 300000);
 });
 
@@ -173,7 +230,7 @@ describe("every rule a figure on the indices page names is a record the page hol
  * (TXH-16, under the term "הפקדה שאינה מוטבת", among them). A term card's list leaves them out (`TermCard`), and each waits for its
  * record. A ratchet: an id leaves the list when it gains a record or when no glossary row cites it any more, and none joins it.
  */
-const noRecord = new Set(["BRK-03", "BRK-30", "CAT-01", "CAT-02", "CAT-25", "CAT-26", "CAT-29", "CAT-30", "CORP-10", "FXD-06", "FXD-12", "FXD-15", "FXD-16", "INS-23", "KH-24", "MF-42", "MF-57", "MGD-20", "PEN-24", "REG-28", "RG-16", "RG-17", "RG-18", "RG-19", "RG-23", "TXH-16", "TXP-25"]);
+const noRecord = new Set(["CAT-01", "CAT-02", "CAT-25", "CAT-26", "CAT-29", "CAT-30", "CORP-10", "FXD-16", "INS-23", "KH-24", "MGD-20", "REG-28", "RG-16", "RG-18", "RG-23"]);
 
 /** The rows of the page's term cards whose rule has no record: rows `TermCard` leaves out. Held at what they are, as a ratchet. */
 const PLACEHOLDER_ROWS = 60;
@@ -284,4 +341,115 @@ describe("every rule a page's term cards and figures name is a record the page s
     expect([...new Set(loadTerms().flatMap((t) => t.ruleIds))].filter((id) => !all[id]).sort()).toEqual([...noRecord].sort());
     expect(found.missing.length).toBeLessThanOrEqual(PLACEHOLDER_ROWS);
   }, 600000);
+});
+
+describe("a card whose rule the page does not ship is fetched when opened", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+  const page = (more: Partial<ProvenanceData> = {}): ProvenanceData => ({ rules: { "BRK-35": must(all["BRK-35"], "BRK-35") }, terms: {}, dimensions: {}, today: "2026-11-26", ...more });
+  const drawn = (data: ProvenanceData, id: string) =>
+    renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(RuleCard, { id, data }))))
+      .replace(/<!-- -->/g, "")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ");
+  const file = must(ruleCardData("BRK-51"), "BRK-51's card data");
+  const answer = (body: unknown, status = 200) => vi.fn(async () => new Response(JSON.stringify(body), { status }));
+
+  it("while its file is on its way, the card heads with the title its chip shows and says it is loading", () => {
+    const head = { id: "BRK-51", title: { text: "כותרת לבדיקה", english: false }, strength: file.record.strength, scope: file.record.scope, ...(file.record.scope_institutions ? { scope_institutions: file.record.scope_institutions } : {}) };
+    const text = drawn(page({ heads: { "BRK-51": head } }), "BRK-51");
+    expect(text).toContain("BRK-51 · כותרת לבדיקה");
+    expect(text).toContain(system.loading);
+    // a rule the page has no head of says its text is not written, as before
+    expect(drawn(page(), "BRK-51")).toContain(ruleCopy.noText);
+  });
+
+  it("while its file is on its way, the card's heading takes the focus a new view in the sheet gives, since its body holds nothing to act on", () => {
+    const head = { id: "BRK-51", title: { text: "כותרת לבדיקה", english: false }, strength: file.record.strength, scope: file.record.scope };
+    const card = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(RuleCard, { id: "BRK-51", data: page({ heads: { "BRK-51": head } }) })));
+    // Sheet.tsx gives a new view's focus to its `data-autofocus`, else to the first control in the body, which a loading card has none of
+    expect(card).not.toMatch(/<(button|a|input)[\s>]/);
+    const heading = must(/<h2[^>]*>/.exec(card), "the card's heading")[0];
+    expect(heading).toContain('tabindex="-1"');
+    expect(heading).toContain("data-autofocus");
+  });
+
+  it("on a company's page, the heading names while the card loads the companies the card names once it is in", () => {
+    const record = must(
+      Object.values(all).find((r) => r.scope !== "general" && (r.scope_institutions?.length ?? 0) >= 3 && !r.text_he?.includes("{")),
+      "a record about three companies or more",
+    );
+    // a brand's page stands for its companies (`pageCompanies`), with no one company the chip would name alone
+    const company = must(record.scope_institutions?.[1], "its second company").id;
+    const base = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-26", pageCompanies: [company] };
+    const scopeLine = (data: ProvenanceData) => must(/<\/h2>(.*?)<\/header>/.exec(renderToStaticMarkup(createElement(MemoryRouter, null, createElement(RuleCard, { id: record.id, data })))), "the heading's scope line")[1];
+    const loaded = scopeLine({ ...base, pointed: { [record.id]: record } });
+    expect(scopeLine({ ...base, heads: { [record.id]: ruleHeadOf(record, { rules: all, today: base.today }) } })).toBe(loaded);
+  });
+
+  it("a chip whose rule the page holds only the head of says the head's title, or the company the rule is about", () => {
+    const general = must(Object.values(all).find((r) => r.scope === "general" && r.strength !== "open"), "a general rule");
+    const own = must(Object.values(all).find((r) => r.scope === "institution" && r.scope_institutions?.length === 1), "a rule about one company");
+    const company = must(own.scope_institutions?.[0], "its company");
+    const headOf = (r: RuleRecord) => ({ ...ruleHeadOf(r, { rules: all, today: "2026-11-26" }), title: { text: `כותרת של ${r.id}`, english: false } });
+    const data: ProvenanceData = { rules: {}, terms: {}, dimensions: {}, today: "2026-11-26", heads: { [general.id]: headOf(general), [own.id]: headOf(own) } };
+    // the words the chip shows: the first button's text, the sheet the provider draws after it aside
+    const chip = (id: string) =>
+      must(/<button[^>]*>(.*?)<\/button>/.exec(renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data } as never, createElement(RuleRef, { id }))))), `${id}'s chip`)[1]
+        ?.replace(/<[^>]+>/g, "")
+        .trim();
+    expect(chip(general.id)).toBe(`כותרת של ${general.id}`);
+    expect(chip(own.id)).toContain(company.name_he);
+  });
+
+  it("a fetch that failed says so with its retry, and the retry fetches the file again", async () => {
+    // an id of its own, so the visit's store of fetched files holds this test's fetches only
+    const id = "BRK-51-RETRY";
+    const head = { id, title: { text: "כותרת לבדיקה", english: false }, strength: file.record.strength, scope: file.record.scope };
+    const failing = vi.fn(async () => Promise.reject(new TypeError("Failed to fetch")));
+    vi.stubGlobal("fetch", failing);
+    await fetchCard(id);
+    const text = drawn(page({ heads: { [id]: head } }), id);
+    expect(text).toContain(ruleCopy.loadFailed);
+    expect(text).toContain(ruleCopy.retry);
+    expect(text).not.toContain(system.loading);
+    const answering = answer(file);
+    vi.stubGlobal("fetch", answering);
+    await fetchCard(id);
+    expect(answering).toHaveBeenCalledTimes(1);
+    expect(drawn(page({ heads: { [id]: head } }), id)).not.toContain(ruleCopy.loadFailed);
+    // a file in is not fetched again
+    await fetchCard(id);
+    expect(answering).toHaveBeenCalledTimes(1);
+  });
+
+  it("reads the file, says a missing one or a failed one did not load, and throws on a file that does not match its schema", async () => {
+    vi.stubGlobal("fetch", answer(file));
+    const loaded = await loadCardFile("BRK-51");
+    expect(loaded.kind === "loaded" && loaded.file.record.id).toBe("BRK-51");
+    // the page has the head, so the build gave the rule a file: none is a page older than the site's files, not a rule with no text
+    vi.stubGlobal("fetch", answer("Not found", 404));
+    expect(await loadCardFile("BRK-51")).toEqual({ kind: "failed" });
+    vi.stubGlobal("fetch", answer("", 500));
+    expect(await loadCardFile("BRK-51")).toEqual({ kind: "failed" });
+    vi.stubGlobal("fetch", vi.fn(async () => Promise.reject(new TypeError("Failed to fetch"))));
+    expect(await loadCardFile("BRK-51")).toEqual({ kind: "failed" });
+    vi.stubGlobal("fetch", answer({ record: { id: "BRK-51" } }));
+    await expect(loadCardFile("BRK-51")).rejects.toThrow(/does not match its schema/);
+  });
+
+  it("a fetched file joins the sheet's data: its record draws the card, its heads name its chips, its uses join only a page that shows uses", () => {
+    const fetched = new Map<string, CardFetch>([["BRK-51", { kind: "loaded", file }]]);
+    const data = withFetched(page(), fetched);
+    expect(ruleOf(data, "BRK-51")?.id).toBe("BRK-51");
+    for (const id of Object.keys(file.heads)) expect(data.heads?.[id]).toEqual(file.heads[id]);
+    expect(data.ruleUses).toBeUndefined();
+    expect(withFetched(page({ ruleUses: {} }), fetched).ruleUses?.["BRK-51"]).toEqual(file.uses["BRK-51"]);
+    const text = drawn(data, "BRK-51");
+    expect(text).not.toContain(system.loading);
+    expect(text).not.toContain(ruleCopy.noText);
+    // nothing fetched: the page's data as it is
+    expect(withFetched(page(), new Map())).toEqual(page());
+  });
 });

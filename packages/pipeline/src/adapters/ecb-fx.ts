@@ -5,13 +5,42 @@
 // free use if the information appears accurately, the ECB is cited, and any modification is stated.
 import { seriesRecord, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";
 import { USER_AGENT, type Downloaded } from "./cma.ts";
-import { lastDate, refreshSeries, type SeriesDiff, type SeriesRefreshOptions, type SeriesSpec, type SourceReport } from "./series-common.ts";
+import { keepChecked, lastDate, refreshSeries, type SeriesDiff, type SeriesRefreshOptions, type SeriesSpec, type SourceReport } from "./series-common.ts";
 
 export const ECB_URL = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
 export const TERMS_URL = "https://www.ecb.europa.eu/services/using-our-site/disclaimer/html/index.en.html";
 export const FX_UNIT = "fx_per_eur";
 export const CODES = ["ILS", "USD"] as const;
 export const API_URL = `https://data-api.ecb.europa.eu/service/data/EXR/M.${CODES.join("+")}.EUR.SP00.E?format=csvdata&startPeriod=2000-01`;
+/** The ECB's page of the day's euro reference rates: it prints each rate of the daily XML, the shekel's among them (read). */
+export const DAILY_PAGE = "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html";
+/**
+ * The ECB Data Portal's page of the EXR dataset, which holds both month-end series the file keeps (read). Each series also has a page of
+ * its own, but the site gives one source to a month-end point and the dollar-shekel rate is read from both series, so the source names
+ * the two together.
+ */
+export const MONTH_END_PAGE = "https://data.ecb.europa.eu/data/datasets/EXR";
+export const PUBLISHER_HE = "הבנק המרכזי האירופי";
+
+/** The source of every daily rate: the page that prints the day's rates, and the XML the refresh reads as `fetched_from`. */
+export const dailySource = (): SeriesObservation["source"] => ({
+  url: DAILY_PAGE,
+  title: "ECB euro foreign exchange reference rates (daily)",
+  publisher: "European Central Bank",
+  publisher_he: PUBLISHER_HE,
+  strength: "primary",
+  fetched_from: ECB_URL,
+});
+
+/** The source of every month-end rate: the dataset's page on the Data Portal, naming both series, and the CSV the refresh reads as `fetched_from`. */
+export const monthEndSource = (): SeriesObservation["source"] => ({
+  url: MONTH_END_PAGE,
+  title: `ECB Data Portal, EXR: ECB reference exchange rates, monthly, end of period (${CODES.map((c) => `EXR.M.${c}.EUR.SP00.E`).join(", ")})`,
+  publisher: "European Central Bank",
+  publisher_he: PUBLISHER_HE,
+  strength: "primary",
+  fetched_from: API_URL,
+});
 
 // Pipeline configuration (not site parameters): the sanity threshold. The dollar and the shekel never moved this much between two reference days.
 export const SANITY = { maxChangePct: 10 } as const;
@@ -43,7 +72,7 @@ export function parseEcbXml(xml: string): EcbDay {
 
 /** The series file for one ECB day, checked (read) on `ctx.runDate`. */
 export function buildSeries(day: EcbDay, ctx: BuildCtx): SeriesRecord {
-  const source = { url: ECB_URL, title: "ECB euro foreign exchange reference rates (daily)", publisher: "European Central Bank", strength: "primary" as const };
+  const source = dailySource();
   return {
     id: "ecb-fx",
     names: { he: ["שערי הייחוס היומיים של האירו (הבנק המרכזי האירופי)"], en: ["ECB euro foreign exchange reference rates"] },
@@ -112,7 +141,7 @@ const lastDay = (month: string) => {
 
 /** The series file, checked (read) on `ctx.runDate`: months both currencies have, oldest first. */
 export function buildMonthSeries(rates: MonthRate[], ctx: BuildCtx): SeriesRecord {
-  const source = { url: API_URL, title: "ECB Data Portal, EXR: ECB reference exchange rates, monthly, end of period (EXR.M.ILS.EUR.SP00.E, EXR.M.USD.EUR.SP00.E)", publisher: "European Central Bank", strength: "primary" as const };
+  const source = monthEndSource();
   const months = [...new Set(rates.map((r) => r.month))].filter((m) => CODES.every((c) => rates.some((r) => r.code === c && r.month === m))).sort();
   return {
     id: "ecb-fx-month-end",
@@ -143,10 +172,10 @@ export function buildMonthSeries(rates: MonthRate[], ctx: BuildCtx): SeriesRecor
 
 const sameRate = (a: SeriesObservation, b: SeriesObservation) => a.key === b.key && a.date === b.date && a.value === b.value;
 
-/** Rows already stored keep their stored object (and its `checked`) while the value is unchanged. */
+/** Rows already stored keep their `checked` while the value is unchanged (`keepChecked`). */
 export function keepStored(next: SeriesRecord, previous: SeriesRecord | null): SeriesRecord {
   const stored = previous?.observations ?? [];
-  return { ...next, observations: next.observations.map((o) => stored.find((p) => sameRate(p, o)) ?? o) };
+  return { ...next, observations: next.observations.map((o) => keepChecked(o, stored.find((p) => sameRate(p, o)))) };
 }
 
 /** Reasons the new file must not be written; empty when it is fine. `previous` may hold an earlier reference day. */
@@ -200,6 +229,7 @@ export const ecbFxSpec: SeriesSpec = {
   sanity: sanityCheck,
   diff: diffSeries,
   archive: archive("ecb-fx"),
+  sourceOf: () => dailySource(),
 };
 
 export const ecbMonthEndSpec: SeriesSpec = {
@@ -210,6 +240,7 @@ export const ecbMonthEndSpec: SeriesSpec = {
   sanity: sanityCheck,
   diff: diffSeries,
   archive: archive("ecb-fx-month-end"),
+  sourceOf: () => monthEndSource(),
 };
 
 export const refreshEcbFx = (opts: SeriesRefreshOptions): Promise<SourceReport> => refreshSeries(ecbFxSpec, opts);

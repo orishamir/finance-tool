@@ -3,6 +3,13 @@
   "title": "Yalin Lapidot: 21 tracking funds named \"quabify אג\"ח לפדיון\", 2026 to 2032, and their terms",
   "title_he": "ילין לפידות: קרנות מחקות ״אג״ח לפדיון״, שנות הפדיון ודמי הניהול",
   "text_he": "בתשקיף של ילין לפידות יש {MF-63:funds} קרנות מחקות פתוחות בשם ״אג״ח לפדיון״, לשנים {MF-63:end_first} עד {MF-63:end_last}, שלוש בכל שנה: צמודה, שקלית ומאוזנת. בכל אחת דמי ניהול קבועים של {MF-63:fee} ושכר נאמן של {MF-63:trustee}, וכולן מסווגות ״פטורה״. לפי מסמך של אחת הקרנות, המפיץ לא מקבל עמלת הפצה בקרן מחקה, אבל רשאי לגבות מבעל היחידות עמלה על קנייה ומכירה של יחידות.",
+  "figure_names_he": {
+    "funds": "קרנות ״אג״ח לפדיון״ בתשקיף",
+    "fee": "דמי ניהול קבועים",
+    "trustee": "שכר נאמן",
+    "end_first": "שנת הפדיון הראשונה בתשקיף",
+    "end_last": "שנת הפדיון האחרונה בתשקיף"
+  },
   "strength": "institution",
   "dimensions": [
     "fee-management-balance",
@@ -32,8 +39,7 @@
       "rule_ids": [
         "MF-63"
       ],
-      "state": "sourced",
-      "notes": "קרנות בתשקיף"
+      "state": "sourced"
     },
     "fee": {
       "value": 0.24,
@@ -54,8 +60,7 @@
       "rule_ids": [
         "MF-63"
       ],
-      "state": "sourced",
-      "notes": "דמי ניהול קבועים"
+      "state": "sourced"
     },
     "trustee": {
       "value": 0.02,
@@ -76,8 +81,7 @@
       "rule_ids": [
         "MF-63"
       ],
-      "state": "sourced",
-      "notes": "שכר נאמן"
+      "state": "sourced"
     },
     "end_first": {
       "value": "2026",
@@ -98,8 +102,7 @@
       "rule_ids": [
         "MF-63"
       ],
-      "state": "sourced",
-      "notes": "שנת הפדיון הראשונה בתשקיף"
+      "state": "sourced"
     },
     "end_last": {
       "value": "2032",
@@ -120,8 +123,7 @@
       "rule_ids": [
         "MF-63"
       ],
-      "state": "sourced",
-      "notes": "שנת הפדיון האחרונה בתשקיף"
+      "state": "sourced"
     }
   },
   "scope": "institution",

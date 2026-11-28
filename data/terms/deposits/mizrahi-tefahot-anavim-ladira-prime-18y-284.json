@@ -26,10 +26,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-27",
-      "BANK-28"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Printed '18 שנים' in the table and 'תקופת הפיקדון: 18 שנים ואינה ניתנת לשינוי במהלך חיי הפיקדון' in the terms; recorded as 216 months."
   },
@@ -72,9 +69,7 @@
     "update_rule": "provider-set",
     "rule_ids": [
       "BANK-13",
-      "BANK-25",
-      "BANK-28",
-      "BANK-34"
+      "BANK-25"
     ],
     "state": "sourced",
     "notes": "Printed '2.25%' with 'P=4.75%' and 'P-2.5%' in every amount tier (400, 750, 750<); rate type 'משתנה'; exit points 'תחנת יציאה ראשונה לאחר 3 שנים ולאחר מכן תחנת יציאה מדי 1 חודשים'; effective '2.25%'; deposit options 'בנקאי'. Terms: 'פיקדון בהפקדות חודשיות בהוראת קבע, בריבית ניידת כמרווח מריבית הפריים לתקופה של 18 שנה', 'ניתן לבצע משיכה מלאה או חלקית, מתום 3 שנים כל חודש', 'סכום מזערי להשארה במשיכה חלקית: 12 הפקדות אחרונות והרווחים עליהם', 'זכאות להלוואה' up to '90% משווי הפיקדון' from half a year. Read 2026-11-07 from the table the page loads (https://www.mizrahi-tefahot.co.il/umbraco/surface/NabatDeposits/GetNabatDeposits?depositType=additional, 'populationDateAdditional' 06/11/2026 08:30:52; library 1b5cbf3747b9920d) and from the plan's terms document linked from its name. Terms document library 9e9e9140b635693f."
@@ -96,8 +91,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel plan (the terms document's 'מגזר הצמדה: שקלי לא צמוד'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

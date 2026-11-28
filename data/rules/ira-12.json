@@ -92,7 +92,7 @@
       "notes": "Across all the member's IRA funds, holdings of any class of control means in a corporation held through foreign funds may not exceed 5%."
     }
   },
-  "text_he": "ניירות ערך של תאגיד אחד לא יעלו על 10% מנכסי הקופה (לא כולל תעודות סל, קרנות חוץ ואג\"ח ממשלתיות). אופציות שנקנו, חוץ מאופציית רכש 001, עד 5%. בטוחות לנגזרים ולמכירה בחסר עד 10%. החזקה באמצעי שליטה דרך קרנות חוץ עד 5%. התקנות מתירות כתיבת אופציות בגבולות הבטוחות.",
+  "text_he": "ניירות ערך של תאגיד אחד לא יעלו על {IRA-12:single_issuer_cap} מנכסי הקופה, לא כולל תעודות סל, קרנות חוץ ואג״ח ממשלתיות. אופציות שנקנו, חוץ מאופציית רכש 001, עד {IRA-12:bought_options_cap}. בטוחות לנגזרים ולמכירה בחסר עד {IRA-12:collateral_cap}. החזקה באמצעי שליטה דרך קרנות חוץ עד {IRA-12:foreign_fund_control_cap}. התקנות מתירות כתיבת אופציות בגבולות הבטוחות.",
   "figure_names_he": {
     "single_issuer_cap": "מגבלת החזקה בתאגיד אחד",
     "bought_options_cap": "מגבלת אופציות שנקנו",

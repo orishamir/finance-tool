@@ -159,7 +159,7 @@ export function InstitutionPage({ data, fees, notes }: { data: Omit<InstitutionP
   );
 
   return (
-    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, terms: data.helpTerms, dimensions: data.terms.dimensions, today: data.today, ...(data.terms.company ? { company: data.terms.company } : {}), pageCompanies: data.terms.pageCompanies }}>
+    <PageShell current="decoder" data={{ rules: data.rules, pointed: data.pointed, heads: data.heads, terms: data.helpTerms, dimensions: data.terms.dimensions, today: data.today, ...(data.terms.company ? { company: data.terms.company } : {}), pageCompanies: data.terms.pageCompanies }}>
       <CompanyTemplate
         pageId={data.id}
         name={name}

@@ -26,6 +26,9 @@
   "variants": [
     "מס יסף"
   ],
+  "also_called": [
+    "מס יסף"
+  ],
   "rule_ids": [
     "TXG-09",
     "TXG-10",

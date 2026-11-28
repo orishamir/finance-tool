@@ -11,6 +11,9 @@
   "variants": [
     "סוג קרן"
   ],
+  "also_called": [
+    "סוג קרן"
+  ],
   "rule_ids": [
     "CAT-10",
     "CAT-11"

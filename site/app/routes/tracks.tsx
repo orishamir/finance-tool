@@ -19,7 +19,7 @@ export function shouldRevalidate() {
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { buildTrackBrowser, templateRuleIds, trackProductIds } = await import("../lib/track-browser.server");
-  const { loadRules, loadTerms, pointedRecords } = await import("../lib/data.server");
+  const { loadRules, loadTerms, pointedShipment } = await import("../lib/data.server");
   const { HELP_TERMS } = await import("../lib/track-browser");
   if (params.product && !(trackProductIds as readonly string[]).includes(params.product)) throw new Response("Not found", { status: 404 });
   const data = buildTrackBrowser();
@@ -35,7 +35,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const rules = Object.fromEntries(ids.map((id) => [id, all[id]!]));
   // the age until which National Insurance pays a child-savings fee, for the note over that list (CS-18, as the company page reads it)
   const childAge = (all["CS-18"]?.figures?.nii_pays_until_age ?? null) as SiteValue | null;
-  return { data, rules, pointed: pointedRecords(rules, all), terms, childAge };
+  return { data, rules, ...pointedShipment(rules, all), terms, childAge };
 }
 
 export function meta({ location }: Route.MetaArgs) {
@@ -43,9 +43,9 @@ export function meta({ location }: Route.MetaArgs) {
 }
 
 export default function Tracks() {
-  const { data, rules, pointed, terms, childAge } = useLoaderData<typeof loader>();
+  const { data, rules, pointed, heads, terms, childAge } = useLoaderData<typeof loader>();
   return (
-    <PageShell current="decoder" data={{ rules, pointed, terms, dimensions: {}, today: data.today }}>
+    <PageShell current="decoder" data={{ rules, pointed, heads, terms, dimensions: {}, today: data.today }}>
       <div className="flex flex-col gap-5 lg:gap-6">
         <PageHead
           tabs={<CompanyTabs current="product" />}

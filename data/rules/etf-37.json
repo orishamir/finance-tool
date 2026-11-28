@@ -1,7 +1,7 @@
 {
   "id": "ETF-37",
   "title": "S&P 500: the provider's own description: the gauge of large-cap U.S. equities, 500 leading companies, about 80% of available market capitalisation, float-adjusted market-cap weighted, in U.S. dollars, launched 4 March 1957",
-  "title_he": "המדד האמריקאי בתיאור עורך המדד: חמש מאות חברות מובילות",
+  "title_he": "המדד האמריקאי בתיאור עורך המדד: חברות מובילות",
   "strength": "institution",
   "dimensions": [
     "currency"
@@ -93,7 +93,7 @@
       "notes": "\"The index Launch Date is Mar 04, 1957\" (index page). History before it is back-tested. Set by S&P Dow Jones Indices in its own methodology or index page, which it may change; no law or regulation sets it."
     }
   },
-  "text_he": "המדד הוא, לדברי עורך המדד S&P Dow Jones Indices, המדד היחיד הטוב ביותר למניות הגדולות בארצות הברית. הוא כולל חמש מאות חברות מובילות ומכסה בערך ארבע חמישיות משווי השוק הזמין להשקעה. משקל כל חברה נקבע לפי שווי השוק של המניות שבידי הציבור, והמדד מחושב בדולרים.",
+  "text_he": "המדד הוא, לדברי עורך המדד S&P Dow Jones Indices, המדד היחיד הטוב ביותר למניות הגדולות בארצות הברית. הוא כולל {ETF-37:constituent_companies} חברות מובילות ומכסה בערך {ETF-37:market_cap_coverage} משווי השוק הזמין להשקעה. משקל כל חברה נקבע לפי שווי השוק של המניות שבידי הציבור, והמדד מחושב בדולרים.",
   "figure_names_he": {
     "constituent_companies": "מספר החברות במדד",
     "constituents": "מספר ניירות הערך במדד",

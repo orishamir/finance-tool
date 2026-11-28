@@ -3,10 +3,25 @@
 import type { SearchEntry } from "../lib/search";
 import { companyPath, documentsPath, guidePath, rulesPath, trackBrowserPath, trackPath } from "../lib/site-paths";
 
+/** Each page's own list of the terms its content ships, by page id. */
+type ShippedTerms = Readonly<Record<string, { termIds: readonly string[] } | undefined>>;
+
+/**
+ * The page a term's search row opens: of the term's own guide pages, given in the guide's order, the first whose content ships the term,
+ * then the first of its exposure pages that does; null when none ships it. It stays out of lib/search, whose code ships to the browser.
+ */
+function termPage(he: string, guides: readonly string[], exposures: readonly string[], guideContent: ShippedTerms, exposureContent: ShippedTerms): { guide: string; exposure?: undefined } | { guide?: undefined; exposure: string } | null {
+  const guide = guides.find((id) => guideContent[id]?.termIds.includes(he));
+  if (guide) return { guide };
+  const exposure = exposures.find((id) => exposureContent[id]?.termIds.includes(he));
+  return exposure ? { exposure } : null;
+}
+
 export async function loader() {
-  const { loadCma, loadTerms, loadProducts, loadRules, loadParameters, today } = await import("../lib/data.server");
+  const { loadCma, loadProducts, loadRules, loadParameters, readDirFiles, today } = await import("../lib/data.server");
+  const { termRecord } = await import("@finance-tool/schema");
   const { exposureHref, loadCatalog, loadExposures } = await import("../lib/instruments.server");
-  const { normalize, ruleFigs, shownEntry } = await import("../lib/search");
+  const { normalize, ruleFigs, shownEntry, termKey } = await import("../lib/search");
   const { gershayim } = await import("../lib/format");
   const { limitedBondFund, mutualFunds, search, searchMore, sourceBlock, parametersPage, topicName } = await import("../copy");
   const entries: SearchEntry[] = [];
@@ -24,7 +39,7 @@ export async function loader() {
   for (const name of mutualFunds.searchNames) entries.push(guideRow(name, "/guide/mutual-funds"));
   // the parts of each guide a question can lead to (tax, cost, money in and out, who offers it, risks), found only through a product's
   // name in the question (lib/search.ts `leadRows`), and the page that compares the product across providers
-  const { firstInGuideOrder, sectionTitle, topicSection } = await import("../lib/guide-nav");
+  const { inGuideOrder, sectionTitle, topicSection } = await import("../lib/guide-nav");
   const { sectionTopicWords } = await import("../lib/search-aliases");
   const proseSections: Record<string, readonly { id: string; title: string }[]> = { "limited-bond-fund": limitedBondFund.sections, "mutual-funds": mutualFunds.sections };
   for (const [href, title] of titles) {
@@ -89,16 +104,23 @@ export async function loader() {
     const row = notCovered.find((r) => r.he === s.name);
     for (const name of [s.name, ...(row?.variants ?? [])]) entries.push({ kind: "notcovered", name, line: search.notCoveredLine, href: `/not-covered#${s.id}`, norm: normalize(name) });
   }
-  for (const term of loadTerms()) {
-    // a term of several products opens on the first of them in the guide's own order
-    const guide = firstInGuideOrder(term.wrapperIds.filter((id) => wrappers.some((w) => w.id === id)));
-    const exposure = guide ? undefined : term.exposureIds.find((id) => exposures.some((e) => e.id === id));
+  // a term's row opens its card on a page that ships it (the page content's own list of terms): the first such page in the guide's
+  // order, then an exposure page that ships it, and only when none does the first page of its products; each row is keyed by its record,
+  // since several records share a name, and is found by its name, its other names and its search strings
+  const { guideContent } = await import("../content/guide");
+  const { exposureContent } = await import("../content/exposure");
+  for (const { record: term } of readDirFiles("data/terms", termRecord)) {
+    const ownGuides = inGuideOrder(wrappers.map((w) => w.id).filter((id) => term.wrapper_ids.some((w) => w === id)));
+    const ownExposures = (term.exposure_ids ?? []).filter((id) => exposures.some((e) => e.id === id));
+    const marked = termPage(term.he, ownGuides, ownExposures, guideContent, exposureContent);
+    const guide = marked ? marked.guide : ownGuides[0];
+    const exposure = marked ? marked.exposure : guide ? undefined : ownExposures[0];
     if (!guide && !exposure) continue;
     const page = guide ? wrappers.find((w) => w.id === guide)!.names.he[0]! : exposures.find((e) => e.id === exposure)!.names.he[0]!;
     // the term's card opens on its page (TermFromAddress): the pages' terms list is gone
     const hash = `term=${encodeURIComponent(term.he)}`;
     const href = guide ? guidePath(guide, { hash }) : `${exposureHref(exposure!)}#${hash}`;
-    for (const name of [term.he, ...term.variants]) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name), key: `term:${term.he}` });
+    for (const name of new Set([term.he, ...(term.also_called ?? term.variants), ...(term.search ?? [])])) entries.push({ kind: "term", name, line: `${search.termLine} ${page}`, href, norm: normalize(name), key: termKey(term.id) });
   }
   // knowledge layer (synthesis 3.6): rules by title, id and figures; parameters by name and id; documents by title. The id is the row's key,
   // which a typed code finds (lib/search.ts `idForms`); the row's line never prints it: the words carry the rule (D101)

@@ -70,8 +70,7 @@
     "update_rule": "provider-set",
     "rule_ids": [
       "BANK-13",
-      "BANK-25",
-      "BANK-34"
+      "BANK-25"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax: offered column printed 'p-3.25' with 1.5 beside it; code 0211 'פקדון ל-3 חודשים', period '3 חודשים', interest type 'משתנה', linkage 'לא צמוד', exit points 'ללא תחנות יציאה' לא קיים; renewal 'ללא אפשרות חידוש' (max renewals 0); break 'קיימת עם קנס שבירה'; 'שיעור הריבית לפיקדון שכיח' empty; deposit channels 'סניף,טלבנק,משוב'; remarks ''. This row as printed: 'החל מ-250 שח': 'p-3.25' with 1.5 beside it, common empty. Read 2026-11-09 from the data the page loads (https://www.discountbank.co.il/api/MoneyMarket/Saving?pageId=6c03bad7-2f01-4a73-bcf3-8c3599a58221, 'lastUpdatedAt' 2026-11-08T18:00:00, prime 4.75%); column titles from the page's own table definition."
@@ -93,8 +92,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

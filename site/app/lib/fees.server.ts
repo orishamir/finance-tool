@@ -7,7 +7,7 @@ import { join } from "node:path";
 import { cmaPeriodFile, type RuleRecord, type ValueObject } from "@finance-tool/schema";
 import { latestTracks, type CmaTrack } from "@finance-tool/engine";
 import { feeDeal, guideBlocks } from "../copy";
-import { classificationToWrapper, loadProducts, loadRules, openTracksOf, pointedRecords, root, termsFor } from "./data.server";
+import { classificationToWrapper, loadProducts, loadRules, openTracksOf, pointedShipment, root, termsFor } from "./data.server";
 import { ACCOUNT_KIND, dealKindsOf } from "./fee-deal/kinds";
 import { houseDeal } from "./deal-account/house-deal";
 import { FEE_KIND_IDS } from "./fee-deal/shapes";
@@ -129,11 +129,12 @@ export function buildFeesData(): FeesData {
  * stated sentences state (a bank's order through a clerk, BRK-71), those of the rule table's bans, which a ban's words open and whose figure
  * they show (MF-71's distribution fee), and BANK-35, whose cap flags a current account's year of holding (F-102, `accountCapOf`).
  */
-function citedRules(parts: Pick<FeesData, "kinds" | "templates" | "houses" | "fx" | "terms">): Pick<FeesData, "rules" | "pointed"> {
+function citedRules(parts: Pick<FeesData, "kinds" | "templates" | "houses" | "fx" | "terms">): Pick<FeesData, "rules" | "pointed" | "heads"> {
   const allRules = loadRules();
   const stated = [...Object.values(STATED_RULES).flatMap((ids) => ids ?? []), ...BAN_RULES, ...ACCOUNT_CAP_RULES];
   const rules: RuleRecord[] = [...ruleIdsIn(parts, new Set(stated))].sort().flatMap((id) => (allRules[id] ? [allRules[id]] : []));
-  return { rules, pointed: Object.values(pointedRecords(rules, allRules)) };
+  const { pointed, heads } = pointedShipment(rules, allRules);
+  return { rules, pointed: Object.values(pointed), heads };
 }
 
 let cached: FeesData | null = null;
@@ -158,6 +159,9 @@ export function houseTermsData(id: string, today: string, held: { rules: Readonl
   const allRules = loadRules();
   const asks = house.distribution ? distributionRuleIds(house.provider === "bank" ? "bank" : "broker") : [];
   const rules = [...ruleIdsIn({ deal, house }, new Set(asks))].filter((r) => !held.rules.has(r)).sort().flatMap((r) => (allRules[r] ? [allRules[r]] : []));
-  const pointed = Object.values(pointedRecords(rules, allRules)).filter((r) => !held.rules.has(r.id) && !held.pointed.has(r.id));
-  return { deal, house, data: { rules, pointed, kinds: all.kinds.filter((k) => k.id === ACCOUNT_KIND), terms: {} } };
+  const shipment = pointedShipment(rules, allRules);
+  const unheld = (id: string) => !held.rules.has(id) && !held.pointed.has(id);
+  const pointed = Object.values(shipment.pointed).filter((r) => unheld(r.id));
+  const heads = Object.fromEntries(Object.entries(shipment.heads).filter(([id]) => unheld(id)));
+  return { deal, house, data: { rules, pointed, heads, kinds: all.kinds.filter((k) => k.id === ACCOUNT_KIND), terms: {} } };
 }

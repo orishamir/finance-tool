@@ -10,7 +10,12 @@
     "brokerage-account"
   ],
   "variants": [
-    "תעריפון",
+    "תעריפון"
+  ],
+  "also_called": [
+    "תעריפון"
+  ],
+  "search": [
     "תעריפון מלא"
   ],
   "rule_ids": [

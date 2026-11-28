@@ -1,7 +1,7 @@
 {
   "id": "ETF-47",
   "title": "NASDAQ-100 return versions: price (NDX), gross total return (XNDX) and a notional net total return that reinvests 70% of dividends",
-  "title_he": "נאסד״ק 100: גרסאות התשואה",
+  "title_he": "נאסד״ק-100: גרסאות התשואה",
   "strength": "institution",
   "dimensions": [
     "distribution-policy",

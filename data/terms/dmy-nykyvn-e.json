@@ -32,6 +32,9 @@
   "variants": [
     "דמי נכיון"
   ],
+  "also_called": [
+    "דמי נכיון"
+  ],
   "rule_ids": [
     "TXG-14",
     "TXI-01"

@@ -125,10 +125,16 @@ interface LedgerOut {
  */
 function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readonly number[], outlay: readonly number[], months: number, I: readonly number[]): LedgerOut {
   const { fees } = input;
+  // the wrapper's fee caps are looked at, each taken on its fee line where it cut a fee; PF-13's minimum is looked at on the line of a
+  // discount, and taken on the line whose discount it extended
   const caps = feeCaps[input.wrapper].rule;
-  const balanceCap = book.rate(caps, "balance_cap");
-  const depositCap = book.rate(caps, "deposit_cap");
-  const minDiscountMonths = 12 * book.amount("PF-13", "min_discount_years");
+  const balanceCap = book.on("fees", "balance").peek.rate(caps, "balance_cap");
+  const depositCap = book.on("fees", "deposit").peek.rate(caps, "deposit_cap");
+  const minDiscountMonths = 12 * book.on("fees", fees.discount || !fees.depositDiscount ? "balance" : "deposit").peek.amount("PF-13", "min_discount_years");
+  let balanceCapCut = false;
+  let depositCapCut = false;
+  let depositDiscountExtended = false;
+  let balanceDiscountExtended = false;
   const g = annualToMonthly(input.market.grossReturn);
   let balance = 0;
   let insurance = 0;
@@ -151,6 +157,8 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
     // F-16: a discounted deposit fee reverts to its rate after the period, no earlier than PF-13's minimum, as on a provident fund
     const dep = feeForMonth(fees.deposit, fees.depositDiscount, minDiscountMonths, month, endsBy);
     discountExtended ||= dep.extended;
+    depositDiscountExtended ||= dep.extended;
+    if (dep.rate > depositCap) depositCapCut = true;
     const fee = depositFee(dep.rate, depositCap, amount);
     const ins = insuranceCost(input.insurance.rate, amount);
     tally.fee("deposit", fee);
@@ -162,7 +170,9 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
     if (m <= input.goal.months) deposit(gross[m] ?? 0, outlay[m] ?? 0, m);
     const { rate, extended } = feeForMonth(fees.balance, fees.discount, minDiscountMonths, m, endsBy);
     discountExtended ||= extended;
+    balanceDiscountExtended ||= extended;
     balance *= 1 + g;
+    if (rate > balanceCap && balance > 0) balanceCapCut = true;
     const bal = balanceFee(rate, balanceCap, balance);
     const direct = (fees.direct / 12) * balance;
     tally.fee("balance", bal);
@@ -172,6 +182,10 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
     tally.point(m, I[m]!, balance);
   }
   if (discountExtended) tally.flag("PF-13");
+  if (depositDiscountExtended) book.on("fees", "deposit").took("PF-13");
+  if (balanceDiscountExtended) book.on("fees", "balance").took("PF-13");
+  if (depositCapCut) book.on("fees", "deposit").took(caps);
+  if (balanceCapCut) book.on("fees", "balance").took(caps);
   // PF OQ18 (D87): whether case 1 reaches one deposit and no more is open; the run ends the discount after PF-14's six months and names the question
   if (oneDeposit) tally.flag("PF-OQ18");
   return { balance, insurance, series };
@@ -179,15 +193,18 @@ function ledger(book: RuleBook, tally: Tally, input: PensionInput, gross: readon
 
 /** Flags every run of these wrappers carries. */
 function commonFlags(book: RuleBook, tally: Tally, input: PensionInput) {
-  if (input.fees.direct > 0) book.cite("PF-10");
+  // the direct expenses are charged on their own line (PF-10)
+  if (input.fees.direct > 0) book.on("fees", "direct").cite("PF-10");
   else tally.flag("G-14");
-  if (input.wrapper === "provident-for-annuity") citeIfPresent(book, ["PEN-35"]);
+  // the insurance cost comes off each deposit (F-53): a provident fund for annuity has none (PEN-35), a pension fund's is entered (PEN-15)
+  if (input.wrapper === "provident-for-annuity") citeIfPresent(book.on("deposit"), ["PEN-35"]);
   else {
     // A-17 is entered by the person; the tables are not collected (G-12).
-    citeIfPresent(book, ["PEN-15"]);
+    citeIfPresent(book.on("deposit"), ["PEN-15"]);
     tally.flag("G-12");
   }
-  book.cite("TXP-13");
+  // the fund's income is exempt while invested, which zeroes the tax during the run
+  book.on("taxDuring").cite("TXP-13");
 }
 
 /**
@@ -337,8 +354,8 @@ function employerLinePensionUnder(input: PensionInput, ctx: RunContext): Pension
   // TXP-10: employer component above the exempt limit. TXP-11: the severance ceiling, applied monthly as 1/12 of the yearly
   // amount (Income Tax circular 4/2019 s.2.1.1); a severance deposit above it is work income at
   // deposit, which this run does not tax yet, so it is flagged under the rule.
-  // the tax on the employer's excess, paid from the salary when deposited, is a tax during the run (F-52)
-  const salaryTax = book.on("taxDuring");
+  // the tax on the employer's excess, paid from the salary when deposited, is a tax during the run (F-52), on its own line (`TaxLine`)
+  const salaryTax = book.on("taxDuring", "salaryTax");
   const ceiling = salaryTax.amount("TXP-10", "employer_ceiling");
   const exemptPct = salaryTax.rate("TXP-10", "employer_exempt_pct");
   const pensionPart = p.employer.pensionRate * deposited;

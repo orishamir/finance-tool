@@ -8,10 +8,15 @@
   "variants": [
     "צמודי מט\"ח"
   ],
+  "also_called": [
+    "צמודי מט\"ח"
+  ],
   "rule_ids": [
     "FXD-02",
     "FXD-09",
     "FXD-10",
+    "FXD-27",
+    "FXD-28",
     "TX2-01"
   ],
   "source": {

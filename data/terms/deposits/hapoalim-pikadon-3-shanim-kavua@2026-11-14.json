@@ -49,8 +49,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax as printed ('2.5%'). Row 'פיקדון ל 3 שנים': rate type 'קבועה', linkage 'ללא הצמדה', amount 'החל מ-1000 ₪', break 'אין אפשרות לשבירת הפיקדון', renewal '-' / '-', exit points 'קיימת' 'מ 25 חודש ובכל יום בהמשך לפי תנאי העסקה', common-deposit rate '-', remark '-', deposit method '-'. The table prints no deposit channel. This row as printed: 'החל מ-1000 ₪': '2.5%'. Read 2026-11-14 from the data the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data), whose message reads 'המידע נכון ל-15.11.2026 ולפני חישוב מס במקור', the next business day after the read (a Saturday). The read of 2026-11-09 printed '2.55%' on this row; every other value of the row is unchanged."
@@ -71,9 +70,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-03"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
@@ -119,7 +116,7 @@
     "value": false,
     "max_renewals": null
   },
-  "conditions_he": "אפשר למשוך את הכסף מהחודש ה-25 ובכל יום אחריו, לפי תנאי העסקה.",
+  "conditions_he": "אפשר למשוך את הכסף מהחודש ה־25 ובכל יום אחריו, לפי תנאי העסקה.",
   "snapshot": "2026-11-14",
   "source": {
     "url": "https://www.bankhapoalim.co.il/forms/he/savings/deposit-interest",

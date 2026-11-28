@@ -49,8 +49,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax as printed ('1.8%'). Row 'ספרינט': rate type 'קבועה', linkage 'ללא הצמדה', amount 'החל מ-1000 ₪', break 'אין אפשרות לשבירת הפיקדון', renewal '-' / '-', exit points 'קיימת' 'כל חודש', common-deposit rate '-', remark 'פיקדון ל-12 חודשים - בעת משיכה חלקית או מלאה לפני סוף תקופת החיסכון יתקבלו 100% מהריבית הצבורה', deposit method 'חד פעמית'. The table prints no deposit channel. Read 2026-11-06 from the data the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data); the data carries no date and the page says 'המידע נכון למועד הצגתו ולפני חישוב מס רווחי הון', so effective_from is the day read. The 2023 brochure 'פיקדון ספרינט דיגיטלי' (https://www.bankhapoalim.co.il/sites/default/files/media/sprynt_dygytly.pdf, 'נכונים לספטמבר 2023') says a withdrawal at an exit point earns 70% of the accrued interest; the 447 table of today says 100%; the table is the current publication and is kept. The contract (https://www.bankhapoalim.co.il/api/media/PDFS/standard-contract/sprynt.pdf) leaves the period and share blank. Re-read 2026-11-09: Read 2026-11-09 from the data the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data), whose message reads 'המידע נכון ל-09.11.2026 ולפני חישוב מס במקור'. The row prints the same figures as on 2026-11-06."
@@ -71,9 +70,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-03"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read there 2026-10-25), not re-read today."

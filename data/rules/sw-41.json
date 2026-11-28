@@ -1,7 +1,7 @@
 {
   "id": "SW-41",
   "title": "The transfer circular 2017-9-17 on gov.il: the official text is the one read, with the same deadlines; its dates and what it cancels",
-  "title_he": "חוזר העברת הכספים בין קופות גמל באתר הממשלה: הנוסח הרשמי ולוחות הזמנים שבו",
+  "title_he": "חוזר העברת הכספים בין קופות גמל: לוחות הזמנים שבו, ואיזה נוסח בתוקף",
   "strength": "primary",
   "dimensions": [
     "transfer-switch-process"
@@ -19,15 +19,15 @@
         "strength": "primary",
         "locator": "p.2, סעיף 3(ו)",
         "locator_he": "עמוד 2, סעיף 3(ו)",
-        "page": 2
+        "page": 2,
+        "quote": "בתוך שני ימי עסקים מהמועד הקובע"
       },
       "checked": "2026-10-25",
       "effective_from": "2017-01-01",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "fixed in regulation",
-      "state": "sourced",
-      "notes": "'בתוך שני ימי עסקים מהמועד הקובע'."
+      "state": "sourced"
     },
     "rejection_notice": {
       "value": 3,
@@ -39,15 +39,15 @@
         "strength": "primary",
         "locator": "p.2, סעיף 3(ז)",
         "locator_he": "עמוד 2, סעיף 3(ז)",
-        "page": 2
+        "page": 2,
+        "quote": "בתוך שלושה ימי עסקים ממועד העברת הבקשה"
       },
       "checked": "2026-10-25",
       "effective_from": "2017-01-01",
       "effective_to": null,
       "tax_year": null,
       "update_rule": "fixed in regulation",
-      "state": "sourced",
-      "notes": "'בתוך שלושה ימי עסקים ממועד העברת הבקשה'."
+      "state": "sourced"
     },
     "lapse_active": {
       "value": 120,
@@ -180,7 +180,7 @@
     "employer_notice": "הודעה למעסיק",
     "member_confirmations": "אישורים לעמית"
   },
-  "text_he": "העותק הרשמי של חוזר העברת הכספים בין קופות גמל נמצא באתר הממשלה, וממנו נקראים כללי ההעברה. סעיף שבוטל, הוראות לקופה מרכזית לפיצויים והודעה למעסיק הם חלק מהנוסח המקורי. החוזר מבטל את קודמו. לוחות הזמנים נקראו כלשונם: העברת הבקשה לקופה המעבירה תוך שני ימי עסקים, הודעת דחייה או עיכוב תוך שלושה ימי עסקים, פקיעת בקשה אחרי מאה ועשרים או שישים יום, החזרת כספים אחרי ביטול תוך עשרה ימי עסקים, והודעה למעסיק ואישורים לעמית תוך חמישה עשר ימי עסקים. החוזר שבתוקף הוא 2016-9-11. חוזר 2017-9-17 תיקן אותו, וחוזר 2020-9-2 תיקן אותו שוב וצירף נוסח משולב. במאגר ההסדרה של הרשות אין תיקון מאוחר יותר.",
+  "text_he": "חוזר העברת הכספים בין קופות גמל קובע את לוחות הזמנים של ניוד: העברת הבקשה לקופה המעבירה תוך {SW-41:forward_request}, הודעת דחייה או עיכוב תוך {SW-41:rejection_notice}, החזרת כספים אחרי ביטול תוך {SW-41:return_after_cancellation}, הודעה למעסיק תוך {SW-41:employer_notice} ואישורים לעמית תוך {SW-41:member_confirmations}. בקשה של עמית פעיל פוקעת אחרי {SW-41:lapse_active}, ובקשה של עמית לא פעיל, או אחרי הודעה שלא יופקד כסף, אחרי {SW-41:lapse_inactive}. החוזר שבתוקף הוא 2016-9-11: חוזר 2017-9-17 תיקן אותו, וחוזר 2020-9-2 תיקן אותו שוב וצירף נוסח משולב. האתר לא מצא במאגר ההסדרה של הרשות תיקון מאוחר יותר.",
   "il_finance_file": "switching-and-transfers.md",
   "checked": "2026-10-26",
   "scope": "general",

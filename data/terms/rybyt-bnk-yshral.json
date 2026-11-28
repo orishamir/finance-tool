@@ -14,6 +14,9 @@
   "variants": [
     "ריבית ב\"י"
   ],
+  "also_called": [
+    "ריבית ב\"י"
+  ],
   "rule_ids": [
     "BANK-25",
     "BANK-46",

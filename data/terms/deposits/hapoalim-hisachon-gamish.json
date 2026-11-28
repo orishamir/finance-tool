@@ -25,10 +25,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-27",
-      "BANK-28"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "The 447 row's comment column prints 'פיקדון ל-24 חודשים'; deposit method 'הוראת קבע'. The product sheet says 'הפיקדון לתקופה כוללת של עד 24 חודשים עם תחנות יציאה מתום חודש וכל חודש לאחר מכן'."
   },
@@ -71,9 +68,7 @@
     "update_rule": "provider-set",
     "rule_ids": [
       "BANK-13",
-      "BANK-25",
-      "BANK-28",
-      "BANK-34"
+      "BANK-25"
     ],
     "state": "sourced",
     "notes": "0.14% = 4.61% - פריים; nominal annual before tax, variable on the bank's prime (rate type 'משתנה', 'ללא הצמדה'); exit points 'קיימת', 'כל חודש'; break 'אין אפשרות לשבירת הפיקדון'; deposit method 'הוראת קבע'. The product sheet: 'ריבית שקלית משתנה הנגזרת מ\"ריבית הפריים\" בניכוי מרווח קבוע'. Read 2026-11-07 from the table the page loads (https://www.bankhapoalim.co.il/forms/he/_api/deposit-products-data, library 53e44c295b233803); the page states 'המידע נכון למועד הצגתו ולפני חישוב מס רווחי הון', so the date read is the date of the figures."
@@ -95,8 +90,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel plan (the 447 table's linkage column 'ללא הצמדה'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

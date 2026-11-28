@@ -4,7 +4,7 @@
 import { datedDay, tariffDated } from "./tariff-date";
 import { companyPath, documentsPath } from "./site-paths";
 import { valueRuleIds } from "./page-rules.server";
-import { depositKindRules, exitPointsOf, ownName, printedQuotes, shownName, shownRate } from "./deposit-kind";
+import { depositKindRules, doubtField, doubtFor, exitPointsOf, ownName, printedQuotes, restatesDoubt, shownName, shownRate, type DoubtField } from "./deposit-kind";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { companyTermRule, institutionsTable, ownDocumentCompanies, takesNewMembers, type DepositTerms, type FeeLine, type FeesSnapshot, type InstitutionRegistryRow, type RuleRecord, type ValueObject } from "@finance-tool/schema";
@@ -20,10 +20,10 @@ import type {
   TariffLineRow,
 } from "../components/decoder/institutions/types";
 import { distributionRuleIds } from "../components/decoder/institutions/types";
-import { loadChecklistRows, loadRules, loadProducts, loadTerms, loadWrappers, pointedRecords, root, today } from "./data.server";
+import { loadChecklistRows, loadRules, loadProducts, loadTerms, loadWrappers, pointedShipment, root, today } from "./data.server";
 import { HELP_TERMS as DEPOSIT_TERMS } from "./deposit-browser";
 import { asOfSpan } from "./bank-table";
-import { topicName } from "../copy";
+import { r4catalogue, topicName } from "../copy";
 import { loadCatalog, loadDepositTerms, seenValue, seenWhere } from "./instruments.server";
 import { isFxToFx, shortName } from "./providers";
 import { ownBy, type SiteValue } from "./value";
@@ -110,9 +110,10 @@ function rateTableUrl(bank: string): string | null {
 
 // ---------------------------------------------------------------- value objects
 
-// D31: everything on a company's page is that company's own figure about its own product; the deposits page shows each bank's the same way
+// D31: everything on a company's page is that company's own figure about its own product; the deposits page shows each bank's the same way.
+// The note its sheet shows is the value's Hebrew note (`notes_he`) where it has one; the sheet shows `notes` only where they are Hebrew.
 export function site(v: ValueObject, t: string, snapshot: string, owner: string): SiteValue {
-  return ownBy({ ...v, stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null } as SiteValue, owner);
+  return ownBy({ ...v, ...(v.notes_he ? { notes: v.notes_he } : {}), stale: isStale(snapshot, t) ? { since: snapshot, cadence: "quarterly" } : null } as SiteValue, owner);
 }
 
 function dateValue(date: string, from: Pick<ValueObject, "source">, checked: string, t: string, snapshot: string, owner: string): SiteValue {
@@ -151,10 +152,20 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     also.push(n);
   }
   const current = d.wrapper_id === "current-account";
-  const asOfDate = d.rate_offered.effective_from;
   const stale = isStale(d.snapshot, t);
   const owner = shortName(d.bank, d.bank);
-  const mark = (v: ValueObject) => site(v, t, d.snapshot, owner);
+  const l = r4catalogue.labels;
+  const on = doubtField(d);
+  // each figure says in its sheet's head which line of the card it is (its row's label); a doubt travels with the number it is about,
+  // and a Hebrew note that says again what the doubt says gives way to it (Mizrahi-Tefahot 189 prints a rate per exit period)
+  const mark = (v: ValueObject, about: string, doubtOn?: DoubtField): SiteValue => {
+    const shown = site(v, t, d.snapshot, owner);
+    return { ...shown, ...(restatesDoubt(shown.notes, d.doubt_he) ? { notes: "" } : {}), about, ...(doubtOn ? doubtFor(d, doubtOn) : {}) };
+  };
+  // the day the bank's table says its rates hold from; where it prints none, the day the record was read, which claims no date of the bank's
+  const asOfDate = d.rate_offered.effective_from;
+  const asOf = dateValue(asOfDate ?? d.rate_offered.checked, d.rate_offered, d.rate_offered.checked, t, d.snapshot, owner);
+  const amountMax = d.amount_range.max ? mark(d.amount_range.max, l.amount, "amount_range") : null;
   return {
     id: d.id,
     name,
@@ -163,28 +174,28 @@ function productRow(d: DepositTerms, t: string): ProductRowData {
     type447: d.type_447,
     wrapperId: d.wrapper_id,
     currentAccount: current,
-    term: mark(d.term_months),
+    term: mark(d.term_months, l.term, "term_months"),
     rateType: d.rate_type,
     anchor: d.anchor ?? null,
-    spread: d.spread ? mark(d.spread) : null,
-    // a doubt travels with the number: its sheet says it, not "not found in the source" (Mizrahi-Tefahot 189 prints a rate per exit period)
-    rate: mark(d.doubt_he ? { ...shownRate(d), notes: d.doubt_he } : shownRate(d)),
-    asOf: dateValue(asOfDate ?? d.snapshot, d.rate_offered, d.rate_offered.checked, t, d.snapshot, owner),
+    spread: d.spread ? mark(d.spread, l.rateType) : null,
+    rate: mark(shownRate(d), l.rate, "rate"),
+    asOf: { ...(asOfDate ? asOf : { ...asOf, effective_from: null }), about: l.asOf },
     asOfAfterRead: !!asOfDate && asOfDate > d.rate_offered.checked,
     linkage: d.linkage,
-    linkageValue: textValue(d.linkage, { source: d.source, checked: d.snapshot }, `linkage "${d.linkage}" as the record holds it`, owner),
-    taxBucket: mark(d.tax_bucket),
-    amountMin: mark(d.amount_range.min),
-    amountMax: d.amount_range.max ? mark(d.amount_range.max) : null,
+    linkageValue: { ...textValue(d.linkage, { source: d.source, checked: d.snapshot }, `linkage "${d.linkage}" as the record holds it`, owner), about: l.linkage, ...doubtFor(d, "linkage") },
+    taxBucket: mark(d.tax_bucket, l.tax),
+    amountMin: amountMax ? mark(d.amount_range.min, l.amount) : mark(d.amount_range.min, l.amount, "amount_range"),
+    amountMax,
     amountEdges: { ...(d.amount_range.min_edge ? { min_edge: d.amount_range.min_edge } : {}), ...(d.amount_range.max_edge ? { max_edge: d.amount_range.max_edge } : {}) },
     breakTerms: { penalty: d.break.penalty, quotes: printedQuotes(d.break.mechanism_text), rules: d.break.rule_ids },
     exitPoints: exitPointsOf(d.exit_points),
     autoRenew: { value: d.auto_renew.value, maxRenewals: d.auto_renew.max_renewals },
-    // what sets the deposit apart: its kind as labels, the conditions the bank prints in plain Hebrew, and an open doubt; the
-    // record's English working notes stay in the data (the current account's card showed them as the bank's words)
+    // what sets the deposit apart: its kind as labels, the conditions the bank prints in plain Hebrew, and an open doubt with the field it
+    // is about; the record's English working notes stay in the data (the current account's card showed them as the bank's words)
     variant: d.variant ?? [],
     conditions: d.conditions_he ?? null,
     doubt: d.doubt_he ?? null,
+    ...(d.doubt_he ? { doubtOn: on } : {}),
     table: { url: d.rate_offered.source.url, title: d.rate_offered.source.title },
     stale,
     snapshot: d.snapshot,
@@ -340,8 +351,8 @@ export function buildInstitution(id: string): InstitutionPageData | null {
   const registryIds = registryIdsOfPage(id);
   const termGroups = companyTermGroups(registryIds, allRules, topicName);
   for (const rid of termGroups.flatMap((g) => g.ids)) rules[rid] = allRules[rid]!;
-  // the records those cards point at (derived_from, examples), so every chip on them opens
-  const pointed = pointedRecords(rules, allRules);
+  // what those cards point at (derived_from, examples): the records their slots read, and the heads of the rest, so every chip on them opens
+  const { pointed, heads } = pointedShipment(rules, allRules);
 
   return {
     id,
@@ -358,6 +369,7 @@ export function buildInstitution(id: string): InstitutionPageData | null {
     catalogue,
     rules,
     pointed,
+    heads,
     helpTerms,
     terms: { groups: termGroups, company: registryIds[0] ?? null, pageCompanies: registryIds, name: loadInstitutionRegistry().find((r) => r.id === registryIds[0])?.name_he ?? snap?.provider.name_he ?? id, dimensions: termGroups.length ? Object.fromEntries(loadChecklistRows().map((r) => [r.id, r.name])) : {} },
   };

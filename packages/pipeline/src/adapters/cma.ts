@@ -8,7 +8,7 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, 
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { gzipSync } from "node:zlib";
-import { cmaPeriodFile, isReligiousLaw, type CmaPeriodFile } from "@finance-tool/schema";
+import { cmaPeriodFile, isReligiousLaw, type CmaPeriodFile, type EmptyBecause } from "@finance-tool/schema";
 
 export type CmaDataset = CmaPeriodFile["dataset"];
 export type CmaFund = CmaPeriodFile["funds"][number];
@@ -43,8 +43,34 @@ export const DATASETS: DatasetConfig[] = [
  */
 export const datasetPageUrl = (c: DatasetConfig): string => `https://data.gov.il/he/datasets/cma/${c.dataset}`;
 
+/** The configuration of `dataset`; a dataset outside DATASETS is a broken invariant, since CmaDataset names only those. */
+function datasetConfig(dataset: CmaDataset): DatasetConfig {
+  const config = DATASETS.find((d) => d.dataset === dataset);
+  if (!config) throw new Error(`cma: no configuration for the dataset ${dataset}`);
+  return config;
+}
+
 export const downloadUrl = (c: DatasetConfig): string =>
   `https://data.gov.il/dataset/${c.datasetUuid}/resource/${c.resourceId}/download/file.csv`;
+
+/**
+ * The body that publishes both datasets, as data.gov.il's package_show names their organization (`cma`). data.gov.il is a portal that
+ * serves many publishers, so its host names none of them.
+ */
+export const PUBLISHER_HE = "רשות שוק ההון, ביטוח וחיסכון";
+
+/**
+ * The source of one value of a period file: the dataset's page and publisher as the file names them, the regulator's Hebrew name, and the
+ * CSV the refresh read as `fetched_from` (the page is where a reader sees the same figures; the CSV is the machine address).
+ */
+const valueSource = (file: Pick<CmaPeriodFile, "dataset" | "source">, title: string): CmaFund["fees"]["avg_deposit_fee"]["source"] => ({
+  url: file.source.url,
+  title,
+  publisher: file.source.publisher,
+  publisher_he: PUBLISHER_HE,
+  strength: "primary",
+  fetched_from: downloadUrl(datasetConfig(file.dataset)),
+});
 
 export const USER_AGENT =
   "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
@@ -530,13 +556,14 @@ const startDate = (inception: string): string => `תאריך ההקמה של ה�
  *   date against that year;
  * - empty, a deposit fee of a type whose regulation has none (`balanceFeeOnly`): PF-06 alone, and a note saying so;
  * - empty for any other reason: no rule, and a note that the reason is unknown, naming CAT OQ22 on the tracks it lists.
- * Pure.
+ * An empty value says why in `empty_because`: `none-by-rule` with PF-06, `too-young` with CAT-36, else `unknown`. Every value's source is
+ * `valueSource`. Pure.
  */
 export function buildFees(
   file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
   fund: Pick<CmaFund, "raw_fields" | "inception_date"> & Partial<Pick<CmaFund, "fund_classification" | "names" | "fund_id">>,
 ): CmaFund["fees"] {
-  const config = DATASETS.find((d) => d.dataset === file.dataset)!;
+  const config = datasetConfig(file.dataset);
   const year = feeYear(file.report_period);
   const pension = file.dataset === "pensia-net";
   const make = (f: (typeof FEE_FIELDS)[number]) => {
@@ -545,10 +572,12 @@ export function buildFees(
     const value = n !== null && Number.isFinite(n) ? n : null;
     let notes: string | undefined;
     let ruleIds: string[];
+    let emptyBecause: EmptyBecause | undefined;
     if (value === null && f.key === "avg_deposit_fee" && file.dataset === "gemelnet" && balanceFeeOnly(fund)) {
       // the rule is in rule_ids, which the sheet shows as a chip; an id inside the Hebrew sentence broke across lines
       notes = "אין דמי ניהול מהפקדה בסוג הקופה הזה: התקנות מתירות דמי ניהול מהיתרה בלבד, ולכן השדה ריק גם בנתוני רשות שוק ההון.";
       ruleIds = ["PF-06"];
+      emptyBecause = "none-by-rule";
     } else if (value === null) {
       // the fee is the average of one calendar year (CAT-36), so the start date is set against that year, never against the reading date;
       // a Pension-Net fee is the fund's pair on every track (CAT-39), so a pension track's start date explains nothing
@@ -556,9 +585,11 @@ export function buildFees(
         const after = fund.inception_date > `${year}-12-31` ? "סוף" : "תחילת";
         notes = `הממוצע הוא של שנת ${year}. ${startDate(fund.inception_date)}, אחרי ${after} השנה.`;
         ruleIds = ["CAT-36"];
+        emptyBecause = "too-young";
       } else {
         notes = file.dataset === "gemelnet" && fund.fund_id !== undefined && OQ22_TRACKS.has(fund.fund_id) ? "הסיבה לא ידועה (CAT OQ22)." : REASON_UNKNOWN;
         ruleIds = [];
+        emptyBecause = "unknown";
       }
     } else {
       ruleIds = [...(f.key === "avg_deposit_fee" ? ["CAT-35"] : []), "CAT-36", "CAT-37", ...(pension ? ["CAT-39"] : [])];
@@ -567,12 +598,7 @@ export function buildFees(
     return {
       value,
       unit: f.unit,
-      source: {
-        url: file.source.url,
-        title: `${config.heTitle}, resource 2024-today, field ${f.raw} ("${f.heName}"), REPORT_PERIOD ${file.report_period.replace("-", "")}`,
-        publisher: file.source.publisher,
-        strength: "primary" as const,
-      },
+      source: valueSource(file, `${config.heTitle}, resource 2024-today, field ${f.raw} ("${f.heName}"), REPORT_PERIOD ${file.report_period.replace("-", "")}`),
       checked: file.checked,
       effective_from: `${year}-01-01`,
       effective_to: `${year}-12-31`,
@@ -581,6 +607,7 @@ export function buildFees(
       rule_ids: ruleIds,
       state: "sourced" as const,
       ...(notes === undefined ? {} : { notes }),
+      ...(emptyBecause === undefined ? {} : { empty_because: emptyBecause }),
     };
   };
   return { avg_annual_management_fee: make(FEE_FIELDS[0]), avg_deposit_fee: make(FEE_FIELDS[1]) };
@@ -610,7 +637,7 @@ const EXPOSURE_NOTE =
  * CMA amount fields to value objects, in NIS millions at the period end (CAT-03 for the unit of TOTAL_ASSETS; the units of
  * STOCK_MARKET_EXPOSURE and FOREIGN_CURRENCY_EXPOSURE are read the same way, inferred: the dictionary does not state them, CAT-44, CAT OQ4).
  * A total is a number with no rule and no note: its about line says what it is. An exposure that is a number names CAT-44, which
- * defines it, with `EXPOSURE_NOTE`. An empty field names no rule, and its note says the reason is unknown.
+ * defines it, with `EXPOSURE_NOTE`. An empty field names no rule, its note says the reason is unknown, and its `empty_because` is `unknown`.
  * Undefined when the file has none of the columns. Pure.
  */
 export function buildHoldings(
@@ -618,7 +645,7 @@ export function buildHoldings(
   fund: Pick<CmaFund, "raw_fields">,
 ): CmaFund["holdings"] | undefined {
   if (!HOLDINGS_FIELDS.some((f) => f.raw in fund.raw_fields)) return undefined;
-  const config = DATASETS.find((d) => d.dataset === file.dataset)!;
+  const config = datasetConfig(file.dataset);
   const make = (f: (typeof HOLDINGS_FIELDS)[number]) => {
     const rawText = (fund.raw_fields[f.raw] ?? "").trim();
     const n = rawText === "" ? null : Number(rawText);
@@ -628,12 +655,7 @@ export function buildHoldings(
     return {
       value,
       unit: "nis_millions" as const,
-      source: {
-        url: file.source.url,
-        title: `${config.heTitle}, resource 2024-today, field ${f.raw} ("${f.heName}"), REPORT_PERIOD ${file.report_period.replace("-", "")}`,
-        publisher: file.source.publisher,
-        strength: "primary" as const,
-      },
+      source: valueSource(file, `${config.heTitle}, resource 2024-today, field ${f.raw} ("${f.heName}"), REPORT_PERIOD ${file.report_period.replace("-", "")}`),
       checked: file.checked,
       effective_from: `${file.report_period}-01`,
       effective_to: periodEnd(file.report_period),
@@ -642,6 +664,7 @@ export function buildHoldings(
       rule_ids: value !== null && exposure ? ["CAT-44"] : [],
       state: "sourced" as const,
       ...(notes === undefined ? {} : { notes }),
+      ...(value === null ? { empty_because: "unknown" as const } : {}),
     };
   };
   return {
@@ -667,15 +690,15 @@ export const youngerThan = (inception: string | null | undefined, period: string
  * CMA average annual yields (3 and 5 years) to value objects, in percent per year (CAT-04, CAT-05). The regulator states they are
  * nominal and gross: before management fees, and not net of tax. That the window ends at the report month and that the figure is a
  * geometric annualisation are read from the data, not stated by the regulator (CAT-05). A number names CAT-04 and CAT-05 with no note;
- * an empty field of a track younger than the window names CAT-05 (null then), with the file's start date; any other empty field names
- * no rule, and its note says the reason is unknown. Undefined when the file has neither column. Pure.
+ * an empty field of a track younger than the window names CAT-05 (null then), with the file's start date, and is `too-young`; any other
+ * empty field names no rule, its note says the reason is unknown, and it is `unknown`. Undefined when the file has neither column. Pure.
  */
 export function buildYields(
   file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked" | "source">,
   fund: Pick<CmaFund, "raw_fields" | "inception_date">,
 ): CmaFund["yields"] | undefined {
   if (!YIELD_FIELDS.some((f) => f.raw in fund.raw_fields)) return undefined;
-  const config = DATASETS.find((d) => d.dataset === file.dataset)!;
+  const config = datasetConfig(file.dataset);
   const make = (f: (typeof YIELD_FIELDS)[number]) => {
     const rawText = (fund.raw_fields[f.raw] ?? "").trim();
     const n = rawText === "" ? null : Number(rawText);
@@ -691,12 +714,7 @@ export function buildYields(
     return {
       value,
       unit: "pct_per_year" as const,
-      source: {
-        url: file.source.url,
-        title: `${config.heTitle}, resource 2024-today, field ${f.raw} ("${f.heName}"), REPORT_PERIOD ${file.report_period.replace("-", "")}`,
-        publisher: file.source.publisher,
-        strength: "primary" as const,
-      },
+      source: valueSource(file, `${config.heTitle}, resource 2024-today, field ${f.raw} ("${f.heName}"), REPORT_PERIOD ${file.report_period.replace("-", "")}`),
       checked: file.checked,
       effective_from: `${file.report_period}-01`,
       effective_to: periodEnd(file.report_period),
@@ -705,6 +723,7 @@ export function buildYields(
       rule_ids: value !== null ? ["CAT-04", "CAT-05"] : young ? ["CAT-05"] : [],
       state: "sourced" as const,
       ...(notes === undefined ? {} : { notes }),
+      ...(value === null ? { empty_because: young ? ("too-young" as const) : ("unknown" as const) } : {}),
     };
   };
   return { avg_annual_yield_3y: make(YIELD_FIELDS[0]), avg_annual_yield_5y: make(YIELD_FIELDS[1]) };
@@ -731,9 +750,14 @@ const derive = (file: Pick<CmaPeriodFile, "dataset" | "report_period" | "checked
   return next;
 };
 
-/** Rebuild `fees`, `holdings` and `yields` of every fund from the stored raw_fields, and `closed_to_joiners` and `joining_open` from the readings; nothing else changes. */
+/**
+ * Rebuild `fees`, `holdings` and `yields` of every fund from the stored raw_fields, and `closed_to_joiners` and `joining_open` from the
+ * readings, and give the file's source the publisher's Hebrew name and the CSV it was read from; nothing else changes.
+ */
 export function renormaliseFees(file: CmaPeriodFile): CmaPeriodFile {
-  return { ...file, funds: file.funds.map((f) => derive(file, f)) };
+  const config = datasetConfig(file.dataset);
+  const next = { ...file, source: { ...file.source, publisher_he: PUBLISHER_HE, fetched_from: downloadUrl(config) } };
+  return { ...next, funds: file.funds.map((f) => derive(next, f)) };
 }
 
 export const archiveKey = (dataset: CmaDataset, runDate: string): string => `cma/${dataset}/${runDate}.csv.gz`;
@@ -854,7 +878,9 @@ export function normalise(csvText: string, ctx: NormaliseContext): NormaliseResu
       url: datasetPageUrl(config),
       title: `${config.heTitle}, resource 2024-today (id ${config.resourceId}), CSV downloaded from ${url} (Windows-1255)${lm}; rows with REPORT_PERIOD ${period}`,
       publisher: "Capital Market, Insurance and Savings Authority (data.gov.il)",
+      publisher_he: PUBLISHER_HE,
       strength: "primary",
+      fetched_from: url,
     },
     checked: ctx.runDate,
     raw: { archive_key: archiveKey(config.dataset, ctx.runDate), sha256: ctx.sha256 },

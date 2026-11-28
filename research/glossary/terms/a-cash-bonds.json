@@ -66,7 +66,8 @@
       "title": "BoI directive 447 \"פרסום שיעורי ריבית על פיקדונות ועל יתרות זכות בחשבון\" (5/24)",
       "url": "https://www.boi.org.il/media/orgfwntb/447.pdf#page=1"
     },
-    "variants_he": [
+    "variants_he": [],
+    "search_he": [
       "תשלום ריבית על יתרת זכות בחשבון"
     ],
     "explain_he": "ריבית שבנק משלם על הכסף בעו\"ש, אבל לא כל בנק משלם אותה, ולפעמים רק בתנאים",
@@ -884,30 +885,6 @@
     "id": "chshbvn-bmarkt-sgvrh"
   },
   {
-    "term_he": "ביטוח פיקדונות",
-    "term_source": {
-      "title": "Deposit-insurance bill P/6522/25, text tabled 02.02.2026",
-      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf#page=2"
-    },
-    "variants_he": [],
-    "explain_he": "ערבות שהחוק נותן מראש לכסף שהופקד בבנק, אם הבנק נכשל. בישראל אין חוק כזה. מה שיש: סמכות של הנגיד, באישור הממשלה, להכריז על ערבות לפיקדונות בבנק שנקלע לקשיים, חוק שמחייב לבחון את הצורך, והצעת חוק.",
-    "rule_ids": [
-      "BANK-23"
-    ],
-    "source": {
-      "title": "Deposit-insurance bill P/6522/25, text tabled 02.02.2026",
-      "url": "https://fs.knesset.gov.il/25/law/25_lst_11195962.pdf#page=2",
-      "checked": "2026-10-22",
-      "strength": "primary",
-      "publisher": "Knesset"
-    },
-    "where": [
-      "guide:bank-deposit"
-    ],
-    "notes": "BANK-23 says no statute was found; the bill was at the preliminary stage on 2026-10-22, so this line may date. Even the bill would not cover current-account balances.",
-    "id": "bytvch-pykdvnvt-a"
-  },
-  {
     "term_he": "פק\"מ",
     "term_source": {
       "title": "רשות שוק ההון, גמל נט: פירוט נכסי קופה (קובץ XML), השורה \"פק\"מ לתקופה של עד שלושה חודשים\"",
@@ -1033,7 +1010,7 @@
     "explain_he": "פיקדון שמפקידים אליו מזמן לזמן, למשל בהוראת קבע, ואם הוא ליותר משנה, ההסכם צריך לפרט את סדרי ההפקדות ואת מגבלות הסכומים והמועדים",
     "rule_ids": [
       "BANK-28",
-      "BANK-31"
+      "BANK-65"
     ],
     "source": {
       "title": "כללי הבנקאות (שירות ללקוח) (גילוי נאות ומסירת מסמכים), התשנ\"ב-1992, נוסח משולב (בנק ישראל), ס' 7(ב)(4)",
@@ -1046,7 +1023,7 @@
       "app",
       "guide:savings-plan"
     ],
-    "notes": "Bank wording only (Discount filter, FIBI 'הוראות קבע'); 'הו\"ק' = הוראת קבע per BANK-31, which is a rule, not the Terms table.",
+    "notes": "Bank wording only (Discount filter, FIBI 'הוראות קבע'); 'הו\"ק' = הוראת קבע per BANK-65, which is a rule, not the Terms table.",
     "id": "pykdvn-bhvrat-kba"
   },
   {
@@ -1695,7 +1672,6 @@
     ],
     "explain_he": "הערכה של מנהל הקרן לתשואה בקרן כספית מתחדשת, במונחים שנתיים, אחרי דמי ניהול ולפני מס, והיא לא מובטחת",
     "rule_ids": [
-      "BANK-15",
       "MF-36",
       "MF-37"
     ],
@@ -2488,7 +2464,8 @@
       "title": "רשות המסים, דע זכויותיך וחובותיך 2025, עמוד 42: טופס 867, \"אישור שנתי של ניכוי מס במקור מהמנכה\"",
       "url": "https://www.gov.il/BlobFolder/generalpage/income-tax-guide-knowyourright/he/Guides_IncomeTax_da-2025.pdf#page=42"
     },
-    "variants_he": [
+    "variants_he": [],
+    "search_he": [
       "טופס 0867"
     ],
     "explain_he": "אישור שנתי ממי ששילם לכם ריבית, על הריבית ועל המס שנוכה ממנה, לשימוש בדוח השנתי",
@@ -2865,8 +2842,10 @@
       "url": "https://boi.org.il/media/ovfhi5dz/%D7%94%D7%90%D7%99%D7%A0%D7%93%D7%99%D7%A7%D7%98%D7%95%D7%A8%D7%99%D7%9D-%D7%9C%D7%90%D7%9E%D7%99%D7%93%D7%AA-%D7%A6%D7%99%D7%A4%D7%99%D7%95%D7%AA-%D7%94%D7%90%D7%99%D7%A0%D7%A4%D7%9C%D7%A6%D7%99%D7%94-%D7%A9%D7%9C-%D7%94%D7%A6%D7%99%D7%91%D7%95%D7%A8.pdf#page=6"
     },
     "variants_he": [
-      "הציפיות לאינפלציה",
       "הציפיות לאינפלציה הנגזרות משוק ההון"
+    ],
+    "search_he": [
+      "הציפיות לאינפלציה"
     ],
     "explain_he": "האינפלציה שהשוק מצפה לה, כפי שבנק ישראל מחשב מההפרש בין התשואה של איגרות המדינה הלא צמודות לזו של הצמודות",
     "rule_ids": [

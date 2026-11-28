@@ -14,6 +14,9 @@
   "variants": [
     "מסלול מניות"
   ],
+  "also_called": [
+    "מסלול מניות"
+  ],
   "rule_ids": [
     "CAT-10",
     "CAT-17",

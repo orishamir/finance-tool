@@ -5,7 +5,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { seriesRecord, type SeriesRecord } from "@finance-tool/schema";
+import { seriesRecord, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";
 import { gzipRaw, sha256Hex, type Downloaded } from "./cma.ts";
 
 export type SourceStatus = "new-period" | "updated" | "unchanged" | "sanity-failed" | "error";
@@ -51,6 +51,27 @@ export interface SeriesSpec {
   sanity: (next: SeriesRecord, previous: SeriesRecord | null) => string[];
   diff: (previous: SeriesRecord | null, next: SeriesRecord) => SeriesDiff;
   archive: { tag: (runDate: string) => string; title: string; notes: string };
+  /**
+   * The source an observation of the series carries, from what the observation itself holds (its key, its date): the one place the
+   * adapter writes a source, so `renormaliseSeries` can give the stored observations the source a refresh would write today.
+   */
+  sourceOf: (o: SeriesObservation) => SeriesObservation["source"];
+}
+
+/**
+ * The stored series with each observation's source as the adapter writes it now (`SeriesSpec.sourceOf`), and nothing else changed: no
+ * download. Run by scripts/renormalise-series.ts after an adapter changes how it writes a source.
+ */
+export const renormaliseSeries = (spec: SeriesSpec, file: SeriesRecord): SeriesRecord =>
+  seriesRecord.parse({ ...file, observations: file.observations.map((o) => ({ ...o, source: spec.sourceOf(o) })) });
+
+/**
+ * A freshly built observation, with the stored `checked` where `stored` (the same observation in the stored file) holds the same value,
+ * so a refresh does not rewrite every line; the rest comes from this build, so a change to how the adapter writes a source reaches every
+ * row.
+ */
+export function keepChecked(fresh: SeriesObservation, stored: SeriesObservation | undefined): SeriesObservation {
+  return stored && stored.value === fresh.value ? { ...fresh, checked: stored.checked } : fresh;
 }
 
 export const seriesPath = (dataDir: string, id: string): string => join(dataDir, "series", `${id}.json`);

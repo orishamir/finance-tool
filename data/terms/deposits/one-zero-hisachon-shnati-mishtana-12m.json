@@ -51,7 +51,8 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-25"
+      "BANK-25",
+      "BANK-34"
     ],
     "state": "sourced",
     "notes": "Printed 'ריבית משתנה (Prime - 1.50%)': spread from prime -1.50 percentage points. The deposits page: 'p-1.50%'."
@@ -94,8 +95,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit (the table's linkage column: 'לא צמוד'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

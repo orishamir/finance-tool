@@ -2,17 +2,60 @@
   "id": "PF-08",
   "title": "Lower fee cap on lost-contact and deceased members' accounts",
   "title_he": "תקרה נמוכה יותר לדמי הניהול כשהקשר עם העמית נותק או כשהוא נפטר",
+  "text_he": "אם הקשר עם עמית נותק או שהעמית נפטר, והחברה המנהלת לא השלימה בזמן את פעולות האיתור שהתקנות מחייבות, יש תקרה נמוכה יותר לדמי הניהול. דמי הניהול מחיסכון לא יעלו על {PF-08:unreachable_or_deceased_cap} לשנה, או על השיעור שנגבה לאחרונה אם הוא נמוך יותר. לעמית שהקשר איתו נותק, התקרה חלה החל משנה אחרי שהקשר נותק. התקרה לא חלה על קופות גמל ענפיות, על רוב קרנות הפנסיה הוותיקות ועל חלק ממקבלי הקצבה שנפטרו.",
+  "figure_names_he": {
+    "unreachable_or_deceased_cap": "תקרת דמי ניהול בחשבון של עמית שנותק איתו הקשר או שנפטר"
+  },
   "strength": "primary",
   "dimensions": [
     "fee-management-balance",
     "fee-change-over-time"
   ],
   "likely_to_change": "no",
-  "text_he": "אם הקשר עם עמית נותק או שהעמית נפטר, והחברה המנהלת לא השלימה בזמן את פעולות האיתור שהתקנות מחייבות, יש תקרה נמוכה יותר לדמי הניהול. דמי הניהול מחיסכון לא יעלו על 0.3% לשנה, או על השיעור שנגבה לאחרונה אם הוא נמוך יותר. לעמית שהקשר איתו נותק, התקרה חלה החל משנה אחרי שהקשר נותק. התקרה לא חלה על קופות גמל ענפיות, על רוב קרנות הפנסיה הוותיקות ועל חלק ממקבלי הקצבה שנפטרו.",
+  "figures": {
+    "unreachable_or_deceased_cap": {
+      "value": 0.3,
+      "unit": "pct_per_year",
+      "source": {
+        "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+        "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012 (קובץ התקנות 7131)",
+        "publisher": "Reshumot (Ministry of Justice)",
+        "strength": "primary",
+        "locator": "p.6, reg. 8(א)",
+        "locator_he": "עמוד 6, תקנה 8(א)",
+        "page": 6,
+        "quote": "בשיעור שלא יעלה על 0.3% לשנה או בשיעור החודשי שגבה הגוף המוסדי מחשבון העמית"
+      },
+      "checked": "2026-10-31",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in regulation",
+      "rule_ids": [
+        "PF-08"
+      ],
+      "state": "sourced",
+      "notes": "Accounts of members the body lost contact with or who died, in the cases reg. 8(a)(1)-(3) lists: up to 0.3% a year, or the monthly rate charged when contact was lost or the death became known, whichever is lower."
+    }
+  },
   "il_finance_file": "provident-family-common.md",
   "checked": "2026-10-22",
   "scope": "general",
   "sources": [
+    {
+      "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
+      "title": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע\"ב-2012",
+      "title_he": "תקנות הפיקוח על שירותים פיננסיים (קופות גמל) (דמי ניהול), התשע״ב-2012",
+      "publisher": "Reshumot (Ministry of Justice) – official gazette file service",
+      "publisher_he": "משרד האוצר",
+      "kind": "regulation",
+      "strength": "primary",
+      "locator": "p.6, reg. 8(א)",
+      "locator_he": "עמוד 6, תקנה 8(א)",
+      "page": 6,
+      "quote": "בשיעור שלא יעלה על 0.3% לשנה או בשיעור החודשי שגבה הגוף המוסדי מחשבון העמית",
+      "checked": "2026-10-31"
+    },
     {
       "url": "https://free-justice.openapi.gov.il/free/moj/portal/rest/searchpredefinedapi/v1/SearchPredefinedApi/Documents/oKtbynDaWVkpXLh269S3D5emiZ9xy8ix+3WluIi8DJg=#page=6",
       "title": "s.8, gazette ק״ת תשע״ב, 1260",

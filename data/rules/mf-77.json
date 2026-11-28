@@ -1,8 +1,13 @@
 {
   "id": "MF-77",
   "title": "Kesem fund 5138565 (2026): its index held 12 securities on 26.8.2026, the five largest 60.22%",
-  "title_he": "קסם, קרן 5138565: כמה ניירות ערך נשארו במדד קרוב לסוף",
+  "title_he": "כמה ניירות ערך נשארו במדד קרוב לסוף: קרן 5138565 של קסם",
   "text_he": "לפי דיווח של קסם, במדד של קרן 5138565, קרן שקלית שמסתיימת ב־2026, היו ב־{MF-77:index_date} רק {MF-77:holdings} ניירות ערך, וחמשת הגדולים שקלו {MF-77:top_five}. זה נתון על מדד אחד בתאריך אחד. לפי קריאה של האתר, קרן שמתקרבת לסוף מחזיקה פחות סדרות, כי סדרות שנפדות יוצאות מהמדד.",
+  "figure_names_he": {
+    "holdings": "ניירות ערך במדד של קרן 5138565, ב־26.8.2026",
+    "top_five": "משקל חמשת הגדולים במדד של קרן 5138565, ב־26.8.2026",
+    "index_date": "תאריך הנתונים על המדד של קרן 5138565"
+  },
   "strength": "institution",
   "dimensions": [
     "liquidity-lockup"
@@ -27,8 +32,7 @@
       "rule_ids": [
         "MF-77"
       ],
-      "state": "sourced",
-      "notes": "ניירות ערך במדד של קרן 5138565, ב־26.8.2026"
+      "state": "sourced"
     },
     "top_five": {
       "value": 60.22,
@@ -47,8 +51,7 @@
       "rule_ids": [
         "MF-77"
       ],
-      "state": "sourced",
-      "notes": "משקל חמשת הגדולים במדד של קרן 5138565, ב־26.8.2026"
+      "state": "sourced"
     },
     "index_date": {
       "value": "2026-08-26",
@@ -67,8 +70,7 @@
       "rule_ids": [
         "MF-77"
       ],
-      "state": "sourced",
-      "notes": "תאריך הנתונים על המדד של קרן 5138565"
+      "state": "sourced"
     }
   },
   "il_finance_file": "mutual-funds-and-money-market-funds.md",

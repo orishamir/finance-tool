@@ -71,8 +71,7 @@
     "update_rule": "provider-set",
     "rule_ids": [
       "BANK-13",
-      "BANK-25",
-      "BANK-34"
+      "BANK-25"
     ],
     "state": "sourced",
     "notes": "Printed '(0.35%)P-4.4%' in the offered nominal rate; rate type 'משתנה', linkage 'לא צמוד'; adjusted '0.3506%', common 'P-4.3%'; exit points 'לא קיימת' (stations: no); break 'אין אפשרות שבירה'; renewal 'לא קיים' / 'לא מתחדש'. Account type 302, product 127. This row as printed: 1,000-250,000: nominal '(0.35%)P-4.4%', adjusted '0.3506%', common 'P-4.3%'. Read 2026-11-09 from the data the page loads (https://apps.fibi.co.il/bff-depositmanagement/api/v1/fibi/depositDetails/31, 'effectiveDate' 2026-11-09, 'prime' 4.75); the 447 row is in the family 'פיקדונות מקובלים'."
@@ -94,8 +93,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."

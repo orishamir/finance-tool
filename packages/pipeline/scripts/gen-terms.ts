@@ -8,6 +8,10 @@
 // when the glossary did not change. Commit that part as its own change. Never hand-edit a dimension's rule_ids; change the
 // rule record's `dimensions` (and the rule base's Dimensions line) and run this again.
 //
+// A row's other names (`variants_he`, shown on its card under "נקרא גם") and the strings a search alone finds it by (`search_he`:
+// spellings, inflections, another card's name, a label as a dataset or a form prints it) are kept apart, and written apart as
+// `also_called` and `search`. `variants` repeats `also_called`, so the readers that still read `variants` list the other names only.
+//
 // A research row that carries an `id` keeps it, so a record's file name does not change when another row with the same name
 // is added or removed; a new row gets the id below. The row's `source.publisher` and `seen_by` are written as they are.
 //
@@ -40,6 +44,7 @@ interface Research {
   seen_by?: string;
   term_he: string;
   variants_he?: string[];
+  search_he?: string[];
   explain_he?: string | null;
   rule_ids?: string[];
   source?: { title?: string; url?: string; checked?: string; strength?: string; publisher?: string } | null;
@@ -53,6 +58,7 @@ interface Merged {
   he: string;
   meaning: string;
   variants: string[];
+  search: string[];
   ruleIds: string[];
   source: { url: string; title: string; strength: Strength; checked: string; publisher?: string } | null;
   where: string[];
@@ -70,7 +76,7 @@ for (const f of readdirSync(termsDir).filter((x) => x.endsWith(".json")).sort())
     const he = r.term_he.trim();
     const s = r.source;
     const src = s?.url && s.title && s.checked ? { url: s.url, title: s.title, strength: (s.strength ?? "secondary") as Strength, checked: s.checked, ...(s.publisher ? { publisher: s.publisher } : {}) } : null;
-    const row: Merged = { ...(r.id ? { id: r.id } : {}), ...(r.seen_by ? { seenBy: r.seen_by } : {}), topic, he, meaning: r.explain_he.trim(), variants: (r.variants_he ?? []).filter((v) => v && v !== he), ruleIds: r.rule_ids ?? [], source: src, where: r.where ?? [] };
+    const row: Merged = { ...(r.id ? { id: r.id } : {}), ...(r.seen_by ? { seenBy: r.seen_by } : {}), topic, he, meaning: r.explain_he.trim(), variants: (r.variants_he ?? []).filter((v) => v && v !== he), search: (r.search_he ?? []).filter((v) => v && v !== he), ruleIds: r.rule_ids ?? [], source: src, where: r.where ?? [] };
     const key = `${topic}|${he}`;
     const prev = merged.get(key);
     if (!prev) {
@@ -80,6 +86,7 @@ for (const f of readdirSync(termsDir).filter((x) => x.endsWith(".json")).sort())
     const keep = rankOf(prev) <= rankOf(row) ? prev : row;
     const other = keep === prev ? row : prev;
     keep.variants = [...new Set([...keep.variants, ...other.variants])];
+    keep.search = [...new Set([...keep.search, ...other.search])].filter((v) => !keep.variants.includes(v));
     keep.ruleIds = [...new Set([...keep.ruleIds, ...other.ruleIds])];
     keep.where = [...new Set([...keep.where, ...other.where])];
     keep.id ??= other.id;
@@ -231,6 +238,8 @@ for (const r of rows) {
     wrapper_ids: [...new Set(wrapper_ids)].sort(),
     ...(exposure_ids.length ? { exposure_ids: [...new Set(exposure_ids)].sort() } : {}),
     variants: r.variants,
+    ...(r.variants.length ? { also_called: r.variants } : {}),
+    ...(r.search.length ? { search: r.search } : {}),
     rule_ids: [...new Set(r.ruleIds)].sort(),
     source: { url: r.source.url, title: r.source.title, publisher, strength: r.source.strength, checked: r.source.checked },
     ...(r.seenBy ? { seen_by: r.seenBy } : {}),

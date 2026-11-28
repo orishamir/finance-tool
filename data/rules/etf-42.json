@@ -1,7 +1,7 @@
 {
   "id": "ETF-42",
   "title": "TA-125 is a gross total return index in shekels (dividends counted before any tax), computed every 15 seconds, launched 2 January 1992 at base 100 and expanded from 100 to 125 shares on 9 February 2017",
-  "title_he": "ת״א 125: תשואה כוללת ברוטו, בשקלים",
+  "title_he": "ת״א-125: תשואה כוללת ברוטו, בשקלים",
   "strength": "primary",
   "dimensions": [
     "distribution-policy",
@@ -16,7 +16,8 @@
         "url": "https://market.tase.co.il/he/market_data/index/137/about",
         "title": "הבורסה, \"ת\"א-125 אודות המדד\" (מדד 137; נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "quote": "תדירות פרסום המדד: רציף, כל 15 שניות במהלך יום המסחר"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -26,8 +27,7 @@
       "rule_ids": [
         "ETF-42"
       ],
-      "state": "sourced",
-      "notes": "\"תדירות פרסום המדד: רציף, כל 15 שניות במהלך יום המסחר\" (index page)."
+      "state": "sourced"
     },
     "launch_date": {
       "value": "1992-01-02",
@@ -36,7 +36,8 @@
         "url": "https://market.tase.co.il/he/market_data/index/137/about",
         "title": "הבורסה, \"ת\"א-125 אודות המדד\" (מדד 137; נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "quote": "מועד השקת מדד 02/01/1992"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -47,7 +48,7 @@
         "ETF-42"
       ],
       "state": "sourced",
-      "notes": "\"מועד השקת מדד 02/01/1992\", base 100 (index page; annex 3 section 7)."
+      "notes": "Base 100 (index page; annex 3 section 7)."
     },
     "expanded_to_125_on": {
       "value": "2017-02-09",
@@ -79,7 +80,8 @@
         "url": "https://market.tase.co.il/he/market_data/index/137/about",
         "title": "הבורסה, \"ת\"א-125 אודות המדד\" (מדד 137; נקרא בכרום 2026-10-25)",
         "publisher": "Tel Aviv Stock Exchange",
-        "strength": "primary"
+        "strength": "primary",
+        "quote": "מועד פרסום עדכון הרכב המדד: לפחות חמישה ימי מסחר לפני מועד העדכון"
       },
       "checked": "2026-10-25",
       "effective_from": null,
@@ -90,10 +92,10 @@
         "ETF-42"
       ],
       "state": "sourced",
-      "notes": "\"מועד פרסום עדכון הרכב המדד: לפחות חמישה ימי מסחר לפני מועד העדכון\" (index page). The knowledge-centre page behind ETF-35 says two weeks; not reconciled."
+      "notes": "The guidelines (s.3ח, s.9א(6)) and the index page both say at least five trading days; reconciled 2026-10-26, when ETF-35, which said two weeks, was corrected."
     }
   },
-  "text_he": "הבורסה מחשבת את המדד כמדד תשואה כוללת ברוטו. ביום האקס של דיבידנד, הדיבידנד ברוטו נספר במדד כאילו הושקע בו מחדש, בלי להוריד מס. לכן קרן שעוקבת אחרי המדד נמדדת מול מדד שלפני מס. המדד מחושב בשקלים ומתפרסם ברציפות במהלך יום המסחר. הוא הושק בתחילת שנות התשעים כמדד של מאה מניות, והורחב למאה עשרים וחמש מניות בתחילת שנת אלפיים ושבע עשרה.",
+  "text_he": "הבורסה מחשבת את המדד כמדד תשואה כוללת ברוטו. ביום האקס של דיבידנד, הדיבידנד ברוטו נספר במדד כאילו הושקע בו מחדש, בלי להוריד מס. לכן קרן שעוקבת אחרי המדד נמדדת מול מדד שלפני מס. המדד מחושב בשקלים ומתפרסם ברציפות במהלך יום המסחר.",
   "figure_names_he": {
     "calculation_interval_seconds": "מרווח החישוב, בשניות",
     "launch_date": "מועד השקת המדד",

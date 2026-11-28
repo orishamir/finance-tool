@@ -5,6 +5,9 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { readFormulaIds, readQuestionPrefixes, readRuleBaseIds, validateData } from "../src/index.ts";
 import { checkCitedPages, checkDealOnlyUnit, checkEffectiveRateUnit, checkFirstExitPoint, checkTypedFundUnit } from "../src/validate.ts";
+import * as values from "../src/checks/values.ts";
+import { isMachineUrl, valuesFile } from "../src/checks/values.ts";
+import { testData } from "../src/checks/lib/kit.ts";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
 const ruleBase = readRuleBaseIds(`${root}.claude/skills/il-finance/references`);
@@ -13,7 +16,7 @@ const formulas = readFormulaIds(`${root}docs/method.md`);
 const vo = {
   value: 25,
   unit: "pct",
-  source: { url: "https://main.knesset.gov.il/x", title: "s.125C", publisher: "Knesset", strength: "primary" },
+  source: { url: "https://main.knesset.gov.il/x", title: "סעיף 125ג", publisher: "Knesset", strength: "primary" },
   checked: "2026-10-22",
   effective_from: null,
   effective_to: null,
@@ -198,7 +201,7 @@ describe("new collections", () => {
   });
 
   it("rejects a deposit whose break column contradicts itself, and a tax bucket outside its values", () => {
-    const deposit = JSON.parse(readFileSync(`${root}data/terms/deposits/hapoalim-pikadon-leshana-kavua.json`, "utf8"));
+    const deposit = JSON.parse(readFileSync(`${root}data/terms/deposits/hapoalim-pikadon-leshana-kavua@2026-11-09.json`, "utf8"));
     expect(run({ "terms/deposits/x.json": deposit })).toEqual([]);
     const contradicts = run({ "terms/deposits/x.json": { ...deposit, break: { ...deposit.break, allowed: true, penalty: "not_allowed" } } });
     expect(contradicts[0]?.message).toMatch(/break\.allowed is false exactly when break\.penalty is "not_allowed"/);
@@ -207,7 +210,7 @@ describe("new collections", () => {
     // a null bucket comes only with an open source (code review, 2026-11-07)
     const nullAtPrimary = run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null } } });
     expect(nullAtPrimary[0]?.message).toMatch(/tax_bucket\.value is null only when its source strength is "open"/);
-    expect(run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null, source: { ...deposit.tax_bucket.source, strength: "open" } } } })).toEqual([]);
+    expect(run({ "terms/deposits/x.json": { ...deposit, tax_bucket: { ...deposit.tax_bucket, value: null, source: { ...deposit.tax_bucket.source, strength: "open" }, rule_ids: [] } } })).toEqual([]);
   });
 
   it("rejects a catalogue track that is not in the latest CMA period", () => {
@@ -580,6 +583,11 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     expect(text).toMatch(/note/);
   });
 
+  it("fails an answered_by id the rule base does not hold", () => {
+    const withAnswers = fromMarkdown.map((q) => (q.id === "PEN OQ7" ? { ...q, status: "narrowed", answered_by: ["PEN-15", "PEN-999"] } : q));
+    expect(run({ "open-questions.json": withAnswers }).problems.map((p) => p.message)).toEqual(["PEN OQ7 answered_by: PEN-999 is not a rule in il-finance (data-schema §4 item 2)"]);
+  });
+
   it("warns when the file is behind the markdown", () => {
     const behind = fromMarkdown.filter((q) => q.id !== "BANK OQ1");
     const { problems, lines } = run({ "open-questions.json": [...behind, { id: "ZZZ OQ1", status: "open" }] });
@@ -851,5 +859,55 @@ describe("an amount in agorot, a typed fund's unit price (data-schema §2)", () 
     expect(checkTypedFundUnit({ fees: { trustee: amount("agorot") } })).toEqual([expect.stringContaining("fees.trustee: unit agorot")]);
     expect(checkTypedFundUnit({ share_price: amount("agorot") })).toEqual([]);
     expect(checkTypedFundUnit(amount("agorot"))).toEqual([expect.stringContaining("(record): unit agorot")]);
+  });
+});
+
+describe("the value checks of the collected collections (src/checks/values.ts)", () => {
+  const sourced = (over: Record<string, unknown>) => ({ ...vo, rule_ids: [], update_rule: "market", ...over });
+  const page = { url: "https://data.gov.il/he/datasets/cma/gemelnet", title: "t", publisher: "CMA", publisher_he: "רשות שוק ההון, ביטוח וחיסכון", strength: "primary", fetched_from: "https://data.gov.il/dataset/x/resource/y/download/file.csv" };
+  const series = (observations: unknown[]) => ({ id: "planted", observations });
+  const found = (observations: unknown[]) => values.check(testData(dataDir({ "series/planted.json": series(observations) }))).map((p) => p.message.replace(/: .*/, ""));
+
+  it("passes a value that names its publisher, opens a page, says why it is empty and has a Hebrew note", () => {
+    expect(found([sourced({ source: page }), sourced({ source: page, value: null, notes: "הסיבה לא ידועה.", empty_because: "unknown" }), sourced({ source: page, notes: "a working note", notes_he: "שורה לקורא." })])).toEqual([]);
+  });
+
+  it("finds an empty value with no reason, a portal source with no publisher, a machine address as the link, and an English note with no notes_he", () => {
+    const { publisher_he: _, ...noName } = page;
+    expect(found([sourced({ source: page, value: null, notes: "הסיבה לא ידועה." }), sourced({ source: noName }), sourced({ source: { ...page, url: page.fetched_from } }), sourced({ source: page, notes: "inferred, not stated" })])).toEqual([
+      "series/planted#/observations/0 (empty-because)",
+      "series/planted#/observations/1 (publisher)",
+      "series/planted#/observations/2 (machine-url)",
+      "series/planted#/observations/3 (notes-he)",
+    ]);
+    // a CMA period file's tracks are records of their own
+    const cma = { dataset: "gemelnet", report_period: "2026-09", funds: [{ fund_id: 7, fees: { avg_deposit_fee: sourced({ source: page, value: null, notes: "הסיבה לא ידועה." }) } }] };
+    expect(values.check(testData(dataDir({ "cma/gemelnet@2026-09.json": cma }))).map((p) => p.message.replace(/: .*/, ""))).toEqual(["cma/gemelnet/7#/fees/avg_deposit_fee (empty-because)"]);
+  });
+
+  it("asks a publisher of a portal whatever its host is written as, and not of a publisher's own data host", () => {
+    const bare = (url: string, fetched_from: string) => ({ url, title: "t", publisher: "x", strength: "primary", fetched_from });
+    expect(found([sourced({ source: bare("https://WWW.gov.il/he/pages/x", "https://example.org/a.csv") }), sourced({ source: bare("https://data.ecb.europa.eu/data/datasets/EXR", "https://data-api.ecb.europa.eu/service/data/EXR/M.ILS.EUR.SP00.E?format=csvdata") })])).toEqual(["series/planted#/observations/0 (publisher)"]);
+  });
+
+  it("tells a machine address from a page", () => {
+    for (const url of [
+      "https://api.cbs.gov.il/index/data/price?id=120010&format=json",
+      "https://data-api.ecb.europa.eu/service/data/EXR/M.ILS.EUR.SP00.E?format=csvdata",
+      "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+      "https://data.gov.il/dataset/a/resource/b/download/file.csv",
+      "https://data.gov.il/api/3/action/datastore_search?resource_id=x",
+      "https://www.bankhapoalim.co.il/sites/default/files/tariff.xls",
+      "https://knesset.gov.il/Odata/ParliamentInfo.svc/KNS_Law",
+    ])
+      expect([url, isMachineUrl(url)]).toEqual([url, true]);
+    for (const url of ["https://data.gov.il/he/datasets/mof/savingsplaninterest", "https://data.ecb.europa.eu/data/datasets/EXR/EXR.M.ILS.EUR.SP00.E", "https://www.gov.il/he/pages/x", "not a url"])
+      expect([url, isMachineUrl(url)]).toEqual([url, false]);
+  });
+
+  it("lists each check's leftovers in a file of its own per collection", () => {
+    expect(values.name).toBe("values");
+    for (const check of ["empty-because", "publisher", "machine-url", "notes-he"]) for (const collection of values.VALUE_COLLECTIONS) expect(valuesFile(check, collection)).toBe(`values/${check}/${collection}.json`);
+    expect(readdirSync(fileURLToPath(new URL("../src/leftovers/values/", import.meta.url))).sort()).toEqual(["empty-because", "machine-url", "notes-he", "publisher"]);
   });
 });

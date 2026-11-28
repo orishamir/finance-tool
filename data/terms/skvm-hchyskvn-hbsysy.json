@@ -14,6 +14,9 @@
   "variants": [
     "הפקדת בסיס"
   ],
+  "also_called": [
+    "הפקדת בסיס"
+  ],
   "rule_ids": [
     "CS-03",
     "TXK-19"

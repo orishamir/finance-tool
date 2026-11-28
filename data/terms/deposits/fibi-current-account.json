@@ -26,9 +26,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-09"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "a current account has no term; the publication prints no term."
   },
@@ -96,9 +94,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08",
-      "BANK-09"
+      "TXI-08"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel credit balance: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate (TXI-04); the bank withholds 15% on any interest it pays an individual, current-account credit interest included (TXI-08)."
@@ -142,7 +138,7 @@
         "BANK-09"
       ],
       "state": "sourced",
-      "notes": "'ריבית עו\"ש בשיעור של 2% עד לגובה של ₪10,000'."
+      "notes": "הבנק כותב: ״ריבית עו״ש בשיעור של 2% עד לגובה של ₪10,000״."
     }
   },
   "balance_conditions": [
@@ -214,7 +210,7 @@
     "max_renewals": null
   },
   "conditions_he": "ללקוחות פרטיים ששכר של לפחות 3,000 ₪ נכנס לחשבון שלהם, כשסך הנכסים הפיננסיים בחשבון (עו״ש, ניירות ערך, פיקדונות) לא עולה על 50,000 ₪ והיתרה בעו״ש היא 10,000 ₪ ומעלה בכל יום בחודש (ביום אחד מתחת לזה אין ריבית על כל החודש). לא למי שבתוכנית ״הטבה פלוס״ או שיש לו בחשבון מוצר אחר של ריבית זכות. הריבית על עד 10,000 ₪, נבדקת בסוף כל חודש ומשולמת כל רבעון.",
-  "doubt_he": "קובץ התנאים של הבנק כותב ״ההטבה בתוקף עד 31.03.2026״, אבל הפרסום מ־25.10.2026 עדיין מציג 2%. האתר מציג את הפרסום.",
+  "doubt_he": "קובץ התנאים של הבנק כותב ״ההטבה בתוקף עד 31.03.2026״, אבל הפרסום מ־25.10.2026 עדיין מציג 2%. השיעור כאן הוא של הפרסום.",
   "snapshot": "2026-10-25",
   "source": {
     "url": "https://www.fibi.co.il/private/depositsandsavings/interest/",

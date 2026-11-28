@@ -17,7 +17,7 @@
 // price leaves out, a standing order's price the figure leaves out first (D41, D56, D106). The person's own deal carries its pencil
 // instead; one that still misses a figure says which, on a line under its row. Before any pick the pair is the page's own and is named by
 // where it is shown, the receipt (`invest.shownPair`).
-import { useMemo, useState, type ReactNode, type RefObject } from "react";
+import { useMemo, type ReactNode, type RefObject } from "react";
 import { invest as c } from "../../copy";
 import { isCustomFund } from "../../lib/custom-entries";
 import { fmt } from "../../lib/format";
@@ -26,7 +26,7 @@ import { dollarBound, hasKinds, kindOf, pairValueFigure, tieShareOf, type FundWa
 import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/providers";
 import { priced, scaleOf, stretchOf, type Scale, type Stretch } from "../../lib/stretch";
 import { differenceOf, type SiteValue } from "../../lib/value";
-import { CatchesSaid, ListCatchMark, Num, useSharedCatches, type Catch } from "../provenance";
+import { CatchesSaid, ListCatchMark, Num, Term, useSharedCatches, type Catch } from "../provenance";
 import { AlsoChanged, Button, Disclosure, HelpMark, MixedName, PickList, StretchBar, StretchChart, Tag, cx, figureFit, type FoldOrder, type PickRow, type StretchSpot, type StretchTone } from "../kit";
 import { AddEntryButton, FundEditMark } from "./custom-entries";
 import { AddDealButton, DealEditMark, DealMissing, DeletedLine, NotMovedLines, TermsMark, useDealAccounts } from "./deal-account";
@@ -127,7 +127,6 @@ export function PairLists(props: ListsProps) {
   const shared = useSharedCatches();
   const sp = c.shownPair(chosen);
   const funds = allFunds(view);
-  const [unpricedOpen, setUnpricedOpen] = useState(false);
   const kinds = hasKinds(view) && !!bundle.dollarRange;
   const range = bundle.dollarRange;
   const fund = funds.find((f) => f.rec.id === pick.fund);
@@ -313,14 +312,21 @@ export function PairLists(props: ListsProps) {
   // moves nothing below the list
   // the row that opens a group: the hedged kind's first
   const groupStarts = (fs: FundWay[]) => new Set(fs.filter((f, i) => { const prev = fs[i - 1]; return kinds && kindOf(f.rec) === "hedged" && (!prev || kindOf(prev.rec) !== "hedged"); }).map((f) => f.rec.id));
-  const orders: FoldOrder[] = [...new Set([...pricedHouses.map((p) => p.id), pick.house])].map((h) => {
-    const fs = pricedAt(h);
-    return { keys: fs.map((f) => f.rec.id), headings: groupStarts(fs), choosable: new Set(fs.map((f) => f.rec.id)), keep: new Set(fs.filter((f) => isCustomFund(f.rec)).map((f) => f.rec.id)) };
-  });
   // the chosen account is the person's deal with no price for buying abroad (E): its funds bought abroad, priced at every other account, fold into one line that says so and opens the deal on its buy-and-sell block
   const abroadLacks = isDealProviderId(pick.house) ? (dealApi?.abroadLacks(pick.house) ?? null) : null;
   const abroadFolded = abroadLacks ? funds.filter((f) => f.option === "abroad" && !priced(f.byHouse[pick.house])) : [];
-  const unpricedFunds = funds.filter((f) => !priced(f.byHouse[pick.house]) && !abroadFolded.includes(f)).sort((a, b) => kindRank(a) - kindRank(b));
+  // the funds an account gives no price stand in the list like the rest, grey, each kind's after its priced funds, with why in the
+  // figure's place (founder, 2026-11-28: no fold of their own)
+  const unpricedAt = (house: string) => funds.filter((f) => !priced(f.byHouse[house]) && !(house === pick.house && abroadFolded.includes(f)));
+  const listAt = (house: string) => {
+    const p = pricedAt(house);
+    const u = unpricedAt(house);
+    return [0, 1].flatMap((k) => [...p.filter((f) => kindRank(f) === k), ...u.filter((f) => kindRank(f) === k)]);
+  };
+  const orders: FoldOrder[] = [...new Set([...pricedHouses.map((p) => p.id), pick.house])].map((h) => {
+    const fs = listAt(h);
+    return { keys: fs.map((f) => f.rec.id), headings: groupStarts(fs), choosable: new Set(pricedAt(h).map((f) => f.rec.id)), keep: new Set(fs.filter((f) => isCustomFund(f.rec)).map((f) => f.rec.id)) };
+  });
   const cur = view.index.exposure?.currency ?? "USD";
   const names = view.index.exposure?.other_currencies === true ? c.kinds.nameMany(c.currencies[cur] ?? cur) : c.kinds.name;
   const hedgedHeading = (
@@ -329,7 +335,8 @@ export function PairLists(props: ListsProps) {
       {names.hedged}
     </span>
   );
-  const starts = groupStarts(pricedFunds);
+  const listed = listAt(pick.house);
+  const starts = groupStarts(listed);
   const headingOf = (id: string) => (starts.has(id) ? hedgedHeading : null);
   // a fund the person typed: its name in the entered ink and, beside it, the pencil that opens its panel, as a deal's row in the account list
   const fundName = (f: FundWay, selected: boolean) => {
@@ -366,7 +373,7 @@ export function PairLists(props: ListsProps) {
   const dotTone = { fund: { ring: "ring-chart-by-fund", fill: "bg-chart-by-fund" }, hedged: { ring: "ring-chart-kind-hedged", fill: "bg-chart-kind-hedged" } } satisfies Record<StretchTone, { ring: string; fill: string }>;
   // the range's "?" says the same on every row of the other kind: it stands on the first of them only
   const firstCross = range ? pricedFunds.find((f) => f.rec.id !== pick.fund && cross.has(f.rec.id))?.rec.id : undefined;
-  const fundRows: PickRow[] = pricedFunds.map((f, i) => {
+  const pricedRow = (f: FundWay): PickRow => {
     const at = f.byHouse[pick.house] as WayPrice;
     const selected = f.rec.id === pick.fund;
     const x = cross.get(f.rec.id);
@@ -409,56 +416,48 @@ export function PairLists(props: ListsProps) {
         </>
       ),
     };
-  });
-  // the funds the chosen account gives no price: why, said once over the rows it holds for (the fund's own reason where no account prices
-  // it, else the account's, with where a pick moves the account)
-  const greyKey = (f: FundWay) => {
-    const at = f.byHouse[pick.house];
-    return !at && f.reason ? reasonText(f.reason, optionClass[f.option]) : `${noPriceLine(bundle, pick.house, f, short)}|${f.best && f.best.providerId !== pick.house ? f.best.providerId : ""}`;
   };
-  // the account's words open why for the funds under them, as an account's row does: the rule the record names, or each kind's reason with
-  // its document (D105; "המחיר בפסגות לא ברור בתעריפון" said nothing of what was unclear)
-  const greyWords = (k: string) => {
-    const under = unpricedFunds.filter((f) => greyKey(f) === k);
-    // a fund's own reason, said once over every fund it holds for: in the plural over two or more
-    const [one] = under;
-    if (!k.includes("|")) return under.length > 1 && one?.reason ? reasonText(one.reason, optionClass[one.option], true) : k;
-    const [line, to] = k.split("|") as [string, string];
-    const told = whyNoFundAt(bundle, pick.house, under);
-    const said = (
-      <NoFundWords told={told} name={line}>
-        {line}
+  // a fund the chosen account gives no price: grey, why in a few words in the figure's place, which open the full reason and its source (the
+  // fund's own reason where no account prices it, else the account's, as an account's row says it)
+  const greyWord = (f: FundWay) => {
+    const at = f.byHouse[pick.house];
+    if (!at && f.reason) {
+      const word = c.lists.funds.whyCode[f.reason.code] ?? c.lists.funds.why.other;
+      return (
+        <Term id={[]} name={word} parts={[{ text: reasonText(f.reason, optionClass[f.option]) }]}>
+          {word}
+        </Term>
+      );
+    }
+    const told = whyNoFundAt(bundle, pick.house, [f]);
+    const code = at && "reason" in at ? at.reason.code : undefined;
+    const word = told.state === "other" && code ? (c.lists.funds.whyCode[code] ?? c.lists.funds.why.other) : c.lists.funds.why[told.state];
+    return (
+      <NoFundWords told={told} name={noPriceLine(bundle, pick.house, f, short)}>
+        {word}
       </NoFundWords>
     );
-    return to ? (
-      <>
-        {said}. {under.length > 1 ? c.lists.pickMovesMany(shortOf(to)) : c.pair.pickMoves(shortOf(to))}.
-      </>
-    ) : (
-      <>{said}.</>
-    );
   };
-  const greyRows: PickRow[] = unpricedFunds.map((f, i) => {
-    const k = greyKey(f);
-    const head = i === 0 || greyKey(unpricedFunds[i - 1]!) !== k;
-    const typed = isCustomFund(f.rec);
-    return {
-      key: f.rec.id,
-      ...(head ? { heading: <span className="text-caution-foreground">{greyWords(k)}</span> } : {}),
-      ...(typed ? { keep: true } : {}),
-      selected: false,
-      muted: true,
-      // a fund no account prices (its reason stands over the row) is shown and never chosen
-      disabled: !f.byHouse[pick.house] && !!f.reason,
-      onSelect: () => pickHalf(view, pick, { fund: f.rec.id }, onPick),
-      cells: (
-        <>
-          {fundName(f, false)}
-          <span className="text-sm text-muted-foreground">—</span>
-        </>
-      ),
-    };
+  const greyRow = (f: FundWay): PickRow => ({
+    key: f.rec.id,
+    countAs: f.rec.identifiers?.isin ?? f.rec.id,
+    ...(isCustomFund(f.rec) ? { keep: true } : {}),
+    ...(headingOf(f.rec.id) ? { heading: headingOf(f.rec.id) } : {}),
+    selected: false,
+    muted: true,
+    // a fund no account prices is shown and never chosen; one another account prices is chosen with that account
+    disabled: !f.byHouse[pick.house] && !!f.reason,
+    onSelect: () => pickHalf(view, pick, { fund: f.rec.id }, onPick),
+    cells: (
+      <>
+        {ruler && <span aria-hidden="true" className="size-[7px]" />}
+        {fundName(f, false)}
+        <span className="text-xs text-muted-foreground whitespace-nowrap">{greyWord(f)}</span>
+        {!ruler && <span aria-hidden="true" />}
+      </>
+    ),
   });
+  const fundRows: PickRow[] = listed.map((f) => (priced(f.byHouse[pick.house]) ? pricedRow(f) : greyRow(f)));
 
   const dealId = isDealProviderId(pick.house) ? dealIdOf(pick.house) : null;
   const abroadLine =
@@ -550,18 +549,11 @@ export function PairLists(props: ListsProps) {
   const fundsFoot = (
     <div className="flex flex-col gap-3">
       {abroadLine}
-      {greyRows.length > 0 && (
-        <Disclosure label={c.lists.funds.unpriced(new Set(unpricedFunds.map((f) => f.rec.identifiers?.isin ?? f.rec.id)).size)} open={unpricedOpen} onOpenChange={setUnpricedOpen} look="link" summaryClassName="text-sm">
-          <div className="pt-1">
-            <PickList look="line" tone="fund" label={c.lists.funds.unpricedLabel(short)} columns="minmax(0,1fr) auto" rows={greyRows} />
-          </div>
-        </Disclosure>
-      )}
       <AddEntryButton />
     </div>
   );
   // what moves the rows: the picks, the plan the lists are sorted on, the index, the lists' sizes and the fold under the funds
-  const watch = [view.index.id, pick.house, pick.fund, plan.amountNow, plan.monthly, plan.years, plan.grossReturn, plan.inflation, providers.length, funds.length, moved?.back ? 1 : 0, unpricedOpen].join("|");
+  const watch = [view.index.id, pick.house, pick.fund, plan.amountNow, plan.monthly, plan.years, plan.grossReturn, plan.inflation, providers.length, funds.length, moved?.back ? 1 : 0].join("|");
 
   if (ruler)
     return (

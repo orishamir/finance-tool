@@ -1,0 +1,29 @@
+{
+  "id": "BANK-65",
+  "title": "Discount Bank: \"הו\"ק\" in its plan names means a standing order",
+  "title_he": "מה פירוש ״הו״ק״ בשמות התוכניות של דיסקונט",
+  "text_he": "בטבלת הריביות של בנק דיסקונט, מוצרי ״הו״ק נזיל״ מופיעים תחת הסינון ״פיקדון בהוראת קבע״. הטבלה לא מפרשת את הקיצור, ולפי קריאה של האתר ״הו״ק״ בשמות האלה היא הוראת קבע.",
+  "strength": "institution",
+  "dimensions": [],
+  "likely_to_change": "no",
+  "il_finance_file": "bank-current-account-deposits.md",
+  "checked": "2026-10-22",
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "discount",
+      "name_he": "בנק דיסקונט"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.discountbank.co.il/private/savings-investments/deposits-savings/classic/interest-rate-tables/",
+      "title": "Discount 447 table, \"פיקדון בהוראת קבע\" filter",
+      "publisher": "Discount Bank",
+      "publisher_he": "בנק דיסקונט",
+      "kind": "institution_doc",
+      "strength": "institution",
+      "checked": "2026-10-22"
+    }
+  ]
+}

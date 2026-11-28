@@ -12,6 +12,9 @@
   "variants": [
     "מסלקה"
   ],
+  "also_called": [
+    "מסלקה"
+  ],
   "rule_ids": [
     "BRK-07",
     "BRK-10",

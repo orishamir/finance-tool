@@ -2,7 +2,7 @@
   "id": "BRK-49",
   "title": "IBI: interest on a credit balance is a tariff line, with conditions, and none on foreign-currency balances",
   "title_he": "ריבית על יתרת זכות בתעריפון של אי.בי.אי",
-  "text_he": "בתעריפון של אי.בי.אי יש שורה לריבית על יתרת זכות בחשבון, עם תנאים כמו סוג לקוח או מינימום. על יתרות במטבע חוץ אי.בי.אי לא משלמת ריבית.",
+  "text_he": "בתעריפון של אי.בי.אי יש שורה לריבית על יתרת זכות בשקלים, רק ללקוחות מסחר עצמאי ורק כשסך הריבית בחודש גבוה מ־30 ₪. הריבית היא ריבית הפריים פחות 2.5%, ולא יותר מ־0.3% לשנה. על יתרות במטבע חוץ אי.בי.אי לא משלמת ריבית.",
   "strength": "institution",
   "dimensions": [
     "currency"
@@ -10,7 +10,7 @@
   "likely_to_change": "yes",
   "recheck_date": "2027-04-01",
   "il_finance_file": "brokerage-account.md",
-  "checked": "2026-10-25",
+  "checked": "2026-11-27",
   "scope": "institution",
   "scope_institutions": [
     {
@@ -30,7 +30,8 @@
       "locator": "p.2, part 3 item 6",
       "locator_he": "עמוד 2, חלק 3 פרט 6",
       "page": 2,
-      "checked": "2026-10-25"
+      "quote": "בכפוף לכך שסך הריבית יהא גבוה מ-30 ₪ לחודש",
+      "checked": "2026-11-27"
     }
   ],
   "derived_from": [

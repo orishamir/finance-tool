@@ -17,6 +17,9 @@
   "variants": [
     "מועד הפדיון"
   ],
+  "also_called": [
+    "מועד הפדיון"
+  ],
   "rule_ids": [
     "ETF-26",
     "ETF-98",

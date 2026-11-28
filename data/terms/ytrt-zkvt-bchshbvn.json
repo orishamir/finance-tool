@@ -13,6 +13,9 @@
   "variants": [
     "יתרת זכות"
   ],
+  "also_called": [
+    "יתרת זכות"
+  ],
   "rule_ids": [
     "BANK-09",
     "BANK-13",

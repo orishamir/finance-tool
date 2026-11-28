@@ -271,11 +271,11 @@ describe("the receipt's fund part marks a fund the person typed (D44, D7)", () =
     const out = html(createElement(PairReceipt, { view, bundle: b, plan, pick: { house, fund }, chosen: true, layout: "ticket" }));
     return out.slice(out.lastIndexOf(`>${w.receipt.parts.fund}</span>`));
   };
-  it("its name in the entered ink and the entered tag, where a collected fund's part has neither", () => {
+  it("its name in the entered ink, where a collected fund's part has none; neither part carries an entered tag", () => {
     expect(allFunds(view).find((f) => f.rec.id === typed.id)?.byHouse[house]).toHaveProperty("valueN");
     const mine = fundPart(typed.id);
     expect(mine).toMatch(new RegExp(`<bdi[^>]*class="text-entered"[^>]*>${name}</bdi>`));
-    expect(shown(mine)).toContain(numbers.legend.entered);
+    expect(shown(mine)).not.toContain(numbers.legend.entered);
     const collected = fundPart(headline.fund);
     expect(collected).not.toContain("text-entered");
     expect(shown(collected)).not.toContain(numbers.legend.entered);

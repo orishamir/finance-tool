@@ -13,9 +13,13 @@
     "הוראות קבע",
     "הו\"ק"
   ],
+  "also_called": [
+    "הוראות קבע",
+    "הו\"ק"
+  ],
   "rule_ids": [
     "BANK-28",
-    "BANK-31"
+    "BANK-65"
   ],
   "source": {
     "url": "https://www.boi.org.il/media/rvzi1ngd/151.pdf",

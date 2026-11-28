@@ -102,9 +102,8 @@ export function isOwnSourceOf(rule: Pick<RuleRecord, "id" | "scope_institutions"
  * (opened from a chip), is returned whole.
  */
 export function pageView(rule: RuleRecord, page: readonly string[], companies: Record<string, CompanyLink> | undefined): RuleRecord {
-  if (isGeneral(rule) || page.length === 0) return rule;
-  const mine = scopeCompanies(rule).filter((c) => page.includes(c.id));
-  if (mine.length === 0) return rule;
+  const scoped = pageScope(rule, page);
+  if (scoped === rule) return rule;
   const foreign = (s: { url: string; title: string; title_he?: string }) => {
     const c = sourceCompany(rule, s, companies);
     return !!c && !page.includes(c.id);
@@ -112,7 +111,17 @@ export function pageView(rule: RuleRecord, page: readonly string[], companies: R
   const figures = Object.fromEntries(
     Object.entries(rule.figures ?? {}).filter(([, f]) => Array.isArray(f) || "by_tax_year" in f || !(f.source.strength === "institution" && foreign(f.source))),
   ) as RuleRecord["figures"];
-  return { ...rule, scope_institutions: mine, sources: (rule.sources ?? []).filter((s) => !foreign(s)), figures };
+  return { ...scoped, sources: (rule.sources ?? []).filter((s) => !foreign(s)), figures };
+}
+
+/**
+ * The companies a record's card names on a company's page (`pageView`), for its record or only its head (a card whose file is on its
+ * way heads as it will once the record comes): only the page's own, where it names any of them; else all it names.
+ */
+export function pageScope<R extends Pick<RuleRecord, "scope" | "scope_institutions">>(rule: R, page: readonly string[]): R {
+  if (isGeneral(rule) || page.length === 0) return rule;
+  const mine = scopeCompanies(rule).filter((c) => page.includes(c.id));
+  return mine.length === 0 ? rule : { ...rule, scope_institutions: mine };
 }
 
 /** Of the companies a record names, the one whose own document a source is; null for a law or a regulator. */
@@ -139,20 +148,28 @@ export function sourcesForPage<S extends { url: string; title: string; title_he?
 }
 
 /**
- * The companies a record's chip and its card's tag name, and how many more they count without naming (spec §4: the chip shows the
- * company's name, not a code): on the page of a company the record shows, that company alone; else the first, with the count of the
- * others, over the same companies the card names (`shownCompanies`). None when it names none.
+ * The company or companies of the page a chip stands on: one registry id, or every member of a brand whose page it is (a brand's page
+ * holds several registry ids, and a record may name any of them). None off a company's page.
  */
-function chipCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined): { named: { id: string; name_he: string }[]; more: number } {
+export type PageCompanies = string | readonly string[] | undefined;
+const pageIds = (current: PageCompanies): readonly string[] => (current === undefined ? [] : typeof current === "string" ? [current] : current);
+
+/**
+ * The companies a record's chip and its card's tag name, and how many more they count without naming (spec §4: the chip shows the
+ * company's name, not a code): on the page of a company the record shows, that company alone (the first of the page's members it
+ * names); else the first, with the count of the others, over the same companies the card names (`shownCompanies`). None when it names none.
+ */
+function chipCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: PageCompanies): { named: { id: string; name_he: string }[]; more: number } {
   const list = shownCompanies(rule, ownDocs);
+  const page = pageIds(current);
   // on the page of a company the record names, the chip names that company alone (D30)
-  const here = list.find((c) => c.id === current);
+  const here = list.find((c) => page.includes(c.id));
   if (here) return { named: [here], more: 0 };
   return { named: list.slice(0, 1), more: Math.max(0, list.length - 1) };
 }
 
 /** The chip's words for a record that is not general (`chipCompanies`), with "and N more" (copy) after the first name. Null when it names none (the code stays). */
-export function chipName(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: string | undefined, more: (n: number) => string): string | null {
+export function chipName(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, current: PageCompanies, more: (n: number) => string): string | null {
   const { named, more: others } = chipCompanies(rule, ownDocs, current);
   const first = named[0];
   if (!first) return null;
@@ -163,7 +180,7 @@ export function chipName(rule: Pick<RuleRecord, "id" | "scope_institutions">, ow
  * The companies a card's tag names in full (`scopeTag`): with `short` (a rule card's tag, worded as the chip) the chip's companies when
  * it counts none unnamed, and none when it shortens them ("לאומי ועוד 3"); without it every company the card names.
  */
-export function tagCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, short?: { company: string | undefined }): { id: string; name_he: string }[] {
+export function tagCompanies(rule: Pick<RuleRecord, "id" | "scope_institutions">, ownDocs: OwnDocs | undefined, short?: { company: PageCompanies }): { id: string; name_he: string }[] {
   if (!short) return shownCompanies(rule, ownDocs);
   const { named, more } = chipCompanies(rule, ownDocs, short.company);
   return more === 0 ? named : [];

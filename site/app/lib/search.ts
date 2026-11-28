@@ -55,7 +55,13 @@ export interface SearchFig {
   u: string;
   f?: string;
   k?: string;
+  /** The value's dates in force, as the record writes them: a figure that starts later than today, or has ended, is not the one in force now. */
+  from?: string;
+  to?: string;
 }
+
+/** The key of a glossary term's rows in the index and in the texts file: its record's id, since several records share one name. */
+export const termKey = (id: string): string => `term:${id}`;
 
 export interface SearchEntry {
   kind: SearchKind;
@@ -65,7 +71,7 @@ export interface SearchEntry {
   norm: string;
   /** Numbers the entry is also known by (fund, security and company numbers), matched from the first digit. */
   ids?: string[];
-  /** The record's id (rules and parameters: `TXG-02`, `P-03`; terms: `term:<name>`), the key of its text in the texts file. */
+  /** The record's id (rules and parameters: `TXG-02`, `P-03`; terms: `term:<record id>`), the key of its text in the texts file. */
   key?: string;
   /** Extra normalised words that may match but are not shown (figure names, topic, source title). */
   alt?: string;
@@ -119,11 +125,13 @@ export function ruleFigs(figures: unknown, names: Record<string, string> | undef
     const o = v as Record<string, unknown>;
     if ("value" in o && "unit" in o) {
       if (typeof o.value !== "number" || typeof o.unit !== "string" || o.unit === "text") return;
-      const id = `${o.value}|${unitFamily(o.unit) === "other" ? o.unit : unitFamily(o.unit)}`;
+      const from = typeof o.effective_from === "string" ? o.effective_from : undefined;
+      const to = typeof o.effective_to === "string" ? o.effective_to : undefined;
+      const id = `${o.value}|${unitFamily(o.unit) === "other" ? o.unit : unitFamily(o.unit)}|${from ?? ""}|${to ?? ""}`;
       if (seen.has(id)) return;
       seen.add(id);
       const f = names?.[key];
-      out.push({ n: o.value, u: o.unit, ...(f ? { f } : {}), k: key });
+      out.push({ n: o.value, u: o.unit, ...(f ? { f } : {}), k: key, ...(from ? { from } : {}), ...(to ? { to } : {}) });
       return;
     }
     for (const x of Array.isArray(v) ? v : Object.values(o)) walk(x, key);
@@ -607,7 +615,8 @@ export function searchEntries(index: SearchEntry[], q: string, texts?: SearchTex
   const hits: SearchHit[] = [];
   for (const h of scored) {
     const { entry } = h;
-    const key = entry.kind === "term" ? `term|${entry.href}|${entry.norm}` : entry.href;
+    // a term's rows fold into one per record: two records may share a page and a spelling
+    const key = entry.kind === "term" ? `term|${entry.key ?? ""}|${entry.href}|${entry.norm}` : entry.href;
     const prev = byKey.get(key);
     if (!prev) {
       byKey.set(key, h);

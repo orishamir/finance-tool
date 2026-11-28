@@ -5,13 +5,27 @@
 // Pure functions (normalise, thin, sanityCheck, diffSeries) do no I/O.
 import { seriesRecord, type SeriesObservation, type SeriesRecord } from "@finance-tool/schema";
 import { USER_AGENT, decodeWindows1255, parseCsv, type Downloaded } from "./cma.ts";
-import { lastDate, refreshSeries, type SeriesDiff, type SeriesRefreshOptions, type SeriesSpec, type SourceReport } from "./series-common.ts";
+import { keepChecked, lastDate, refreshSeries, type SeriesDiff, type SeriesRefreshOptions, type SeriesSpec, type SourceReport } from "./series-common.ts";
 
 export const MOF_ID = "mof-child-savings-rates";
 export const DATASET_UUID = "dcd96625-def1-45dc-a2cf-f4ad7fc2360a";
 export const RESOURCE_ID = "a737b311-c6d8-4084-9ac9-c40d0fd01125";
 export const DOWNLOAD_URL = `https://data.gov.il/dataset/${DATASET_UUID}/resource/${RESOURCE_ID}/download/file.csv`;
 export const TERMS_URL = "https://data.gov.il/he/terms-of-use";
+/** The dataset's page on data.gov.il, where a reader sees the file: the portal's package_show names its organization `mof`. */
+export const DATASET_PAGE = "https://data.gov.il/he/datasets/mof/savingsplaninterest";
+/** The body that publishes the file, as the record's attribution names it; data.gov.il is a portal and names no publisher. */
+export const PUBLISHER_HE = "משרד האוצר, החשב הכללי";
+
+/** The source of every rate: the dataset's page, and the CSV the refresh reads as `fetched_from`. */
+export const rateSource = (): SeriesObservation["source"] => ({
+  url: DATASET_PAGE,
+  title: "ריביות של פיקדונות חיסכון לכל ילד – עדכון יומי (data.gov.il savingsplaninterest, file.csv, Windows-1255)",
+  publisher: "Ministry of Finance (Accountant General) via data.gov.il",
+  publisher_he: PUBLISHER_HE,
+  strength: "primary",
+  fetched_from: DOWNLOAD_URL,
+});
 /** The file is a rolling window; the series keeps this many months back from the run date. */
 export const WINDOW_MONTHS = 14;
 
@@ -149,12 +163,7 @@ const observation = (date: string, key: string, value: number, runDate: string):
   key,
   value,
   unit: "pct_per_year",
-  source: {
-    url: DOWNLOAD_URL,
-    title: "ריביות של פיקדונות חיסכון לכל ילד – עדכון יומי (data.gov.il savingsplaninterest, file.csv, Windows-1255)",
-    publisher: "Ministry of Finance (Accountant General) via data.gov.il",
-    strength: "primary",
-  },
+  source: rateSource(),
   checked: runDate,
   effective_from: date,
   effective_to: null,
@@ -169,14 +178,11 @@ export function normalise(
 ): { file: SeriesRecord | null; problems: string[] } {
   const parsed = parseRates(decodeWindows1255(dl.bytes), ctx.runDate);
   if (parsed.series.size === 0) return { file: null, problems: parsed.problems };
-  // An observation unchanged from the stored file keeps its stored `checked`, so a refresh does not rewrite every line.
+  // An observation unchanged from the stored file keeps its stored `checked` (keepChecked), so a refresh does not rewrite every line.
   const stored = new Map((previous?.observations ?? []).map((o) => [`${o.date}\u0000${o.key ?? ""}`, o]));
   const observations: SeriesObservation[] = [];
   for (const [key, points] of parsed.series) {
-    for (const p of thin(points)) {
-      const old = stored.get(`${p.date}\u0000${key}`);
-      observations.push(old && old.value === p.value ? old : observation(p.date, key, p.value, ctx.runDate));
-    }
+    for (const p of thin(points)) observations.push(keepChecked(observation(p.date, key, p.value, ctx.runDate), stored.get(`${p.date}\u0000${key}`)));
   }
   observations.sort(byDateThenKey);
   const candidate = {
@@ -297,6 +303,7 @@ export const mofSpec: SeriesSpec = {
     title: "Raw MoF child-savings rate downloads",
     notes: "Raw gzipped CSV downloads from data.gov.il (docs/architecture.md section 3.3). Evidence for data/series/mof-child-savings-rates.json.",
   },
+  sourceOf: () => rateSource(),
 };
 
 export const refreshMofChildSavings = (opts: SeriesRefreshOptions): Promise<SourceReport> => refreshSeries(mofSpec, opts);

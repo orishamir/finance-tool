@@ -74,8 +74,7 @@
     "update_rule": "provider-set",
     "rule_ids": [
       "BANK-13",
-      "BANK-25",
-      "BANK-34"
+      "BANK-25"
     ],
     "state": "sourced",
     "notes": "Nominal annual rate before tax as printed ('P-4.65%=0.10 %') for the 1,000 - 99,999 tier of model 5126/6 'פק\"מ פריים 7-13 ימים' ('פיקדון שבועי'): rate type 'משתנה', linkage 'לא צמוד', break 'אין אפשרות שבירה', automatic renewal 'לא קיימת', number of renewals '-', exit points 'לא קיימת' '-', 'הטבת דיגיטל' '0.05 %'; the common-deposit column is empty (p.2). This row as printed: 1,000 - 99,999: 'P-4.65%=0.10 %', 'הטבת דיגיטל' 0.05 %. Read 2026-11-09 from the bank's print file of its 447 publication (the PDF its rate-table page offers), which prints 'הנתונים נכונים ליום: 09.11.2026' and 'שיעור ריבית הפריים הנוכחית: P = 4.75 % החל מתאריך: 03.09.2026'; the file also says 'שיעור הריבית המוצעת הינו לתום תקופת ההפקדה'. The column 'הטבת דיגיטל' is printed beside the rate; whether it is included in the offered rate or added to it is not stated."
@@ -97,8 +96,7 @@
     "update_rule": "fixed in law",
     "rule_ids": [
       "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-04"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel deposit: interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
@@ -162,12 +160,12 @@
     "value": false,
     "max_renewals": null
   },
-  "conditions_he": "בטבלה מופיעה גם הטבת דיגיטל של 0.05%, ולא כתוב אם היא כלולה בשיעור או נוספת עליו.",
   "snapshot": "2026-11-09",
   "source": {
     "url": "https://www.leumi.co.il/he/savings/interest-rate-table/print-pdf/leumi",
     "title": "בנק לאומי, 'שיעורי הריבית על הפיקדונות ועל יתרות זכות בחשבון', 'הנתונים נכונים ליום: 09.11.2026', 'שיעורי הריבית על סוגי הפיקדונות השקליים המקובלים ועל יתרות זכות בחשבון'",
     "publisher": "Bank Leumi le-Israel B.M.",
     "strength": "institution"
-  }
+  },
+  "doubt_he": "בטבלה מופיעה גם הטבת דיגיטל של 0.05%, ולא כתוב אם היא כלולה בשיעור או נוספת עליו."
 }

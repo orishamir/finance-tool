@@ -2,7 +2,7 @@
 // from the line and the inputs, and, for every figure a builder marks as a line of math, that line worked out (tex-eval.ts) comes to the
 // figure its sheet heads with, to its last digit. The lines of a difference or a sum add up to the figure as written.
 import { describe, expect, it } from "vitest";
-import { paidInAsEntered, stretchRange, yearlyChanges } from "@finance-tool/engine";
+import { PERCENT_UNITS, paidInAsEntered, stretchRange, yearlyChanges } from "@finance-tool/engine";
 import { formulaKeys, invest } from "../copy";
 import { addedOf, inflationOf, leftOf, nominalOf } from "../components/invest/receipt";
 import { loadFormulaTex } from "./data.server";
@@ -99,7 +99,6 @@ function headNumber(head: string): { n: number; unit: number } {
 
 /** The drawn lines whose own symbol is a percent in percent numbers (`× 100`); any other line works out a percent figure as a fraction. */
 const PERCENT_LINES = new Set(["F-87#0", "F-88#0"]);
-const PERCENT_UNITS = new Set(["pct", "pct_per_year", "pct_of_deposit", "pct_of_trade", "pct_of_balance_per_period"]);
 
 /**
  * Checks each figure marked as a line of math: its symbols are the line's and its key's, each stands for one of its inputs, every input with

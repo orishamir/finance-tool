@@ -8,6 +8,7 @@ import { join } from "node:path";
 import type { RuleRecord } from "@finance-tool/schema";
 import { documents as documentsCopy } from "../copy";
 import { hebrewDocTitle } from "./source-label";
+import { onSharedPortal, publisherName } from "./sources";
 import { ruleTitle } from "./rule-title";
 import type { Strength } from "./value";
 import * as dataServer from "./data.server";
@@ -54,7 +55,7 @@ interface PublisherRow {
 }
 
 /** One source entry, from a rule's `sources[]` or from a figure's own `source`. */
-export interface Entry {
+interface Entry {
   ruleId: string;
   url: string;
   title: string;
@@ -172,6 +173,7 @@ function sectionOf(kind: string, strength: Strength, host: string, publisherKind
 export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDoc[], publishers: Record<string, PublisherRow>, hrefOf: (id: string) => string = (id) => rulesPath({ hash: id })): DocumentCard[] {
   const groups = new Map<string, { doc: TableDoc | null; entries: Entry[] }>();
   const all = entriesOf(rules);
+  const publishersHe = Object.fromEntries(Object.entries(publishers).flatMap(([host, r]) => (r.publisher_he ? [[host, r.publisher_he]] : [])));
   // the same address is the same document whatever a link called it ("[1](url)"): the table match found by any entry of an address serves them all
   const docByUrl = new Map<string, TableDoc>();
   for (const e of all) {
@@ -187,7 +189,6 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
   }
   const cards: DocumentCard[] = [];
   for (const [key, { doc, entries }] of groups) {
-    const hosts = entries.map((e) => hostOf(e.url));
     const pub = (e: Entry): PublisherRow | undefined => publishers[hostOf(e.url)];
     // a title written in Hebrew, a web host before it allowed: "data.gov.il, בנק ישראל: רשימת תאגידים בנקאיים" is a Hebrew title, and
     // "Tax Authority, מדריך…" an English working title that quotes one (a count of letters alone showed it)
@@ -196,7 +197,9 @@ export function groupDocuments(rules: Record<string, RuleRecord>, table: TableDo
     const kind0 = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x));
     // never an English working title: the kind's word stands in
     const title = titleHe ?? (kind0 ? (documentsCopy.kinds as Record<string, string>)[kind0] : undefined) ?? hostOf(url0);
-    const publisher = doc?.publisher_he ?? mostCommon(entries.map((e) => pub(e)?.publisher_he ?? e.publisher_he).filter((x): x is string => !!x)) ?? mostCommon(entries.map((e) => e.publisher).filter((x): x is string => !!x)) ?? hosts[0] ?? "";
+    // the record's own Hebrew name before the host table's, and never a shared portal's name or host (`publisherName`): there the
+    // title names who published the document
+    const publisher = doc?.publisher_he ?? mostCommon(entries.map((e) => publisherName({ url: e.url, publisher: e.publisher ?? "", ...(e.publisher_he ? { publisher_he: e.publisher_he } : {}) }, publishersHe)).filter((x) => !!x)) ?? entries.filter((e) => !onSharedPortal(e.url)).map((e) => hostOf(e.url))[0] ?? "";
     const kind = doc?.kind ?? mostCommon(entries.map((e) => e.kind).filter((x): x is string => !!x)) ?? pub(entries[0]!)?.kind ?? "other";
     // an official url is the card's link; without one the most common url
     const url = doc?.official_url ?? mostCommon(entries.map((e) => e.url))!;

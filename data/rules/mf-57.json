@@ -1,0 +1,46 @@
+{
+  "id": "MF-57",
+  "title": "The \"(!)\" in a fund's name: since 2021 it also counts bonds of foreign companies with no tie to Israel, unless highly rated; new text of 19 April 2026",
+  "title_he": "סימן ״(!)״ בשם קרן: חשיפה לסיכון אשראי",
+  "strength": "primary",
+  "dimensions": [
+    "protection"
+  ],
+  "likely_to_change": "no",
+  "text_he": "לפי הוראה של רשות ניירות ערך, מנהל קרן מוסיף לשם הקרן את הסימן ״(!)״, ליד פרופיל החשיפה, ומסביר אותו בשיווק ובמדיניות ההשקעה. הוא מוסיף אותו כשהחשיפה האפשרית לסיכון אשראי גבוהה מהחשיפה המרבית של הקרן למניות. החשיפה הזו נספרת מאיגרות חוב בדירוג נמוך מדירוג השקעה, מגופים שמחוץ לקבוצת סיכון האשראי הראשונה ומאיגרות של חברה בלי זיקה לישראל, חוץ מאיגרות של חברה כזו בדירוג ilAA ומעלה או בדירוג מקביל. בנפרד, חשיפה לגופים שמחוץ לקבוצה הראשונה מעל שיעור שההוראה קובעת מחייבת את הסימן בלי קשר לחשיפה למניות. קרן מסוג 3 לפי תקנות עמלת ההפצה, כולל קרן מחקה, לא צריכה את הסימן כשהחשיפה שלה לכל גוף אחד מהקבוצה השנייה, ולכל הקבוצה הזו יחד, לא עוברת את התקרות שבהוראה.",
+  "il_finance_file": "mutual-funds-and-money-market-funds.md",
+  "checked": "2026-10-31",
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/ExclamationMarkInstruction1_2026.pdf#page=1",
+      "title": "ISA, directive on adding an exclamation mark to a fund's name (new text, 2026)",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "locator": "p.1 to 3, p.3 to 4, p.4 to 5, p.6",
+      "locator_he": "עמוד 1 עד 3, עמוד 3 עד 4, עמוד 4 עד 5, עמוד 6",
+      "page": 1,
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/tavla071121.pdf",
+      "title": "ISA, amendment notice of 7.11.2021",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-31"
+    },
+    {
+      "url": "https://www.new.isa.gov.il/images/Fittings/isa/asset_library_pic/al_lobby/al_lobby-62bd445f910eb/draft040825.pdf",
+      "title": "proposal of 4.8.2025",
+      "publisher": "Israel Securities Authority",
+      "publisher_he": "רשות ניירות ערך",
+      "kind": "regulator_page",
+      "strength": "primary",
+      "checked": "2026-10-31"
+    }
+  ]
+}

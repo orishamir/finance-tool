@@ -2,7 +2,7 @@
 // end), the break, the renewal and the tax.
 import { describe, expect, it } from "vitest";
 import { r4catalogue } from "../copy";
-import { amountRangeForm, amountRangeText, breakText, renewText, taxWord } from "./deposit-kind";
+import { amountRangeForm, amountRangeText, breakText, renewText, restatesDoubt, taxWord } from "./deposit-kind";
 
 describe("a deposit's amount range", () => {
   it("says a bottom and a top as one range with עד", () => {
@@ -33,9 +33,26 @@ describe("a deposit's break, renewal and tax", () => {
     expect(renewText(true, null)).toBe(r4catalogue.autoRenewWord.yes);
     expect(renewText(true, 3)).toBe("עד 3 פעמים");
   });
+  it("counts one and two renewals in words, never a figure before a plural", () => {
+    expect(renewText(true, 1)).toBe("עד פעם אחת");
+    expect(renewText(true, 2)).toBe("עד פעמיים");
+  });
   it("gives an empty tax bucket no word", () => {
     expect(taxWord("unlinked_15")).toBe(r4catalogue.tax.unlinked);
     expect(taxWord("linked_25")).toBe(r4catalogue.tax.linked);
     expect(taxWord(null)).toBeUndefined();
+  });
+});
+
+describe("a value's note beside the record's doubt", () => {
+  // Mizrahi-Tefahot's Litchi: its effective rate's note and its doubt say the same four rates and the effective one printed beside them
+  const doubt = "הבנק מפרסם ארבעה שיעורי ריבית, אחד לכל שלושה חודשים, והמספר כאן הוא ״הריבית האפקטיבית״ שהוא מדפיס לצדם בלי להסביר לפיקדון הזה איך חישב אותה.";
+  it("finds a note that says again what the doubt says", () => {
+    expect(restatesDoubt("הבנק מדפיס לפיקדון הזה ארבעה שיעורי ריבית, אחד לכל שלושה חודשים: 1.50%, 1.51%, 1.52% ו־1.53%. ״הריבית האפקטיבית״ שהוא מדפיס לצדם היא 1.52% בכל טווחי הסכום.", doubt)).toBe(true);
+  });
+  it("keeps a note that carries another limit", () => {
+    expect(restatesDoubt("השיעור שבטבלה הוא לתקופה הראשונה של הפיקדון.", doubt)).toBe(false);
+    expect(restatesDoubt("פותחים רק בסניף או בטלבנק.", doubt)).toBe(false);
+    expect(restatesDoubt("השיעור שבטבלה הוא לתקופה הראשונה של הפיקדון.", null)).toBe(false);
   });
 });

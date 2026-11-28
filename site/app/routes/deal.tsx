@@ -40,7 +40,7 @@ export default function FeesPage() {
   useTypedAccountsMove(data);
   const provenance = useMemo(() => {
     const rules: Record<string, RuleRecord> = Object.fromEntries((data?.rules ?? []).map((r) => [r.id, r]));
-    return { rules, pointed: recordsById(data?.pointed), terms: data?.terms ?? {}, dimensions: {}, today };
+    return { rules, pointed: recordsById(data?.pointed), ...(data?.heads ? { heads: data.heads } : {}), terms: data?.terms ?? {}, dimensions: {}, today };
   }, [data, today]);
   return (
     <PageShell current="other" data={provenance}>

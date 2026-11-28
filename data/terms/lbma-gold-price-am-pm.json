@@ -9,6 +9,10 @@
     "LBMA Gold Price AM",
     "LBMA Gold Price PM"
   ],
+  "also_called": [
+    "LBMA Gold Price AM",
+    "LBMA Gold Price PM"
+  ],
   "rule_ids": [
     "RG-18"
   ],

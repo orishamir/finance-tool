@@ -12,6 +12,9 @@
   "variants": [
     "(!)"
   ],
+  "also_called": [
+    "(!)"
+  ],
   "rule_ids": [
     "MF-43",
     "MF-57"

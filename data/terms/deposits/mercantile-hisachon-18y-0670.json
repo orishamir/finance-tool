@@ -26,10 +26,7 @@
     "effective_to": null,
     "tax_year": null,
     "update_rule": "provider-set",
-    "rule_ids": [
-      "BANK-27",
-      "BANK-28"
-    ],
+    "rule_ids": [],
     "state": "sourced",
     "notes": "Printed period '18 שנה'; the product page names it 'פיקדון חיסכון ל 18 שנים (216 חודשים)'. Recorded as 216 months."
   },
@@ -51,9 +48,7 @@
     "tax_year": null,
     "update_rule": "provider-set",
     "rule_ids": [
-      "BANK-13",
-      "BANK-25",
-      "BANK-28"
+      "BANK-13"
     ],
     "state": "sourced",
     "notes": "Printed '1.8' in the 447 row '18 שנה' (rate type 'קבועה', 'לא צמוד'; exit points 'There are exit stations', 'שנתית', remark 'תחנה מתום 12 ו 13 שנה'; break 'קיימת עם קנס שבירה'; channel 'סניף'). CONFLICT: the product page prints 'ריבית התחלתית 1.60%', 'בתום 12 שנה 1.85%', 'בתום 13 שנה 1.85%', 'ריבית לסיום 2.10%'; the 447 table, updated 2026-11-06, is stored. Product page: 'מקסימום הפקדה חודשית 250 ש\"ח'; 'שיעור ההפחתה מריבית הפיקדון במקרה של אי רצף - ריבית שנתית 0.10%'. Read 2026-11-07 from the table the page loads (https://www.mercantile.co.il/api/MoneyMarket/Saving?pageId=d57395d4-ba86-43b6-9a85-26a7c97a1e36, 'lastUpdatedAt' 2026-11-06T22:00, prime 4.75%; library e7d5f46d740c1df4). The row is in ProductFamily 5, which the page's filter names 'פיקדון בהוראת קבע'. Product page read 2026-11-07 (library 54e08b1020ace002)."
@@ -74,9 +69,7 @@
     "tax_year": null,
     "update_rule": "fixed in law",
     "rule_ids": [
-      "TXI-03",
-      "TXI-04",
-      "TXI-08"
+      "TXI-03"
     ],
     "state": "sourced",
     "notes": "Unlinked shekel plan (the 447 table's linkage column 'לא צמוד'): interest taxed at 15% of the nominal interest (TXI-03); 'linked' means CPI or exchange rate, so an unlinked or prime-linked shekel deposit is in this bucket (TXI-04); the bank withholds 15% (TXI-08). Copied from the rule base (TXI-03's source, read 2026-10-25), not re-read today."
@@ -144,8 +137,8 @@
     "value": false,
     "max_renewals": null
   },
-  "conditions_he": "תחנות יציאה בתום 12 שנים ובתום 13 שנים. פותחים רק בסניף. בחודש שבו לא מפקידים, הריבית יורדת ב-0.1%.",
-  "doubt_he": "דף המוצר של הבנק מציג ריבית התחלתית 1.60% וריבית לסיום 2.10%, וטבלת הריביות מציגה 1.80%; נרשם המספר שבטבלה.",
+  "conditions_he": "תחנות יציאה בתום 12 שנים ובתום 13 שנים. פותחים רק בסניף. בחודש שבו לא מפקידים, הריבית יורדת ב־0.1%.",
+  "doubt_he": "דף המוצר של הבנק מציג ריבית התחלתית 1.60% וריבית לסיום 2.10%, וטבלת הריביות מציגה 1.80%. השיעור כאן הוא של הטבלה.",
   "snapshot": "2026-11-07",
   "source": {
     "url": "https://www.mercantile.co.il/private/investments-savings/deposit-savings/classic/interest-tables-new/",

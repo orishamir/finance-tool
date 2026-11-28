@@ -11,6 +11,7 @@ import { withoutLtd } from "./company-name";
 import { isCustomFund, type EnteredInBundle } from "./custom-entries";
 import { type SiteValue } from "./value";
 import type { RefLink } from "./sources";
+import type { RuleHead } from "./rule-card-file";
 
 
 // ---------------------------------------------------------------- the data (providers.server.ts)
@@ -171,8 +172,10 @@ export interface IndicesBundle {
   fundLists: FundListFile[];
   /** The rule records a run may read, the protection rules and the rules the pages quote. */
   rules: RuleRecord[];
-  /** The records those rules' cards point at (derived_from, examples) that the bundle does not ship: only chips and cards read them. */
+  /** The records those rules' cards point at (derived_from, examples) whose figures fill their slots, which `rules` does not hold: only chips and cards read them. */
   pointed?: RuleRecord[];
+  /** The heads of the other rules they point at: a chip names its rule from them, and its card is fetched when tapped (`pointedShipment`). */
+  heads?: Record<string, RuleHead>;
   /** P-01 (tie threshold), P-02 (the sensitivity bounds: the yearly return's range the order is checked over, the dollar's) and P-05 (the representative instruments). */
   p01: ParameterRecord;
   p02: ParameterRecord;
