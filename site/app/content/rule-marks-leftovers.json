@@ -5,7 +5,7 @@
       "page": "/guide/makam",
       "rule": "BANK-18",
       "blocks": 1,
-      "why": "On the page when the check came in (2026-11-28)."
+      "why": "The paragraph comparing makam with a deposit opens BANK-18 for both the custody ban and the buy, sell and redemption fees, with BRK-17 between them. Which of BANK-18 and BRK-17 owns the custody ban on makam is not settled; the two marks are folded once it is."
     }
   ]
 }
