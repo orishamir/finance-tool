@@ -1447,7 +1447,8 @@ export const guideBlocks = {
     // a deposit's example reads the bank's deposit terms and no tariff
     whoseDeposit: "התנאים בדוגמה הם של",
     whoseManager: "דמי הניהול בדוגמה הם של",
-    // a money-market fund's example: the fund's own fees are its manager's, and the trade and custody lines are the bank route's (MF-26, BANK-18)
+    // a money-market fund's example: the fund's own fees are its manager's, and the trade and custody lines are the bank route's: no trade
+    // fee under a distribution agreement (MF-26, and MF-71 for what that leaves a bank to charge), no custody fee (BRK-17's ban)
     whoseFund: "דמי הניהול של הקרן בדוגמה הם של",
     bankRoute: "הדוגמה מניחה שהקרן נקנית דרך בנק שיש לו הסכם הפצה איתה. בנק כזה לא גובה עליה עמלת קנייה ומכירה ודמי ניהול פיקדון.",
     // a fee of the fund the record could not collect: the run counts it as 0
