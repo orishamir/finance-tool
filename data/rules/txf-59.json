@@ -1,0 +1,260 @@
+{
+  "id": "TXF-59",
+  "title": "MSCI's net indices deduct each company country's full rate without a treaty; for the eight countries read it equals that country's own rate",
+  "title_he": "מדדי הנטו של MSCI מנכים את השיעור המלא של מדינת החברה, בלי אמנה",
+  "text_he": "גרסת הנטו של מדדי MSCI משקיעה מחדש כל דיבידנד אחרי ניכוי מס בשיעור הגבוה ביותר שמדינת החברה גובה ממשקיע מוסדי זר שלא נהנה מאמנה. בשמונה המדינות שהשיעור שלהן נקרא מהרשויות עצמן, זה בדיוק השיעור של המדינה: למשל ארצות הברית {TXF-59:us}. קרן שמשלמת פחות מזה מקדימה את מדד הנטו בהפרש.",
+  "figure_names_he": {
+    "us": "ניכוי מדד הנטו של MSCI על דיבידנד אמריקני",
+    "jp": "ניכוי מדד הנטו של MSCI על דיבידנד יפני",
+    "uk": "ניכוי מדד הנטו של MSCI על דיבידנד בריטי",
+    "ca": "ניכוי מדד הנטו של MSCI על דיבידנד קנדי",
+    "ch": "ניכוי מדד הנטו של MSCI על דיבידנד שווייצרי",
+    "fr": "ניכוי מדד הנטו של MSCI על דיבידנד צרפתי",
+    "de": "ניכוי מדד הנטו של MSCI על דיבידנד גרמני",
+    "nl": "ניכוי מדד הנטו של MSCI על דיבידנד הולנדי"
+  },
+  "strength": "institution",
+  "dimensions": [
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-11-28",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-11-28",
+  "figures": {
+    "us": {
+      "value": 30,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
+        "title": "MSCI, MSCI Index Calculation Methodology, November 2026",
+        "publisher": "MSCI",
+        "strength": "institution",
+        "page": 47,
+        "locator": "p.47, appendix VI"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "TXF-59"
+      ],
+      "state": "sourced",
+      "notes": "MSCI's net-index withholding for the company country (\"Foreign\" column), the deduction τ of method F-133."
+    },
+    "jp": {
+      "value": 15.315,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
+        "title": "MSCI, MSCI Index Calculation Methodology, November 2026",
+        "publisher": "MSCI",
+        "strength": "institution",
+        "page": 47,
+        "locator": "p.47, appendix VI"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "TXF-59"
+      ],
+      "state": "sourced",
+      "notes": "MSCI's net-index withholding for the company country (\"Foreign\" column), the deduction τ of method F-133."
+    },
+    "uk": {
+      "value": 0,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
+        "title": "MSCI, MSCI Index Calculation Methodology, November 2026",
+        "publisher": "MSCI",
+        "strength": "institution",
+        "page": 47,
+        "locator": "p.47, appendix VI"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "TXF-59"
+      ],
+      "state": "sourced",
+      "notes": "MSCI's net-index withholding for the company country (\"Foreign\" column), the deduction τ of method F-133."
+    },
+    "ca": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
+        "title": "MSCI, MSCI Index Calculation Methodology, November 2026",
+        "publisher": "MSCI",
+        "strength": "institution",
+        "page": 47,
+        "locator": "p.47, appendix VI"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "TXF-59"
+      ],
+      "state": "sourced",
+      "notes": "MSCI's net-index withholding for the company country (\"Foreign\" column), the deduction τ of method F-133."
+    },
+    "ch": {
+      "value": 35,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
+        "title": "MSCI, MSCI Index Calculation Methodology, November 2026",
+        "publisher": "MSCI",
+        "strength": "institution",
+        "page": 47,
+        "locator": "p.47, appendix VI"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "TXF-59"
+      ],
+      "state": "sourced",
+      "notes": "MSCI's net-index withholding for the company country (\"Foreign\" column), the deduction τ of method F-133."
+    },
+    "fr": {
+      "value": 25,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
+        "title": "MSCI, MSCI Index Calculation Methodology, November 2026",
+        "publisher": "MSCI",
+        "strength": "institution",
+        "page": 47,
+        "locator": "p.47, appendix VI"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "TXF-59"
+      ],
+      "state": "sourced",
+      "notes": "MSCI's net-index withholding for the company country (\"Foreign\" column), the deduction τ of method F-133."
+    },
+    "de": {
+      "value": 26.375,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
+        "title": "MSCI, MSCI Index Calculation Methodology, November 2026",
+        "publisher": "MSCI",
+        "strength": "institution",
+        "page": 47,
+        "locator": "p.47, appendix VI"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "TXF-59"
+      ],
+      "state": "sourced",
+      "notes": "MSCI's net-index withholding for the company country (\"Foreign\" column), the deduction τ of method F-133."
+    },
+    "nl": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.msci.com/index/methodology/latest/IndexCalc",
+        "title": "MSCI, MSCI Index Calculation Methodology, November 2026",
+        "publisher": "MSCI",
+        "strength": "institution",
+        "page": 47,
+        "locator": "p.47, appendix VI"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in document",
+      "rule_ids": [
+        "TXF-59"
+      ],
+      "state": "sourced",
+      "notes": "MSCI's net-index withholding for the company country (\"Foreign\" column), the deduction τ of method F-133."
+    }
+  },
+  "scope": "institution",
+  "scope_institutions": [
+    {
+      "id": "msci",
+      "name_he": "MSCI"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.msci.com/index/methodology/latest/IndexCalc#page=24",
+      "title": "MSCI Index Calculation Methodology, November 2026",
+      "publisher": "MSCI",
+      "publisher_he": "MSCI",
+      "kind": "other",
+      "strength": "institution",
+      "locator": "p.24",
+      "locator_he": "עמוד 24",
+      "quote": "the maximum rate applicable to non-resident institutional investors who do not benefit from double taxation treaties",
+      "checked": "2026-11-28",
+      "qualifier": "(library b35729c385ab20b0)"
+    },
+    {
+      "url": "https://www.msci.com/index/methodology/latest/IndexCalc#page=24",
+      "title": "MSCI Index Calculation Methodology, November 2026",
+      "publisher": "MSCI",
+      "publisher_he": "MSCI",
+      "kind": "other",
+      "strength": "institution",
+      "locator": "p.31",
+      "locator_he": "עמוד 31",
+      "checked": "2026-11-28",
+      "qualifier": "(library b35729c385ab20b0)"
+    },
+    {
+      "url": "https://www.msci.com/index/methodology/latest/IndexCalc#page=24",
+      "title": "MSCI Index Calculation Methodology, November 2026",
+      "publisher": "MSCI",
+      "publisher_he": "MSCI",
+      "kind": "other",
+      "strength": "institution",
+      "locator": "p.47, appendix VI",
+      "checked": "2026-11-28",
+      "qualifier": "(library b35729c385ab20b0)"
+    },
+    {
+      "url": "https://www.msci.com/index/methodology/latest/IndexCalc#page=24",
+      "title": "MSCI Index Calculation Methodology, November 2026",
+      "publisher": "MSCI",
+      "publisher_he": "MSCI",
+      "kind": "other",
+      "strength": "institution",
+      "locator": "p.48",
+      "locator_he": "עמוד 48",
+      "quote": "As there is no withholding tax in the United Kingdom",
+      "checked": "2026-11-28",
+      "qualifier": "(library b35729c385ab20b0)"
+    }
+  ]
+}

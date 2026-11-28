@@ -1,0 +1,256 @@
+{
+  "id": "TXF-56",
+  "title": "A fund domiciled in the US (a RIC) that holds the shares: what each company's country withholds from it",
+  "title_he": "קרן אמריקנית שמחזיקה את המניות: כמה מס מנכה ממנה מדינת החברה",
+  "text_he": "על דיבידנד מחברה אמריקנית לא מנוכה מס בקרן אמריקנית: הניכוי האמריקני חל על תשלום לזר, ולכן המס האמריקני חל על החלוקה של הקרן למחזיק. משווייץ השיעור הוא {TXF-56:ch} לפי האמנה, ומצרפת, מיפן ומקנדה האמנה עם ארצות הברית מגבילה אותו ל־{TXF-56:fr_treaty}, {TXF-56:jp_treaty} ו־{TXF-56:ca_treaty}. מגרמניה {TXF-56:de_accepted} לקרן השקעות זרה עם אישור מעמד. אם קרן אמריקנית זכאית לאמנות האלה נקרא רק לשווייץ ולאמנה עם ישראל.",
+  "figure_names_he": {
+    "us": "מס ארצות הברית בקרן אמריקנית על דיבידנד מחברה אמריקנית",
+    "ch": "מס שווייץ על דיבידנד לקרן אמריקנית, לפי האמנה",
+    "fr_treaty": "מס צרפת על דיבידנד לתושב ארצות הברית, לפי האמנה",
+    "jp_treaty": "מס יפן על דיבידנד לתושב ארצות הברית, לפי האמנה",
+    "ca_treaty": "מס קנדה על דיבידנד לתושב ארצות הברית, לפי האמנה",
+    "de_accepted": "מס גרמניה על דיבידנד לקרן השקעות זרה עם אישור מעמד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-11-28",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-11-28",
+  "figures": {
+    "us": {
+      "value": 0,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.irs.gov/publications/p515",
+        "title": "IRS, Publication 515 (2026), Withholding of Tax on Nonresident Aliens and Foreign Entities",
+        "publisher": "US Internal Revenue Service",
+        "strength": "primary",
+        "locator": "Withholding of Tax",
+        "quote": "Most types of U.S. source income received by a foreign person are subject to U.S. tax of 30%"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-56"
+      ],
+      "state": "sourced",
+      "notes": "None at the fund: US withholding falls on payments to foreign persons; the rule base's reading of Publication 515 with TXF-41."
+    },
+    "ch": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.estv.admin.ch/dam/de/sd-web/pecnSH8azAHM/dba-steuerentlastungen-2026-de.pdf",
+        "title": "ESTV, Steuerentlastungen für schweizerische Dividenden und Zinsen auf Grund von Doppelbesteuerungsabkommen, Stand 1.1.2026",
+        "publisher": "Swiss Federal Tax Administration",
+        "strength": "primary",
+        "page": 10,
+        "locator": "p.10, row Vereinigte Staaten"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-56"
+      ],
+      "state": "sourced",
+      "notes": "Settled for a RIC: Switzerland's form 82 R is for RICs only."
+    },
+    "fr_treaty": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.irs.gov/pub/irs-trty/france.pdf",
+        "title": "Convention between the United States and France (1994), IRS text",
+        "publisher": "US Internal Revenue Service",
+        "strength": "primary",
+        "page": 12,
+        "locator": "art. 10(2)(b)",
+        "quote": "15 percent of the gross amount of the dividends in other cases"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-56"
+      ],
+      "state": "sourced",
+      "notes": "The rate where the fund's claim is accepted, the low end of its cell in method F-107 (b); the high end is the company country's own rate (TXF-53). Treaty rate; a RIC's entitlement under this treaty was not read."
+    },
+    "jp_treaty": {
+      "value": 10,
+      "unit": "pct",
+      "source": {
+        "url": "https://home.treasury.gov/system/files/131/Treaty-Japan-11-6-2003.pdf",
+        "title": "Convention between the United States and Japan (2003)",
+        "publisher": "US Department of the Treasury",
+        "strength": "primary",
+        "page": 15,
+        "locator": "art. 10(2)(b)",
+        "quote": "10 percent of the gross amount of the dividends in all other cases"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-56"
+      ],
+      "state": "sourced",
+      "notes": "The rate where the fund's claim is accepted, the low end of its cell in method F-107 (b); the high end is the company country's own rate (TXF-53). Treaty rate; a RIC's residence under this treaty was not read."
+    },
+    "ca_treaty": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.irs.gov/pub/irs-trty/canada.pdf",
+        "title": "Convention between Canada and the United States (1980), IRS text",
+        "publisher": "US Internal Revenue Service",
+        "strength": "primary",
+        "page": 15,
+        "locator": "art. X(2)(b)",
+        "quote": "15 per cent of the gross amount of the dividends in all other cases"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-56"
+      ],
+      "state": "sourced",
+      "notes": "The rate where the fund's claim is accepted, the low end of its cell in method F-107 (b); the high end is the company country's own rate (TXF-53). Treaty rate; a RIC's entitlement under this treaty was not read."
+    },
+    "de_accepted": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gesetze-im-internet.de/invstg_2018/__7.html",
+        "title": "חוק מס קרנות ההשקעה הגרמני (Investmentsteuergesetz), סעיף 7",
+        "publisher": "Bundesministerium der Justiz",
+        "strength": "primary",
+        "locator": "§7(1)",
+        "quote": "beträgt die Kapitalertragsteuer 15 Prozent des Kapitalertrags"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-56"
+      ],
+      "state": "sourced",
+      "notes": "The rate where the fund's claim is accepted, the low end of its cell in method F-107 (b); the high end is the company country's own rate (TXF-53). A reading, as in TXF-54."
+    }
+  },
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.irs.gov/pub/irs-trty/france.pdf#page=12",
+      "title": "Convention between the United States and France for the avoidance of double taxation (1994), IRS text",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.12, art. 10(2)(b)",
+      "page": 12,
+      "checked": "2026-11-28",
+      "qualifier": "(library 909c4a1cf58a5138)"
+    },
+    {
+      "url": "https://home.treasury.gov/system/files/131/Treaty-Japan-11-6-2003.pdf#page=15",
+      "title": "Convention between the United States and Japan for the avoidance of double taxation (2003)",
+      "publisher": "home.treasury.gov",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.15, art. 10(2)(b)",
+      "page": 15,
+      "checked": "2026-11-28",
+      "qualifier": "(library 59606b9421c0b899)"
+    },
+    {
+      "url": "https://www.irs.gov/pub/irs-lbi/tax-treaty-table-1.pdf#page=2",
+      "title": "Table 1. Tax Rates on Income Other Than Personal Service Income Under Chapter 3, Internal Revenue Code, and Income Tax Treaties",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.2, row Japan",
+      "page": 2,
+      "checked": "2026-11-28",
+      "qualifier": "(library 8ba855afd80c1b8f)"
+    },
+    {
+      "url": "https://www.irs.gov/pub/irs-trty/canada.pdf#page=15",
+      "title": "Convention between Canada and the United States with respect to taxes on income and on capital (1980), IRS text",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.15, art. X(2)(b)",
+      "page": 15,
+      "checked": "2026-11-28",
+      "qualifier": "(library 8f50627bf060c994)"
+    },
+    {
+      "url": "https://www.irs.gov/publications/p515#:~:text=The%20tax%20is%20generally%20withheld%20(chapter%203%20withholding)%20from%20the%20payment%20made%20to%20the%20foreign%20person",
+      "title": "Publication 515 (2026), Withholding of Tax on Nonresident Aliens and Foreign Entities",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "quote": "The tax is generally withheld (chapter 3 withholding) from the payment made to the foreign person",
+      "checked": "2026-11-06",
+      "qualifier": "(library 60f3b61756cf9e9c)"
+    },
+    {
+      "url": "https://www.estv.admin.ch/dam/de/sd-web/pecnSH8azAHM/dba-steuerentlastungen-2026-de.pdf#page=10",
+      "title": "Steuerentlastungen für schweizerische Dividenden und Zinsen auf Grund von Doppelbesteuerungsabkommen, Stand 1.1.2026",
+      "publisher": "estv.admin.ch",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.10, row Vereinigte Staaten",
+      "page": 10,
+      "checked": "2026-11-28",
+      "qualifier": "(library b8ddbef10e7d8095)"
+    },
+    {
+      "url": "https://bofip.impots.gouv.fr/bofip/7780-PGP.html/identifiant=BOI-RPPM-RCM-30-30-20-70-20211006",
+      "title": "BOI-RPPM-RCM-30-30-20-70",
+      "publisher": "bofip.impots.gouv.fr",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "§30; §45",
+      "locator_he": "§30; §45",
+      "checked": "2026-11-28",
+      "qualifier": "(library 72701fffbd800895)"
+    },
+    {
+      "url": "https://www.estv.admin.ch/en/usa-en",
+      "title": "Double taxation agreement Switzerland - USA",
+      "publisher": "estv.admin.ch",
+      "kind": "other",
+      "strength": "primary",
+      "checked": "2026-11-28",
+      "qualifier": "(library 687cd04e48cd38ef)"
+    }
+  ],
+  "derived_from": [
+    "TXF-54",
+    "TXF-53",
+    "TXF-41"
+  ]
+}

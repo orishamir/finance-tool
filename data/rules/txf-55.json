@@ -1,0 +1,203 @@
+{
+  "id": "TXF-55",
+  "title": "A fund domiciled in Luxembourg (a SICAV) that holds the shares: what each company's country withholds from it, by Luxembourg's own list",
+  "title_he": "קרן מלוקסמבורג שמחזיקה את המניות: כמה מס מנכה ממנה מדינת החברה",
+  "text_he": "רשות המסים של לוקסמבורג מפרטת, אמנה אחרי אמנה, אם הקרנות שלה בצורת חברה יכולות להסתמך עליה. לפי הרשימה, ארצות הברית, שווייץ וקנדה לא מחילות את האמנה על הקרנות האלה, והולנד ויפן סירבו להחיל אותה, ולכן השיעור שם הוא של המדינה עצמה. בצרפת השיעור הוא {TXF-55:fr_accepted} לקרן מאיחוד האירופי שדומה לקרנות צרפתיות, ובגרמניה {TXF-55:de_accepted} לכל קרן השקעות זרה עם אישור מעמד. בבריטניה לא מנוכה מס.",
+  "figure_names_he": {
+    "fr_accepted": "מס צרפת על דיבידנד לקרן מלוקסמבורג שדומה לקרן צרפתית",
+    "de_accepted": "מס גרמניה על דיבידנד לקרן השקעות זרה עם אישור מעמד"
+  },
+  "strength": "primary",
+  "dimensions": [
+    "foreign-withholding-domicile"
+  ],
+  "likely_to_change": "yes",
+  "recheck_date": "2027-11-28",
+  "il_finance_file": "tax-securities-foreign.md",
+  "checked": "2026-11-28",
+  "figures": {
+    "fr_accepted": {
+      "value": 0,
+      "unit": "pct",
+      "source": {
+        "url": "https://bofip.impots.gouv.fr/bofip/7780-PGP.html/identifiant=BOI-RPPM-RCM-30-30-20-70-20211006",
+        "title": "הנחיות רשות המסים הצרפתית (BOFiP), BOI-RPPM-RCM-30-30-20-70",
+        "publisher": "Direction générale des Finances publiques",
+        "strength": "primary",
+        "locator": "§30, §40"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-55"
+      ],
+      "state": "sourced",
+      "notes": "The rate where the fund's claim is accepted, the low end of its cell in method F-107 (b); the high end is the company country's own rate (TXF-53). As for an Irish fund (TXF-54)."
+    },
+    "de_accepted": {
+      "value": 15,
+      "unit": "pct",
+      "source": {
+        "url": "https://www.gesetze-im-internet.de/invstg_2018/__7.html",
+        "title": "חוק מס קרנות ההשקעה הגרמני (Investmentsteuergesetz), סעיף 7",
+        "publisher": "Bundesministerium der Justiz",
+        "strength": "primary",
+        "locator": "§7(1)",
+        "quote": "beträgt die Kapitalertragsteuer 15 Prozent des Kapitalertrags"
+      },
+      "checked": "2026-11-28",
+      "effective_from": null,
+      "effective_to": null,
+      "tax_year": null,
+      "update_rule": "fixed in law",
+      "rule_ids": [
+        "TXF-55"
+      ],
+      "state": "sourced",
+      "notes": "The rate where the fund's claim is accepted, the low end of its cell in method F-107 (b); the high end is the company country's own rate (TXF-53). InvStG §7, as for every foreign investment fund; without a status certificate 26.375% (TXF-54)."
+    }
+  },
+  "scope": "general",
+  "sources": [
+    {
+      "url": "https://www.irs.gov/pub/irs-lbi/tax-treaty-table-1.pdf#page=1",
+      "title": "Table 1. Tax Rates on Income Other Than Personal Service Income Under Chapter 3, Internal Revenue Code, and Income Tax Treaties",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.1",
+      "locator_he": "עמוד 1",
+      "page": 1,
+      "quote": "This table does not provide guidance on how to identify the relevant treaty resident",
+      "checked": "2026-11-28",
+      "qualifier": "(library 8ba855afd80c1b8f)"
+    },
+    {
+      "url": "https://www.irs.gov/pub/irs-lbi/tax-treaty-table-1.pdf#page=3",
+      "title": "Table 1. Tax Rates on Income Other Than Personal Service Income Under Chapter 3, Internal Revenue Code, and Income Tax Treaties",
+      "publisher": "IRS",
+      "publisher_he": "רשות המס האמריקאית (IRS)",
+      "kind": "official_pdf",
+      "strength": "primary",
+      "locator": "p.3, row Luxembourg",
+      "page": 3,
+      "checked": "2026-11-28",
+      "qualifier": "(library 8ba855afd80c1b8f)"
+    },
+    {
+      "url": "https://impotsdirects.public.lu/dam-assets/fr/legislation/legi24/lg-a-61-du-24122024.pdf#page=3",
+      "title": "Circulaire du directeur des contributions L.G. - A. n° 61 du 24 décembre 2024",
+      "publisher": "impotsdirects.public.lu",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.3",
+      "locator_he": "עמוד 3",
+      "page": 3,
+      "checked": "2026-11-28",
+      "qualifier": "(library a750acd1fcbc248c)"
+    },
+    {
+      "url": "https://impotsdirects.public.lu/dam-assets/fr/legislation/legi24/lg-a-61-du-24122024.pdf#page=4",
+      "title": "Circulaire du directeur des contributions L.G. - A. n° 61 du 24 décembre 2024",
+      "publisher": "impotsdirects.public.lu",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.4",
+      "locator_he": "עמוד 4",
+      "page": 4,
+      "checked": "2026-11-28",
+      "qualifier": "(library a750acd1fcbc248c)"
+    },
+    {
+      "url": "https://impotsdirects.public.lu/dam-assets/fr/legislation/legi24/lg-a-61-du-24122024.pdf#page=5",
+      "title": "Circulaire du directeur des contributions L.G. - A. n° 61 du 24 décembre 2024",
+      "publisher": "impotsdirects.public.lu",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.5",
+      "locator_he": "עמוד 5",
+      "page": 5,
+      "checked": "2026-11-28",
+      "qualifier": "(library a750acd1fcbc248c)"
+    },
+    {
+      "url": "https://impotsdirects.public.lu/dam-assets/fr/legislation/legi24/lg-a-61-du-24122024.pdf#page=7",
+      "title": "Circulaire du directeur des contributions L.G. - A. n° 61 du 24 décembre 2024",
+      "publisher": "impotsdirects.public.lu",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.7",
+      "locator_he": "עמוד 7",
+      "page": 7,
+      "checked": "2026-11-28",
+      "qualifier": "(library a750acd1fcbc248c)"
+    },
+    {
+      "url": "https://impotsdirects.public.lu/dam-assets/fr/legislation/legi24/lg-a-61-du-24122024.pdf#page=9",
+      "title": "Circulaire du directeur des contributions L.G. - A. n° 61 du 24 décembre 2024",
+      "publisher": "impotsdirects.public.lu",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.9",
+      "locator_he": "עמוד 9",
+      "page": 9,
+      "checked": "2026-11-28",
+      "qualifier": "(library a750acd1fcbc248c)"
+    },
+    {
+      "url": "https://impotsdirects.public.lu/dam-assets/fr/legislation/legi24/lg-a-61-du-24122024.pdf#page=11",
+      "title": "Circulaire du directeur des contributions L.G. - A. n° 61 du 24 décembre 2024",
+      "publisher": "impotsdirects.public.lu",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.11",
+      "locator_he": "עמוד 11",
+      "page": 11,
+      "checked": "2026-11-28",
+      "qualifier": "(library a750acd1fcbc248c)"
+    },
+    {
+      "url": "https://impotsdirects.public.lu/dam-assets/fr/legislation/legi24/lg-a-61-du-24122024.pdf#page=13",
+      "title": "Circulaire du directeur des contributions L.G. - A. n° 61 du 24 décembre 2024",
+      "publisher": "impotsdirects.public.lu",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.13",
+      "locator_he": "עמוד 13",
+      "page": 13,
+      "checked": "2026-11-28",
+      "qualifier": "(library a750acd1fcbc248c)"
+    },
+    {
+      "url": "https://impotsdirects.public.lu/dam-assets/fr/legislation/legi24/lg-a-61-du-24122024.pdf#page=15",
+      "title": "Circulaire du directeur des contributions L.G. - A. n° 61 du 24 décembre 2024",
+      "publisher": "impotsdirects.public.lu",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.15, footnote 4",
+      "locator_he": "עמוד 15, הערת שוליים 4",
+      "page": 15,
+      "checked": "2026-11-28",
+      "qualifier": "(library a750acd1fcbc248c)"
+    },
+    {
+      "url": "https://www.estv.admin.ch/dam/de/sd-web/pecnSH8azAHM/dba-steuerentlastungen-2026-de.pdf#page=6",
+      "title": "Steuerentlastungen für schweizerische Dividenden und Zinsen auf Grund von Doppelbesteuerungsabkommen, Stand 1.1.2026",
+      "publisher": "estv.admin.ch",
+      "kind": "other",
+      "strength": "primary",
+      "locator": "p.6, row Luxemburg",
+      "page": 6,
+      "checked": "2026-11-28",
+      "qualifier": "(library b8ddbef10e7d8095)"
+    }
+  ],
+  "derived_from": [
+    "TXF-54",
+    "TXF-53"
+  ]
+}

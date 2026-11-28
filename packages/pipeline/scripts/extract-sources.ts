@@ -474,7 +474,7 @@ export const QUALIFIER_STANDING: readonly { match: RegExp; standing: SourceStand
   // a company's or an index provider's own document, often a named example
   {
     match:
-      /^\(index provider's own document\b|^\((?:TASE|TASE Ltd)'s\b|^\((?:BlackRock|Invesco|Meitav)'s own\b|^\(the (?:fund|bank)'s own\b|^\(its own funds?\b|^\(each manager's own\b|^\(percent display, Meitav's own page\)$|^\(named example\)$/,
+      /^\(index provider's own document\b|^\((?:TASE|TASE Ltd)'s\b|^\((?:BlackRock|Invesco|Meitav)'s own\b|^\(the (?:fund|bank)'s own\b|^\(its own funds?\b|^\(each manager's own\b|^\(percent display, Meitav's own page\)$|^\((?:named )?example\)$/,
     standing: "none",
   },
   // an official body's statement, report, ruling or explanation, which its kind and strength already name
