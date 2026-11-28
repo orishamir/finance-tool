@@ -4066,7 +4066,8 @@ export const searchMore = {
   groups: { rule: "חוקים וכללים", companyRule: "אצל חברות מסוימות" /* D30: a company's own terms, each row naming the company */, parameter: "פרמטרים", document: "מסמכים" },
   parameterLine: "פרמטר של האתר",
   documentLine: "מסמך",
-  figureLine: "מספר מתוך המאגר",
+  /** A figure that matched a search, where its rule's record gives it no name: the row says the figure has none yet. */
+  figureLine: "מספר של הכלל, שעוד אין לו שם",
   maybe: "אולי התכוונתם:",
   empty: {
     questionTitle: "אין תשובה על זה בניסוח הזה",
