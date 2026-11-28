@@ -54,10 +54,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.4% מינימום 10 ש\"ח', charged on execution. The line covers all TASE securities except traditional mutual funds, Maof options and futures, and explicitly includes ETFs and tracking funds ('ולרבות קרנות סל וקרנות מחקות'); no separate makam row is printed, so makam falls under this line. No channel split. Its heading also names '(כולל קניה או מכירה שלא בוצעה)' and no line of the tariff exempts an order that was not executed. The tariff's closing note: the member may charge lower amounts or rates (BRK-24). D56 (2026-11-04): the Kesem-funds arrangement (no buy fee on Kesem funds, at most 40 buys, 1.1-31.12.2026) is an offer under groups, never this price. Place: library 6c9ec0ada66f77d8, PDF page 3, line 1 of part 4(א); re-read 2026-11-04 on the page image."
       },
@@ -77,12 +74,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
-        "state": "sourced",
-        "notes": "'מינימום 10 ש\"ח'."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "max": null,
       "period": null,
@@ -118,10 +111,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "The tariff prints no line of its own for makam; the heading of its only line for securities on TASE names redemption and leaves out only mutual funds, options and futures, and this is the line the run already reads for makam."
       },
@@ -141,12 +131,8 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
-        "state": "sourced",
-        "notes": "'מינימום 10 ש\"ח'."
+        "rule_ids": [],
+        "state": "sourced"
       },
       "max": null,
       "period": null,
@@ -182,10 +168,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Printed '₪ 16 פיקס לעסקה': a fixed shekel amount per trade, not a percentage. Band set 2026-10-31: this line is for traditional funds only, so a tracking fund is not priced on it. Place: library 6c9ec0ada66f77d8, PDF page 3, line 2 of part 4(א), \"קניה, מכירה ופדיון של קרנות נאמנות מסורתיות הנסחרות בבורסה בתל אביב\", price \"₪ 16 פיקס לעסקה\"."
       },
@@ -224,10 +207,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "US-only line (p.4, item 6), priced 'בהתאם לבחירת הלקוח לפי מערכת המסחר ללקוח' on one of three tracks: '3 סנט למניה מינימום 8$', 'או 11$ פיקס לעסקה', 'או + 0.3% עמלת ברוקר', with 'עמלת מקסימום 2% משווי העסקה'. The customer chooses, so the indices page reads each quantified track and takes the cheaper that computes (method F-63, as for Interactive Brokers' Fixed and Tiered); the third track's broker fee is not quantified, so it is left out. Split 2026-11-12: until then one line held the third track's 0.3% with the first track's USD 8 minimum, under a band that named no exchange. Its notes column is empty (p.4, item 6, read on the page image 2026-11-14): the price list prints no third-party fee on a US trade; the third track's '+ 0.3% עמלת ברוקר' is a broker fee it does not size. 'ייתכנו עמלות צדדים שלישיים בשווקים מסוימים' is printed on item 7, outside the US, only. This line: 3 US cents a share, recorded as USD 0.03 in the schema's per-share unit."
       },
@@ -247,10 +227,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 8$' (p.4), the first track's minimum."
       },
@@ -281,10 +258,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'עמלת מקסימום 2% משווי העסקה', printed under the line's three tracks, so read as the line's ceiling on each (until 2026-11-12 stored as max). The tariff does not say what applies when it is below a minimum; the engine lets the cap win, as Interactive Brokers prints."
       }
@@ -312,10 +286,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "US-only line (p.4, item 6), priced 'בהתאם לבחירת הלקוח לפי מערכת המסחר ללקוח' on one of three tracks: '3 סנט למניה מינימום 8$', 'או 11$ פיקס לעסקה', 'או + 0.3% עמלת ברוקר', with 'עמלת מקסימום 2% משווי העסקה'. The customer chooses, so the indices page reads each quantified track and takes the cheaper that computes (method F-63, as for Interactive Brokers' Fixed and Tiered); the third track's broker fee is not quantified, so it is left out. Split 2026-11-12: until then one line held the third track's 0.3% with the first track's USD 8 minimum, under a band that named no exchange. Its notes column is empty (p.4, item 6, read on the page image 2026-11-14): the price list prints no third-party fee on a US trade; the third track's '+ 0.3% עמלת ברוקר' is a broker fee it does not size. 'ייתכנו עמלות צדדים שלישיים בשווקים מסוימים' is printed on item 7, outside the US, only. This line: USD 11 a trade (rate 0, minimum and maximum USD 11)."
       },
@@ -335,10 +306,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'11$ פיקס לעסקה' (p.4): the trade's fixed price."
       },
@@ -358,10 +326,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'11$ פיקס לעסקה' (p.4): the trade's fixed price, so also the most a trade pays."
       },
@@ -391,10 +356,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'עמלת מקסימום 2% משווי העסקה', printed under the line's three tracks, so read as the line's ceiling on each (until 2026-11-12 stored as max). The tariff does not say what applies when it is below a minimum; the engine lets the cap win, as Interactive Brokers prints."
       }
@@ -422,10 +384,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.4% משווי העסקה עם מינימום 35 בש\"ח/$ ארה\"ב/יורו במטבע העסקה'. Its notes column: 'ייתכנו עמלות צדדים שלישיים בשווקים מסוימים' (p.4, item 7, read on the page image 2026-11-14), with no amount, ceiling or list of markets. Band 'מחוץ לארה\"ב' set 2026-11-12, so the indices page reads this line for a fund bought outside the US and the US tracks for a fund bought there (before, the US line's band named no exchange, and this unbanded line priced every fund abroad, US funds included)."
       },
@@ -445,10 +404,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "Printed 'מינימום 35 בש\"ח/$ ארה\"ב/יורו במטבע העסקה' (p.4, item 7): 35 units of the currency the trade is in, for a trade in shekels, US dollars or euros (trade_currencies)."
       },
@@ -497,10 +453,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'0.6% לרבעון עם מינימום 40 ₪ לחודש', collection 'חודשי/רבעוני' (PDF page 4, item 8, checked on the page image 2026-11-04); the exchange's member sheet (updated 06/07/26) prints the same: 'דמי ניהול/טיפול פקדון ני\"ע כללי - לפקדון 0.6000% לרבעון', minimum '40.00 ₪ לחודש'. So at most 2.4% a year, at least 480 NIS a year. The tariff prints no exemption of makam or money-market funds from custody; the bank ban (BRK-17) does not apply to a non-bank member, and no rule limits its custody fee on them (BRK-52; BRK open question 11 closed 2026-10-26), so no excludes are recorded. D56 (2026-11-04): the joining page's 'ללא דמי משמרת' is advertising and is contradicted by this line; the handling-fee promotions say in their own terms that they do not cover 'דמי משמרת'. Section (4ב)2 prints a further 'דמי משמרת' of 0.1% for managed accounts or accounts 'שמהות פעילותם היא אחזקת נכסים ולא מסחר פעיל'; it is listed under left_out, not priced here. What customers paid on average (the exchange, H1 2026) is far lower, 0.0492% a year below 25,000 NIS; listed under left_out as a fact, not a price. 2026-11-14: re-read, the same file (md5 561a2d47, Last-Modified 15.7.2026). 'חודשי/רבעוני' stands in the column 'מועד הגביה', when the fee is collected; the price prints its own periods, '0.6% לרבעון' and 'מינימום 40 ₪ לחודש', so the period stays a quarter. The price list does not say which customers are collected from monthly and which quarterly, and neither does the disclosure page /trading/full-disclosure/ or the disclosure document it links (giluy_naot_0626.pdf, Last-Modified 6.10.2026). The further 0.1% 'דמי משמרת' of 4(ב)2 is collected 'רבעוני', its note 'מחושב ברמה יומית ונגבה אחת לרבעון'."
       },
@@ -520,10 +473,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'מינימום 40 ₪ לחודש' (PDF page 4; the exchange's sheet: '40.00 ₪ לחודש')."
       },
@@ -571,10 +521,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'עמלת חליפין 0.1%', charged on execution (PDF page 5, part 5(א) item 1, checked on the page image 2026-11-04). The joining page's 'ללא עמלת מט\"ח' is advertising and is contradicted by this line (D56)."
       },
@@ -596,11 +543,9 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "The notes column of the same line reads 'אינו כולל מרווח הנקבע בהסכם מול הלקוח': a spread is charged on top of the 0.1% and is set in the client's agreement, which is not published. No binding document read limits it, so the spread is not limited by the documents; it is not zero and no number is recorded (D56)."
       },
       "period": null,
@@ -636,10 +581,7 @@
         "effective_to": null,
         "tax_year": null,
         "update_rule": "provider-set",
-        "rule_ids": [
-          "BRK-24",
-          "BRK-15"
-        ],
+        "rule_ids": [],
         "state": "sourced",
         "notes": "'דמי טיפול', 'ללקוחות פרטיים: עד 99 ₪', 'אחת לחודש', notes 'לחשבונות שייעודם לטובת מסחר בלבד' (PDF page 5, part 6(א) item 1, checked on the page image 2026-11-04); other clients up to 2%. Priced at the 99 NIS ceiling (D56: 'up to' is the ceiling), 1,188 NIS a year. Separate from custody: the promotion terms define their exemption as 'פטור מדמי טיפול חודשיים' and say it does not cover 'דמי משמרת'. The two handling-fee exemptions (24 months, and 'לכל חיי החשבון' for accounts opened with 10,000 NIS by 31.12.2026) are offers, listed under left_out with their conditions; the kids page's '15 ₪ בלבד בכל חודש' after two years appears in no binding document."
       },

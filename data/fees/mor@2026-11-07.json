@@ -49,8 +49,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "PF-02",
-          "PF-03",
           "KGL-16",
           "KGL-30"
         ],
@@ -84,6 +82,7 @@
           "KGL-30"
         ],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not printed: the joining request leaves the discount's terms to a letter sent after joining, which is not published. The bylaws (edition 18.2.2026, s.36.1, p.10) say \"לפחות שנתיים\"; the CMA circular 2017-9-15 sets at least five years from the day the lower fee starts (KGL-16), which method A-19 applies."
       },
       "reverts_to": {
@@ -140,8 +139,6 @@
         "tax_year": null,
         "update_rule": "provider-set",
         "rule_ids": [
-          "PF-02",
-          "PF-03",
           "KGL-16",
           "KGL-30"
         ],
@@ -175,6 +172,7 @@
           "KGL-30"
         ],
         "state": "sourced",
+        "empty_because": "unknown",
         "notes": "Not printed: the joining request leaves the discount's terms to a letter sent after joining, which is not published. The bylaws (edition 18.2.2026, s.36.1, p.10) say \"לפחות שנתיים\"; the CMA circular 2017-9-15 sets at least five years from the day the lower fee starts (KGL-16), which method A-19 applies."
       },
       "reverts_to": {
