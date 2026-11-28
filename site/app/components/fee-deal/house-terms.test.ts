@@ -32,9 +32,9 @@ describe("a house's terms on the data a company page's first view gets", () => {
   it("carry no rule the house's deal, lines and distribution fee do not cite, and none the page holds already", () => {
     const meitav = houseTermsData("meitav-trade", TODAY, NONE_HELD);
     const ids = meitav?.data.rules.map((r) => r.id) ?? [];
-    // Meitav Trade's terms cite the conversion's and the trade's rules, and no distribution fee's (its list prints none)
-    expect(ids).toEqual(expect.arrayContaining(["BRK-15", "BRK-24"]));
-    expect(ids).not.toContain("MF-24");
+    // Meitav Trade's lines cite no rule, since no rule sets a member's own prices; its averages cite the exchange's calculator, and no
+    // distribution fee's rule stands, since its list prints none
+    expect(ids).toEqual(["BRK-33"]);
     const held = houseTermsData("meitav-trade", TODAY, { rules: new Set(ids), pointed: new Set(meitav?.data.pointed?.map((r) => r.id)) });
     expect(held?.data.rules).toEqual([]);
     expect(held?.data.pointed).toEqual([]);
