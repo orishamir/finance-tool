@@ -243,6 +243,13 @@ describe("what the person says of an index they added feeds F-107, and the label
     const index: CustomIndex = { id: "custom-us", name: "US", added: t, region: "us", dividendYield: yieldTyped };
     expect(dividendTaxLabel(must(withCustomEntries(bundle, [f], [index]).funds.at(-1), "the record"), refOfCustom(index))).toBe("tax-fund-dividend-range");
   });
+  it("a swap or futures fund on an added index in a region with a rule but no yield typed asks for the yield, as a fund that holds the shares does", () => {
+    for (const tracking of ["swap", "futures"] as const) {
+      const f = fundAt("europe-usd", "IE", { tracking }, "custom-us-bare", `custom-fund-${tracking}-bare`);
+      const index: CustomIndex = { id: "custom-us-bare", name: "US", added: t, region: "us" };
+      expect(dividendTaxLabel(must(withCustomEntries(bundle, [f], [index]).funds.at(-1), "the record"), refOfCustom(index)), tracking).toBe("tax-fund-dividend-need-yield");
+    }
+  });
 });
 
 describe("a saved entry that is not the shape the panel saves never breaks the page", () => {
