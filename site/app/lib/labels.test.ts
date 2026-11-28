@@ -13,6 +13,7 @@ describe("label icons (2026-11-05 sweep)", () => {
   const same = [
     ["currency", "currency-many", "currency-bought"],
     ["hedged", "hedged-many"],
+    ["held-tase-foreign", "held-tase-unknown"],
     ["tax-index-currency", "tax-index-cpi"],
     ["tax-fund-dividend", "tax-fund-dividend-left-out", "tax-fund-dividend-part", "tax-fund-dividend-swap", "tax-fund-dividend-us-keeps", "tax-fund-dividend-need-yield", "tax-fund-dividend-not-us", "tax-fund-dividend-us-share", "tax-fund-dividend-tracking", "tax-fund-dividend-us-fund", "tax-fund-dividend-il-fund", "tax-fund-dividend-domicile"],
   ];

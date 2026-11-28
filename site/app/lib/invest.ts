@@ -7,7 +7,7 @@ import { gershayim } from "./format";
 import { BlockedError, listingChangesRun, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
 import { assertNever, exchangeOfTicker, fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
-import { addedIndexCurrency, customFundGaps, isCustomFund, type AddedIndexCurrency } from "./custom-entries";
+import { addedIndexCurrency, customFundGaps, isCustomFund, kindNotKnown, type AddedIndexCurrency, type FundKind } from "./custom-entries";
 import { dealProviderOf, houseSnap, isDealProviderId } from "./deal-account/bundle";
 import { feeIdsOf, missingOf } from "./deal-account/plan";
 import { feeNameOf } from "./fee-deal/part-words";
@@ -46,6 +46,12 @@ export function optionOfFund(rec: FundRecord, exposure: ExposureRecord | undefin
   if (rec.domicile === "IL") return instrumentClassOf(rec, exposure) === "etf_units" ? "il-etf" : "il-tracking";
   return rec.trading_currency_on_tase ? "tase-foreign" : "abroad";
 }
+
+/**
+ * The kind a fund's row names: its option's, except a typed fund in Tel Aviv whose country is not known, which is listed among the foreign
+ * funds there (`optionOfFund`) but is not known to be one (F-04).
+ */
+export const kindOfFund = (rec: FundRecord, option: OptionId): FundKind => (kindNotKnown(rec) ? "tase-unknown" : option);
 
 export type Venue = FundExchange;
 const EXCHANGES = fundExchange.options;
@@ -283,6 +289,8 @@ export interface FundWay {
   name: string;
   number: string;
   option: OptionId;
+  /** The kind its row names (`kindOfFund`): its option's, or, for a typed fund in Tel Aviv whose country is not known, that it is not known. */
+  kind: FundKind;
   /** The broker the figure is at: the option's cheapest for this fund. */
   best?: WayPrice;
   /** The fund's run at every house of the option (a price, or why it has none); `best` is the highest of the ranked ones. */
@@ -1290,7 +1298,7 @@ const numberOf = (rec: FundRecord) => rec.identifiers.tase_number ?? rec.identif
 
 /** One fund of an option at every house (F-63, F-65): its price at each house that sells it, or why it has none, and its cheapest ranked house. */
 function fundWayOf(ctx: Ctx, rec: FundRecord, option: OptionId): FundWay {
-  const base = { rec, name: nameOf(rec), number: numberOf(rec), option, currencyMismatch: false, noUnitPrice: unitPriceMissing(rec, option), byHouse: {} as FundWay["byHouse"] };
+  const base = { rec, name: nameOf(rec), number: numberOf(rec), option, kind: kindOfFund(rec, option), currencyMismatch: false, noUnitPrice: unitPriceMissing(rec, option), byHouse: {} as FundWay["byHouse"] };
   const fs = fundSpec(ctx, rec);
   const venue = option === "abroad" ? venueOfFund(rec) : null;
   // the houses that sell this fund: the kind, and where a house sells it fund by fund, the fund itself (BRK-38)

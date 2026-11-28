@@ -6,10 +6,10 @@ import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "rea
 import { Pencil } from "lucide-react";
 import { invest as root } from "../../copy";
 import type { FundRecord, ValueObject } from "@finance-tool/schema";
-import { addedIndexCurrency, asksCountry, boughtInAt, boughtInSaid, BUY_ABROAD, BUY_IN_ISRAEL, countryChoicesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, isForeignKind, NAME_MAX, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
+import { addedIndexCurrency, asksCountry, boughtInAt, boughtInSaid, BUY_ABROAD, BUY_IN_ISRAEL, countryChoicesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, NAME_MAX, registeredOf, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { dividendTaxLabel, fundLabels, optionLabels, type DividendTaxLabelId, type Label } from "../../lib/labels";
 import { INDEX_REGIONS, type IndexFacts, type IndexRegion } from "../../lib/index-region";
-import { addedIndexAs, optionsOf, type CustomIndex, type IndexRef } from "../../lib/invest";
+import { addedIndexAs, optionOfFund, optionsOf, type CustomIndex, type IndexRef } from "../../lib/invest";
 import { isoToday } from "../../lib/state";
 import { entered } from "../../lib/value";
 import { Num, StateTag } from "../provenance";
@@ -178,7 +178,7 @@ function draftRecord(d: FundDraft, index: IndexRef, today: string): FundRecord |
 function rowLabels(d: FundDraft, rec: FundRecord | null, seen: IndexRef): Label[] {
   const kind = draftKind(d);
   if (!rec || !kind) return [];
-  const all = [...optionLabels(kind), ...fundLabels(rec, seen, kind)];
+  const all = [...optionLabels(kind), ...fundLabels(rec, seen, optionOfFund(rec, seen.exposure ?? undefined))];
   return d.hedged === null ? all.filter((l) => !HEDGE_LABELS.has(l.id)) : all;
 }
 const HEDGE_LABELS = new Set<string>(["currency", "currency-many", "currency-foreign", "hedged", "hedged-many", "tax-currency"]);
@@ -328,9 +328,10 @@ function Question({ id, text, aside, children, after }: { id: string; text: Reac
 function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, setFacts, errors }: { draft: FundDraft; set: SetDraft; setMany: (p: Partial<FundDraft>) => void; index: IndexRef; currencyOfIndex: string | null; facts: FactsDraft; setFacts: (f: FactsDraft) => void; errors: EntryError[] }) {
   const ids = useId();
   const w = c.fields;
-  const kind = draftKind(draft);
-  // a foreign fund, or one whose kind is not known yet, has one yearly charge; an Israeli one its fixed and variable fees and the trustee's
-  const yearly = !kind || isForeignKind(kind);
+  // an Israeli fund has its fixed and variable fees and the trustee's; a foreign one its one yearly charge, and one whose kind is not known
+  // yet one fee, named as neither
+  const registered = registeredOf(draftKind(draft));
+  const yearly = registered !== "israel";
   const priceUnit = draftPriceUnit(draft, currencyOfIndex);
   const setPlace = (buyAt: BuyAt, country: CountryAnswer) => setMany(draftWithPlace(draft, { buyAt, country }, currencyOfIndex));
   // no "0" in an empty field: an empty fee is not known, not a fee of zero
@@ -375,8 +376,10 @@ function FundQuestions({ draft, set, setMany, index, currencyOfIndex, facts, set
           <div className="grid gap-4 @xl:grid-cols-2">
             <TextField label={w.fundName} value={draft.name} onChange={(v) => set("name", v)} maxLength={NAME_MAX} dir="auto" error={errors.includes("name-empty") ? c.errors["name-empty"] : errors.includes("name-taken") ? c.errors["name-taken"] : null} />
             <TextField label={w.number} value={draft.number} onChange={(v) => set("number", v)} maxLength={20} dir="ltr" />
-            {yearly ? (
+            {registered === "abroad" ? (
               percent("fixed", w.yearly, c.feeHint)
+            ) : registered === "not-known" ? (
+              percent("fixed", w.fee)
             ) : (
               <>
                 {percent("fixed", w.fixed)}

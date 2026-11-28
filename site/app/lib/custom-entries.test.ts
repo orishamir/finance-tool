@@ -265,12 +265,12 @@ describe("a fund the person types is priced at the collected houses under its ki
     const custom = { id: "custom-nikkei", name: "ניקיי", added: t };
     const onCustom = fundFromDraft({ ...said("il-tracking"), name: "על ניקיי", fixed: 0.3 }, "custom-fund-nikkei", custom.id, t);
     const rec = withCustomEntries(bundle, [onCustom], [custom]).funds.at(-1)!;
-    const labels = fundLabels(rec, refOfCustom(custom), onCustom.kind);
+    const labels = fundLabels(rec, refOfCustom(custom), optionOfFund(rec, undefined));
     expect(labels.map((l) => l.id)).toContain("currency-foreign");
     expect(labels.map((l) => l.id)).not.toContain("currency");
     expect(labels.map((l) => l.text).join(" ")).not.toContain("דולר");
     const hedgedRec = withCustomEntries(bundle, [{ ...onCustom, hedged: true }], [custom]).funds.at(-1)!;
-    expect(fundLabels(hedgedRec, refOfCustom(custom), onCustom.kind).map((l) => l.explain).join(" ")).not.toContain("דולר");
+    expect(fundLabels(hedgedRec, refOfCustom(custom), optionOfFund(hedgedRec, undefined)).map((l) => l.explain).join(" ")).not.toContain("דולר");
   });
 
   it("on an index the person added, \"המדד בשקלים\" is the fund's own answer: no currency label, and it is priced, at home or abroad (2026-11-05)", () => {
@@ -311,7 +311,7 @@ describe("a fund the person types is priced at the collected houses under its ki
 
 describe("what the person says the fund does (2026-11-05): nothing is filled in for them", () => {
   const priceOf = (f: CustomFund) => allFunds(buildInvest({ bundle: withCustomEntries(bundle, [f]), index: sp, plan })).find((x) => x.rec.id === f.id)!;
-  const ids = (f: CustomFund) => fundLabels(withCustomEntries(bundle, [f]).funds.at(-1)!, sp, f.kind).map((l) => l.id);
+  const ids = (f: CustomFund) => { const rec = withCustomEntries(bundle, [f]).funds.at(-1)!; return fundLabels(rec, sp, optionOfFund(rec, sp.exposure ?? undefined)).map((l) => l.id); };
   const abroadDraft = { ...said("abroad"), name: "חו״ל", fixed: 0.07 };
 
   it("a payout not said is no price, with its reason, and no payout label", () => {

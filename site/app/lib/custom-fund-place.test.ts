@@ -5,13 +5,13 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { countriesAt, customFundGaps, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, recordOfFund, validCustomFunds, withCustomEntries, type BuyAt, type CustomFund, type CountryAnswer, type FundDraft, type FundTracking } from "./custom-entries";
+import { countriesAt, customFundGaps, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, recordOfFund, validCustomFunds, withCustomEntries, type BuyAt, type CustomFund, type CountryAnswer, type FundDraft, type FundTracking } from "./custom-entries";
 import type { CustomIndex } from "./invest";
 import { buildInvest, fundWayAt, indexById, indexSeenBy, kindOf, pairCosts, refOfCustom, type FundWay, type WayPrice } from "./invest";
 import { dividendTaxLabel, fundLabels, labelDefs } from "./labels";
 import { invest as copy } from "../copy";
 import { panelStateOf } from "../components/invest/custom-entries";
-import { allFunds, labelsOf, steadyOf } from "../components/invest/pair";
+import { allFunds, labelsOf, steadyOf, whyNoFundAt } from "../components/invest/pair";
 import { PairLists } from "../components/invest/lists";
 import { LabelSheetHost } from "../components/kit";
 import { ProvenanceProvider } from "../components/provenance";
@@ -48,7 +48,7 @@ describe("where the person buys a fund and where it is registered make its kind,
       ["manager", "IL", "il-tracking", undefined, "ILS"],
       ["tase", "IL", "il-etf", undefined, "ILS"],
       ["tase", "IE", "tase-foreign", undefined, "ILS"],
-      ["tase", "unsure", "tase-foreign", undefined, "ILS"],
+      ["tase", "unsure", "tase-unknown", undefined, "ILS"],
       ["us-usd", "US", "abroad", "us", "USD"],
       ["europe-eur", "IE", "abroad", "europe", "EUR"],
       ["europe-usd", "IE", "abroad", "europe", "USD"],
@@ -92,6 +92,27 @@ describe("where the person buys a fund and where it is registered make its kind,
     expect(w.reason).toEqual({ code: "tase-country-unknown" });
     expect(priced(w)).toEqual([]);
     expect(copy.lists.funds.whyCode["tase-country-unknown"]).toBeTruthy();
+  });
+
+  it("in Tel Aviv with \"not sure\" its row names no foreign kind: it says whether it is Israeli is not known, asks one fee named as neither kind's, and its reason heads no foreign group", () => {
+    const f = fundAt("tase", "unsure", { fixed: null }, SP, "custom-fund-tase-not-sure");
+    const israeli = fundAt("tase", "IL", {}, SP, "custom-fund-tase-il");
+    const b = withCustomEntries(bundle, [f, israeli]);
+    const view = buildInvest({ bundle: b, index: must(indexById(b, SP), "S&P 500"), plan });
+    const way = must(allFunds(view).find((x) => x.rec.id === f.id), "its row");
+    const labels = labelsOf(view, way, b);
+    expect(labels.map((l) => l.id)).toContain("held-tase-unknown");
+    expect(labels.map((l) => l.id)).not.toContain("held-tase-foreign");
+    for (const l of labels) expect(`${l.id} ${l.text} ${l.explain}`).not.toContain("קרן חוץ בת״א");
+    expect(copy.labels["held-tase-unknown"].explain).toContain("לא ידוע אם זו קרן ישראלית");
+    expect(fundTerms(f).empty).toEqual([copy.customEntries.fields.fee]);
+    // where a house's reasons over two kinds differ, each is headed by its kind: this one's is not called a foreign fund
+    const house = must(bundle.snapshots[0]?.id, "a house");
+    const atHouse = (w: FundWay, reason: FundWay["reason"] & object): FundWay => ({ ...w, byHouse: { [house]: { providerId: house, reason } } });
+    const other = must(allFunds(view).find((x) => x.rec.id === israeli.id), "the Israeli fund's row");
+    const told = whyNoFundAt(b, house, [atHouse(way, { code: "tase-country-unknown" }), atHouse(other, { code: "fee-unknown" })]);
+    expect(told.why).toContain(copy.stairs.kinds["tase-unknown"]);
+    expect(told.why).not.toContain(copy.stairs.kinds["tase-foreign"]);
   });
 
   it("every reason a typed fund has no price is listed, not only the first", () => {

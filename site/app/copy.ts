@@ -4518,6 +4518,8 @@ export const invest = {
       variable: "דמי ניהול משתנים",
       trustee: "שכר נאמן",
       yearly: "דמי ניהול שנתיים",
+      /** A fund in Tel Aviv whose country is not said: one fee, named as neither an Israeli fund's nor a foreign one's. */
+      fee: "דמי ניהול",
       yield: "תשואת החלוקה",
       perYear: "תשלומים בשנה",
       unitPrice: "מחיר יחידה (לא חובה)",
@@ -4599,7 +4601,7 @@ export const invest = {
     exchangeUnknownDoubt: "לא הזנתם באיזו בורסה הקרן נסחרת. לכן כל חשבון מחושב בבורסה שמשאירה לכם פחות אצלו, בארה״ב או באירופה. חשבון שיש לו מחיר רק באחת משתי הבורסות מופיע בלי מחיר. אפשר לבחור בורסה בעריכת הקרן.",
     enteredWord: "הזנתם",
     yearlyWord: "שנתיים",
-    kinds: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "קרן שנקנית בחו״ל" } as Record<string, string>,
+    kinds: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", "tase-unknown": "קרן בבורסה בתל אביב שלא ידוע אם היא ישראלית", abroad: "קרן שנקנית בחו״ל" } as Record<string, string>,
     listWords: (xs: string[]) => (xs.length < 2 ? (xs[0] ?? "") : `${xs.slice(0, -1).join(", ")} ו${xs[xs.length - 1]}`),
     errors: {
       "name-empty": "הזינו שם.",
@@ -5043,7 +5045,7 @@ export const invest = {
       kind: { word: "סוג קרן אחר", title: "סוג קרן אחר, אותו חשבון", head: "סוג הקרן" },
       fund: { word: "קרן אחרת", title: "קרן אחרת מאותו סוג, אותו חשבון", head: "הקרן" },
     },
-    kinds: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "קרן שנקנית בחו״ל" } as Record<string, string>,
+    kinds: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", "tase-unknown": "קרן בבורסה בתל אביב שלא ידוע אם היא ישראלית", abroad: "קרן שנקנית בחו״ל" } as Record<string, string>,
     why: { u: "לא נמכרת שם", n: "אין מחיר", d: "יש ספק אם נמכרת שם" },
     /** the account lane's grey lines name the fund they are about ("יש ספק אם נמכרת שם: וואן זירו" read as the list's own pick) */
     whyFund: {
@@ -5214,6 +5216,7 @@ export const invest = {
   },
   labels: {
     "held-il": { text: "קרן ישראלית", explain: "הקרן רשומה בישראל ומפוקחת כאן. על מדד זר היא מקבלת את החשיפה בדרך כלל בעסקאות, ועל מדד ישראלי היא מחזיקה בדרך כלל את המניות." },
+    "held-tase-unknown": { text: "לא ידוע אם ישראלית", explain: "הקרן נסחרת בבורסה בתל אביב, ולא בחרתם באיזו מדינה היא רשומה. לכן לא ידוע אם זו קרן ישראלית או קרן חוץ, ועד שתבחרו אין לקרן מחיר." },
     "held-tase-foreign": { text: "קרן חוץ בת״א", explain: "קרן מחוץ לישראל שנסחרת גם בבורסה בתל אביב, בשקלים. קרן חוץ לא מתמחה בישראל, ולכן היא רק על מדדים זרים." },
     "held-abroad": { text: "נקנית בחו״ל", explain: "הקרן נקנית בבורסה בחו״ל, דרך בנק או בית השקעות שמוכרים ניירות ערך זרים. רשות ניירות ערך לא מפקחת עליה." },
     "trade-etf": { text: "קרן סל", explain: "קרן סל נסחרת בבורסה כל יום המסחר, במחיר שמשתנה במהלך היום." },

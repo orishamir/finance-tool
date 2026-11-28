@@ -9,6 +9,7 @@ import { sourceHref } from "./sources";
 import type { IndexRef, OptionId, ProviderInfo } from "./invest";
 import { assertNever, isShekel } from "@finance-tool/schema";
 import { typedDividendTax, type TypedDividendTax } from "./index-region";
+import type { FundKind } from "./custom-entries";
 
 /** The engine's fund kind for an option's funds (F-04). */
 const OPTION_KIND = { "il-tracking": "israeli-fund", "il-etf": "israeli-fund", "tase-foreign": "tase-foreign-fund", abroad: "foreign-fund" } as const satisfies Record<OptionId, string>;
@@ -30,6 +31,7 @@ type IconDef = LabelIconKey | "sign";
 type LabelId =
   | "held-il"
   | "held-tase-foreign"
+  | "held-tase-unknown"
   | "held-abroad"
   | "trade-etf"
   | "trade-tracking"
@@ -82,6 +84,7 @@ type LabelDef = { icon: IconDef; tone: LabelTone; rules: string[] };
 export const labelDefs: Record<RuleLabelId, LabelDef> = {
   "held-il": { icon: "home", tone: "neutral", rules: ["ETF-31", "ETF-11"] },
   "held-tase-foreign": { icon: "landmark", tone: "neutral", rules: ["ETF-31", "ETF-24"] },
+  "held-tase-unknown": { icon: "landmark", tone: "open", rules: ["ETF-31", "ETF-11", "ETF-24"] },
   "held-abroad": { icon: "globe", tone: "neutral", rules: ["ETF-24"] },
   "trade-etf": { icon: "pulse", tone: "neutral", rules: ["ETF-04"] },
   "trade-tracking": { icon: "calendarClock", tone: "neutral", rules: ["ETF-04", "MF-09"] },
@@ -158,6 +161,7 @@ export type RuleLabel = Label & { rests: RuleRests };
 const familyOf: Record<RuleLabelId, Label["family"]> = {
   "held-il": "held",
   "held-tase-foreign": "held",
+  "held-tase-unknown": "held",
   "held-abroad": "held",
   "trade-etf": "trade",
   "trade-tracking": "trade",
@@ -216,8 +220,11 @@ function statementLabel(st: TaxIndexStatement): Label {
 
 
 
-/** What holds for every fund in the option (shown once on its card): where it is held and how it trades. */
-export function optionLabels(option: OptionId): RuleLabel[] {
+/**
+ * What holds for every fund of a kind (shown once on an option's card): where it is held and how it trades. A fund the person typed in Tel
+ * Aviv without its country is of no option's kind: it is held in Tel Aviv, and whether it is Israeli is not known.
+ */
+export function optionLabels(option: FundKind): RuleLabel[] {
   switch (option) {
     case "il-tracking":
       return [label("held-il"), label("trade-tracking")];
@@ -225,6 +232,8 @@ export function optionLabels(option: OptionId): RuleLabel[] {
       return [label("held-il"), label("trade-etf")];
     case "tase-foreign":
       return [label("held-tase-foreign"), label("trade-etf")];
+    case "tase-unknown":
+      return [label("held-tase-unknown"), label("trade-etf")];
     case "abroad":
       return [label("held-abroad")];
     default:

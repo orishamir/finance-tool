@@ -57,7 +57,7 @@ export interface CustomFund {
   number: string | null;
   /** The index it was added on: an exposure id, or a custom index's id. */
   indexId: string;
-  kind: OptionId;
+  kind: FundKind;
   fixed: ValueObject | null;
   variable: ValueObject | null;
   trustee: ValueObject | null;
@@ -87,6 +87,17 @@ export interface CustomFund {
 }
 
 export type FundPayout = "accumulating" | "distributing";
+/**
+ * The kind of fund the person's two answers make: one of the page's options, or, in Tel Aviv with the country not sure, a fund whose kind
+ * is not known, an Israeli ETF or a foreign fund, which are worked out apart (F-04). The page lists such a fund among the Tel Aviv
+ * foreign funds (`optionOfFund`, by its record) without a price, and nothing on its row or in its panel says it is foreign.
+ */
+export type FundKind = OptionId | "tase-unknown";
+/** Where a kind of fund is registered, as far as the answers say: in Israel, outside it, or not known. */
+export type Registered = "israel" | "abroad" | "not-known";
+const REGISTERED = { "il-tracking": "israel", "il-etf": "israel", "tase-foreign": "abroad", abroad: "abroad", "tase-unknown": "not-known" } as const satisfies Record<FundKind, Registered>;
+/** Where a kind of fund is registered (`REGISTERED`); before the first question is answered, not known. */
+export const registeredOf = (k: FundKind | null): Registered => (k ? REGISTERED[k] : "not-known");
 /**
  * The country question's answers: a country the site has rules for, another country, or not sure. In Tel Aviv "another country" makes a
  * foreign fund and "not sure" leaves its kind not known (an Israeli ETF or a foreign fund, F-04); abroad the two lead to the same fund, and
@@ -126,13 +137,13 @@ export interface CountryChoices {
   unsureIsOther: boolean;
 }
 const ABROAD_COUNTRIES: CountryChoices = { open: ["IE", "US", "unsure"], closed: ["IL"], unsureIsOther: true };
-const BUY_AT: Record<BuyAt, { kinds: { israeli: OptionId | null; foreign: OptionId | null }; countries: CountryChoices; exchange: FundExchange | null; tradesIn: TradingCurrency | null }> = {
-  manager: { kinds: { israeli: "il-tracking", foreign: null }, countries: { open: ["IL"], closed: [], unsureIsOther: false }, exchange: null, tradesIn: "ILS" },
-  tase: { kinds: { israeli: "il-etf", foreign: "tase-foreign" }, countries: { open: COUNTRIES, closed: [], unsureIsOther: false }, exchange: null, tradesIn: "ILS" },
-  "us-usd": { kinds: { israeli: null, foreign: "abroad" }, countries: ABROAD_COUNTRIES, exchange: "us", tradesIn: "USD" },
-  "europe-eur": { kinds: { israeli: null, foreign: "abroad" }, countries: ABROAD_COUNTRIES, exchange: "europe", tradesIn: "EUR" },
-  "europe-usd": { kinds: { israeli: null, foreign: "abroad" }, countries: ABROAD_COUNTRIES, exchange: "europe", tradesIn: "USD" },
-  abroad: { kinds: { israeli: null, foreign: "abroad" }, countries: ABROAD_COUNTRIES, exchange: null, tradesIn: null },
+const BUY_AT: Record<BuyAt, { kinds: { israeli: FundKind | null; foreign: FundKind | null; unsure: FundKind | null }; countries: CountryChoices; exchange: FundExchange | null; tradesIn: TradingCurrency | null }> = {
+  manager: { kinds: { israeli: "il-tracking", foreign: null, unsure: null }, countries: { open: ["IL"], closed: [], unsureIsOther: false }, exchange: null, tradesIn: "ILS" },
+  tase: { kinds: { israeli: "il-etf", foreign: "tase-foreign", unsure: "tase-unknown" }, countries: { open: COUNTRIES, closed: [], unsureIsOther: false }, exchange: null, tradesIn: "ILS" },
+  "us-usd": { kinds: { israeli: null, foreign: "abroad", unsure: null }, countries: ABROAD_COUNTRIES, exchange: "us", tradesIn: "USD" },
+  "europe-eur": { kinds: { israeli: null, foreign: "abroad", unsure: null }, countries: ABROAD_COUNTRIES, exchange: "europe", tradesIn: "EUR" },
+  "europe-usd": { kinds: { israeli: null, foreign: "abroad", unsure: null }, countries: ABROAD_COUNTRIES, exchange: "europe", tradesIn: "USD" },
+  abroad: { kinds: { israeli: null, foreign: "abroad", unsure: null }, countries: ABROAD_COUNTRIES, exchange: null, tradesIn: null },
 };
 
 /** The country answers an answer to where the fund is bought leaves open (`BUY_AT`). */
@@ -149,10 +160,14 @@ const OTHER_COUNTRY = "other";
 const COUNTRY_NOT_SAID = "unknown";
 const DOMICILE_OF = { IL: "IL", IE: "IE", US: "US", other: OTHER_COUNTRY, unsure: COUNTRY_NOT_SAID } as const satisfies Record<CountryAnswer, string>;
 
-/** The kind of fund the two answers make; an answer that leaves Israel as the only country is Israeli whatever the second says. */
-function kindOf(at: BuyAt, country: CountryAnswer): OptionId {
-  const { israeli, foreign } = BUY_AT[at].kinds;
+/**
+ * The kind of fund the two answers make; an answer that leaves Israel as the only country is Israeli whatever the second says, and "not
+ * sure" makes the answer's kind for it where it has one (in Tel Aviv, a kind not known).
+ */
+function kindOf(at: BuyAt, country: CountryAnswer): FundKind {
+  const { israeli, foreign, unsure } = BUY_AT[at].kinds;
   if (israeli && (country === "IL" || !foreign)) return israeli;
+  if (unsure && country === "unsure") return unsure;
   if (foreign) return foreign;
   throw new Error(`BUY_AT.${at} names no kind of fund`);
 }
@@ -169,7 +184,7 @@ function buyAtOf(f: Pick<CustomFund, "kind" | "exchange" | "tradesIn">): BuyAt {
  * currency, `unitPriceUnits`); on TASE in agorot, as TASE quotes a unit (ETF-92); none for a tracking fund, bought from its manager by
  * amount.
  */
-const UNIT_PRICE_BY_KIND = { abroad: "fund-currency", "il-etf": "agorot", "tase-foreign": "agorot", "il-tracking": null } as const satisfies Record<OptionId, "fund-currency" | UnitPriceUnit | null>;
+const UNIT_PRICE_BY_KIND = { abroad: "fund-currency", "il-etf": "agorot", "tase-foreign": "agorot", "tase-unknown": "agorot", "il-tracking": null } as const satisfies Record<FundKind, "fund-currency" | UnitPriceUnit | null>;
 
 /** The unit price unit that is a whole amount of a currency (`unitPriceUnits`, scale one); null where none is. */
 function unitOfCurrency(code: string): UnitPriceUnit | null {
@@ -180,12 +195,20 @@ function unitOfCurrency(code: string): UnitPriceUnit | null {
 const BROKER_ID = /^custom-broker-[a-z0-9-]+$/;
 const FUND_ID = /^custom-fund-[a-z0-9-]+$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
-const KINDS: readonly OptionId[] = ["il-tracking", "il-etf", "tase-foreign", "abroad"];
+const KINDS: readonly FundKind[] = ["il-tracking", "il-etf", "tase-foreign", "tase-unknown", "abroad"];
 
 export const NAME_MAX = 60;
 export const isCustomFund = (rec: Pick<FundRecord, "id">) => rec.id.startsWith("custom-fund-");
-/** A foreign fund has one yearly charge; an Israeli one its fixed and variable fees and the trustee's. */
-export const isForeignKind = (k: OptionId) => k === "tase-foreign" || k === "abroad";
+/** An Israeli fund has its fixed and variable fees and the trustee's; any other, or one whose kind is not known, one yearly charge. */
+const threeFees = (k: FundKind) => REGISTERED[k] === "israel";
+/** The one yearly charge's word: a foreign fund's, or, where the kind is not known, a word that names neither kind. */
+const feeWord = (k: FundKind) => (REGISTERED[k] === "abroad" ? c.fields.yearly : REGISTERED[k] === "not-known" ? c.fields.fee : c.fields.fixed);
+
+/**
+ * Whether a fund's record is of a fund in Tel Aviv whose country the person did not say: an Israeli ETF or a foreign fund, not known which
+ * (F-04), so it has no price (`customFundGaps`) and its row says its kind is not known (`kindOfFund`).
+ */
+export const kindNotKnown = (rec: Pick<FundRecord, "trading_currency_on_tase" | "domicile">): boolean => rec.trading_currency_on_tase !== null && rec.domicile === COUNTRY_NOT_SAID;
 
 export const newFundId = () => newId("custom-fund-");
 
@@ -196,10 +219,10 @@ export const newFundId = () => newId("custom-fund-");
  * the dollar where the index is in shekels or is one the person added (as the page's generic fund abroad): a stand-in until the panel asks
  * it.
  */
-function fundCurrencyOf(kind: OptionId, tradesIn: TradingCurrency | null, currencyOfIndex: string | null): string {
+function fundCurrencyOf(kind: FundKind, tradesIn: TradingCurrency | null, currencyOfIndex: string | null): string {
   const bought = foreignOf(tradesIn);
   if (bought) return bought;
-  if (!isForeignKind(kind)) return "NIS";
+  if (REGISTERED[kind] === "israel") return "NIS";
   return currencyOfIndex && !isShekel(currencyOfIndex) ? currencyOfIndex : "USD";
 }
 
@@ -219,7 +242,7 @@ export const asksCountry = (at: BuyAt | null): boolean => at === null || countri
  * The unit a typed fund's unit price is typed in (`UNIT_PRICE_BY_KIND`): abroad the fund's currency (`fundCurrencyOf`), on TASE agorot;
  * null where it is bought by amount, or is in a currency no unit price unit is an amount of.
  */
-function unitPriceUnit(kind: OptionId, fundCurrency: string): UnitPriceUnit | null {
+function unitPriceUnit(kind: FundKind, fundCurrency: string): UnitPriceUnit | null {
   const how = UNIT_PRICE_BY_KIND[kind];
   return how === "fund-currency" ? unitOfCurrency(fundCurrency) : how;
 }
@@ -306,13 +329,13 @@ export function validCustomFunds(list: unknown[]): CustomFund[] {
   const out: CustomFund[] = [];
   for (const f of list) {
     if (!isObj(f) || typeof f.id !== "string" || !FUND_ID.test(f.id) || typeof f.name !== "string" || !f.name.trim() || typeof f.indexId !== "string" || !f.indexId || typeof f.added !== "string" || !DATE.test(f.added) || out.some((x) => x.id === f.id)) continue;
-    if (!KINDS.includes(f.kind as OptionId) || typeof f.hedged !== "boolean" || (f.number !== null && f.number !== undefined && typeof f.number !== "string")) continue;
-    const kind = f.kind as OptionId;
+    if (!KINDS.includes(f.kind as FundKind) || typeof f.hedged !== "boolean" || (f.number !== null && f.number !== undefined && typeof f.number !== "string")) continue;
+    const kind = f.kind as FundKind;
     const fixed = figure(f.fixed, "pct_per_year", 100);
     const variable = figure(f.variable, "pct_per_year", 100);
     const trustee = figure(f.trustee, "pct_per_year", 100);
     if (fixed === undefined || variable === undefined || trustee === undefined) continue;
-    const foreign = isForeignKind(kind);
+    const three = threeFees(kind);
     // every answer is the shape the panel saves, or the entry is left out: a payout, a country, a way of following the index, null where
     // not said
     const payout = f.payout === null ? null : PAYOUTS.includes(f.payout as FundPayout) ? (f.payout as FundPayout) : undefined;
@@ -328,18 +351,18 @@ export function validCustomFunds(list: unknown[]): CustomFund[] {
     if (!at || !country || kindOf(at, country) !== kind) continue;
     // a unit price in a unit its kind is not typed in, or not a price, is not read, and the fund is kept, bought by amount
     const unitPrice = unitPriceFrom(kind, f.unitPrice);
-    out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: foreign ? null : variable, trustee: foreign ? null : trustee, hedged: f.hedged, ...(f.shekelIndex === true && !f.hedged ? { shekelIndex: true as const } : {}), payout, yield: yieldPct, perYear, country, tracking, ...(BUY_AT[at].exchange ? { exchange: BUY_AT[at].exchange } : {}), tradesIn: BUY_AT[at].tradesIn, ...(unitPrice ? { unitPrice } : {}), added: f.added });
+    out.push({ id: f.id, name: f.name, number: typeof f.number === "string" && f.number ? f.number : null, indexId: f.indexId, kind, fixed, variable: three ? variable : null, trustee: three ? trustee : null, hedged: f.hedged, ...(f.shekelIndex === true && !f.hedged ? { shekelIndex: true as const } : {}), payout, yield: yieldPct, perYear, country, tracking, ...(BUY_AT[at].exchange ? { exchange: BUY_AT[at].exchange } : {}), tradesIn: BUY_AT[at].tradesIn, ...(unitPrice ? { unitPrice } : {}), added: f.added });
   }
   return out;
 }
 
 /** The answer to where a fund is bought that its kind, exchange and currency make (`BUY_AT`); null where no answer makes them. */
-function placeOf(kind: OptionId, exchange: FundExchange | null, tradesIn: unknown): BuyAt | null {
-  return BUY_AT_IDS.find((a) => (BUY_AT[a].kinds.israeli === kind || BUY_AT[a].kinds.foreign === kind) && BUY_AT[a].exchange === exchange && BUY_AT[a].tradesIn === tradesIn) ?? null;
+function placeOf(kind: FundKind, exchange: FundExchange | null, tradesIn: unknown): BuyAt | null {
+  return BUY_AT_IDS.find((a) => Object.values(BUY_AT[a].kinds).includes(kind) && BUY_AT[a].exchange === exchange && BUY_AT[a].tradesIn === tradesIn) ?? null;
 }
 
 /** A saved unit price, where it is a price above zero in a unit the fund's kind is typed in for some currency (`unitPriceUnit`); else null. */
-function unitPriceFrom(kind: OptionId, raw: unknown): CustomFund["unitPrice"] | null {
+function unitPriceFrom(kind: FundKind, raw: unknown): CustomFund["unitPrice"] | null {
   const unit = isObj(raw) ? raw.unit : undefined;
   if (!isUnitPriceUnit(unit) || unitPriceUnit(kind, unitPriceUnits[unit].code) !== unit) return null;
   const read = figure(raw, unit, ANY_SUM);
@@ -387,7 +410,7 @@ export const fundDraftOf = (f: CustomFund | null, start: { buyAt: BuyAt | null; 
     : { name: "", number: "", ...start, fixed: null, variable: null, trustee: null, hedged: israeliIndex ? false : null, shekelIndex: false, payout: null, yield: null, perYear: null, tracking: null, unitPrice: null };
 
 /** The kind a draft makes, or null before the first question is answered. */
-export const draftKind = (d: Pick<FundDraft, "buyAt" | "country">): OptionId | null => (d.buyAt ? kindOf(d.buyAt, d.country) : null);
+export const draftKind = (d: Pick<FundDraft, "buyAt" | "country">): FundKind | null => (d.buyAt ? kindOf(d.buyAt, d.country) : null);
 
 /** The unit a draft's unit price is typed in (`unitPriceUnit`); null before its kind is known, or where it is bought by amount. */
 export function draftPriceUnit(d: Pick<FundDraft, "buyAt" | "country">, currencyOfIndex: string | null): UnitPriceUnit | null {
@@ -438,7 +461,7 @@ export function fundFromDraft(d: FundDraft & { buyAt: BuyAt }, id: string, index
   const w = c.fields;
   const kind = kindOf(d.buyAt, d.country);
   const at = BUY_AT[d.buyAt];
-  const foreign = isForeignKind(kind);
+  const three = threeFees(kind);
   const priceUnit = draftPriceUnit(d, currencyOfIndex);
   const typed = priceUnit && d.unitPrice && d.unitPrice.unit === priceUnit && d.unitPrice.value !== 0 ? { value: d.unitPrice.value, unit: priceUnit } : null;
   const kept = typed && before?.unitPrice && before.unitPrice.unit === typed.unit && before.unitPrice.value === typed.value ? before.unitPrice : null;
@@ -448,9 +471,9 @@ export function fundFromDraft(d: FundDraft & { buyAt: BuyAt }, id: string, index
     number: norm(d.number) || null,
     indexId,
     kind,
-    fixed: vo(d.fixed, "pct_per_year", today, foreign ? w.yearly : w.fixed),
-    variable: foreign ? null : vo(d.variable, "pct_per_year", today, w.variable),
-    trustee: foreign ? null : vo(d.trustee, "pct_per_year", today, w.trustee),
+    fixed: vo(d.fixed, "pct_per_year", today, feeWord(kind)),
+    variable: three ? vo(d.variable, "pct_per_year", today, w.variable) : null,
+    trustee: three ? vo(d.trustee, "pct_per_year", today, w.trustee) : null,
     hedged: d.hedged === true,
     ...(d.shekelIndex && d.hedged !== true ? { shekelIndex: true as const } : {}),
     payout: d.payout,
@@ -480,8 +503,7 @@ const asSite = (v: ValueObject) => v as SiteValue;
 /** A fund's terms: the fees typed, and the words of those left empty, which are not known (D56). */
 export function fundTerms(f: CustomFund): { shown: EntryTerm[]; empty: string[] } {
   const w = c.fields;
-  const foreign = isForeignKind(f.kind);
-  const parts: [string, string, ValueObject | null][] = foreign ? [["fixed", w.yearly, f.fixed]] : [["fixed", w.fixed, f.fixed], ["variable", w.variable, f.variable], ["trustee", w.trustee, f.trustee]];
+  const parts: [string, string, ValueObject | null][] = threeFees(f.kind) ? [["fixed", w.fixed, f.fixed], ["variable", w.variable, f.variable], ["trustee", w.trustee, f.trustee]] : [["fixed", feeWord(f.kind), f.fixed]];
   const shown: EntryTerm[] = [];
   const empty: string[] = [];
   for (const [id, word, v] of parts) {
@@ -517,7 +539,7 @@ const notKnownStatus = (added: string): ValueObject => ({
  * a fee not known, so the fund has no price (`customFundGaps`).
  */
 export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): FundRecord {
-  const foreign = isForeignKind(f.kind);
+  const israeli = REGISTERED[f.kind] === "israel";
   return {
     id: f.id,
     names: { en: [], he: [f.name], tase: [] },
@@ -526,15 +548,15 @@ export function recordOfFund(f: CustomFund, currencyOfIndex: string | null): Fun
     // another country, or not said, is no country a rule reads (`DOMICILE_OF`)
     domicile: DOMICILE_OF[f.country],
     // instrumentClassOf reads the two Israeli kinds from these words
-    legal_form: foreign ? c.kinds[f.kind]! : copy.typeTags[f.kind]!,
+    legal_form: israeli ? copy.typeTags[f.kind]! : c.kinds[f.kind]!,
     exposure_id: f.indexId,
     currency: fundCurrencyOf(f.kind, f.tradesIn, currencyOfIndex),
     trading_currency_on_tase: f.kind === "abroad" ? null : "NIS",
     distribution_policy: f.payout,
     // TXS-14, F-04: whether a typed Israeli fund is a foreign-investment fund is not known (no document of it was read), so its status is
     // null and, on an index in a foreign currency, it is run under both readings of TXS OQ26, as a collected fund whose status is not known
-    tax_status: { il_fund_tax_track: foreign ? null : "exempt", ...(foreign ? {} : { foreign_investment_fund: notKnownStatus(f.added) }) },
-    fees: { fixed_management: f.fixed, variable_management: foreign ? null : f.variable, trustee: foreign ? null : f.trustee, tracking_difference_12m: null, median_spread: null, fund_level_withholding_drag: null },
+    tax_status: { il_fund_tax_track: israeli ? "exempt" : null, ...(israeli ? { foreign_investment_fund: notKnownStatus(f.added) } : {}) },
+    fees: { fixed_management: f.fixed, variable_management: israeli ? f.variable : null, trustee: israeli ? f.trustee : null, tracking_difference_12m: null, median_spread: null, fund_level_withholding_drag: null },
     dimensions: {},
     prospectus: { url: "local", date: null },
     ...(f.hedged ? { hedged: true } : {}),
@@ -561,7 +583,7 @@ export function customFundGaps(rec: FundRecord): CustomFundGap[] {
   const fees = rec.domicile === "IL" ? [rec.fees.fixed_management, rec.fees.variable_management, rec.fees.trustee] : [rec.fees.fixed_management];
   if (fees.some((v) => !v)) out.push("fee-unknown");
   // in Tel Aviv the country decides whether the fund is an Israeli ETF or a foreign fund, which are taxed apart (F-04): not said, no price
-  if (rec.trading_currency_on_tase !== null && rec.domicile === COUNTRY_NOT_SAID) out.push("tase-country-unknown");
+  if (kindNotKnown(rec)) out.push("tase-country-unknown");
   if (rec.distribution_policy === null) out.push("payout-unknown");
   if (rec.hedged === true) out.push("no-hedge-entered");
   if (rec.distribution_policy === "distributing") {
