@@ -7,10 +7,17 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { countriesAt, customFundGaps, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, recordOfFund, validCustomFunds, withCustomEntries, type BuyAt, type CustomFund, type CountryAnswer, type FundDraft, type FundTracking } from "./custom-entries";
 import type { CustomIndex } from "./invest";
-import { fundWayAt, indexById, indexSeenBy, pairCosts, refOfCustom, type FundWay, type WayPrice } from "./invest";
+import { buildInvest, fundWayAt, indexById, indexSeenBy, kindOf, pairCosts, refOfCustom, type FundWay, type WayPrice } from "./invest";
 import { dividendTaxLabel, fundLabels, labelDefs } from "./labels";
 import { invest as copy } from "../copy";
 import { panelStateOf } from "../components/invest/custom-entries";
+import { allFunds, labelsOf, steadyOf } from "../components/invest/pair";
+import { PairLists } from "../components/invest/lists";
+import { LabelSheetHost } from "../components/kit";
+import { ProvenanceProvider } from "../components/provenance";
+import { createElement } from "react";
+import { renderToString } from "react-dom/server";
+import { MemoryRouter } from "react-router";
 import { buildIndicesBundle } from "./providers.server";
 import type { WorkbenchInputs } from "./providers";
 import { validCustomIndices } from "./state";
@@ -310,5 +317,44 @@ describe("the panel's checklist: an answer not given is never done (D56)", () =>
     expect(itemOf(draftOf("tase", "other", { tracking: "swap" }), "country")?.state).toBe("done");
     expect(itemOf(draftOf("us-usd", "unsure", { tracking: "swap" }), "country")).toBeUndefined();
     expect(itemOf(draftOf("abroad", "unsure", { tracking: "swap" }), "country")).toMatchObject({ state: "stand-in", note: copy.customEntries.needs.standIn.countryExchange });
+  });
+});
+
+describe("a fund in euros on an index in dollars says so, and no figure calls its currency the dollar (F-65, F-94)", () => {
+  const eur = fundAt("europe-eur", "IE", { tracking: "swap" }, SP, "custom-fund-eur-swap");
+  const usd = fundAt("europe-usd", "IE", { tracking: "swap" }, SP, "custom-fund-usd-swap");
+  const b = withCustomEntries(bundle, [eur, usd]);
+  const view = buildInvest({ bundle: b, index: must(indexById(b, SP), "S&P 500"), plan });
+  const way = (id: string) => must(allFunds(view).find((f) => f.rec.id === id), id);
+
+  it("its row carries the label that its currency is not its index's; the dollar twin's does not", () => {
+    const ids = (id: string) => labelsOf(view, way(id), b).map((l) => l.id);
+    expect(ids(eur.id)).toContain("currency-mismatch");
+    expect(ids(usd.id)).not.toContain("currency-mismatch");
+    const l = must(labelsOf(view, way(eur.id), b).find((x) => x.id === "currency-mismatch"), "the label");
+    expect(l.explain).toContain(copy.currencies.EUR);
+  });
+
+  it("the figure's steady currency is the euro for it and the dollar for its twin", () => {
+    expect(steadyOf(view, b, eur.id)).toBe(copy.pair.steadyIn(must(copy.currencies.EUR, "the euro's word")));
+    expect(steadyOf(view, b, usd.id)).toBe(copy.pair.steadyIn(must(copy.currencies.USD, "the dollar's word")));
+  });
+
+  it("the dollar's range against a hedged pick runs over the dollar twin and leaves the euro fund out", () => {
+    const hedged = allFunds(view).filter((f) => kindOf(f.rec) === "hedged");
+    const house = Object.keys(way(eur.id).byHouse).find((h) => "valueN" in (way(eur.id).byHouse[h] ?? {}) && "valueN" in (way(usd.id).byHouse[h] ?? {}) && hedged.some((f) => "valueN" in (f.byHouse[h] ?? {})));
+    const pickFund = hedged.find((f) => house && "valueN" in (f.byHouse[house] ?? {}));
+    if (!house || !pickFund) throw new Error("a house that prices both twins and a hedged fund");
+    const data = { rules: {}, terms: {}, dimensions: {}, today: t };
+    const out = renderToString(createElement(MemoryRouter, null, createElement(ProvenanceProvider, { data, children: createElement(LabelSheetHost, null, createElement(PairLists, { view, bundle: b, plan, livePlan: plan, today: t, pick: { house, fund: pickFund.rec.id }, chosen: false, onPick: () => undefined, moved: null })) })));
+    const row = (id: string) => {
+      const at = out.indexOf(`data-pick-key="${id}"`);
+      expect(at).toBeGreaterThan(-1);
+      const next = out.slice(at + 1).search(/data-pick-key="/);
+      return out.slice(at, next < 0 ? undefined : at + 1 + next).replace(/<[^>]*>/g, " ");
+    };
+    const range = new RegExp(`\\s${copy.kinds.between}\\s`);
+    expect(row(usd.id)).toMatch(range);
+    expect(row(eur.id)).not.toMatch(range);
   });
 });

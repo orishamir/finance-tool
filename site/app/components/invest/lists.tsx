@@ -123,17 +123,19 @@ export function PairLists(props: ListsProps) {
   const pickKey = c.pair.input(`${sp.name}, ${pickName}`, c.pair.colLeft);
   const mine = fund ? kindOf(fund.rec) : "unhedged";
   // a row of the other kind: its difference from the pick runs over the dollar's range (F-94), from the dollar's fall to its rise; each
-  // difference is the row's pair less the pick's at the same end of P-02's range, the two figures its sheet opens
+  // difference is the row's pair less the pick's at the same end of P-02's range, the two figures its sheet opens. A fund in a foreign
+  // currency other than its index's (`currencyMismatch`) would move with that currency, not the dollar: it is left out, and a pick of one
+  // gives no range
   const cross = useMemo(() => {
     const out = new Map<string, { atLo: number; atHi: number; lo: SiteValue; hi: SiteValue }>();
-    if (!kinds || !range || !fund) return out;
+    if (!kinds || !range || !fund || fund.currencyMismatch) return out;
     const bound = { lo: dollarBound(bundle, "lo"), hi: dollarBound(bundle, "hi") };
     const at = (f: { id: string; name: string }, end: "lo" | "hi") => pairValueFigure({ bundle, index: view.index, plan, fundId: f.id, providerId: pick.house, fxChange: range[end], about: f.name, dollarChange: bound[end] });
     const pLo = at({ id: pick.fund, name: pickName }, "lo"), pHi = at({ id: pick.fund, name: pickName }, "hi");
     if (!pLo || !pHi) return out;
     const gap = (v: SiteValue, name: string, p: SiteValue) => differenceOf([c.pair.input(name, c.pair.colLeft), v], [pickKey, p], "F-94", { today, about: sp.diffAbout, round: Math.round });
     for (const f of funds) {
-      if (kindOf(f.rec) === mine || !priced(f.byHouse[pick.house])) continue;
+      if (kindOf(f.rec) === mine || f.currencyMismatch || !priced(f.byHouse[pick.house])) continue;
       const lo = at({ id: f.rec.id, name: f.name }, "lo"), hi = at({ id: f.rec.id, name: f.name }, "hi");
       if (lo && hi) out.set(f.rec.id, { atLo: (lo.value as number) - (pLo.value as number), atHi: (hi.value as number) - (pHi.value as number), lo: gap(lo, f.name, pLo), hi: gap(hi, f.name, pHi) });
     }

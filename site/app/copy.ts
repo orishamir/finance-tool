@@ -4728,7 +4728,8 @@ export const invest = {
     baseInput: "ההפקדות עם התשואה בלבד",
     baseAbout: "ההפקדות עם התשואה של התוכנית בלבד, בלי מה שהחשבון, הקרן והמדינה לוקחים, בהתחשב באינפלציה",
     left: (years: number) => `נשאר לכם בעוד ${yearsSpan(years)}`,
-    steadyDollar: "בהנחה שהדולר לא זז מול השקל",
+    /** The currency the figure holds still against the shekel: the fund's own, or its index's for a fund in shekels. */
+    steadyIn: (ccy: string) => `בהנחה שה${ccy} לא זז מול השקל`,
     /** In the "!" beside the total, for a fund bought abroad: said once for the page, since the price of a fund bought abroad leaves these out. */
     abroadShort: "בקרן שנקנית בחו״ל החישוב לא כולל חיובים של ברוקר, של צד שלישי ושל רשויות, ולא מרווח המרה שאין לו תקרה כתובה. בפועל אפשר לשלם יותר.",
     steadyIndexCurrency: "בהנחה ששער המטבע של המדד לא זז מול השקל",
@@ -4950,8 +4951,6 @@ export const invest = {
     promotionWord: (until: string) => `במבצע עד ${until}`,
     promotionName: (fee: string, until: string) => `${fee} במבצע עד ${until}`,
     cannot: "אי אפשר לחשב",
-    currencyMismatch: (fund: string, index: string) => `הקרן נקובה ב${fund} והמדד ב${index}. האתר לא מחשב את ההפרש ביניהם.`,
-    mismatchTag: "מטבע שונה ממטבע המדד",
     number: "מספר נייר",
     sameAsBest: "אותו חשבון ניירות ערך",
     emptyHeading: "עוד לא נאספו קרנות על המדד הזה",
@@ -5232,6 +5231,8 @@ export const invest = {
     "hedged-many": { text: (ccy: string) => `מנוטרלת ${ccy}`, explain: (ccy: string) => `הקרן מנטרלת רק את החשיפה לשער ה${ccy} מול השקל, חוץ מחשיפה מזערית לצרכים תפעוליים. המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות, ולכן המטבעות האחרים שבמדד עדיין משנים את ערכה, מול ה${ccy}. הנטרול יכול להוסיף לקרן או לקחת ממנה, לפי פער הריביות בין המטבעות ולפי האופן שבו המדד והמטבע זזים יחד. התוצאה נראית בפער של הקרן מהמדד שלה, והחישוב באתר כולל אותו.` },
     /** On an index the person added, a fund they said is bought in a foreign currency: the run moves it with that currency (F-65). */
     "currency-bought": { text: (ccy: string) => `חשיפה ל${ccy}`, explain: (ccy: string) => `הקרן נקנית ב${ccy}. האתר לא יודע באיזה מטבע המדד מחושב, ומטבע של סוג יחידות של קרן יכול להיות שונה מהמטבע של מה שהיא מחזיקה. לכן החישוב מזיז את ערך הקרן עם שער ה${ccy} מול השקל, וגם מס רווחי ההון נמדד מול שער ה${ccy}. זו קריאה של האתר.` },
+    /** A fund in a foreign currency other than its index's (F-65, `currencyMismatch`): the run does not model the one against the other. */
+    "currency-mismatch": { text: "מטבע שונה ממטבע המדד", explain: (ccy: string) => `הקרן נקובה ב${ccy}, והמדד מחושב במטבע אחר. החישוב מזיז את ערך הקרן עם שער ה${ccy} מול השקל, ולא מחשב את השינוי בין ה${ccy} לבין המטבע של המדד. החישוב מדויק רק כששני המטבעות זזים יחד.` },
     "currency-foreign": { text: "חשיפה למט״ח", explain: "את המדד הזה הוספתם, והאתר לא יודע באיזה מטבע הוא מחושב. ערך הקרן עולה ויורד גם עם שער המטבע הזה מול השקל. בדיקת השער באתר זהה לכל מטבע, ולכן היא לא תלויה בשאלה איזה מטבע זה." },
     "currency-many": { text: (ccy: string) => `חשיפה ל${ccy} ולמטבעות נוספים`, explain: (ccy: string) => `ערך הקרן עולה ויורד עם שער ה${ccy} מול השקל, ועם המטבעות האחרים שבמדד, כי המדד מחושב ב${ccy} מתוך מניות בכמה מטבעות.` },
     "tax-currency": { text: "מס גם על שינויי המטבע", explain: "ביחידות שקליות של קרן ישראלית שאינה קרן נאמנות להשקעות חוץ, הרווח הריאלי נמדד מול מדד המחירים לצרכן, ולכן גם עליית המטבע שבתוך הרווח ממוסה." },

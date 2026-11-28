@@ -25,7 +25,7 @@ export type LabelIconKey =
   | "trendUpDown" | "badgePercent" | "percent" | "lock" | "gavel"
   | "piggy" | "handCoins"
   | "filePen" | "receipt" | "scroll" | "eyeOff" | "fileSignature" | "ban"
-  | "megaphone" | "building" | "coins" | "scale" | "userPlus";
+  | "megaphone" | "building" | "coins" | "scale" | "userPlus" | "unlink";
 type IconDef = LabelIconKey | "sign";
 
 type LabelId =
@@ -44,6 +44,7 @@ type LabelId =
   | "currency-many"
   | "currency-foreign"
   | "currency-bought"
+  | "currency-mismatch"
   | "tax-currency"
   | "tax-currency-unknown"
   | "tax-fund-dividend"
@@ -92,6 +93,7 @@ export const labelDefs: Record<RuleLabelId, LabelDef> = {
   "currency-many": { icon: "sign", tone: "neutral", rules: ["ETF-12"] },
   "currency-foreign": { icon: "currency", tone: "neutral", rules: ["ETF-12"] },
   "currency-bought": { icon: "sign", tone: "neutral", rules: ["ETF-28", "TXF-03"] },
+  "currency-mismatch": { icon: "unlink", tone: "caution", rules: ["ETF-28"] },
   "tax-currency": { icon: "trendUpDown", tone: "neutral", rules: ["TXS-09", "TXS-14"] },
   "tax-currency-unknown": { icon: "scale", tone: "open", rules: ["TXS-14"] },
   "tax-fund-dividend": { icon: "badgePercent", tone: "neutral", rules: ["TXF-16"] },
@@ -164,6 +166,7 @@ const familyOf: Record<RuleLabelId, Label["family"]> = {
   "currency-many": "currency",
   "currency-foreign": "currency",
   "currency-bought": "currency",
+  "currency-mismatch": "currency",
   "tax-currency": "tax",
   "tax-currency-unknown": "tax",
   "tax-fund-dividend": "tax",

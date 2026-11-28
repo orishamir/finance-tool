@@ -80,7 +80,7 @@ describe("the receipt", () => {
     const leftMark = `aria-label="${help.noteLabel.replace("{about}", w.receipt.left)}"`;
     const sp = html(createElement(PairReceipt, { view, bundle, plan, pick, chosen: false }));
     expect(sp).toContain(leftMark);
-    expect(steadyOf(view, bundle, pick.fund)).toBe(w.pair.steadyDollar);
+    expect(steadyOf(view, bundle, pick.fund)).toBe(w.pair.steadyIn(invest.currencies.USD ?? ""));
     const ta = buildInvest({ bundle, index: indexById(bundle, "index-ta125")!, plan });
     const p = pickOfHeadline(ta)!;
     const out = html(createElement(PairReceipt, { view: ta, bundle, plan, pick: p, chosen: false }));
