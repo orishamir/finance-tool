@@ -19,7 +19,7 @@ import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/
 import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, restated, sumOf, type SiteValue } from "../../lib/value";
-import { Num, ShortRow, StateTag, shortRow } from "../provenance";
+import { Num, ShortRow, shortRow } from "../provenance";
 import { DocLink, FEE_WORDS_HELP, HeldMark, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
 import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, totalNoteOf, whole, type Pick } from "./pair";
@@ -272,8 +272,6 @@ function FundFacts({ view, bundle, fund, refs }: { view: InvestView; bundle: Ind
   const labels = [
     <OptionTag key="kind" option={fund.option} />,
     ...FUND_FAMILIES.flatMap((g) => own.filter((l) => l.family === g)).map((l) => <LabelChip key={l.id} label={l} />),
-    // a fund the person typed: its name in the entered ink, and in words
-    isCustomFund(fund.rec) ? <StateTag key="entered" state="entered" /> : null,
   ];
   const details = [
     refs ? <FundRefs key="refs" fund={fund} /> : null,
