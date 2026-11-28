@@ -17,7 +17,7 @@ export const content: GuideContent = {
         הקרן הכללית היא <Term id="קרן פנסיה">קרן פנסיה</Term> להפקדות שלא נכנסות לקרן המקיפה. <Ruled id="PEN-08">לקרן המקיפה יש תקרה להפקדות של כל חודש</Ruled>, ו<Ruled id="PEN-10">מה שמעל התקרה עובר לקרן הכללית של אותה חברה</Ruled>.
       </p>
       <p className="max-w-measure">
-        גם בה <Ruled id="PEN-70">החיסכון הופך בפרישה</Ruled> <Term prefix="ל" id="קצבה">קצבה</Term>: סכום שמקבלים כל חודש. אבל בניגוד לקרן המקיפה, <Ruled id="PEN-69">המדינה לא מבטיחה בה רווח על חלק מהכסף</Ruled>.
+        גם בה <Ruled id="PEN-70">החיסכון הופך בפרישה</Ruled> <Term prefix="ל" id="קצבה">קצבה</Term>: סכום שמקבלים כל חודש. ההבדל: <Ruled id="PEN-69">בקרן המקיפה המדינה מבטיחה רווח על חלק מהכסף, ובקרן הכללית לא</Ruled>.
       </p>
       <GuidePart title="התקרה של הקרן המקיפה">
         <p className="max-w-measure">

@@ -62,8 +62,9 @@ export const content: GuideContent = {
           העלות העיקרית היא <Term id="דמי ניהול">דמי הניהול</Term> ושכר הנאמן: <Ruled id={["MF-16", "MF-20"]}>אחוז שנתי מהנכסים שיורד מהמחיר כל יום</Ruled>, ולכן לא רואים אותו כחיוב נפרד. רשות ניירות ערך <Ruled id="MF-18">מפרסמת ממוצע שנתי לקטגוריה</Ruled>.
         </p>
         <Sentence measure>
-          בבנק, <Ruled id="MF-24">מנהל הקרן משלם לבנק</Ruled> <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה.
+          בבנק, <Ruled id="MF-24">מנהל הקרן משלם לבנק</Ruled> <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה. <Ruled id="MF-71">בלי הסכם הפצה, הבנק יכול לגבות מכם עד גובה עמלת ההפצה</Ruled>.
         </Sentence>
+        <p className="max-w-measure">תוספת בקנייה או <Term id="ניכוי בפדיון">ניכוי בפדיון</Term> <Ruled id={["MF-21", "MF-22"]}>אפשריים רק אם הסכם הקרן קובע אותם</Ruled>, ורוב הקרנות לא גובות תוספת.</p>
       </>
     );
   },
