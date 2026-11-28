@@ -504,11 +504,20 @@ function StaleLine({ stale }: { stale: Staleness }) {
   );
 }
 
-/** An engine flag on a figure: its words, whose {ID:figure} slots are the rule's figure from the page's records or those its cards point at, and its code. */
-function FlagCallout({ code, data }: { code: string; data: ProvenanceData }) {
+/**
+ * The engine's flags on a figure, in one callout, so its first line stands where the smallest phone's sheet shows it: each flag's words,
+ * whose {ID:figure} slots are the rule's figure from the page's records or those its cards point at, and its code.
+ */
+function FlagsCallout({ codes, data }: { codes: readonly string[]; data: ProvenanceData }) {
   return (
     <Callout tone="caution">
-      <SlottedText text={flagCopy[code] ?? copy.flagOther} source={data} /> <bdi dir="ltr" className="text-xs">{code}</bdi>
+      <span className="flex flex-col gap-1.5">
+        {codes.map((code) => (
+          <span key={code}>
+            <SlottedText text={flagCopy[code] ?? copy.flagOther} source={data} /> <bdi dir="ltr" className="text-xs">{code}</bdi>
+          </span>
+        ))}
+      </span>
     </Callout>
   );
 }
@@ -535,7 +544,7 @@ export function CatchSheet({ value, catches, exact, display, data, headId, descI
     <div className="flex flex-col gap-3.5">
       <FigureHead value={value} text={headText(value, exact, display)} ink={false} headId={headId} descId={descId} />
       {catches.map((c) => (
-        <CatchPart key={c.kind === "flag" ? `flag ${c.code}` : c.kind} c={c} value={value} data={data} />
+        <CatchPart key={c.kind} c={c} value={value} data={data} />
       ))}
       <AllRulesLink value={value} data={data} />
     </div>
@@ -555,8 +564,8 @@ function CatchPart({ c, value, data }: { c: Catch; value: SiteValue; data: Prove
       return <StrengthNote value={value} strength="open" />;
     case "stale":
       return <StaleLine stale={c.stale} />;
-    case "flag":
-      return <FlagCallout code={c.code} data={data} />;
+    case "flags":
+      return <FlagsCallout codes={c.codes} data={data} />;
     case "reading":
       return (
         <div className="flex flex-col items-start gap-1.5">

@@ -38,7 +38,7 @@ describe("a calculated figure on the page", () => {
 describe("a calculated figure's catches", () => {
   it("are its doubt, its flags and its readings, in that order", () => {
     const v = computed(1, "nis", "F-08", { a: sourced(1) }, { today, flags: ["G-14"], labels: [{ code: "cautious", ruleId: "TXF-04", notKnown: "documents" }] });
-    expect(kinds(v)).toEqual(["doubt", "flag", "reading"]);
+    expect(kinds(v)).toEqual(["doubt", "flags", "reading"]);
   });
   it("count a company's document out of its own context only at figure size; a secondary source anywhere", () => {
     const v = computed(1, "nis", "F-08", { a: company(1) }, { today });
@@ -59,7 +59,7 @@ describe("a calculated figure's catches", () => {
     expect(kinds(differenceOf(["א", flagged], ["ב", stale], "F-08", { today }), { figure: true })).toEqual([]);
     expect(kinds(sumOf({ א: doubted, ב: company(1) }, "F-08", { today }), { figure: true })).toEqual([]);
     // a flag of its own, which no input carries, stays
-    expect(kinds(differenceOf(["א", flagged], ["ב", stale], "F-08", { today, flags: ["G-15"] }))).toEqual(["flag"]);
+    expect(kinds(differenceOf(["א", flagged], ["ב", stale], "F-08", { today, flags: ["G-15"] }))).toEqual(["flags"]);
   });
 });
 

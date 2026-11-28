@@ -368,7 +368,7 @@ function onPage(v: SiteValue, ownPage: boolean, data: ProvenanceData | null): Si
  *   by their key (in a line or a cell each such input says its own source where it stands);
  * - `open`: it rests on an open rule;
  * - `stale`: what it rests on is older than its cadence;
- * - `flag`: an engine flag (`sheetFlags`);
+ * - `flags`: the engine's flags on it (`sheetFlags`);
  * - `reading`: it rests on the site's own reading of the rules it names (`sheetReadings`).
  */
 export type Catch =
@@ -377,7 +377,7 @@ export type Catch =
   | { kind: "weak"; strength: "institution" | "secondary"; inputs: readonly (readonly [key: string, input: SiteValue])[] }
   | { kind: "open" }
   | { kind: "stale"; stale: Staleness }
-  | { kind: "flag"; code: string }
+  | { kind: "flags"; codes: readonly string[] }
   | { kind: "reading"; rules: readonly string[] };
 
 /** What decides a figure's catches beyond the figure: the page's date, its size, the notices around it that already say a catch, and how the page shows a figure (`onPage`). */
@@ -390,6 +390,16 @@ export interface CatchPlace {
   /** A callout around it already says these rules start later (`useAheadSaid`). */
   aheadSaid: boolean;
   onPage: (v: SiteValue) => SiteValue;
+}
+
+/** Where a figure stands, for its catches (`CatchPlace`): the page's date, the notices around it and the page's company, at a size. */
+export function useCatchPlace(): (figure: boolean) => CatchPlace {
+  const today = useContext(TodayCtx);
+  const staleSaid = useContext(StaleSaidCtx);
+  const aheadSaid = useAheadSaid();
+  const ownPage = useContext(OwnCompanyCtx);
+  const data = useContext(DataCtx);
+  return (figure) => ({ today, figure, staleSaid, aheadSaid, onPage: (v) => onPage(v, ownPage, data) });
 }
 
 /**
@@ -408,7 +418,8 @@ export function catchesOf(v: SiteValue, place: CatchPlace): Catch[] {
   if (isWeak(v) && (strength === "secondary" || (strength === "institution" && place.figure)) && !carried(isWeak)) out.push({ kind: "weak", strength, inputs: inputs.filter(([, x]) => isWeak(x)) });
   if ((strength === "open" || isOpenValue(v)) && !carried((x) => strengthOf(x) === "open")) out.push({ kind: "open" });
   if (v.stale && !place.staleSaid && !carried((x) => !!x.stale)) out.push({ kind: "stale", stale: v.stale });
-  for (const code of sheetFlags(v)) out.push({ kind: "flag", code });
+  const flags = sheetFlags(v);
+  if (flags.length > 0) out.push({ kind: "flags", codes: flags });
   const rules = [...new Set(sheetReadings(v).map((l) => l.ruleId))];
   if (rules.length > 0) out.push({ kind: "reading", rules });
   return out;
@@ -428,6 +439,7 @@ export function Num({ value: given, size = "inline", display, animate, className
   const today = useContext(TodayCtx);
   const staleSaid = useContext(StaleSaidCtx);
   const aheadSaid = useAheadSaid();
+  const catchPlace = useCatchPlace();
   const param = isParameter(value);
   const counting = useCounting();
   const unseen = useUnseen();
@@ -484,7 +496,7 @@ export function Num({ value: given, size = "inline", display, animate, className
   // a calculated figure is plain text in the ink around it: it opens nothing, and only a catch it carries shows, as a caution "?" held to
   // its last digit, which opens what the catch is (`catchesOf`)
   if (value.state === "computed") {
-    const catches = catchesOf(value, { today, figure: size === "figure", staleSaid, aheadSaid, onPage: (v) => onPage(v, ownPage, pageData) });
+    const catches = catchesOf(value, catchPlace(size === "figure"));
     const figure = <span className={cx("num-plain", size === "figure" && "num-figure", value.value === null && "num-unknown", oneLine && "whitespace-nowrap", className)}>{digits}</span>;
     if (catches.length === 0) return led(figure);
     return led(

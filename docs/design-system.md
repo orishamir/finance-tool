@@ -454,7 +454,8 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   only its catches, each as a sourced figure's sheet says it, in this order: the line of a figure not in force yet; the doubt's callout
   with the rules it rests on (`doubtRules`), naming the doubted inputs where it carries theirs (`doubtFrom`); the weak inputs, each by its
   name with its figure, which opens its own sheet with its source, under a line by strength, and the strength's callout for a secondary
-  or open one, or for a weakness no input carries; the stale line; each flag's callout with its code; the site's-reading tag with each
+  or open one, or for a weakness no input carries; the stale line; one callout of its flags, each with its code, so its first line stands
+  where the smallest phone's sheet shows it; the site's-reading tag with each
   rule it reads, by title (`RuleTitleList`). Then the way to the rules, as every sheet has. No formula, no inputs, no rules the
   calculation read, no fund statement, no note and no state tag: the step-by-step explanation of a page's main result is to come, kept
   apart (lib/working.ts and each figure's `working` are kept for it).
