@@ -22,6 +22,11 @@ In Interactive Israel's own words:
 
 The answer does not speak separately of Israeli mutual funds. Who the Tax Authority gives a withholding exemption to is the Tax Authority's to say, not the company's; the site keeps the company's sentence about the form as the company's own statement.
 
+### Where the site uses it
+
+- Interactive Israel's record (`data/fees/interactive-israel@2026-11-12.json`) marks the Tel Aviv holdings not available to a private person (`availability`, BRK-65: a limited company's account only), with the Tax Authority's practice that a private person as a rule gets no such exemption beside it (TXS-42), and so does not price a Tel Aviv fund there; the tariff's Tel Aviv commission and custody fee sit in `left_out` for the same reason. This replaces the reading of its pages as institutional clients only.
+- The site says the sentence about the form as the company's own and the Tax Authority's practice as the Tax Authority's.
+
 ## Psagot 2026-11-10
 
 **Who answered.** Psagot Trade (פסגות ניירות ערך בע"מ, מערך טרייד), its trade customer relations, in writing by mail on 10.11.2026, to two mails sent on 4.11 and 8.11.2026.

@@ -58,7 +58,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "Printed per share: 'USD (Shares)' 0.01 dollar a share, minimum '2.5 USD' per trade (unit usd_per_share, 2026-10-25 schema S2). Same page: 'עמלת מקסימום במניות ארה\"ב הינה 2% משווי העסקה' (recorded in cap, not max); the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך'; for fractional shares in the US and Canada the commission and minimum are computed on the share count rounded up to a whole share. The commission page (inter-il.com/commission) prints the same '0.01$ למניה מינימום 2.5$' for 'חשבון אמריקאי / אירי / עסקי', and its FAQ adds that regulatory fees (SEC/TAF) apply on sales. The regulation page FAQ: the 2.5$ minimum buys up to 250 shares, above that 0.01$ a share. The PDF repeats on every page that the fees are a personal offer valid if the account is opened within 30 days, and also says 'תעריף זה חל על כל לקוח של החברה'. TASE lines (ILS 0.06% minimum 10 ILS, and a 0.08% custody fee on TASE shares and ETFs with no period printed) are not recorded as lines: the company's Israeli-market page says TASE trading is offered 'ללקוחות מוסדיים בלבד' (BRK-41)."
+        "notes": "Printed per share: 'USD (Shares)' 0.01 dollar a share, minimum '2.5 USD' per trade (unit usd_per_share, 2026-10-25 schema S2). Same page: 'עמלת מקסימום במניות ארה\"ב הינה 2% משווי העסקה' (recorded in cap, not max); the fee is collected 'במטבע הראשי של הבורסה בה נסחר נייר הערך'; for fractional shares in the US and Canada the commission and minimum are computed on the share count rounded up to a whole share. The commission page (inter-il.com/commission) prints the same '0.01$ למניה מינימום 2.5$' for 'חשבון אמריקאי / אירי / עסקי', and its FAQ adds that regulatory fees (SEC/TAF) apply on sales. The regulation page FAQ: the 2.5$ minimum buys up to 250 shares, above that 0.01$ a share. The PDF repeats on every page that the fees are a personal offer valid if the account is opened within 30 days, and also says 'תעריף זה חל על כל לקוח של החברה'. TASE lines (ILS 0.06% minimum 10 ILS, and a 0.08% custody fee on TASE shares and ETFs with no period printed) are not recorded as lines: the company's written answer of 15.11.2026 says TASE trading is possible only from a limited company's account with a withholding exemption (BRK-65)."
       },
       "min": {
         "value": 2.5,
@@ -215,7 +215,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "The tariff's only custody fee is 'עמלת אחזקה (Custody Fee) בשיעור של 0.08%' on shares and ETFs traded on TASE (p.1), which a private client cannot buy here (BRK-41); none of the 8 pages prints a custody, holding or management fee on securities abroad, and p.7 says the tariff applies to every customer. The company's pages say the same: 'אנו לא גובים דמי ניהול, בנוסף אין דמי שמירת ניירות ערך' (commission page FAQ), 'אין דמי החזקה כלל' (regulation page). Interactive Brokers' own pass-through custody table (other-fees page) names no US, UK or Irish market. Kept at 0 under the general change clause (p.8)."
+        "notes": "The tariff's only custody fee is 'עמלת אחזקה (Custody Fee) בשיעור של 0.08%' on shares and ETFs traded on TASE (p.1), which a private client cannot buy here (BRK-65); none of the 8 pages prints a custody, holding or management fee on securities abroad, and p.7 says the tariff applies to every customer. The company's pages say the same: 'אנו לא גובים דמי ניהול, בנוסף אין דמי שמירת ניירות ערך' (commission page FAQ), 'אין דמי החזקה כלל' (regulation page). Interactive Brokers' own pass-through custody table (other-fees page) names no US, UK or Irish market. Kept at 0 under the general change clause (p.8)."
       },
       "min": null,
       "max": null,
@@ -258,7 +258,7 @@
           "BRK-41"
         ],
         "state": "sourced",
-        "notes": "None of the tariff's 8 pages prints an account, system, management, inactivity, standing-order or dividend-handling fee, and p.7 says the tariff applies to every customer. The company's pages agree: 'דמי מערכת: 0 ש\"ח', 'דמי ניהול: 0 ₪ - דרכינו אין דמי ניהול!' (commission page), 'אין דמי אי פעילות כלל' (regulation and open-account pages). Costs outside the tariff (withdrawals after the first in a month, regulatory fees on US sales, optional market data, Interactive Brokers' inactivity rule for introduced accounts, interest on a positive balance) are in left_out. applies_to names foreign securities only, the classes a private client can trade here (TASE is for institutional clients, BRK-41), so that a zero account fee does not make the tariff look complete for a TASE fund."
+        "notes": "None of the tariff's 8 pages prints an account, system, management, inactivity, standing-order or dividend-handling fee, and p.7 says the tariff applies to every customer. The company's pages agree: 'דמי מערכת: 0 ש\"ח', 'דמי ניהול: 0 ₪ - דרכינו אין דמי ניהול!' (commission page), 'אין דמי אי פעילות כלל' (regulation and open-account pages). Costs outside the tariff (withdrawals after the first in a month, regulatory fees on US sales, optional market data, Interactive Brokers' inactivity rule for introduced accounts, interest on a positive balance) are in left_out. applies_to names foreign securities only, the classes a private client can trade here (TASE is for a limited company's account only, BRK-65), so that a zero account fee does not make the tariff look complete for a TASE fund."
       },
       "min": null,
       "max": null,
@@ -471,7 +471,7 @@
         "checked": "2026-11-15",
         "quote": "מסחר בבורסה הישראלית דרך אינטראקטיב ברוקרז אפשרית רק לחשבונות חברה (חברה בע\"מ בלבד!)"
       },
-      "reason_he": "החברה ענתה שבבורסה בתל אביב היא מאפשרת לקנות ולמכור ניירות ערך רק מחשבון של חברה בע״מ שקיבלה פטור מניכוי מס במקור, ופטור כזה אדם פרטי ככלל לא מקבל.",
+      "reason_he": "החברה ענתה שבבורסה בתל אביב אפשר לקנות ולמכור אצלה ניירות ערך רק מחשבון של חברה בע״מ שהגישה טופס פטור מניכוי מס במקור. לפי רשות המסים, אדם פרטי ככלל לא מקבל אישור כזה.",
       "note": "The company's written answer of 15.11.2026 (BRK-65) settles which of its pages holds: Tel Aviv trading only for a limited company's account, which must hand in a withholding-exemption form. Before it, the pages read 2026-11-12 differed: the Israeli-market page (dateModified 2026-10-14) and the company-account page (/company-account/, dateModified 2026-06-30) said institutional clients only; the world-markets page (/world-markets/, dateModified 2026-10-14) said companies or individuals with a withholding exemption. Whom the Tax Authority gives such an exemption is TXS-42's, from its execution instruction 02/2026. The tariff (p.1) prices Tel Aviv 'מניות ותעודות סל' only; its mutual-fund table (p.5) is the mutual_fund_units entry.",
       "rule_ids": [
         "BRK-65",
@@ -542,8 +542,8 @@
       "what": "מסחר בבורסת תל אביב: עמלה 0.06% מינימום 10 ILS, ועמלת אחזקה 0.08%",
       "name_he": "מסחר בבורסה בתל אביב",
       "page": 1,
-      "why": "Printed in the tariff (p.1) but offered 'ללקוחות מוסדיים בלבד' (israeli-stock-market page, re-read 2026-11-04, BRK-41); a private client cannot buy a TASE fund here.",
-      "why_he": "התעריפון מפרסם עמלה על מסחר בבורסה בתל אביב ועמלת אחזקה, אבל לפי החברה המסחר שם פתוח רק ללקוחות מוסדיים. לכן האתר לא מתמחר אצלה קרן שנסחרת בתל אביב.",
+      "why": "Printed in the tariff (p.1), but the company's written answer of 15.11.2026 (BRK-65) says Tel Aviv trading is possible only from a limited company's account that holds a withholding exemption, which the Tax Authority as a rule does not give a private person (TXS-42); the site does not price a TASE fund here.",
+      "why_he": "התעריפון מפרסם עמלה על מסחר בבורסה בתל אביב ועמלת אחזקה, אבל החברה ענתה שהמסחר שם אפשרי רק מחשבון של חברה בע״מ עם פטור מניכוי מס במקור. לכן האתר לא מתמחר אצלה קרן שנסחרת בתל אביב.",
       "could_change_price": false
     },
     {
