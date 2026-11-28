@@ -2066,7 +2066,10 @@
   },
   {
     "id": "TXF OQ20",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXF-29"
+    ]
   },
   {
     "id": "TXF OQ21",
@@ -2125,14 +2128,24 @@
   },
   {
     "id": "TXF OQ33",
-    "status": "open"
+    "status": "narrowed"
   },
   {
     "id": "TXF OQ34",
-    "status": "open"
+    "status": "narrowed",
+    "answered_by": [
+      "TXF-63"
+    ]
   },
   {
     "id": "TXF OQ35",
+    "status": "narrowed",
+    "answered_by": [
+      "TXF-62"
+    ]
+  },
+  {
+    "id": "TXF OQ36",
     "status": "open"
   },
   {

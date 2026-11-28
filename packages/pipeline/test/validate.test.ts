@@ -569,8 +569,9 @@ describe("open questions (data-schema 3.15, 2026-10-26; an answered one is delet
     // later that day three more from the foreign bond ETF tax pass: withholding on a sale after a Tel Aviv delisting (TXF OQ33), the index
     // currency of a hedged class or another trading line bought abroad (TXF OQ34), and a non-Irish fund's own withholding (TXF OQ35)
     // and six from the foreign bond ETF domain pass: the iBoxx rules (ETF OQ44), iShares' undefined fact-sheet figures (ETF OQ45),
-    // index-data licences (ETF OQ46), the PRIIPs KID's term (ETF OQ47) and the agencies' own rating definitions (ETF OQ48, CORP OQ22)
-    expect(items.length).toBe(468);
+    // index-data licences (ETF OQ46), the PRIIPs KID's term (ETF OQ47) and the agencies' own rating definitions (ETF OQ48, CORP OQ22);
+    // then one more from the second foreign bond ETF tax pass: whether s.3(ג) on redeemable shares reaches a foreign fund's redemption (TXF OQ36)
+    expect(items.length).toBe(469);
     expect(items.filter((q) => q.struck)).toEqual([]);
     expect(items.find((q) => q.id === "PEN OQ7")).toMatchObject({ file: "pension-and-gemel-lekitzba.md", struck: false });
     expect(items.some((q) => q.id === "TXP OQ3")).toBe(false);
