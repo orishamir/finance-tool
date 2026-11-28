@@ -13,6 +13,7 @@ import { useSyncExternalStore } from "react";
 import { z } from "zod";
 import { valueObject, type ValueObject, type WrapperId } from "@finance-tool/schema";
 import type { CustomIndex } from "./invest";
+import { isIndexRegion } from "./index-region";
 import { validCustomBrokers, validCustomFunds, type CustomBroker, type CustomFund } from "./custom-entries";
 import { todayLocal } from "./today";
 import { askToKeepStorage } from "./keep-storage";
@@ -271,14 +272,28 @@ export function shekelFromIndex(funds: CustomFund[], indices: readonly CustomInd
   return funds.map((f) => (israeli.has(f.indexId) && !f.hedged && !f.shekelIndex ? { ...f, shekelIndex: true as const } : f));
 }
 
-/** The custom indices of a document that pass the shape check; a bad entry is left out, never a reason to refuse the file. */
+/**
+ * The custom indices of a document that pass the shape check; a bad entry is left out, never a reason to refuse the file. A region or a
+ * yield that does not parse reads as not said, and the index is kept. An index answered "החברות במדד ישראליות?" yes before the region was
+ * asked has its companies in Israel.
+ */
 export function validCustomIndices(list: unknown[]): CustomIndex[] {
   const out: CustomIndex[] = [];
   for (const c of list) {
     if (!isObj(c) || typeof c.id !== "string" || !c.id || typeof c.name !== "string" || !c.name.trim() || out.some((x) => x.id === c.id)) continue;
-    out.push({ id: c.id, name: c.name, ...(typeof c.israeli === "boolean" ? { israeli: c.israeli } : {}), ...(typeof c.currency === "string" && c.currency ? { currency: c.currency } : {}), ...(typeof c.region === "string" && c.region ? { region: c.region } : {}), added: typeof c.added === "string" ? c.added : "" });
+    const region = isIndexRegion(c.region) ? c.region : c.israeli === true ? ("israel" as const) : null;
+    const dividendYield = enteredPercent(c.dividendYield);
+    out.push({ id: c.id, name: c.name, ...(typeof c.israeli === "boolean" ? { israeli: c.israeli } : {}), ...(typeof c.currency === "string" && c.currency ? { currency: c.currency } : {}), ...(region ? { region } : {}), ...(dividendYield ? { dividendYield } : {}), added: typeof c.added === "string" ? c.added : "" });
   }
   return out;
+}
+
+/** An entered percent a year from 0 to 100, as a typed index's dividend yield is kept; null where the value is not one. */
+function enteredPercent(raw: unknown): ValueObject | null {
+  const r = valueObject.safeParse(raw);
+  if (!r.success || r.data.state !== "entered" || r.data.unit !== "pct_per_year") return null;
+  const v = r.data.value;
+  return typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= 100 ? r.data : null;
 }
 
 /** A version 2 or 3 document as the version 3 shape: its goals and saved comparisons become empty lists, its current goal and a `visits` field of an earlier file are left out (the migration chain, design-spec 21.5). */

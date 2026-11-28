@@ -554,7 +554,7 @@ describe("an index's old answer moves to its funds (2026-11-05)", () => {
   it("a fund on an index answered Israeli says \"המדד בשקלים\"; a hedged one, or one on a foreign index, does not", async () => {
     const { shekelFromIndex } = await import("./state");
     const day = "2026-11-01";
-    const fund = (id: string, indexId: string, hedged = false) => ({ id, name: id, number: null, indexId, kind: "il-tracking" as const, fixed: null, variable: null, trustee: null, hedged, payout: null, yield: null, perYear: null, domicile: null, tracking: null, added: day });
+    const fund = (id: string, indexId: string, hedged = false) => ({ id, name: id, number: null, indexId, kind: "il-tracking" as const, fixed: null, variable: null, trustee: null, hedged, payout: null, yield: null, perYear: null, domicile: null, tracking: null, tradesIn: "ILS" as const, added: day });
     const out = shekelFromIndex([fund("custom-fund-a", "custom-il"), fund("custom-fund-b", "custom-il", true), fund("custom-fund-c", "custom-zar")], [
       { id: "custom-il", name: "ישראלי", israeli: true, added: day },
       { id: "custom-zar", name: "זר", israeli: false, added: day },
@@ -564,7 +564,7 @@ describe("an index's old answer moves to its funds (2026-11-05)", () => {
 });
 
 describe("what an import brings of the index page's own and of the plan (the transfer page)", () => {
-  const fund = (id: string, indexId: string) => ({ id, name: id, number: null, indexId, kind: "il-tracking" as const, fixed: null, variable: null, trustee: null, hedged: false, payout: null, yield: null, perYear: null, domicile: null, tracking: null, added: day });
+  const fund = (id: string, indexId: string) => ({ id, name: id, number: null, indexId, kind: "il-tracking" as const, fixed: null, variable: null, trustee: null, hedged: false, payout: null, yield: null, perYear: null, domicile: null, tracking: null, tradesIn: "ILS" as const, added: day });
   const theirs = (): StateV3 => ({
     ...emptyOf(),
     inputs: { horizon_years: entered(20, "years", day), "A-01": entered(5, "pct_per_year", day) },

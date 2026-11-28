@@ -7,11 +7,12 @@ import { gershayim } from "./format";
 import { BlockedError, listingChangesRun, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, irishFundUsWithholding, paidInAsEntered, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
 import { exchangeOfTicker, fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
-import { customFundGap, isCustomFund } from "./custom-entries";
+import { customFundGaps, isCustomFund } from "./custom-entries";
 import { dealProviderOf, houseSnap, isDealProviderId } from "./deal-account/bundle";
 import { feeIdsOf, missingOf } from "./deal-account/plan";
 import { feeNameOf } from "./fee-deal/part-words";
 import { aliasRows } from "./search-aliases";
+import type { IndexFacts } from "./index-region";
 import { fxRunInput, nisPer } from "./fx";
 import { agreedClasses, houseSnapshots, instrumentClassOf, isFxToFx, fundRun, ruleContext, shortName, subjectOf, type FundAssumptions, type NotComparable, type IndicesBundle, type BundleSnapshot, type WorkbenchInputs } from "./providers";
 import { computed, ownBy, ruleFigure, sumOf, type ExchangeLabel, type FlagIn, type SiteLabel, type SiteValue, type Strength } from "./value";
@@ -73,15 +74,14 @@ export function venueOfFund(rec: FundRecord): Venue | null {
 
 // ---------------------------------------------------------------- the index
 
-/** An index the person added (state.ts keeps it on the device). One question decides the options: are the companies Israeli? */
-export interface CustomIndex {
+/** An index the person added (state.ts keeps it on the device), with what they said of it in a fund's panel (`IndexFacts`: its region and dividend yield, F-107). */
+export interface CustomIndex extends IndexFacts {
   id: string;
   name: string;
-  /** Asked before 2026-11-05 ("החברות במדד ישראליות?") and read only to carry the answer to the index's funds (state.ts, shekelFromIndex). */
+  /** Asked before 2026-11-05 ("החברות במדד ישראליות?") and read only to carry the answer to the index's funds (state.ts, shekelFromIndex) and to its region. */
   israeli?: boolean;
   /** "לידיעתכם בלבד": shown in the header, never used (spec §1, 10.8). */
   currency?: string;
-  region?: string;
   added: string;
 }
 
@@ -158,6 +158,8 @@ export type Reason =
   | { code: "payout-unknown" }
   | { code: "fee-unknown" }
   | { code: "domicile-unknown" }
+  /** A fund the person buys in Tel Aviv whose country they did not say: an Israeli ETF or a foreign fund, which are worked out apart. */
+  | { code: "tase-country-unknown" }
   /** The house sells this kind of fund fund by fund (its distribution agreements, BRK-38), and the run names no fund a report can name: the generic fund of the kind, or a fund the person typed. */
   | { code: "sold-fund-by-fund" }
   /** The house sells this kind fund by fund, and no report of an agreement found names this fund: whether it sells it stays open (`FundDoubt`). */
@@ -1039,7 +1041,7 @@ function fundInputsOf(bundle: IndicesBundle, rec: FundRecord): Record<string, Si
  */
 function usWithholdingInput(ctx: Ctx, r: RunReads, rec: FundRecord): Record<string, SiteValue> {
   const u = r.spec?.fund.drag?.usDividends;
-  const us = u ? ctx.bundle.exposures.find((e) => e.id === rec.exposure_id)?.us_dividends : undefined;
+  const us = u ? exposureOf(ctx, rec)?.us_dividends : undefined;
   const rule = us ? ctx.bundle.rules.find((x) => x.id === "TXF-16") : undefined;
   const rate = rule ? ruleFigure(rule, "irish_fund_us_dividend_treaty_rate", ctx.bundle.today) : null;
   if (!u || !us || !rule || !rate || typeof rate.value !== "number") return {};
@@ -1180,10 +1182,17 @@ function pricedLines(ctx: Ctx, s: FeesSnapshot, row: ComparedProvider): PairCost
 // ---------------------------------------------------------------- funds
 
 
-/** The index a fund is on, as its run reads it: a collected one, or the one the person typed (in shekels where they said the fund is). */
+/**
+ * The index a fund is on, as its run reads it: a collected one, or the one the person added, whose currency is not known: in shekels where
+ * they said the fund's index is, else in the foreign currency the fund is bought in, so a fund in euros on it moves with the euro (F-65),
+ * else the stand-in of `customExposures`.
+ */
 function exposureOf(ctx: Ctx, rec: FundRecord) {
   const entered = ctx.bundle.entered?.exposures[rec.exposure_id];
-  return ctx.bundle.exposures.find((e) => e.id === rec.exposure_id) ?? (entered && ctx.bundle.entered!.shekelFunds.includes(rec.id) ? { ...entered, currency: "ILS" } : entered);
+  const collected = ctx.bundle.exposures.find((e) => e.id === rec.exposure_id);
+  if (collected || !entered) return collected ?? entered;
+  if (ctx.bundle.entered!.shekelFunds.includes(rec.id)) return { ...entered, currency: "ILS" };
+  return isShekel(rec.currency) ? entered : { ...entered, currency: rec.currency };
 }
 
 function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } | { reason: Reason } {
@@ -1191,7 +1200,7 @@ function fundSpec(ctx: Ctx, rec: FundRecord): { spec: Spec; mismatch: boolean } 
   const subject = subjectOf(ctx.bundle, rec.id);
   if (!subject) return { reason: { code: "fund-type" } };
   // a fund the person typed: what they left unsaid is named, never filled in
-  const gap = isCustomFund(rec) ? customFundGap(rec) : null;
+  const gap = isCustomFund(rec) ? (customFundGaps(rec)[0] ?? null) : null;
   if (gap) return { reason: { code: gap } };
   // a hedged fund's cost is mostly beyond its fees (F-92 (c)): with no compared year in its report (none, or none F-92 (d) compares) and
   // no published figure it is not priced, never priced at A-07 = 0

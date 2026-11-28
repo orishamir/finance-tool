@@ -13,7 +13,7 @@ describe("label icons (2026-11-05 sweep)", () => {
     ["currency", "currency-many"],
     ["hedged", "hedged-many"],
     ["tax-index-currency", "tax-index-cpi"],
-    ["tax-fund-dividend", "tax-fund-dividend-left-out"],
+    ["tax-fund-dividend", "tax-fund-dividend-left-out", "tax-fund-dividend-need-yield", "tax-fund-dividend-not-us", "tax-fund-dividend-us-share"],
   ];
   const kin = (a: string, b: string) => same.some((g) => g.includes(a) && g.includes(b));
 

@@ -13,7 +13,7 @@ export { Card, Section, type CardPad, type SectionGap, type SectionLevel } from 
 export { PageHead } from "./page-head";
 export { Disclosure, FoldGroup, type DisclosureProps, type FoldGroupProps } from "./disclosure";
 export { PhoneFold } from "./phone-fold";
-export { ChoiceChips, ChoicePair, ChoiceTray, OtherChip, onSurface, PickCard, SegmentedControl, TileChoice, type SegmentOption, type Tile } from "./choice";
+export { ChoiceChips, ChoicePair, ChoiceTray, OtherChip, onSurface, PickCard, SegmentedControl, type ChipLook, type SegmentOption } from "./choice";
 export { ChipList, dropOrder, RenameInput, type ChipItem, type ChipListProps, type ChipListWords } from "./chip-list";
 export { MenuPicker, type MenuItem } from "./menu-picker";
 export { KnobStrip, type Knob } from "./knobs";
@@ -77,6 +77,7 @@ export { PeriodBars, type PeriodBar } from "./period-bars";
 export { EmptyFigure, FigureField, MonthField, monthText, parseMonth, type Settled } from "./figure-field";
 export { MonthPicker, type MonthBounds } from "./month-picker";
 export { Step, StepStrip, type StripStep } from "./steps";
+export { NeedBar, NeedList, type NeedItem, type NeedState } from "./need-list";
 export { TypedPlain } from "./typed-plain";
 export { AddLine, chipAfterAdd, type AddItem } from "./add-line";
 export { ShareChart, ShareStack, SHARE_PLOT, markLabels, shareAt, type ShareGroup, type ShareLayer, type ShareMark, type SharePoint, type ShareZone } from "./share-chart";

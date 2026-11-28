@@ -4254,6 +4254,7 @@ export const invest = {
         "payout-unknown": "לא ידוע אם צוברת",
         "fee-unknown": "חסרים דמי ניהול",
         "domicile-unknown": "חסרה מדינת הרישום",
+        "tase-country-unknown": "חסרה מדינת הרישום",
         "sold-fund-by-fund": "לא ברור אם נקנית",
         "no-agreement-found": "לא ברור אם נקנית",
         "needs-share-price": "אין מחיר יחידה",
@@ -4508,15 +4509,15 @@ export const invest = {
     /** The pencil beside a typed fund's name, in the lists: its spoken name. */
     editFund: "לערוך את הקרן",
     unknownLine: (list: string) => `לא הזנתם, ולכן לא ידוע: ${list}.`,
-    /** A fee of a typed fund left empty, where its figure would stand. */
-    notTyped: "לא הוזן",
     fundTitle: (index: string) => `קרן על ${index}`,
     fundEdit: (name: string) => `הפרטים של ״${name}״`,
-    fundSub: "הקרן נשמרת רק במכשיר הזה, ברשימה של המדד הזה, ומתומחרת כמו כל קרן מהסוג שלה. שדה ריק הוא דמי ניהול לא ידועים, והקרן לא תתומחר עד שתמלאו אותו. דמי ניהול שהקרן לא גובה: כתבו 0.",
+    fundSub: "הקרן נשמרת רק במכשיר הזה ומחושבת כמו כל קרן מהסוג שלה. מה שלא תדעו אפשר להשאיר, והאתר יגיד מה זה משנה.",
+    /** The panel's four steps, and the line beside two of them. */
+    steps: { place: "איפה קונים את הקרן, ואיפה היא רשומה", fund: "הקרן", traits: "מה הקרן עושה", index: "המדד" },
+    stepNotes: { traits: "כל תשובה משנה את החישוב. ״לא בטוח״ תמיד אפשרי.", index: "נשמר למדד, לכל הקרנות שתוסיפו עליו" },
     fields: {
       fundName: "שם הקרן",
-      number: "מספר נייר (לא חובה)",
-      kind: "סוג הקרן",
+      number: "סימול או ISIN (לא חובה)",
       fixed: "דמי ניהול קבועים",
       variable: "דמי ניהול משתנים",
       trustee: "שכר נאמן",
@@ -4526,47 +4527,78 @@ export const invest = {
       unitPrice: "מחיר יחידה (לא חובה)",
       /** A fund bought in Tel Aviv: its price as TASE quotes it (ETF-92). */
       unitPriceAgorot: "מחיר יחידה באגורות (לא חובה)",
+      /** Kept on the index (F-107's y_US where its companies are in the United States). */
+      indexYield: "תשואת הדיבידנד של המדד",
     },
+    /** Under the yearly fee of a foreign fund: where its figure is printed. */
+    feeHint: "איפה מוצאים: בדף הקרן באתר המנהל, בשורה \u2068TER\u2069.",
     /** Under the unit price: what it changes in the calculation (F-109). */
-    unitPriceHint: "עם מחיר, החישוב קונה יחידות שלמות, כמו בקרנות שהאתר אסף. חשבון שקונה גם בסכום מחושב בדרך שמשאירה לכם יותר.",
-    /** The panel of the person's own fund: its three parts, the questions about the fund, and the preview of its row. */
-    fundParts: { fund: "הקרן", fees: "דמי ניהול", traits: "מה הקרן עושה" },
-    traitsSub: "כל תשובה מוסיפה לשורה של הקרן את התוויות שמופיעות בה.",
+    unitPriceHint: "עם מחיר, החישוב קונה יחידות שלמות.",
     ask: {
+      buyAt: "איפה קונים אותה?",
+      country: "באיזו מדינה הקרן רשומה?",
+      /** Beside the country question. */
+      countryWhere: "שתי האותיות הראשונות של ה־ISIN",
       payout: "מה הקרן עושה עם הדיבידנדים?",
       tracking: "איך הקרן עוקבת אחרי המדד?",
-      domicile: "באיזו מדינה הקרן רשומה?",
       hedged: "האם הקרן מנטרלת את שער המטבע?",
-      /** On an index the person added, which may be in shekels. */
-      currency: "האם ערך הקרן זז עם שער של מטבע זר?",
-      exchange: "באיזו בורסה בחו״ל הקרן נסחרת?",
+      region: "איפה החברות במדד?",
     },
-    exchangeNames: { us: "ארה״ב", europe: "אירופה" },
-    /** Under each answer: which fees each account is priced on (F-65). "Not sure" goes by the country the fund is registered in, the answer below: the United States only (ETF-93). */
-    exchangeNotes: { us: "העמלות של כל חשבון בארה״ב", europe: "העמלות של כל חשבון באירופה" },
-    exchangeByDomicile: { US: "לפי המדינה שבה הקרן רשומה: העמלות בארה״ב", other: "כל חשבון לפי הבורסה שמשאירה לכם פחות" },
-    /** The doubt of what a typed fund bought abroad leaves at an account, where its exchange is not known (F-65, invest.ts `withPlaceDoubt`). */
-    exchangeUnknownDoubt: "לא הזנתם באיזו בורסה הקרן נסחרת. לכן כל חשבון מחושב בבורסה שמשאירה לכם פחות אצלו, בארה״ב או באירופה. חשבון שיש לו מחיר רק באחת משתי הבורסות מופיע בלי מחיר. אפשר לבחור בורסה בעריכת הקרן.",
-    unknown: "לא ידוע",
-    domicileNames: { IE: "אירלנד", US: "ארצות הברית", other: "מדינה אחרת, או לא ידוע" } as Record<string, string>,
-    noLabel: "בלי תווית",
-    noPrice: "הקרן תופיע בלי מחיר",
-    shekelIndex: "המדד בשקלים",
-    shekelIndexNote: "בלי חשיפה למט״ח",
+    buyGroups: { israel: "בישראל", abroad: "בחו״ל" },
+    /** Where the fund is bought (F-65): the exchange and the currency it is bought in. */
+    buyAtNames: { manager: "ישירות ממנהל הקרן", tase: "בורסה בתל אביב · שקל", "us-usd": "ארה״ב · דולר", "europe-eur": "אירופה · אירו", "europe-usd": "אירופה · דולר", abroad: "בחו״ל, לא בטוח איפה" } as Record<string, string>,
+    countryNames: { IL: "ישראל (IL)", IE: "אירלנד (IE)", US: "ארה״ב (US)", other: "אחרת, או לא בטוח" } as Record<string, string>,
+    /** Why a country is closed, or the only one, for where the fund is bought: what the site works out, not a rule. */
+    countryWhy: {
+      abroad: "קרן שקונים בחו״ל מחושבת כאן כקרן חוץ, ולכן ״ישראל״ סגורה.",
+      manager: "קרן שקונים ישירות ממנהל הקרן מחושבת כאן כקרן מחקה ישראלית, ולכן היא רשומה בישראל.",
+      israeliIndex: "על מדד של חברות ישראליות מחושבות כאן רק קרנות ישראליות, ולכן הקרן רשומה בישראל.",
+    },
+    payoutNames: { accumulating: "צוברת אותם (Acc)", distributing: "מחלקת דיבידנד (Dist)" } as Record<string, string>,
+    trackingNames: { physical: "מחזיקה את המניות", swap: "עסקת החלף", futures: "חוזים עתידיים" } as Record<string, string>,
+    hedgedNames: { no: "לא", yes: "כן, מנוטרלת", shekel: "המדד בשקלים" } as Record<string, string>,
+    regionNames: { us: "ארה״ב", europe: "אירופה", world: "כל העולם", israel: "ישראל", other: "אחר, או לא בטוח" } as Record<string, string>,
+    unsure: "לא בטוח",
+    /** The fold of the index's optional figures. */
+    more: { label: "עוד פרטים שמדייקים את החישוב", sub: "תשואת הדיבידנד של המדד · לא חובה" },
     perYearNames: { "1": "פעם בשנה", "2": "פעמיים", "4": "4 פעמים", "12": "כל חודש" } as Record<string, string>,
     preview: "כך תיראה השורה של הקרן",
-    previewPriced: "מה שהזנתם מספיק כדי לחשב את הקרן.",
-    previewNone: "בלי תוויות",
-    kinds: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "קרן שנקנית בחו״ל" } as Record<string, string>,
+    /** The checklist beside the form: every item the calculation reads, and what each state leaves. */
+    needs: {
+      title: "מה החישוב צריך",
+      items: { place: "איפה קונים, באיזו בורסה ובאיזה מטבע", fee: "דמי ניהול", payout: "מה עושה עם הדיבידנדים", yield: "תשואת החלוקה", country: "איפה הקרן רשומה", hedge: "מה הקרן עושה עם שער המטבע", gap: "הפער של הקרן מהמדד", dividendTax: "מס דיבידנד בתוך הקרן" },
+      /** Under the dividend tax, by its label (labels.ts `dividendTaxLabel`): what is not counted. */
+      dividendTax: {
+        "tax-fund-dividend-left-out": "לאתר אין את תשואת הדיבידנד של המדד.",
+        "tax-fund-dividend-need-yield": "חסרה תשואת הדיבידנד של המדד. אפשר להזין אותה בפרטים הנוספים.",
+        "tax-fund-dividend-not-us": "מס שמנוכה בחו״ל מהדיבידנדים של המניות.",
+        "tax-fund-dividend-us-share": "לא ידוע כמה מהמדד חברות אמריקניות.",
+      } as Record<string, string>,
+      /** Under the country in Tel Aviv, not said. */
+      taseCountry: "בבורסה בתל אביב המדינה קובעת אם זו קרן ישראלית או קרן חוץ.",
+      /** Under the hedge when the fund is hedged: the field that would give it is not asked yet. */
+      gap: "בקרן מנוטרלת רוב העלות היא הפער מהמדד, והאתר עוד לא שואל עליו.",
+    },
+    /** The status over the buttons, and its short form in a phone's bar. */
+    status: { ok: "אפשר לחשב את הקרן.", "left-out": "אפשר לחשב את הקרן, בלי מס הדיבידנד בתוך הקרן.", missing: "הקרן תופיע בלי מחיר עד שיושלם מה שחסר." } as Record<string, string>,
+    statusShort: { ok: "אפשר לחשב", "left-out": "אפשר לחשב · בלי מס בקרן", missing: "תופיע בלי מחיר" } as Record<string, string>,
+    /** A fee of a typed fund left empty, where its figure would stand. */
+    notTyped: "לא הוזן",
+    /** The doubt of what a typed fund bought abroad leaves at an account, where its exchange is not known (F-65, invest.ts `withPlaceDoubt`). */
+    exchangeUnknownDoubt: "לא הזנתם באיזו בורסה הקרן נסחרת. לכן כל חשבון מחושב בבורסה שמשאירה לכם פחות אצלו, בארה״ב או באירופה. חשבון שיש לו מחיר רק באחת משתי הבורסות מופיע בלי מחיר. אפשר לבחור בורסה בעריכת הקרן.",
     enteredWord: "הזנתם",
     yearlyWord: "שנתיים",
+    kinds: { "il-tracking": "קרן מחקה ישראלית", "il-etf": "קרן סל ישראלית", "tase-foreign": "קרן חוץ בבורסה בתל אביב", abroad: "קרן שנקנית בחו״ל" } as Record<string, string>,
     listWords: (xs: string[]) => (xs.length < 2 ? (xs[0] ?? "") : `${xs.slice(0, -1).join(", ")} ו${xs[xs.length - 1]}`),
     errors: {
       "name-empty": "הזינו שם.",
       "name-taken": "השם הזה כבר תפוס.",
       "hedged-none": "בחרו מה קורה לקרן כששער המטבע זז.",
+      "place-none": "בחרו איפה קונים את הקרן.",
     } as Record<string, string>,
     save: "שמירה במכשיר",
+    /** Saves, and opens a new fund on the same index with the first question's answers kept. */
+    saveAnother: "שמירה והוספת קרן נוספת על המדד",
     cancel: "ביטול",
     remove: "הסרה מהמכשיר",
     removeAsk: (name: string) => `להסיר את ״${name}״ מהמכשיר הזה?`,
@@ -5141,6 +5173,8 @@ export const invest = {
     /** A fund the person typed with a fee left empty (D56). */
     feeUnknown: "אי אפשר לחשב: חלק מדמי הניהול של הקרן לא הוזנו. השלימו אותם בעריכה.",
     domicileUnknown: "אי אפשר לחשב: הקרן מחלקת, והמס שמנוכה בחו״ל מכל חלוקה תלוי במדינה שבה היא רשומה. האתר יודע אותו לאירלנד ולארצות הברית בלבד.",
+    /** A fund the person buys in Tel Aviv, its country not said: an Israeli ETF and a foreign fund are worked out apart (F-04). */
+    taseCountryUnknown: "אי אפשר לחשב: לא ידוע אם הקרן ישראלית או קרן חוץ, והחישוב שונה לכל אחת. אפשר לבחור את המדינה שבה היא רשומה בעריכת הקרן.",
     /** A house that sells this kind of fund only under distribution agreements (BRK-38), and a fund with no number a report can name. */
     soldFundByFund: "אין מחיר בלי קרן מסוימת: הבית מוכר קרן כזו רק אם מנהל הקרן חתם איתו על הסכם הפצה.",
     /** The same house, and a fund no report of an agreement names: open, never "not sold" (the record's own words show where it has them). */
@@ -5190,6 +5224,12 @@ export const invest = {
     "tax-currency-unknown": { text: "מס רווחי הון על המטבע: לא ידוע", explain: "האתר לא יודע אם הקרן הזו היא קרן נאמנות להשקעות חוץ. בקרן כזו הרווח הריאלי נמדד מול שער המטבע העיקרי שלה, אם תקנות מ־2003 שקובעות זאת עדיין בתוקף, וגם זה לא ידוע. בקרן אחרת הוא נמדד מול מדד המחירים לצרכן. המטבע העיקרי נקבע בתשקיף, והאתר לוקח במקומו את המטבע שהמדד מחושב בו. האתר מחשב את שתי הדרכים, וכשהן נותנות מס רווחי הון שונה, מציג את זו שמשאירה פחות כסף." },
     "tax-fund-dividend": { text: "מס דיבידנד בתוך הקרן", explain: "קרן אירית משלמת מס אמריקני על דיבידנדים מחברות אמריקניות. המס הזה הוא עלות של הקרן ולא מזוכה בישראל: פקודת מס הכנסה מזכה רק מס זר ששילם תושב ישראל, ואת המס הזה שילמה הקרן. זו קריאה של האתר, גם בקרן שרשומה בבורסה בתל אביב וגם בקרן שנקנית בחו״ל." },
     "tax-fund-dividend-left-out": { text: "מס דיבידנד בקרן: לא נכלל", explain: "קרן אירית שמחזיקה את מניות המדד משלמת מס אמריקני על דיבידנדים מחברות אמריקניות, והמס הזה הוא עלות של הקרן. בקרן הזו האתר לא כולל אותו בחישוב: כדי לחשב אותו צריך את תשואת הדיבידנד של המדד, ולאתר אין נתון כזה למדד הזה. לכן העלות של הקרן גבוהה ממה שמוצג כאן." },
+    /** On an index the person added, of US companies, with no yield typed (F-107 needs it). */
+    "tax-fund-dividend-need-yield": { text: "מס דיבידנד בקרן: לא נכלל", explain: "קרן אירית שמחזיקה את מניות המדד משלמת מס אמריקני על דיבידנדים מחברות אמריקניות, והמס הזה הוא עלות של הקרן. האתר לא כולל אותו בחישוב, כי כדי לחשב אותו צריך את תשואת הדיבידנד של המדד. אפשר להזין אותה בעריכת הקרן, תחת ״עוד פרטים שמדייקים את החישוב״. בינתיים העלות של הקרן גבוהה ממה שמוצג כאן." },
+    /** On an index the person added whose companies are not in the United States: no rate of what their countries withhold is in the rule base. */
+    "tax-fund-dividend-not-us": { text: "מס דיבידנד בקרן: לא נכלל", explain: "מס שמנוכה בחו״ל מהדיבידנדים של המניות שהקרן מחזיקה הוא עלות של הקרן, ולא מזוכה בישראל. האתר לא כולל אותו בחישוב, כי לא מצא בכללים שקרא כמה מס מנוכה מהדיבידנדים של החברות במדד הזה. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
+    /** On an index the person added whose share of US companies is not known (the whole world, or another place or not sure). */
+    "tax-fund-dividend-us-share": { text: "מס דיבידנד בקרן: לא נכלל", explain: "קרן אירית שמחזיקה את מניות המדד משלמת מס אמריקני על דיבידנדים מחברות אמריקניות, והמס הזה הוא עלות של הקרן. האתר לא כולל אותו בחישוב, כי לא ידוע כמה מהמדד הן חברות אמריקניות. גם מס שמנוכה במדינות אחרות לא נכלל, כי האתר לא מצא בכללים שקרא כמה הוא. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
     "tax-distribution": { text: "מס על כל חלוקה", explain: "קרן שמחלקת משלמת לכם דיבידנד, וממנו משלמים מס בכל חלוקה, לפני המכירה." },
     "pays-accumulating": { text: "צוברת", explain: "הקרן לא מחלקת תשלומים: הכנסות כמו דיבידנד וריבית מושקעות בה מחדש." },
     "pays-distributing": { text: "מחלקת דיבידנד", explain: "הקרן מחלקת תשלומים לבעלי היחידות, פעם בשנה או יותר, לפי שיקול דעת המנהל." },
@@ -5331,6 +5371,8 @@ export const kit = {
   },
   /** Said with a step's check (kit Step), so a done step is not told by its colour alone. */
   stepDone: "הושלם",
+  /** A checklist's item, by its state (kit NeedList), so a state is never its mark alone. */
+  needStates: { done: "יש", missing: "חסר", "left-out": "לא נכלל" },
   /**
    * A price list's date line (kit TariffDate): what the document prints, never only that something is missing (copy.md 3,
    * "Say what the source gives"). `checked` follows a line whose document prints no usable date, where the page shows no other day: the day the site collected the
@@ -5430,8 +5472,7 @@ export const kit = {
       LeftOutLine: "מה שבמסמכים של בית ולא במחיר שלו: שורה מתחת למחיר, שהמילים שלה פותחות כל דבר שיכול לשנות את מה שחלק מהלקוחות משלמים, עם הסיבה והמסמך בעמוד שלו, ואחריהם השאר בשמם; או, כשלעמוד יש תצוגה של התעריפון של הבית, את התצוגה הזאת. LeftOutFold: אותם דברים בתוך התצוגה של התעריפון, בשורה אחת מקופלת, בצבע של אזהרה כשיש דבר שיכול לשנות את המחיר. פתוחה: כל דבר כזה עם הסיבה והמסמך, שניים זה לצד זה כשיש מקום, ואחריהם השאר בשמם, בקיפול נוסף.",
       DiffRow: "שורה של שינוי אחד: מה משתנה, מה נשאר בסוף, וסרגל מקו האמצע: ימינה וירוק לעוד כסף, שמאלה ואדום לפחות. יחידה אחת לכל השורות; סרגל ארוך נחתך בסימן והמספר אומר את הגודל המלא. לחיצה על השורה לוקחת אותה.",
       PickCard: "כרטיס שכולו כפתור: לחיצה בכל מקום עליו בוחרת בו, בלי קישור ״בחרו״ בתוכו. מספרים וקישורים שבתוכו נשארים לחיצים בפני עצמם. הכרטיס שכבר נבחר אינו PickCard.",
-      TileChoice: "תשובות לשאלה אחת, כל אחת אריח שמראה מה היא מביאה (התוויות שהיא מוסיפה, או שורה קצרה). אפשר שלא תהיה בחירה עדיין. מה שבתוך אריח לא לחיץ בפני עצמו.",
-      ChoiceChips: "ערך אחד מכמה שמצמצם רשימה, עם counts: מספר השורות שכל ערך יציג, במקום קבוע, וגלולה שלא תציג כלום מתעמעמת במקומה. עם missing: גלולה מקווקוות ואפורה לבחירה שלא נמצא בה כלום, שאפשר עדיין לבחור, והתווית שלה אומרת את זה גם במילים. בלי counts: תשובה מוכנה לשאלה שהחישוב צריך, כשהתשובות רבות או ארוכות מדי לעמוד זו ליד זו בטלפון, ו״אחר״ לערך משלכם. עם wrap יורד שורה, בלעדיו גולל הצידה בטלפון, ועם line נשאר שורה אחת בכל רוחב. הגלולה הנבחרת ברוחב של האחרות, כך שבחירה לא מזיזה כלום. ״אחר״ הוא תמיד הגלולה המקווקוות עם הפלוס (other), שפותחת שדה מתחת לשורה.",
+      ChoiceChips: "ערך אחד מכמה שמצמצם רשימה, עם counts: מספר השורות שכל ערך יציג, במקום קבוע, וגלולה שלא תציג כלום מתעמעמת במקומה. עם look: גלולה מקווקוות ואפורה, שהתווית שלה אומרת את זה גם במילים. missing לבחירה שלא נמצא בה כלום, שאפשר עדיין לבחור; unsure לתשובה ״לא בטוח״; closed לתשובה שלא יכולה להתקיים כאן, מחוקה ולא נבחרת, והסיבה כתובה ליד השורה. בלי counts: תשובה מוכנה לשאלה שהחישוב צריך, כשהתשובות רבות או ארוכות מדי לעמוד זו ליד זו בטלפון, ו״אחר״ לערך משלכם. עם wrap יורד שורה, בלעדיו גולל הצידה בטלפון, ועם line נשאר שורה אחת בכל רוחב. הגלולה הנבחרת ברוחב של האחרות, כך שבחירה לא מזיזה כלום. ״אחר״ הוא תמיד הגלולה המקווקוות עם הפלוס (other), שפותחת שדה מתחת לשורה.",
       ChoicePair: "בחירה בשתי רמות (סוג מוצר ואז מוצר; מוצר ואז במה הכסף מושקע): הרמה הראשונה שורת גלולות עם מספרים, והשנייה מגש בשורה אחת ובגובה קבוע שגולל הצידה, כך שבחירה בכל רמה לא מזיזה כלום מתחת. כל עוד הרמה הראשונה לא פותחת כלום, במגש יש רמז.",
       ChoiceTray: "מגש בשורה אחת ובגובה קבוע מתחת לשורת בחירה: כל עוד לא נבחר בה כלום יש בו רמז עמום, ואחר כך תווית ושורת בחירה משלו שגוללת הצידה. מה שמתחתיו לא זז.",
       LongestCase: "גוש שתוכנו משתנה לפי בחירה: תמיד בגובה המקרה הארוך ביותר, בכל רוחב מסך, כדי ששום דבר מתחתיו לא יזוז.",
@@ -5493,6 +5534,8 @@ export const kit = {
       MonthField: "חודש ושנה באותה תיבה של FigureField, עם סימן של לוח שנה. לחיצה על התיבה פותחת לידה את השנה ואת שנים־עשר החודשים שלה (MonthPicker), ובחירה בחודש שומרת אותו. אפשר גם להקליד, כמו 03.2027: נשמר כשיוצאים מהשדה או לוחצים Enter, ושדה רשות שמרוקנים נמחק. חודש שהעמוד לא מקבל מופיע מחוק ואי אפשר לבחור בו, וחודש כזה שמקלידים נדחה, והסיבה כתובה מתחת לתיבה.",
       TypedPlain: "עוטף סיכום שעומד ליד התיבות שהמספרים הוקלדו בהן: מספר שהאדם הקליד נקרא בו כמילים רגילות, בלי הכחול ובלי לחיצה, כי התיבה לידו כבר מראה של מי הוא. מספר מחושב שומר על הקו המנוקד, ומספר ממקור על הקו האפור.",
       Step: "שלב בעמוד שבונים בו משהו לפי סדר: מספר בעיגול, או סימן וי כשהשלב הושלם, הכותרת, מה נבחר, והדרך לשנות בסוף השורה. קו דק בין השלבים.",
+      NeedList: "מה החישוב צריך, בזמן שממלאים טופס: כל פריט עם סימן של המצב שלו בצבע שלו, ומתחת לפריט שלא הושלם מילה שאומרת את המצב ומה הוא משאיר: חסר, ולכן אין תוצאה, או לא נכלל, והתוצאה בלעדיו.",
+      NeedBar: "התחתית של טופס בקופסה צרה, שנשארת למטה בזמן הגלילה: איפה החישוב עומד בכמה מילים, כפתור שפותח מעליה את מה שהחישוב צריך, והפעולה היחידה של הטופס.",
       StepStrip: "השלבים אחרי שנעשו, בשורה אחת מעל מה שנבנה בהם, כשכמעט לא חוזרים לשנות אותם: השם של כל שלב ומה נבחר, נקודה, והדרך לשנות. מתחת לשורה מה ששלב פותח כדי לשנות אותו או מה שנאמר על הבחירה, צמוד אליה. כשאין מקום, השורה נשברת.",
       ShareChart: "מה משהו עולה באחוזים מסכום, והסכום על ציר לוגריתמי. העקומה היא קו אחד (מה עולה פעולה אחת) או שכבות זו על זו מאפס והסכום שלהן כקו מעליהן (מה עולה שנה של החזקה), עם שם של כל קבוצת שכבות בתוך אחת השכבות שלה, איפה שיש לשם מקום שלם. מעל הגרף אזורים עם השם שלהם, ובסכומים שבהם העלות משנה התנהגות נקודות עם המילים שלהן צמודות אליהן, בלי קו מחבר. כשהעקומה יוצאת מראש הציר, הערך שלה בתחילת הציר כתוב מעל ציר הערכים. נקודה שגוררים קוראת סכום אחד; בלעדיה המצביע קורא את הסכום שמתחתיו, הקשה בטלפון, וגרירה בעכבר בוחרת טווח להתקרב אליו.",
       AmountLanes: "הרצועות מתחת לגרף לפי גודל, על אותו ציר: רצועה לכל עמלה, והחלקים שלה לאורך הסכומים עם המילים שלהם בתוכם, כשהן נכנסות. חלק צר מדי למילים שלו כותב אותן מתחת לרצועה, באמצע החלק או צמוד לקצה הרצועה, עם קו קטן בצבע של העמלה. עמלה שהמחיר שלה זהה בכל סכום היא קו שקט אחד עד השם והמחיר שלה. הסכום שבקריאה עובר דרך הרצועות כקו, והחלק שמחזיק אותו מודגש; הקשה על חלק מעבירה את הקריאה אליו.",

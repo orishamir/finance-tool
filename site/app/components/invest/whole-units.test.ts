@@ -5,7 +5,7 @@ import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { help, invest } from "../../copy";
 import { buildInvest, indexById, knownIndices, pairCosts, type WayPrice } from "../../lib/invest";
-import { fundDraftOf, fundFromDraft, withCustomEntries } from "../../lib/custom-entries";
+import { fundDraftOf, fundFromDraft, withCustomEntries, type BuyAt } from "../../lib/custom-entries";
 import { PairReceipt } from "./receipt";
 import { bundle, plan, html, lists, shown } from "./render-fixtures";
 
@@ -93,9 +93,10 @@ describe("whole units on the indices page (F-109, D94)", () => {
     expect(byAmount.accountFees).toBe(byAmount.accountCost);
   });
   it("a fund the person typed has no unit price: an ETF or a fund abroad says so on its row; a tracking fund is bought by amount anyway", () => {
-    const typed = (kind: Parameters<typeof fundDraftOf>[1]) =>
-      fundFromDraft({ ...fundDraftOf(null, kind), payout: "accumulating" as const, hedged: false, name: kind, fixed: 0.1, variable: 0, trustee: 0 }, `custom-fund-${kind}`, "index-sp500", bundle.today);
-    const b = withCustomEntries(bundle, [typed("abroad"), typed("il-etf"), typed("il-tracking")]);
+    // the panel's answers for a fund abroad not sure where, an Israeli ETF and an Israeli tracking fund
+    const typed = (kind: string, buyAt: BuyAt) =>
+      fundFromDraft({ ...fundDraftOf(null, { buyAt, country: buyAt === "abroad" ? null : "IL" }), buyAt, payout: "accumulating" as const, hedged: false, name: kind, fixed: 0.1, variable: 0, trustee: 0 }, `custom-fund-${kind}`, "index-sp500", bundle.today);
+    const b = withCustomEntries(bundle, [typed("abroad", "abroad"), typed("il-etf", "tase"), typed("il-tracking", "manager")]);
     const view = buildInvest({ bundle: b, index: indexById(b, "index-sp500")!, plan });
     const all = view.options.flatMap((o) => o.funds);
     const of = (kind: string) => all.find((f) => f.rec.id === `custom-fund-${kind}`)!;

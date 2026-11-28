@@ -301,7 +301,7 @@ describe("invest page computation", () => {
 
   it("prices an Israeli fund the person typed on the cautious reading of TXS-14 where the readings split, its cost before tax with no doubt and no label (F-04, method §13, D119)", () => {
     // a typed Israeli tracking fund on the S&P 500, on a plan whose prices rise while the dollar stands still: the two readings split
-    const typed = fundFromDraft({ ...fundDraftOf(null, "il-tracking"), payout: "accumulating" as const, hedged: false, name: "typed", fixed: 0.1, variable: 0, trustee: 0 }, "custom-fund-typed", "index-sp500", t);
+    const typed = fundFromDraft({ ...fundDraftOf(null, { buyAt: "manager", country: "IL" }), buyAt: "manager" as const, payout: "accumulating" as const, hedged: false, name: "typed", fixed: 0.1, variable: 0, trustee: 0 }, "custom-fund-typed", "index-sp500", t);
     const b = withCustomEntries(bundle, [typed]);
     const ix = indexById(b, "index-sp500");
     if (!ix) throw new Error("the bundle prices the S&P 500");

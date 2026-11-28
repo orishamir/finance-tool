@@ -3,11 +3,12 @@
 import { createContext, useContext, useRef, useState } from "react";
 import { invest as root } from "../../copy";
 import { Button } from "../kit";
-import type { CustomFund } from "../../lib/custom-entries";
+import type { BuyAt, CustomFund, FundCountry } from "../../lib/custom-entries";
 import type { CustomIndex, IndexRef, InvestView } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 
-export type Editing = { kind: "fund"; id: string | null };
+/** The fund being edited, or a new one (`id` null) opening with the first question's answers in `start` ("save and add another"). */
+export type Editing = { kind: "fund"; id: string | null; start?: { buyAt: BuyAt; country: FundCountry | null } };
 
 /** What a fund's preview prices on: the page's own data, plan and view. */
 export interface PanelWorld {
@@ -52,7 +53,11 @@ export const isInvalid = (form: HTMLElement | null) => !!form?.querySelector('[d
 
 const c = root.customEntries;
 
-export function Actions({ entry, name, writable, onSave, onCancel, onRemove, saveLabel }: { entry: boolean; name: string; writable: boolean; onSave: () => void; onCancel: () => void; onRemove: () => void; saveLabel?: string; }) {
+/**
+ * The panel's actions, one under the other: the save, an optional second save (`again`, which saves and starts another), the way out, and on
+ * a saved entry its removal, which asks first. `saveIn` "bar": the save stands in the panel's foot (`NeedBar`), not here.
+ */
+export function Actions({ entry, name, writable, saveIn = "here", onSave, again, onCancel, onRemove }: { entry: boolean; name: string; writable: boolean; saveIn?: "here" | "bar"; onSave: () => void; again?: { label: string; onClick: () => void }; onCancel: () => void; onRemove: () => void }) {
   const [asking, setAsking] = useState(false);
   return (
     <div className="flex flex-col gap-2 pt-1">
@@ -68,19 +73,28 @@ export function Actions({ entry, name, writable, onSave, onCancel, onRemove, sav
           </Button>
         </div>
       ) : (
-        <div className="flex flex-wrap items-center gap-2">
-          <Button variant="primary" onClick={onSave}>
-            {saveLabel ?? c.save}
-          </Button>
-          <Button variant="quiet" onClick={onCancel}>
-            {c.cancel}
-          </Button>
-          {entry && (
-            <Button variant="destructive" className="ms-auto" onClick={() => setAsking(true)}>
-              {c.remove}
+        <>
+          {saveIn === "here" && (
+            <Button variant="primary" onClick={onSave}>
+              {c.save}
             </Button>
           )}
-        </div>
+          {again && (
+            <Button variant="outline" onClick={again.onClick}>
+              {again.label}
+            </Button>
+          )}
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Button variant="quiet" wide onClick={onCancel}>
+              {c.cancel}
+            </Button>
+            {entry && (
+              <Button variant="destructive" wide onClick={() => setAsking(true)}>
+                {c.remove}
+              </Button>
+            )}
+          </div>
+        </>
       )}
     </div>
   );
