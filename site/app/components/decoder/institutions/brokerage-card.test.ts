@@ -120,7 +120,7 @@ describe("a company's brokerage terms, under each fee's name", () => {
     const { terms, text } = render("hapoalim");
     const fx = terms?.deal.fees.find((f) => f.kind === "fx");
     const small = fx && "cases" in fx ? fx.cases?.[0]?.stages[0]?.price : undefined;
-    expect(small).toMatchObject({ form: "perAction", currency: "USD", amount: { v: 3.3, src: { url: expect.stringContaining("single_small_51026.xls") } } });
+    expect(small).toMatchObject({ form: "perAction", currency: "USD", amount: { v: 3.3, src: { url: "https://www.bankhapoalim.co.il/he/fee-list" } } });
     const direct = feeDeal.cases.values.channel.direct;
     expect(plain(text)).toMatch(new RegExp(`${direct}\\s*\\S+\\s99\\s\\$\\s*3\\.30\\s\\$\\s*${feeDeal.price.perAction.fx}`));
   });
