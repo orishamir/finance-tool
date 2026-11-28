@@ -5,6 +5,7 @@ import type { GuideContent } from "./types";
 import { Num, Ruled, Term } from "../../components/provenance";
 import { effectiveFromValue } from "../../lib/value";
 import { Callout, Sentence, When } from "../../components/kit";
+import { GuideFold, GuidePart } from "../../components/guide/sections";
 
 export const content: GuideContent = {
   what: ({ figure }) => {
@@ -25,22 +26,34 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          לא כל בנק משלם <Term id="ריבית על יתרת זכות">ריבית על יתרת זכות</Term>. בנק שמשלם <Ruled id="BANK-09">חייב להציג את התנאים</Ruled>. בנק שלא משלם חייב לכתוב זאת בטבלת הריביות שלו. הבנק <Ruled id="TXI-08">מנכה מס הכנסה</Ruled> <Term prefix="מה" id="ריבית">ריבית</Term> שכן משולמת.
+          חשבון עובר ושב (עו״ש) הוא חשבון הבנק של היום־יום: המשכורת נכנסת אליו, וההוצאות והתשלומים יוצאים ממנו.
         </p>
-        <Sentence measure>
-          העלות היא עמלות החשבון. כל בנק חייב להציע שני מסלולים ולתת לכל לקוח להצטרף אליהם. <Term prefix="ה" id="מסלול בסיסי">מסלול הבסיסי</Term> כולל {basicTeller ? <>עד <Num value={basicTeller} /> פעולה בפקיד ו</> : null}
-          {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, <Term prefix="וה" id="מסלול מורחב">מסלול המורחב</Term>{" "}
-          {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. פעולות מעבר למסלול מחויבות לפי <Term id="התעריפון המלא">התעריפון המלא</Term>. המחיר של המסלול הבסיסי <Ruled id="BANK-60">מוגבל בצו</Ruled>{basicCap ? <>: עד <Num value={basicCap} /> בחודש</> : null}.
-        </Sentence>
-        <Sentence measure>
-          חוץ מבנק חדש: בשנים הראשונות אחרי שקיבל רישיון הוא <Ruled id="BANK-51">לא כפוף לתעריפון המלא</Ruled>, ומפרסם תעריפון משלו. אבל תקרה שהנגיד קבע לשירות בפיקוח חלה גם עליו. גם בנק קטן <Ruled id="BANK-52">מקבל הקלות</Ruled> בחלק מהכללים של <Term id="בנק ישראל">בנק ישראל</Term> ללקוחות, למשל בשירותי התשלום שהוא חייב להציע בחשבון.
-        </Sentence>
-        {/* the rules ahead sit in their own box, which says they start later; the figures inside leave out their "starts on" mark */}
-        <Callout tone="upcoming" className="max-w-measure" title="עומד להשתנות" tag={accountFrom ? <When iso={String(accountFrom.value)} lead="מ־" /> : undefined}>
-          <Sentence size="sm">
-            צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} <Ruled id="BANK-35">המסלולים מתבטלים</Ruled>. אותו צו קובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew && bandLowMax ? <>עד <Num value={feeFew} /> למי שעושה עד <Num value={bandLowMax} /> פעולות, </> : null}{feeMost && bandMidMin && bandMidMax ? <>עד <Num value={feeMost} /> מ־<Num value={bandMidMin} /> עד <Num value={bandMidMax} /> פעולות</> : null}{feeEach && bandMidMax ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל <Num value={bandMidMax} /></> : null}. <Ruled id="BANK-54">התקרות חלות על כל יחיד שמחזיק חשבון</Ruled>. הן חלות גם על תאגיד שהוא עסק כפי שקבע הנגיד בכללים, לפי מחזור העסקים שלו.
+        <p className="max-w-measure">
+          <Ruled id="BANK-09">לא כל בנק משלם</Ruled> <Term id="ריבית">ריבית</Term> על הכסף שיושב בו. העלות של החשבון היא <Ruled id={["BANK-16", "BANK-17"]}>העמלות שהבנק גובה על הפעולות בו</Ruled>.
+        </p>
+        <GuidePart title="אם הבנק משלם ריבית">
+          <p className="max-w-measure">
+            בנק שמשלם <Term id="ריבית על יתרת זכות">ריבית על יתרת זכות</Term> <Ruled id="BANK-09">חייב להציג את התנאים</Ruled>. בנק שלא משלם חייב לכתוב זאת בטבלת הריביות שלו. הבנק <Ruled id="TXI-08">מנכה מס הכנסה</Ruled> מהריבית שכן משולמת.
+          </p>
+        </GuidePart>
+        <GuidePart title="כמה החשבון עולה">
+          <Sentence measure>
+            <Ruled id="BANK-17">כל בנק חייב להציע שני מסלולים ולתת לכל לקוח להצטרף אליהם</Ruled>. <Term prefix="ה" id="מסלול בסיסי">מסלול הבסיסי</Term> כולל {basicTeller ? <>עד <Num value={basicTeller} /> פעולה בפקיד ו</> : null}
+            {basicDirect ? <>עד <Num value={basicDirect} /> פעולות בערוץ ישיר בחודש</> : "מעט פעולות בחודש"}, <Term prefix="וה" id="מסלול מורחב">מסלול המורחב</Term>{" "}
+            {extendedTeller && extendedDirect ? <>עד <Num value={extendedTeller} /> ו־<Num value={extendedDirect} /></> : "יותר"}. פעולות מעבר למסלול מחויבות לפי <Term id="התעריפון המלא">התעריפון המלא</Term>. המחיר של המסלול הבסיסי <Ruled id="BANK-60">מוגבל בצו</Ruled>{basicCap ? <>: עד <Num value={basicCap} /> בחודש</> : null}.
           </Sentence>
-        </Callout>
+          <GuideFold label="בנק חדש ובנק קטן">
+            <Sentence measure>
+              בנק חדש: בשנים הראשונות אחרי שקיבל רישיון הוא <Ruled id="BANK-51">לא כפוף לתעריפון המלא</Ruled>, ומפרסם תעריפון משלו. אבל תקרה שהנגיד קבע לשירות בפיקוח חלה גם עליו. גם בנק קטן <Ruled id="BANK-52">מקבל הקלות</Ruled> בחלק מהכללים של <Term id="בנק ישראל">בנק ישראל</Term> ללקוחות, למשל בשירותי התשלום שהוא חייב להציע בחשבון.
+            </Sentence>
+          </GuideFold>
+          {/* the rules ahead sit in their own box, which says they start later; the figures inside leave out their "starts on" mark */}
+          <Callout tone="upcoming" className="max-w-measure" title="עומד להשתנות" tag={accountFrom ? <When iso={String(accountFrom.value)} lead="מ־" /> : undefined}>
+            <Sentence size="sm">
+              צו חדש קבע תקרה לדמי כרטיס חיוב מיידי{cardCap ? <>, עד <Num value={cardCap} /> בחודש,</> : null} שחלה {cardFrom ? <Num value={cardFrom} prefix="מ־" /> : "כבר"}. {accountFrom ? <Num value={accountFrom} prefix="מ־" /> : "בהמשך"} <Ruled id="BANK-35">המסלולים מתבטלים</Ruled>. אותו צו קובע במקומם תקרה לעמלת ניהול חשבון, לפי מספר הפעולות בחודש: {feeFew && bandLowMax ? <>עד <Num value={feeFew} /> למי שעושה עד <Num value={bandLowMax} /> פעולות, </> : null}{feeMost && bandMidMin && bandMidMax ? <>עד <Num value={feeMost} /> מ־<Num value={bandMidMin} /> עד <Num value={bandMidMax} /> פעולות</> : null}{feeEach && bandMidMax ? <>, ועוד <Num value={feeEach} /> לכל פעולה מעל <Num value={bandMidMax} /></> : null}. <Ruled id="BANK-54">התקרות חלות על כל יחיד שמחזיק חשבון</Ruled>. הן חלות גם על תאגיד שהוא עסק כפי שקבע הנגיד בכללים, לפי מחזור העסקים שלו.
+            </Sentence>
+          </Callout>
+        </GuidePart>
       </>
     );
   },
