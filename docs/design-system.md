@@ -26,7 +26,7 @@ No financial figure appears here. Where a component shows a number, it shows a v
 | V1 | **Provenance is the visual language.** A sourced number and one you entered show it, and one tap shows where it came from; a computed number is plain text, and shows only a catch it carries, as a caution "?" after it. Stale, secondary-source and blocked states are visible in place, never only in a footnote. | guidelines/design.md, D3, D7, D10 |
 | V2 | **Both screen sizes.** Every screen is checked at 1440 px and 390 px before it goes live. Touch targets at least 44 px. Nothing depends on hover. | guidelines/design.md, product.md §2, K7 |
 | V3 | **Right to left throughout.** Layout, reading order, disclosure and navigation flow from the right. Exceptions: every chart axis runs left to right, not only time (gap 8.6, guidelines/charts.md), and so does every slider, like a chart's time axis (guidelines/design.md, "Fields"), while a bar inside a table row may grow from the right with its Hebrew text; numbers, identifiers and Latin names are isolated left-to-right runs. | guidelines/project.md, guidelines/design.md, architecture 3.5 |
-| V4 | **Inputs sit next to the result they change.** Every graph and computed number shows the inputs it uses, each editable on the same page. | product.md §2 "interactive by default", K8 |
+| V4 | **Inputs sit next to the result they change.** The inputs a graph or a page's result uses are on the same page, each editable there; a computed number itself is plain and does not list them. | product.md §2 "interactive by default", K8 |
 | V5 | **Calm and neutral.** Warm dark grey, light text, one accent. No bank or manager brand colours, no promotional look, no colour that suggests a recommendation the site has not made. | product.md §2 "neutral by construction" |
 | V6 | **Colour never works alone.** Every state also has a pattern, an icon or a word, so it reads in sunlight, in greyscale and to a colour-blind friend. | dataviz method |
 | V7 | **Polish is a requirement.** Motion inside a chart mark when values change (a bar grows, a line glides), and the layout moves as little as it can (2.5a); careful type; charts drawn by us. | K12 |
@@ -400,10 +400,22 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
 - **A computed figure is plain** (`num-plain`): text in the ink around it, no button, no line under it, no tint; its display rounding,
   counting, short billions, size, sign and lead words stay. A catch it carries (`catchesOf`) is a caution "?" (`CatchMark`, the look of
   `HelpMark` with `tone="caution"`) right after its last digit, held on that line, with a 44 px tap area; it is the figure's only mark.
-  The catches: not in force yet; its own doubt; a secondary source, or at figure size a company's document out of its own context (in a
-  line or a cell each such input says its own source); an open rule; staleness a notice around it does not already say (`StaleSaid`); an
-  engine flag; the site's own reading of a rule. A plain difference or sum (`SiteValue.plain`) carries only a catch none of its inputs
-  carries: each input shows its own where it stands.
+  The catches: not in force yet; its own doubt; its caveat (`SiteValue.caveat`: an assumption its value rests on, in one sentence, such as
+  a variable rate taken as it stands today, or a fund report that prints only the positive variable fees; a field of its own, never `notes`,
+  which also holds English working notes and a source's attribution, and never carried to a figure worked out from it); a secondary source,
+  or at figure size a company's document out of its own context (in a line or a cell each such input says its own source); an open rule;
+  staleness a notice around it does not already say (`StaleSaid`); an engine flag; the site's own reading of a rule. A plain difference or
+  sum (`SiteValue.plain`) carries only a catch none of its inputs carries: each input shows its own where it stands. A figure's definition
+  (what it is, how it is counted) is no catch: it waits for the step-by-step explanation of a page's main result.
+- **A catch every figure of a list carries is said once** (`useSharedCatches`, `CatchesSaid`, `ListCatchMark`). Where every calculated
+  figure of a table's column, a list's figure column or a set of lines carries the same catch, one caution "?" says it: in the column's head,
+  as a column's shared mark stands in its head (D60), or after the words above a set of lines that has no head (the receipt's title, the
+  account's charges). The figures inside leave it out of their own "?", and one left with no catch has none. A flag and a rule read are each
+  shared alone, so a flag some rows carry stays on those rows. A list of one shares nothing. The kit's `ChartTable` does it for a column given
+  its `figures`; a list builds its figures' catches with `useSharedCatches` and wraps its rows in `CatchesSaid`. No sheet inherits it.
+- **A figure whose source's terms require a line beside it** (`SiteValue.obligation`, the ECB's attribution of its exchange rates) is not
+  plain, whatever its state: it draws as a sourced figure does, the solid grey line, with a sourced figure's clock or caution icon for a
+  catch, and opens its sheet (below). This follows from `obligation` alone.
 - **Flags.** A stale figure carries a clock. Under a caution notice that already says the figures' source is old (`StaleSaid`), the
   figures inside leave the clock out (the accessible name and the sheet still say it). A secondary-strength figure, or an institution's
   figure out of its own context, carries the caution icon before the digits, never between a number and its unit word; the strength word
@@ -456,9 +468,14 @@ Called for by the standing rule "every number traces to a source", D3, D7, D10, 
   name with its figure, which opens its own sheet with its source, under a line by strength, and the strength's callout for a secondary
   or open one, or for a weakness no input carries; the stale line; one callout of its flags, each with its code, so its first line stands
   where the smallest phone's sheet shows it; the site's-reading tag with each
-  rule it reads, by title (`RuleTitleList`). Then the way to the rules, as every sheet has. No formula, no inputs, no rules the
-  calculation read, no fund statement, no note and no state tag: the step-by-step explanation of a page's main result is to come, kept
-  apart (lib/working.ts and each figure's `working` are kept for it).
+  rule it reads, by title (`RuleTitleList`); its caveat, in a caution callout after the doubt. Then the fund's own statements it rests on
+  (D84, D119), each said as the fund's, its document linked at the page and the day the site read it, since nothing else on the page names
+  them. Then the way to the rules, as every sheet has. No formula, no inputs, no rules the calculation read, no note and no state tag: the
+  step-by-step explanation of a page's main result is to come, kept apart (lib/working.ts and each figure's `working` are kept for it). The
+  sheet a list's "?" opens heads with what the figures are and a line that it holds for each of them, then says the shared catches the same
+  way.
+- **An obliged figure's sheet** (`ObligedSheet`) heads with the figure in the sourced ink and what it is, then its catches, then each source
+  its inputs come from, once, with the date of the figures read from it, and then the line its terms require, which no place leaves out.
 - **A source opens where it says it.** A link to a cited source opens at the cited words: a web page by text fragment, a PDF at its page
   (Chrome's PDF viewer does not follow a text fragment), a dataset at this fund's own record rather than the dataset's front page. Every
   such link is built by `sourceHref` (`site/app/lib/sources.ts`), never from a raw address (guard 23), and `tools/quote-fragments.mjs`
@@ -847,7 +864,7 @@ in the kit fits is added to the kit.
   terms are the bank's.
 - `HelpMark`: a "?" beside a head or a label, only where its card says what the label leaves out; `tone="caution"` where what it opens
   holds a catch about the figure, `note` ("!") where it opens a fact added to the figure rather than the label's meaning.
-- `CatchMark`: the caution "?" after a computed figure that carries a catch, drawn by `Num` only (3.2); it opens the figure's catch sheet.
+- `CatchMark`: the caution "?" after a computed figure that carries a catch, drawn by `Num` only (3.2); it opens the figure's catch sheet. The same mark says once what every figure of a list carries (`ListCatchMark`, 3.2), in a column's head or after the words above the list.
 - `MixedName`: every fund, house or manager name, and every document title or other text from the data, inside Hebrew text (`DocLink`
   draws a title with it); a plain `<bdi>` takes its direction from the first letter and is right only for a name known to be Latin or a
   number (a ratchet, and the layout check's `direction` check on the built pages).
@@ -1166,7 +1183,7 @@ several products of one kind (tracks, funds, deposits, accounts):
 - **A column of one number state carries its mark in the head (D60).** Where every figure in a column is sourced, the column head word
   carries the sourced underline and one line above the list says what it means; the cells stay plain and still open their source when
   tapped. A cell whose state differs keeps its own mark; entered numbers keep their blue, flags keep their icon. A column of computed
-  figures has no mark in its head: they are plain wherever they stand. Every column that holds a figure has a head.
+  figures has no state mark in its head: they are plain wherever they stand; a catch all of them carry is its head's caution "?" (3.2). Every column that holds a figure has a head.
 - **A very long list opens folded.** A list of over a hundred products under their companies (the track browser) starts with each company
   as one row, its count and its money, the first open so the reader sees what a row holds; on a phone each product under an open company
   is one line (`ProductPhoneFold`). A search or a chosen filter shows its matches open, with nothing to open. Opening a company moves only
