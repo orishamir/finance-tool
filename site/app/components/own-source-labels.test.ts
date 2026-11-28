@@ -156,6 +156,15 @@ describe("one drawing for every source (sourceView)", () => {
     const data = { rules: { "TXA-30": txa30 }, terms: {}, dimensions: {}, today };
     expect(words(render(createElement(RuleCard, { id: "TXA-30", data, inline: true }), data))).toContain(rulesDetail.sourcesHead);
   });
+  it("a rule card's citation writes a title's abbreviation with the gershayim", () => {
+    const root = new URL("../../../", import.meta.url);
+    const txa30 = JSON.parse(readFileSync(new URL("data/rules/txa-30.json", root), "utf8")) as RuleRecord;
+    const quoted = { ...txa30, sources: [{ ...law, title_he: 'תקנות לבדיקה, התשע"ב-2012' }] } as unknown as RuleRecord;
+    const data = { rules: { "TXA-30": quoted }, terms: {}, dimensions: {}, today };
+    const shown = words(render(createElement(RuleCard, { id: "TXA-30", data, inline: true }), data)).replace(/&quot;/g, '"');
+    expect(shown).toContain("התשע״ב-2012");
+    expect(shown).not.toContain('התשע"ב');
+  });
 });
 
 describe("a sourced figure's source", () => {

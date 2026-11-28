@@ -1334,7 +1334,8 @@ export function RuleCard({ id, data, headId, inline, figure }: { id: string; dat
       {uses && uses.pages.length === 0 && !uses.engine && <p className="text-xs text-muted-foreground">{ruleCardMore.usesNone}</p>}
       {/* the card's foot: pushed to the bottom, so cards side by side have it at one height */}
       <div className="mt-auto flex flex-col gap-3 pt-1">
-        {firstView && <CitationBox text={citationFor(sourced, firstView, slots)} />}
+        {/* a title from the data writes its abbreviations with a straight quote; the line shown and copied writes the gershayim (copy 10.4) */}
+        {firstView && <CitationBox text={gershayim(citationFor(sourced, firstView, slots))} />}
         {!inline && <CardFoot rule={rule} data={data} />}
       </div>
     </div>
@@ -1400,7 +1401,7 @@ function SourcesByDocument({ sources, rule, slots }: { sources: readonly RuleSou
     <section className="flex flex-col gap-3" aria-label={w.sourcesHead}>
       <GroupHead>{w.sourcesHead}</GroupHead>
       {sourceView(sources, publishersHe).map((view) => (
-        <DocumentSource key={view.key} view={view} rules={[rule]} today={slots.today} boxed citation={view.places.map((place) => citationFor(rule, view, slots, place)).join("\n")} />
+        <DocumentSource key={view.key} view={view} rules={[rule]} today={slots.today} boxed citation={gershayim(view.places.map((place) => citationFor(rule, view, slots, place)).join("\n"))} />
       ))}
     </section>
   );
