@@ -769,7 +769,7 @@ export const company = {
     currency: "מט״ח",
     about: "החלק מנכסי המסלול שחשוף לשוק המניות בסוף",
     aboutCurrency: "החלק מנכסי המסלול שחשוף למטבע חוץ בסוף",
-    missing: "לא דווח",
+    missing: emptyWords.notReported,
     noAssets: "אין נכסים",
     /** The sheet's note on a share above 100% only: the circular's exposure counts what is held plus exposure through derivatives on it, and that the dataset's field is that exposure is the site's reading of its name (CAT-44). */
     above100: "חוזר של רשות שוק ההון מגדיר את החשיפה כך שהיא כוללת גם חשיפה דרך נגזרים על אותו נכס, ולכן היא יכולה לעבור את 100% מנכסי המסלול. האתר מסיק משם השדה שהנתון כאן הוא החשיפה הזו.",
@@ -1690,8 +1690,8 @@ export const trackBrowser = {
   depositOnce: "דמי ניהול מהפקדה, בכל המסלולים:",
   /** A company page's link to the product's tracks at every company: "קרן השתלמות בכל החברות". */
   inAll: (name: string) => `${name} בכל החברות`,
-  yield: { phone: "תשואה שנתית ממוצעת", years3: "3 שנים", years5: "5 שנים", young: "אין", missing: "לא דווח", emptyNote: { before: "השדה ריק בנתוני הרשות: לא פורסמה למסלול תשואה שנתית ממוצעת ל־", after: " שנים." }, selfManaged: "בניהול אישי: כל חוסך מחליט במה להשקיע", selfManagedShort: "כל חוסך מחליט במה להשקיע" },
-  assets: { million: "מיליון ₪", missing: "לא דווח", emptyNote: "השדה ריק בנתוני הרשות: לא פורסם כמה כסף מנוהל במסלול.", phone: "כסף מנוהל" },
+  yield: { phone: "תשואה שנתית ממוצעת", years3: "3 שנים", years5: "5 שנים", young: emptyWords.none, missing: emptyWords.notReported, emptyNote: { before: "השדה ריק בנתוני הרשות: לא פורסמה למסלול תשואה שנתית ממוצעת ל־", after: " שנים." }, selfManaged: "בניהול אישי: כל חוסך מחליט במה להשקיע", selfManagedShort: "כל חוסך מחליט במה להשקיע" },
+  assets: { million: "מיליון ₪", missing: emptyWords.notReported, emptyNote: "השדה ריק בנתוני הרשות: לא פורסם כמה כסף מנוהל במסלול.", phone: "כסף מנוהל" },
   /** The sheets' headers of the two group figures (F-99, F-100), and of the whole list's fee range on the count line. */
   about: { assets: "הכסף שהחברה מנהלת במוצר, בכל המסלולים יחד", feeLow: "הנמוך מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה", feeHigh: "הגבוה מדמי הניהול מהחיסכון שדווחו למסלולים בקבוצה" },
   noResult: { before: "אין מסלולים שמתאימים לחיפוש ״", after: "״." },
@@ -4991,8 +4991,8 @@ export const invest = {
       ]
         .filter(Boolean)
         .join(" "),
-    notCollected: "לא נאסף",
-    noSuchFee: "אין",
+    notCollected: emptyWords.notCollected,
+    noSuchFee: emptyWords.none,
     /** What "אין" and "לא נאסף" say: `lines` states ETF-14 and MF-20 and `foreign` ETF-71, after the prefix ו (D116); a "?" sheet joins them all. */
     feeWordsNote: { before: "״אין״ ליד דמי ניהול משתנים או שכר נאמן: אלה שורות של קרן נאמנות ישראלית,", lines: "שקובעים התקנות והסכם הקרן", mid: ", ", prefix: "ו", foreign: "החוק הישראלי לקרנות לא חל על קרן זרה", after: ". ״לא נאסף״: לקרן יש שורה כזאת, והאתר עוד לא אסף את המספר שלה." },
     /** After "אין": "אין נאמן" alone could read as a fund with no custodian, which is not what the site knows. */
