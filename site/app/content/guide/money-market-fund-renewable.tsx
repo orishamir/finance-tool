@@ -59,7 +59,7 @@ export const content: GuideContent = {
           דמי הניהול ושכר הנאמן <Ruled id="MF-37">כבר מופחתים מהתשואה הצפויה שמוצגת</Ruled>. <Ruled id="MF-18">רשות ניירות ערך מפרסמת ממוצע שנתי לקטגוריה</Ruled>.
         </p>
         <Sentence measure>
-          בבנק, <Ruled id="MF-24">מנהל הקרן משלם לבנק</Ruled> <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה. <Ruled id="MF-71">בלי הסכם הפצה, הבנק יכול לגבות מכם עד גובה עמלת ההפצה</Ruled>.
+          בבנק, <Ruled id="MF-24">מנהל הקרן משלם לבנק</Ruled> <Term id="עמלת הפצה">עמלת הפצה</Term> של עד {distCap ? <Num value={distCap} /> : null} בשנה. לפי קריאה של האתר, <Ruled id="MF-71">בלי הסכם הפצה הבנק יכול לגבות מכם עד גובה עמלת ההפצה</Ruled>.
         </Sentence>
         <p className="max-w-measure">תוספת בקנייה או <Term id="ניכוי בפדיון">ניכוי בפדיון</Term> <Ruled id={["MF-21", "MF-22"]}>אפשריים רק אם הסכם הקרן קובע אותם</Ruled>.</p>
       </>
