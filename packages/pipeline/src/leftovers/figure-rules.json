@@ -539,9 +539,6 @@
     "MF-43",
     "TXS-24"
   ],
-  "funds/1223866#/fees/load": [
-    "MF-21"
-  ],
   "funds/1223866#/fees/median_spread": [
     "MF-35"
   ],
@@ -550,9 +547,6 @@
   ],
   "funds/5112628#/fees/fund_level_withholding_drag": [
     "ETF-11"
-  ],
-  "funds/5112628#/fees/load": [
-    "MF-21"
   ],
   "funds/5112628#/fees/median_spread": [
     "ETF-04",
@@ -565,9 +559,6 @@
   ],
   "funds/5122569#/fees/fund_level_withholding_drag": [
     "ETF-11"
-  ],
-  "funds/5122569#/fees/load": [
-    "MF-21"
   ],
   "funds/5122569#/fees/median_spread": [
     "ETF-04",
@@ -582,9 +573,6 @@
   "funds/5124482#/fees/fund_level_withholding_drag": [
     "ETF-11"
   ],
-  "funds/5124482#/fees/load": [
-    "MF-21"
-  ],
   "funds/5124482#/fees/median_spread": [
     "ETF-04",
     "MF-21"
@@ -596,9 +584,6 @@
   ],
   "funds/5124573#/fees/fund_level_withholding_drag": [
     "ETF-11"
-  ],
-  "funds/5124573#/fees/load": [
-    "MF-21"
   ],
   "funds/5124573#/fees/median_spread": [
     "ETF-04",
@@ -613,9 +598,6 @@
   "funds/5127527#/fees/fund_level_withholding_drag": [
     "ETF-11"
   ],
-  "funds/5127527#/fees/load": [
-    "MF-21"
-  ],
   "funds/5127527#/fees/median_spread": [
     "ETF-04",
     "MF-21"
@@ -627,9 +609,6 @@
   ],
   "funds/5128905#/fees/fund_level_withholding_drag": [
     "ETF-11"
-  ],
-  "funds/5128905#/fees/load": [
-    "MF-21"
   ],
   "funds/5128905#/fees/median_spread": [
     "ETF-04",
@@ -644,9 +623,6 @@
   "funds/5129275#/fees/fund_level_withholding_drag": [
     "ETF-11"
   ],
-  "funds/5129275#/fees/load": [
-    "MF-21"
-  ],
   "funds/5129275#/fees/median_spread": [
     "ETF-04",
     "MF-21"
@@ -658,9 +634,6 @@
   ],
   "funds/5129283#/fees/fund_level_withholding_drag": [
     "ETF-11"
-  ],
-  "funds/5129283#/fees/load": [
-    "MF-21"
   ],
   "funds/5129283#/fees/median_spread": [
     "ETF-04",
@@ -675,9 +648,6 @@
   "funds/5130638#/fees/fund_level_withholding_drag": [
     "ETF-11"
   ],
-  "funds/5130638#/fees/load": [
-    "MF-21"
-  ],
   "funds/5130638#/fees/median_spread": [
     "ETF-04",
     "MF-21"
@@ -689,9 +659,6 @@
   ],
   "funds/5130661#/fees/fund_level_withholding_drag": [
     "ETF-11"
-  ],
-  "funds/5130661#/fees/load": [
-    "MF-21"
   ],
   "funds/5130661#/fees/median_spread": [
     "ETF-04",
@@ -711,9 +678,6 @@
     "MF-43",
     "MF-29"
   ],
-  "funds/5138763#/fees/load": [
-    "MF-21"
-  ],
   "funds/5138763#/fees/median_spread": [
     "MF-09"
   ],
@@ -722,9 +686,6 @@
   ],
   "funds/5139100#/fees/fund_level_withholding_drag": [
     "ETF-11"
-  ],
-  "funds/5139100#/fees/load": [
-    "MF-21"
   ],
   "funds/5139100#/fees/median_spread": [
     "ETF-04",
@@ -738,9 +699,6 @@
   "funds/5139282#/fees/fund_level_withholding_drag": [
     "ETF-11"
   ],
-  "funds/5139282#/fees/load": [
-    "MF-21"
-  ],
   "funds/5139282#/fees/median_spread": [
     "ETF-04",
     "MF-21"
@@ -753,9 +711,6 @@
   "funds/5139696#/fees/fund_level_withholding_drag": [
     "ETF-11"
   ],
-  "funds/5139696#/fees/load": [
-    "MF-21"
-  ],
   "funds/5139696#/fees/median_spread": [
     "ETF-04",
     "MF-21"
@@ -767,9 +722,6 @@
   ],
   "funds/5140165#/fees/fund_level_withholding_drag": [
     "ETF-11"
-  ],
-  "funds/5140165#/fees/load": [
-    "MF-21"
   ],
   "funds/5140165#/fees/median_spread": [
     "ETF-04",

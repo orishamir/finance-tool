@@ -245,6 +245,11 @@ const FUND_ROWS: FigureRow[] = [
   },
   {
     collection: funds,
+    path: "fees.load",
+    allow: [{ id: "MF-21", why: "the load is the manager's add-on to the unit price at purchase, its rate set in the prospectus" }],
+  },
+  {
+    collection: funds,
     path: "promotions[].rate",
     allow: [{ id: "MF-20", when: (r, _v, at) => promotionOf(r, at)?.fee === "trustee", why: "a trustee fee lowered for a period is still the trustee's fee of the fund's agreement" }],
   },

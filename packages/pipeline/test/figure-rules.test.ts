@@ -224,6 +224,10 @@ describe("figure-rules table: funds and averages", () => {
     expect(ids("funds", f)).toEqual(["/fees/fixed_management ETF-13 disallowed", "/fees/fixed_management MF-17 disallowed", "/fees/trustee ETF-13 disallowed", "/fees/variable_management ETF-13 disallowed"]);
   });
 
+  it("keeps the load rule on a fund's load", () => {
+    expect(ids("funds", fund({ fees: { load: vo(0, ["MF-21"]) } }))).toEqual([]);
+  });
+
   it("keeps BlackRock's card on an iShares fund's expense ratio only, and no tax rule on it", () => {
     const er = ["ETF-27", "ETF-28", "TXF-16", "TXF-29"];
     expect(ids("funds", fund({ domicile: "IE", manager: "BlackRock (fund: iShares VII plc)", fees: { fixed_management: vo(0.07, er) } }))).toEqual([
