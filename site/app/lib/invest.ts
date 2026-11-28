@@ -4,7 +4,7 @@
 // exchange rates are the ECB's (D26). Nothing is chosen for the person (D27): an index is always an argument.
 import { rankByValue } from "./rank";
 import { gershayim } from "./format";
-import { BlockedError, listingChangesRun, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, paidInAsEntered, dividendsOf, gapFromNet, insideTaxCaseOf, insideTaxEnds, netDeduction, shortfallBeyondFees, type InsideTax, type RateOf, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
+import { BlockedError, listingChangesRun, openReadings, type AccountKind, type DealRun, withRunMemo, STANDING_CONVERSION_BAND, STANDING_ORDER_BAND, beforeTax, calendarMonthOf, waitingReal, paidInAsEntered, dividendsOf, gapFromNet, insideTaxCaseOf, insideTaxEnds, shortfallBeyondFees, type InsideTax, type RateOf, buildTariff, comparedYears, gapListOf, type GapList, costByWho, countsCurrentAccount, gapToIndex, sumFees, trackingBeyondFees, variableForwardYears, providerWorkbench, isTie, securitiesBlockedBy, securitiesStopOf, tieThreshold, type ComparedProvider, type FeeLine, type Label, type LayeredRun, type NotComparableProvider, type ProviderRow, type SecuritiesStop, type TariffBuild } from "@finance-tool/engine";
 import { assertNever, exchangeOfTicker, fundExchange, isShekel, type ExposureRecord, type FeesSnapshot, type FundExchange, type FundRecord } from "@finance-tool/schema";
 import { invest as copy } from "../copy";
 import { addedIndexCurrency, customFundGaps, isCustomFund, kindNotKnown, type AddedIndexCurrency, type FundKind } from "./custom-entries";
@@ -1070,20 +1070,25 @@ function fundInputsOf(bundle: IndicesBundle, rec: FundRecord): Record<string, Si
 
 /**
  * The rule figures a case reads (F-107, F-133), each as the bundle holds it, keyed by its Hebrew name for a figure's sheet: a `RateOf` that
- * records what it read, so the sheet lists exactly the rates the run multiplied.
+ * records what it read, so the sheet lists exactly the rates the run multiplied, and `cite` for a rule the case rests on beside them.
  */
-function ruleRates(bundle: Pick<IndicesBundle, "rules" | "today">): { rate: RateOf; read: Record<string, SiteValue>; rules: { id: string; strength: Strength }[] } {
+function ruleRates(bundle: Pick<IndicesBundle, "rules" | "today">): { rate: RateOf; cite: (id: string) => void; read: Record<string, SiteValue>; rules: { id: string; strength: Strength }[] } {
   const read: Record<string, SiteValue> = {};
   const rules = new Map<string, Strength>();
-  const rate: RateOf = (id, figure) => {
+  const ruleOf = (id: string) => {
     const rule = bundle.rules.find((x) => x.id === id);
-    const v = rule ? ruleFigure(rule, figure, bundle.today) : null;
-    if (!rule || !v || typeof v.value !== "number") throw new Error(`F-107: rule ${id} has no figure ${figure}`);
-    read[copy.pair.fundInputs.rate(rule.figure_names_he?.[figure] ?? figure)] = v;
+    if (!rule) throw new Error(`F-107: no rule ${id}`);
     rules.set(rule.id, rule.strength as Strength);
+    return rule;
+  };
+  const rate: RateOf = (id, figure) => {
+    const rule = ruleOf(id);
+    const v = ruleFigure(rule, figure, bundle.today);
+    if (!v || typeof v.value !== "number") throw new Error(`F-107: rule ${id} has no figure ${figure}`);
+    read[copy.pair.fundInputs.rate(rule.figure_names_he?.[figure] ?? figure)] = v;
     return v.value / 100;
   };
-  return { rate, read, get rules() { return [...rules].map(([id, strength]) => ({ id, strength })); } };
+  return { rate, cite: (id) => void ruleOf(id), read, get rules() { return [...rules].map(([id, strength]) => ({ id, strength })); } };
 }
 
 /** The yield and share a case's parts rest on, as sourced or entered values: a collected index's US part, or the yield typed for an added index. */
@@ -1103,9 +1108,11 @@ function partInputs(exposure: ReturnType<typeof exposureOf>, t: InsideTax): Reco
 function insideTaxInput(ctx: Ctx, r: RunReads, rec: FundRecord): Record<string, SiteValue> {
   const d = r.spec?.fund.drag;
   const t = d?.insideTax;
-  if (!t || d.foreignWithholding !== undefined || t.basis.kind === "none") return {};
+  // the record's own figure is its fee line's (F-107 (a)); a case whose years carry it all has nothing of the fund's own here
+  if (!t || t.basis.kind === "none" || t.basis.kind === "own") return {};
   const reads = ruleRates(ctx.bundle);
   const ends = insideTaxEnds(t, reads.rate);
+  for (const id of ends.cites) reads.cite(id);
   if (ends.high === 0) return {};
   const w = copy.pair.fundInputs;
   const two = ends.low !== ends.high;
@@ -1117,7 +1124,9 @@ function insideTaxInput(ctx: Ctx, r: RunReads, rec: FundRecord): Record<string, 
   const single = !two && rateName !== undefined && moreRates.length === 0 && t.parts.length === 1;
   const sym = formula === "F-107" ? String.raw`\rho_p` : String.raw`\tau_p`;
   const working = single ? ({ kind: "formula", entry: formula, line: 0, symbols: { [rateName]: sym, ...Object.fromEntries(Object.keys(parts).map((k) => [k, k === w.usWeight ? "s_p" : "y_p"])) } } as const) : undefined;
-  const doubt = { labels: two && ends.open ? [{ code: "cautious" as const, ruleId: ends.open.rule, notKnown: "documents" as const, ends: { low: ends.low, high: ends.high, why: ends.open.why } }] : [] };
+  // the cautious label the run gives the two ends (method F-107), with what the run says the site does not know of the fund
+  const notKnown = r.spec?.fund.notKnown;
+  const doubt = { labels: two && ends.open && notKnown ? [{ code: "cautious" as const, ruleId: ends.open.rule, notKnown, ends: { low: ends.low, high: ends.high, why: ends.open.why, parts: ends.open.parts } }] : [] };
   const value = (two ? ends.high : ends.low) * 100;
   return {
     [w.insideTax]: computed(Math.round(value * 1000) / 1000, "pct_per_year", formula, { ...reads.read, ...parts }, { today: ctx.bundle.today, rules: reads.rules, flags: ends.flags, labels: doubt.labels, about: w.insideTaxAbout, ...(working ? { working } : {}) }),
@@ -1130,22 +1139,29 @@ function insideTaxInput(ctx: Ctx, r: RunReads, rec: FundRecord): Record<string, 
  */
 function raisedGap(bundle: IndicesBundle, rec: FundRecord, list: GapList, years: readonly NonNullable<FundRecord["tracking_record"]>["years"][number][]): { value: number; inputs: Record<string, SiteValue>; rules: { id: string; strength: Strength }[] } | null {
   const exposure = bundle.exposures.find((e) => e.id === rec.exposure_id);
-  const c = insideTaxCaseOf(rec, { dividends: dividendsOf(exposure), list, typed: false, withholding: typeof rec.fees.fund_level_withholding_drag?.value === "number", published: false });
+  const c = insideTaxCaseOf(rec, { dividends: dividendsOf(exposure), list, typed: false, published: false });
   if (c.kind !== "counted" || !c.tax.years) return null;
   const w = copy.pair.fundInputs;
   const netRule = c.tax.netRule;
   const s = shortfallBeyondFees(years, sumFees(rec));
   if (s === null || !netRule) return null;
-  // D on the index's parts at its provider's rates, and the fund's own counted tax on them, each read apart so each sheet lists its own
+  // D on the index's parts at its provider's rates (the case's own deduction, read with nothing of the fund's), and the fund's own counted
+  // tax on them, each read apart so each sheet lists its own
   const net = ruleRates(bundle);
-  const deduction = netDeduction(c.tax.parts.flatMap((p) => p.countries.map((country) => ({ rate: net.rate(netRule, country), yield: p.yield, weight: p.weight }))));
+  const deduction = insideTaxEnds({ basis: { kind: "none" }, parts: c.tax.parts, netRule, years: c.tax.years }, net.rate).deduction;
+  if (deduction === undefined) throw new Error(`F-133: ${rec.id} has years against a net index and no deduction was read`);
   const own = ruleRates(bundle);
-  const counted = insideTaxEnds({ basis: c.tax.basis, parts: c.tax.parts }, own.rate).low;
+  const ownEnds = insideTaxEnds({ basis: c.tax.basis, parts: c.tax.parts }, own.rate);
+  for (const id of ownEnds.cites) own.cite(id);
+  const counted = ownEnds.low;
   const parts = partInputs(exposure, c.tax);
   const inputs: Record<string, SiteValue> = {
     [w.netDeduction]: computed(Math.round(deduction * 100 * 1e6) / 1e6, "pct_per_year", "F-133", { ...net.read, ...parts }, { today: bundle.today, rules: net.rules, about: w.netDeductionAbout }),
   };
-  if (counted > 0) inputs[w.insideTax] = computed(Math.round(counted * 100 * 1e6) / 1e6, "pct_per_year", "F-107", { ...own.read, ...parts }, { today: bundle.today, rules: own.rules, about: w.insideTaxAbout });
+  // the record's own figure stands as w where it holds one (F-107 (a)); else F-107 (b)'s, where it counts any
+  const ownFigure = rec.fees.fund_level_withholding_drag;
+  if (c.tax.basis.kind === "own" && ownFigure) inputs[w.insideTax] = ownFigure as SiteValue;
+  else if (counted > 0) inputs[w.insideTax] = computed(Math.round(counted * 100 * 1e6) / 1e6, "pct_per_year", "F-107", { ...own.read, ...parts }, { today: bundle.today, rules: own.rules, about: w.insideTaxAbout });
   return { value: gapFromNet(s, deduction, counted), inputs, rules: [...net.rules, ...own.rules] };
 }
 
@@ -1874,6 +1890,9 @@ export function gapListFor(bundle: Pick<IndicesBundle, "funds" | "exposures">, r
   const index = bundle.exposures.find((e) => e.id === rec.exposure_id);
   return gapListOf(rec, index, bundle.funds.filter((f) => f.exposure_id === rec.exposure_id));
 }
+
+/** F-92 (d) for a fund the person is still typing, before it is in any bundle: it has no years, so no list compares them; it names its index. */
+export const typedGapList = (rec: FundRecord, index: IndexRef): GapList => gapListOf(rec, index.exposure ?? undefined, []);
 
 /** F-92 (a): a fund's gap to its index in percent a year, with how many full years it rests on; null with none, and with years F-92 (d) does not compare. */
 export function gapOf(rec: FundRecord, list: GapList): { pct: number; years: number } | null {

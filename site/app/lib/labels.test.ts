@@ -1,21 +1,23 @@
 import { describe, expect, expectTypeOf, it } from "vitest";
 import type { FundRecord } from "@finance-tool/schema";
-import { comparedYears, gapListOf, taxIndexStatementOf } from "@finance-tool/engine";
+import { comparedYears, taxIndexStatementOf } from "@finance-tool/engine";
 import { loadFunds } from "./instruments.server";
-import { knownIndices, type IndexRef } from "./invest";
+import { gapListFor, knownIndices, type IndexRef } from "./invest";
 import { allLabels, dividendTaxLabel, fundLabels, label, labelDefs, statementExamples } from "./labels";
 import { invest as copy } from "../copy";
 import { labelDoc, labelRules } from "./label-rests";
 import { buildIndicesBundle } from "./providers.server";
 
 /**
- * The years a collected fund's gap is measured over (F-92 (d)), by the dividends of the series it is measured against as its record says
- * alone; null where it has none, or where a published 12-month gap stands in for them. F-133 (b) reaches a fund with net years on an index
- * whose net deduction is known, and (c) one with gross years.
+ * The years a collected fund's gap is measured over (F-92 (d)), compared on its index's list as the run compares them (`gapListFor`), by
+ * the dividends of the series it is measured against; null where it has none, or where a published 12-month gap stands in for them. F-133
+ * (b) reaches a fund with net years on an index whose net deduction is known, and (c) one with gross years.
  */
-const yearsOf = (f: FundRecord, i: IndexRef): "net" | "gross" | "unstated" | null => {
-  if (typeof f.fees.tracking_difference_12m?.value === "number" || !comparedYears(f.tracking_record, gapListOf(f, i.exposure ?? undefined, []))) return null;
-  return f.tracking_record?.benchmark.dividends ?? null;
+const listBundle = buildIndicesBundle();
+const listOf = (f: FundRecord) => gapListFor(listBundle, f);
+const yearsOf = (f: FundRecord, _i: IndexRef): "net" | "gross" | "unstated" | null => {
+  const years = typeof f.fees.tracking_difference_12m?.value === "number" ? null : comparedYears(f.tracking_record, listOf(f));
+  return years && years.length > 0 ? (f.tracking_record?.benchmark.dividends ?? null) : null;
 };
 const netYears = (f: FundRecord, i: IndexRef) => yearsOf(f, i) === "net" && !!i.exposure?.net_deduction_rule;
 
@@ -49,7 +51,7 @@ describe("the tax inside an Irish fund that holds its index's shares (TXF-16, F-
   const exposure = index?.exposure;
   const replication = rec?.replication;
   if (!rec || !index || !exposure?.us_dividends || !replication) throw new Error("the Irish S&P 500 fund ie00b5bmr087, how it follows its index, and the index's dividend yield are in the data");
-  const ids = (r: FundRecord, i: typeof index) => fundLabels(r, i, "abroad").map((l) => l.id);
+  const ids = (r: FundRecord, i: typeof index) => fundLabels(r, i, "abroad", listOf(r)).map((l) => l.id);
 
   it("says the tax where the figure holds it, and that it is left out where the index's record has no dividend yield to work it from", () => {
     expect(ids(rec, index)).toContain("tax-fund-dividend");
@@ -86,7 +88,7 @@ describe("wherever a collected fund may bear dividend tax inside it that the run
     if (!i) throw new Error(`the index of ${f.id}`);
     return i;
   };
-  const taxOf = (f: FundRecord) => dividendTaxLabel(f, indexOf(f));
+  const taxOf = (f: FundRecord) => dividendTaxLabel(f, indexOf(f), listOf(f));
   /** F-133 (b) first: a fund with years against a net index whose deduction is known is counted through them, whatever else it is. */
   const orYears = (f: FundRecord, label: string | null) => (netYears(f, indexOf(f)) ? "tax-fund-dividend-years" : label);
   const funds = (pick: (f: FundRecord) => boolean) => {
@@ -105,6 +107,8 @@ describe("wherever a collected fund may bear dividend tax inside it that the run
     // every swap fund on an index with a net version whose deduction is known measures against that net index (F-107, TXF-58)
     const swapLabel = (f: FundRecord) => (f.replication?.method === "swap" && indexOf(f).exposure?.net_deduction_rule ? "tax-fund-dividend-net" : "tax-fund-dividend-swap");
     for (const f of funds((x) => x.replication?.method === "swap" || x.replication?.method === "futures")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} ${orYears(f, swapLabel(f))}`);
+    // a mixed fund (swaps and futures, or the shares and synthetic options) is not counted for the same reason, Israeli or Irish
+    for (const f of funds((x) => x.replication?.method === "mixed")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} ${yearsOf(f, indexOf(f)) === "gross" ? "tax-fund-dividend-gap" : orYears(f, "tax-fund-dividend-swap")}`);
     expect(labelDefs["tax-fund-dividend-swap"].rules).toEqual(["TXS-41", "TXF-58"]);
     expect(copy.labels["tax-fund-dividend-swap"].explain).not.toMatch(/\d+(\.\d+)?%/);
   });
@@ -121,7 +125,8 @@ describe("wherever a collected fund may bear dividend tax inside it that the run
 
   it("an Israeli fund holding shares on an index of Israeli companies may hold foreign ones too (ETF-44): counted in its gap against the gross index where it has years (F-133 (c)), not counted otherwise (TXF-57)", () => {
     for (const f of funds((x) => x.domicile === "IL" && x.exposure_id === "index-ta35")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} ${yearsOf(f, indexOf(f)) === "gross" ? "tax-fund-dividend-gap" : "tax-fund-dividend-il-fund"}`);
-    for (const f of funds((x) => x.domicile === "IL" && x.replication?.method !== "swap" && x.exposure_id === "index-sp500")) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-il-fund`);
+    // an Israeli mixed fund on the S&P 500 or the NASDAQ-100 is not counted for a swap's reason, not as a fund that may hold foreign shares
+    for (const f of funds((x) => x.domicile === "IL" && x.replication?.method === "mixed" && (x.exposure_id === "index-sp500" || x.exposure_id === "index-nasdaq100"))) expect(`${f.id} ${taxOf(f)}`).toBe(`${f.id} tax-fund-dividend-swap`);
   });
 
   it("a figure of the fund's own, or a published 12-month gap, may hold the tax: counted", () => {
@@ -147,7 +152,7 @@ describe("the currency's tax on an Israeli fund on a foreign index (TXS-14, F-04
   const index = knownIndices(buildIndicesBundle()).find((i) => i.id === rec?.exposure_id);
   if (!rec || !status || !index) throw new Error("the S&P 500 fund 5129275, its status and its index are in the data");
   const withStatus = (hedged: boolean, value: string | false | null) => ({ ...rec, hedged, tax_status: { ...rec.tax_status, foreign_investment_fund: { ...status, value, notes: "as the test sets it" } } });
-  const ids = (hedged: boolean, value: string | false | null) => fundLabels(withStatus(hedged, value), index, "il-etf").map((l) => l.id);
+  const ids = (hedged: boolean, value: string | false | null) => fundLabels(withStatus(hedged, value), index, "il-etf", listOf(rec)).map((l) => l.id);
   it("says the currency is taxed only where the fund is known not to be a foreign-investment fund", () => {
     expect(ids(false, false)).toContain("tax-currency");
     expect(ids(false, false)).not.toContain("tax-currency-unknown");
@@ -171,7 +176,7 @@ describe("the tax index a Tel Aviv foreign fund's own annex states (F-04, D84)",
   const { index: _stated, ...unstated } = ruling;
   const main = { basis: "main-currency" as const, currency: "USD", page: 17, quote: "בסיס המדד", currency_quote: "דולר ארה״ב", checked: "2026-11-25" };
   const cpi = { basis: "cpi" as const, page: 16, quote: "מדד המחירים לצרכן", checked: "2026-11-25" };
-  const tax = (r: typeof rec, option: "tase-foreign" | "abroad") => fundLabels(r, index, option).filter((l) => l.id === "tax-index-currency" || l.id === "tax-index-cpi");
+  const tax = (r: typeof rec, option: "tase-foreign" | "abroad") => fundLabels(r, index, option, listOf(r)).filter((l) => l.id === "tax-index-currency" || l.id === "tax-index-cpi");
   it("says the fund's own statement, with its annex opened at the page, on the Tel Aviv line only", () => {
     const onDollar = tax({ ...rec, tax_ruling: { ...ruling, index: main } }, "tase-foreign");
     expect(onDollar.map((l) => l.id)).toEqual(["tax-index-currency"]);

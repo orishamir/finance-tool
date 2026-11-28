@@ -120,14 +120,15 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   const spread = get("median_spread", "pct_of_trade");
   const withholding = get("fund_level_withholding_drag", "pct_per_year");
   // A-11 and F-133: the case of the tax on what the fund receives from its index, which sets F-133 (b)'s A-07 in place of F-92 (b)'s
-  const inside = insideTaxCaseOf(rec, { dividends, list, typed: typed === true, withholding: withholding !== undefined, published: published !== undefined });
+  const inside = insideTaxCaseOf(rec, { dividends, list, typed: typed === true, published: published !== undefined });
   const fromNet = inside.kind === "counted" && inside.tax.years !== undefined;
   const drag: NonNullable<Fund["drag"]> = {};
   if (management !== undefined) drag.management = management;
   if (trustee !== undefined) drag.trustee = trustee;
   if (variable !== undefined) drag.variable = variable;
   if (tracking !== undefined && !fromNet) drag.tracking = tracking;
-  if (withholding !== undefined) drag.foreignWithholding = withholding;
+  // the record's own figure stands as A-11 where its case does not set it against its years (F-107 (a), F-133 (b))
+  if (withholding !== undefined && inside.kind !== "counted") drag.foreignWithholding = withholding;
   // F-121: a fee lowered for a stated period, charged at the promotion's rate in the months it covers
   const promotions = (rec.promotions ?? []).flatMap((p) => {
     const rate = fraction(p.rate, "pct_per_year", `fund ${rec.id} promotions.${p.fee}`);
@@ -138,7 +139,8 @@ export function fundOf(rec: FundRecord, kind: Fund["kind"], { distribution: dist
   // one, is `foreignWithholding` above
   if (inside.kind === "counted") {
     drag.insideTax = inside.tax;
-    notCollected.splice(notCollected.indexOf("fund_level_withholding_drag"), 1);
+    const missing = notCollected.indexOf("fund_level_withholding_drag");
+    if (missing >= 0) notCollected.splice(missing, 1);
   }
   const fund: Fund = { kind, drag };
   // A-08: half of the published median bid-ask spread.
@@ -187,22 +189,22 @@ export interface InsideTaxContext {
   dividends: IndexDividends | undefined;
   list: GapList | undefined;
   typed: boolean;
-  /** The record holds a withholding figure of its own (`fees.fund_level_withholding_drag`). */
-  withholding: boolean;
   /** The record holds a published 12-month gap (`fees.tracking_difference_12m`). */
   published: boolean;
 }
 
 /**
- * The case of a fund record's inside tax (method A-11, F-107, F-133, `insideTaxOf`), from the record, its index and its years as F-92 (d)
- * compares them: against a net benchmark, F-92 (b)'s shortfall before its floor; against a gross one, counted in the gap. The run (`fundOf`)
- * and every label read it here.
+ * The case of a fund record's inside tax (method A-11, F-107, F-133, `insideTaxOf`), from the record (its own withholding figure, the kind
+ * of tracking asset its document names), its index and its years as F-92 (d) compares them: against a net benchmark, F-92 (b)'s shortfall
+ * before its floor; against a gross one, counted in the gap. The run (`fundOf`) and every label read it here.
  */
-export function insideTaxCaseOf(rec: FundRecord, { dividends, list, typed, withholding, published }: InsideTaxContext): InsideTaxCase {
+export function insideTaxCaseOf(rec: FundRecord, { dividends, list, typed, published }: InsideTaxContext): InsideTaxCase {
   const years = published ? null : comparedYears(rec.tracking_record, list);
-  const net = years && rec.tracking_record?.benchmark.dividends === "net" ? shortfallBeyondFees(years, sumFees(rec)) : null;
+  const tracksNet = rec.tracking_record?.benchmark.dividends === "net";
+  const net = years && tracksNet ? shortfallBeyondFees(years, sumFees(rec)) : null;
+  const withholding = fraction(rec.fees.fund_level_withholding_drag, "pct_per_year", `fund ${rec.id} fees.fund_level_withholding_drag`) ?? null;
   return insideTaxOf(
-    { domicile: rec.domicile, replication: rec.replication?.method ?? null, distribution: rec.distribution_policy, ownFigure: withholding || published, typed },
+    { domicile: rec.domicile, replication: rec.replication?.method ?? null, distribution: rec.distribution_policy, withholding, publishedGap: published, tracksNet, typed },
     dividends,
     { net: net === null ? null : { shortfall: net }, gross: years !== null && rec.tracking_record?.benchmark.dividends === "gross" },
   );

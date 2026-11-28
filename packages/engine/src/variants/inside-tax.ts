@@ -3,7 +3,7 @@
 // (site/app/lib/labels.ts), so a fund is never counted one way and labelled another.
 import { assertNever, type FundRecord } from "@finance-tool/schema";
 import { heldDividendTax, netDeduction, type RatedPart } from "../formulas/inside-tax.ts";
-import type { InsideTaxEndsLabel } from "../result.ts";
+import type { InsideTaxEndsLabel, InsideTaxParts } from "../result.ts";
 
 /** The fund countries F-107's table has a row for (TXF-54 to TXF-57). */
 export type FundCountry = "ireland" | "luxembourg" | "us" | "israel";
@@ -70,6 +70,8 @@ interface Cell {
   low: FigureRef;
   high: FigureRef;
   question?: string;
+  /** The row's rule, where it is what settles that the fund bears the domestic rate (Luxembourg's own statement of which treaties reach its funds, TXF-55). */
+  settledBy?: string;
 }
 
 const DOMESTIC = "TXF-53";
@@ -77,6 +79,7 @@ const own = (c: CompanyCountry): FigureRef => [DOMESTIC, c];
 const settled = (ref: FigureRef): Cell => ({ low: ref, high: ref });
 const domestic = (c: CompanyCountry): Cell => settled(own(c));
 const claim = (low: FigureRef, c: CompanyCountry, question: string): Cell => ({ low, high: own(c), question });
+const domesticBy = (c: CompanyCountry, rule: string): Cell => ({ ...domestic(c), settledBy: rule });
 
 /**
  * F-107 (b)'s table, each fund country's row with its rule and a cell per company country, every rate a figure of a rule in `data/rules/`.
@@ -99,14 +102,14 @@ export const INSIDE_TAX_ROWS: Record<FundCountry, { rule: string; cells: Record<
   luxembourg: {
     rule: "TXF-55",
     cells: {
-      us: domestic("us"),
+      us: domesticBy("us", "TXF-55"),
       uk: domestic("uk"),
-      ch: domestic("ch"),
+      ch: domesticBy("ch", "TXF-55"),
       fr: claim(["TXF-55", "fr_accepted"], "fr", "TXF-OQ29"),
       de: claim(["TXF-55", "de_accepted"], "de", "TXF-OQ29"),
-      nl: domestic("nl"),
-      jp: domestic("jp"),
-      ca: domestic("ca"),
+      nl: domesticBy("nl", "TXF-55"),
+      jp: domesticBy("jp", "TXF-55"),
+      ca: domesticBy("ca", "TXF-55"),
     },
   },
   us: {
@@ -148,16 +151,19 @@ export const INSIDE_TAX_FLAGS: readonly string[] = [
 /**
  * What A-11 is for a fund the run counts it for, at one end or two:
  * - `held`: it holds the shares and bears F-107 (b)'s rates, at the accepted rate (`accepted`, a collected fund) or at both ends (a typed one);
- * - `net`: a swap fund with no years, read as paying the net index, bears its deduction (F-133 (a)): the fund's own statement, or the
- *   site's reading for a typed fund;
+ * - `own`: the record's own figure (F-107 (a)), a fraction a year, set against its years against a net index by F-133 (b);
+ * - `net`: a swap fund with no years, read as paying the net index, bears its deduction (F-133 (a)): the fund's own statement where its
+ *   own document names the net index as its tracking asset, else the site's reading;
  * - `futures-net`: a typed futures fund on a collected index, 0 to the net index's deduction;
- * - `synthetic-domestic`: a typed swap or futures fund on an index the person added, 0 to the highest domestic rate over each part's countries;
+ * - `synthetic-domestic`: a typed swap or futures fund on an index whose net deduction is not known (one the person added, the S&P 500),
+ *   0 to the highest domestic rate over each part's countries;
  * - `way-not-known`: a typed fund whose way of following was not said, the widest of `held` and its swap reading (`net`, or the highest
  *   domestic rate, `domestic`);
  * - `none`: 0, where its years carry what it bore (F-133 (b)).
  */
 export type InsideTaxBasis =
   | { kind: "held"; fund: FundCountry; ends: "accepted" | "both" }
+  | { kind: "own"; rate: number }
   | { kind: "net"; statement: "fund" | "reading" }
   | { kind: "futures-net" }
   | { kind: "synthetic-domestic" }
@@ -176,9 +182,9 @@ export interface InsideTax {
 
 /**
  * Why a fund's inside tax is not counted, each said by its own label: a US fund that keeps its income (TXF-50); a swap, futures or mixed
- * fund the method has no deduction for (the S&P 500, the NASDAQ-100, mixed or collected futures with no years); a fund whose way of
- * following is not recorded or holds only some of the shares; an index with no part whose yield the site holds; a fund of a country F-107
- * has no row for.
+ * fund the method has no deduction for (a collected one on the S&P 500, the NASDAQ-100, mixed or collected futures with no years, an
+ * index with no part whose yield the site holds); a collected fund whose way of following is not recorded; an index with no part whose
+ * yield the site holds; a fund of a country F-107 has no row for.
  */
 export type NotCounted = "us-keeps" | "synthetic" | "some-shares" | "no-parts" | "domicile";
 
@@ -193,8 +199,12 @@ export interface InsideTaxFund {
   domicile: string;
   replication: NonNullable<FundRecord["replication"]>["method"] | null;
   distribution: FundRecord["distribution_policy"];
-  /** The record holds a withholding figure of its own or a published 12-month gap (A-11 (1), (2)). */
-  ownFigure: boolean;
+  /** The record's own withholding figure (A-11 (1), F-107 (a)), a fraction a year; null where it holds none. */
+  withholding: number | null;
+  /** The record holds a published 12-month gap (A-11 (2)). */
+  publishedGap: boolean;
+  /** The fund's own document names a net index as its tracking asset (`tracking_record.benchmark.dividends`, with years or none). */
+  tracksNet: boolean;
   /** The site read none of the fund's documents: a fund the person typed (D44). */
   typed: boolean;
 }
@@ -207,7 +217,7 @@ export interface InsideTaxYears {
 
 /** One rule for every fund, collected or typed (method F-107): the case it is in, from what it is, its index and its years. */
 export function insideTaxOf(fund: InsideTaxFund, dividends: IndexDividends | undefined, years: InsideTaxYears): InsideTaxCase {
-  if (fund.ownFigure) return { kind: "own-figure" };
+  if (fund.publishedGap) return { kind: "own-figure" };
   const country = fundCountryOf(fund.domicile);
   const parts = partsOf(dividends);
   const netRule = dividends?.source === "collected" ? dividends.netRule : null;
@@ -215,23 +225,29 @@ export function insideTaxOf(fund: InsideTaxFund, dividends: IndexDividends | und
   const counted = (basis: InsideTaxBasis, extra: Pick<InsideTax, "years"> = {}): InsideTaxCase => ({ kind: "counted", tax: { basis, parts, ...(netRule ? { netRule } : {}), ...extra } });
   const notCounted = (why: NotCounted): InsideTaxCase => ({ kind: "not-counted", why });
   const heldBasis = (c: FundCountry): InsideTaxBasis => ({ kind: "held", fund: c, ends: fund.typed ? "both" : "accepted" });
-  // F-133 (b): years against a net index whose deduction is known, whatever way the fund follows it; w is F-107's where F-107 applies
+  // F-133 (b): years against a net index whose deduction is known, whatever way the fund follows it; w is the record's own figure where it
+  // holds one (F-107 (a)), else F-107 (b)'s where F-107 applies
   if (years.net && netRule && parts.length > 0) {
+    if (fund.withholding !== null) return counted({ kind: "own", rate: fund.withholding }, { years: years.net });
     const held = fund.replication === "physical" && country !== undefined && !keeps;
     return counted(held ? heldBasis(country) : { kind: "none" }, { years: years.net });
   }
+  // F-107 (a): with no such years, the record's own figure stands for the fund
+  if (fund.withholding !== null) return { kind: "own-figure" };
   if (keeps) return notCounted("us-keeps");
   if (years.gross) return { kind: "gap-gross" };
   switch (fund.replication) {
+    // co-equal parts such as swaps and futures, or the shares and synthetic options: with no years against a net index whose deduction is
+    // known, not counted for the same reason as a swap or futures fund
     case "mixed":
-      return country ? notCounted("some-shares") : notCounted("domicile");
-    // what a swap or futures deduct is the index's, whatever the fund's country (TXS-41, F-133 (a))
+      return country ? notCounted("synthetic") : notCounted("domicile");
+    // what a swap or futures deduct is the index's, whatever the fund's country (TXS-41, F-133 (a)); where the index's net deduction is not
+    // known (an added index, the S&P 500), a typed fund runs at 0 to the highest domestic rate, and a collected one is not counted
     case "swap":
     case "futures": {
       if (parts.length === 0) return notCounted("synthetic");
-      if (dividends?.source === "added") return fund.typed ? counted({ kind: "synthetic-domestic" }) : notCounted("synthetic");
-      if (!netRule) return notCounted("synthetic");
-      if (fund.replication === "swap") return counted({ kind: "net", statement: fund.typed ? "reading" : "fund" });
+      if (!netRule) return fund.typed ? counted({ kind: "synthetic-domestic" }) : notCounted("synthetic");
+      if (fund.replication === "swap") return counted({ kind: "net", statement: fund.tracksNet && !fund.typed ? "fund" : "reading" });
       return fund.typed ? counted({ kind: "futures-net" }) : notCounted("synthetic");
     }
     case "physical":
@@ -243,8 +259,7 @@ export function insideTaxOf(fund: InsideTaxFund, dividends: IndexDividends | und
       // a US fund that pays out bears no US tax on its US companies however it follows its index (TXF-56); its other parts as it holds them
       if (country === "us" && !fund.typed) return counted(heldBasis(country));
       if (!fund.typed) return notCounted("some-shares");
-      if (dividends?.source === "added") return counted({ kind: "way-not-known", fund: country, swap: "domestic" });
-      return netRule ? counted({ kind: "way-not-known", fund: country, swap: "net" }) : notCounted("some-shares");
+      return counted({ kind: "way-not-known", fund: country, swap: netRule ? "net" : "domestic" });
     }
     default:
       return assertNever(fund.replication);
@@ -252,18 +267,22 @@ export function insideTaxOf(fund: InsideTaxFund, dividends: IndexDividends | und
 }
 
 /**
- * Whether a counted case runs at two ends (method F-107, "One reading, or two ends"), from its structure alone, as a label says it before
- * any rate is read: a held part over several countries or on an open cell, at both ends; a typed synthetic fund, or one whose way is not said.
+ * Whether a counted case runs at two ends (method F-107, "One reading, or two ends"), from its structure, as a label says it before any rate
+ * is read: its low end differs from its high (`insideTaxEnds`), which a test holds on every case. A part with no dividends adds nothing at
+ * either end. At both ends, a held part over several countries or on an open cell; a typed synthetic fund, or one whose way is not said,
+ * whose low end is 0 and high end a positive rate on a part with dividends.
  */
 export function hasTwoEnds(t: InsideTax): boolean {
   const b = t.basis;
+  const paying = t.parts.filter((p) => p.yield * p.weight > 0);
   switch (b.kind) {
     case "held":
-      return b.ends === "both" && t.parts.some((p) => p.countries.length > 1 || p.countries.some((c) => INSIDE_TAX_ROWS[b.fund].cells[c].question !== undefined));
+      return b.ends === "both" && paying.some((p) => p.countries.length > 1 || p.countries.some((c) => INSIDE_TAX_ROWS[b.fund].cells[c].question !== undefined));
     case "futures-net":
     case "synthetic-domestic":
     case "way-not-known":
-      return true;
+      return paying.length > 0;
+    case "own":
     case "net":
     case "none":
       return false;
@@ -275,6 +294,9 @@ export function hasTwoEnds(t: InsideTax): boolean {
 /** Whether a case's parts are the whole index: their shares add up to one (an index of US companies, or an added index's region). */
 export const coversIndex = (t: Pick<InsideTax, "parts">): boolean => Math.abs(t.parts.reduce((a, p) => a + p.weight, 0) - 1) < 1e-9;
 
+/** What of the index a case's parts are, for the doubt on its two ends: a region's countries, a part of the index, or the whole. */
+export const partsScope = (t: Pick<InsideTax, "parts">): InsideTaxParts => (t.parts.some((p) => p.countries.length > 1) ? "region" : coversIndex(t) ? "whole" : "part");
+
 /** A rate a figure of a rule gives, as a fraction: the run reads it through its rule book, a page from the bundle's rules. */
 export type RateOf = (rule: string, figure: string) => number;
 
@@ -285,9 +307,9 @@ export type InsideTaxWhy = InsideTaxEndsLabel["why"];
 export interface InsideTaxEnds {
   low: number;
   high: number;
-  /** The rule a cautious label on the two ends names, and why there are two (`InsideTaxWhy`); absent at one end. */
-  open?: { rule: string; why: InsideTaxWhy };
-  /** Rules the run cites beside the figures it reads: TXS-41 where a swap's terms decide it, or on an Israeli fund. */
+  /** The rule a cautious label on the two ends names, why there are two (`InsideTaxWhy`) and what of the index they are on; absent at one end. */
+  open?: { rule: string; why: InsideTaxWhy; parts: InsideTaxParts };
+  /** Rules the run cites beside the figures it reads: TXS-41 where a swap's terms decide it, or on an Israeli fund; a row's rule where it settles a domestic rate (TXF-55). */
   cites: string[];
   flags: string[];
   formulas: ("F-107" | "F-133")[];
@@ -296,13 +318,15 @@ export interface InsideTaxEnds {
 }
 
 /** F-107 (b) on each part: the least accepted rate and the greatest high rate over its countries, times its yield and share. */
-function heldEnds(fund: FundCountry, parts: readonly DividendPart[], both: boolean, rate: RateOf): { low: number; high: number; flags: string[] } {
+function heldEnds(fund: FundCountry, parts: readonly DividendPart[], both: boolean, rate: RateOf): { low: number; high: number; flags: string[]; cites: string[] } {
   const row = INSIDE_TAX_ROWS[fund].cells;
   const flags = new Set<string>();
+  const cites = new Set<string>();
   const low: RatedPart[] = [];
   const high: RatedPart[] = [];
   for (const p of parts) {
     const cells = p.countries.map((c) => row[c]);
+    for (const c of cells) if (c.settledBy) cites.add(c.settledBy);
     low.push({ rate: Math.min(...cells.map((c) => rate(...c.low))), yield: p.yield, weight: p.weight });
     if (both) high.push({ rate: Math.max(...cells.map((c) => rate(...c.high))), yield: p.yield, weight: p.weight });
     if (p.countries.length > 1) flags.add(REGION_FLAG);
@@ -310,7 +334,7 @@ function heldEnds(fund: FundCountry, parts: readonly DividendPart[], both: boole
     else if (!both) for (const c of cells) if (c.question) flags.add(c.question);
   }
   const w = heldDividendTax(low);
-  return { low: w, high: both ? heldDividendTax(high) : w, flags: [...flags] };
+  return { low: w, high: both ? heldDividendTax(high) : w, flags: [...flags], cites: [...cites] };
 }
 
 /** F-133: the net index's deduction over the parts, each part one company country at its provider's rate. */
@@ -324,7 +348,7 @@ function deductionOf(netRule: string, parts: readonly DividendPart[], rate: Rate
   );
 }
 
-/** The highest domestic rate (TXF-53) over each part's countries, times its yield and share: the high end of a swap or futures on an added index. */
+/** The highest domestic rate (TXF-53) over each part's countries, times its yield and share: the high end of a typed swap or futures fund on an index whose net deduction is not known. */
 const domesticHigh = (parts: readonly DividendPart[], rate: RateOf): number =>
   heldDividendTax(parts.map((p) => ({ rate: Math.max(...p.countries.map((c) => rate(DOMESTIC, c))), yield: p.yield, weight: p.weight })));
 
@@ -341,12 +365,15 @@ export function insideTaxEnds(t: InsideTax, rate: RateOf): InsideTaxEnds {
   switch (b.kind) {
     case "none":
       return withYears({ low: 0, high: 0, cites: [], flags: [], formulas: [] });
+    case "own":
+      return withYears({ low: b.rate, high: b.rate, cites: [], flags: [], formulas: ["F-107"] });
     case "held": {
       const e = heldEnds(b.fund, t.parts, b.ends === "both", rate);
-      // the rates read are cited by their reading; the row's rule only holds a case at two ends open (its cautious label)
+      // the rates read are cited by their reading, with the row's rule where it settles a domestic rate; the row's rule otherwise only holds
+      // a case at two ends open (its cautious label)
       const rule = INSIDE_TAX_ROWS[b.fund].rule;
-      const cites = b.fund === "israel" ? ["TXS-41"] : [];
-      return withYears({ low: e.low, high: e.high, ...(e.low !== e.high ? { open: { rule, why: "claim" as const } } : {}), cites, flags: e.flags, formulas: ["F-107"] });
+      const cites = [...(b.fund === "israel" ? ["TXS-41"] : []), ...e.cites];
+      return withYears({ low: e.low, high: e.high, ...(e.low !== e.high ? { open: { rule, why: "claim" as const, parts: partsScope(t) } } : {}), cites, flags: e.flags, formulas: ["F-107"] });
     }
     case "net": {
       const d = deductionOf(needNet(t), t.parts, rate);
@@ -355,20 +382,21 @@ export function insideTaxEnds(t: InsideTax, rate: RateOf): InsideTaxEnds {
     case "futures-net": {
       const netRule = needNet(t);
       const d = deductionOf(netRule, t.parts, rate);
-      return { low: 0, high: d, open: { rule: netRule, why: "futures" }, cites: ["TXS-41"], flags: [], formulas: ["F-133"], deduction: d };
+      return { low: 0, high: d, open: { rule: netRule, why: "futures", parts: partsScope(t) }, cites: ["TXS-41"], flags: [], formulas: ["F-133"], deduction: d };
     }
     case "synthetic-domestic":
-      return { low: 0, high: domesticHigh(t.parts, rate), open: { rule: DOMESTIC, why: "synthetic" }, cites: ["TXS-41"], flags: t.parts.some((p) => p.countries.length > 1) ? [REGION_FLAG] : [], formulas: ["F-107"] };
+      return { low: 0, high: domesticHigh(t.parts, rate), open: { rule: DOMESTIC, why: "synthetic", parts: partsScope(t) }, cites: ["TXS-41"], flags: t.parts.some((p) => p.countries.length > 1) ? [REGION_FLAG] : [], formulas: ["F-107"] };
     case "way-not-known": {
       const held = heldEnds(b.fund, t.parts, true, rate);
       const swap = b.swap === "net" ? deductionOf(needNet(t), t.parts, rate) : null;
-      const low = Math.min(held.low, swap ?? 0);
+      // the least of the low ends is a futures fund's 0, a price that holds the dividends before tax; the greatest of the high ends
+      const low = Math.min(held.low, 0);
       const high = Math.max(held.high, swap ?? domesticHigh(t.parts, rate));
       return {
         low,
         high,
-        open: { rule: INSIDE_TAX_ROWS[b.fund].rule, why: "way" },
-        cites: ["TXS-41"],
+        open: { rule: INSIDE_TAX_ROWS[b.fund].rule, why: "way", parts: partsScope(t) },
+        cites: ["TXS-41", ...held.cites],
         flags: held.flags,
         formulas: swap === null ? ["F-107"] : ["F-107", "F-133"],
         ...(swap === null ? {} : { deduction: swap }),

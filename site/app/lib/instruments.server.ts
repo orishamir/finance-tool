@@ -417,7 +417,7 @@ function buildFund(wrapperId: string, spec: InstrumentSpec, src: InstrumentSourc
     const exposureId = (rec as { exposure_id?: string }).exposure_id;
     const list = exposureId ? gapListOf(rec, { id: exposureId }, src.funds.filter((f) => (f as { exposure_id?: string }).exposure_id === exposureId)) : undefined;
     const dividends = dividendsOf(loadExposures().find((e) => e.id === exposureId));
-    if (insideTaxCaseOf(rec, { dividends, list, typed: false, withholding: drag.foreignWithholding !== undefined, published: drag.tracking !== undefined }).kind === "counted")
+    if (insideTaxCaseOf(rec, { dividends, list, typed: false, published: drag.tracking !== undefined }).kind === "counted")
       missing.push(`${wrapperId}: fund "${rec.id}" bears a tax inside it the method counts; the guides do not compute F-107 or F-133 (A-11)`);
     // F-92 (b): the variable fee counted forward as the invest page's engine counts it (fundOf), the mean charged in the years at
     // today's rate where the reports give A-07, so the comparison prices a fund's way at the value the invest page gives it

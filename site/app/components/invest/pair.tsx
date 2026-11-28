@@ -9,7 +9,7 @@ import { isTie, type GapList } from "@finance-tool/engine";
 import { currencyWord, groupPrices, invest as c } from "../../copy";
 import { isShekel } from "@finance-tool/schema";
 import { isCustomFund, type FundKind } from "../../lib/custom-entries";
-import { doubtAt, doubtOf, entryRules, tieShareOf, paybackMayLower, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type Availability, type FundWay, type OptionId, type InvestView, type Kind, type Reason, type WayPrice } from "../../lib/invest";
+import { doubtAt, doubtOf, entryRules, tieShareOf, paybackMayLower, gapListFor, gapOf, gapUnstated, indexSeenBy, kindOf, opensOn, pairCostsKept, phoneOnlyValue, type AsideLine as AsideLineRecord, type Availability, type FundWay, type OptionId, type InvestView, type Kind, type Reason, type WayPrice } from "../../lib/invest";
 import { brokeragePagePath } from "../../lib/site-paths";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { brokerLabels, fundLabels, label, optionLabels, type Label } from "../../lib/labels";
@@ -493,7 +493,7 @@ export const mayaHrefOf = (f: FundWay) => {
  */
 export const labelsOf = (view: InvestView, f: FundWay, bundle: IndicesBundle): Label[] => [
   f.option === "tase-foreign" ? optionLabels(f.kind)[0]! : optionLabels(f.kind)[1] ?? optionLabels(f.kind)[0]!,
-  ...fundLabels(f.rec, indexSeenBy(view.index, f.rec, bundle), f.option),
+  ...fundLabels(f.rec, indexSeenBy(view.index, f.rec, bundle), f.option, gapListFor(bundle, f.rec)),
   ...(f.currencyMismatch ? [label("currency-mismatch", f.rec.currency)] : []),
 ];
 

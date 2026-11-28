@@ -2844,7 +2844,6 @@
       "type": "object",
       "properties": {
         "years": {
-          "minItems": 1,
           "type": "array",
           "items": {
             "type": "object",
@@ -2894,7 +2893,6 @@
           }
         },
         "years_printed": {
-          "minItems": 1,
           "type": "array",
           "items": {
             "type": "integer",

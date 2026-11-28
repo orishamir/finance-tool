@@ -31,6 +31,7 @@ import {
   productId,
   wrapperRecord,
   type SeriesRecord,
+  type ExposureRecord,
   sourcesFile,
   israelToday,
   isReligiousLaw,
@@ -40,7 +41,7 @@ import {
   EFFECTIVE_RATE_PATHS,
   isUnitPriceUnit,
 } from "@finance-tool/schema";
-import { inTrailingYear, trailingDistributionYield } from "@finance-tool/engine";
+import { dividendsOf, inTrailingYear, trailingDistributionYield } from "@finance-tool/engine";
 import { questionCodesIn, questionWordsIn, urlInBlock, type RuleBaseIds } from "./references.ts";
 import { checkScope } from "./scope.ts";
 import { figureSlots, readTextLeftovers, withoutSlots, type TextLeftovers } from "./rule-text.ts";
@@ -337,6 +338,7 @@ export function validateData(ctx: ValidationContext): Problem[] {
   checkLegalStructures(files, ctx.dataDir, report);
   checkStatedTaxIndex(files, ctx.dataDir, currencies, report);
   checkPinnedRules(files, ctx.dataDir, ruleRecords, report);
+  checkNetDeductionRules(files, ctx.dataDir, ruleRecords, report);
   checkHomeGuideDoor(files, ctx.dataDir, report);
   checkDepositAmounts(files, ctx.dataDir, report);
   checkTermNames(files, ctx.dataDir, report);
@@ -410,7 +412,8 @@ export const GROSS_INDEX_RULE: Record<string, string> = { "index-ta125": "ETF-42
  * data-schema §3.5 and §4 item 17. A tracking record holds every full calendar year its
  * report prints, no fewer and no more: `years` against `years_printed`, each year once. A `gross` benchmark is admitted only on an index
  * the method names (TA-125, TA-35, TA-90), with the document that says so (its own source, or the report's page) and that index's own
- * rule; another rule id fails. An Israeli record carries the fees charged in each of its years and the page that prints them (F-92 (b): every Israeli annual
+ * rule; another rule id fails. A record with no full year keeps the field only for its tracking asset (F-133 (a)), naming the document
+ * that says what it is, and has no page of fees charged. An Israeli record carries the fees charged in each of its years and the page that prints them (F-92 (b): every Israeli annual
  * report prints them in "הוצאות שנפרעו מנכסי הקרן"); fees charged without their page fail anywhere.
  */
 export function checkTrackingRecord(record: Pick<FundRecord, "exposure_id" | "tracking_record"> & { domicile?: string; fees?: Pick<FundRecord["fees"], "variable_management"> }): string[] {
@@ -441,6 +444,11 @@ export function checkTrackingRecord(record: Pick<FundRecord, "exposure_id" | "tr
     const from = t.variable_rate_since;
     const over = charged.filter((y) => (from === null || y.year >= firstFullYear(from)) && Math.abs(y.fees_charged!.variable) > listed + 1e-9).map((y) => y.year);
     if (over.length) out.push(`tracking_record.years: ${over.join(", ")} charged a variable fee beyond today's rate of ${listed}% in a year at that rate; read the cell again`);
+  }
+  // a record with no full year keeps the field for its tracking asset alone (F-133 (a)): it names the page that says what that asset is
+  if (t.years.length === 0) {
+    if (!t.benchmark.source && !t.benchmark.page) out.push("tracking_record.benchmark: a record with no full year keeps the field for its tracking asset, and names the document that says what it is, in its own source or by the page of the record's report");
+    if (t.fees_page || t.changes_page) out.push("tracking_record: a record with no full year has no fees charged in a year, so no fees_page or changes_page");
   }
   if (t.benchmark.dividends === "gross") {
     const rule = GROSS_INDEX_RULE[record.exposure_id];
@@ -1677,6 +1685,37 @@ function checkLegalStructures(files: string[], dataDir: string, report: (file: s
     const rec = parseJson(readFileSync(file, "utf8")).value as Partial<Pick<FundRecord, "domicile" | "legal_structure">> | undefined;
     if (rec?.domicile === "IL" && rec.legal_structure !== undefined)
       report(file, "legal_structure: a foreign fund's form, which decides whether its distribution's tax is settled (F-20); an Israeli fund's record leaves it out");
+  }
+}
+
+/**
+ * data-schema §3.4 `net_deduction_rule` (method F-133): the rule an exposure names for its net index's deduction exists under data/rules/
+ * and holds a numeric figure for each company country its dividend parts name (`dividendsOf`, the parts the engine reads it on), so a run
+ * never meets a deduction it cannot read.
+ */
+export function checkNetDeductionRule(exposure: Pick<ExposureRecord, "id" | "us_dividends" | "net_deduction_rule">, rules: ReadonlyMap<string, Pick<RuleLike, "figures">>): string[] {
+  const id = exposure.net_deduction_rule;
+  if (id === undefined) return [];
+  const rule = rules.get(id);
+  if (!rule) return [`net_deduction_rule: "${id}" has no rule record under data/rules/`];
+  let countries: string[];
+  try {
+    countries = [...new Set(dividendsOf(exposure).parts.flatMap((p) => p.countries))];
+  } catch (e) {
+    return [`net_deduction_rule: the index's dividend parts do not read (${e instanceof Error ? e.message : String(e)})`];
+  }
+  return countries.flatMap((c) => {
+    const v = (rule.figures?.[c] as { value?: unknown } | undefined)?.value;
+    return typeof v === "number" ? [] : [`net_deduction_rule: ${id} has no numeric figure "${c}" for the part of the index in that country (F-133)`];
+  });
+}
+
+function checkNetDeductionRules(files: string[], dataDir: string, rules: ReadonlyMap<string, RuleLike>, report: (file: string, message: string) => void) {
+  for (const file of files) {
+    const rel = relative(dataDir, file).split(/[\\/]/).join("/");
+    if (!file.endsWith(".json") || !rel.startsWith("instruments/exposures/")) continue;
+    const v = parseJson(readFileSync(file, "utf8")).value as Pick<ExposureRecord, "id" | "us_dividends" | "net_deduction_rule"> | undefined;
+    if (v) for (const message of checkNetDeductionRule(v, rules)) report(file, message);
   }
 }
 

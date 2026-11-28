@@ -597,8 +597,8 @@ export function customFundGaps(rec: FundRecord): CustomFundGap[] {
   if (rec.distribution_policy === null) out.push("payout-unknown");
   if (rec.hedged === true) out.push("no-hedge-entered");
   if (rec.distribution_policy === "distributing") {
-    // the foreign tax withheld on a distribution is known for a fund registered in Ireland or the United States only (F-20); a country the
-    // panel names whose tax on it is not in the rule base says so (G-44)
+    // the foreign tax withheld on a distribution is known for a fund registered in a country the panel names but Luxembourg (F-20,
+    // `DISTRIBUTION_TAX_KNOWN`); Luxembourg's, not in the rule base, says so (G-44), and a country not named or not said has no price
     if (known === undefined && !out.includes("tase-country-unknown")) out.push("domicile-unknown");
     if (known === false) out.push("distribution-tax-unknown");
     if (!rec.distribution) out.push("need-yield");

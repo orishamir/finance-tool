@@ -221,7 +221,7 @@ function readingDoubtOf(labels: readonly SiteLabel[] | undefined): Pick<SiteValu
     if (l.code !== "cautious") continue;
     // A-11 at two ends (method F-107): both ends and why there are two, with the rule of the case beside them
     if (l.ends) {
-      doubts.push({ words: numbers.insideTaxDoubt[l.ends.why](fmt.pctNonZero(l.ends.low * 100), fmt.pctNonZero(l.ends.high * 100)), ruleId: l.ruleId });
+      doubts.push({ words: numbers.insideTaxDoubt[l.ends.why](fmt.pctNonZero(l.ends.low * 100), fmt.pctNonZero(l.ends.high * 100), l.ends.parts), ruleId: l.ruleId });
       continue;
     }
     const words = numbers.readingDoubt[l.ruleId]?.[l.notKnown];

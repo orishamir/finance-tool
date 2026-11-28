@@ -96,11 +96,18 @@ export interface CautiousLabel {
   ends?: InsideTaxEndsLabel;
 }
 
-/** A-11 at its two ends, fractions of the fund a year, and why there are two (the case's `InsideTaxWhy`). */
+/**
+ * What of the index A-11's parts are (method F-107): the whole index; the part of it the site holds a yield for, its US shares, where they
+ * are not the whole (`part`); or an index the person added whose companies' countries are known only by its region (`region`).
+ */
+export type InsideTaxParts = "whole" | "part" | "region";
+
+/** A-11 at its two ends, fractions of the fund a year, why there are two (the case's `InsideTaxWhy`), and what of the index they are on. */
 export interface InsideTaxEndsLabel {
   low: number;
   high: number;
   why: "claim" | "futures" | "synthetic" | "way";
+  parts: InsideTaxParts;
 }
 
 /**

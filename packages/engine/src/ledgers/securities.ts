@@ -37,8 +37,8 @@ export interface Fund {
     foreignWithholding?: number;
     /**
      * A-11 by F-107 and F-133 (`fundOf`, `insideTaxOf`): the case, the index parts it rests on, and F-133 (b)'s years. The run reads the
-     * rates from the rules; where the case has years, A-07 is F-133 (b)'s and `tracking` is not read. `foreignWithholding`, where the
-     * record holds one, stands instead and the case is absent.
+     * rates from the rules; where the case has years, A-07 is F-133 (b)'s and `tracking` is not read. `foreignWithholding`, the record's
+     * own figure, stands where there is no case (F-107 (a)); with years against a net index the case carries it instead (`own`).
      */
     insideTax?: InsideTax;
     /**
@@ -420,22 +420,22 @@ export function securitiesStopOf(input: SecuritiesInput, ctx: RunContext): Secur
  * F-51 IRA: an IRA hishtalmut holding securities pays the manager's balance fee and follows F-46 at exit.
  */
 /**
- * A-11 and A-07 as the run charges them (method F-107, F-133): the record's own withholding where it holds one; else the fund's case at its
- * ends, read from the rules. A fund the site does not know whose case has two ends meets the open reading of A-11 (`insideTaxReading`):
+ * A-11 and A-07 as the run charges them (method F-107, F-133): the fund's case at its ends, read from the rules (the record's own figure
+ * is the case `own` where its years against a net index are set against it); with no case, the record's own withholding, if any. A fund the site does not know whose case has two ends meets the open reading of A-11 (`insideTaxReading`):
  * the run is made at each end and the one that leaves the holder less stands (`acrossReadings`). A-07 is F-133 (b)'s where the case has
  * years against a net index, else the drag's own.
  */
 function insideTaxDrag(d: NonNullable<Fund["drag"]>, fund: Fund, book: RuleBook, ctx: RunContext): { withheld: number; tracking: number; formulas: string[]; flags: string[] } {
   const t = d.insideTax;
-  if (d.foreignWithholding !== undefined || !t) return { withheld: d.foreignWithholding ?? 0, tracking: d.tracking ?? 0, formulas: [], flags: [] };
+  if (!t) return { withheld: d.foreignWithholding ?? 0, tracking: d.tracking ?? 0, formulas: [], flags: [] };
   const ends = insideTaxEnds(t, (rule, figure) => book.rate(rule, figure));
   for (const r of ends.cites) book.cite(r);
   if (t.basis.kind === "net" && t.basis.statement === "reading" && t.netRule) book.label("reading", t.netRule);
   let withheld = ends.low;
   if (ends.low !== ends.high) {
     if (!ends.open) throw new Error("A-11 has two ends and no rule that holds them open");
-    if (!fund.notKnown) throw new Error("A-11 has two ends for a fund whose documents the site read; such a fund runs on the accepted rate (method F-107)");
-    const open = insideTaxReading(ends.open.rule, { low: ends.low, high: ends.high, why: ends.open.why });
+    if (fund.notKnown !== "documents") throw new Error("A-11 has two ends for a fund whose documents the site read; such a fund runs on the accepted rate (method F-107)");
+    const open = insideTaxReading(ends.open.rule, { low: ends.low, high: ends.high, why: ends.open.why, parts: ends.open.parts });
     const choice = ctx.readings?.[open.question];
     if (choice === undefined) throw new OpenReadingError(open, fund.notKnown);
     if (choice === null) throw new Error(`${open.question} has no reading that stops the run`);

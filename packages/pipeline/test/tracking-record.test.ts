@@ -28,6 +28,10 @@ describe("checkTrackingRecord", () => {
     expect(rec("index-ta90", [2025], [2025], { ...gross125, rule_ids: [] })[0]).toMatch(/recorded by ETF-45/);
     expect(rec("index-ta35", [2025], [2025], { ...gross125, rule_ids: ["ETF-44", "ETF-45"] }).join(" ")).toMatch(/ETF-45 records another index/);
   });
+  it("keeps a record with no full year only for its tracking asset, with the page that names it (F-133 (a))", () => {
+    expect(rec("index-msci-world", [], [], { dividends: "net", page: 3 })).toEqual([]);
+    expect(rec("index-msci-world", [], [], { dividends: "net" })[0]).toMatch(/no full year keeps the field for its tracking asset/);
+  });
   it("fails a gross benchmark on an index the method does not compare gross", () => {
     expect(rec("index-sp500", [2025], [2025], gross125)[0]).toMatch(/not a Tel Aviv index/);
   });

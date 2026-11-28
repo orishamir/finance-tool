@@ -163,7 +163,9 @@ export const fundRecord = z.strictObject({
   hedged: z.boolean().optional(),
   /**
    * F-92: the fund's return and its tracking asset's in each full calendar year its report prints, in percent, from the
-   * report named in `source` (the same as `fees.tracking_difference_12m`). A part year is left out; no full year leaves the field out.
+   * report named in `source` (the same as `fees.tracking_difference_12m`). A part year is left out. A report that prints no full year
+   * gives `years: []` where the record keeps its tracking asset (`benchmark`, F-133 (a) reads it with no years); otherwise no full year
+   * leaves the field out.
    */
   tracking_record: z
     .strictObject({
@@ -182,14 +184,13 @@ export const fundRecord = z.strictObject({
              */
             fees_charged: z.strictObject({ fixed: z.number().min(0), variable: z.number().min(-0.3).max(0.3), trustee: z.number().min(0) }).optional(),
           }),
-        )
-        .min(1),
+        ),
       /**
        * every full calendar year the report's returns table prints, read off the page in
-       * `page`, oldest first. The validator holds `years` to it (data-schema §4 item 17), and where the report's text is in the research
+       * `page`, oldest first; empty where it prints only a part year. The validator holds `years` to it (data-schema §4 item 17), and where the report's text is in the research
        * library a test reads the page and holds this field to it (packages/pipeline/test/tracking-years-library.test.ts).
        */
-      years_printed: z.array(z.number().int().min(1990)).min(1),
+      years_printed: z.array(z.number().int().min(1990)),
       source,
       page: z.number().int().positive().nullable(),
       /** The PDF page of the same report that prints `years[].fees_charged`; required with them (data-schema §4 item 17). */
@@ -212,6 +213,7 @@ export const fundRecord = z.strictObject({
        * former ground rule 2: the benchmark the document compares the fund with, by the name it prints, and whether that
        * index counts dividends after the tax withheld at source (`net`), before it (`gross`), or no official document says (`unstated`).
        * Every record carries it, Israeli and foreign alike: a `net` record shows a gap and takes A-07 from its years, a `gross` one only on the list F-92 (d) allows.
+       * With no years, it is the fund's own statement of the index it measures itself against (F-133 (a)), and names the page that says so.
        * `source`: the document that says so, when it is not the one in `source` above; `page`: its PDF page; `rule_ids`: the rule that
        * says how the index is computed, where the rule base has one (a Tel Aviv index: ETF-42, ETF-44, ETF-45).
        */

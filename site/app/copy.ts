@@ -2,7 +2,7 @@
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
 import { countPhrase } from "./lib/count";
 import type { FeeCap } from "@finance-tool/schema";
-import type { ChangeKind, ForeignInvestmentFundStatement, FundStatement, HeldKind, NotKnown, TaxIndexStatement } from "@finance-tool/engine";
+import type { ChangeKind, ForeignInvestmentFundStatement, FundStatement, HeldKind, InsideTaxParts, NotKnown, TaxIndexStatement } from "@finance-tool/engine";
 import type { FeeKindId } from "./lib/fee-deal/core";
 
 /**
@@ -28,6 +28,10 @@ const taxIndexRanked = "האתר מחשב לפיה את מס רווחי הון �
 export function currencyWord(code: string): string {
   return invest.currencies[code] ?? code;
 }
+
+/** The first sentence of an inside tax's doubt: both ends a year, on the whole index or on its US shares alone (method F-107). */
+const insideTaxRange = (low: string, high: string, parts: InsideTaxParts): string =>
+  `${parts === "part" ? "המס על הדיבידנדים של המניות האמריקניות בתוך הקרן" : "המס על הדיבידנדים בתוך הקרן"} הוא ${low} עד ${high} בשנה.`;
 
 /** A name's gender and number, which the words after it agree with: masculine, feminine, and each plural. */
 export type NameForm = "m" | "f" | "mp" | "fp";
@@ -116,13 +120,15 @@ export const numbers = {
   } as Record<string, Partial<Record<NotKnown, string>>>,
   /**
    * The doubt of a figure that rests on a typed fund's inside tax at two ends (method F-107, "One reading, or two ends", lib/value.ts
-   * `readingDoubtOf`): both ends as percents of the fund a year, and why there are two, by the engine's `InsideTaxWhy`.
+   * `readingDoubtOf`): both ends as percents of the fund a year, what of the index they are on (the engine's `InsideTaxParts`: the whole
+   * index, its US shares alone, or an added index whose companies' countries are known only by region), and why there are two, by the
+   * engine's `InsideTaxWhy`.
    */
   insideTaxDoubt: {
-    claim: (low: string, high: string) => `המס על הדיבידנדים בתוך הקרן הוא ${low} עד ${high} בשנה. הוא תלוי בשאלה אם המדינות של החברות במדד מקבלות את הבקשה של הקרן לשיעור מופחת, ובמדד שהוספתם גם באילו מדינות החברות. את הקרן הזו הזנתם, והאתר לא קרא את המסמכים שלה. לכן החישוב לפי ${high}, הקצה שמשאיר לכם פחות.`,
-    futures: (low: string, high: string) => `המס על הדיבידנדים בתוך הקרן הוא ${low} עד ${high} בשנה. הקרן עוקבת אחרי המדד בחוזים עתידיים, ואין כלל שאומר כמה מס על הדיבידנדים נמצא במחיר שלהם: אפס, או עד מה שגרסת הנטו של המדד מנכה. לכן החישוב לפי ${high}, הקצה שמשאיר לכם פחות.`,
-    synthetic: (low: string, high: string) => `המס על הדיבידנדים בתוך הקרן הוא ${low} עד ${high} בשנה. הקרן לא מחזיקה את המניות, ומה שהעסקה שלה מנכה מהדיבידנדים לא ידוע במדד שהוספתם: אפס, או עד השיעור הגבוה ביותר שמדינה באזור הזה גובה. לכן החישוב לפי ${high}, הקצה שמשאיר לכם פחות.`,
-    way: (low: string, high: string) => `המס על הדיבידנדים בתוך הקרן הוא ${low} עד ${high} בשנה. לא הזנתם אם הקרן מחזיקה את המניות או עוקבת אחרי המדד בעסקה, והמס שונה בין הדרכים. לכן החישוב לפי ${high}, הקצה שמשאיר לכם פחות. אפשר לבחור את הדרך בעריכת הקרן.`,
+    claim: (low: string, high: string, parts: InsideTaxParts) => `${insideTaxRange(low, high, parts)} הוא תלוי בשאלה אם המדינות של החברות במדד מקבלות את הבקשה של הקרן לשיעור מופחת${parts === "region" ? ", וגם באילו מדינות החברות במדד שהוספתם" : ""}. את הקרן הזו הזנתם, והאתר לא קרא את המסמכים שלה. לכן החישוב לפי ${high}, הקצה שמשאיר לכם פחות.`,
+    futures: (low: string, high: string, parts: InsideTaxParts) => `${insideTaxRange(low, high, parts)} הקרן עוקבת אחרי המדד בחוזים עתידיים, ואין כלל שאומר כמה מס על הדיבידנדים נמצא במחיר שלהם. שני הקצוות הם קריאה של האתר: אפס, או עד מה שגרסת הנטו של המדד מנכה. לכן החישוב לפי ${high}, הקצה שמשאיר לכם פחות.`,
+    synthetic: (low: string, high: string, parts: InsideTaxParts) => `${insideTaxRange(low, high, parts)} הקרן לא מחזיקה את המניות, ולא ידוע מה העסקה או החוזים שלה מנכים מהדיבידנדים במדד הזה. שני הקצוות הם קריאה של האתר: אפס, או עד השיעור הגבוה ביותר מבין המדינות שהאתר קרא את השיעור שלהן. לכן החישוב לפי ${high}, הקצה שמשאיר לכם פחות.`,
+    way: (low: string, high: string, parts: InsideTaxParts) => `${insideTaxRange(low, high, parts)} לא הזנתם אם הקרן מחזיקה את המניות או עוקבת אחרי המדד בעסקה או בחוזים עתידיים, והמס שונה בין הדרכים. לכן החישוב לפי ${high}, הקצה שמשאיר לכם פחות. אפשר לבחור את הדרך בעריכת הקרן.`,
   },
   yes: "כן",
   no: "לא",
@@ -4280,7 +4286,7 @@ export const invest = {
         "payout-unknown": "לא ידוע אם צוברת",
         "fee-unknown": "חסרים דמי ניהול",
         "domicile-unknown": "חסרה מדינת הרישום",
-        "distribution-tax-unknown": "המס על החלוקה לא ידוע",
+        "distribution-tax-unknown": "מס לוקסמבורג על החלוקה לא ידוע",
         "tase-country-unknown": "חסרה מדינת הרישום",
         "sold-fund-by-fund": "לא ברור אם נקנית",
         "no-agreement-found": "לא ברור אם נקנית",
@@ -5293,16 +5299,16 @@ export const invest = {
     /** An Israeli fund on TA-35, TA-90 or TA-125 with yearly records against the gross index: its tax is in its gap (F-133 (c)). */
     "tax-fund-dividend-gap": { text: "מס דיבידנד בקרן: בתוך הפער", explain: "הקרן מודדת את עצמה מול גרסת הברוטו של המדד, שמשקיעה מחדש כל דיבידנד לפני מס. לכן כל מס שהקרן שילמה על הדיבידנדים, למשל על מניה זרה שבמדד, כבר נמצא בפער שלה מהמדד בשנים שהדוחות שלה מראים, והחישוב כולל אותו דרך הפער." },
     /** A collected swap fund with no years, read as paying its net index (F-133 (a)). */
-    "tax-fund-dividend-net": { text: "מס דיבידנד בקרן: לפי מדד נטו", explain: "הקרן לא מחזיקה את מניות המדד: היא עוקבת אחריו בעסקת החלף, שמשלמת את התשואה של גרסת הנטו של המדד. גרסת הנטו של MSCI מנכה מכל דיבידנד את מלוא המס שמדינת החברה גובה ממי שלא נהנה מאמנה, והחישוב כולל את הניכוי הזה על החלק האמריקני של המדד. מה שגרסת הנטו מנכה מהחברות מחוץ לארה״ב לא נכלל, ולכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
+    "tax-fund-dividend-net": { text: "מס דיבידנד בקרן: לפי מדד נטו", explain: "הקרן לא מחזיקה את מניות המדד: היא עוקבת אחריו בעסקת החלף. לפי המסמכים שלה, היא מודדת את עצמה מול גרסת הנטו של המדד. גם קרנות החלף של אי.בי.אי., קסם, MTF ומור מודדות את עצמן כך, לפי הדוחות שלהן. גרסת הנטו של MSCI מנכה מכל דיבידנד את מלוא המס שמדינת החברה גובה ממי שלא נהנה מאמנה. החישוב כולל את הניכוי הזה על החלק האמריקני של המדד. לפי המסמכים של Invesco על קרן ה־S&P 500 שלה, העסקה יכולה להניח ניכוי נמוך מזה של המדד, ואז העלות של הקרן נמוכה ממה שמוצג כאן. מה שגרסת הנטו מנכה מהחברות מחוץ לארה״ב לא נכלל, ולכן העלות של הקרן יכולה גם להיות גבוהה ממה שמוצג כאן." },
     /** A swap fund the person typed on a collected index with a known net deduction: the site's reading that its swap pays the net index (F-133 (a)). */
-    "tax-fund-dividend-net-reading": { text: "מס דיבידנד בקרן: לפי קריאת האתר", explain: "הקרן עוקבת אחרי המדד בעסקת החלף. בכל קרן על עסקת החלף שהמסמכים שלה נמצאים באתר, העסקה משלמת את התשואה של גרסת הנטו של המדד, שמנכה מכל דיבידנד את מלוא המס שמדינת החברה גובה ממי שלא נהנה מאמנה. את הקרן הזו הזנתם, והאתר לא קרא את המסמכים שלה, ולכן זו קריאה של האתר: החישוב כולל את הניכוי של גרסת הנטו על החלק האמריקני של המדד. לפי המסמכים של קרן אחת, העסקה יכולה להניח ניכוי נמוך יותר, ואז העלות של הקרן נמוכה ממה שמוצג כאן." },
+    "tax-fund-dividend-net-reading": { text: "מס דיבידנד בקרן: לפי קריאת האתר", explain: "הקרן עוקבת אחרי המדד בעסקת החלף. לפי הדוחות שלהן, קרנות החלף של אי.בי.אי., קסם, MTF ומור מודדות את עצמן מול גרסת הנטו של המדד, וכך גם קרן ה־S&P 500 של Invesco לפי המסמכים שלה. גרסת הנטו של MSCI מנכה מכל דיבידנד את מלוא המס שמדינת החברה גובה ממי שלא נהנה מאמנה. על הקרן הזו אין באתר מסמך שאומר מול איזו גרסה של המדד היא נמדדת, ולכן זו קריאה של האתר: החישוב כולל את הניכוי של גרסת הנטו על החלק האמריקני של המדד. לפי המסמכים של Invesco על קרן ה־S&P 500 שלה, העסקה יכולה להניח ניכוי נמוך מזה של המדד, ואז העלות של הקרן נמוכה ממה שמוצג כאן. מה שגרסת הנטו מנכה מהחברות מחוץ לארה״ב לא נכלל, ולכן העלות של הקרן יכולה גם להיות גבוהה ממה שמוצג כאן." },
     /** A typed fund whose inside tax has two ends: the list shows the cautious end, its "?" and receipt both (method F-107). */
     "tax-fund-dividend-range": { text: "מס דיבידנד בקרן: כטווח", explain: "המס על הדיבידנדים בתוך הקרן תלוי במה שהאתר לא יודע על הקרן: אם המדינות של החברות מקבלות את הבקשה שלה לשיעור מופחת, איך היא עוקבת אחרי המדד, או באילו מדינות החברות במדד שהוספתם. החישוב נעשה בשני הקצוות, והסכום שמופיע הוא של הקצה שמשאיר לכם פחות. סימן השאלה ליד הסכום ושורת המס בקבלה מראים את שני הקצוות. מס על חלקים של המדד שאין לאתר את תשואת הדיבידנד שלהם לא נכלל." },
     "tax-fund-dividend-left-out": { text: "מס דיבידנד בקרן: לא נכלל", explain: "קרן שמחזיקה את מניות המדד משלמת מס על הדיבידנדים מהחברות שבו, והמס הזה הוא עלות של הקרן. בקרן הזו האתר לא כולל אותו בחישוב: כדי לחשב אותו צריך את תשואת הדיבידנד של המדד, ולאתר אין נתון כזה למדד הזה. לכן העלות של הקרן גבוהה ממה שמוצג כאן." },
     /** A fund that holds the shares of an index whose US share is below one (MSCI World, MSCI ACWI), with no years: the US part is counted (F-107), the rest is not. */
     "tax-fund-dividend-part": { text: "מס דיבידנד בקרן: נכלל חלקית", explain: "קרן שמחזיקה את מניות המדד משלמת מס על דיבידנדים מחברות אמריקניות, והחישוב כולל אותו. גם מהדיבידנדים של החברות ממדינות אחרות שבמדד עשוי להיות מנוכה מס, בשיעור שתלוי במדינה של כל חברה. המס הזה הוא עלות של הקרן, ולא מזוכה בישראל: זו קריאה של האתר. האתר לא כולל אותו בחישוב, כי הוא לא יודע מה החלק של כל מדינה במדד, ולא לכל מדינה יש שיעור סגור. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
     /** A fund that follows its index through a swap or futures, with no figure of its own: what the swap pays is set by its terms. */
-    "tax-fund-dividend-swap": { text: "מס דיבידנד בקרן: לא נכלל", explain: "הקרן לא מחזיקה את מניות המדד: היא עוקבת אחריו בעסקת החלף או בחוזים עתידיים. בעסקת החלף, מה שהקרן מקבלת נקבע בתנאי העסקה, ויכול להיות אחרי ניכוי מס מהדיבידנדים: לפי המסמכים של קרן אחת, העסקה שלה משלמת את התשואה של המדד נטו, כלומר אחרי מס על הדיבידנדים. האתר לא כולל מס כזה בחישוב: במדד הזה הוא לא יודע כמה גרסת הנטו מנכה, או שלקרן אין שנים בדוחות שהיו מראות אותו. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
+    "tax-fund-dividend-swap": { text: "מס דיבידנד בקרן: לא נכלל", explain: "הקרן לא מחזיקה את מניות המדד, או לא רק אותן: היא עוקבת אחריו בעסקת החלף, בחוזים עתידיים או בשילוב של דרכים. בעסקת החלף, מה שהקרן מקבלת נקבע בתנאי העסקה, ויכול להיות אחרי ניכוי מס מהדיבידנדים: לפי המסמכים של Invesco על קרן ה־S&P 500 שלה, העסקה משלמת את התשואה של המדד נטו, כלומר אחרי מס על הדיבידנדים. האתר לא כולל מס כזה בחישוב: במדד הזה הוא לא יודע כמה גרסת הנטו מנכה, או שלקרן אין שנים בדוחות שהיו מראות אותו. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
     /** A US fund that keeps its income: the US tax on what it keeps falls inside it (TXF-50). */
     "tax-fund-dividend-us-keeps": { text: "מס דיבידנד בקרן: לא נכלל", explain: "קרן אמריקנית שלא מחלקת את ההכנסה שלה משלמת עליה מס בתוך הקרן: לפי החוק האמריקני, היא משלמת מס על הכנסה שהיא שומרת, ובנוסף מס על מה שחסר לה כדי להגיע לסכום החלוקה שהחוק קובע. המס הזה הוא עלות של הקרן. האתר לא כולל אותו בחישוב, כי הוא לא יודע כמה מההכנסה הקרן שומרת. גם מס שעשוי להיות מנוכה מדיבידנדים של חברות מחוץ לארה״ב, אם הקרן מחזיקה כאלה, לא נכלל. לכן העלות של הקרן יכולה להיות גבוהה ממה שמוצג כאן." },
     /** On an index the person added, in a region with a rule, with no yield typed (F-107 needs it). */

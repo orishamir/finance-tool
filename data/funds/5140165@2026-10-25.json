@@ -213,5 +213,22 @@
     }
   },
   "hedged": true,
+  "tracking_record": {
+    "years": [],
+    "years_printed": [],
+    "source": {
+      "url": "https://mayafiles.tase.co.il/rpdf/1728001-1729000/P1728922-00.pdf",
+      "title": "דוח שנתי 'MTF מחקה (4D) MSCI World מנוטרלת דולר' (מספר בורסה 5140165), תאריך הדוח 31 בדצמבר 2025, מגדל קרנות נאמנות בע\"מ (Maya filing 1728922, PDF), עמ' 9 'תשואות, סטיות תקן ונתוני השוואה'",
+      "publisher": "מגדל קרנות נאמנות בע\"מ",
+      "strength": "institution"
+    },
+    "page": 9,
+    "checked": "2026-11-28",
+    "benchmark": {
+      "name": "MSCI WORLD INDEX - NTR",
+      "dividends": "net",
+      "page": 3
+    }
+  },
   "snapshot": "2026-10-25"
 }

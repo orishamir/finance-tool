@@ -9,7 +9,7 @@ import { assertNever, type FundRecord, type ValueObject } from "@finance-tool/sc
 import { addedIndexCurrency, asksCountry, boughtInAt, boughtInSaid, BUY_ABROAD, BUY_IN_ISRAEL, countryChoicesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, NAME_MAX, registeredOf, tradedOnExchange, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { DIVIDEND_TAX_COUNTS, dividendTaxLabel, fundLabels, optionLabels, type DividendTaxLabelId, type Label } from "../../lib/labels";
 import { asksYield, INDEX_REGIONS, type IndexFacts, type IndexRegion } from "../../lib/index-region";
-import { addedIndexAs, optionOfFund, optionsOf, type CustomIndex, type IndexRef } from "../../lib/invest";
+import { addedIndexAs, optionOfFund, optionsOf, typedGapList, type CustomIndex, type IndexRef } from "../../lib/invest";
 import { isoToday } from "../../lib/state";
 import { entered } from "../../lib/value";
 import { Num, StateTag } from "../provenance";
@@ -178,7 +178,7 @@ function draftRecord(d: FundDraft, index: IndexRef, today: string): FundRecord |
 function rowLabels(d: FundDraft, rec: FundRecord | null, seen: IndexRef): Label[] {
   const kind = draftKind(d);
   if (!rec || !kind) return [];
-  const all = [...optionLabels(kind), ...fundLabels(rec, seen, optionOfFund(rec, seen.exposure ?? undefined))];
+  const all = [...optionLabels(kind), ...fundLabels(rec, seen, optionOfFund(rec, seen.exposure ?? undefined), typedGapList(rec, seen))];
   return d.hedged === null ? all.filter((l) => !HEDGE_LABELS.has(l.id)) : all;
 }
 const HEDGE_LABELS = new Set<string>(["currency", "currency-many", "currency-foreign", "currency-bought", "hedged", "hedged-many", "tax-currency"]);
@@ -196,7 +196,7 @@ function needsOf(d: FundDraft, rec: FundRecord | null, index: IndexRef, seen: In
   const w = c.needs;
   const gaps = rec ? customFundGaps(rec) : [];
   const item = (id: keyof typeof w.items, state: NeedState, note?: string): NeedItem => ({ id, text: w.items[id], state, ...(note ? { note } : {}) });
-  const tax = rec ? dividendTaxLabel(rec, seen) : null;
+  const tax = rec ? dividendTaxLabel(rec, seen, typedGapList(rec, seen)) : null;
   // no exchange named: the fund is priced on the exchange that leaves the least (F-65)
   const anyExchange = rec?.exchange === "unknown";
   const out: NeedItem[] = [!d.buyAt ? item("place", "missing") : boughtInSaid(d.buyAt) ? item("place", "done") : item("place", "stand-in", w.standIn.place(anyExchange))];
@@ -246,7 +246,7 @@ export function panelStateOf(draft: FundDraft, index: IndexRef, facts: FactsDraf
   const seen = seenBy(draft, index, facts, today);
   const rec = draftRecord(draft, index, today);
   const needs = needsOf(draft, rec, index, seen);
-  const without = withoutOf(needs, rec ? dividendTaxLabel(rec, seen) : null);
+  const without = withoutOf(needs, rec ? dividendTaxLabel(rec, seen, typedGapList(rec, seen)) : null);
   return { labels: rowLabels(draft, rec, seen), needs, status: statusOf(needs), without };
 }
 

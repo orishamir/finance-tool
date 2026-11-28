@@ -6,7 +6,7 @@ import { memo, useMemo, useState, type ReactNode } from "react";
 import { invest as c } from "../../copy";
 import { fmt } from "../../lib/format";
 import { fundLabels } from "../../lib/labels";
-import { pairCosts, type FundWay, type InvestView, type ProviderInfo, type WayPrice } from "../../lib/invest";
+import { gapListFor, pairCosts, type FundWay, type InvestView, type ProviderInfo, type WayPrice } from "../../lib/invest";
 import type { IndicesBundle, WorkbenchInputs } from "../../lib/providers";
 import { LANES, byGain, chainOf, gridOf, middleStart, rowsAt, unitOf, yScale, type Lane, type Pos, type Row, type Stair, type Taken } from "../../lib/stairs";
 import { computed, differenceOf, restated, type SiteValue } from "../../lib/value";
@@ -306,7 +306,7 @@ export const StairsSection = memo(function StairsSection({ view, bundle, s: st }
   // ---------------------------------------------------------------- the rows under it
   const hedgedChip = (f: string) => {
     const fw = ways.get(f);
-    return fw ? fundLabels(fw.rec, view.index, fw.option).filter((l) => l.id === "hedged" || l.id === "hedged-many") : [];
+    return fw ? fundLabels(fw.rec, view.index, fw.option, gapListFor(bundle, fw.rec)).filter((l) => l.id === "hedged" || l.id === "hedged-many") : [];
   };
   // the account lane's grey lines name the fund; laid out unseen with the longest name, so the held height covers any start
   const longestName = [...new Set(allFunds(view).map((f) => f.name))].sort((a, b) => b.length - a.length)[0] ?? "";
