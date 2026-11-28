@@ -5,6 +5,7 @@ import type { GuideContent } from "./types";
 import type { SiteValue } from "../../lib/value";
 import { IdRef, Num, Ruled, Term } from "../../components/provenance";
 import { Callout } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 import { disabilityRetirement, EmployerUntaxed, ExemptShare, LumpSums } from "./pension-parts";
 
 const N = ({ v, prefix }: { v: SiteValue | null; prefix?: string }) => (v ? <Num value={v} prefix={prefix} /> : null);
@@ -13,20 +14,36 @@ export const content: GuideContent = {
   what: ({ figure }) => (
     <>
       <p className="max-w-measure">
-        כל חודש נכנסות לקרן הפקדות מהשכר, שלכם ושל המעסיק. הן נצברות בחשבון שלכם בקרן ומושקעות <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term>. <Ruled id="PEN-17">מי שלא בוחר מסלול נכנס למסלול לפי הגיל שלו</Ruled>. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה. למי שהיה זכאי לפני המועד שבחוק החלק <Ruled id="PEN-18">גדול יותר</Ruled>.
+        קרן פנסיה מקיפה היא חיסכון לפרישה שבא מהמשכורת. <Ruled id="PEN-03">כל חודש אתם והמעסיק מפקידים בה חלק מהשכר</Ruled>, ובפרישה <Ruled id="PEN-27">החיסכון הופך</Ruled> <Term prefix="ל" id="קצבה">קצבה</Term>: סכום שמקבלים כל חודש.
       </p>
       <p className="max-w-measure">
-        בפרישה החיסכון הופך <Term prefix="ל" id="קצבה">קצבה</Term> חודשית, <Term id="קצבת זקנה">קצבת זקנה</Term>. <Ruled id="PEN-27">היא שווה ליתרה שצברתם חלקי</Ruled> <Term id="מקדם המרה">מקדם המרה</Term> שהקרן קובעת. אפשר להתחיל לקבל אותה מגיל <N v={figure("PEN-26", "early_retirement_age")} />.
+        הקרן היא גם ביטוח: <Ruled id="PEN-68">היא משלמת קצבה</Ruled> גם <Ruled id="PEN-12">אם תאבדו את היכולת לעבוד, כולה או חלקה</Ruled>, <Ruled id="PEN-13" prefix="ו">למשפחה אם תמותו</Ruled>. <Ruled id="PEN-01">שכירים חייבים לחסוך לפנסיה, חוץ מכמה חריגים</Ruled>, ו<Ruled id="PEN-05">מי שלא בוחר אחרת, המעסיק מבטח אותו בקרן כזו</Ruled>. המחיר: הכסף <Ruled id={["PEN-30", "PEN-28"]}>נועד לקצבה, ולמשוך אותו בבת אחת אפשר רק במקרים מסוימים</Ruled>.
       </p>
-      <p className="max-w-measure">
-        הקרן היא גם ביטוח. <Term id="דמי ביטוח">דמי הביטוח</Term> <Ruled id="PEN-15">באים מההפקדות</Ruled>, כל עוד אתם מבוטחים. בזכותם הקרן <Ruled id="PEN-68">משלמת עוד שתי קצבאות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Ruled id="PEN-12">למי שאיבד חלק מכושר העבודה או את כולו</Ruled>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> <Ruled id="PEN-13">למשפחה אחרי מוות</Ruled>.
-      </p>
-      <p className="max-w-measure">
-        צו ההרחבה <Ruled id="PEN-01">מחייב חיסכון לפנסיה לכל עובד</Ruled> מגיל <N v={figure("PEN-01", "minimum_age_men")} /> לגברים ומגיל <N v={figure("PEN-01", "minimum_age_women")} /> לנשים, חוץ ממי שיש לו הסדר טוב לפחות כמו זה. ההפקדות מתחילות בתום <N v={figure("PEN-02", "waiting_months")} /> חודשים מתחילת העבודה. מי שכבר מבוטח כשהוא מתחיל לעבוד <Ruled id="PEN-02">זכאי להן מהיום הראשון</Ruled>. העובד בוחר קרן מקיפה או <Term id="קופת גמל לקצבה">קופת גמל לקצבה</Term> <Ruled id="PEN-05">עם כיסוי גם למקרה מוות וגם למקרה נכות, באותה קופה או בקופה אחרת</Ruled>. מי שלא בוחר, המעסיק מבטח אותו בקרן מקיפה.
-      </p>
-      <p className="max-w-measure">
-        ההפקדה היא לפחות <N v={figure("PEN-03", "employee_pct")} /> מכם, ומהמעסיק <N v={figure("PEN-03", "employer_pct")} /> ועוד <N v={figure("PEN-03", "severance_pct")} /> לפיצויים, <Ruled id="PEN-04" prefix="מ">השכר עד</Ruled> <Term id="השכר הממוצע במשק">השכר הממוצע במשק</Term>.
-      </p>
+      <GuidePart title="איך הכסף מושקע">
+        <p className="max-w-measure">
+          ההפקדות נצברות בחשבון שלכם בקרן ומושקעות <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term>. <Ruled id="PEN-17">מי שלא בוחר מסלול נכנס למסלול לפי הגיל שלו</Ruled>. <N v={figure("PEN-18", "guaranteed_share")} /> מהנכסים נמצאים במסלול עם <Term id="השלמת תשואה">השלמת תשואה</Term> של המדינה. למי שהיה זכאי לפני המועד שבחוק החלק <Ruled id="PEN-18">גדול יותר</Ruled>.
+        </p>
+      </GuidePart>
+      <GuidePart title="הקצבה בפרישה">
+        <p className="max-w-measure">
+          הקצבה מהחיסכון נקראת <Term id="קצבת זקנה">קצבת זקנה</Term>. <Ruled id="PEN-27">היא שווה ליתרה שצברתם חלקי</Ruled> <Term id="מקדם המרה">מקדם המרה</Term> שהקרן קובעת. אפשר להתחיל לקבל אותה מגיל <N v={figure("PEN-26", "early_retirement_age")} />.
+        </p>
+      </GuidePart>
+      <GuidePart title="הביטוח שבקרן">
+        <p className="max-w-measure">
+          <Term id="דמי ביטוח">דמי הביטוח</Term> <Ruled id="PEN-15">באים מההפקדות</Ruled>, כל עוד אתם מבוטחים. בזכותם הקרן <Ruled id="PEN-68">משלמת עוד שתי קצבאות</Ruled>: <Term id="קצבת נכות">קצבת נכות</Term> <Ruled id="PEN-12">למי שאיבד חלק מכושר העבודה או את כולו</Ruled>, <Term prefix="ו" id="קצבת שאירים">קצבת שאירים</Term> <Ruled id="PEN-13">למשפחה אחרי מוות</Ruled>.
+        </p>
+      </GuidePart>
+      <GuidePart title="מי חייב">
+        <p className="max-w-measure">
+          צו ההרחבה <Ruled id="PEN-01">מחייב חיסכון לפנסיה לכל עובד</Ruled> מגיל <N v={figure("PEN-01", "minimum_age_men")} /> לגברים ומגיל <N v={figure("PEN-01", "minimum_age_women")} /> לנשים, חוץ ממי שיש לו הסדר טוב לפחות כמו זה. ההפקדות מתחילות בתום <N v={figure("PEN-02", "waiting_months")} /> חודשים מתחילת העבודה. מי שכבר מבוטח כשהוא מתחיל לעבוד <Ruled id="PEN-02">זכאי להן מהיום הראשון</Ruled>. העובד בוחר קרן מקיפה או <Term id="קופת גמל לקצבה">קופת גמל לקצבה</Term> <Ruled id="PEN-05">עם כיסוי גם למקרה מוות וגם למקרה נכות, באותה קופה או בקופה אחרת</Ruled>.
+        </p>
+      </GuidePart>
+      <GuidePart title="כמה מפקידים">
+        <p className="max-w-measure">
+          ההפקדה היא לפחות <N v={figure("PEN-03", "employee_pct")} /> מכם, ומהמעסיק <N v={figure("PEN-03", "employer_pct")} /> ועוד <N v={figure("PEN-03", "severance_pct")} /> לפיצויים, <Ruled id="PEN-04" prefix="מ">השכר עד</Ruled> <Term id="השכר הממוצע במשק">השכר הממוצע במשק</Term>.
+        </p>
+      </GuidePart>
     </>
   ),
   who: ({ figure }) => (
