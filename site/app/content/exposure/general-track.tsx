@@ -46,7 +46,7 @@ export const content: ExposureContent = {
                 המסלול הכללי <Ruled id="CAT-19">סגור למצטרפים חדשים</Ruled>. מי שכבר היה בו יכול להישאר. הכלל הזה לא חל על כמה סוגים של קופות גמל, למשל קופות לדמי מחלה <Term prefix="ו" id="קופת גמל בניהול אישי">קופות בניהול אישי</Term>.
               </>
             ),
-            line: <Sentence as="span">מצטרפים חדשים שלא בחרו מסלול נכנסים למסלול לפי הגיל שלהם: הראשון עד גיל {age ? <Num value={age} /> : null}, וכן הלאה.</Sentence>,
+            line: <Sentence as="span">מצטרפים חדשים שלא בחרו מסלול <Ruled id="CAT-58">נכנסים למסלול לפי הגיל שלהם</Ruled>: הראשון עד גיל {age ? <Num value={age} /> : null}, וכן הלאה.</Sentence>,
           },
           {
             id: "account",
