@@ -874,8 +874,12 @@ describe("what each figure's sheet lists", () => {
     expect(compared, "a house whose deal prices the fund that pays out").toBeGreaterThan(0);
   });
 
-  it("the deposits' sheet says the monthly deposit rises with prices (A-04, F-05)", () => {
-    expect(leumiPair(plan()).paidIn.lead).toBe(words.pair.paidInLead);
+  it("the deposits' figure carries the caveat that the monthly deposit rises with prices (A-04, F-05), which its caution \"?\" opens", () => {
+    expect(plan().monthly).toBeGreaterThan(0);
+    expect(leumiPair(plan()).paidIn.caveat).toBe(words.pair.paidInCaveat);
+    expect(leumiPair(plan()).paidInNominal.caveat).toBe(words.pair.paidInCaveat);
+    // a lump sum has no monthly deposit for prices to raise
+    expect(leumiPair(plan({ monthly: 0 })).paidIn.caveat).toBeUndefined();
   });
 });
 

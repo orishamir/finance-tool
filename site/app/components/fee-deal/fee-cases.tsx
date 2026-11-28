@@ -82,7 +82,7 @@ export const caseWords = (when: readonly WhenWords[], mine: boolean, things: rea
 
 /**
  * A price's standing against the cap now, after its parts (a slim fee's, or a case's): the share of the cap or the standing's tag; a tag
- * leads to the fee's row of the law card; a share opens its calculation. Nothing for a price not given yet.
+ * leads to the fee's row of the law card; a share is a calculated figure. Nothing for a price not given yet.
  */
 export function RowStanding({ fee, priced, standing }: { fee: string; priced: boolean; standing: StandingView }) {
   if (!priced) return null;

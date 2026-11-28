@@ -1,7 +1,7 @@
 // The app shell: header, menu sheet, search, footer and the page frame (design-spec 1.3, flows 6.2, 6.3).
 import { createContext, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useLocation, useRouteLoaderData } from "react-router";
-import { companies as companiesCopy, formulaNames, knowledgeEntry, r3workbench, site } from "../copy";
+import { companies as companiesCopy, knowledgeEntry, r3workbench, site } from "../copy";
 import { IconBack, IconMenu, IconSearch } from "./icons";
 import { ProvenanceProvider, TermFromAddress, type ProvenanceData } from "./provenance";
 import { preloadSearch, SearchCombo, SearchSheet } from "./search";
@@ -50,12 +50,11 @@ export function useOpenSearch() {
 }
 
 export function PageShell({ current, data: pageData, children }: { current: Current; data: ProvenanceData; children: ReactNode }) {
-  // every page's sheets know the method: the formulas with their parameters and their math, the parameter cards, the source hosts' Hebrew names, the open questions and where each company's terms are listed (root loader)
-  const method = useRouteLoaderData("root") as { formulaParameters: Record<string, string[]>; formulaTex: Record<string, string[]>; parameterAnchors: Record<string, string>; publishersHe: Record<string, string>; openQuestions: NonNullable<ProvenanceData["openQuestions"]>; companies: NonNullable<ProvenanceData["companies"]>; ownDocs: NonNullable<ProvenanceData["ownDocs"]> } | undefined;
+  // every page's sheets know the parameter cards, the source hosts' Hebrew names, the open questions and where each company's terms are listed (root loader)
+  const method = useRouteLoaderData("root") as { parameterAnchors: Record<string, string>; publishersHe: Record<string, string>; openQuestions: NonNullable<ProvenanceData["openQuestions"]>; companies: NonNullable<ProvenanceData["companies"]>; ownDocs: NonNullable<ProvenanceData["ownDocs"]> } | undefined;
   const data = useMemo<ProvenanceData>(() => {
     if (!method) return pageData;
-    const formulas = pageData.formulas ?? Object.fromEntries([...new Set([...Object.keys(formulaNames), ...Object.keys(method.formulaParameters), ...Object.keys(method.formulaTex)])].filter((f) => f !== "_other").map((f) => [f, { name: formulaNames[f] ?? "", parameters: method.formulaParameters[f] ?? [], tex: method.formulaTex[f] }]));
-    return { ...pageData, formulas, parameters: pageData.parameters ?? method.parameterAnchors, publishersHe: pageData.publishersHe ?? method.publishersHe, openQuestions: pageData.openQuestions ?? method.openQuestions, companies: pageData.companies ?? method.companies, ownDocs: pageData.ownDocs ?? method.ownDocs };
+    return { ...pageData, parameters: pageData.parameters ?? method.parameterAnchors, publishersHe: pageData.publishersHe ?? method.publishersHe, openQuestions: pageData.openQuestions ?? method.openQuestions, companies: pageData.companies ?? method.companies, ownDocs: pageData.ownDocs ?? method.ownDocs };
   }, [pageData, method]);
   // One frame for every page (some pages used the room of a large screen and others did not): the header, the page and
   // the footer share it, so their edges stay put from page to page; prose keeps its own measure inside it.

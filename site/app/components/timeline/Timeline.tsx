@@ -15,7 +15,7 @@ import { paidInWorking } from "../../lib/working";
 import { lumpSumEntered, type CashRateRange } from "../../lib/guide-signature";
 import { TimelineChart, type ChartPoint, type Marker } from "../chart/TimelineChart";
 import { IconReset } from "../icons";
-import { IdRef, Num, RuleRef, StateTag } from "../provenance";
+import { IdRef, Num, RuleRef } from "../provenance";
 import { Sheet } from "../Sheet";
 import { Button, Callout, Card, ChartLegend, FoldGroup, HelpMark, MixedName, ChartReadout, ChartTable, useChartPick, InputSlot, LongestCase, NumberField, RangeField, SegmentedControl, Swatch, nonNegativeCheck, ageCheck, percentCheck, rangeScale, yearsCheck } from "../kit";
 import { ToolBoundary } from "../tool-boundary";
@@ -256,6 +256,8 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
   const depositsRise = !lumpSum && (state.entered.monthly_deposit ?? p05Number(bundle.p05, "monthly_deposit")) > 0;
   const panel = <ValuesPanel bundle={bundle} focusField={focusField} employment={employment} showAge={ageMatters} cash={cash} lumpSum={!!lumpSum} ownRate={ownRate} setOwnRate={(n) => cash && setOwnRate(cash.id, n ?? undefined)} />;
 
+  // each year's figures, once: the table's cells, and its columns' figures, whose shared catches each column's head says once
+  const tableYears = timeline.kind === "ok" && values ? timeline.years.map((p) => ({ p, v: values.yearValues(p, mode) })) : [];
   const tableCard =
     timeline.kind === "ok" && values ? (
       <Card pad="none" className="px-4 py-2 md:px-6">
@@ -264,13 +266,12 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
           regionLabel={copy.graphTitle}
           rowHead={copy.table.year}
           columns={[
-            { id: "contributions", head: copy.table.contributions },
-            ...(tableFees.current ? [{ id: "fees", head: onTariff ? copy.table.feesTariff : copy.table.fees }] : []),
-            ...(tableTax.current ? [{ id: "tax", head: copy.table.tax }] : []),
-            { id: "net", head: copy.table.net },
+            { id: "contributions", head: copy.table.contributions, figures: { name: copy.table.contributions, values: tableYears.map(({ v }) => v.contributions) } },
+            ...(tableFees.current ? [{ id: "fees", head: onTariff ? copy.table.feesTariff : copy.table.fees, figures: { name: onTariff ? copy.table.feesTariff : copy.table.fees, values: tableYears.map(({ v }) => v.fees) } }] : []),
+            ...(tableTax.current ? [{ id: "tax", head: copy.table.tax, figures: { name: copy.table.tax, values: tableYears.map(({ v }) => v.tax) } }] : []),
+            { id: "net", head: copy.table.net, figures: { name: copy.table.net, values: tableYears.map(({ v }) => v.net) } },
           ]}
-          rows={timeline.years.map((p) => {
-            const v = values!.yearValues(p, mode);
+          rows={tableYears.map(({ p, v }) => {
             return {
               key: p.year,
               head: p.year,
@@ -323,7 +324,6 @@ function TimelineTool({ bundle: pageBundle, initial, wrapperName, ageMarker, loc
               ) : timeline.kind === "ok" ? (
                 <span className="figure text-muted-foreground">{system.loading}</span>
               ) : null}
-              {headline && <StateTag state="computed" />}
             </div>
           </div>
           {/* what each side's figure is stands in the "?" beside the switch; the other side's figure is the switch's other side */}

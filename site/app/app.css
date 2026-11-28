@@ -316,29 +316,20 @@
     inset: 0;
   }
   .num-static::after,
-  .num-sample::after,
-  .num-static::before,
-  .num-sample::before {
+  .num-static::before {
     content: none;
   }
-  .num-sample,
   .num-static {
     cursor: default;
+  }
+  /* a calculated figure: plain text in the ink around it, opening nothing (provenance Num); a catch it carries is its caution "?" */
+  .num-plain {
+    font-variant-numeric: tabular-nums;
   }
   .num-sourced {
     text-decoration: underline;
     text-decoration-color: var(--sourced);
     text-decoration-thickness: var(--num-underline-thickness);
-  }
-  .num-computed {
-    text-decoration: underline dotted;
-    text-decoration-color: var(--computed-line);
-    text-decoration-thickness: var(--num-underline-thickness);
-  }
-  /* a list whose figures are all computed carries the mark once, in its head (a `num-sample`), and its cells stay plain (design.md, number
-     states): each figure still opens its calculation */
-  .nums-plain .num-computed:not(.num-sample) {
-    text-decoration: none;
   }
   /* a figure the person typed: the entered ink alone, no highlight behind it (design.md, the number states; the "entered" tag keeps its own) */
   .num-entered {
@@ -753,12 +744,6 @@
       .sheet[data-pc="popover"] {
         width: 30rem;
       }
-    }
-    /* a figure's calculation (Sheet `size` "roomy"): a line of math with its values and a key that names each input beside its figure;
-       its height is capped where the card is placed (Sheet.tsx, `place`) */
-    .sheet[data-pc="popover"][data-size="roomy"] {
-      width: min(42rem, calc(100vw - 2rem));
-      max-height: 85vh;
     }
     .sheet[data-pc="popover"][open] {
       animation: pop-in var(--duration-base) var(--ease-standard);

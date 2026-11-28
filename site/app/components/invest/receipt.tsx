@@ -19,7 +19,7 @@ import { startsDeal, type IndicesBundle, type WorkbenchInputs } from "../../lib/
 import { rateWords, type RatePart, type RateWords } from "../../lib/rate-words";
 import { accountLinesOf, receiptAmounts, receiptChain, takenWords, type AccountLine, type ReceiptChain } from "../../lib/receipt";
 import { computed, differenceOf, ownBy, restated, sumOf, type SiteValue } from "../../lib/value";
-import { Num, ShortRow, shortRow } from "../provenance";
+import { CatchesSaid, ListCatchMark, Num, ShortRow, shortRow, useSharedCatches } from "../provenance";
 import { DocLink, FEE_WORDS_HELP, HeldMark, HelpMark, LabelChip, MixedName, PartFacts, ProductIdLink, ReceiptLine, ReceiptPaper, ReceiptRule, ReceiptStub, ReceiptTicket, SourcedTag, Tag, TicketPart, When } from "../kit";
 import { isCustomFund } from "../../lib/custom-entries";
 import { allFunds, GapCell, gapNoteOf, gapStateOf, labelsOf, mayaHrefOf, pairVerdict, phoneOf, totalNoteOf, whole, type Pick } from "./pair";
@@ -154,7 +154,7 @@ export function leftOf(pc: Costs, today: string): SiteValue {
 
 /**
  * A line as the receipt writes it, in whole shekels (`n`): the figure with that number, its working kept where the figure as the page
- * writes it is that number, so its sheet still works it out; otherwise its working is left off (`restated`), since it comes to another number.
+ * writes it is that number; otherwise its working is left off (`restated`), since it comes to another number.
  */
 function asWritten(v: SiteValue, n: number): SiteValue {
   return typeof v.value === "number" && amountShown(v.value, v.unit, v.state) === n ? { ...v, value: n } : restated(v, n);
@@ -332,6 +332,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const v = pairVerdict(view, bundle, plan, pick, chosen);
   const pc = v.pc;
   const dealApi = useDealAccounts();
+  const shared = useSharedCatches();
   if (!pc) return null;
   const today = bundle.today;
   // the chain in the shekels of the horizon down to what the account and the fund leave, then the inflation, then the tax and what is left
@@ -349,10 +350,24 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   const steady = totalNoteOf(view, bundle, pick.fund);
   const years = plan.years;
   const ticket = layout === "ticket";
+  // the figures of the lines that add up to the total, and the total: a catch every one of them carries is said once, after the receipt's
+  // title, and left out of each one's own "?"
+  const shown = {
+    paidIn: pc.paidInNominal,
+    added: addedOf(pc, today),
+    account: nom(accountSum(pc, c.pair.who.account, today), c.receipt.parts.account),
+    waiting: pc.waiting ? nom(pc.waiting, c.pair.waiting) : null,
+    fund: nom(pc.fund, c.receipt.parts.fund),
+    inflation: inflationOf(pc, ch, v.taxName, today),
+    tax: taxOf(pc),
+    left: leftOf(pc, today),
+  };
+  const waits = !!pc.waiting && r.waiting !== 0;
+  const lineCatches = shared([shown.paidIn, shown.added, shown.account, waits && shown.waiting, shown.fund, shown.inflation, shown.tax, shown.left]);
   const top = (
     <>
       <span>
-        {site.name} · {c.receipt.title}
+        {site.name} · {lineCatches.length > 0 ? <HeldMark words={c.receipt.title} mark={<ListCatchMark catches={lineCatches} name={c.receipt.title} scope="list" />} /> : c.receipt.title}
       </span>
       <span className="text-end">
         <MixedName>{view.index.name}</MixedName> · {fmt.years(years)}
@@ -360,29 +375,33 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
     </>
   );
   // F-128: an account priced by a deal writes the deal's own fees, each under its name, in whole shekels that add up with the remainder
+  const accountLines = accountLinesOf(pc, r).map((l) => ({ l, name: accountLineName(l), value: nom(l.cost, accountLineName(l)) }));
   const accountParts = (
     <>
-      {accountLinesOf(pc, r).map((l) => {
-        const name = accountLineName(l);
+      {accountLines.map(({ l, name, value }) => {
         const sub = accountLineSub(l, { pc, plan, pick, dealApi });
         // the remainder is no one fee: its "?" says where it comes from
         const label = l.kind === "remainder" ? <HeldMark words={name} mark={<HelpMark about={name} text={c.pair.remainderAbout} />} /> : name;
-        return <ReceiptLine key={l.key} size="sm" label={label} value={<Num value={nom(l.cost, name)} display={minus(l.amount)} />} sub={sub ?? undefined} />;
+        return <ReceiptLine key={l.key} size="sm" label={label} value={<Num value={value} display={minus(l.amount)} />} sub={sub ?? undefined} />;
       })}
     </>
   );
-  const accountValue = <Num value={nom(accountSum(pc, c.pair.who.account, today), c.receipt.parts.account)} display={minus(r.account)} />;
+  // the account's own lines (its charges, each fee of them, the cash that waited): a catch every one carries is said once, after the
+  // charges' name, wherever they stand (the ticket's part, or the sheet the account's line opens on paper)
+  const accountCatches = shared([shown.account, ...accountLines.map((x) => x.value), waits && shown.waiting]);
+  const accountValue = <Num value={shown.account} display={minus(r.account)} />;
   // F-109: what the cash waiting for a whole unit did, beside the account's fees and never among them: a minus where the fund rose while it
   // waited, a plus where it fell; on the account's own lines with why, and among the lines that add up to the total without it
-  const waits = !!pc.waiting && r.waiting !== 0;
-  const waitingValue = pc.waiting && <Num value={nom(pc.waiting, c.pair.waiting)} display={minus(r.waiting)} />;
-  const fundValue = <Num value={nom(pc.fund, c.receipt.parts.fund)} display={minus(r.fund)} />;
+  const waitingValue = shown.waiting && <Num value={shown.waiting} display={minus(r.waiting)} />;
+  const fundValue = <Num value={shown.fund} display={minus(r.fund)} />;
   // the account's and the fund's own facts and lines, written once: the ticket's side parts, and on paper the sheet each one's name opens
   const accountOwn = (
     <>
       <AccountFacts view={view} bundle={bundle} plan={plan} pick={pick} refs={!ticket} />
-      <ReceiptLine size="sm" edge="border-chart-by-account" label={c.receipt.accountCharges} value={accountValue} parts={accountParts} />
-      {waits && <ReceiptLine size="sm" label={<HeldMark words={c.pair.waiting} mark={<HelpMark about={c.pair.waiting} text={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />} />} value={waitingValue} />}
+      <CatchesSaid catches={accountCatches}>
+        <ReceiptLine size="sm" edge="border-chart-by-account" label={accountCatches.length > 0 ? <HeldMark words={c.receipt.accountCharges} mark={<ListCatchMark catches={accountCatches} name={c.receipt.accountCharges} scope="list" />} /> : c.receipt.accountCharges} value={accountValue} parts={accountParts} />
+        {waits && <ReceiptLine size="sm" label={<HeldMark words={c.pair.waiting} mark={<HelpMark about={c.pair.waiting} text={r.waiting > 0 ? c.pair.waitingWhy.rose : c.pair.waitingWhy.fell} />} />} value={waitingValue} />}
+      </CatchesSaid>
     </>
   );
   const fundOwn = (
@@ -401,13 +420,13 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
   // the lines that add up to the total, one each; on the ticket the account's and the fund's carry their part's colour
   const lines = (
     <div className="flex flex-col gap-2.5 text-sm">
-      <ReceiptLine size="sm" label={c.pair.paidIn} value={<Num value={pc.paidInNominal} display={fmt.nisWhole(r.paidIn)} />} />
-      <ReceiptLine size="sm" label={c.receipt.added} value={<Num value={addedOf(pc, today)} display={fmt.signedNisWhole(r.added)} />} />
+      <ReceiptLine size="sm" label={c.pair.paidIn} value={<Num value={shown.paidIn} display={fmt.nisWhole(r.paidIn)} />} />
+      <ReceiptLine size="sm" label={c.receipt.added} value={<Num value={shown.added} display={fmt.signedNisWhole(r.added)} />} />
       <ReceiptLine size="sm" swatch={ticket ? "bg-chart-by-account" : undefined} label={accountName} value={accountValue} opens={ticket ? undefined : { title: accountName, body: accountOwn }} />
       {waits && <ReceiptLine size="sm" label={c.pair.waiting} value={waitingValue} />}
       <ReceiptLine size="sm" swatch={ticket ? "bg-chart-by-fund" : undefined} label={fundLabel} value={fundValue} opens={ticket ? undefined : { title: <>{c.pair.who.fund} {fundName}</>, body: fundOwn }} />
-      <ReceiptLine size="sm" label={c.receipt.inflation} value={<Num value={inflationOf(pc, ch, v.taxName, today)} display={minus(ch.inflation)} />} />
-      <ReceiptLine size="sm" label={v.taxName} value={<Num value={taxOf(pc)} display={minus(ch.tax)} />} />
+      <ReceiptLine size="sm" label={c.receipt.inflation} value={<Num value={shown.inflation} display={minus(ch.inflation)} />} />
+      <ReceiptLine size="sm" label={v.taxName} value={<Num value={shown.tax} display={minus(ch.tax)} />} />
     </div>
   );
   // the total's name, with a "!" only where the figure rests on the dollar holding still (D118)
@@ -417,7 +436,7 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
       {steady && <HelpMark about={c.receipt.left} text={steady} note className="ms-1" />}
     </span>
   );
-  const total = <Num value={leftOf(pc, today)} display={fmt.nisWhole(ch.left)} />;
+  const total = <Num value={shown.left} display={fmt.nisWhole(ch.left)} />;
   // one form for the receipt's large figures: where one is a billion or more, its others of a hundred million or more are short too
   const shortFigures = shortRow(r.paidIn, r.added, r.account, r.waiting, r.fund, ...r.accountLines, r.remainder, ch.inflation, ch.tax, ch.left);
   if (ticket)
@@ -433,14 +452,14 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
           </TicketPart>
         }
         middle={
-          <>
+          <CatchesSaid catches={lineCatches}>
             {lines}
             <ReceiptRule kind="double" />
             <div className="flex flex-col items-center gap-1 text-center">
               {leftName}
               <span className="text-total font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
             </div>
-          </>
+          </CatchesSaid>
         }
         end={
           <TicketPart label={c.receipt.parts.fund} swatch="bg-chart-by-fund" name={fundName} aside={fund && <FundRefs fund={fund} />}>
@@ -454,12 +473,14 @@ export function PairReceipt({ view, bundle, plan, pick, chosen, layout = "paper"
     <ShortRow when={shortFigures}>
     <ReceiptPaper label={c.receipt.title}>
       <div className="flex items-baseline justify-between gap-3 text-xs text-muted-foreground">{top}</div>
-      {lines}
-      <ReceiptRule kind="double" />
-      <div className="flex flex-wrap items-baseline justify-between gap-x-2 pb-1">
-        {leftName}
-        <span className="text-figure font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
-      </div>
+      <CatchesSaid catches={lineCatches}>
+        {lines}
+        <ReceiptRule kind="double" />
+        <div className="flex flex-wrap items-baseline justify-between gap-x-2 pb-1">
+          {leftName}
+          <span className="text-figure font-semibold text-primary tabular-nums whitespace-nowrap">{total}</span>
+        </div>
+      </CatchesSaid>
     </ReceiptPaper>
     </ShortRow>
   );

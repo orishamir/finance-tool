@@ -15,7 +15,7 @@
 //            cited "ONE ZERO, 'פיקדונות' (טבלת תנאי הפיקדונות…)" read from the left). The kit's MixedName sets the direction; at every width.
 //   warning  a caution or blocked callout in a figure's sheet that the smallest phone (320 × 568) shows only after scrolling (2026-11-08:
 //            Mercantile's doubt sat last in its sheet, under the source details). Checked on the first figures of each page that carry a
-//            doubt or a lock.
+//            doubt or a lock, or a calculated figure's caution "?".
 //   side     on a company page, the side list folded over the content on a computer, at 1440, 1425 (a 1440 screen with a classic
 //            scrollbar), 1280 and 1024 px, the page wider than the screen there, and a table that scrolls sideways beside the list at 1440 and
 //            1425 (below that a table may scroll inside its own card, its first column in place);
@@ -1209,9 +1209,10 @@ async function checkPage(page, path, width) {
   }
   if (width === SHEET_WIDTH) {
     const n = await page.evaluate((max) => {
-      // the first figures that carry a doubt or a lock, in page order, of those a reader can see: a folded row is laid out unseen
-      // (visibility: hidden) so its height can be measured, and a figure in it cannot be tapped
-      const figs = [...document.querySelectorAll("main button.num-doubt, main button.num:has(svg.text-blocked)")].filter((b) => b.checkVisibility({ visibilityProperty: true }));
+      // the first figures that carry a doubt or a lock, and the caution "?" of calculated figures with a catch (`data-catch`), in page order,
+      // of those a reader can see: a folded row is laid out unseen (visibility: hidden) so its height can be measured, and a figure in it
+      // cannot be tapped
+      const figs = [...document.querySelectorAll("main button.num-doubt, main button.num:has(svg.text-blocked), main button[data-catch]")].filter((b) => b.checkVisibility({ visibilityProperty: true }));
       figs.slice(0, max).forEach((b, i) => b.setAttribute("data-layout-check", String(i)));
       return Math.min(figs.length, max);
     }, SHEET_FIGURES);
@@ -1227,7 +1228,9 @@ async function checkPage(page, path, width) {
       await page.evaluate(settled); // the sheet slides up
       const hidden = await page.evaluate(warningsOutOfSight);
       opened++;
-      const name = (await fig.innerText()).trim();
+      // a caution "?", drawn and so without text, is named by what it is about
+      const text = (await fig.innerText()).trim();
+      const name = text === "?" || text === "" ? ((await fig.getAttribute("aria-label")) ?? text) : text;
       for (const h of hidden) findings.push({ check: "warning", id: h.title.slice(0, 12), detail: `the sheet of ${name} shows "${h.title}" only after scrolling (its top ${h.top} px, the sheet shows to ${h.bottom} px)` });
       await page.keyboard.press("Escape");
       await page.evaluate(settled);

@@ -13,7 +13,7 @@ import { p05Number, p05Range, p05Value, type Bundle } from "../../lib/engine";
 import { useInputs } from "../../lib/inputs";
 import { asField, computed, differenceOf, type SiteValue } from "../../lib/value";
 import { amountCheck, DotLine, InputSlot, LongestCase, MixedName, NumberField, PercentField, PileBar, PileYears, SegmentedControl, Sentence, StatRow, StatTile, TextLink, clamp, cx, percentCheck, type PileBarPart } from "../kit";
-import { Num, ReadingTag, Ruled, Term } from "../provenance";
+import { CatchesSaid, Num, ReadingTag, Ruled, Term, catchesOf, useCatchPlace } from "../provenance";
 import { text } from "./g2-parts";
 import { figure, Gap, inputSite, notFeeFlag, SigAmountField, termInputs, useSigInputs, typed, type VisualProps } from "./kit";
 import { rulesOfRun, salaryTaxOnly, withoutSalaryTax, type RunParts } from "../../lib/run-rules";
@@ -53,6 +53,7 @@ export function typedShareLimits(a: { employee: boolean; employerTyped: boolean;
 function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
   const inputs = useSigInputs(base);
   const { state, setEmployment } = useInputs();
+  const catchPlace = useCatchPlace();
   // the page's own values and the site's example, never the saved goal
   const employment: Employment = state.employment ?? "employee";
   const isEmployee = employment === "employee";
@@ -175,6 +176,10 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
     const v = partValue(part);
     return v && <Num value={v} display={partText(SIGN[part], compact)} />;
   };
+  const partMarked = (part: PileBarPart) => {
+    const v = partValue(part);
+    return !!v && catchesOf(v, catchPlace(false)).length > 0;
+  };
   const leftValue = slice ? ranValue(slice.net, story.about.left, false, ofRuns(picked.runs, "all")) : null;
   const ownValue = slice ? paidValue(slice.own, story.about.own, ownIn) : null;
   // what the multiple is of: the person's deposits, and an employee's employer's too, so the employer's money is not counted as growth
@@ -233,15 +238,17 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
               <Num value={ranValue(slice.tax, story.about.tax, true, ofRuns(picked.runs, ["taxDuring", "taxAtExit"]))} display={fmt.nisWhole} />
             </StatTile>
           );
+  // the chart's note repeats the wait tile's two figures, which stand right above it with their own "?": inside the chart they say no catch again
+  const tileSays = waitWords ? [...catchesOf(waitWords.more, catchPlace(false)), ...catchesOf(waitWords.saved, catchPlace(false))] : [];
   const stripNote = waitWords && (
-    <>
+    <CatchesSaid catches={tileSays}>
       <div>
         {story.note.wait} <bdi>{fmt.years(lock - year)}</bdi>: <span className={cx("font-semibold", waitGains && "text-gain")}><Num value={waitWords.more} display={(v) => fmt.nisWhole(Math.abs(Number(v)))} /></span> {waitGains ? story.note.more : story.note.less}
       </div>
       <div>
         <Num value={waitWords.saved} display={fmt.nisWhole} /> {story.note.saved}
       </div>
-    </>
+    </CatchesSaid>
   );
 
   const brokerCount = fact(data, "brokerCount");
@@ -511,6 +518,7 @@ function Inner({ data, today, base }: VisualProps & { base: Bundle }) {
           slice={slice && { ...slice, fees: Math.round(slice.fees), tax: Math.round(slice.tax), taxFromSalary: Math.round(slice.taxFromSalary) }}
           names={{ own: story.bar.own, extra: isEmployee ? story.bar.employer : story.bar.refund, gain: story.bar.gain, loss: story.bar.loss, fees: story.bar.fees, salary: story.bar.salary, tax: slice && slice.taxFromSalary > 1 ? story.bar.taxWithdrawal : story.bar.tax }}
           number={partNumber}
+          marked={partMarked}
           left={{ words: story.bar.left, number: leftValue && <Num value={leftValue} display={fmt.nisWhole} /> }}
           {...(!isEmployee ? { other: { net: account?.net ?? null, words: <>{story.bar.account.before} <Term prefix={story.bar.account.prefix} id="חשבון ניירות ערך">{story.bar.account.term}</Term>{story.bar.account.after}</>, number: account && <Num value={nis(account.net, story.about.account, accountIn, rulesOfRun(account.rules, "all"))} display={fmt.nisWhole} /> } } : {})}
           gap={gapWords}

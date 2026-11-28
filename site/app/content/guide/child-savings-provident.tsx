@@ -6,6 +6,7 @@ import type { GuideContent } from "./types";
 import { YearOf } from "./year";
 import { Num, Ruled, Term, VariesByCompany } from "../../components/provenance";
 import { Callout, Sentence } from "../../components/kit";
+import { GuidePart } from "../../components/guide/sections";
 import { OpenLossOffset } from "./open-tax";
 
 export const content: GuideContent = {
@@ -21,18 +22,32 @@ export const content: GuideContent = {
     const months = figure("CS-06", "choice_months");
     return (
       <>
-        <Sentence measure>
-          <Term id="הביטוח הלאומי">הביטוח הלאומי</Term> <Ruled id="CS-02">מפקיד בכל חודש</Ruled> {monthly ? <Num value={monthly} /> : null}<YearOf v={monthly} /> עד גיל {depositsUntil ? <Num value={depositsUntil} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>). ההורה שמקבל את קצבת הילדים <Ruled id="CS-04">יכול להורות להכפיל אותם מתוכה</Ruled> (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). כסף אחר אי אפשר להפקיד.
-        </Sentence>
-        <Sentence measure>
-          בגילים קבועים הביטוח הלאומי מוסיף <Term id="מענק">מענקים</Term>. ילדים שנולדו מאז תחילת התוכנית מקבלים {grantYoung ? <Num value={grantYoung} /> : null}<YearOf v={grantYoung} /> בגיל {ageFirst ? <Num value={ageFirst} /> : null} ושוב בגיל בר או בת מצווה. ילדים שנולדו לפני כן מקבלים מענק אחד <Term prefix="ב" id="גיל הפדיון">גיל הפדיון</Term>. כולם מקבלים עוד {grantLast ? <Num value={grantLast} /> : null}<YearOf v={grantLast} /> בגיל {ageLast ? <Num value={ageLast} /> : null}, אבל <Ruled id="CS-13">רק אם לא משכו כלום קודם</Ruled>: גם <Term id="משיכה חלקית">משיכה חלקית</Term> מבטלת את המענק הזה.
-        </Sentence>
-        <Sentence measure>
-          הכסף פנוי כשהילד מגיע לגיל {until ? <Num value={until} /> : null}. לפני כן <Ruled id="CS-15">מושכים רק למימון צרכים רפואיים של הילד</Ruled>. זה אפשרי רק כשמצב רפואי מסכן את חייו, גופו או נפשו, ורופא מטעם הביטוח הלאומי אישר. עד גיל {parentUntil ? <Num value={parentUntil} /> : null} ההורה חותם על <Term prefix="ה" id="משיכה">משיכה</Term>, ואחר כך הילד <Ruled id="CS-14">מושך לבד</Ruled>.
-        </Sentence>
-        <Sentence measure>
-          במסלול הזה הכסף מנוהל <Term prefix="ב" id="קופת גמל">קופת גמל</Term> ייעודית, <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים <Ruled id="CS-08">מתוך הרשימה של הקופה</Ruled>. מי שלא בוחר בתוך {months ? <Num value={months} /> : null} חודשים מהלידה נכנס לקופת גמל <Term prefix="ב" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term>: <Term id="חוסכים המעדיפים סיכון מוגבר">חוסכים המעדיפים סיכון מוגבר</Term>, <Ruled id="CS-07">או הקופה והמסלול של אח גדול</Ruled>.
-        </Sentence>
+        <p className="max-w-measure">
+          <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term> הוא כסף ש<Term id="הביטוח הלאומי">הביטוח הלאומי</Term> חוסך בשביל הילד: <Ruled id="CS-02">בכל חודש הוא מפקיד סכום לכל ילד שמקבלים בעדו קצבת ילדים</Ruled>. ההורה <Ruled id="CS-04">יכול להכפיל את ההפקדה מתוך קצבת הילדים</Ruled>.
+        </p>
+        <p className="max-w-measure">
+          <Ruled id="CS-06">ההורה בוחר אם הכסף ינוהל</Ruled> <Term prefix="ב" id="קופת גמל">קופת גמל</Term> או בבנק. בעמוד הזה הוא בקופת גמל: הכסף מושקע, והשווי שלו <Ruled id="CS-05">עולה ויורד</Ruled>. הוא <Ruled id="CS-05">שייך לילד</Ruled>, ו<Ruled id="CS-14">אפשר למשוך אותו כשהילד מגיע לגיל</Ruled> {until ? <Num value={until} /> : null}.
+        </p>
+        <GuidePart title="כמה מופקד">
+          <Sentence measure>
+            הביטוח הלאומי <Ruled id="CS-02">מפקיד בכל חודש</Ruled> {monthly ? <Num value={monthly} /> : null}<YearOf v={monthly} /> עד גיל {depositsUntil ? <Num value={depositsUntil} /> : null} (<Term id="סכום החיסכון הבסיסי">סכום החיסכון הבסיסי</Term>). ההורה שמקבל את קצבת הילדים <Ruled id="CS-04">יכול להורות להכפיל אותם מתוכה</Ruled> (<Term id="סכום החיסכון הנוסף">סכום החיסכון הנוסף</Term>). כסף אחר אי אפשר להפקיד.
+          </Sentence>
+        </GuidePart>
+        <GuidePart title="תוספות בגילים קבועים">
+          <Sentence measure>
+            בגילים קבועים הביטוח הלאומי מוסיף <Term id="מענק">מענקים</Term>. ילדים שנולדו מאז תחילת התוכנית מקבלים {grantYoung ? <Num value={grantYoung} /> : null}<YearOf v={grantYoung} /> בגיל {ageFirst ? <Num value={ageFirst} /> : null} ושוב בגיל בר או בת מצווה. ילדים שנולדו לפני כן מקבלים מענק אחד <Term prefix="ב" id="גיל הפדיון">גיל הפדיון</Term>. כולם מקבלים עוד {grantLast ? <Num value={grantLast} /> : null}<YearOf v={grantLast} /> בגיל {ageLast ? <Num value={ageLast} /> : null}, אבל <Ruled id="CS-13">רק אם לא משכו כלום קודם</Ruled>: גם <Term id="משיכה חלקית">משיכה חלקית</Term> מבטלת את המענק הזה.
+          </Sentence>
+        </GuidePart>
+        <GuidePart title="מתי אפשר למשוך">
+          <Sentence measure>
+            הכסף פנוי כשהילד מגיע לגיל {until ? <Num value={until} /> : null}. לפני כן <Ruled id="CS-15">מושכים רק למימון צרכים רפואיים של הילד</Ruled>. זה אפשרי רק כשמצב רפואי מסכן את חייו, גופו או נפשו, ורופא מטעם הביטוח הלאומי אישר. עד גיל {parentUntil ? <Num value={parentUntil} /> : null} ההורה חותם על <Term prefix="ה" id="משיכה">משיכה</Term>, ואחר כך הילד <Ruled id="CS-14">מושך לבד</Ruled>.
+          </Sentence>
+        </GuidePart>
+        <GuidePart title="המסלול בקופה">
+          <Sentence measure>
+            בקופת הגמל, שהיא קופה ייעודית לחיסכון לילד, הכסף מושקע <Term prefix="ב" id="מסלול השקעה">מסלול השקעה</Term> שבוחרים <Ruled id="CS-08">מתוך הרשימה של הקופה</Ruled>. מי שלא בוחר בתוך {months ? <Num value={months} /> : null} חודשים מהלידה נכנס לקופת גמל <Term prefix="ב" id="מסלול ברירת מחדל">מסלול ברירת המחדל</Term>: <Term id="חוסכים המעדיפים סיכון מוגבר">חוסכים המעדיפים סיכון מוגבר</Term>, <Ruled id="CS-07">או הקופה והמסלול של אח גדול</Ruled>.
+          </Sentence>
+        </GuidePart>
       </>
     );
   },
@@ -54,7 +69,7 @@ export const content: GuideContent = {
     return (
       <>
         <p className="max-w-measure">
-          <span className="font-medium">במשיכה משלמים מס הכנסה כמו במשיכה מקופת גמל להשקעה, <Ruled id="TXK-23">לפי קריאה של האתר</Ruled>.</span> החוק מחזיק את הכסף בקופת גמל להשקעה. רשות שוק ההון, ביטוח וחיסכון ומשרד האוצר כותבים שחלים עליה כל הכללים של קופה כזאת. <Term id="רשות המסים">רשות המסים</Term> לא כתבה זאת על <Term id="חיסכון לכל ילד">חיסכון לכל ילד</Term>. הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, <Ruled id="TXK-20">בלי לומר על איזה רווח</Ruled>.
+          <span className="font-medium">במשיכה משלמים מס הכנסה כמו במשיכה מקופת גמל להשקעה, <Ruled id="TXK-23">לפי קריאה של האתר</Ruled>.</span> החוק מחזיק את הכסף בקופת גמל להשקעה. רשות שוק ההון, ביטוח וחיסכון ומשרד האוצר כותבים שחלים עליה כל הכללים של קופה כזאת. <Term id="רשות המסים">רשות המסים</Term> לא כתבה זאת על חיסכון לכל ילד. הביטוח הלאומי כותב בחוזר שלו שבמשיכה משלמים <Term id="מס רווחי הון">מס רווחי הון</Term>{niiRate ? <> בשיעור <Num value={niiRate} /> מהרווחים</> : null}, <Ruled id="TXK-20">בלי לומר על איזה רווח</Ruled>.
         </p>
         <Callout tone="blocked" className="max-w-measure">
           <span className="font-medium">הביטוח הלאומי מתאר גם מסלול <Term id="קצבה">קצבה</Term>:</span> להשאיר את הכסף בקופה עד הפרישה ולקבל אותו כקצבה בלי מס רווחי הון. הבסיס לכך בחוק <Ruled id="TXK-25">לא נמצא</Ruled>, והאתר לא מחשב אותו.
