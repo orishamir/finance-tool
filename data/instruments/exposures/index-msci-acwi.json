@@ -94,5 +94,6 @@
       "notes": "The United States' share of MSCI ACWI, from MSCI's country weights for 30.10.2026 (library 2b87ca0aecd3fa26)."
     }
   },
+  "net_deduction_rule": "TXF-59",
   "checked": "2026-10-25"
 }
