@@ -146,6 +146,9 @@ const BUY_AT: Record<BuyAt, { kinds: { israeli: FundKind | null; foreign: FundKi
   abroad: { kinds: { israeli: null, foreign: "abroad", unsure: null }, countries: ABROAD_COUNTRIES, exchange: null, tradesIn: null },
 };
 
+/** Whether a fund bought where this answer says is bought on an exchange, where each trade pays the bid-ask spread (A-08): all but from its manager. */
+export const tradedOnExchange = (at: BuyAt): boolean => at !== "manager";
+
 /** The country answers an answer to where the fund is bought leaves open (`BUY_AT`). */
 export const countriesAt = (at: BuyAt): readonly CountryAnswer[] => BUY_AT[at].countries.open;
 

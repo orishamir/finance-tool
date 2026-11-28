@@ -5,8 +5,8 @@
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { Pencil } from "lucide-react";
 import { invest as root } from "../../copy";
-import type { FundRecord, ValueObject } from "@finance-tool/schema";
-import { addedIndexCurrency, asksCountry, boughtInAt, boughtInSaid, BUY_ABROAD, BUY_IN_ISRAEL, countryChoicesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, NAME_MAX, registeredOf, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
+import { assertNever, type FundRecord, type ValueObject } from "@finance-tool/schema";
+import { addedIndexCurrency, asksCountry, boughtInAt, boughtInSaid, BUY_ABROAD, BUY_IN_ISRAEL, countryChoicesAt, COUNTRIES, customFundGaps, draftKind, draftPriceUnit, draftWithPlace, fundDraftOf, fundErrors, fundFromDraft, fundTerms, NAME_MAX, registeredOf, tradedOnExchange, newFundId, PAYOUTS, PER_YEAR, recordOfFund, TRACKINGS, type BuyAt, type CustomFund, type EntryError, type EntryTerm, type CountryAnswer, type FundDraft, type FundPayout, type FundTracking, type PerYear } from "../../lib/custom-entries";
 import { dividendTaxLabel, fundLabels, optionLabels, type DividendTaxLabelId, type Label } from "../../lib/labels";
 import { INDEX_REGIONS, type IndexFacts, type IndexRegion } from "../../lib/index-region";
 import { addedIndexAs, optionOfFund, optionsOf, type CustomIndex, type IndexRef } from "../../lib/invest";
@@ -207,9 +207,20 @@ function needsOf(d: FundDraft, rec: FundRecord | null, index: IndexRef, seen: In
     const country = countryNeed(d, gaps, tax, anyExchange);
     if (country) out.push(item("country", country.state, country.note));
   }
-  if (asksHedge(index)) out.push(d.hedged === true ? item("gap", "missing", w.gap) : item("hedge", d.hedged === null ? "missing" : "done"));
+  if (asksHedge(index)) out.push(item("hedge", d.hedged === null ? "missing" : "done"));
+  // the gap to the index (A-07) and the spread on each trade (A-08) are not asked: zero in the run, so not counted, never done (D56); a
+  // hedged fund's cost is mostly its gap, so without one it has no price (F-92 (c))
+  out.push(d.hedged === true ? item("gap", "missing", w.gap) : item("gap", "left-out", w.notEntered));
+  if (d.buyAt && tradedOnExchange(d.buyAt)) out.push(item("spread", "left-out", w.notEntered));
   if (tax) out.push(item("dividendTax", tax === "tax-fund-dividend" ? "done" : "left-out", w.dividendTax[tax]));
   return out;
+}
+
+/** What a price without the items left out leaves out, in the checklist's order, for the status's words. */
+function withoutOf(needs: readonly NeedItem[], tax: DividendTaxLabelId | null): string[] {
+  const w = c.needs.without;
+  const word = { gap: w.gap, spread: w.spread, dividendTax: tax === "tax-fund-dividend-part" ? w.dividendTaxPart : w.dividendTax } as Record<string, string>;
+  return needs.flatMap((x) => (x.state === "left-out" && word[x.id] ? [word[x.id]!] : []));
 }
 
 /** The country item: missing where the fund has no price without it; "not sure" with what stands in, or none where it changes nothing. */
@@ -226,15 +237,32 @@ function countryNeed(d: FundDraft, gaps: readonly string[], tax: DividendTaxLabe
  * What the panel shows beside the questions, from the draft as it stands: the index as the fund would see it, the record it would save, the
  * checklist and where the calculation stands.
  */
-export function panelStateOf(draft: FundDraft, index: IndexRef, facts: FactsDraft, today: string): { seen: IndexRef; rec: FundRecord | null; needs: NeedItem[]; status: keyof typeof c.status } {
+export function panelStateOf(draft: FundDraft, index: IndexRef, facts: FactsDraft, today: string): { seen: IndexRef; rec: FundRecord | null; needs: NeedItem[]; status: PanelStatus; without: string[] } {
   const seen = seenBy(draft, index, facts, today);
   const rec = draftRecord(draft, index, today);
   const needs = needsOf(draft, rec, index, seen);
-  return { seen, rec, needs, status: statusOf(needs) };
+  const without = withoutOf(needs, rec ? dividendTaxLabel(rec, seen) : null);
+  return { seen, rec, needs, status: statusOf(needs), without };
 }
 
-/** Where the calculation stands: a missing item leaves the fund with no price; an item left out leaves a price without it. */
-const statusOf = (needs: readonly NeedItem[]): keyof typeof c.status => (needs.some((x) => x.state === "missing") ? "missing" : needs.some((x) => x.state === "left-out") ? "left-out" : "ok");
+/**
+ * Where the calculation stands: a missing item leaves the fund with no price; else its price leaves out what is not counted, which is never
+ * nothing, since the gap to the index is not asked (`needsOf`).
+ */
+type PanelStatus = "left-out" | "missing";
+const statusOf = (needs: readonly NeedItem[]): PanelStatus => (needs.some((x) => x.state === "missing") ? "missing" : "left-out");
+
+/** The status in words, in full beside the checklist and short in a phone's bar: what a price leaves out, by name. */
+function statusWords(status: PanelStatus, without: readonly string[], needs: readonly NeedItem[]): { full: string; short: string } {
+  switch (status) {
+    case "missing":
+      return { full: c.status.missing, short: c.statusShort.missing };
+    case "left-out":
+      return { full: c.status.leftOut(c.listWords([...without])), short: needs.some((x) => x.id === "dividendTax" && x.state === "left-out") ? c.statusShort.dividendTax : c.statusShort.notEntered };
+    default:
+      return assertNever(status);
+  }
+}
 
 function FundPanel({ headId, index, fund, start, others, writable, onSave, onCancel, onRemove }: { headId: string; index: IndexRef; fund: CustomFund | null; start: Editing["start"]; others: readonly CustomFund[]; writable: boolean; onSave: (f: CustomFund, index: CustomIndex | null, again: { buyAt: BuyAt; country: CountryAnswer } | null) => void; onCancel: () => void; onRemove: (id: string) => void }) {
   const [today] = useState(isoToday);
@@ -243,7 +271,8 @@ function FundPanel({ headId, index, fund, start, others, writable, onSave, onCan
   const [errors, setErrors] = useState<EntryError[]>([]);
   const form = useRef<HTMLDivElement>(null);
   const currencyOfIndex = index.exposure?.currency ?? null;
-  const { seen, rec, needs, status } = panelStateOf(draft, index, facts, today);
+  const { seen, rec, needs, status, without } = panelStateOf(draft, index, facts, today);
+  const words = statusWords(status, without, needs);
   const save = (again: boolean) => {
     const d = now.current;
     const e = fundErrors(d, others, fund?.id ?? null);
@@ -272,7 +301,7 @@ function FundPanel({ headId, index, fund, start, others, writable, onSave, onCan
         <p className="text-sm font-medium">{c.needs.title}</p>
         <NeedList items={needs} />
       </div>
-      <p className="text-sm">{c.status[status]}</p>
+      <p className="text-sm">{words.full}</p>
     </>
   );
   return (
@@ -294,7 +323,7 @@ function FundPanel({ headId, index, fund, start, others, writable, onSave, onCan
         </aside>
       </div>
       <div className="@4xl/fund:hidden">
-        <NeedBar status={c.statusShort[status]} listLabel={c.needs.title} list={<div className="flex flex-col gap-4">{side}</div>} action={<Button variant="primary" onClick={() => save(false)}>{c.save}</Button>} />
+        <NeedBar status={words.short} listLabel={c.needs.title} list={<div className="flex flex-col gap-4">{side}</div>} action={<Button variant="primary" onClick={() => save(false)}>{c.save}</Button>} />
       </div>
     </div>
   );

@@ -358,6 +358,27 @@ describe("the panel's checklist: an answer not given is never done (D56)", () =>
     expect(stateOf(draftOf("europe-usd", "IE", { tracking: "physical" }), world).needs.find((x) => x.id === "dividendTax")).toMatchObject({ state: "left-out", note: w["tax-fund-dividend-part"] });
   });
 
+  it("the gap to the index and the spread, which the panel does not ask, are named as not entered and not counted, and the status names them", () => {
+    const w = copy.customEntries.needs;
+    const onExchange = stateOf(draftOf("us-usd", "US", { tracking: "swap", payout: "distributing", yield: 1.2, perYear: 4 }));
+    expect(onExchange.needs.find((x) => x.id === "gap")).toMatchObject({ state: "left-out", note: w.notEntered });
+    expect(onExchange.needs.find((x) => x.id === "spread")).toMatchObject({ state: "left-out", note: w.notEntered });
+    expect(onExchange.status).toBe("left-out");
+    expect(onExchange.without).toEqual(expect.arrayContaining([w.without.gap, w.without.spread]));
+    // bought from its manager, a fund trades on no exchange (A-08): no spread, but the gap still
+    const fromManager = stateOf(draftOf("manager", "IL", { tracking: "physical" }));
+    expect(fromManager.needs.find((x) => x.id === "spread")).toBeUndefined();
+    expect(fromManager.needs.find((x) => x.id === "gap")?.state).toBe("left-out");
+    // a hedged fund's gap is missing: no price without it (F-92 (c))
+    expect(stateOf(draftOf("us-usd", "US", { hedged: true })).needs.find((x) => x.id === "gap")).toMatchObject({ state: "missing", note: w.gap });
+  });
+
+  it("an Irish fund holding MSCI World's shares is priced without part of the dividend tax, and the status says only part", () => {
+    const s = stateOf(draftOf("europe-usd", "IE", { tracking: "physical" }), must(indexById(bundle, "index-msci-world"), "MSCI World"));
+    expect(s.without).toContain(copy.customEntries.needs.without.dividendTaxPart);
+    expect(s.without).not.toContain(copy.customEntries.needs.without.dividendTax);
+  });
+
   it("abroad, not sure where: the place says what stands in for the currency and the exchange", () => {
     expect(itemOf(draftOf("abroad", "IE", { tracking: "swap" }), "place")).toMatchObject({ state: "stand-in", note: copy.customEntries.needs.standIn.place(true) });
     expect(itemOf(draftOf("abroad", "US", { tracking: "swap" }), "place")).toMatchObject({ state: "stand-in", note: copy.customEntries.needs.standIn.place(false) });

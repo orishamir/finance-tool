@@ -4566,7 +4566,11 @@ export const invest = {
     /** The checklist beside the form: every item the calculation reads, and what each state leaves. */
     needs: {
       title: "מה החישוב צריך",
-      items: { place: "איפה קונים, באיזו בורסה ובאיזה מטבע", fee: "דמי ניהול", payout: "מה עושה עם הדיבידנדים", yield: "תשואת החלוקה", country: "איפה הקרן רשומה", hedge: "מה הקרן עושה עם שער המטבע", gap: "הפער של הקרן מהמדד", dividendTax: "מס דיבידנד בתוך הקרן" },
+      items: { place: "איפה קונים, באיזו בורסה ובאיזה מטבע", fee: "דמי ניהול", payout: "מה עושה עם הדיבידנדים", yield: "תשואת החלוקה", country: "איפה הקרן רשומה", hedge: "מה הקרן עושה עם שער המטבע", gap: "הפער של הקרן מהמדד", spread: "מרווח הקנייה והמכירה", dividendTax: "מס דיבידנד בתוך הקרן" },
+      /** Under the gap and the spread, which the panel does not ask: the run counts neither. */
+      notEntered: "לא הוזן, ולכן לא נכלל בחישוב.",
+      /** What a price leaves out, as the status names it. */
+      without: { gap: "הפער מהמדד", spread: "מרווח הקנייה והמכירה", dividendTax: "מס הדיבידנד שבקרן", dividendTaxPart: "חלק ממס הדיבידנד שבקרן" },
       /** Under the dividend tax, by its label (labels.ts `dividendTaxLabel`): what is not counted. */
       dividendTax: {
         "tax-fund-dividend-left-out": "לאתר אין את תשואת הדיבידנד של המדד.",
@@ -4593,8 +4597,9 @@ export const invest = {
       gap: "בקרן מנוטרלת רוב העלות היא הפער מהמדד, והאתר עוד לא שואל עליו.",
     },
     /** The status over the buttons, and its short form in a phone's bar. */
-    status: { ok: "אפשר לחשב את הקרן.", "left-out": "אפשר לחשב את הקרן, בלי מס הדיבידנד בתוך הקרן.", missing: "הקרן תופיע בלי מחיר עד שיושלם מה שחסר." },
-    statusShort: { ok: "אפשר לחשב", "left-out": "אפשר לחשב · בלי מס דיבידנד", missing: "תופיע בלי מחיר" },
+    status: { leftOut: (what: string) => `אפשר לחשב את הקרן, בלי ${what}.`, missing: "הקרן תופיע בלי מחיר עד שיושלם מה שחסר." },
+    /** In a phone's bar: the dividend tax where it is left out, else that what was not entered is. */
+    statusShort: { dividendTax: "אפשר לחשב · בלי מס הדיבידנד שבקרן", notEntered: "אפשר לחשב · בלי מה שלא הוזן", missing: "תופיע בלי מחיר" },
     /** A fee of a typed fund left empty, where its figure would stand. */
     notTyped: "לא הוזן",
     /** The doubt of what a typed fund bought abroad leaves at an account, where its exchange is not known (F-65, invest.ts `withPlaceDoubt`). */
