@@ -1,7 +1,7 @@
 // Every Hebrew string the site shows, from docs/copy.md.
 // Figures never appear here: a `{…}` place in copy.md is filled by a Num on the page.
 import { countPhrase } from "./lib/count";
-import type { FeeCap } from "@finance-tool/schema";
+import type { EmptyBecause, FeeCap, SourceStanding } from "@finance-tool/schema";
 import type { ChangeKind, ForeignInvestmentFundStatement, FundStatement, HeldKind, NotKnown, TaxIndexStatement } from "@finance-tool/engine";
 import type { FeeKindId } from "./lib/fee-deal/core";
 
@@ -128,6 +128,17 @@ export const strength = {
   secondary: { label: "מקור משני", line: "הנתון נלקח מכתבה או מאתר מידע, לא מהמקור עצמו." },
   open: { label: "שאלה פתוחה", line: "עוד לא נמצא מקור שעונה על זה, ולכן האתר לא מחשב את זה." },
   entered: { label: "הזנתם", line: "הזנתם את הערך הזה." },
+} as const;
+
+/**
+ * One word for each state of a figure that has no number, the same in every cell, row and sheet head: a figure not collected yet, one its
+ * source did not report, and one there is none of (a rule says so, or the product has none). Each says what is missing, never a value
+ * beside it (wording.md, missing data).
+ */
+export const emptyWords = {
+  notCollected: "לא נאסף",
+  notReported: "לא דווח",
+  none: "אין",
 } as const;
 
 export const buttons = {
@@ -430,6 +441,18 @@ export const provenance = {
     englishTitle: "שם המקור באנגלית",
     localFile: "קובץ נתונים של האתר",
     noValue: "הנתון הזה לא נמצא במקור, ולכן האתר לא מציג מספר.",
+    /**
+     * Why a figure has no number, by the reason its record gives (`empty_because`, data-schema 1), said once in its sheet; null where the
+     * sheet says it otherwise: a figure a rule says there is none of has that rule's chip.
+     */
+    emptyBecause: {
+      "too-young": "המוצר קיים פחות זמן מהתקופה הזו, ולכן אין לו עוד נתון עליה.",
+      "none-by-rule": null,
+      "not-reported": "הנתון הזה לא דווח במקור.",
+      "not-collected": "הנתון הזה עוד לא נאסף.",
+      "not-applicable": "לנתון הזה אין משמעות במוצר הזה.",
+      unknown: "הנתון הזה חסר במקור, ולא ידוע למה.",
+    } satisfies Record<EmptyBecause, string | null>,
     notYetInForce: "עד אז הנתון הזה עוד לא חל. האתר מציג אותו כפי שפורסם.",
   },
   /** A glossary card's other names; each is drawn with its gershayim (copy 10.4). */
@@ -3341,6 +3364,16 @@ export const sourceBlock = {
   more: { one: "עוד מקור אחד", two: "עוד שני מקורות", many: "עוד {n} מקורות" },
   /** The word after "נבדק {date} ·" when the source is weaker than the law. */
   weak: { institution: "לפי החברה", secondary: "מקור משני" } as Record<string, string>,
+  /** The word after "נבדק {date} ·" for a source that is not the binding text in force (its `standing`, data-schema 3.1). */
+  standing: {
+    draft: "טיוטה, לא בתוקף",
+    bill: "הצעת חוק",
+    superseded: "נוסח שכבר לא בתוקף",
+    "consolidated-not-binding": "נוסח משולב, לא הנוסח המחייב",
+    translation: "תרגום",
+    "foreign-view": "מקור מחו״ל",
+    "does-not-answer": "לא קובע את זה בעצמו",
+  } satisfies Record<SourceStanding, string>,
   /** The one-line citation the copy button writes: "{claim} — {publisher}, {document}, {locator}. {url} (נבדק {date})" */
   citation: { checked: "נבדק", copied: "הועתק" }, // was "ההפניה הועתקה."; the box's own label turns into it
   /** The lede sentence of the rules pages' legend: where a text comes from and what a date is. */

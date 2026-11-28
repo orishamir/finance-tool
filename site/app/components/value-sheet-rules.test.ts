@@ -85,6 +85,31 @@ describe("a missing figure's sheet", () => {
     expect(count(out, provenance.sourced.noValue)).toBe(1);
     expect(out).toContain("קובץ הרשות");
   });
+
+  it("a sourced one says the reason its record gives for the gap, once, in place of 'not found in the source'", () => {
+    for (const why of ["too-young", "not-reported", "not-collected", "not-applicable", "unknown"] as const) {
+      const out = sheet(sourced(null, { empty_because: why }), { display: "לא דווח" });
+      const reason = provenance.sourced.emptyBecause[why];
+      if (reason === null) throw new Error(`no words for ${why}`);
+      expect(count(out, reason)).toBe(1);
+      expect(out).not.toContain(provenance.sourced.noValue);
+    }
+  });
+
+  it("a note in Hebrew is its reason, before the reason its record gives", () => {
+    const out = sheet(sourced(null, { empty_because: "unknown", notes_he: "החברה הפסיקה לפרסם את הנתון." }), { display: "לא דווח" });
+    expect(count(out, "החברה הפסיקה לפרסם את הנתון.")).toBe(1);
+    expect(out).not.toContain(provenance.sourced.emptyBecause.unknown);
+  });
+});
+
+describe("a figure's note", () => {
+  it("shows the Hebrew note, and of an English one only the open questions it names, each as its chip", () => {
+    expect(sheet(sourced(5, { notes: "Taken from the March file.", notes_he: "נלקח מהקובץ של מרץ." }))).toContain("נלקח מהקובץ של מרץ.");
+    const english = sheet(sourced(5, { notes: "Rate as of March; see TXI OQ19 for the cap." }));
+    expect(english).not.toContain("Rate as of March");
+    expect(english).toContain(provenance.idRef.questionChip);
+  });
 });
 
 describe("a figure not in force yet", () => {

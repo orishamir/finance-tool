@@ -511,16 +511,25 @@ export function SlottedText({ text, source }: { text: string; source: SlotSource
 }
 
 
+/** A figure's note as its sheet shows it: the Hebrew one (`notes_he`), else its working note where that is written in Hebrew. */
+const hebrewNote = (value: SiteValue): string | null => value.notes_he ?? (mostlyHebrew(value.notes) ? (value.notes ?? null) : null);
+
 /**
- * Why a figure has no number, said once in its sheet, or null where nothing is said: its note in Hebrew; else, for a sourced figure, that
- * the source does not hold it. An open value's reason is its blocked callout, and an empty value a rule explains ("אין", PF-06) has that
- * rule's chip: "not found in the source" would be untrue of either.
+ * Why a figure has no number, said once in its sheet, or null where nothing is said: its note in Hebrew; else, for a sourced figure, the
+ * reason its record gives (`empty_because`), or that the source does not hold it. An open value's reason is its blocked callout, and an
+ * empty value a rule explains ("אין", PF-06) has that rule's chip: "not found in the source" would be untrue of either.
  */
 function missingReason(value: SiteValue, display: string | undefined, blocked: boolean): string | null {
-  if (value.value === null && mostlyHebrew(value.notes)) return value.notes ?? null;
-  if (value.value !== null || blocked || value.state !== "sourced") return null;
+  if (value.value !== null) return null;
+  const note = hebrewNote(value);
+  if (note) return note;
+  if (blocked || value.state !== "sourced") return null;
+  if (value.empty_because) return copy.sourced.emptyBecause[value.empty_because];
   return display && value.rule_ids?.length ? null : copy.sourced.noValue;
 }
+
+/** The open questions an English working note names (`TX2 OQ6`): the only part of it a sheet shows, each as its chip. */
+const questionsIn = (notes: string | undefined): string[] => [...new Set([...(notes ?? "").matchAll(/\b([A-Z][A-Z0-9]*)[ -]OQ(\d+)\b/g)].map((m) => `${m[1]} OQ${m[2]}`))];
 
 /**
  * A figure's head in its sheet: the figure as its line shows it, with its unit's word, then what else stands beside it (a state tag), and
@@ -898,7 +907,17 @@ export function ValueSheet({ value, exact, display, shown = [], data, headId, de
             </>
           )}
           {chipRow}
-          {mostlyHebrew(value.notes) && <Row label=""><span className="text-sm text-muted-foreground"><IdText text={value.notes ?? ""} /></span></Row>}
+          {hebrewNote(value) ? (
+            <Row label=""><span className="text-sm text-muted-foreground"><IdText text={hebrewNote(value) ?? ""} /></span></Row>
+          ) : (
+            questionsIn(value.notes).length > 0 && (
+              <Row label={copy.idRef.question}>
+                <span className="flex flex-wrap gap-2">
+                  {questionsIn(value.notes).map((q) => <IdRef key={q} id={q} />)}
+                </span>
+              </Row>
+            )
+          )}
         </dl>
         </>
       )}
