@@ -446,11 +446,11 @@ export const provenance = {
      * sheet says it otherwise: a figure a rule says there is none of has that rule's chip.
      */
     emptyBecause: {
-      "too-young": "המוצר קיים פחות זמן מהתקופה הזו, ולכן אין לו עוד נתון עליה.",
+      "too-young": "המסלול או המוצר קיים פחות זמן מהתקופה שהנתון מכסה, ולכן אין לו עוד נתון עליה.",
       "none-by-rule": null,
       "not-reported": "הנתון הזה לא דווח במקור.",
       "not-collected": "הנתון הזה עוד לא נאסף.",
-      "not-applicable": "לנתון הזה אין משמעות במוצר הזה.",
+      "not-applicable": "אין נתון כזה במוצר הזה מטבעו.",
       unknown: "הנתון הזה חסר במקור, ולא ידוע למה.",
     } satisfies Record<EmptyBecause, string | null>,
     notYetInForce: "עד אז הנתון הזה עוד לא חל. הוא מוצג כפי שפורסם.",
