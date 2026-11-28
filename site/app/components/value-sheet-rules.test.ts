@@ -102,6 +102,13 @@ describe("a missing figure's sheet", () => {
     }
   });
 
+  it("an English note's open questions are its chips, and a Hebrew note stands alone", () => {
+    const out = sheet(sourced(null, { empty_because: "unknown", notes: "Not published; see TXI OQ19." }), { display: "לא דווח" });
+    expect(out).toContain(provenance.idRef.questionChip);
+    expect(out).not.toContain("Not published");
+    expect(sheet(sourced(null, { notes: "Not published; see TXI OQ19.", notes_he: "החברה הפסיקה לפרסם את הנתון." }), { display: "לא דווח" })).not.toContain(provenance.idRef.questionChip);
+  });
+
   it("a note in Hebrew is its reason, before the reason its record gives", () => {
     const out = sheet(sourced(null, { empty_because: "unknown", notes_he: "החברה הפסיקה לפרסם את הנתון." }), { display: "לא דווח" });
     expect(count(out, "החברה הפסיקה לפרסם את הנתון.")).toBe(1);

@@ -954,6 +954,15 @@ export function ValueSheet({ value, exact, display, shown = [], figure, data, he
   );
   const missing = value.value === null;
   const reason = missingReason(value, display, blocked);
+  // of an English working note only the open questions it names, each as its chip; a Hebrew note is shown whole instead
+  const questions = hebrewNote(value) ? [] : questionsIn(value.notes);
+  const questionRow = questions.length > 0 && (
+    <Row label={copy.idRef.question}>
+      <span className="flex flex-wrap gap-2">
+        {questions.map((q) => <IdRef key={q} id={q} />)}
+      </span>
+    </Row>
+  );
   return (
     <div className="flex flex-col gap-3.5">
       <FigureHead value={value} text={text} ink headId={headId} descId={descId}>
@@ -978,7 +987,12 @@ export function ValueSheet({ value, exact, display, shown = [], figure, data, he
       {missing && value.state === "sourced" && !blocked && !param && (
         <>
           <FigureSource value={value} data={data} strengthSaid={strengthSaid} />
-          {chipRow && <dl className="sheet-dl">{chipRow}</dl>}
+          {(chipRow || questionRow) && (
+            <dl className="sheet-dl">
+              {chipRow}
+              {questionRow}
+            </dl>
+          )}
         </>
       )}
 
@@ -1017,13 +1031,7 @@ export function ValueSheet({ value, exact, display, shown = [], figure, data, he
           {hebrewNote(value) ? (
             <Row label=""><span className="text-sm text-muted-foreground"><IdText text={hebrewNote(value) ?? ""} /></span></Row>
           ) : (
-            questionsIn(value.notes).length > 0 && (
-              <Row label={copy.idRef.question}>
-                <span className="flex flex-wrap gap-2">
-                  {questionsIn(value.notes).map((q) => <IdRef key={q} id={q} />)}
-                </span>
-              </Row>
-            )
+            questionRow
           )}
         </dl>
         </>
